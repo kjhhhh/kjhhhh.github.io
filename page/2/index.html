@@ -1383,7 +1383,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-12-21 16:39:06 / 修改时间：16:41:54" itemprop="dateCreated datePublished" datetime="2020-12-21T16:39:06+08:00">2020-12-21</time>
+              <time title="创建时间：2020-12-21 16:39:06 / 修改时间：21:44:09" itemprop="dateCreated datePublished" datetime="2020-12-21T16:39:06+08:00">2020-12-21</time>
             </span>
 
           
@@ -1397,7 +1397,133 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>1、</p>
+          <h2 id="1、继承"><a href="#1、继承" class="headerlink" title="1、继承"></a>1、继承</h2><p>基类的构造函数和析构函数不可以被继承。</p>
+<p>派生类继承至基类(父类继承至子类)，派生类对于基类成员的继承是没有选择的，不能选择接收或者舍弃基类中的成员。</p>
+<h2 id="2、类的层次结构"><a href="#2、类的层次结构" class="headerlink" title="2、类的层次结构"></a>2、类的层次结构</h2><p>通过继承可以形成类的层次结构，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span>......&#125;；</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span><span class="keyword">public</span> A &#123;......&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span><span class="keyword">public</span> B&#123;.......&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>即A为顶层类，不存在不可访问成员，C作为底层类。</p>
+<h2 id="3、基类成员按操作分类"><a href="#3、基类成员按操作分类" class="headerlink" title="3、基类成员按操作分类"></a>3、基类成员按操作分类</h2><p>public成员:公有成员，类内、类外、派生类都可以使用。</p>
+<p>protect成员:受保护成员，类内、派生类可以使用。</p>
+<p>private成员:私有成员，类内可以使用。</p>
+<p>不可访问成员：不可访问。</p>
+<h2 id="4、继承权限"><a href="#4、继承权限" class="headerlink" title="4、继承权限"></a>4、继承权限</h2><p>继承类型有三种，<strong>公有继承(public)</strong>，<strong>私有继承(private)</strong>和<strong>保护继承(protected)</strong>。</p>
+<p>public继承：公有继承，所有类型成员权限都不变</p>
+<p>protect继承：保护继承，public和protect成员都变成protect权限成员，可以依此多次保护继承，而数据仍然为保护权限。</p>
+<p>private继承：私有继承，public和protect成员都变成privatet权限成员，可以依此多次私有继承，而终止基类功能在子类中的派生。</p>
+<p><strong>公有继承：</strong></p>
+<p>公有继承的特点是基类成员在派生类中都保持原来的状态</p>
+<ul>
+<li>基类中的public仍为public，</li>
+<li>基类中的protected仍为protected，</li>
+<li>基类中的private仍为private；</li>
+</ul>
+<p><strong>私有继承：</strong></p>
+<p>私有继承的特点是基类中所有成员在派生类中都变为私有成员</p>
+<ul>
+<li>基类中的public，protected变为private，</li>
+<li>基类中的private仍为private；</li>
+</ul>
+<p><strong>保护继承：</strong></p>
+<ul>
+<li>基类中的public变为protected，</li>
+<li>基类中的protected仍为protected，</li>
+<li>基类中的private仍为private；</li>
+</ul>
+<p><strong>private在派生类中依然存在，但不论以哪种方法继承基类，派生类都不能直接访问基类的私有成员。</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">继承方式</th>
+<th align="center">基类的public成员</th>
+<th align="center">基类的protected成员</th>
+<th align="center">基类的private成员</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">public继承</td>
+<td align="center">public成员</td>
+<td align="center">protected成员</td>
+<td align="center">private成员</td>
+</tr>
+<tr>
+<td align="center">protected继承</td>
+<td align="center">protected成员</td>
+<td align="center">protected成员</td>
+<td align="center">private成员</td>
+</tr>
+<tr>
+<td align="center">private继承</td>
+<td align="center">private成员</td>
+<td align="center">private成员</td>
+<td align="center">private成员</td>
+</tr>
+</tbody></table>
+<p>for example：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span>	<span class="comment">//基类 </span></span><br><span class="line">	<span class="keyword">public</span> :</span><br><span class="line">		<span class="keyword">int</span> pub;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		<span class="keyword">int</span> pri;</span><br><span class="line">	<span class="keyword">protected</span> :</span><br><span class="line">		<span class="keyword">int</span> pro;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> :</span> <span class="keyword">public</span> Base&#123;	<span class="comment">//public继承 </span></span><br><span class="line">	<span class="keyword">public</span> :</span><br><span class="line">		<span class="keyword">int</span> a;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			a = pub;	<span class="comment">//可以，依然为public成员 </span></span><br><span class="line">			a = pro;	<span class="comment">//可以，依然为protected成员 </span></span><br><span class="line">			a = pri;	<span class="comment">//错误，基类的私有成员在派生类中是不可见的 </span></span><br><span class="line">		&#125;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">protected</span> Base&#123;	<span class="comment">//protected继承 </span></span><br><span class="line">	<span class="keyword">public</span> :</span><br><span class="line">		<span class="keyword">int</span> b;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			b = pub;	<span class="comment">//可以，变为protected成员 </span></span><br><span class="line">			b = pro;	<span class="comment">//可以，依然为protected成员 </span></span><br><span class="line">			b = pri;	<span class="comment">//错误，基类的私有成员在派生类中是不可见的 </span></span><br><span class="line">		&#125;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> :</span> <span class="keyword">private</span> Base&#123;	<span class="comment">//private继承 </span></span><br><span class="line">	<span class="keyword">public</span> :</span><br><span class="line">		<span class="keyword">int</span> c;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			c = pub;	<span class="comment">//可以，变为private成员 </span></span><br><span class="line">			c = pro;	<span class="comment">//可以，变为private成员 </span></span><br><span class="line">			c = pri;	<span class="comment">//错误，基类的私有成员在派生类中是不可见的 </span></span><br><span class="line">		&#125;</span><br><span class="line">&#125;; </span><br><span class="line"><span class="keyword">int</span> x;</span><br><span class="line">	A a;</span><br><span class="line">	x = a.pub;	<span class="comment">//可以，public继承的public成员是public的，对对象可见 </span></span><br><span class="line">	x = a.pro;	<span class="comment">//错误，public继承的protected成员是protected的，对对象不可见 </span></span><br><span class="line">	x = a.pri;	<span class="comment">//错误，public继承的private成员是private的，对对象不可见</span></span><br><span class="line">	</span><br><span class="line">	B b;</span><br><span class="line">	x = b.pub;	<span class="comment">//错误，protected继承的public成员是protected的，对对象不可见</span></span><br><span class="line">	x = b.pro;	<span class="comment">//错误，protected继承的protected成员是protected的，对对象不可见</span></span><br><span class="line">	x = b.pri;	<span class="comment">//错误，protected继承的private成员是private的，对对象不可见</span></span><br><span class="line">	</span><br><span class="line">	C c;</span><br><span class="line">	x = c.pub;	<span class="comment">//错误，protected继承的public成员是private的，对对象不可见</span></span><br><span class="line">	x = c.pro;	<span class="comment">//错误，protected继承的protected成员是private的，对对象不可见</span></span><br><span class="line">	x = c.pri;	<span class="comment">//错误，protected继承的private成员是private的，对对象不可见</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>public继承是一个接口继承，保持is-a原则，每个父类可用的成员对子类也可用,因为每个子类对象也都是一个父类对象。</li>
+<li>protetced/private继承是一个实现继承，基类的部分成员并非完全成为子类接口的一部分，是has-a的关系原则，所以非特殊情况下不会使用这两种继承关系，在绝大多数的场景下使用的都是公有继承。</li>
+<li><strong>class的默认继承是private的，struct的默认继承是public的。</strong></li>
+</ul>
+<h2 id="5、类型兼容"><a href="#5、类型兼容" class="headerlink" title="5、类型兼容"></a>5、类型兼容</h2><p>不同类型数据之间在一定条件下可以进行类型的转换，比如int n =‘a’,由于字符和整型兼容，可以对整型变量n赋值为字符’a’。基类和派生类对象之间也有赋值兼容的关系，可以进行类型建的转换。</p>
+<p>一般继承情况下，派生类对象会首先存放基类的数据成员，在存储派生类新增的数据成员。并且所占字节数就是类型字节数。</p>
+<p><strong>重点理解派生类对象在基类对象数据成员的基础上新增了自己的数据成员，因此两者兼容关系是不可逆的。</strong></p>
+<p>派生类对象可以像基类对象赋值。</p>
+<p>派生类型关系是单向的，不可逆。</p>
+<p>派生类对象可以替代基类对象向基类对象的引用进行赋值或初始化。</p>
+<p>如果函数的参数是基类对象或基类对象的引用，函数调用时的实参可以时派生类对象。</p>
+<p>派生类对象的地址可以赋值给基类指针变量。</p>
+<p><strong>即派生类对象对于基类对象兼容。</strong></p>
+<h2 id="6、派生类中的构造函数和析构函数"><a href="#6、派生类中的构造函数和析构函数" class="headerlink" title="6、派生类中的构造函数和析构函数"></a>6、派生类中的构造函数和析构函数</h2><p>如果基类中没有构造函数或者仅存在无参构造函数，则派生类中的构造函数的定义中可以省略掉对基类构造函数的调用。而当基类中的构造函数使用一个或多个参数时，派生类必须定义构造函数，提供将参数传递给基类构造函数的方法，从而实现对基类数据成员的初始化。</p>
+<p>（<strong>即先调用基类构造函数再调用派生类构造函数）</strong></p>
+<p>（<strong>析构函数则相反，先调用派生类析构函数再调用基类析构函数）</strong></p>
+<h2 id="7、隐藏基类函数"><a href="#7、隐藏基类函数" class="headerlink" title="7、隐藏基类函数"></a>7、隐藏基类函数</h2><p>派生类中重新定义基类同名函数的方法，称为对基类函数的覆盖或改写，覆盖后基类同名函数再派生类中被隐藏，定义派生类对象调用该函数时，调用的是自身的函数，基类同名函数被隐藏，通过这个可以方便软件更新功能的实现。</p>
+<h2 id="8、多重继承"><a href="#8、多重继承" class="headerlink" title="8、多重继承"></a>8、多重继承</h2><h3 id="8-1、多重继承的数据排列规则"><a href="#8-1、多重继承的数据排列规则" class="headerlink" title="8.1、多重继承的数据排列规则"></a>8.1、多重继承的数据排列规则</h3><p>通过多继承，派生类会从多个基类中继承成员。在普通多继承方式下，若定义派生类对象，其中的数据成员排列规则是：首先按照<strong>派生类定义形式</strong>中基类的排列顺序，将基类成员依次排列，接下来再存放派生类中新增的数据成员。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func_base1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> n_base1;</span><br><span class="line">i	nt m_base1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func_base2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> n_base2;</span><br><span class="line">	<span class="keyword">int</span> m_base2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span>:</span><span class="keyword">public</span> Base1,<span class="keyword">public</span> Base2<span class="comment">//派生类定义形式</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func_derive</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> n_drive;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中派生类对象中的数据成员排列如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Base1::n_base1;</span><br><span class="line">Base1::m_base1;</span><br><span class="line">Base2::n_base2;</span><br><span class="line">Base2::m_base2;</span><br><span class="line">Drive::n_drive;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2、多重继承派生类中的构造函数"><a href="#8-2、多重继承派生类中的构造函数" class="headerlink" title="8.2、多重继承派生类中的构造函数"></a>8.2、多重继承派生类中的构造函数</h3><p><strong>如果派生类中新增的成员有类对象的话，那么派生类需要初始化的数据有三部分：继承的数据成员，新增类对象的数据成员和新增的普通数据成员。</strong></p>
+<p>那么多重继承中的构造函数调用顺序规则为：</p>
+<p>首先调用<strong>基类构造函数</strong>，按它们再派生类定义中的先后顺序，依次调用各基类的构造函数。</p>
+<p>其次调用<strong>对象成员的构造函数</strong>，按它们再派生类中定义的先后顺序依次调用。</p>
+<p>最后调用<strong>派生类的构造函数</strong>。</p>
+<p><strong>多重继承派生类、复杂派生类的析构函数只需要编写对于新增普通函数的善后处理，而对类对象和基类的善后处理工作是由类对象和基类的析构函数完成的，并且析构函数的调用顺序与构造函数完全相反。</strong></p>
+<h3 id="8-3、多重继承引起的二义性"><a href="#8-3、多重继承引起的二义性" class="headerlink" title="8.3、多重继承引起的二义性"></a>8.3、多重继承引起的二义性</h3><h4 id="8-3-1调用不同基类中的同名成员函数时产生二义性"><a href="#8-3-1调用不同基类中的同名成员函数时产生二义性" class="headerlink" title="8.3.1调用不同基类中的同名成员函数时产生二义性"></a>8.3.1调用不同基类中的同名成员函数时产生二义性</h4><p>消除方法：</p>
+<p>使用作用域限定符</p>
+<p>派生类中定义与基类同名函数，将基类函数覆盖</p>
+<h4 id="8-3-2派生类中访问共有成员时产生二义性"><a href="#8-3-2派生类中访问共有成员时产生二义性" class="headerlink" title="8.3.2派生类中访问共有成员时产生二义性"></a>8.3.2派生类中访问共有成员时产生二义性</h4><p>多重继承中派生类由多个基类，多个基类又可能由同一个基类派生，则在派生类中访问公共基类时会出现二义性。</p>
+<p>可能会对于一个基类成员出现多次拷贝。</p>
+<p>消除方法：</p>
+<p>将基类说明为虚基类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class 派生类名：virtual 继承方式 基类名</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对于普通基类来说，派生类构造函数值负责调用其<strong>直接基类</strong>的构造函数，若直接基类还要它更上层德基类，则依次调用各层基类的构造函数；而对于虚基类的派生类来说，其构造函数不仅调用其直接基类的构造函数，还需要调用其虚基类的构造函数。</p>
+<p><strong>即对于C++编译器来说，对于虚基类的构造函数，由最后定义的派生类，即类的层次结构中最低层的派生类在定义对象时完成虚基类构造函数的调用，该派生类其它基类对基类的构造函数的调用被忽略。</strong></p>
+<h2 id="9、多态"><a href="#9、多态" class="headerlink" title="9、多态"></a>9、多态</h2><p><strong>多态是指不同的对象接收到相同的操作指令时，产生不同的动作。即每个对象以自己的方式是响应相同的消息。</strong></p>
+<p>多态分为静态多态和动态多态。</p>
+<h3 id="9-1、静态多态（静态联编）"><a href="#9-1、静态多态（静态联编）" class="headerlink" title="9.1、静态多态（静态联编）"></a>9.1、静态多态（静态联编）</h3><p>不同对象直接调用同名函数，在<strong>编译</strong>时确定调用。<strong>通过重载机制实现。</strong></p>
+<h3 id="9-2、动态多态（动态联编）"><a href="#9-2、动态多态（动态联编）" class="headerlink" title="9.2、动态多态（动态联编）"></a>9.2、动态多态（动态联编）</h3><p>以基类指针或者引用指向派生类对象调用同名函数，在<strong>运行</strong>时确定调用。<strong>通过继承和虚函数实现。</strong></p>
+<h3 id="9-3、虚函数"><a href="#9-3、虚函数" class="headerlink" title="9.3、虚函数"></a>9.3、虚函数</h3><p>虚函数是运行时多态，若某个基类函数声明为虚函数，则其共有派生类将定义与其基类虚函数原型相同的函数，这时，当使用基类指针或基类引用操作派生类对象时，系统会自动用派生类中同名函数代替基类函数。<strong>（派生类函数覆盖掉基类同名函数）</strong></p>
+<h4 id="虚函数只能时类内的函数，但不可以时静态成员函数。"><a href="#虚函数只能时类内的函数，但不可以时静态成员函数。" class="headerlink" title="虚函数只能时类内的函数，但不可以时静态成员函数。"></a><strong>虚函数只能时类内的函数，但不可以时静态成员函数。</strong></h4><h4 id="派生类对基类虚函数重新定义时，必须与基类中虚函数的原型完全一致，包括返回值类型、函数名、参数个数、参数类型以及参数顺序。而派生类中同名函数无论是否添加virtual关键字，都被视为虚函数。（但是一般保留virtual-关键字，以提高程序的可读性）"><a href="#派生类对基类虚函数重新定义时，必须与基类中虚函数的原型完全一致，包括返回值类型、函数名、参数个数、参数类型以及参数顺序。而派生类中同名函数无论是否添加virtual关键字，都被视为虚函数。（但是一般保留virtual-关键字，以提高程序的可读性）" class="headerlink" title="派生类对基类虚函数重新定义时，必须与基类中虚函数的原型完全一致，包括返回值类型、函数名、参数个数、参数类型以及参数顺序。而派生类中同名函数无论是否添加virtual关键字，都被视为虚函数。（但是一般保留virtual 关键字，以提高程序的可读性）"></a><strong>派生类对基类虚函数重新定义时，必须与基类中虚函数的原型完全一致，包括返回值类型、函数名、参数个数、参数类型以及参数顺序。而派生类中同名函数无论是否添加virtual关键字，都被视为虚函数。</strong>（但是一般保留virtual 关键字，以提高程序的可读性）</h4><h4 id="9-3-1、一般虚函数成员"><a href="#9-3-1、一般虚函数成员" class="headerlink" title="9.3.1、一般虚函数成员"></a>9.3.1、一般虚函数成员</h4><p>虚函数在编译器执行过程中会为包含虚函数的类建立一张虚函数表vtable，编译器按照虚函数的声明顺序依次保持虚函数地址，同时在每个带有虚函数的类中都放一个vptr指针，用来指向虚函数表，<strong>通常在定义对象时为vptr分配空间，该指针被分配旨在对象的起始位置，从而通过对象的构造函数将vptr初始化为本类的虚函数表地址。</strong>（虚函数按照其声明顺序列于表中并且基类的虚函数在派生类虚函数之前）</p>
+<p>即带有虚函数时，C++编译器会按以下操作进行：</p>
+<p>·为每个类建立虚函数表，若无虚函数则不操作；</p>
+<p>·暂不连接虚函数，只是将各个虚函数地址放入虚函数表；</p>
+<p>·连接各静态函数</p>
+<h4 id="9-3-2虚析构函数"><a href="#9-3-2虚析构函数" class="headerlink" title="9.3.2虚析构函数"></a>9.3.2虚析构函数</h4><p><strong>C++中不能声明虚构造函数，因为在构造函数执行时，对象还没有构造好，无法按虚函数方式进行调用。</strong></p>
+<p><strong>虚析构函数是为了解决基类的指针指向派生类对象，并用基类指针销毁派生类对象的应用产生的。</strong></p>
+<p><strong>由于继承基类时不会继承基类的构造函数和析构函数，则会出现派生类申请的资源得不到回收的问题。</strong></p>
+<p>使用基类指针指向一个new生成的派生类对象，通过delete销毁基类指针指向的派生类对象时，会出现以下两种情况：</p>
+<p>1、如果基类析构函数不是虚析构函数，则只会调用基类的析构函数，派生类的析构函数不会被调用，导致派生类种申请的资源不被回收。</p>
+<p>2、如果基类析构函数为虚析构函数，则释放基类指针指向的对象时会调用基类及派生类析构函数，派生类对象所有资源被回收。</p>
+<h4 id="9-3-3、纯虚函数"><a href="#9-3-3、纯虚函数" class="headerlink" title="9.3.3、纯虚函数"></a>9.3.3、纯虚函数</h4><p>在定义一个表示抽象概念的基类时，有时无法或者不需要给出某些成员函数的具体实现，函数的实现在派生类种完成，基类中这样的函数声明为纯虚函数。<strong>（纯虚函数作为一个接口，具体实现在各派生类中完成）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">virtual 函数返回类型 函数名（参数表） &#x3D; 0；</span><br></pre></td></tr></table></figure>
+
+<p>纯虚函数只有函数名而不具备函数功能，不可以被调用，声明格式后面的“=0”并不是表示函数的返回值为0，而是以这种形式说明此函数为纯虚函数吗，“=0”后以分号结尾，表示声明结束。</p>
+<p><strong>若在一个类中声明了纯虚函数，但是在其派生类中没有实现该函数，则该函数在派生类中仍然为纯虚函数。</strong></p>
 
       
     </div>
