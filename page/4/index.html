@@ -155,6 +155,419 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day19%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day19%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">day19笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:49" itemprop="dateModified" datetime="2019-01-11T09:22:49+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、List接口<br>2、Set接口<br>3、判断集合唯一性原理</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01List接口的特点<br>  A:List接口的特点:<br>   a:它是一个元素存取有序的集合。<br>        例如，存元素的顺序是11、22、33。那么集合中，元素的存储就是按照11、22、33的顺序完成的）。<br>   b:它是一个带有索引的集合，通过索引就可以精确的操作集合中的元素（与数组的索引是一个道理）。<br>   <br>     c:集合中可以有重复的元素，通过元素的equals方法，来比较是否为重复的元素。</p>
+<pre><code>d:List接口的常用子类有：</code></pre><p>      ArrayList集合<br>      LinkedList集合</p>
+<p>###02List接口的特有方法<br>    A:List接口的特有方法(带索引的方法)<br>   a:增加元素方法<br>   add(Object e)：向集合末尾处，添加指定的元素<br>   add(int index, Object e)   向集合指定索引处，添加指定的元素，原有元素依次后移</p>
+<pre><code>/*
+  *  add(int index, E)
+  *  将元素插入到列表的指定索引上
+  *  带有索引的操作,防止越界问题
+  *  java.lang.IndexOutOfBoundsException
+  *     ArrayIndexOutOfBoundsException
+  *     StringIndexOutOfBoundsException
+  */
+ public static void function(){
+   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+   list.add(&quot;abc1&quot;);
+   list.add(&quot;abc2&quot;);
+   list.add(&quot;abc3&quot;);
+   list.add(&quot;abc4&quot;);
+   System.out.println(list);
+
+   list.add(1, &quot;itcast&quot;);
+   System.out.println(list);
+ }</code></pre><p>   b:删除元素删除<br>   remove(Object e)：将指定元素对象，从集合中删除，返回值为被删除的元素<br>   remove(int index)：将指定索引处的元素，从集合中删除，返回值为被删除的元素<br>     /*<br>       *  E remove(int index)<br>       *  移除指定索引上的元素<br>       *  返回被删除之前的元素<br>       */<br>      public static void function_1(){<br>        List<Double> list = new ArrayList<Double>();<br>        list.add(1.1);<br>        list.add(1.2);<br>        list.add(1.3);<br>        list.add(1.4);</Double></Double></p>
+<pre><code>  Double d = list.remove(0);
+  System.out.println(d);
+  System.out.println(list);
+}</code></pre><p>   c:替换元素方法<br>   set(int index, Object e)：将指定索引处的元素，替换成指定的元素，返回值为替换前的元素<br>      /*<br>       *  E set(int index, E)<br>       *  修改指定索引上的元素<br>       *  返回被修改之前的元素<br>       */<br>      public static void function_2(){<br>        List<Integer> list = new ArrayList<Integer>();<br>        list.add(1);<br>        list.add(2);<br>        list.add(3);<br>        list.add(4);</Integer></Integer></p>
+<pre><code>    Integer i = list.set(0, 5);
+    System.out.println(i);
+    System.out.println(list);
+  }
+d:查询元素方法</code></pre><p>   get(int index)：获取指定索引处的元素，并返回该元素</p>
+<p>###03迭代器的并发修改异常<br>    A:迭代器的并发修改异常</p>
+<pre><code>/*
+ *  迭代器的并发修改异常 java.util.ConcurrentModificationException
+ *  就是在遍历的过程中,使用了集合方法修改了集合的长度,不允许的
+ */
+public class ListDemo1 {
+ public static void main(String[] args) {
+   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+   list.add(&quot;abc1&quot;);
+   list.add(&quot;abc2&quot;);
+   list.add(&quot;abc3&quot;);
+   list.add(&quot;abc4&quot;);
+
+   //对集合使用迭代器进行获取,获取时候判断集合中是否存在 &quot;abc3&quot;对象
+   //如果有,添加一个元素 &quot;ABC3&quot;
+   Iterator&lt;String&gt; it = list.iterator();
+   while(it.hasNext()){
+     String s = it.next();
+     //对获取出的元素s,进行判断,是不是有&quot;abc3&quot;
+     if(s.equals(&quot;abc3&quot;)){
+       list.add(&quot;ABC3&quot;);
+     }
+     System.out.println(s);
+   }
+ }
+}
+
+运行上述代码发生了错误 java.util.ConcurrentModificationException这是什么原因呢？
+  在迭代过程中，使用了集合的方法对元素进行操作。
+  导致迭代器并不知道集合中的变化，容易引发数据的不确定性。
+
+并发修改异常解决办法：
+   在迭代时，不要使用集合的方法操作元素。
+   或者通过ListIterator迭代器操作元素是可以的，ListIterator的出现，解决了使用Iterator迭代过程中可能会发生的错误情况。</code></pre><p>###04数据的存储结构<br>    A:数据的存储结构<br>     a:栈结构:后进先出/先进后出(手枪弹夹) FILO (first in last out)<br>     b:队列结构:先进先出/后进后出(银行排队) FIFO(first in first out)<br>     c:数组结构:<br>               查询快:通过索引快速找到元素<br>               增删慢:每次增删都需要开辟新的数组,将老数组中的元素拷贝到新数组中<br>                      开辟新数组耗费资源<br>     d:链表结构<br>               查询慢:每次都需要从链头或者链尾找起<br>               增删快:只需要修改元素记录的下个元素的地址值即可不需要移动大量元素</p>
+<p>=======================第二节课开始=============================================<br>###05ArrayList集合的自身特点<br>   A:ArrayList集合的自身特点<br>     底层采用的是数组结构<br>     ArrayList al=new ArrayList();//创建了一个长度为0的Object类型数组<br>     al.add(“abc”);//底层会创建一个长度为10的Object数组 Object[] obj=new Object[10]<br>                   //obj[0]=”abc”<br>                  //如果添加的元素的超过10个,底层会开辟一个1.5*10的长度的新数组<br>                  //把原数组中的元素拷贝到新数组,再把最后一个元素添加到新数组中<br>   原数组:<br>     a b c d e f g h k l<br>   添加m:<br>     a b c d e f g h k l m null null null null</p>
+<p>###06LinkedList集合的自身特点<br>  A:LinkedList集合的自身特点<br>     底层采用链表结构,每次查询都要从链头或链尾找起,查询相对数组较慢<br>     但是删除直接修改元素记录的地址值即可,不要大量移动元素</p>
+<pre><code>LinkedList的索引决定是从链头开始找还是从链尾开始找
+如果该元素小于元素长度一半,从链头开始找起,如果大于元素长度的一半,则从链尾找起</code></pre><p>###07LinkedList特有方法<br>   <em>A:LinkedList特有方法:获取,添加,删除<br>       /</em><br>     *  LinkedList 链表集合的特有功能<br>     *    自身特点: 链表底层实现,查询慢,增删快<br>     *<br>     *  子类的特有功能,不能多态调用<br>     */<br>    public class LinkedListDemo {<br>      public static void main(String[] args) {<br>        function_3();<br>      }</p>
+<pre><code>  /*
+   *  E removeFirst() 移除并返回链表的开头
+   *  E removeLast() 移除并返回链表的结尾
+   */
+  public static void function_3(){
+    LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+    link.add(&quot;1&quot;);
+    link.add(&quot;2&quot;);
+    link.add(&quot;3&quot;);
+    link.add(&quot;4&quot;);
+
+    String first = link.removeFirst();
+    String last = link.removeLast();
+    System.out.println(first);
+    System.out.println(last);
+
+    System.out.println(link);
+  }
+
+  /*
+   * E getFirst() 获取链表的开头
+   * E getLast() 获取链表的结尾
+   */
+  public static void function_2(){
+    LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+    link.add(&quot;1&quot;);
+    link.add(&quot;2&quot;);
+    link.add(&quot;3&quot;);
+    link.add(&quot;4&quot;);
+
+    if(!link.isEmpty()){
+      String first = link.getFirst();
+      String last = link.getLast();
+      System.out.println(first);
+      System.out.println(last);
+    }
+  }
+
+  public static void function_1(){
+    LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+    link.addLast(&quot;a&quot;);
+    link.addLast(&quot;b&quot;);
+    link.addLast(&quot;c&quot;);
+    link.addLast(&quot;d&quot;);
+
+    link.addFirst(&quot;1&quot;);
+    link.addFirst(&quot;2&quot;);
+    link.addFirst(&quot;3&quot;);
+    System.out.println(link);
+  }
+
+  /*
+   *  addFirst(E) 添加到链表的开头
+   *  addLast(E) 添加到链表的结尾
+   */
+  public static void function(){
+    LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+
+    link.addLast(&quot;heima&quot;);
+
+    link.add(&quot;abc&quot;);
+    link.add(&quot;bcd&quot;);
+
+    link.addFirst(&quot;itcast&quot;);
+    System.out.println(link);
+
+
+  }
+}</code></pre><p>###08Vector类的特点<br>   *A:Vector类的特点<br>       Vector集合数据存储的结构是数组结构，为JDK中最早提供的集合,它是线程同步的<br>       Vector中提供了一个独特的取出方式，就是枚举Enumeration，它其实就是早期的迭代器。<br>       此接口Enumeration的功能与 Iterator 接口的功能是类似的。<br>       Vector集合已被ArrayList替代。枚举Enumeration已被迭代器Iterator替代。</p>
+<p>=======================第三节课开始=============================================<br>###09Set接口的特点<br>   A:Set接口的特点<br>     a:它是个不包含重复元素的集合。<br>     b:Set集合取出元素的方式可以采用：迭代器、增强for。<br>     c:Set集合有多个子类，这里我们介绍其中的HashSet、LinkedHashSet这两个集合。</p>
+<p>###10Set集合存储和迭代<br>   A:Set集合存储和迭代<br>      /*<br>       *  Set接口,特点不重复元素,没索引<br>       *<br>       *  Set接口的实现类,HashSet (哈希表)<br>       *  特点: 无序集合,存储和取出的顺序不同,没有索引,不存储重复元素<br>       *  代码的编写上,和ArrayList完全一致<br>       */<br>      public class HashSetDemo {<br>        public static void main(String[] args) {<br>          Set<String> set = new HashSet<String>();<br>          set.add(“cn”);<br>          set.add(“heima”);<br>          set.add(“java”);<br>          set.add(“java”);<br>          set.add(“itcast”);</String></String></p>
+<pre><code>    Iterator&lt;String&gt; it = set.iterator();
+    while(it.hasNext()){
+      System.out.println(it.next());
+    }
+    System.out.println(&quot;==============&quot;);
+
+    for(String s : set){
+      System.out.println(s);
+    }
+  }
+}</code></pre><p>###11哈希表的数据结构<br>    A:哈希表的数据结构:(参见图解)</p>
+<pre><code>加载因子:表中填入的记录数/哈希表的长度
+例如:
+加载因子是0.75 代表:
+  数组中的16个位置,其中存入16*0.75=12个元素
+
+如果在存入第十三个(&gt;12)元素,导致存储链子过长,会降低哈希表的性能,那么此时会扩充哈希表(在哈希),底层会开辟一个长度为原长度2倍的数组,把老元素拷贝到新数组中,再把新元素添加数组中
+
+当存入元素数量&gt;哈希表长度*加载因子,就要扩容,因此加载因子决定扩容时机</code></pre><p>###12字符串对象的哈希值<br>      A:字符串对象的哈希值<br>      /*<br>       *  对象的哈希值,普通的十进制整数<br>       *  父类Object,方法 public int hashCode() 计算结果int整数<br>       */<br>      public class HashDemo {<br>        public static void main(String[] args) {<br>          Person p = new Person();<br>          int i = p.hashCode();<br>          System.out.println(i);</p>
+<pre><code>    String s1 = new String(&quot;abc&quot;);
+    String s2 = new String(&quot;abc&quot;);
+    System.out.println(s1.hashCode());
+    System.out.println(s2.hashCode());
+
+    /*System.out.println(&quot;重地&quot;.hashCode());
+    System.out.println(&quot;通话&quot;.hashCode());*/
+  }
+}
+
+//String类重写hashCode()方法
+//字符串都会存储在底层的value数组中{&apos;a&apos;,&apos;b&apos;,&apos;c&apos;}
+public int hashCode() {
+        int h = hash;//hash初值为0
+        if (h == 0 &amp;&amp; value.length &gt; 0) {
+            char val[] = value;
+
+            for (int i = 0; i &lt; value.length; i++) {
+                h = 31 * h + val[i];
+            }
+            hash = h;
+        }
+        return h;
+    }</code></pre><p>###13哈希表的存储过程<br>   A:哈希表的存储过程<br>     public static void main(String[] args) {<br>        HashSet<String> set = new HashSet<String>();<br>        set.add(new String(“abc”));<br>        set.add(new String(“abc”));<br>        set.add(new String(“bbc”));<br>        set.add(new String(“bbc”));<br>        System.out.println(set);<br>    }</String></String></p>
+<p>  存取原理:<br>    每存入一个新的元素都要走以下三步:</p>
+<pre><code>1.首先调用本类的hashCode()方法算出哈希值
+
+2.在容器中找是否与新元素哈希值相同的老元素,
+  如果没有直接存入
+  如果有转到第三步
+
+3.新元素会与该索引位置下的老元素利用equals方法一一对比
+  一旦新元素.equals(老元素)返回true,停止对比,说明重复,不再存入
+  如果与该索引位置下的老元素都通过equals方法对比返回false,说明没有重复,存入</code></pre><p>=======================第四节课开始=============================================<br>###14哈希表的存储自定义对象<br>   A:哈希表的存储自定义对象<br>     /*<br>      *  HashSet集合的自身特点:<br>      *    底层数据结构,哈希表<br>      *    存储,取出都比较快<br>      *    线程不安全,运行速度快<br>      */<br>     public class HashSetDemo1 {<br>      public static void main(String[] args) {</p>
+<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
+    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
+    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
+    setPerson.add(new Person(&quot;a&quot;,11));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;c&quot;,25));
+    setPerson.add(new Person(&quot;d&quot;,19));
+    setPerson.add(new Person(&quot;e&quot;,17));//每个对象的地址值都不同,调用Obejct类的hashCode方法返回不同哈希值,直接存入
+    System.out.println(setPerson);
+  }
+ }
+
+public class Person {
+  private String name;
+  private int age;
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+  public int getAge() {
+    return age;
+  }
+  public void setAge(int age) {
+    this.age = age;
+  }
+  public Person(String name, int age) {
+    super();
+    this.name = name;
+    this.age = age;
+  }
+  public Person(){}
+
+  public String toString(){
+    return name+&quot;..&quot;+age;
+  }
+
+
+
+ }</code></pre><p>###15自定义对象重写hashCode和equals<br>     A:自定义对象重写hashCode和equals<br>      /*<br>          *  HashSet集合的自身特点:<br>          *    底层数据结构,哈希表<br>          *    存储,取出都比较快<br>          *    线程不安全,运行速度快<br>          */<br>         public class HashSetDemo1 {<br>          public static void main(String[] args) {</p>
+<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
+    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
+    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
+    setPerson.add(new Person(&quot;a&quot;,11));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;c&quot;,25));
+    setPerson.add(new Person(&quot;d&quot;,19));
+    setPerson.add(new Person(&quot;e&quot;,17));
+    System.out.println(setPerson);
+  }
+ }
+
+public class Person {
+  private String name;
+  private int age;
+
+  /*
+   *  没有做重写父类,每次运行结果都是不同整数
+   *  如果子类重写父类的方法,哈希值,自定义的
+   *  存储到HashSet集合的依据
+   *   
+   *  尽可能让不同的属性值产生不同的哈希值,这样就不用再调用equals方法去比较属性
+   *
+   */
+  public int hashCode(){
+    return name.hashCode()+age*55;
+  }
+  //方法equals重写父类,保证和父类相同
+  //public boolean equals(Object obj){}
+  public boolean equals(Object obj){
+    if(this == obj)
+      return true;
+    if(obj == null)
+      return false;
+    if(obj instanceof Person){
+      Person p = (Person)obj;
+      return name.equals(p.name) &amp;&amp; age==p.age;
+    }
+    return false;
+  }
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+  public int getAge() {
+    return age;
+  }
+  public void setAge(int age) {
+    this.age = age;
+  }
+  public Person(String name, int age) {
+    super();
+    this.name = name;
+    this.age = age;
+  }
+  public Person(){}
+
+  public String toString(){
+    return name+&quot;..&quot;+age;
+  }
+
+
+
+ }</code></pre><p>###16LinkedHashSet集合<br>  A:LinkedHashSet集合<br>    /*<br>     *   LinkedHashSet 基于链表的哈希表实现<br>     *   继承自HashSet<br>     *<br>     *   LinkedHashSet 自身特性,具有顺序,存储和取出的顺序相同的<br>     *   线程不安全的集合,运行速度块<br>     */<br>    public class LinkedHashSetDemo {</p>
+<pre><code>  public static void main(String[] args) {
+    LinkedHashSet&lt;Integer&gt; link = new LinkedHashSet&lt;Integer&gt;();
+    link.add(123);
+    link.add(44);
+    link.add(33);
+    link.add(33);
+    link.add(66);
+    link.add(11);
+    System.out.println(link);
+  }
+}</code></pre><p>###17ArrayList,HashSet判断对象是否重复的原因<br>  A:ArrayList,HashSet判断对象是否重复的原因<br>     a:ArrayList的contains方法原理:底层依赖于equals方法<br>       ArrayList的contains方法会使用调用方法时，<br>         传入的元素的equals方法依次与集合中的旧元素所比较，<br>         从而根据返回的布尔值判断是否有重复元素。<br>         此时，当ArrayList存放自定义类型时，由于自定义类型在未重写equals方法前，<br>         判断是否重复的依据是地址值，所以如果想根据内容判断是否为重复元素，需要重写元素的equals方法。</p>
+<pre><code>b:HashSet的add()方法和contains方法()底层都依赖 hashCode()方法与equals方法()
+
+ Set集合不能存放重复元素，其添加方法在添加时会判断是否有重复元素，有重复不添加，没重复则添加。
+ HashSet集合由于是无序的，其判断唯一的依据是元素类型的hashCode与equals方法的返回结果。规则如下：
+ 先判断新元素与集合内已经有的旧元素的HashCode值
+  如果不同，说明是不同元素，添加到集合。
+  如果相同，再判断equals比较结果。返回true则相同元素；返回false则不同元素，添加到集合。
+ 所以，使用HashSet存储自定义类型，如果没有重写该类的hashCode与equals方法，则判断重复时，使用的是地址值，如果想通过内容比较元素是否相同，需要重写该元素类的hashcode与equals方法。</code></pre><p>###18hashCode和equals方法的面试题<br> A:hashCode和equals的面试题<br> /*</p>
+<ul>
+<li><p>两个对象  Person  p1 p2</p>
+</li>
+<li><p>问题: 如果两个对象的哈希值相同 p1.hashCode()==p2.hashCode()</p>
+</li>
+<li><p>两个对象的equals一定返回true吗  p1.equals(p2) 一定是true吗</p>
+</li>
+<li><p>正确答案:不一定</p>
+</li>
+<li></li>
+<li><p>如果两个对象的equals方法返回true,p1.equals(p2)==true</p>
+</li>
+<li><p>两个对象的哈希值一定相同吗</p>
+</li>
+<li><p>正确答案: 一定</p>
+</li>
+<li><p>/<br>在 Java 应用程序执行期间，<br>1.如果根据 equals(Object) 方法，两个对象是相等的，那么对这两个对象中的每个对象调用 hashCode 方法都必须生成相同的整数结果。<br>2.如果根据 equals(java.lang.Object) 方法，两个对象不相等，那么对这两个对象中的任一对象上调用 hashCode 方法不 要求一定生成不同的整数结果。 </p>
+<p> 两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值相同</p>
+<p> 两个对象调用hashCode()方法哈希值不同=====&gt;equals返回true</p>
+</li>
+</ul>
+<pre><code>两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值不同
+
+两个对象调用hashCode()方法哈希值相同=====&gt;equals返回true</code></pre><p>   所以说两个对象哈希值无论相同还是不同,equals都可能返回true</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day18%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -974,6 +1387,369 @@ System.out.println(1.301 / 100);//0.013009999999999999
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day03%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day03%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">day03笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:44" itemprop="dateModified" datetime="2019-01-11T09:22:44+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、引用类型变量的创建及使用<br>2、流程控制语句之选择语句<br>3、流程控制语句之循环语句<br>4、循环高级</p>
+<p>###01创建引用类型变量公式<br>    * A: 创建引用类型变量公式<br>        * a: 我们要学的Scanner类是属于引用数据类型，我们先了解下引用数据类型。<br>        * b: 引用数据类型的定义格式<br>            * 与定义基本数据类型变量不同，引用数据类型的变量定义及赋值有一个相对固定的步骤或格式。<br>            * 数据类型  变量名  =  new 数据类型();<br>        * c: 引用数据类型的使用<br>            * 每种引用数据类型都有其功能，我们可以调用该类型实例的功能。<br>            * 变量名.方法名();</p>
+<p>###02Scanner类的使用<br>    * A: Scanner类的使用<br>        * a: 导包import java.util.Scanner;<br>        * b：创建键盘录入对象 Scanner sc = new Scanner(System.in);<br>        * c: 读取键盘录入的一个整数<br>            * int enterNumber = sc.nextInt();<br>        * d: 读取键盘录入的字符串<br>            * String enterString = sc.next();<br>    * B: 案例代码<br>        import java.util.Scanner;<br>        public class Demo05Scanner{<br>            public static void main(String[] args)<br>            {<br>                Scanner sc = new Scanner(System.in);</p>
+<pre><code>        int enterNumber = sc.nextInt();
+        System.out.println(&quot;用户输入的整数为&quot;+enterNumber);
+
+        String enterString = sc.next();
+        System.out.println(&quot;用户输入的字符串为&quot;+enterString);
+    }
+}</code></pre><p>###03Random随机数类的使用_1<br>    * A: Random随机数类的使用_1<br>        * a: 功能<br>            * 生成随机数需要使用到引用类型随机数Random类<br>        * b: 使用方式<br>            * import导包：所属包java.util. Random<br>            * 创建实例格式：Random  random = new Random ();<br>            * 调用方法<br>                * nextInt(int maxValue)    产生[0,maxValue)范围的随机数,包含0不包含maxValue<br>                * nextDouble()  产生[0,1)范围的随机数<br>                如：<br>                    Random  random = new Random ();<br>                    int  myNumber = random.nextInt(100);//结果为0-99的一个数<br>    * B: 案例代码<br>        import java.util.Random;<br>        public class RandomDemo{<br>            public static void main(String[] args){<br>               Random ran = new Random();<br>               // Random类中的,产生随机数的功能<br>               int i = ran.nextInt(100);<br>               System.out.println(i);</p>
+<pre><code>       //问题? 产生随机数,范围 1-100之间
+       // nextInt(100) 0-99 + 1
+    }
+}</code></pre><p>###04Random随机数类的使用_2<br>    * A: Random随机数类的使用_2<br>        * a: 调用方法<br>            * nextDouble()  产生[0,1)范围的随机数<br>            如：<br>                Random  random = new Random ();<br>                int  myNumber = random.nextDouble();//结果为0.0-1.0之间的数(包括0.0不包括1.0)</p>
+<p>###05if语句格式第一种<br>    * A: if语句格式第一种<br>        * a: 书写格式<br>            if(比较表达式) {<br>                语句体;<br>            }<br>        * b：执行流程：<br>            * 先计算比较表达式的值，看其返回值是true还是false。<br>            * 如果是true，就执行语句体；<br>            * 如果是false，就不执行语句体；<br>    * B: 案例代码<br>        public class IfDemo{<br>            public static void main(String[] args){<br>                  int i = 5 ;<br>                  //对变量i进行if判断<br>                  if(i &gt; 5){<br>                      System.out.println(“if中的条件是true”);<br>                      i++;<br>                  }</p>
+<pre><code>          System.out.println(i);
+    }
+}</code></pre><p>###06if语句格式第二种<br>    * A: if语句格式第二种<br>        * a: 书写格式<br>            if(比较表达式) {<br>                语句体1;<br>            }else {<br>                语句体2;<br>            }<br>        * b：执行流程：<br>            * 首先计算比较表达式的值，看其返回值是true还是false。<br>            * 如果是true，就执行语句体1；<br>            * 如果是false，就执行语句体2；<br>    * B: 案例代码<br>        public class IfElseDemo{<br>            public static void main(String[] args){<br>                 int i = 16 ;<br>                 //判断变量,是奇偶数, 除以2,看余数是0还是1<br>                 if( i % 2 == 0 ){<br>                     System.out.println(i+” 是偶数”);<br>                 }else{<br>                     System.out.println(i+” 是奇数”);<br>                 }<br>            }<br>        }</p>
+<p>###07if语句格式第三种<br>    * A: if语句格式第三种<br>        * a: 书写格式<br>                if(比较表达式1) {<br>                    语句体1;<br>                }else if(比较表达式2) {<br>                    语句体2;<br>                }else if(比较表达式3) {<br>                    语句体3;<br>                }<br>                …<br>                else {<br>                    语句体n+1;<br>                }<br>        * b：执行流程：<br>            * 首先计算比较表达式1看其返回值是true还是false，<br>            * 如果是true，就执行语句体1，if语句结束。<br>            * 如果是false，接着计算比较表达式2看其返回值是true还是false，</p>
+<pre><code>        * 如果是true，就执行语句体2，if语句结束。
+        * 如果是false，接着计算比较表达式3看其返回值是true还是false，
+
+        * 如果都是false，就执行语句体n+1。
+* B: 案例代码
+    public class IfElseIfDemo{
+        public static void main(String[] args){
+            //成绩判断要求 ,成绩&gt;80  成绩&gt;70  成绩&gt;60  不及格
+            //定义变量,保存成绩
+            int grade = 75;
+            //使用if else if 语句对成绩判断
+            if( grade &gt; 80 ){
+                System.out.println(grade+&quot; 成绩是优&quot;);
+            }else if ( grade &gt; 70){
+                System.out.println(grade+&quot; 成绩是良&quot;);
+            }else if ( grade &gt; 60){
+                System.out.println(grade+&quot; 成绩是中&quot;);
+            }else{
+                System.out.println(grade+&quot; 成绩是差&quot;);
+            }
+
+        }
+    }</code></pre><p>###08if语句和三元运算符的互换<br>    * A: 三元运算符<br>        * a: 概念<br>            * 用来完成简单的选择逻辑，即根据条件判断，从两个选择中选择一种执行<br>        * b: 使用格式<br>            * (条件表达式)？表达式1：表达式2；<br>        * c: 运算规则<br>            * 1: 判断条件表达式，结果为一个布尔值<br>            * 2: true，运算结果为表达式1<br>            * 3: false，运算结果为表达式2<br>    * B: 案例代码<br>        public class IfElseDemo_1{<br>            public static void main(String[] args){<br>                int j = 6;<br>                int i = 15;<br>                //使用if语句,判断出最大值<br>                if(i&gt;j){<br>                int j = 6;<br>                    System.out.println(i+” 是最大值”);<br>                }else{<br>                    System.out.println(j+” 是最大值”);<br>                }</p>
+<pre><code>            //使用三元运算实现
+            int k = i&gt;j ? i : j;
+            System.out.println(k+&quot; 是最大值&quot;);
+        }
+    }
+* C: 使用if语句还是三元表达式
+    * 判断条件多,使用if
+     * 三元,必须有结果的, if 可以没有结果的</code></pre><p>###09while循环<br>    * A: while循环结构<br>        * a: 使用格式<br>            初始化表达式；<br>            while(条件){<br>                循环体<br>            }<br>        * b: 执行顺序<br>              当条件是true,就执行循环体,执行完循环体后<br>              程序再次执行while中的条件,如果条件还是true,继续执行循环体<br>              直到条件是false的时候,循环就结束<br>    * B: 案例代码<br>        public class WhileDemo{<br>            public static void main(String[] args){<br>                //输出 1-4之间的整数<br>                //定义变量,整数类型, 循环的条件<br>                int i = 1;<br>                while( i &lt; 5 ){<br>                    System.out.println(i);<br>                    i++;<br>                }<br>            }<br>        }</p>
+<p>###10for循环_1<br>    * A: for循环_1<br>        * a: 使用格式<br>             for(初始化变量 ; 条件 ; 增量){<br>                 循环体;<br>             }<br>        * b: 各模块解释<br>            初始化变量: 定义变量,作用是用来控制循环的次数<br>            条件: 当条件是true,执行循环体,条件是false,结束循环<br>            增量: 变量自增情况<br>    * B: 案例代码<br>        public class ForDemo{<br>            public static void main(String[] args){<br>                //for循环,输出0-10<br>                for(int i = 0 ; i &lt; 11 ; i++){<br>                    System.out.println(i);<br>                }<br>            }<br>        }</p>
+<p>###11for循环_2<br>    * A: for循环的执行流程<br>        for（① ; ② ; ③）{<br>            ④<br>        }<br>        第一步，执行①<br>        第二步，执行②，如果判断结果为true，执行第三步，如果判断结果为false，执行第五步<br>        第三步，执行④<br>        第四步，执行③，然后重复执行第二步<br>        第五步，退出循环</p>
+<p>###12for循环_3<br>    * A: 案例<br>        * a: 利用for循环,计算1+4的结果<br>    * B: 案例代码<br>        public class ForDemo_1{<br>            public static void main(String[] args){<br>                // 定义变量,记录求和后的数据<br>                int sum = 0;<br>                // 利用循环,将变量从1变化到4<br>                for(int i = 1 ; i &lt;= 4 ; i++){<br>                    //对变量进行求和<br>                    sum = sum + i;<br>                }<br>                System.out.println(sum);<br>            }<br>        }</p>
+<p>###13do_while循环<br>    * A: do_while循环<br>        * a: 使用格式<br>            do{<br>               循环体;<br>            }while(条件);<br>        * b: 执行顺序<br>            先执行一次循环体，然后再判断条件，如果条件为true，继续执行循环体，<br>            如果条件为false，循环结束。<br>        * c: 特点<br>            * 无条件先执行一次<br>    * B: 案例代码<br>        public class DoWhileDemo{<br>            public static void main(String[] args){<br>                int i = 0;<br>                do{<br>                    System.out.println(i);<br>                    i++;<br>                }while( i &lt;  5);<br>            }<br>        }</p>
+<p>###14死循环<br>    * A: 死循环概述<br>        * 无限循环存在的原因是并不知道循环多少次，而是根据某些条件，来控制循环<br>    * B: 死循环格式<br>        * while(true){}<br>        * for(;;){}</p>
+<p>###15嵌套for循环_1<br>    * A: 嵌套循环的概述<br>        * 嵌套循环是指在一个循环语句的循环体中再定义一个循环语句的语法结构。while、do…while、for循环语句都可以进行嵌套，并且它们之间也可以互相嵌套，如最常见的在for循环中嵌套for循环。<br>    * B: 嵌套循环的格式<br>        for(初始化表达式; 循环条件; 操作表达式) {<br>            ………<br>            for(初始化表达式; 循环条件; 操作表达式) {<br>                执行语句<br>                ………<br>            }<br>            ………<br>        }<br>    * C: 各模块解释<br>        * 总的循环次数 =  内循环次数 * 外循环的次数<br>        * 内循环,是外循环的循环体</p>
+<pre><code>* 外循环,控制的是行数
+* 内循环,控制的是每行的个数</code></pre><p>###16嵌套for循环_2<br>    * A: 案例<br>        * a: 打印正三角形<br>    * B: 案例代码<br>        public class ForForDemo{<br>            public static void main(String[] args){<br>                for(int i = 0 ; i &lt; 9 ; i++){<br>                    for(int j = 0; j &lt; i+1 ;j++){<br>                        System.out.print(“* “);<br>                    }<br>                    System.out.println();<br>                }<br>            }<br>        }</p>
+<p>###17break语句<br>    * A: break语句<br>        * a: 作用<br>            * 跳出所在的循环体<br>        * b: 书写位置<br>            * 必须出现在循环或选择结构内<br>        * c: 举例<br>            for(int i=0; i&lt;10; i++) {<br>                if(i&gt;5) {<br>                break;<br>            }<br>                System.out.println(“我爱Java”+i);<br>            }<br>            //会从0-5输出6次“我爱Java”<br>    * B: break详细解释<br>        * a: 作用<br>            * 在loop/switch选择或者循环过程中，我们总是满足布尔表达条件才能执行对应的代码，然而在这些逻辑过程中，<br>                可以使用一些关键字直接跳出正在执行的代码，去执行后边或者指定位置的代码，<br>                这些关键字一旦出现就可以跳转语句执行顺序。<br>        * b: 使用方式<br>            * 无法单独使用，必须将break关键字置于switch或循环语句中<br>        * c: 运行规律<br>            * 不需要判断任何条件，只要遇到break变直接跳出执行后续代码。会完全跳出选择或者循环结构<br>            * 只能跳出最近的代码块，不能跨越多级代码块</p>
+<pre><code>* C：循环标号
+    * a: 为什么使用循环标号
+        * 当在双层循环或者循环内有switch选择语句时，我们发现，使用break或者continue所作用的对象均是内层语句，无法直接跳出外层循环，这时就需要使用标号语句跳转了.
+    * b: 使用方式
+        * 在外层循环外的某行前边，使用后边跟有冒号”:”的标识符，即定义完毕。
+          使用时当在内层循环使用break或continue时后边紧跟之前定义的标号即可
+    * c: 运行规律
+        * 当外层循环外定义了标号
+        * 内层使用break，终止内外双层循环。
+        * 内层使用continue，终止内层循环，继续外层循环。</code></pre><p>###18continue语句<br>    * A: continue语句<br>        * a: 作用<br>            * 提前结束本次循环，继续进行下次循环<br>        * b: 使用方式<br>            * 无法单独使用，必须将continue关键字置于循环语句中<br>        * c：运行规律<br>            * 不需要判断任何条件，只要遇到continue变直接跳出本轮循环进行下次循环<br>        * d：案例代码<br>            public class ContinueDemo{<br>                public static void main(String[] args){<br>                    for(int i = 0 ; i &lt; 10 ; i++){<br>                        if(i%2==0){<br>                            continue;<br>                        }<br>                        System.out.println(i);<br>                    }<br>                }<br>            }<br>            //会把0-9之间所有的奇数打印到控制台上</p>
+<p>###19猜数字小游戏<br>    * A: 猜数字小游戏<br>        * a: 分析<br>            * 用户给的数可能大于、小于、或等于被猜的数，这样就会出现三种情况，用前面讲的三元运算符可以实现，<br>                但是得用三元运算符的嵌套，比较麻烦！可以用更简单的方式if条件判断，可以有三个以上的条件<br>        * b: 需求分析<br>            * 后台预先生成一个随机数1-100，用户键盘录入猜数字<br>            * 如果猜对了，打印“恭喜您，答对了”<br>            * 如果猜错了<br>            * 猜大了：打印“sorry，您猜大了!”<br>            * 猜小了：打印“sorry，您猜小了!”<br>                    直到数字猜到为止<br>                    最多只能猜5次，否则提示“sorry，您没有机会了!”<br>    * B: 案例代码<br>        /*<br>            猜数字小游戏</p>
+<pre><code>    完成猜数字小游戏：
+    1、产生随机数
+    后台预先生成一个随机数1-100，用户键盘录入猜数字
+    2、通过if语句对用户猜的数与随机数进行比较
+    如果猜对了，打印“恭喜您，答对了”
+    如果猜错了
+    猜大了：打印“sorry，您猜大了!”
+    猜小了：打印“sorry，您猜小了!”
+    3、通过for循环完成用户猜数的循环
+    直到数字猜到为止
+    最多只能猜5次，否则提示“sorry，您没有机会了!”
+
+*/
+import java.util.Random;
+import java.util.Scanner;
+//通过*的方式可以一次导入该包下所有的类，但是不建议使用。建议使用哪个导哪个。
+//import java.util.*;
+public class GuessNumber{
+    public static void main(String[] args) {
+        //1、产生随机数
+        //后台预先生成一个随机数1-100，用户键盘录入猜数字
+        //创建随机数对象
+        Random random = new Random();
+        //产生一个1-100的随机数
+        int randomNumber = random.nextInt(100)+1;
+        //System.out.println(&quot;我产生的随机数是：&quot;+randomNumber+&quot;你猜猜是多少？&quot;);  作弊专用
+
+        //产生控制台录入的Scanner对象
+        Scanner sc = new Scanner(System.in);
+        //3、通过for循环完成用户猜数的循环
+        //通过for循环完成猜数字逻辑
+        for(int i=1; i&lt;=5; i++){
+            //提示用户输入要猜的数，用变量接收
+            System.out.println();
+            System.out.println(&quot;请您输入一个1-100的数：&quot;);
+            int guessNumber = sc.nextInt();
+
+            //2、通过if语句对用户猜的数与随机数进行比较
+            //如果猜对了
+            if(guessNumber==randomNumber) {
+                //打印猜对后的提示
+                System.out.println(&quot;恭喜您，猜对了！&quot;);
+                //跳出循环，不用再猜了
+                break;
+            }else {//如果猜错了
+                //如果猜大了
+                if(guessNumber&gt;randomNumber) {
+                    System.out.println(&quot;sorry，您猜大了!&quot;);
+                }else {//如果猜小了
+                    System.out.println(&quot;sorry，您猜小了!&quot;);
+                }
+            }
+            //如果猜到了最后的第5次仍然没有猜对就跳出循环
+            if(i==5) {
+                System.out.println(&quot;对不起，点太背，下次再来吧！&quot;);
+                break;
+            }
+            //每次猜错后，都提示还有多少次机会
+            System.out.println(&quot;请注意，您还有&quot;+(5-i)+&quot;次机会，请慎重作答！&quot;);
+        }
+    }
+}</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day02%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day02%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">day02笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-22 19:21:13 / 修改时间：17:54:55" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、变量<br>2、运算符</p>
+<p>###01变量概述<br>    * A: 什么是变量?<br>        * a: 变量是一个内存中的小盒子（小容器），容器是什么？生活中也有很多容器，例如水杯是容器，用来装载水；你家里的大衣柜是容器，用来装载衣裤；饭盒是容器，用来装载饭菜。那么变量是装载什么的呢？答案是数据！结论：变量是内存中装载数据的小盒子，你只能用它来存数据和取数据。</p>
+<p>###02计算机存储单元<br>    * A: 计算机中储存和运算的最小单位是?<br>        * a: 一个字节,也就是一个byte.<br>            * win+r–cmd–回车<br>        * b: 常用储存单位<br>            *1B（字节） = 8bit<br>            *1KB = 1024B<br>            *1MB = 1024KB<br>            *1GB = 1024MB<br>            *1TB = 1024GB<br>            *1PB = 1024TB</p>
+<p>​<br>​<br>###03Java中数据类型四类八种<br>    * A: 数据类型四类八种<br>        *四类    八种    字节数    数据表示范围<br>        *整型    byte    1    -128～127<br>            short    2    -32768～32767<br>            int    4    -2147483648～2147483648<br>            long    8    -263～263-1<br>        *浮点型    float    4    -3.403E38～3.403E38<br>            double    8    -1.798E308～1.798E308<br>        *字符型    char    2    表示一个字符，如(‘a’，’A’，’0’，’家’)<br>        *布尔型    boolean    1    只有两个值true与false</p>
+<p>###04常量和数据类型<br>    * A:常量的定义<br>        * a: 整形常量默认是int类型<br>        * b: 小数常量默认是double类型<br>        * c: 定义长整形数据如果值超过int取值范围后面要+”L”<br>        * d: 定义float类型的数据后面要+”f” 否则默认是double</p>
+<p>###05变量创建的三要素<br>    * A: 定义变量的语法格式：<br>        数据类型  变量名  =  变量值;<br>        * int         a    =  100;<br>        * B:代码:<br>        public class Variable {<br>            public static void main(String[] args) {<br>                int a = 10;<br>                double b = 3.14;<br>                char c = ‘z’;<br>                String s = “i love java”;</p>
+<pre><code>        a = 20;
+        System.out.println(a);
+    }
+}</code></pre><p>​                </p>
+<p>###06定义所有的基本数据类型变量<br>    * A: 案例演示<br>        * a: 八种基本类型数据的创建</p>
+<p>###07定义字符串变量<br>    * A：案例演示<br>        * 创建字符串数据类型变量<br>        * String 是引用数据类型<br>###08变量定义使用注意事项<br>    * A：变量使用的注意事项<br>        * a: 变量定义后可以不赋值，使用时再赋值。不赋值不能使用。<br>            public static void main(String[] args) {<br>            int x;<br>            x = 20; //为x赋值20<br>            System.out.println(x);//读取x变量中的值，再打印<br>            }<br><br>        * c:    变量使用时有作用域的限制。<br>            public static void main(String[] args) {<br>            int x = 20;<br>            {<br>                int y = 20;<br>            }<br>            System.out.println(x);//读取x变量中的值，再打印<br>            System.out.println(y);//读取y变量中的值失败，失败原因，找不到y变量，因为超出了y变量作用范围，所以不能使用y变量<br>            }</p>
+<pre><code>    </code></pre><p>    </p>
+<p>###09数据类型转换_自动转换<br>    * A:     自动类型转换<br>        * a:表示范围小的数据类型转换成范围大的数据类型，这种方式称为自动类型转换<br>            自动类型转换格式：<br>            范围大的数据类型 变量 = 范围小的数据类型值；<br>            如：<br>                    double d = 1000;<br>                或<br>                    int i = 100;<br>                    double d2 = i;</p>
+<p>​<br>###10数据类型转换_强制转换<br>    * A: 强制类型转换<br>        *a: 表示范围大的数据类型转换成范围小的数据类型，这种方式称为强制类型转换<br>        *b: 强制类型转换格式：<br>        范围小的数据类型  变量 = (范围小的数据类型) 范围大的数据类型值;<br>        如：<br>        int  i = (int)6.718;   //i的值为6<br>        或<br>        double  d = 3.14;<br>        int  i2 = (int)d;     //i2的值为3</p>
+<p>###11算数运算符_1<br>    * A: 常见操作<br>        运算符    运算规则    范例        结果<br>        +    正号        +3        3<br>        +    加        2+3        5<br>        +    连接字符串    “中”+“国”    “中国”<br>        -    负号        int a=3;-a    -3<br>        -    减        3-1        2<br>        *    乘        2<em>3        6<br>        /    除        5/2        2<br>        %    取模        5/2        1<br>        ++    自增        int a=1;a++/++a    2<br>        –    自减        int b=3;a–/–a    2<br>    * B: 注意事项<br>        *a:加法运算符在连接字符串时要注意，只有直接与字符串相加才会转成字符串。<br>        *b:除法“/”当两边为整数时，取整数部分，舍余数。当其中一边为浮点型时，按正常规则相除。<br>        *c:“%”为整除取余符号，小数取余没有意义。结果符号与被取余符号相同。<br>        *d:整数做被除数，0不能做除数，否则报错。<br>        *e:小数做被除数，整除0结果为Infinity，对0取模结果为NaN<br>    * C:代码演示<br>    public class OperatorDemo1 {<br>        public static void main(String[] args) {<br>        /</em><br>         * 常量使用算数运算符<br>         */<br>        System.out.println(10+20);</p>
+<pre><code>    /*
+     * 变量使用算数运算符
+     */
+    int x = 10;
+    int y = 20;
+    //&quot;+&quot;作为加法运算使用
+    int z = x + y; 
+    //&quot;+&quot;作为连接字符串使用
+    System.out.println(&quot;x=&quot;+x);
+    System.out.println(&quot;y=&quot;+y);
+    System.out.println(&quot;z=&quot;+z);
+}</code></pre><p>}<br>###12算数运算符_2<br>    * A:算数运算符++、–的使用<br>        * a: ++运算符，会在原有值的基础上自增1<br>        * b: –运算符，会在原有值的基础上自减1。<br>    * B:++  – 位置的使用<br>        * a:++,–运算符后置时，先使用变量a原有值参与运算操作，运算操作完成后，变量a的值自增1或者自减1；<br>        * b:++，–运算符前置时，先将变量a的值自增1或者自减1，然后使用更新后的新值参与运算操作。<br>###13赋值运算符<br>    * A: 赋值运算符的使用<br>        运算符    运算规则    范例        结果<br>        =    赋值        int a=2        2<br>        +=    加后赋值    int a=2，a+=2    4<br>        -=    减后赋值    int a=2，a-=2    0<br>        <em>=    乘后赋值    int a=2，a</em>=2    4<br>        /=    整除后赋值    int a=2，a/=2    1<br>        %=    取模后赋值    int a=2，a%=2    0</p>
+<pre><code>* B：案例演示
+
+     * 赋值运算符
+     * +=, -=, *=, /=, %= ： 
+     * 上面的运算符作用：将等号左右两边计算，会将结果自动强转成等号左边的数据类型,再赋值给等号左边的
+     * 注意：赋值运算符左边必须是变量
+
+    public class OperatorDemo2 {
+        public static void main(String[] args) {
+            byte x = 10;
+            x += 20;// 相当于 x = (byte)(x+20);
+            System.out.println(x);
+        }
+    }</code></pre><p>###14比较运算符<br>    * A:比较运算符的使用<br>        运算符    运算规则    范例    结果<br>        ==    相等于        4==3    False<br>        !=    不等于        4!=3    True<br>        &lt;    小于        4&lt;3    False<br>        &gt;    大于        4&gt;3    True<br>        &lt;=    小于等于    4&lt;=3    False<br>        &gt;=    大于等于    4&gt;=3    True</p>
+<p>​<br>###15逻辑运算符<br>    * A: 逻辑运算符的使用<br>        运算符    运算规则    范例        结果<br>        &amp;    与        false&amp;true    False<br>        |    或        false|true    True<br>        ^    异或        true^flase    True<br>        !    非        !true        Flase<br>        &amp;&amp;    短路与        false&amp;&amp;true    False<br>        ||    短路或        false||true    True</p>
+<pre><code>规律小结:
+    短路与&amp;&amp;:参与运算的两边数据，有false，则运算结果为false；
+    短路或||:参与运算的两边数据，有true，则运算结果为true；
+    逻辑非! : 参与运算的数据，原先是true则变成false，原先是false则变成true。</code></pre><p>​    </p>
+<p>###16三元运算符<br>    * A: 格式:<br>        (条件表达式)？表达式1：表达式2；</p>
+<pre><code>* B: 代码案例
+    方式一：
+    System.out.println( 3&gt;2 ? “正确” : “错误” ); 
+    // 三元运算符运算后的结果为true，运算结果为表达式1的值“正确”，然后将结果“正确”，在控制台输出打印
+
+    方式二：
+    int a = 3;
+    int b = 4;
+    String result = (a==b) ? “相等” : “不相等”;  
+    //三元运算符运算后的结果为false，运算结果为表达式2的值“不相等”，然后将结果赋值给了变量result
+
+    方式三：
+    int n = (3&gt;2 &amp;&amp; 4&gt;6) ? 100 : 200;
+    //三元运算符运算后的结果为false，运算结果为表达式2的值200,然后将结果200赋值给了变量n</code></pre><p>​<br>​<br>###17运算符优先级<br>    优先级    描述        运算符<br>    1    括号        ()、[]<br>    2    正负号        +、-<br>    3    自增自减，非    ++、–、!<br>    4    乘除，取余    <em>、/、%<br>    5    加减        +、-<br>    6    移位运算    &lt;&lt;、&gt;&gt;、&gt;&gt;&gt;<br>    7    大小关系    &gt;、&gt;=、&lt;、&lt;=<br>    8    相等关系    ==、!=<br>    9    按位与        &amp;<br>    10    按位异或    ^<br>    11    按位或        |<br>    12    逻辑与        &amp;&amp;<br>    13    逻辑或        ||<br>    14    条件运算    ?:<br>    15    赋值运算    =、+=、-=、</em>=、/=、%=<br>    16    位赋值运算    &amp;=、|=、&lt;&lt;=、&gt;&gt;=、&gt;&gt;&gt;=</p>
+<p>###18    商场库存清单案例<br>    A: 案例分析.<br>        * a:观察清单后，可将清单分解为三个部分（清单顶部、清单中部、清单底部）<br>        * b:清单顶部为固定的数据，直接打印即可<br>        * c:清单中部为商品，为变化的数据，需要记录商品信息后，打印<br>            经过观察，我们确定一项商品应该有如下几个属性：<br>            品牌型号: 即商品名称，String型<br>            尺寸：物品大小，double型<br>            价格：物品单价，double型<br>            配置：这一项为每种商品的配置信息，String型<br>            库存数：这一项为每种商品的库存个数，int型</p>
+<pre><code>    * d:清单底部包含了统计操作，需经过计算后，打印
+        我们发现两个单独的可变化量
+        总库存数：所有商品总个数，int型
+        库存商品总金额：所有商品金额，double型
+
+B: 案例代码实现
+    //步骤一:  创建Demo01库存清单.java文件，编写main主方法
+    public class Demo01库存清单 {
+        public static void main(String[] args) {
+        }
+    }
+    //步骤二:  记录每种库存商品信息
+    //苹果笔记本电脑
+    String macBrand = &quot;MacBookAir&quot;;
+    double macSize = 13.3;
+    double macPrice = 6988.88;
+    int macCount = 5;
+
+    //联想Thinkpad笔记本电脑
+    String thinkpadBrand = &quot;ThinkpadT450&quot;;
+    double thinkpadSize = 14.0;
+    double thinkpadPrice = 5999.99;
+    int thinkpadCount = 10;
+
+    //华硕ASUS笔记本电脑
+    String ASUSBrand = &quot;ASUS-FL5800&quot;;
+    double ASUSSize = 15.6;
+    double ASUSPrice = 4999.50;
+    int ASUSCount = 18;
+
+    //步骤三: 统计库存总个数、库存总金额
+    int totalCount = macCount + thinkpadCount + ASUSCount;
+    double totalMoney = (macCount * macPrice) + (thinkpadCount * thinkpadPrice) + (ASUSCount * ASUSPrice);
+
+    //步骤四: 列表顶部
+    System.out.println(&quot;------------------------------商城库存清单-----------------------------&quot;);
+    System.out.println(&quot;品牌型号    尺寸    价格    库存数&quot;);
+
+    步骤四:打印库存清单中部信息
+    //列表中部
+    System.out.println(macBrand+&quot;    &quot;+macSize+&quot;    &quot;+macPrice+&quot;    &quot;+macCount);
+    System.out.println(thinkpadBrand+&quot;    &quot;+thinkpadSize+&quot;    &quot;+thinkpadPrice+&quot;    &quot;+thinkpadCount);
+    System.out.println(ASUSBrand+&quot;    &quot;+ASUSSize+&quot;    &quot;+ASUSPrice+&quot;    &quot;ASUSCount);
+    打印库存清单底部信息
+    //列表底部
+    System.out.println(&quot;-----------------------------------------------------------------------&quot;);
+    System.out.println(&quot;总库存数：&quot;+totalCount); 
+    System.out.println(&quot;库存商品总金额：&quot;+totalMoney);</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1198,687 +1974,6 @@ System.out.println(1.301 / 100);//0.013009999999999999
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)/" class="post-title-link" itemprop="url">C++复习(运算符重载)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-22 16:47:17 / 修改时间：20:51:31" itemprop="dateCreated datePublished" datetime="2020-12-22T16:47:17+08:00">2020-12-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1、运算符重载的意义"><a href="#1、运算符重载的意义" class="headerlink" title="1、运算符重载的意义"></a>1、运算符重载的意义</h2><p>在C++中，运算符的操作对象只能是基本数据类型，而不能对于类、结构体等复杂数据类型进行操作，因此引入了运算符重载机制。运算符重载对已有的运算符赋予多重含义，使得同一个运算符作用于不同类型的数据时做出不同的行为。</p>
-<p>运算符重载实际上是函数重载，它提供了C++的可扩展性。</p>
-<h2 id="2、运算符重载的规则"><a href="#2、运算符重载的规则" class="headerlink" title="2、运算符重载的规则"></a>2、运算符重载的规则</h2><p><strong>1、只能重载C++已有的运算符，不能创建新的运算符。</strong></p>
-<p><strong>2、重载之后的运算符不能改变其优先级和结合性，也不能改变其操作数的个数以及语法结构。</strong></p>
-<p>3、运算符重载是针对新类型数据的实际需要，对原有运算符进行适当的改造，重载功能应与原有功能相类似，避免没有目的地使用重载运算符。</p>
-<p><strong>4、C++中有五个运算符不可以重载：类属关系运算符“.”、成员指针运算符“*”、作用域运算符“::”、sizeof运算符和三目运算符“?:”。</strong></p>
-<h2 id="3、运算符重载方式"><a href="#3、运算符重载方式" class="headerlink" title="3、运算符重载方式"></a>3、运算符重载方式</h2><p>重载运算符是具有特殊名字的函数，它们的名字由关键字operator和其后要重载的运算符共同组成。即：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">返回类型 <span class="keyword">operator</span> 运算符(参数列表)</span><br><span class="line">&#123;</span><br><span class="line">	函数体；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="3-1、重载为类的成员函数"><a href="#3-1、重载为类的成员函数" class="headerlink" title="3.1、重载为类的成员函数"></a>3.1、重载为类的成员函数</h3><p>重载为类的成员函数，可以自由地访问本类的数据成员，运算的操作数会以调用者或参数的形式表示。</p>
-<p>如果是双目运算符重载为类的成员函数，则它有两个操作数，左操作数一定是对象本身的数据，由this指针指出，右操作数则通过运算符重载函数的参数表来传递，即：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数(右操作数)；</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line"> 	<span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">	类名A <span class="keyword">operator</span>+(<span class="keyword">const</span> A&amp; a) <span class="keyword">const</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> A(x+a.x,y+a.y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>如果是单目运算符重载为类的成员函数，则要分为前置运算符和后置运算符，如果是前置运算符，则它的操作数是函数调用者，函数没有参数，即：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数();</span><br><span class="line"></span><br><span class="line">++a1;<span class="comment">//相当于调用a1.oprator++();</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>如果是后置单目运算符，则函数需要待一个整型参数，该参数不起任何作用，只是用来区分前置和后置。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line">a1++;<span class="comment">//相当于调用a1.operator++(int);</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//const成员函数 只读数据成员 不可调用非const成员函数</span></span><br><span class="line">    	A <span class="keyword">operator</span>++()<span class="comment">//前置单目运算符</span></span><br><span class="line">        &#123;</span><br><span class="line">            ++x;</span><br><span class="line">            ++y;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    	A <span class="keyword">operator</span>++(<span class="keyword">int</span>)<span class="comment">//后置单目运算符</span></span><br><span class="line">        &#123;</span><br><span class="line">            A a = *<span class="keyword">this</span>;</span><br><span class="line">            ++(*<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span> a;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::show</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(x,y) = "</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;x&lt;&lt;<span class="string">","</span>&lt;&lt;y&lt;&lt;<span class="string">")"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1(1,2),a2(3,4);</span><br><span class="line">    (a1++).show();</span><br><span class="line">    (++a2).show();</span><br><span class="line">    </span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<p><strong>前置单目运算符与后置单目运算符重载的最主要区别就算函数的形参，后置单目运算符带一个int型形参，但它只起区分作用。</strong></p>
-<h3 id="3-2、重载为类的友元函数"><a href="#3-2、重载为类的友元函数" class="headerlink" title="3.2、重载为类的友元函数"></a>3.2、重载为类的友元函数</h3><p>运算符重载为类的友元函数，只需要在函数前加一个friend 关键字。即：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">friend</span> 返回类型 <span class="keyword">operator</span> 运算符(参数列表)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	函数体；</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>重载为类的友元函数(类外定义的函数)时，由于没有隐含的this指针,因此操作数的个数没有变化，<strong>所有的操作数都必须通过函数的形参进行传递，函数的参数与操作数自左到右需要保持<u>一一对应</u>。</strong></p>
-<p>一般调用格式为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">operator</span> 运算符(参数<span class="number">1</span>，参数<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>&lt;iostream</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//const成员函数 只读数据成员 不可调用非const成员函数</span></span><br><span class="line">    <span class="keyword">friend</span> A <span class="keyword">operator</span>+(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2);</span><br><span class="line">    <span class="keyword">friend</span> A <span class="keyword">operator</span>-(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::show</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(x,y) = "</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;x&lt;&lt;<span class="string">","</span>&lt;&lt;y&lt;&lt;<span class="string">")"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">A <span class="keyword">operator</span>+(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> A(a1.x+a2.x,a1.y+a2.y);</span><br><span class="line">&#125;</span><br><span class="line">A <span class="keyword">operator</span>-(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> A(a1.x-a2.x,a1.y-a2.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1(1,2),a2(3,4);</span><br><span class="line">    A a;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a1:"</span>;</span><br><span class="line">    a1.show();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a2:"</span></span><br><span class="line">    a2.show();</span><br><span class="line">    a =a1+a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a:"</span>;</span><br><span class="line">    a.show();</span><br><span class="line">    a=a1-a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a:"</span>;</span><br><span class="line">    a.show();</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<p><strong>1、一般情况下，单目运算符最好重载为类的成员函数，双目运算符最好重载为类的友元函数。</strong></p>
-<p>2、若一个运算符的操作需要修改对象的状态，选择重载为成员函数比较好。</p>
-<p><strong>3、若运算符的操作数(尤其是第一个操作数)希望有隐式类型转换，则只能选用友元函数。</strong></p>
-<p>4、具有对称性的运算符可能转换任意一端的运算对象，如算术、关系运算符等等，通常重载为非成员函数。</p>
-<p><strong>5、由4个运算符必须重载为类的成员函数：赋值(=)、下标([])、调用(())、成员访问箭头(-&gt;)。</strong></p>
-<p><strong>（new、delete、类型转换函数也算）</strong></p>
-<p><strong>6、类型转换函数只能定义为一个类的成员函数而不能定义为类的友元函数。</strong></p>
-<p><strong>7、C++规定，重载运算符必须和用户定义的自定义类型对象一起使用。</strong></p>
-<p>MyClass operator *(double,MyClass);</p>
-<p>MyClass operator *(MyClass,MyClass);</p>
-<p>MyClass operator *(MyClass,double);</p>
-<p>对于一个运算符函数来说，它或者是类的成员，或者至少包含一个类类型参数。操作符重载允许将标准C++操作符用于类对象；</p>
-<p>8、当运算符函数是一个成员函数时，最左边的操作数（或者只有最左边的操作数）必须是运算符类的一个类对象（或者是对该类对象的引用）。如果左边的操作数必须是一个不同类的对象，或者是一个内部　类型的对象，该运算符函数必须作为一个友元函数来实现。</p>
-<p>典型例子:<strong>输入输出运算符不能重载为类的成员函数</strong>，因为它们左侧的运算符对象必须式istream/ostream流对象，而如果重载为类的成员函数，则左侧的操作对象必须是我们定义的一个类对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp;,<span class="keyword">const</span> 类对象引用);</span><br><span class="line">istream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp;,类对象引用);</span><br></pre></td></tr></table></figure>
-
-<p>对于输出运算符”&lt;&lt;”来说，第一个参数是ostream对象引用，因为向六种写入数据会改变流的状态，所以不能用const修饰ostream对象。</p>
-<p>对于输入运算符“&gt;&gt;”来说，第一个参数是istream对象的引用，第二个参数要想其中存入数据的对象，不能为常量。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span></span><br><span class="line">        A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    	<span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os,<span class="keyword">const</span> A &amp;a);</span><br><span class="line">    	<span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp; is,A &amp;a);</span><br><span class="line">&#125;;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os,<span class="keyword">const</span> A &amp;a)</span><br><span class="line">&#123;</span><br><span class="line">    os&lt;&lt;a.x&lt;&lt;a.y;</span><br><span class="line">    <span class="comment">//os&lt;&lt;"("&lt;&lt;a.x&lt;&lt;a.y&lt;&lt;")";</span></span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp; os,A &amp;a)</span><br><span class="line">&#123;</span><br><span class="line">    is&gt;&gt;a.x&gt;&gt;a.y;</span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A A1(1,2),A2(3,4);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a1:"</span>&lt;&lt;a1&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a2:"</span>&lt;&lt;a2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"请重新为a2对象输入数据："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"重新输入后a2:"</span>&lt;&lt;a2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<p>通常情况下，输出运算符主要负责输出对象的内容，而非控制格式，即在重载时可以不需要重载格式控制符，如空格、换行、制表位等等，因为如果把格式控制符也重载进去的话，用户又是想在同一行输出一些描述性的文本，就无法完成了。</p>
-<h2 id="4、常用运算符的重载"><a href="#4、常用运算符的重载" class="headerlink" title="4、常用运算符的重载"></a>4、常用运算符的重载</h2><h3 id="4-1、输入输出运算符重载"><a href="#4-1、输入输出运算符重载" class="headerlink" title="4.1、输入输出运算符重载"></a>4.1、输入输出运算符重载</h3><p>如上所示。</p>
-<h3 id="4-2、关系运算符的重载"><a href="#4-2、关系运算符的重载" class="headerlink" title="4.2、关系运算符的重载"></a>4.2、关系运算符的重载</h3><p>注意：</p>
-<p><strong>1、通过关系运算符都要成对的重载，即重载了“&gt;”运算符，那么就要重载“&lt;”运算符，反之亦然。</strong></p>
-<p>2、通常情况下，“==”运算符应该具有传递性，即a=b,b=c,则a=c成立。(都为两个=号)</p>
-<p>3、当成对的出现运算符重载时，可以把一个运算符的工作委托给另外一个运算符，比如重载”!=”可以在重载”==”运算符基础上重载。</p>
-<h3 id="4-3、赋值运算符的重载"><a href="#4-3、赋值运算符的重载" class="headerlink" title="4.3、赋值运算符的重载"></a>4.3、赋值运算符的重载</h3><p>对于赋值运算符来说，如果不重载，那么类会自动为我们提供一个赋值运算符。这个默认的赋值运算符与默认拷贝构造函数意义，就是把一个对象的数据成员的值复制给另外一个对象相应的数据成员，即浅拷贝。如果数据成员种有指针，则无法满足要求，会造成内存泄露，这时我们应该重载赋值函数，实现深拷贝。</p>
-<h3 id="4-4、下标运算符"><a href="#4-4、下标运算符" class="headerlink" title="4.4、下标运算符"></a>4.4、下标运算符</h3><h3 id="4-5、类型转换函数"><a href="#4-5、类型转换函数" class="headerlink" title="4.5、类型转换函数"></a>4.5、类型转换函数</h3><p>类型转换函数又称类型转换运算符重载函数,<strong>是指将类对象等复杂数据类型转换为基本数据类型</strong>。即：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">operator</span> 类型名();</span><br></pre></td></tr></table></figure>
-
-<p>类型转换函数也是以operator关键字开头，这点和运算符重载时的规律是一致的，只是被重载的是类型名。<strong>在函数名前面不能指定函数类型，函数也没有参数。其返回值的类型是由函数名中指定的类型名来确定的</strong>(如果类型名是double，则将类型数据转换为double类型返回)。</p>
-<p><strong>类型转换运算符重载函数只能作为类的成员函数，因为转换的主体是本类的对象。</strong></p>
-<p>例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Swap</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> a,b;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	Swap(<span class="keyword">int</span> m,<span class="keyword">int</span> n):a(m),b(n)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">char</span><span class="params">()</span><span class="comment">//类型转换运算符重载函数</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">char</span>&gt;(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="string">" "</span>&lt;&lt;b&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span>   </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Swap <span class="title">s1</span><span class="params">(<span class="number">65</span>,<span class="number">2</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"s1:"</span>;</span><br><span class="line">    s1.show();</span><br><span class="line">    <span class="keyword">char</span> ch =s1;<span class="comment">//调用类型转换函数</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;ch&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">65</span> <span class="number">2</span></span><br><span class="line">A</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<p><strong>类型转换函数有一个特殊功能。当需要的时候，编译系统会自动调用重载函数，建立一个无名的临时对象(或临时变量)，如上图，将s1对象赋值给ch时，如果没有重载“=”运算符，编译器会首先检查是否由类型转换函数，如果由，则调用operator char()函数将s1对象转换为一个临时的char类型变量，再将这个临时变量赋值给ch。</strong></p>
-<h3 id="4-6、转换构造函数"><a href="#4-6、转换构造函数" class="headerlink" title="4.6、转换构造函数"></a>4.6、转换构造函数</h3><p>转换构造函数是当一个构造函数只有一个参数，并且这个参数又不是本类的const引用时，这种构造函数称为转换构造函数。<strong>即它用来将基本数据变量转换为类对象等复杂数据变量。</strong></p>
-<p>转换构造函数不仅可以将一个标准类型数据转换为类对象，还可以将另一个类的对象转换为转换构造函数所在类的类对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//////////////////////////////////////</span></span><br><span class="line"><span class="comment">////////////////////////</span></span><br><span class="line"><span class="comment">//P146例4.10 包含转换构造函数、运算符重载函数和类型转换函数的程序</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//#include &lt;iostream.h&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Complex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Complex()&#123;real=<span class="number">0</span>;imag=<span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line">	Complex(<span class="keyword">double</span> r)&#123;real=r;imag=<span class="number">0</span>;&#125; <span class="comment">//转换构造函数 普通基础数据转换为类对象数据 </span></span><br><span class="line"></span><br><span class="line">	Complex(<span class="keyword">double</span> r,<span class="keyword">double</span> i)&#123;real=r;imag=i;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//operator double()&#123;return real;&#125;    //类型转换函数 类对象数据转换为普通基础数据 </span></span><br><span class="line">	<span class="comment">//后面的语句：c3=c1+2.5; //error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">friend</span> Complex <span class="keyword">operator</span> + (Complex c1,Complex c2);   <span class="comment">//运算符重载函数</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">double</span> real;</span><br><span class="line">	<span class="keyword">double</span> imag;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">///* </span></span><br><span class="line">Complex <span class="keyword">operator</span> + (Complex c1,Complex c2)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> Complex(c1.real+c2.real, c1.imag+c2.imag);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//*/   </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Complex::display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;real&lt;&lt;<span class="string">","</span>&lt;&lt;imag&lt;&lt;<span class="string">"i)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Complex c1(3,4),c2(5,-10),c3;</span><br><span class="line">	<span class="keyword">double</span> d=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	c3=c1+<span class="number">2.5</span>; <span class="comment">//需要注释前面的 //类型转换函数，否则：//error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//d = c1+2.5; //需要注释前面的  //转换构造函数，否则：//error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//c3 = c1+2.5; 和 d = c1+2.5在此程序中不能同时出现。</span></span><br><span class="line"></span><br><span class="line">	c3.<span class="built_in">display</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*编程题（类对象的转换）。编写一个学生类和教师类信息输入/输出程序。学生类数据包括学号、姓名、班级、成绩；教师类数据包括编号、姓名、职称和部门。要求设计一个person类，作为学生类student和教师类teacher的基类，再写一个转换构造函数，可以把学生类对象转换为教师类对象，最后定义一个学生类对象和教师类对象。*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">string</span> name;</span><br><span class="line">person()&#123;&#125;;</span><br><span class="line">person(<span class="built_in">string</span> nam):name(nam)&#123;&#125;;</span><br><span class="line"><span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>;</span></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span><span class="keyword">public</span> person</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    Student(<span class="built_in">string</span> num,<span class="built_in">string</span> nam,<span class="built_in">string</span> cla,<span class="keyword">int</span> score):number(num),name(nam),classes(cla),scores(score),person(nam)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"学生："</span>&lt;&lt;name&lt;&lt;<span class="string">"，学号："</span>&lt;&lt;number&lt;&lt;<span class="string">"，班级："</span>&lt;&lt;classes&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">        <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>;</span></span><br><span class="line">        <span class="built_in">string</span> number;</span><br><span class="line">        <span class="built_in">string</span> name;</span><br><span class="line">        <span class="built_in">string</span> classes;</span><br><span class="line">        <span class="keyword">int</span> scores; </span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>:</span><span class="keyword">public</span> person </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    Teacher(<span class="built_in">string</span> num,<span class="built_in">string</span> nam,<span class="built_in">string</span> st,<span class="built_in">string</span> de):number(num),name(nam),stuff(st),department(de),person(nam)&#123;&#125;;</span><br><span class="line">Teacher(Student &amp;s):person(s.name)</span><br><span class="line">&#123;</span><br><span class="line">number = s.number;</span><br><span class="line">name = s.name;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"教师："</span>&lt;&lt;name&lt;&lt;<span class="string">"，编号："</span>&lt;&lt;number&lt;&lt;<span class="string">"，职称："</span>&lt;&lt;stuff&lt;&lt;<span class="string">"，部门："</span>&lt;&lt;department&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="built_in">string</span> number;</span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="built_in">string</span> stuff;</span><br><span class="line">    <span class="built_in">string</span> department;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> number;</span><br><span class="line">	<span class="built_in">string</span> name,sex;</span><br><span class="line">	<span class="keyword">int</span> score; </span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; number &gt;&gt; name &gt;&gt; sex &gt;&gt;score;</span><br><span class="line">	<span class="built_in">string</span> st,department;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt;st&gt;&gt;department;</span><br><span class="line">	<span class="function">person <span class="title">p</span><span class="params">(name)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">stu</span><span class="params">(number,name,sex,score)</span></span>;</span><br><span class="line">    stu.Print();</span><br><span class="line">    Teacher t = (Teacher)stu;</span><br><span class="line">    t.stuff=st;</span><br><span class="line">    t.department=department;</span><br><span class="line">    t.Print();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/" class="post-title-link" itemprop="url">17函数进阶</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-21 16:48:23 / 修改时间：18:07:43" itemprop="dateCreated datePublished" datetime="2020-12-21T16:48:23+08:00">2020-12-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="函数进阶"><a href="#函数进阶" class="headerlink" title="函数进阶"></a>函数进阶</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>函数参数和返回值的作用</li>
-<li>函数的返回值 进阶</li>
-<li>函数的参数 进阶</li>
-<li>递归函数</li>
-</ul>
-<h2 id="01-函数参数和返回值的作用"><a href="#01-函数参数和返回值的作用" class="headerlink" title="01. 函数参数和返回值的作用"></a>01. 函数参数和返回值的作用</h2><p>函数根据 <strong>有没有参数</strong> 以及 <strong>有没有返回值</strong>，可以 <strong>相互组合</strong>，一共有 <strong>4 种</strong> 组合形式</p>
-<ol>
-<li>无参数，无返回值</li>
-<li>无参数，有返回值</li>
-<li>有参数，无返回值</li>
-<li>有参数，有返回值</li>
-</ol>
-<p><img src="/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/001_%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC.png" alt></p>
-<blockquote>
-<p>定义函数时，<strong>是否接收参数，或者是否返回结果</strong>，是根据 <strong>实际的功能需求</strong> 来决定的！</p>
-</blockquote>
-<ol>
-<li>如果函数 <strong>内部处理的数据不确定</strong>，就可以将外界的数据以参数传递到函数内部</li>
-<li>如果希望一个函数 <strong>执行完成后，向外界汇报执行结果</strong>，就可以增加函数的返回值</li>
-</ol>
-<h3 id="1-1-无参数，无返回值"><a href="#1-1-无参数，无返回值" class="headerlink" title="1.1 无参数，无返回值"></a>1.1 无参数，无返回值</h3><p>此类函数，不接收参数，也没有返回值，应用场景如下：</p>
-<ol>
-<li><strong>只是单纯地做一件事情</strong>，例如 <strong>显示菜单</strong></li>
-<li>在函数内部 <strong>针对全局变量进行操作</strong>，例如：<strong>新建名片</strong>，最终结果 <strong>记录在全局变量</strong> 中</li>
-</ol>
-<blockquote>
-<p>注意：</p>
-</blockquote>
-<ul>
-<li>如果全局变量的数据类型是一个 <strong>可变类型</strong>，在函数内部可以使用 <strong>方法</strong> 修改全局变量的内容 —— <strong>变量的引用不会改变</strong></li>
-<li>在函数内部，<strong>使用赋值语句</strong> 才会 <strong>修改变量的引用</strong></li>
-</ul>
-<h3 id="1-2-无参数，有返回值"><a href="#1-2-无参数，有返回值" class="headerlink" title="1.2 无参数，有返回值"></a>1.2 无参数，有返回值</h3><p>此类函数，不接收参数，但是有返回值，应用场景如下：</p>
-<ul>
-<li>采集数据，例如 <strong>温度计</strong>，返回结果就是当前的温度，而不需要传递任何的参数</li>
-</ul>
-<h3 id="1-3-有参数，无返回值"><a href="#1-3-有参数，无返回值" class="headerlink" title="1.3 有参数，无返回值"></a>1.3 有参数，无返回值</h3><p>此类函数，接收参数，没有返回值，应用场景如下：</p>
-<ul>
-<li>函数内部的代码保持不变，针对 <strong>不同的参数 处理 不同的数据</strong></li>
-<li>例如 <strong>名片管理系统</strong> 针对 <strong>找到的名片</strong> 做 <strong>修改</strong>、<strong>删除</strong> 操作</li>
-</ul>
-<h3 id="1-4-有参数，有返回值"><a href="#1-4-有参数，有返回值" class="headerlink" title="1.4 有参数，有返回值"></a>1.4 有参数，有返回值</h3><p>此类函数，接收参数，同时有返回值，应用场景如下：</p>
-<ul>
-<li>函数内部的代码保持不变，针对 <strong>不同的参数 处理 不同的数据</strong>，并且 <strong>返回期望的处理结果</strong></li>
-<li>例如 <strong>名片管理系统</strong> 使用 <strong>字典默认值</strong> 和 <strong>提示信息</strong> 提示用户输入内容<ul>
-<li>如果输入，返回输入内容</li>
-<li>如果没有输入，返回字典默认值</li>
-</ul>
-</li>
-</ul>
-<h2 id="02-函数的返回值-进阶"><a href="#02-函数的返回值-进阶" class="headerlink" title="02. 函数的返回值 进阶"></a>02. 函数的返回值 进阶</h2><ul>
-<li>在程序开发中，有时候，会希望 <strong>一个函数执行结束后，告诉调用者一个结果</strong>，以便调用者针对具体的结果做后续的处理</li>
-<li><strong>返回值</strong> 是函数 <strong>完成工作</strong>后，<strong>最后</strong> 给调用者的 <strong>一个结果</strong></li>
-<li>在函数中使用 <code>return</code> 关键字可以返回结果</li>
-<li>调用函数一方，可以 <strong>使用变量</strong> 来 <strong>接收</strong> 函数的返回结果</li>
-</ul>
-<blockquote>
-<p>问题：一个函数执行后能否返回多个结果？</p>
-</blockquote>
-<h3 id="示例-——-温度和湿度测量"><a href="#示例-——-温度和湿度测量" class="headerlink" title="示例 —— 温度和湿度测量"></a>示例 —— 温度和湿度测量</h3><ul>
-<li>假设要开发一个函数能够同时返回当前的温度和湿度</li>
-<li><strong>先完成返回温度</strong>的功能如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">measure</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""返回当前的温度"""</span></span><br><span class="line">    </span><br><span class="line">    print(<span class="string">"开始测量..."</span>)</span><br><span class="line">    temp = <span class="number">39</span></span><br><span class="line">    print(<span class="string">"测量结束..."</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line"></span><br><span class="line">result = measure()</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在利用 <strong>元组</strong> 在返回温度的同时，也能够返回 <strong>湿度</strong></li>
-<li>改造如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">measure</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""返回当前的温度"""</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"开始测量..."</span>)</span><br><span class="line">    temp = <span class="number">39</span></span><br><span class="line">    wetness = <span class="number">10</span></span><br><span class="line">    print(<span class="string">"测量结束..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (temp, wetness)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提示：如果一个函数返回的是元组，括号可以省略</p>
-</blockquote>
-<p><strong>技巧</strong> </p>
-<ul>
-<li>在 <code>Python</code> 中，可以 <strong>将一个元组</strong> 使用 <strong>赋值语句</strong> 同时赋值给 <strong>多个变量</strong></li>
-<li>注意：变量的数量需要和元组中的元素数量保持一致</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = temp, wetness = measure()</span><br></pre></td></tr></table></figure>
-
-<h3 id="面试题-——-交换两个数字"><a href="#面试题-——-交换两个数字" class="headerlink" title="面试题 —— 交换两个数字"></a>面试题 —— 交换两个数字</h3><p><strong>题目要求</strong></p>
-<ol>
-<li>有两个整数变量 <code>a = 6</code>, <code>b = 100</code></li>
-<li>不使用其他变量，<strong>交换两个变量的值</strong></li>
-</ol>
-<h4 id="解法-1-——-使用其他变量"><a href="#解法-1-——-使用其他变量" class="headerlink" title="解法 1 —— 使用其他变量"></a>解法 1 —— 使用其他变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 解法 1 - 使用临时变量</span></span><br><span class="line">c = b</span><br><span class="line">b = a</span><br><span class="line">a = c</span><br></pre></td></tr></table></figure>
-
-<h4 id="解法-2-——-不使用临时变量"><a href="#解法-2-——-不使用临时变量" class="headerlink" title="解法 2 —— 不使用临时变量"></a>解法 2 —— 不使用临时变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 解法 2 - 不使用临时变量</span></span><br><span class="line">a = a + b</span><br><span class="line">b = a - b</span><br><span class="line">a = a - b</span><br></pre></td></tr></table></figure>
-
-<h4 id="解法-3-——-Python-专有，利用元组"><a href="#解法-3-——-Python-专有，利用元组" class="headerlink" title="解法 3 —— Python 专有，利用元组"></a>解法 3 —— Python 专有，利用元组</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a, b = b, a</span><br></pre></td></tr></table></figure>
-
-<h2 id="03-函数的参数-进阶"><a href="#03-函数的参数-进阶" class="headerlink" title="03. 函数的参数 进阶"></a>03. 函数的参数 进阶</h2><h3 id="3-1-不可变和可变的参数"><a href="#3-1-不可变和可变的参数" class="headerlink" title="3.1. 不可变和可变的参数"></a>3.1. 不可变和可变的参数</h3><blockquote>
-<p>问题 1：在函数内部，针对参数使用 <strong>赋值语句</strong>，会不会影响调用函数时传递的 <strong>实参变量</strong>？ —— 不会！</p>
-</blockquote>
-<ul>
-<li>无论传递的参数是 <strong>可变</strong> 还是 <strong>不可变</strong> <ul>
-<li>只要 <strong>针对参数</strong> 使用 <strong>赋值语句</strong>，会在 <strong>函数内部</strong> 修改 <strong>局部变量的引用</strong>，<strong>不会影响到 外部变量的引用</strong></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num, num_list)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"函数内部"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 赋值语句</span></span><br><span class="line">    num = <span class="number">200</span></span><br><span class="line">    num_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"函数代码完成"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">99</span></span><br><span class="line">gl_list = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">demo(gl_num, gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>问题 2：如果传递的参数是 <strong>可变类型</strong>，在函数内部，使用 <strong>方法</strong> 修改了数据的内容，<strong>同样会影响到外部的数据</strong></p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mutable</span><span class="params">(num_list)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_list = [1, 2, 3]</span></span><br><span class="line">    num_list.extend([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">    </span><br><span class="line">    print(num_list)</span><br><span class="line"></span><br><span class="line">gl_list = [<span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line">mutable(gl_list)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
-
-<h4 id="面试题-——"><a href="#面试题-——" class="headerlink" title="面试题 —— +="></a>面试题 —— <code>+=</code></h4><ul>
-<li>在 <code>python</code> 中，列表变量调用 <code>+=</code> 本质上是在执行列表变量的 <code>extend</code> 方法，不会修改变量的引用</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num, num_list)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"函数内部代码"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># num = num + num</span></span><br><span class="line">    num += num</span><br><span class="line">    <span class="comment"># num_list.extend(num_list) 由于是调用方法，所以不会修改变量的引用</span></span><br><span class="line">    <span class="comment"># 函数执行结束后，外部数据同样会发生变化</span></span><br><span class="line">    num_list += num_list</span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数代码完成"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">9</span></span><br><span class="line">gl_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">demo(gl_num, gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2-缺省参数"><a href="#3-2-缺省参数" class="headerlink" title="3.2 缺省参数"></a>3.2 缺省参数</h3><ul>
-<li>定义函数时，可以给 <strong>某个参数</strong> 指定一个<strong>默认值</strong>，具有默认值的参数就叫做 <strong>缺省参数</strong></li>
-<li>调用函数时，如果没有传入 <strong>缺省参数</strong> 的值，则在函数内部使用定义函数时指定的 <strong>参数默认值</strong></li>
-<li>函数的缺省参数，<strong>将常见的值设置为参数的缺省值</strong>，从而 <strong>简化函数的调用</strong></li>
-<li>例如：对列表排序的方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gl_num_list = [<span class="number">6</span>, <span class="number">3</span>, <span class="number">9</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认就是升序排序，因为这种应用需求更多</span></span><br><span class="line">gl_num_list.sort()</span><br><span class="line">print(gl_num_list)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有当需要降序排序时，才需要传递 `reverse` 参数</span></span><br><span class="line">gl_num_list.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">print(gl_num_list)</span><br></pre></td></tr></table></figure>
-
-<h4 id="指定函数的缺省参数"><a href="#指定函数的缺省参数" class="headerlink" title="指定函数的缺省参数"></a>指定函数的缺省参数</h4><ul>
-<li>在参数后使用赋值语句，可以指定参数的缺省值</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">(name, gender=True)</span>:</span></span><br><span class="line"></span><br><span class="line">    gender_text = <span class="string">"男生"</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> gender:</span><br><span class="line">        gender_text = <span class="string">"女生"</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"%s 是 %s"</span> % (name, gender_text))</span><br></pre></td></tr></table></figure>
-
-<p><strong>提示</strong></p>
-<ol>
-<li>缺省参数，需要使用 <strong>最常见的值</strong> 作为默认值！</li>
-<li>如果一个参数的值 <strong>不能确定</strong>，则不应该设置默认值，具体的数值在调用函数时，由外界传递！</li>
-</ol>
-<h4 id="缺省参数的注意事项"><a href="#缺省参数的注意事项" class="headerlink" title="缺省参数的注意事项"></a>缺省参数的注意事项</h4><h5 id="1-缺省参数的定义位置"><a href="#1-缺省参数的定义位置" class="headerlink" title="1) 缺省参数的定义位置"></a>1) 缺省参数的定义位置</h5><ul>
-<li><strong>必须保证</strong> <strong>带有默认值的缺省参数</strong> <strong>在参数列表末尾</strong></li>
-<li>所以，以下定义是错误的！</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">(name, gender=True, title)</span>:</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="2-调用带有多个缺省参数的函数"><a href="#2-调用带有多个缺省参数的函数" class="headerlink" title="2) 调用带有多个缺省参数的函数"></a>2) 调用带有多个缺省参数的函数</h5><ul>
-<li>在 <strong>调用函数时</strong>，如果有 <strong>多个缺省参数</strong>，<strong>需要指定参数名</strong>，这样解释器才能够知道参数的对应关系！</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">(name, title=<span class="string">""</span>, gender=True)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param title: 职位</span></span><br><span class="line"><span class="string">    :param name: 班上同学的姓名</span></span><br><span class="line"><span class="string">    :param gender: True 男生 False 女生</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    gender_text = <span class="string">"男生"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> gender:</span><br><span class="line">        gender_text = <span class="string">"女生"</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"%s%s 是 %s"</span> % (title, name, gender_text))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示：在指定缺省参数的默认值时，应该使用最常见的值作为默认值！</span></span><br><span class="line">print_info(<span class="string">"小明"</span>)</span><br><span class="line">print_info(<span class="string">"老王"</span>, title=<span class="string">"班长"</span>)</span><br><span class="line">print_info(<span class="string">"小美"</span>, gender=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-3-多值参数（知道）"><a href="#3-3-多值参数（知道）" class="headerlink" title="3.3 多值参数（知道）"></a>3.3 多值参数（知道）</h3><h4 id="定义支持多值参数的函数"><a href="#定义支持多值参数的函数" class="headerlink" title="定义支持多值参数的函数"></a>定义支持多值参数的函数</h4><ul>
-<li><p>有时可能需要 <strong>一个函数</strong> 能够处理的参数 <strong>个数</strong> 是不确定的，这个时候，就可以使用 <strong>多值参数</strong></p>
-</li>
-<li><p><code>python</code> 中有 <strong>两种</strong> 多值参数：</p>
-<ul>
-<li>参数名前增加 <strong>一个</strong> <code>*</code> 可以接收 <strong>元组</strong></li>
-<li>参数名前增加 <strong>两个</strong> <code>*</code> 可以接收 <strong>字典</strong></li>
-</ul>
-</li>
-<li><p>一般在给多值参数命名时，<strong>习惯</strong>使用以下两个名字</p>
-<ul>
-<li><code>*args</code> —— 存放 <strong>元组</strong> 参数，前面有一个 <code>*</code></li>
-<li><code>**kwargs</code> —— 存放 <strong>字典</strong> 参数，前面有两个 <code>*</code></li>
-</ul>
-</li>
-<li><p><code>args</code> 是 <code>arguments</code> 的缩写，有变量的含义</p>
-</li>
-<li><p><code>kw</code> 是 <code>keyword</code> 的缩写，<code>kwargs</code> 可以记忆 <strong>键值对参数</strong></p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num, *args, **kwargs)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    print(args)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">demo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, name=<span class="string">"小明"</span>, age=<span class="number">18</span>, gender=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提示：<strong>多值参数</strong> 的应用会经常出现在网络上一些大牛开发的框架中，知道多值参数，<strong>有利于我们能够读懂大牛的代码</strong></p>
-</blockquote>
-<h4 id="多值参数案例-——-计算任意多个数字的和"><a href="#多值参数案例-——-计算任意多个数字的和" class="headerlink" title="多值参数案例 —— 计算任意多个数字的和"></a>多值参数案例 —— 计算任意多个数字的和</h4><p><strong>需求</strong></p>
-<ol>
-<li>定义一个函数 <code>sum_numbers</code>，可以接收的 <strong>任意多个整数</strong></li>
-<li>功能要求：将传递的 <strong>所有数字累加</strong> 并且返回累加结果</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(*args)</span>:</span></span><br><span class="line"></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 遍历 args 元组顺序求和</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> args:</span><br><span class="line">        num += n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line">print(sum_numbers(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-
-<h4 id="元组和字典的拆包（知道）"><a href="#元组和字典的拆包（知道）" class="headerlink" title="元组和字典的拆包（知道）"></a>元组和字典的拆包（知道）</h4><ul>
-<li>在调用带有多值参数的函数时，如果希望：<ul>
-<li>将一个 <strong>元组变量</strong>，直接传递给 <code>args</code></li>
-<li>将一个 <strong>字典变量</strong>，直接传递给 <code>kwargs</code></li>
-</ul>
-</li>
-<li>就可以使用 <strong>拆包</strong>，简化参数的传递，<strong>拆包</strong> 的方式是：<ul>
-<li>在 <strong>元组变量前</strong>，增加 <strong>一个</strong> <code>*</code></li>
-<li>在 <strong>字典变量前</strong>，增加 <strong>两个</strong> <code>*</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(args)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要将一个元组变量/字典变量传递给函数对应的参数</span></span><br><span class="line">gl_nums = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">gl_xiaoming = &#123;<span class="string">"name"</span>: <span class="string">"小明"</span>, <span class="string">"age"</span>: <span class="number">18</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 会把 num_tuple 和 xiaoming 作为元组传递个 args</span></span><br><span class="line"><span class="comment"># demo(gl_nums, gl_xiaoming)</span></span><br><span class="line">demo(*gl_nums, **gl_xiaoming)</span><br></pre></td></tr></table></figure>
-
-<h2 id="04-函数的递归"><a href="#04-函数的递归" class="headerlink" title="04. 函数的递归"></a>04. 函数的递归</h2><blockquote>
-<p>函数调用自身的 <strong>编程技巧</strong> 称为递归</p>
-</blockquote>
-<h3 id="4-1-递归函数的特点"><a href="#4-1-递归函数的特点" class="headerlink" title="4.1 递归函数的特点"></a>4.1 递归函数的特点</h3><p><strong>特点</strong></p>
-<ul>
-<li><strong>一个函数</strong> <strong>内部</strong> <strong>调用自己</strong><ul>
-<li>函数内部可以调用其他函数，当然在函数内部也可以调用自己</li>
-</ul>
-</li>
-</ul>
-<p><strong>代码特点</strong></p>
-<ol>
-<li>函数内部的 <strong>代码</strong> 是相同的，只是针对 <strong>参数</strong> 不同，<strong>处理的结果不同</strong></li>
-<li>当 <strong>参数满足一个条件</strong> 时，函数不再执行<ul>
-<li><strong>这个非常重要</strong>，通常被称为递归的出口，否则 <strong>会出现死循环</strong>！</li>
-</ul>
-</li>
-</ol>
-<p>示例代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 递归的出口很重要，否则会出现死循环</span></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    sum_numbers(num - <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">sum_numbers(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/002_%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt></p>
-<h3 id="4-2-递归案例-——-计算数字累加"><a href="#4-2-递归案例-——-计算数字累加" class="headerlink" title="4.2 递归案例 —— 计算数字累加"></a>4.2 递归案例 —— 计算数字累加</h3><p><strong>需求</strong></p>
-<ol>
-<li>定义一个函数 <code>sum_numbers</code></li>
-<li>能够接收一个 <code>num</code> 的整数参数</li>
-<li>计算 1 + 2 + … num 的结果</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 假设 sum_numbers 能够完成 num - 1 的累加</span></span><br><span class="line">    temp = sum_numbers(num - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 函数内部的核心算法就是 两个数字的相加</span></span><br><span class="line">    <span class="keyword">return</span> num + temp</span><br><span class="line"></span><br><span class="line">print(sum_numbers(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/002_%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8%E7%A4%BA%E6%84%8F%E5%9B%BEI.png" alt></p>
-<blockquote>
-<p>提示：递归是一个 <strong>编程技巧</strong>，初次接触递归会感觉有些吃力！在处理 <strong>不确定的循环条件时</strong>，格外的有用，例如：<strong>遍历整个文件目录的结构</strong></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/" class="post-title-link" itemprop="url">16变量进阶（理解）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-21 16:48:23" itemprop="dateCreated datePublished" datetime="2020-12-21T16:48:23+08:00">2020-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-07-06 14:34:40" itemprop="dateModified" datetime="2017-07-06T14:34:40+08:00">2017-07-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="变量进阶（理解）"><a href="#变量进阶（理解）" class="headerlink" title="变量进阶（理解）"></a>变量进阶（理解）</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>变量的引用</li>
-<li>可变和不可变类型</li>
-<li>局部变量和全局变量</li>
-</ul>
-<h2 id="01-变量的引用"><a href="#01-变量的引用" class="headerlink" title="01. 变量的引用"></a>01. 变量的引用</h2><blockquote>
-<ul>
-<li>变量 和 数据 都是保存在 <strong>内存</strong> 中的</li>
-<li>在 <code>Python</code> 中 <strong>函数 的 参数传递</strong> 以及 <strong>返回值</strong> 都是靠 <strong>引用</strong> 传递的</li>
-</ul>
-</blockquote>
-<h3 id="1-1-引用的概念"><a href="#1-1-引用的概念" class="headerlink" title="1.1 引用的概念"></a>1.1 引用的概念</h3><p>在 <code>Python</code> 中</p>
-<ul>
-<li><strong>变量</strong> 和 <strong>数据</strong> 是分开存储的</li>
-<li><strong>数据</strong> 保存在内存中的一个位置</li>
-<li><strong>变量</strong> 中保存着数据在内存中的地址</li>
-<li><strong>变量</strong> 中 <strong>记录数据的地址</strong>，就叫做 <strong>引用</strong></li>
-<li>使用 <code>id()</code> 函数可以查看变量中保存数据所在的 <strong>内存地址</strong></li>
-</ul>
-<blockquote>
-<p>注意：如果变量已经被定义，当给一个变量赋值的时候，本质上是 <strong>修改了数据的引用</strong></p>
-<ul>
-<li>变量 <strong>不再</strong> 对之前的数据引用</li>
-<li>变量 <strong>改为</strong> 对新赋值的数据引用</li>
-</ul>
-</blockquote>
-<h3 id="1-2-变量引用-的示例"><a href="#1-2-变量引用-的示例" class="headerlink" title="1.2 变量引用 的示例"></a>1.2 <code>变量引用</code> 的示例</h3><p>在 <code>Python</code> 中，变量的名字类似于 <strong>便签纸</strong> 贴在 <strong>数据</strong> 上</p>
-<ul>
-<li>定义一个整数变量 <code>a</code>，并且赋值为 <code>1</code></li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">代码</th>
-<th align="center">图示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">a = 1</td>
-<td align="center"><img src="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/14982751015713/004_a1tag.png" alt="004_a1tag"></td>
-</tr>
-</tbody></table>
-<ul>
-<li>将变量 <code>a</code> 赋值为 <code>2</code></li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">代码</th>
-<th align="center">图示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">a = 2</td>
-<td align="center"><img src="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/14982751015713/005_a2tag.png" alt="005_a2tag">)<img src="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/14982751015713/005_1.png" alt="005_1"></td>
-</tr>
-</tbody></table>
-<ul>
-<li>定义一个整数变量 <code>b</code>，并且将变量 <code>a</code> 的值赋值给 <code>b</code></li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">代码</th>
-<th align="center">图示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">b = a</td>
-<td align="center"><img src="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/14982751015713/006_ab2tag.png" alt="006_ab2tag"></td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>变量 <code>b</code> 是第 2 个贴在数字 <code>2</code> 上的标签</p>
-</blockquote>
-<h3 id="1-3-函数的参数和返回值的传递"><a href="#1-3-函数的参数和返回值的传递" class="headerlink" title="1.3 函数的参数和返回值的传递"></a>1.3 函数的参数和返回值的传递</h3><p>在 <code>Python</code> 中，函数的 <strong>实参</strong>/<strong>返回值</strong> 都是是靠 <strong>引用</strong> 来传递来的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(num)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line">    print(<span class="string">"%d 在函数内的内存地址是 %x"</span> % (num, id(num)))</span><br><span class="line"></span><br><span class="line">    result = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"返回值 %d 在内存中的地址是 %x"</span> % (result, id(result)))</span><br><span class="line">    print(<span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>  result</span><br><span class="line"></span><br><span class="line">a = <span class="number">10</span></span><br><span class="line">print(<span class="string">"调用函数前 内存地址是 %x"</span> % id(a))</span><br><span class="line"></span><br><span class="line">r = test(a)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"调用函数后 实参内存地址是 %x"</span> % id(a))</span><br><span class="line">print(<span class="string">"调用函数后 返回值内存地址是 %x"</span> % id(r))</span><br></pre></td></tr></table></figure>
-
-<h2 id="02-可变和不可变类型"><a href="#02-可变和不可变类型" class="headerlink" title="02. 可变和不可变类型"></a>02. 可变和不可变类型</h2><ul>
-<li><p><strong>不可变类型</strong>，内存中的数据不允许被修改：</p>
-<ul>
-<li>数字类型 <code>int</code>, <code>bool</code>, <code>float</code>, <code>complex</code>, <code>long(2.x)</code></li>
-<li>字符串 <code>str</code></li>
-<li>元组 <code>tuple</code></li>
-</ul>
-</li>
-<li><p><strong>可变类型</strong>，内存中的数据可以被修改：</p>
-<ul>
-<li>列表 <code>list</code></li>
-<li>字典 <code>dict</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">a = [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">demo_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="string">"定义列表后的内存地址 %d"</span> % id(demo_list))</span><br><span class="line"></span><br><span class="line">demo_list.append(<span class="number">999</span>)</span><br><span class="line">demo_list.pop(<span class="number">0</span>)</span><br><span class="line">demo_list.remove(<span class="number">2</span>)</span><br><span class="line">demo_list[<span class="number">0</span>] = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"修改数据后的内存地址 %d"</span> % id(demo_list))</span><br><span class="line"></span><br><span class="line">demo_dict = &#123;<span class="string">"name"</span>: <span class="string">"小明"</span>&#125;</span><br><span class="line"></span><br><span class="line">print(<span class="string">"定义字典后的内存地址 %d"</span> % id(demo_dict))</span><br><span class="line"></span><br><span class="line">demo_dict[<span class="string">"age"</span>] = <span class="number">18</span></span><br><span class="line">demo_dict.pop(<span class="string">"name"</span>)</span><br><span class="line">demo_dict[<span class="string">"name"</span>] = <span class="string">"老王"</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"修改数据后的内存地址 %d"</span> % id(demo_dict))</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：字典的 <code>key</code> <strong>只能使用不可变类型的数据</strong></p>
-</blockquote>
-<p><strong>注意</strong></p>
-<ol>
-<li><strong>可变类型</strong>的数据变化，是通过 <strong>方法</strong> 来实现的</li>
-<li>如果给一个可变类型的变量，赋值了一个新的数据，<strong>引用会修改</strong><ul>
-<li>变量 <strong>不再</strong> 对之前的数据引用</li>
-<li>变量 <strong>改为</strong> 对新赋值的数据引用</li>
-</ul>
-</li>
-</ol>
-<h3 id="哈希-hash"><a href="#哈希-hash" class="headerlink" title="哈希 (hash)"></a>哈希 <code>(hash)</code></h3><ul>
-<li><code>Python</code> 中内置有一个名字叫做 <code>hash(o)</code> 的函数<ul>
-<li>接收一个 <strong>不可变类型</strong> 的数据作为 <strong>参数</strong></li>
-<li><strong>返回</strong> 结果是一个 <strong>整数</strong></li>
-</ul>
-</li>
-<li><code>哈希</code> 是一种 <strong>算法</strong>，其作用就是提取数据的 <strong>特征码（指纹）</strong><ul>
-<li><strong>相同的内容</strong> 得到 <strong>相同的结果</strong></li>
-<li><strong>不同的内容</strong> 得到 <strong>不同的结果</strong></li>
-</ul>
-</li>
-<li>在 <code>Python</code> 中，设置字典的 <strong>键值对</strong> 时，会首先对 <code>key</code> 进行 <code>hash</code> 已决定如何在内存中保存字典的数据，以方便 <strong>后续</strong> 对字典的操作：<strong>增、删、改、查</strong><ul>
-<li>键值对的 <code>key</code> 必须是不可变类型数据</li>
-<li>键值对的 <code>value</code> 可以是任意类型的数据</li>
-</ul>
-</li>
-</ul>
-<h2 id="03-局部变量和全局变量"><a href="#03-局部变量和全局变量" class="headerlink" title="03. 局部变量和全局变量"></a>03. 局部变量和全局变量</h2><ul>
-<li><strong>局部变量</strong> 是在 <strong>函数内部</strong> 定义的变量，<strong>只能在函数内部使用</strong></li>
-<li><strong>全局变量</strong> 是在 <strong>函数外部定义</strong> 的变量（没有定义在某一个函数内），<strong>所有函数</strong> 内部 <strong>都可以使用这个变量</strong></li>
-</ul>
-<blockquote>
-<p>提示：在其他的开发语言中，大多 <strong>不推荐使用全局变量</strong> —— 可变范围太大，导致程序不好维护！</p>
-</blockquote>
-<h3 id="3-1-局部变量"><a href="#3-1-局部变量" class="headerlink" title="3.1 局部变量"></a>3.1 局部变量</h3><ul>
-<li><strong>局部变量</strong> 是在 <strong>函数内部</strong> 定义的变量，<strong>只能在函数内部使用</strong></li>
-<li>函数执行结束后，<strong>函数内部的局部变量，会被系统回收</strong></li>
-<li>不同的函数，可以定义相同的名字的局部变量，但是 <strong>彼此之间</strong> 不会产生影响</li>
-</ul>
-<h4 id="局部变量的作用"><a href="#局部变量的作用" class="headerlink" title="局部变量的作用"></a>局部变量的作用</h4><ul>
-<li>在函数内部使用，<strong>临时</strong> 保存 <strong>函数内部需要使用的数据</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    num = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line">    num = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"修改后 %d"</span> % num)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line">demo1()</span><br><span class="line">demo2()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"over"</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="局部变量的生命周期"><a href="#局部变量的生命周期" class="headerlink" title="局部变量的生命周期"></a>局部变量的生命周期</h4><ul>
-<li>所谓 <strong>生命周期</strong> 就是变量从 <strong>被创建</strong> 到 <strong>被系统回收</strong> 的过程</li>
-<li><strong>局部变量</strong> 在 <strong>函数执行时</strong> 才会被创建</li>
-<li><strong>函数执行结束后</strong> 局部变量 <strong>被系统回收</strong></li>
-<li><strong>局部变量在生命周期</strong> 内，可以用来存储 <strong>函数内部临时使用到的数据</strong></li>
-</ul>
-<h3 id="3-2-全局变量"><a href="#3-2-全局变量" class="headerlink" title="3.2 全局变量"></a>3.2 全局变量</h3><ul>
-<li><strong>全局变量</strong> 是在 <strong>函数外部定义</strong> 的变量，所有函数内部都可以使用这个变量</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义一个全局变量</span></span><br><span class="line">num = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line">demo1()</span><br><span class="line">demo2()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"over"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong>：函数执行时，<strong>需要处理变量时</strong> 会：</p>
-<ol>
-<li><strong>首先</strong> 查找 <strong>函数内部</strong> 是否存在 <strong>指定名称 的局部变量</strong>，<strong>如果有，直接使用</strong></li>
-<li>如果没有，查找 <strong>函数外部</strong> 是否存在 <strong>指定名称 的全局变量</strong>，<strong>如果有，直接使用</strong></li>
-<li>如果还没有，程序报错！</li>
-</ol>
-<h4 id="1-函数不能直接修改-全局变量的引用"><a href="#1-函数不能直接修改-全局变量的引用" class="headerlink" title="1) 函数不能直接修改 全局变量的引用"></a>1) 函数不能直接修改 <code>全局变量的引用</code></h4><ul>
-<li><strong>全局变量</strong> 是在 <strong>函数外部定义</strong> 的变量（没有定义在某一个函数内），<strong>所有函数</strong> 内部 <strong>都可以使用这个变量</strong></li>
-</ul>
-<blockquote>
-<p>提示：在其他的开发语言中，大多 <strong>不推荐使用全局变量</strong> —— 可变范围太大，导致程序不好维护！</p>
-</blockquote>
-<ul>
-<li>在函数内部，可以 <strong>通过全局变量的引用获取对应的数据</strong></li>
-<li>但是，<strong>不允许直接修改全局变量的引用</strong> —— 使用赋值语句修改全局变量的值</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"demo1"</span> + <span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 只是定义了一个局部变量，不会修改到全局变量，只是变量名相同而已</span></span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"demo2"</span> + <span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line">demo1()</span><br><span class="line">demo2()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"over"</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：只是在函数内部定义了一个局部变量而已，只是变量名相同 —— 在函数内部不能直接修改全局变量的值</p>
-</blockquote>
-<h4 id="2-在函数内部修改全局变量的值"><a href="#2-在函数内部修改全局变量的值" class="headerlink" title="2) 在函数内部修改全局变量的值"></a>2) 在函数内部修改全局变量的值</h4><ul>
-<li>如果在函数中需要修改全局变量，需要使用 <code>global</code> 进行声明</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"demo1"</span> + <span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># global 关键字，告诉 Python 解释器 num 是一个全局变量</span></span><br><span class="line">    <span class="keyword">global</span> num</span><br><span class="line">    <span class="comment"># 只是定义了一个局部变量，不会修改到全局变量，只是变量名相同而已</span></span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"demo2"</span> + <span class="string">"-"</span> * <span class="number">50</span>)</span><br><span class="line">    print(num)</span><br><span class="line"></span><br><span class="line">demo1()</span><br><span class="line">demo2()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"over"</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-全局变量定义的位置"><a href="#3-全局变量定义的位置" class="headerlink" title="3) 全局变量定义的位置"></a>3) 全局变量定义的位置</h4><ul>
-<li>为了保证所有的函数都能够正确使用到全局变量，应该 <strong>将全局变量定义在其他函数的上方</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"%d"</span> % a)</span><br><span class="line">    print(<span class="string">"%d"</span> % b)</span><br><span class="line">    print(<span class="string">"%d"</span> % c)</span><br><span class="line"></span><br><span class="line">b = <span class="number">20</span></span><br><span class="line">demo()</span><br><span class="line">c = <span class="number">30</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong></p>
-<ul>
-<li>由于全局变量 c，是在调用函数之后，才定义的，在执行函数时，变量还没有定义，所以程序会报错！</li>
-</ul>
-<p><strong>代码结构示意图如下</strong></p>
-<p><img src="/2020/12/21/16%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%EF%BC%88%E7%90%86%E8%A7%A3%EF%BC%89/14982751015713/001_%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="001_代码结构示意图-w240"></p>
-<h4 id="4-全局变量命名的建议"><a href="#4-全局变量命名的建议" class="headerlink" title="4) 全局变量命名的建议"></a>4) 全局变量命名的建议</h4><ul>
-<li>为了避免局部变量和全局变量出现混淆，在定义全局变量时，有些公司会有一些开发要求，例如：</li>
-<li>全局变量名前应该增加 <code>g_</code> 或者 <code>gl_</code> 的前缀</li>
-</ul>
-<blockquote>
-<p>提示：具体的要求格式，各公司要求可能会有些差异</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1948,7 +2043,7 @@ System.out.println(1.301 / 100);//0.013009999999999999
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

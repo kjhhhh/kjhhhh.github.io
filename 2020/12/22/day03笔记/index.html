@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容介绍1、引用类型变量的创建及使用2、流程控制语句之选择语句3、流程控制语句之循环语句4、循环高级 ###01创建引用类型变量公式    * A: 创建引用类型变量公式        * a: 我们要学的Scanner类是属于引用数据类型，我们先了解下引用数据类型。        * b: 引用数据类型的定义格式            * 与定义基本数据类型变量不同，引用数据类型的变量定义及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day03笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/day03%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今日内容介绍1、引用类型变量的创建及使用2、流程控制语句之选择语句3、流程控制语句之循环语句4、循环高级 ###01创建引用类型变量公式    * A: 创建引用类型变量公式        * a: 我们要学的Scanner类是属于引用数据类型，我们先了解下引用数据类型。        * b: 引用数据类型的定义格式            * 与定义基本数据类型变量不同，引用数据类型的变量定义及">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-22T11:21:13.810Z">
+<meta property="article:modified_time" content="2019-01-11T01:22:44.406Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/22/day03%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>day03笔记 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day03%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          day03笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:44" itemprop="dateModified" datetime="2019-01-11T09:22:44+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今日内容介绍<br>1、引用类型变量的创建及使用<br>2、流程控制语句之选择语句<br>3、流程控制语句之循环语句<br>4、循环高级</p>
+<p>###01创建引用类型变量公式<br>    * A: 创建引用类型变量公式<br>        * a: 我们要学的Scanner类是属于引用数据类型，我们先了解下引用数据类型。<br>        * b: 引用数据类型的定义格式<br>            * 与定义基本数据类型变量不同，引用数据类型的变量定义及赋值有一个相对固定的步骤或格式。<br>            * 数据类型  变量名  =  new 数据类型();<br>        * c: 引用数据类型的使用<br>            * 每种引用数据类型都有其功能，我们可以调用该类型实例的功能。<br>            * 变量名.方法名();</p>
+<p>###02Scanner类的使用<br>    * A: Scanner类的使用<br>        * a: 导包import java.util.Scanner;<br>        * b：创建键盘录入对象 Scanner sc = new Scanner(System.in);<br>        * c: 读取键盘录入的一个整数<br>            * int enterNumber = sc.nextInt();<br>        * d: 读取键盘录入的字符串<br>            * String enterString = sc.next();<br>    * B: 案例代码<br>        import java.util.Scanner;<br>        public class Demo05Scanner{<br>            public static void main(String[] args)<br>            {<br>                Scanner sc = new Scanner(System.in);</p>
+<pre><code>        int enterNumber = sc.nextInt();
+        System.out.println(&quot;用户输入的整数为&quot;+enterNumber);
+
+        String enterString = sc.next();
+        System.out.println(&quot;用户输入的字符串为&quot;+enterString);
+    }
+}</code></pre><p>###03Random随机数类的使用_1<br>    * A: Random随机数类的使用_1<br>        * a: 功能<br>            * 生成随机数需要使用到引用类型随机数Random类<br>        * b: 使用方式<br>            * import导包：所属包java.util. Random<br>            * 创建实例格式：Random  random = new Random ();<br>            * 调用方法<br>                * nextInt(int maxValue)    产生[0,maxValue)范围的随机数,包含0不包含maxValue<br>                * nextDouble()  产生[0,1)范围的随机数<br>                如：<br>                    Random  random = new Random ();<br>                    int  myNumber = random.nextInt(100);//结果为0-99的一个数<br>    * B: 案例代码<br>        import java.util.Random;<br>        public class RandomDemo{<br>            public static void main(String[] args){<br>               Random ran = new Random();<br>               // Random类中的,产生随机数的功能<br>               int i = ran.nextInt(100);<br>               System.out.println(i);</p>
+<pre><code>       //问题? 产生随机数,范围 1-100之间
+       // nextInt(100) 0-99 + 1
+    }
+}</code></pre><p>###04Random随机数类的使用_2<br>    * A: Random随机数类的使用_2<br>        * a: 调用方法<br>            * nextDouble()  产生[0,1)范围的随机数<br>            如：<br>                Random  random = new Random ();<br>                int  myNumber = random.nextDouble();//结果为0.0-1.0之间的数(包括0.0不包括1.0)</p>
+<p>###05if语句格式第一种<br>    * A: if语句格式第一种<br>        * a: 书写格式<br>            if(比较表达式) {<br>                语句体;<br>            }<br>        * b：执行流程：<br>            * 先计算比较表达式的值，看其返回值是true还是false。<br>            * 如果是true，就执行语句体；<br>            * 如果是false，就不执行语句体；<br>    * B: 案例代码<br>        public class IfDemo{<br>            public static void main(String[] args){<br>                  int i = 5 ;<br>                  //对变量i进行if判断<br>                  if(i &gt; 5){<br>                      System.out.println(“if中的条件是true”);<br>                      i++;<br>                  }</p>
+<pre><code>          System.out.println(i);
+    }
+}</code></pre><p>###06if语句格式第二种<br>    * A: if语句格式第二种<br>        * a: 书写格式<br>            if(比较表达式) {<br>                语句体1;<br>            }else {<br>                语句体2;<br>            }<br>        * b：执行流程：<br>            * 首先计算比较表达式的值，看其返回值是true还是false。<br>            * 如果是true，就执行语句体1；<br>            * 如果是false，就执行语句体2；<br>    * B: 案例代码<br>        public class IfElseDemo{<br>            public static void main(String[] args){<br>                 int i = 16 ;<br>                 //判断变量,是奇偶数, 除以2,看余数是0还是1<br>                 if( i % 2 == 0 ){<br>                     System.out.println(i+” 是偶数”);<br>                 }else{<br>                     System.out.println(i+” 是奇数”);<br>                 }<br>            }<br>        }</p>
+<p>###07if语句格式第三种<br>    * A: if语句格式第三种<br>        * a: 书写格式<br>                if(比较表达式1) {<br>                    语句体1;<br>                }else if(比较表达式2) {<br>                    语句体2;<br>                }else if(比较表达式3) {<br>                    语句体3;<br>                }<br>                …<br>                else {<br>                    语句体n+1;<br>                }<br>        * b：执行流程：<br>            * 首先计算比较表达式1看其返回值是true还是false，<br>            * 如果是true，就执行语句体1，if语句结束。<br>            * 如果是false，接着计算比较表达式2看其返回值是true还是false，</p>
+<pre><code>        * 如果是true，就执行语句体2，if语句结束。
+        * 如果是false，接着计算比较表达式3看其返回值是true还是false，
+
+        * 如果都是false，就执行语句体n+1。
+* B: 案例代码
+    public class IfElseIfDemo{
+        public static void main(String[] args){
+            //成绩判断要求 ,成绩&gt;80  成绩&gt;70  成绩&gt;60  不及格
+            //定义变量,保存成绩
+            int grade = 75;
+            //使用if else if 语句对成绩判断
+            if( grade &gt; 80 ){
+                System.out.println(grade+&quot; 成绩是优&quot;);
+            }else if ( grade &gt; 70){
+                System.out.println(grade+&quot; 成绩是良&quot;);
+            }else if ( grade &gt; 60){
+                System.out.println(grade+&quot; 成绩是中&quot;);
+            }else{
+                System.out.println(grade+&quot; 成绩是差&quot;);
+            }
+
+        }
+    }</code></pre><p>###08if语句和三元运算符的互换<br>    * A: 三元运算符<br>        * a: 概念<br>            * 用来完成简单的选择逻辑，即根据条件判断，从两个选择中选择一种执行<br>        * b: 使用格式<br>            * (条件表达式)？表达式1：表达式2；<br>        * c: 运算规则<br>            * 1: 判断条件表达式，结果为一个布尔值<br>            * 2: true，运算结果为表达式1<br>            * 3: false，运算结果为表达式2<br>    * B: 案例代码<br>        public class IfElseDemo_1{<br>            public static void main(String[] args){<br>                int j = 6;<br>                int i = 15;<br>                //使用if语句,判断出最大值<br>                if(i&gt;j){<br>                int j = 6;<br>                    System.out.println(i+” 是最大值”);<br>                }else{<br>                    System.out.println(j+” 是最大值”);<br>                }</p>
+<pre><code>            //使用三元运算实现
+            int k = i&gt;j ? i : j;
+            System.out.println(k+&quot; 是最大值&quot;);
+        }
+    }
+* C: 使用if语句还是三元表达式
+    * 判断条件多,使用if
+     * 三元,必须有结果的, if 可以没有结果的</code></pre><p>###09while循环<br>    * A: while循环结构<br>        * a: 使用格式<br>            初始化表达式；<br>            while(条件){<br>                循环体<br>            }<br>        * b: 执行顺序<br>              当条件是true,就执行循环体,执行完循环体后<br>              程序再次执行while中的条件,如果条件还是true,继续执行循环体<br>              直到条件是false的时候,循环就结束<br>    * B: 案例代码<br>        public class WhileDemo{<br>            public static void main(String[] args){<br>                //输出 1-4之间的整数<br>                //定义变量,整数类型, 循环的条件<br>                int i = 1;<br>                while( i &lt; 5 ){<br>                    System.out.println(i);<br>                    i++;<br>                }<br>            }<br>        }</p>
+<p>###10for循环_1<br>    * A: for循环_1<br>        * a: 使用格式<br>             for(初始化变量 ; 条件 ; 增量){<br>                 循环体;<br>             }<br>        * b: 各模块解释<br>            初始化变量: 定义变量,作用是用来控制循环的次数<br>            条件: 当条件是true,执行循环体,条件是false,结束循环<br>            增量: 变量自增情况<br>    * B: 案例代码<br>        public class ForDemo{<br>            public static void main(String[] args){<br>                //for循环,输出0-10<br>                for(int i = 0 ; i &lt; 11 ; i++){<br>                    System.out.println(i);<br>                }<br>            }<br>        }</p>
+<p>###11for循环_2<br>    * A: for循环的执行流程<br>        for（① ; ② ; ③）{<br>            ④<br>        }<br>        第一步，执行①<br>        第二步，执行②，如果判断结果为true，执行第三步，如果判断结果为false，执行第五步<br>        第三步，执行④<br>        第四步，执行③，然后重复执行第二步<br>        第五步，退出循环</p>
+<p>###12for循环_3<br>    * A: 案例<br>        * a: 利用for循环,计算1+4的结果<br>    * B: 案例代码<br>        public class ForDemo_1{<br>            public static void main(String[] args){<br>                // 定义变量,记录求和后的数据<br>                int sum = 0;<br>                // 利用循环,将变量从1变化到4<br>                for(int i = 1 ; i &lt;= 4 ; i++){<br>                    //对变量进行求和<br>                    sum = sum + i;<br>                }<br>                System.out.println(sum);<br>            }<br>        }</p>
+<p>###13do_while循环<br>    * A: do_while循环<br>        * a: 使用格式<br>            do{<br>               循环体;<br>            }while(条件);<br>        * b: 执行顺序<br>            先执行一次循环体，然后再判断条件，如果条件为true，继续执行循环体，<br>            如果条件为false，循环结束。<br>        * c: 特点<br>            * 无条件先执行一次<br>    * B: 案例代码<br>        public class DoWhileDemo{<br>            public static void main(String[] args){<br>                int i = 0;<br>                do{<br>                    System.out.println(i);<br>                    i++;<br>                }while( i &lt;  5);<br>            }<br>        }</p>
+<p>###14死循环<br>    * A: 死循环概述<br>        * 无限循环存在的原因是并不知道循环多少次，而是根据某些条件，来控制循环<br>    * B: 死循环格式<br>        * while(true){}<br>        * for(;;){}</p>
+<p>###15嵌套for循环_1<br>    * A: 嵌套循环的概述<br>        * 嵌套循环是指在一个循环语句的循环体中再定义一个循环语句的语法结构。while、do…while、for循环语句都可以进行嵌套，并且它们之间也可以互相嵌套，如最常见的在for循环中嵌套for循环。<br>    * B: 嵌套循环的格式<br>        for(初始化表达式; 循环条件; 操作表达式) {<br>            ………<br>            for(初始化表达式; 循环条件; 操作表达式) {<br>                执行语句<br>                ………<br>            }<br>            ………<br>        }<br>    * C: 各模块解释<br>        * 总的循环次数 =  内循环次数 * 外循环的次数<br>        * 内循环,是外循环的循环体</p>
+<pre><code>* 外循环,控制的是行数
+* 内循环,控制的是每行的个数</code></pre><p>###16嵌套for循环_2<br>    * A: 案例<br>        * a: 打印正三角形<br>    * B: 案例代码<br>        public class ForForDemo{<br>            public static void main(String[] args){<br>                for(int i = 0 ; i &lt; 9 ; i++){<br>                    for(int j = 0; j &lt; i+1 ;j++){<br>                        System.out.print(“* “);<br>                    }<br>                    System.out.println();<br>                }<br>            }<br>        }</p>
+<p>###17break语句<br>    * A: break语句<br>        * a: 作用<br>            * 跳出所在的循环体<br>        * b: 书写位置<br>            * 必须出现在循环或选择结构内<br>        * c: 举例<br>            for(int i=0; i&lt;10; i++) {<br>                if(i&gt;5) {<br>                break;<br>            }<br>                System.out.println(“我爱Java”+i);<br>            }<br>            //会从0-5输出6次“我爱Java”<br>    * B: break详细解释<br>        * a: 作用<br>            * 在loop/switch选择或者循环过程中，我们总是满足布尔表达条件才能执行对应的代码，然而在这些逻辑过程中，<br>                可以使用一些关键字直接跳出正在执行的代码，去执行后边或者指定位置的代码，<br>                这些关键字一旦出现就可以跳转语句执行顺序。<br>        * b: 使用方式<br>            * 无法单独使用，必须将break关键字置于switch或循环语句中<br>        * c: 运行规律<br>            * 不需要判断任何条件，只要遇到break变直接跳出执行后续代码。会完全跳出选择或者循环结构<br>            * 只能跳出最近的代码块，不能跨越多级代码块</p>
+<pre><code>* C：循环标号
+    * a: 为什么使用循环标号
+        * 当在双层循环或者循环内有switch选择语句时，我们发现，使用break或者continue所作用的对象均是内层语句，无法直接跳出外层循环，这时就需要使用标号语句跳转了.
+    * b: 使用方式
+        * 在外层循环外的某行前边，使用后边跟有冒号”:”的标识符，即定义完毕。
+          使用时当在内层循环使用break或continue时后边紧跟之前定义的标号即可
+    * c: 运行规律
+        * 当外层循环外定义了标号
+        * 内层使用break，终止内外双层循环。
+        * 内层使用continue，终止内层循环，继续外层循环。</code></pre><p>###18continue语句<br>    * A: continue语句<br>        * a: 作用<br>            * 提前结束本次循环，继续进行下次循环<br>        * b: 使用方式<br>            * 无法单独使用，必须将continue关键字置于循环语句中<br>        * c：运行规律<br>            * 不需要判断任何条件，只要遇到continue变直接跳出本轮循环进行下次循环<br>        * d：案例代码<br>            public class ContinueDemo{<br>                public static void main(String[] args){<br>                    for(int i = 0 ; i &lt; 10 ; i++){<br>                        if(i%2==0){<br>                            continue;<br>                        }<br>                        System.out.println(i);<br>                    }<br>                }<br>            }<br>            //会把0-9之间所有的奇数打印到控制台上</p>
+<p>###19猜数字小游戏<br>    * A: 猜数字小游戏<br>        * a: 分析<br>            * 用户给的数可能大于、小于、或等于被猜的数，这样就会出现三种情况，用前面讲的三元运算符可以实现，<br>                但是得用三元运算符的嵌套，比较麻烦！可以用更简单的方式if条件判断，可以有三个以上的条件<br>        * b: 需求分析<br>            * 后台预先生成一个随机数1-100，用户键盘录入猜数字<br>            * 如果猜对了，打印“恭喜您，答对了”<br>            * 如果猜错了<br>            * 猜大了：打印“sorry，您猜大了!”<br>            * 猜小了：打印“sorry，您猜小了!”<br>                    直到数字猜到为止<br>                    最多只能猜5次，否则提示“sorry，您没有机会了!”<br>    * B: 案例代码<br>        /*<br>            猜数字小游戏</p>
+<pre><code>    完成猜数字小游戏：
+    1、产生随机数
+    后台预先生成一个随机数1-100，用户键盘录入猜数字
+    2、通过if语句对用户猜的数与随机数进行比较
+    如果猜对了，打印“恭喜您，答对了”
+    如果猜错了
+    猜大了：打印“sorry，您猜大了!”
+    猜小了：打印“sorry，您猜小了!”
+    3、通过for循环完成用户猜数的循环
+    直到数字猜到为止
+    最多只能猜5次，否则提示“sorry，您没有机会了!”
+
+*/
+import java.util.Random;
+import java.util.Scanner;
+//通过*的方式可以一次导入该包下所有的类，但是不建议使用。建议使用哪个导哪个。
+//import java.util.*;
+public class GuessNumber{
+    public static void main(String[] args) {
+        //1、产生随机数
+        //后台预先生成一个随机数1-100，用户键盘录入猜数字
+        //创建随机数对象
+        Random random = new Random();
+        //产生一个1-100的随机数
+        int randomNumber = random.nextInt(100)+1;
+        //System.out.println(&quot;我产生的随机数是：&quot;+randomNumber+&quot;你猜猜是多少？&quot;);  作弊专用
+
+        //产生控制台录入的Scanner对象
+        Scanner sc = new Scanner(System.in);
+        //3、通过for循环完成用户猜数的循环
+        //通过for循环完成猜数字逻辑
+        for(int i=1; i&lt;=5; i++){
+            //提示用户输入要猜的数，用变量接收
+            System.out.println();
+            System.out.println(&quot;请您输入一个1-100的数：&quot;);
+            int guessNumber = sc.nextInt();
+
+            //2、通过if语句对用户猜的数与随机数进行比较
+            //如果猜对了
+            if(guessNumber==randomNumber) {
+                //打印猜对后的提示
+                System.out.println(&quot;恭喜您，猜对了！&quot;);
+                //跳出循环，不用再猜了
+                break;
+            }else {//如果猜错了
+                //如果猜大了
+                if(guessNumber&gt;randomNumber) {
+                    System.out.println(&quot;sorry，您猜大了!&quot;);
+                }else {//如果猜小了
+                    System.out.println(&quot;sorry，您猜小了!&quot;);
+                }
+            }
+            //如果猜到了最后的第5次仍然没有猜对就跳出循环
+            if(i==5) {
+                System.out.println(&quot;对不起，点太背，下次再来吧！&quot;);
+                break;
+            }
+            //每次猜错后，都提示还有多少次机会
+            System.out.println(&quot;请注意，您还有&quot;+(5-i)+&quot;次机会，请慎重作答！&quot;);
+        }
+    }
+}</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day02%E7%AC%94%E8%AE%B0/" rel="prev" title="day02笔记">
+      <i class="fa fa-chevron-left"></i> day02笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day16%E7%AC%94%E8%AE%B0/" rel="next" title="day16笔记">
+      day16笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
