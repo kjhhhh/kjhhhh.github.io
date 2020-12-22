@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容介绍1、Eclipse常用快捷键操作2、Eclipse文档注释导出帮助文档3、Eclipse项目的jar包导出与使用jar包4、不同修饰符混合使用细节5、辨析何时定义变量为成员变量6、类、抽象类、接口作为方法参数7、类、抽象类、接口作为方法返回值 第1章 Eclipse的应用###01 day14_01(面向对象)eclipse快捷键.avi(14:33)###02 day14_02(面向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day14笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/day14%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今日内容介绍1、Eclipse常用快捷键操作2、Eclipse文档注释导出帮助文档3、Eclipse项目的jar包导出与使用jar包4、不同修饰符混合使用细节5、辨析何时定义变量为成员变量6、类、抽象类、接口作为方法参数7、类、抽象类、接口作为方法返回值 第1章 Eclipse的应用###01 day14_01(面向对象)eclipse快捷键.avi(14:33)###02 day14_02(面向">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-22T11:21:13.862Z">
+<meta property="article:modified_time" content="2019-01-11T01:22:47.257Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/22/day14%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>day14笔记 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day14%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          day14笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:47" itemprop="dateModified" datetime="2019-01-11T09:22:47+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今日内容介绍<br>1、Eclipse常用快捷键操作<br>2、Eclipse文档注释导出帮助文档<br>3、Eclipse项目的jar包导出与使用jar包<br>4、不同修饰符混合使用细节<br>5、辨析何时定义变量为成员变量<br>6、类、抽象类、接口作为方法参数<br>7、类、抽象类、接口作为方法返回值</p>
+<p>第1章 Eclipse的应用<br>###01 day14_01(面向对象)eclipse快捷键.avi(14:33)<br>###02 day14_02(面向对象)java中的文档注释和制作.avi(15:08)<br>###03 day14_03(面向对象)eclipse生成jar包(08:37)<br>###04 day14_04(面向对象)JAVA_HOME配置.avi(03:27)<br>###05 day14_05(面向对象)导入jar包.avi(12:13)</p>
+<p>第2章    面向对象<br>###06 day14_07(面向对象)类中的修饰符(09:33)<br>###07 day14_08(面向对象)局部变量和成员变量解析(11:01)</p>
+<p>第3章    自定义数据类型的使用<br>###08 day14_09(面向对象)类作为方法的参数(08:12)<br>###09 day14_10(面向对象)类作为方法的返回值(07:50)<br>###10 day14_11(面向对象)抽象类作为方法的参数(10:37)<br>###11 day14_12(面向对象)抽象类作为方法的返回值(09:24)<br>###12 day14_13(面向对象)抽象类作为方法的返回值_1(01:53)<br>###13 day14_14(面向对象)接口作为方法的参数(05:55)<br>###14 day14_15(面向对象)接口作为方法的参数_常量调用(03:31)<br>###15 day14_16(面向对象)接口作为方法的返回值(03:33)<br>###16 day14_17(面向对象)抽象类作为方法返回值的案例(09:31)</p>
+<p>第三节课 星级酒店案例<br>###17 day14_18(面向对象)酒店案例分析(09:12)<br>###18 day14_19(面向对象)酒店案例功能实现(14:57)</p>
+<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01eclipse快捷键<br>    * A:     Ctrl+T：查看所选中类的继承树<br>        例如，在下面代码中，选中Teacher类名，然后按Ctrl+T，就会显示出Teacher类的继承关系</p>
+<pre><code>* B:    查看所选中方法的源代码
+    Ctrl+滑动鼠标点击方法名，或者选中方法名后，按F3键查看所选中方法的源代码。</code></pre><p>###02java中的文档注释和制作<br>    * A: 在eclipse使用时，可以配合文档注释，导出对类的说明文档，从而供其         他人阅读学习与使用。<br>        通过使用文档注释，将类或者方法进行注释用@简单标注基本信息。如@author 作者、@version代码版本、@param方法参数、@return方法返回值等。</p>
+<p>###03eclipse生成jar包<br>###04JAVA_HOME配置<br>###05导入jar包<br>    * A:     导入jar包：即把指定的jar包，加入到指项目中，提供给项目使用。<br>        导入jar包的过程是将jar包加入到项目的.classpath文件中去，让项目识别，便可以使用jar包中所有的.class文件类。<br>        以下是加入步骤：<br>        1：项目根文件夹下创建lib文件夹，用于同一管理所有的jar文件<br>        2：把jar文件复制到lib文件夹中<br>        3：右键点击jar文件，点击Build Path，选择Add to Build Path，此时查看项目根文件夹下的.classpath文件，发现新加入的jar包路径被配置到了该文件中。说明可以使用jar包中所有类了。</p>
+<pre><code>注意：
+    Jar包加入后，必须Add to Build Path才能使用
+    Jar包加入后，加入的类也必须导包，如果加入的类其包名与现有类包名相同，则视作在同一个包下。(不常见)</code></pre><p>==============================第二节课开始====================================        </p>
+<p>###07不同修饰符使用细节</p>
+<pre><code>A: 常用来修饰类、方法、变量的修饰符如下：
+    public 权限修饰符，公共访问, 类,方法,成员变量
+    protected 权限修饰符，受保护访问, 方法,成员变量
+    默认什么也不写 也是一种权限修饰符，默认访问, 类,方法,成员变量
+    private 权限修饰符，私有访问, 方法,成员变量
+    static 静态修饰符  方法,成员变量
+    final 最终修饰符   类,方法,成员变量,局部变量
+    abstract 抽象修饰符  类 ,方法
+
+B: 不能同时使用的修饰符
+    同时，abstract与private不能同时使用；
+    同时，abstract与static不能同时使用；
+    同时，abstract与final不能同时使用。</code></pre><p>    C: 修饰类能够使用的修饰符：<br>        修饰类只能使用public、默认的、final、abstract关键字<br>        使用最多的是 public关键字</p>
+<pre><code>    a:代码案例
+        public class Demo {} //最常用的方式
+        class Demo2{}
+        public final class Demo3{}
+        public abstract class Demo4{}
+
+D:修饰成员变量能够使用的修饰符：
+    public : 公共的
+    protected : 受保护的
+        : 默认的
+    private ：私有的
+    final : 最终的
+    static : 静态的
+    使用最多的是 private
+
+    a: 代码案例
+        public int count = 100;
+        protected int count2 = 100;
+        int count3 = 100;
+        private int count4 = 100; //最常用的方式
+        public final int count5 = 100;
+        public static int count6 = 100;</code></pre><p>    E:修饰构造方法能够使用的修饰符：<br>        public : 公共的<br>        protected : 受保护的<br>            : 默认的<br>        private ：私有的<br>        使用最多的是 public</p>
+<pre><code>a:代码案例
+    public Demo(){} //最常用的方式
+    protected Demo(){}
+    Demo(){}
+    private Demo(){}
+
+    修饰成员方法能够使用的修饰符：
+        public : 公共的
+        protected : 受保护的
+            : 默认的
+        private ：私有的
+        final : 最终的
+        static : 静态的
+        abstract : 抽象的
+        使用最多的是 public
+    public void method1(){}//最常用的方式
+    protected void method2(){}
+    void method3(){}
+    private void method4(){}
+    public final void method5(){}
+    public static void method6(){}//最常用的方式
+    public abstract void method7();//最常用的方式</code></pre><p>###07局部变量和成员变量解析<br>    * A：程序编译<br>            数学工具类<br>    public class MathTool {<br>        //求两个数的和的二倍<br>        public double sum2times(int number,int number2) {<br>            return (number+number2)<em>2;<br>        }<br>        //求两个数的积<br>        public double area(int number,int number2) {<br>            return number</em>number2;<br>        }<br>    }</p>
+<p>    长方形类<br>    public class CFX {<br>        //因为长与宽，在现实事物中属于事物的一部分，所以定义成员变量<br>        private int chang;<br>        private int kuan;</p>
+<pre><code>    public CFX(int chang, int kuan) {
+        this.chang = chang;
+        this.kuan = kuan;
+    }
+
+    //求长与宽的周长
+    public double zhouChang() {
+        return (chang+kuan)*2;
+    }
+    //求长与宽的面积
+    public double mianJi() {
+        return chang*kuan;
+    }
+    public int getChang() {
+        return chang;
+    }
+    public void setChang(int chang) {
+        this.chang = chang;
+    }
+    public int getKuan() {
+        return kuan;
+    }
+    public void setKuan(int kuan) {
+        this.kuan = kuan;
+    }
+}</code></pre><p>###08类作为方法的参数<br>    * A：    类作为方法参数<br>        在编写程序中，会经常碰到调用的方法要接收的是一个类类型的情况，那么这时，要向方法中传入该类的对象。</p>
+<pre><code>如下代码演示：
+    class Person{
+        public void show(){
+            System.out.println(&quot;show方法执行了&quot;);
+        }
+    }
+    //测试类
+    public class Test {
+        public static void main(String[] args) {
+            //创建Person对象
+            Person p = new Person();
+            //调用method方法
+            method(p);
+        }
+
+    //定义一个方法method，用来接收一个Person对象，在方法中调用Person对象的show方法
+    public static void method(Person p){
+        p.show();
+    }</code></pre><p>###09抽象类作为方法参数与返回值<br>    * A:     抽象类作为方法参数<br>        今后开发中，抽象类作为方法参数的情况也很多见。当遇到方法参数为抽象类类型时，要传入一个实现抽象类所有抽象方法的子类对象。如下代码演示：<br>        //抽象类<br>        abstract class Person{<br>            public abstract void show();<br>        }<br>        class Student extends Person{<br>            @Override<br>            public void show() {<br>                System.out.println(“重写了show方法”);<br>            }<br>        }<br>        //测试类<br>        public class Test {<br>            public static void main(String[] args) {<br>                //通过多态的方式，创建一个Person类型的变量，而这个对象实际是Student<br>                Person p = new Student();<br>                //调用method方法<br>                method(p);<br>            }</p>
+<pre><code>        //定义一个方法method，用来接收一个Person类型对象，在方法中调用Person对象的show方法
+        public static void method(Person p){//抽象类作为参数
+            //通过p变量调用show方法,这时实际调用的是Student对象中的show方法
+            p.show();    
+    }
+    }
+
+
+* B:    抽象类作为方法返回值
+    抽象类作为方法返回值的情况，也是有的，这时需要返回一个实现抽象类所有抽象方法的子类对象。如下代码演示：
+    //抽象类
+    abstract class Person{
+        public abstract void show();
+    }
+    class Student extends Person{
+        @Override
+        public void show() {
+            System.out.println(&quot;重写了show方法&quot;);
+        }
+    }
+    //测试类
+    public class Test {
+        public static void main(String[] args) {
+            //调用method方法，获取返回的Person对象
+            Person p = method();
+            //通过p变量调用show方法,这时实际调用的是Student对象中的show方法
+            p.show();
+        }
+
+        //定义一个方法method，用来获取一个Person对象，在方法中完成Person对象的创建
+        public static Person method(){
+            Person p = new Student();
+            return p;
+        }
+    }</code></pre><p>###10接口作为方法参数与返回值<br>    * A:     接口作为方法参数<br>        接口作为方法参数的情况是很常见的，经常会碰到。当遇到方法参数为接口类型时，那么该方法要传入一个接口实现类对象。如下代码演示。<br>        //接口<br>        interface Smoke{<br>            public abstract void smoking();<br>        }<br>        class Student implements Smoke{<br>            @Override<br>            public void smoking() {<br>                System.out.println(“课下吸口烟，赛过活神仙”);<br>            }<br>        }<br>        //测试类<br>        public class Test {<br>            public static void main(String[] args) {<br>                //通过多态的方式，创建一个Smoke类型的变量，而这个对象实际是Student<br>                Smoke s = new Student();<br>                //调用method方法<br>                method(s);<br>            }</p>
+<pre><code>        //定义一个方法method，用来接收一个Smoke类型对象，在方法中调用Smoke对象的show方法
+        public static void method(Smoke sm){//接口作为参数
+            //通过sm变量调用smoking方法，这时实际调用的是Student对象中的smoking方法
+            sm.smoking();
+        }
+    }
+
+* B:    接口作为方法返回值
+    接口作为方法返回值的情况，在后面的学习中会碰到。当遇到方法返回值是接口类型时，那么该方法需要返回一个接口实现类对象。如下代码演示。
+
+    //接口
+    interface Smoke{
+        public abstract void smoking();
+    }
+    class Student implements Smoke{
+        @Override
+        public void smoking() {
+            System.out.println(&quot;课下吸口烟，赛过活神仙&quot;);
+        }
+    }
+    //测试类
+    public class Test {
+        public static void main(String[] args) {
+            //调用method方法，获取返回的会吸烟的对象
+            Smoke s = method();
+            //通过s变量调用smoking方法,这时实际调用的是Student对象中的smoking方法
+            s.smoking();
+        }
+
+        //定义一个方法method，用来获取一个具备吸烟功能的对象，并在方法中完成吸烟者的创建
+        public static Smoke method(){
+            Smoke sm = new Student();
+            return sm;
+        }
+    }</code></pre><p>==============================第三节课开始====================================<br>###11星级酒店案例<br>    * A:     根据“某五星级酒店，资金雄厚……都有自己的工作要做。”分析出，该题        目中包含酒店，可以把它封装成类，多名员工）。</p>
+<pre><code>    class 员工 {
+         属性：姓名
+    属性：工号
+    方法：工作
+    }
+    class 厨师 extends 员工{}
+    class 服务员 extends 员工{}
+    class 经理 extends 员工 {
+         属性：奖金
+    }
+
+    员工的类型有经理、厨师、服务员，它们有共同的属性（姓名、工号、），经理额外属性（奖金）。
+
+        根据“向酒店中，增加多名员工（其中包含1名经理，1名厨师、2名服务员）”。分析出，要创建一个酒店对象，并添加4名员工到酒店对象的员工集合中。
+    酒店员工集合添加新员工： 经理对象
+    酒店员工集合添加新员工： 厨师对象
+    酒店员工集合添加新员工： 服务员对象
+    酒店员工集合添加新员工： 服务员对象
+
+        根据“获取酒店幸运员工”。分析出，从酒店员工集合随机得到一名员工对象。
+    1. 从酒店员工集合长度范围内，随机产生一个随机数
+    2. 使用该随机数作为集合的索引，返回该索引处对应的员工对象
+
+        根据“酒店开设VIP服务，酒店的厨师与服务员可以提供VIP服务。（厨师做菜加量、服务员给顾客倒酒）”。分析出，这是要增加一个VIP的接口，接口中提供个VIP服务的方法。让厨师与服务员实现该接口。
+    interface VIP服务{
+         抽象方法：服务
+    }
+    class 厨师 extends 员工 implements VIP服务{ 重写服务方法 }
+    class 服务员 extends 员工 implements VIP服务{ 重写服务方法 }
+
+B:
+    VIP服务</code></pre><p>public interface VIP {<br>     public abstract void server(); //服务<br>}</p>
+<p>    员工<br>/*</p>
+<ul>
+<li><p>员工：<br>  姓名 String<br>  工号 String</p>
+</li>
+<li><p>/<br>public abstract class YuanGong {<br>  // 成员变量<br>  private String xingMing;<br>  private String gongHao;<br>  // 构造方法<br>  public YuanGong() {</p>
+<pre><code>super();</code></pre><p>  }<br>  public YuanGong(String xingMing, String gongHao) {</p>
+<pre><code>super();
+this.xingMing = xingMing;
+this.gongHao = gongHao;</code></pre><p>  }<br>  // 抽象方法<br>  public abstract void work();</p>
+<p>  // getters与setters<br>  public String getXingMing() {</p>
+<pre><code>return xingMing;</code></pre><p>  }<br>  public void setXingMing(String xingMing) {</p>
+<pre><code>this.xingMing = xingMing;</code></pre><p>  }<br>  public String getGongHao() {</p>
+<pre><code>return gongHao;</code></pre><p>  }<br>  public void setGongHao(String gongHao) {</p>
+<pre><code>this.gongHao = gongHao;</code></pre><p>  }</p>
+</li>
+</ul>
+<p>}</p>
+<p>    服务员<br>/*</p>
+<ul>
+<li><p>定义员工的子类 服务员类</p>
+</li>
+<li><p>/<br>public class FuWuYuan extends YuanGong implements VIP {<br>  public FuWuYuan() {</p>
+<pre><code>super();</code></pre><p>  }</p>
+<p>  public FuWuYuan(String xingMing, String gongHao) {</p>
+<pre><code>super(xingMing, gongHao);</code></pre><p>  }<br>  @Override<br>  public void work() {</p>
+<pre><code>System.out.println(&quot;亲，全身心为您服务，记得给好评哦&quot;);</code></pre><p>  }<br>  @Override<br>  public void server() {</p>
+<pre><code>System.out.println(&quot;给顾客倒酒&quot;);</code></pre><p>  }<br>}</p>
+</li>
+</ul>
+<p>    经理<br>/*</p>
+<ul>
+<li><p>经理在员工的基础上，添加了奖金成员</p>
+</li>
+<li><p>/<br>public class JingLi extends YuanGong {<br>  private double jiangJin;</p>
+<p>  public JingLi() {</p>
+<pre><code>super();</code></pre><p>  }<br>  public JingLi(String xingMing, String gongHao, double jiangJin) {</p>
+<pre><code>super(xingMing, gongHao);
+this.jiangJin = jiangJin;</code></pre><p>  }</p>
+<p>  public double getJiangJin() {</p>
+<pre><code>return jiangJin;</code></pre><p>  }<br>  public void setJiangJin(double jiangJin) {</p>
+<pre><code>this.jiangJin = jiangJin;</code></pre><p>  }</p>
+<p>  @Override<br>  public void work() {</p>
+<pre><code>System.out.println(&quot;哪个员工让顾客不满意，我扣谁钱&quot;);</code></pre><p>  };<br>}</p>
+</li>
+</ul>
+<p>    厨师<br>/*</p>
+<ul>
+<li><p>定义员工的子类 厨师类</p>
+</li>
+<li><p>/<br>public class ChuShi extends YuanGong implements VIP{<br>  public ChuShi() {</p>
+<pre><code>super();</code></pre><p>  }<br>  public ChuShi(String xingMing, String gongHao) {</p>
+<pre><code>super(xingMing, gongHao);</code></pre><p>  }</p>
+<p>  @Override<br>  public void work() {</p>
+<pre><code>System.out.println(&quot;我做饭，放心吃吧，包您满意&quot;);</code></pre><p>  }<br>  @Override<br>  public void server() {</p>
+<pre><code>System.out.println(&quot;做菜加量加料&quot;);</code></pre><p>  }<br>}</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day13%E7%AC%94%E8%AE%B0/" rel="prev" title="day13笔记">
+      <i class="fa fa-chevron-left"></i> day13笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day15%E7%AC%94%E8%AE%B0/" rel="next" title="day15笔记">
+      day15笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
