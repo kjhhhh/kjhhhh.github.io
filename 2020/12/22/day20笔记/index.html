@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容介绍1、Map接口2、模拟斗地主洗牌发牌 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一节课开始&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01Map集合概述  A:Map集合概述:    我们通过查看Map接口描述,发现Map接口下的集合与Collection接口下的集合，它们存储数据的形式不同        a:Collect">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day20笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/day20%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今日内容介绍1、Map接口2、模拟斗地主洗牌发牌 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一节课开始&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01Map集合概述  A:Map集合概述:    我们通过查看Map接口描述,发现Map接口下的集合与Collection接口下的集合，它们存储数据的形式不同        a:Collect">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-22T11:21:13.908Z">
+<meta property="article:modified_time" content="2019-01-11T01:22:49.421Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/22/day20%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>day20笔记 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day20%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          day20笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:49" itemprop="dateModified" datetime="2019-01-11T09:22:49+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今日内容介绍<br>1、Map接口<br>2、模拟斗地主洗牌发牌</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01Map集合概述<br>  A:Map集合概述:<br>    我们通过查看Map接口描述,发现Map接口下的集合与Collection接口下的集合，它们存储数据的形式不同<br>        a:Collection中的集合，元素是孤立存在的（理解为单身），向集合中存储元素采用一个个元素的方式存储。<br>    <br>        b:Map中的集合，元素是成对存在的(理解为夫妻)。每个元素由键与值两部分组成，通过键可以找对所对应的值。<br>    <br>        Collection中的集合称为单列集合，Map中的集合称为双列集合。<br>        需要注意的是，Map中的集合不能包含重复的键，值可以重复；每个键只能对应一个值。<br>    Map<br>     |–HashMap<br>     |–LinkedHashMap</p>
+<p>###02Map接口中的常用方法<br>  A:Map接口中的常用方法<br>       /*<br>        *  Map接口中的常用方法<br>        *    使用Map接口的实现类 HashMap<br>        <em>/<br>       public class MapDemo {<br>           public static void main(String[] args) {<br>               function_2();<br>           }<br>           /</em><br>            *  移除集合中的键值对,返回被移除之前的值<br>            *  V remove(K)<br>            */<br>           public static void function_2(){<br>               Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>               map.put(1, “a”);<br>               map.put(2, “b”);<br>               map.put(3, “c”);<br>               System.out.println(map);</p>
+<pre><code>        String value = map.remove(33);
+        System.out.println(value);
+        System.out.println(map);
+    }
+
+    /*
+     * 通过键对象,获取值对象
+     * V get(K)
+     * 如果集合中没有这个键,返回null
+     */
+    public static void function_1(){
+        //创建集合对象,作为键的对象整数,值的对象存储字符串
+        Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();
+        map.put(1, &quot;a&quot;);
+        map.put(2, &quot;b&quot;);
+        map.put(3, &quot;c&quot;);
+        System.out.println(map);
+
+        String value = map.get(4);
+        System.out.println(value);
+    }
+
+    /*
+     *  将键值对存储到集合中
+     *  V put(K,V) K 作为键的对象, V作为值的对象
+     *  存储的是重复的键,将原有的值,覆盖
+     *  返回值一般情况下返回null,
+     *  存储重复键的时候,返回被覆盖之前的值
+     */
+    public static void function(){
+        //创建集合对象,HashMap,存储对象,键是字符串,值是整数
+        Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();
+        map.put(&quot;a&quot;, 1);
+
+        map.put(&quot;b&quot;, 2);
+
+        map.put(&quot;c&quot;, 3);
+
+        System.out.println(map);
+    }
+}</code></pre><p>###03Map集合遍历方式keySet方法<br>  A:Map集合遍历方式keySet方法<br>     1.获取Map集合中所有的键，由于键是唯一的，所以返回一个Set集合存储所有的键<br>     2.遍历键的Set集合，得到每一个键<br>     3.根据键利用get(key)去Map找所对应的值<br>     /*<br>      *  Map集合的遍历<br>      *    利用键获取值<br>      *    Map接口中定义方法keySet<br>      *    所有的键,存储到Set集合<br>      <em>/<br>     public class MapDemo1 {<br>         public static void main(String[] args) {<br>             /</em><br>              *  1. 调用map集合的方法keySet,所有的键存储到Set集合中<br>              *  2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)<br>              *  3. 调用map集合方法get,通过键获取到值<br>              */<br>             Map&lt;String,Integer&gt; map = new HashMap&lt;String,Integer&gt;();<br>             map.put(“a”, 11);<br>             map.put(“b”, 12);<br>             map.put(“c”, 13);<br>             map.put(“d”, 14);</p>
+<pre><code>        //1. 调用map集合的方法keySet,所有的键存储到Set集合中
+        Set&lt;String&gt; set = map.keySet();
+        //2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)
+        Iterator&lt;String&gt; it = set.iterator();
+        while(it.hasNext()){
+            //it.next返回是Set集合元素,也就是Map中的键
+            //3. 调用map集合方法get,通过键获取到值
+            String key = it.next();
+            Integer value = map.get(key);
+            System.out.println(key+&quot;....&quot;+value);
+        }
+
+        System.out.println(&quot;=======================&quot;);
+
+
+        for(String key : map.keySet()){
+            Integer value = map.get(key);
+            System.out.println(key+&quot;....&quot;+value);
+        }
+    }
+}</code></pre><p>###04Map集合Entry对象<br>   A:Map集合Entry对象<br>     interface Map{<br>         interface Entry{//Entry是Map的一个内部接口<br>                        //由Map的子类的内部类实现</p>
+<pre><code>    }
+}
+class HashMap{
+    static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {//Entry对象指的就是该类的对象
+       final K key;
+             V value;
+    }
+}
+在Map类设计时，提供了一个嵌套接口：Entry。
+Entry将键值对的对应关系封装成了对象。
+即键值对对象，这样我们在遍历Map集合时，就可以从每一个键值对（Entry）对象中获取对应的键与对应的值。
+  a:Entry是Map接口中提供的一个静态内部嵌套接口。
+  b:相关方法
+     getKey()方法：获取Entry对象中的键
+  getValue()方法：获取Entry对象中的值
+  entrySet()方法：用于返回Map集合中所有的键值对(Entry)对象，以Set集合形式返回。</code></pre><p>###05Map集合遍历方式entrySet方法<br>   A:Map集合遍历方式entrySet方法<br>    *<br>     *  Map集合获取方式<br>     *  entrySet方法,键值对映射关系(结婚证)获取<br>     *  实现步骤:<br>     *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>     *        Set&lt;Entry &lt;K,V&gt; &gt;<br>     *    2. 迭代Set集合<br>     *    3. 获取出的Set集合的元素,是映射关系对象<br>     *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>     *<br>     *    创建内部类对象 外部类.内部类 = new<br>     */<br>    public class MapDemo2 {<br>        public static void main(String[] args) {<br>            Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>            map.put(1, “abc”);<br>            map.put(2, “bcd”);<br>            map.put(3, “cde”);<br>            //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>            Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>            //2. 迭代Set集合<br>            Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>            while(it.hasNext()){<br>                //  3. 获取出的Set集合的元素,是映射关系对象<br>                // it.next 获取的是什么对象,也是Map.Entry对象<br>                Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                Integer key = entry.getKey();<br>                String value = entry.getValue();<br>                System.out.println(key+”….”+value);<br>            }</p>
+<pre><code>    }
+}</code></pre><p>=======================第二节课开始============================================<br>###06Map集合遍历方式增强for循环<br>   A:Map集合遍历方式增强for循环<br>     A:Map集合遍历方式entrySet方法<br>      *<br>       *  Map集合获取方式<br>       *  entrySet方法,键值对映射关系(结婚证)获取<br>       *  实现步骤:<br>       *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>       *        Set&lt;Entry &lt;K,V&gt; &gt;<br>       *    2. 迭代Set集合<br>       *    3. 获取出的Set集合的元素,是映射关系对象<br>       *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>       *<br>       *    创建内部类对象 外部类.内部类 = new<br>       */<br>      public class MapDemo2 {<br>          public static void main(String[] args) {<br>              Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>              map.put(1, “abc”);<br>              map.put(2, “bcd”);<br>              map.put(3, “cde”);<br>              //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>              Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>              //2. 迭代Set集合<br>              Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>              while(it.hasNext()){<br>                  //  3. 获取出的Set集合的元素,是映射关系对象<br>                  // it.next 获取的是什么对象,也是Map.Entry对象<br>                  Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                  //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                  Integer key = entry.getKey();<br>                  String value = entry.getValue();<br>                  System.out.println(key+”….”+value);<br>              }</p>
+<pre><code>        System.out.println(&quot;=========================&quot;);
+        for(Map.Entry&lt;Integer, String&gt; entry : map.entrySet()){
+            System.out.println(entry.getKey()+&quot;...&quot;+entry.getValue());
+        }
+    }
+}
+
+注意：Map集合不能直接使用迭代器或者foreach进行遍历。但是转成Set之后就可以使用了。</code></pre><p>###07HashMap集合存储和遍历<br>  A:HashMap集合存储和遍历<br>     /*<br>      *  使用HashMap集合,存储自定义的对象<br>      *  自定义对象,作为键,出现,作为值出现<br>      <em>/<br>     public class HashMapDemo {<br>         public static void main(String[] args) {<br>             function_1();<br>         }<br>         /</em><br>          * HashMap 存储自定义对象Person,作为键出现<br>          * 键的对象,是Person类型,值是字符串<br>          * 保证键的唯一性,存储到键的对象,重写hashCode equals<br>          */<br>         public static void function_1(){<br>             HashMap&lt;Person, String&gt; map = new HashMap&lt;Person, String&gt;();<br>             map.put(new Person(“a”,20), “里约热内卢”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“c”,19), “百慕大”);<br>             for(Person key : map.keySet()){<br>                 String value = map.get(key);<br>                 System.out.println(key+”…”+value);<br>             }<br>             System.out.println(“===================”);<br>             for(Map.Entry&lt;Person, String&gt; entry : map.entrySet()){<br>                 System.out.println(entry.getKey()+”…”+entry.getValue());<br>             }<br>         }</p>
+<pre><code>    /*
+     * HashMap 存储自定义的对象Person,作为值出现
+     * 键的对象,是字符串,可以保证唯一性
+     */
+    public static void function(){
+        HashMap&lt;String, Person&gt; map = new HashMap&lt;String, Person&gt;();
+        map.put(&quot;beijing&quot;, new Person(&quot;a&quot;,20));
+        map.put(&quot;tianjin&quot;, new Person(&quot;b&quot;,18));
+        map.put(&quot;shanghai&quot;, new Person(&quot;c&quot;,19));
+        for(String key : map.keySet()){
+            Person value = map.get(key);
+            System.out.println(key+&quot;...&quot;+value);
+        }
+        System.out.println(&quot;=================&quot;);
+        for(Map.Entry&lt;String, Person&gt; entry : map.entrySet()){
+            String key = entry.getKey();
+            Person value = entry.getValue();
+            System.out.println(key+&quot;...&quot;+value);
+        }
+    }
+}</code></pre><p>###08LinkedHashMap的特点<br>   *A:LinkedHashMap的特点</p>
+<pre><code>/*
+ *  LinkedHashMap继承HashMap
+ *  保证迭代的顺序
+ */
+public class LinkedHashMapDemo {
+    public static void main(String[] args) {
+        LinkedHashMap&lt;String, String&gt; link = new LinkedHashMap&lt;String, String&gt;();
+        link.put(&quot;1&quot;, &quot;a&quot;);
+        link.put(&quot;13&quot;, &quot;a&quot;);
+        link.put(&quot;15&quot;, &quot;a&quot;);
+        link.put(&quot;17&quot;, &quot;a&quot;);
+        System.out.println(link);
+    }
+}</code></pre><p>###09Hashtable的特点<br>   <em>A:Hashtable的特点<br>       /</em><br>        *  Map接口实现类 Hashtable<br>        *  底层数据结果哈希表,特点和HashMap是一样的<br>        *  Hashtable 线程安全集合,运行速度慢<br>        *  HashMap 线程不安全的集合,运行速度快<br>        *<br>        *  Hashtable命运和Vector是一样的,从JDK1.2开始,被更先进的HashMap取代<br>        *<br>        *  HashMap 允许存储null值,null键<br>        *  Hashtable 不允许存储null值,null键<br>        *<br>        *  Hashtable他的孩子,子类 Properties 依然活跃在开发舞台<br>        */<br>       public class HashtableDemo {<br>           public static void main(String[] args) {<br>               Map&lt;String,String&gt; map = new Hashtable&lt;String,String&gt;();<br>               map.put(null, null);<br>               System.out.println(map);<br>           }<br>       }</p>
+<p>###10静态导入<br>   <em>A:静态导入:如果本类中有和静态导入的同名方法会优先使用本类的<br>               如果还想使用静态导入的,依然需要类名来调用<br>       /</em><br>        * JDK1.5新特性,静态导入<br>        * 减少开发的代码量<br>        * 标准的写法,导入包的时候才能使用<br>        *<br>        * import static java.lang.System.out;最末尾,必须是一个静态成员<br>        */<br>       import static java.lang.System.out;<br>       import static java.util.Arrays.sort;</p>
+<pre><code>public class StaticImportDemo {
+    public static void main(String[] args) {
+        out.println(&quot;hello&quot;);
+
+        int[] arr = {1,4,2};
+        sort(arr);
+    }
+}</code></pre><p>###11方法的可变参数<br>   <em>A:方法的可变参数<br>     /</em><br>      *  JDK1.5新的特性,方法的可变参数<br>      *  前提: 方法参数数据类型确定,参数的个数任意<br>      *  可变参数语法: 数据类型…变量名<br>      *  可变参数,本质就是一个数组<br>      */<br>     public class VarArgumentsDemo {<br>         public static void main(String[] args) {<br>             //调用一个带有可变参数的方法,传递参数,可以任意<br>         //    getSum();<br>             int sum = getSum(5,34,3,56,7,8,0);<br>             System.out.println(sum);</p>
+<pre><code>    }
+
+    /*
+     * 定义方法,计算10个整数和
+     * 方法的可变参数实现
+     */
+    public static int getSum(int...a){
+        int sum = 0 ;
+        for(int i : a){
+            sum = sum + i;
+        }
+        return sum;
+    }
+
+    /*
+     * 定义方法,计算3个整数和
+     */
+    /*public static int getSum(int a,int b ,int c){
+        return a+b+c;
+    }*/
+
+    /*
+     * 定义方法,计算2个整数和
+     */
+    /*public static int getSum(int a,int b){
+        return a+b;
+    }*/
+}</code></pre><p>###12可变参数的注意事项<br>   <em>A:可变参数的注意事项<br>       /</em><br>        * 可变参数的注意事项<br>        * 1. 一个方法中,可变参数只能有一个<br>        * 2. 可变参数,必须写在参数列表的最后一位<br>        */<br>        public static void function(Object…o){</p>
+<pre><code>}</code></pre><p>=======================第三节课开始=============================================<br>###13Collections工具类<br>   A:Collections工具类<br>      /*<br>       *  集合操作的工具类<br>       *    Collections<br>       <em>/<br>      public class CollectionsDemo {<br>          public static void main(String[] args) {<br>              function_2();<br>          }<br>          /</em><br>           * Collections.shuffle方法<br>           * 对List集合中的元素,进行随机排列<br>           */<br>          public static void function_2(){<br>              List<Integer> list = new ArrayList<Integer>();<br>              list.add(1);<br>              list.add(5);<br>              list.add(9);<br>              list.add(11);<br>              list.add(8);<br>              list.add(10);<br>              list.add(15);<br>              list.add(20);<br>              System.out.println(list);</Integer></Integer></p>
+<pre><code>        //调用工具类方法shuffle对集合随机排列
+        Collections.shuffle(list);
+        System.out.println(list);
+    }
+
+    /*
+     * Collections.binarySearch静态方法
+     * 对List集合进行二分搜索,方法参数,传递List集合,传递被查找的元素
+     */
+    public static void function_1(){
+        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        list.add(1);
+        list.add(5);
+        list.add(8);
+        list.add(10);
+        list.add(15);
+        list.add(20);
+        //调用工具类静态方法binarySearch
+        int index = Collections.binarySearch(list, 16);
+        System.out.println(index);
+    }
+
+    /*
+     *  Collections.sort静态方法
+     *  对于List集合,进行升序排列
+     */
+    public static void function(){
+        //创建List集合
+        List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+        list.add(&quot;ewrew&quot;);
+        list.add(&quot;qwesd&quot;);
+        list.add(&quot;Qwesd&quot;);
+        list.add(&quot;bv&quot;);
+        list.add(&quot;wer&quot;);
+        System.out.println(list);
+        //调用集合工具类的方法sort
+        Collections.sort(list);
+        System.out.println(list);
+    }
+}</code></pre><p>###14集合的嵌套<br>   A:集合的嵌套<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
+<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
+    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+    //定义传智播客集合容器,键是班级名字,值是两个班级容器
+    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+    czbk.put(&quot;基础班&quot;, javase);
+    czbk.put(&quot;就业班&quot;, javaee);
+
+     keySet(czbk);
+
+}</code></pre><p>###15集合的嵌套keySet遍历<br>   A:集合的嵌套keySet遍历<br>       /*<br>        *  Map集合的嵌套,Map中存储的还是Map集合<br>        *  要求:<br>        *    传智播客<br>        *      Java基础班<br>        *        001  张三<br>        *        002  李四<br>        *<br>        *      Java就业班<br>        *        001  王五<br>        *        002  赵六<br>        *  对以上数据进行对象的存储<br>        *   001 张三  键值对<br>        *   Java基础班: 存储学号和姓名的键值对<br>        *   Java就业班:<br>        *   传智播客: 存储的是班级<br>        *<br>        *   基础班Map   &lt;学号,姓名&gt;<br>        *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>        */<br>       public class MapMapDemo {<br>           public static void main(String[] args) {<br>               //定义基础班集合<br>               HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>               //定义就业班集合<br>               HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>               //向班级集合中,存储学生信息<br>               javase.put(“001”, “张三”);<br>               javase.put(“002”, “李四”);</p>
+<pre><code>        javaee.put(&quot;001&quot;, &quot;王五&quot;);
+        javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+        //定义传智播客集合容器,键是班级名字,值是两个班级容器
+        HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+                new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+        czbk.put(&quot;基础班&quot;, javase);
+        czbk.put(&quot;就业班&quot;, javaee);
+
+         keySet(czbk);
+
+    }
+
+
+
+    public static void keySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){
+        //调用czbk集合方法keySet将键存储到Set集合
+        Set&lt;String&gt; classNameSet = czbk.keySet();
+        //迭代Set集合
+        Iterator&lt;String&gt; classNameIt = classNameSet.iterator();
+        while(classNameIt.hasNext()){
+            //classNameIt.next获取出来的是Set集合元素,czbk集合的键
+            String classNameKey = classNameIt.next();
+            //czbk集合的方法get获取值,值是一个HashMap集合
+            HashMap&lt;String,String&gt; classMap = czbk.get(classNameKey);
+            //调用classMap集合方法keySet,键存储到Set集合
+            Set&lt;String&gt; studentNum = classMap.keySet();
+            Iterator&lt;String&gt; studentIt = studentNum.iterator();
+
+            while(studentIt.hasNext()){
+                //studentIt.next获取出来的是classMap的键,学号
+                String numKey = studentIt.next();
+                //调用classMap集合中的get方法获取值
+                String nameValue = classMap.get(numKey);
+                System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+            }
+        }
+
+        System.out.println(&quot;==================================&quot;);
+        for(String className: czbk.keySet()){
+           HashMap&lt;String, String&gt; hashMap = czbk.get(className);    
+           for(String numKey : hashMap.keySet()){
+               String nameValue = hashMap.get(numKey);
+               System.out.println(className+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+           }
+        }
+    }
+
+} </code></pre><p>###16集合的嵌套entrySet遍历<br>    A:集合的嵌套entrySet遍历<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
+<pre><code>        javaee.put(&quot;001&quot;, &quot;王五&quot;);
+        javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+        //定义传智播客集合容器,键是班级名字,值是两个班级容器
+        HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+                new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+        czbk.put(&quot;基础班&quot;, javase);
+        czbk.put(&quot;就业班&quot;, javaee);
+
+        entrySet(czbk);
+    }
+
+    public static void entrySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){
+        //调用czbk集合方法entrySet方法,将czbk集合的键值对关系对象,存储到Set集合
+        Set&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; 
+                                 classNameSet = czbk.entrySet();
+        //迭代器迭代Set集合
+        Iterator&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; classNameIt = classNameSet.iterator();
+        while(classNameIt.hasNext()){
+            //classNameIt.next方法,取出的是czbk集合的键值对关系对象
+            Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt; classNameEntry =  classNameIt.next();
+            //classNameEntry方法 getKey,getValue
+            String classNameKey = classNameEntry.getKey();
+            //获取值,值是一个Map集合
+            HashMap&lt;String,String&gt; classMap = classNameEntry.getValue();
+            //调用班级集合classMap方法entrySet,键值对关系对象存储Set集合
+            Set&lt;Map.Entry&lt;String, String&gt;&gt; studentSet = classMap.entrySet();
+            //迭代Set集合
+            Iterator&lt;Map.Entry&lt;String, String&gt;&gt; studentIt = studentSet.iterator();
+            while(studentIt.hasNext()){
+                //studentIt方法next获取出的是班级集合的键值对关系对象
+                Map.Entry&lt;String, String&gt; studentEntry = studentIt.next();
+                //studentEntry方法 getKey getValue
+                String numKey = studentEntry.getKey();
+                String nameValue = studentEntry.getValue();
+                System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+            }
+        }
+         System.out.println(&quot;==================================&quot;);
+
+        for (Map.Entry&lt;String, HashMap&lt;String, String&gt;&gt; me : czbk.entrySet()) {
+            String classNameKey = me.getKey();
+            HashMap&lt;String, String&gt; numNameMapValue = me.getValue();
+            for (Map.Entry&lt;String, String&gt; nameMapEntry : numNameMapValue.entrySet()) {
+                String numKey = nameMapEntry.getKey();
+                String nameValue = nameMapEntry.getValue();
+                System.out.println(classNameKey + &quot;..&quot; + numKey + &quot;..&quot; + nameValue);
+            }
+        }
+    }
+
+
+}</code></pre><p>=======================第四节课开始=============================================</p>
+<p>###17斗地主的功能分析<br>   A:斗地主的功能分析<br>       a:具体规则：<br>               1. 组装54张扑克牌<br>            2. 将54张牌顺序打乱<br>               3. 三个玩家参与游戏，三人交替摸牌，每人17张牌，最后三张留作底牌。<br>               4. 查看三人各自手中的牌（按照牌的大小排序）、底牌<br>       b:分析:<br>          1.准备牌：<br>           完成数字与纸牌的映射关系：<br>           使用双列Map(HashMap)集合，完成一个数字与字符串纸牌的对应关系(相当于一个字典)。<br>          2.洗牌：<br>           通过数字完成洗牌发牌<br>          3.发牌：<br>           将每个人以及底牌设计为ArrayList<String>,将最后3张牌直接存放于底牌，剩余牌通过对3取模依次发牌。<br>           存放的过程中要求数字大小与斗地主规则的大小对应。<br>           将代表不同纸牌的数字分配给不同的玩家与底牌。<br>          4.看牌：<br>           通过Map集合找到对应字符展示。<br>           通过查询纸牌与数字的对应关系，由数字转成纸牌字符串再进行展示。</String></p>
+<p>###18斗地主的准备牌<br>   A:斗地主的准备牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王,索引是从0~54,对应大王,小王,…3(牌的顺序从大到小)<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>}</code></pre><p>###19斗地主的洗牌<br>    A:斗地主的洗牌<br>      /*<br>       *  实现模拟斗地主的功能<br>       *   1. 组合牌<br>       *   2. 洗牌<br>       *   3. 发牌<br>       *   4. 看牌<br>       */<br>      public class DouDiZhu {<br>          public static void main(String[] args) {<br>              //1. 组合牌<br>              //创建Map集合,键是编号,值是牌<br>              HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>              //创建List集合,存储编号<br>              ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>              //定义出13个点数的数组<br>              String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>              //定义4个花色数组<br>              String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>              //定义整数变量,作为键出现<br>              int index = 2;<br>              //遍历数组,花色+点数的组合,存储到Map集合<br>              for(String number : numbers){<br>                  for(String color : colors){<br>                      pooker.put(index, color+number);<br>                      pookerNumber.add(index);<br>                      index++;<br>                  }<br>              }<br>              //存储大王,和小王<br>              pooker.put(0, “大王”);<br>              pookerNumber.add(0);<br>              pooker.put(1, “小王”);<br>              pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>        //洗牌,将牌的编号打乱
+        Collections.shuffle(pookerNumber);
+
+
+    }
+
+}</code></pre><p>###20斗地主的发牌<br>  A:斗地主的发牌<br>    /*<br>     *  实现模拟斗地主的功能<br>     *   1. 组合牌<br>     *   2. 洗牌<br>     *   3. 发牌<br>     *   4. 看牌<br>     */<br>    public class DouDiZhu {<br>        public static void main(String[] args) {<br>            //1. 组合牌<br>            //创建Map集合,键是编号,值是牌<br>            HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>            //创建List集合,存储编号<br>            ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>            //定义出13个点数的数组<br>            String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>            //定义4个花色数组<br>            String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>            //定义整数变量,作为键出现<br>            int index = 2;<br>            //遍历数组,花色+点数的组合,存储到Map集合<br>            for(String number : numbers){<br>                for(String color : colors){<br>                    pooker.put(index, color+number);<br>                    pookerNumber.add(index);<br>                    index++;<br>                }<br>            }<br>            //存储大王,和小王<br>            pooker.put(0, “大王”);<br>            pookerNumber.add(0);<br>            pooker.put(1, “小王”);<br>            pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>        //洗牌,将牌的编号打乱
+        Collections.shuffle(pookerNumber);
+
+        //发牌功能,将牌编号,发给玩家集合,底牌集合
+        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
+
+        //发牌采用的是集合索引%3
+        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
+            //先将底牌做好
+            if(i &lt; 3){
+                //存到底牌去
+                bottom.add( pookerNumber.get(i));
+               //对索引%3判断
+            }else if(i % 3 == 0){
+                //索引上的编号,发给玩家1
+                player1.add( pookerNumber.get(i) );
+            }else if( i % 3 == 1){
+                //索引上的编号,发给玩家2
+                player2.add( pookerNumber.get(i) );
+            }else if( i % 3 == 2){
+                //索引上的编号,发给玩家3
+                player3.add( pookerNumber.get(i) );
+            }
+        }
+
+    }
+
+}</code></pre><p>###21斗地主的看牌<br>  A:斗地主的看牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>        //洗牌,将牌的编号打乱
+        Collections.shuffle(pookerNumber);
+
+        //发牌功能,将牌编号,发给玩家集合,底牌集合
+        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
+
+        //发牌采用的是集合索引%3
+        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
+            //先将底牌做好
+            if(i &lt; 3){
+                //存到底牌去
+                bottom.add( pookerNumber.get(i));
+               //对索引%3判断
+            }else if(i % 3 == 0){
+                //索引上的编号,发给玩家1
+                player1.add( pookerNumber.get(i) );
+            }else if( i % 3 == 1){
+                //索引上的编号,发给玩家2
+                player2.add( pookerNumber.get(i) );
+            }else if( i % 3 == 2){
+                //索引上的编号,发给玩家3
+                player3.add( pookerNumber.get(i) );
+            }
+        }
+        //对玩家手中的编号排序
+        Collections.sort(player1);
+        Collections.sort(player2);
+        Collections.sort(player3);
+        //看牌,将玩家手中的编号,到Map集合中查找,根据键找值
+        //定义方法实现
+        look(&quot;刘德华&quot;,player1,pooker);
+        look(&quot;张曼玉&quot;,player2,pooker);
+        look(&quot;林青霞&quot;,player3,pooker);
+        look(&quot;底牌&quot;,bottom,pooker);
+    }
+    public static void look(String name,ArrayList&lt;Integer&gt; player,HashMap&lt;Integer,String&gt; pooker){
+        //遍历ArrayList集合,获取元素,作为键,到集合Map中找值
+        System.out.print(name+&quot; &quot;);
+        for(Integer key : player){
+            String value = pooker.get(key);
+            System.out.print(value+&quot; &quot;);
+        }
+        System.out.println();
+    }
+}</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day19%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AC%AC%E4%BA%8C%E5%A4%A9/" rel="prev" title="day19集合框架第二天">
+      <i class="fa fa-chevron-left"></i> day19集合框架第二天
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day21%E7%AC%94%E8%AE%B0/" rel="next" title="day21笔记">
+      day21笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

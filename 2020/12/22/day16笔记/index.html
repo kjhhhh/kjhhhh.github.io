@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容介绍1、正则表达式的定义及使用2、Date类的用法3、Calendar类的用法 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一阶段&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01正则表达式的概念和作用    * A: 正则表达式的概念和作用        * a: 正则表达式的概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day16笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/day16%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今日内容介绍1、正则表达式的定义及使用2、Date类的用法3、Calendar类的用法 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一阶段&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01正则表达式的概念和作用    * A: 正则表达式的概念和作用        * a: 正则表达式的概述">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-22T11:21:13.878Z">
+<meta property="article:modified_time" content="2019-01-11T01:22:47.859Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/22/day16%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>day16笔记 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day16%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          day16笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-11 09:22:47" itemprop="dateModified" datetime="2019-01-11T09:22:47+08:00">2019-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今日内容介绍<br>1、正则表达式的定义及使用<br>2、Date类的用法<br>3、Calendar类的用法</p>
+<p>==========================================第一阶段========================================</p>
+<p>###01正则表达式的概念和作用<br>    * A: 正则表达式的概念和作用<br>        * a: 正则表达式的概述<br>            * 正则表达式也是一个字符串，用来定义匹配规则，在Pattern类中有简单的规则定义。<br>              可以结合字符串类的方法使用。<br>            * 简单记：正则表达式是具有特殊含义的字符串。<br>        * b: 正则表达式的作用<br>        * 比如注册邮箱,邮箱有用户名和密码,一般会对其限制长度,这个限制长度的事情就是正则表达式做的</p>
+<p>###02正则表达式语法规则<br>    * A: 正则表达式语法规则<br>        * a: 字符<br>            * x  代表的是字符x<br>            * \ 代表的是反斜线字符’&#39;<br>            * \t 代表的是制表符<br>            * \n 代表的是换行符<br>            * \r 代表的是回车符<br>        * b: 字符类<br>            * [abc]    a、b 或 c（简单类）<br>            * [^abc]   任何字符，除了 a、b 或 c（否定）<br>            * [a-zA-Z] a到 z 或 A到 Z，两头的字母包括在内（范围）<br>            * [0-9]    0到9的字符都包括<br>            * [a-zA-Z_0-9] 代表的字母或者数字或者下划线(即单词字符)<br>        * c: 预定义字符类<br>            * . 任何字符。<br>            * \d 数字：[0-9]<br>            * \w 单词字符：[a-zA-Z_0-9]如”com.itheima.tests”/finish<br>        * d: 边界匹配器<br>            * ^  代表的是行的开头<br>            * $  代表的是行的结尾<br>            * \b 代表的是单词边界<br>        * e: 数量词<br>            * X?     X，一次或一次也没有<br>            * X*     X，零次或多次<br>            * X+     X，一次或多次<br>            * X{n}   X，恰好 n 次<br>            * X{n,}  X，至少 n 次<br>            * X{n,m} X，至少 n 次，但是不超过 m 次</p>
+<p>###03正则表达式练习和相关的String类方法<br>    * A: 正则表达式练习和相关的String类方法<br>        * a: boolean matches(String 正则的规则)<br>            * “abc”.matches(“[a]”)<br>            * 匹配成功返回true<br>        * b: String[] split(String 正则的规则)<br>            * “abc”.split(“a”)<br>            * 使用规则将字符串进行切割<br>        * c: String replaceAll( String 正则规则,String 字符串)<br>            * “abc0123”.repalceAll(“[\d]”,”#”)<br>            * 按照正则的规则,替换字符串</p>
+<p>###04正则表达式匹配练习<br>    * A: 正则表达式匹配练习<br>        * a: 案例代码<br>            public class RegexDemo {<br>                public static void main(String[] args) {<br>                    checkTel();<br>                }</p>
+<pre><code>    /*
+     *  检查手机号码是否合法
+     *  1开头 可以是34578  0-9 位数固定11位
+     */
+    public static void checkTel(){
+        String telNumber = &quot;1335128005&quot;;
+        //String类的方法matches
+        boolean b = telNumber.matches(&quot;1[34857][\\d]{9}&quot;);
+        System.out.println(b);
+    }
+
+    /*
+     *  检查QQ号码是否合法
+     *  0不能开头,全数字, 位数5,10位
+     *  123456 
+     *  \\d  \\D匹配不是数字
+     */
+    public static void checkQQ(){
+        String QQ = &quot;123456&quot;;
+        //检查QQ号码和规则是否匹配,String类的方法matches
+        boolean b = QQ.matches(&quot;[1-9][\\d]{4,9}&quot;);
+        System.out.println(b);
+    }
+}</code></pre><p>###05正则表达式切割练习<br>    * A: 正则表达式切割练习<br>        * a: 案例代码<br>            public class RegexDemo1 {<br>                public static void main(String[] args) {<br>                    split_1();<br>                    split_2();<br>                    split_3();</p>
+<pre><code>    }
+
+    /*
+     * String类方法split对字符串进行切割
+     * 192.168.105.27 按照 点切割字符串
+     */
+    public static void split_3(){
+        String ip = &quot;192.168.105.27&quot;;
+        String[] strArr = ip.split(&quot;\\.&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+
+    /*
+     * String类方法split对字符串进行切割
+     * 18 22 40 65 按照空格切割字符串
+     */
+    public static void split_2(){
+        String str = &quot;18    22     40          65&quot;;
+        String[] strArr = str.split(&quot; +&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+
+    /*
+     *  String类方法split对字符串进行切割
+     *  12-25-36-98  按照-对字符串进行切割
+     */
+    public static void split_1(){
+        String str = &quot;12-25-36-98&quot;;
+        //按照-对字符串进行切割,String类方法split
+        String[] strArr = str.split(&quot;-&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+}        </code></pre><p>###06正则表达式替换练习<br>    * A: 正则表达式替换练习<br>        * a: 案例代码<br>            public class RegexDemo1 {<br>                public static void main(String[] args) {<br>                    replaceAll_1();<br>                }</p>
+<pre><code>    /*
+     * &quot;Hello12345World6789012&quot;将所有数字替换掉
+     * String类方法replaceAll(正则规则,替换后的新字符串)
+     */
+    public static void replaceAll_1(){
+        String str = &quot;Hello12345World6789012&quot;;
+        str = str.replaceAll(&quot;[\\d]+&quot;, &quot;#&quot;);
+        System.out.println(str);
+    }
+}</code></pre><p>###07正则表达式邮箱地址验证<br>    * A: 正则表达式邮箱地址验证<br>        * a: 案例代码<br>            public class RegexDemo2 {<br>                public static void main(String[] args) {<br>                    checkMail();<br>                }<br>                /*<br>                 *  检查邮件地址是否合法<br>                 *  规则:<br>                 *   <a href="mailto:1234567@qq.com">1234567@qq.com</a><br>                 *   <a href="mailto:mym_ail@sina.com">mym_ail@sina.com</a><br>                 *   <a href="mailto:nimail@163.com">nimail@163.com</a><br>                 *   <a href="mailto:wodemail@yahoo.com.cn">wodemail@yahoo.com.cn</a><br>                 *<br>                 *   @: 前  数字字母_ 个数不能少于1个<br>                 *   @: 后  数字字母     个数不能少于1个<br>                 *   .: 后面 字母<br>                 *<br>                 */<br>                public static void checkMail(){<br>                    String email =”<a href="mailto:abc123@sina.com">abc123@sina.com</a>“;<br>                    boolean b = email.matches(“[a-zA-Z0-9_]+@[0-9a-z]+(\.[a-z]+)+”);<br>                    System.out.println(b);<br>                }<br>            }</p>
+<p>###08毫秒值概念<br>    * A: 毫秒值概念<br>        * a: 时间和日期类<br>            * java.util.Date<br>        * b: 毫秒概念<br>            * 1000毫秒=1秒<br>        * c: 毫秒的0点<br>             * System.currentTimeMillis() 返回值long类型参数<br>             * 获取当前日期的毫秒值   3742769374405<br>             * 时间原点; 公元1970年1月1日,午夜0:00:00 英国格林威治  毫秒值就是0<br>             * 时间2088年8月8日<br>             * 时间和日期的计算，必须依赖毫秒值</p>
+<p>###09Date类的构造方法<br>    * A: Date类的构造方法<br>        * a: 空参构造<br>            * public Date()<br>        * b: 带参构造<br>            * public Date(long times)</p>
+<p>==============================第二阶段====================================        </p>
+<p>###10Date类的get和set方法<br>    * A：Date类的get和set方法<br>        * public long getTime()<br>            * 将当前的日期对象，转为对应的毫秒值<br>        * public void setTime(long times);<br>            * 根据给定的毫秒值，生成对应的日期对象</p>
+<p>###11日期格式化SimpleDateFormat<br>    * A: 日期格式化SimpleDateFormat<br>        * a: 对日期进行格式化(自定义)<br>            * 对日期格式化的类 java.text.DateFormat 抽象类, 普通方法,也有抽象的方法<br>            * 实际使用是子类 java.text.SimpleDateFormat 可以使用父类普通方法,重写了抽象方法<br>        * b: 对日期进行格式化的步骤<br>            * 1: 创建SimpleDateFormat对象<br>                * 在类构造方法中,写入字符串的日期格式 (自己定义)<br>            * 2: SimpleDateFormat调用方法format对日期进行格式化<br>                * public String format(Date date) 传递日期对象,返回字符串<br>                * 日期模式:<br>                 * yyyy    年份<br>                 * MM      月份<br>                * dd      月中的天数<br>                * HH       0-23小时<br>                * mm      小时中的分钟<br>                 * ss      秒<br>                 * yyyy年MM月dd日 HH点mm分钟ss秒  汉字修改,: -  字母表示的每个字段不可以随便写</p>
+<p>###12字符串转成日期对象<br>    * A: 字符串转成日期对象<br>        * a: 使用步骤<br>            * 1: 创建SimpleDateFormat的对象<br>                * 构造方法中,指定日期模式<br>            * 2: 子类对象,调用方法 parse 传递String,返回Date<br>                * 注意: 时间和日期的模式yyyy-MM-dd, 必须和字符串中的时间日期匹配</p>
+<p>###13Calendar类_1<br>    * A: Calendar类_1<br>        * a: 日历类(抽象类)<br>            * java.util.Calendar<br>        * b: 创建对象<br>            * Calendar类写了静态方法 getInstance() 直接返回了子类的对象<br>            * 不需要直接new子类的对象,通过静态方法直接获取</p>
+<p>###14Calendar类_2<br>    * A: Calendar类_2<br>        * a: 成员方法<br>            * getTime() 把日历对象,转成Date日期对象<br>            * get(日历字段) 获取指定日历字段的值<br>        * b: 代码演示<br>            Calendar c = Calendar.getInstance();<br>            // 获取年份<br>            int year = c.get(Calendar.YEAR);<br>            // 获取月份<br>            int month = c.get(Calendar.MONTH) + 1;<br>            // 获取天数<br>            int day = c.get(Calendar.DAY_OF_MONTH);<br>            System.out.println(year + “年” + month + “月” + day + “日”);</p>
+<p>###15Calendar类_3<br>    * A: Calendar类_3<br>        * a: 成员方法<br>            * set(int field,int value)  设置指定的时间<br>        * b: 代码演示<br>            /*<br>             * Calendar类的set方法 设置日历 set(int field,int value) field 设置的是哪个日历字段 value<br>             * 设置后的具体数值<br>             *<br>             * set(int year,int month,int day) 传递3个整数的年,月,日<br>             */<br>            public static void function_1() {<br>                Calendar c = Calendar.getInstance();<br>                // 设置,月份,设置到10月分<br>                // c.set(Calendar.MONTH, 9);</p>
+<pre><code>    // 设置年,月,日
+    c.set(2099, 4, 1);
+
+    // 获取年份
+    int year = c.get(Calendar.YEAR);
+    // 获取月份
+    int month = c.get(Calendar.MONTH) + 1;
+    // 获取天数
+    int day = c.get(Calendar.DAY_OF_MONTH);
+    System.out.println(year + &quot;年&quot; + month + &quot;月&quot; + day + &quot;日&quot;);
+}</code></pre><p>###16Calendar类_4<br>    * A: Calendar类_4<br>        * a: 成员方法<br>            * add(int field, int value) 进行整数的偏移<br>            * int get(int field) 获取指定字段的值<br>        * b: 案例演示<br>            /*<br>             * Calendar类方法add 日历的偏移量,<br>             * 可以指定一个日历中的字段,<br>             * 进行整数的偏移 add(int field, int value)<br>             */<br>            public static void function_2() {<br>                Calendar c = Calendar.getInstance();<br>                // 让日历中的天数,向后偏移280天<br>                c.add(Calendar.DAY_OF_MONTH, -280);<br>                // 获取年份<br>                int year = c.get(Calendar.YEAR);<br>                // 获取月份<br>                int month = c.get(Calendar.MONTH) + 1;<br>                // 获取天数<br>                int day = c.get(Calendar.DAY_OF_MONTH);<br>                System.out.println(year + “年” + month + “月” + day + “日”);<br>            }</p>
+<p>###17日期练习_活了多少天<br>    * A: 日期练习_活了多少天<br>        * a: 案例代码<br>            /*<br>             *  计算活了多少天<br>             *   生日  今天的日期<br>             *   两个日期变成毫秒值,减法<br>             */<br>            public static void function() throws Exception {<br>                System.out.println(“请输入出生日期 格式 YYYY-MM-dd”);<br>                //获取出生日期,键盘输入<br>                String birthdayString = new Scanner(System.in).next();<br>                //将字符串日期,转成Date对象<br>                //创建SimpleDateFormat对象,写日期模式<br>                SimpleDateFormat sdf = new SimpleDateFormat(“yyyy-MM-dd”);<br>                //调用方法parse,字符串转成日期对象<br>                Date birthdayDate = sdf.parse(birthdayString);</p>
+<pre><code>    //获取今天的日期对象
+    Date todayDate = new Date();
+
+    //将两个日期转成毫秒值,Date类的方法getTime
+    long birthdaySecond = birthdayDate.getTime();
+    long todaySecond = todayDate.getTime();
+    long secone = todaySecond-birthdaySecond;
+
+    if(secone &lt; 0){
+        System.out.println(&quot;还没出生呢&quot;);
+    }
+    else{
+    System.out.println(secone/1000/60/60/24);
+    }
+
+}</code></pre><p>###18日期练习_闰年计算<br>    * A: 日期练习_闰年计算<br>        * a: 案例代码<br>            /*<br>             *  闰年计算<br>             *  2000 3000<br>             *  高级的算法: 日历设置到指定年份的3月1日,add向前偏移1天,获取天数,29闰年<br>             */<br>            public static void function_1(){<br>                Calendar c = Calendar.getInstance();<br>                //将日历,设置到指定年的3月1日<br>                c.set(2088, 2, 1);<br>                //日历add方法,向前偏移1天<br>                c.add(Calendar.DAY_OF_MONTH, -1);<br>                //get方法获取天数<br>                int day = c.get(Calendar.DAY_OF_MONTH);<br>                System.out.println(day);<br>            }</p>
+<p>###19总结</p>
+<ul>
+<li>把今天的知识点总结一遍。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/" rel="prev" title="C++复习(初识STL)">
+      <i class="fa fa-chevron-left"></i> C++复习(初识STL)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/day17%E7%AC%94%E8%AE%B0/" rel="next" title="day17笔记">
+      day17笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

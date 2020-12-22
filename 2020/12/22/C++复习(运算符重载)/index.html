@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、运算符重载的意义在C++中，运算符的操作对象只能是基本数据类型，而不能对于类、结构体等复杂数据类型进行操作，因此引入了运算符重载机制。运算符重载对已有的运算符赋予多重含义，使得同一个运算符作用于不同类型的数据时做出不同的行为。 运算符重载实际上是函数重载，它提供了C++的可扩展性。 2、运算符重载的规则1、只能重载C++已有的运算符，不能创建新的运算符。 2、重载之后的运算符不能改变其优先级和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++复习(运算符重载)">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、运算符重载的意义在C++中，运算符的操作对象只能是基本数据类型，而不能对于类、结构体等复杂数据类型进行操作，因此引入了运算符重载机制。运算符重载对已有的运算符赋予多重含义，使得同一个运算符作用于不同类型的数据时做出不同的行为。 运算符重载实际上是函数重载，它提供了C++的可扩展性。 2、运算符重载的规则1、只能重载C++已有的运算符，不能创建新的运算符。 2、重载之后的运算符不能改变其优先级和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-22T08:47:17.926Z">
+<meta property="article:modified_time" content="2020-12-22T12:51:31.266Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++复习(运算符重载) | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++复习(运算符重载)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-22 16:47:17 / 修改时间：20:51:31" itemprop="dateCreated datePublished" datetime="2020-12-22T16:47:17+08:00">2020-12-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1、运算符重载的意义"><a href="#1、运算符重载的意义" class="headerlink" title="1、运算符重载的意义"></a>1、运算符重载的意义</h2><p>在C++中，运算符的操作对象只能是基本数据类型，而不能对于类、结构体等复杂数据类型进行操作，因此引入了运算符重载机制。运算符重载对已有的运算符赋予多重含义，使得同一个运算符作用于不同类型的数据时做出不同的行为。</p>
+<p>运算符重载实际上是函数重载，它提供了C++的可扩展性。</p>
+<h2 id="2、运算符重载的规则"><a href="#2、运算符重载的规则" class="headerlink" title="2、运算符重载的规则"></a>2、运算符重载的规则</h2><p><strong>1、只能重载C++已有的运算符，不能创建新的运算符。</strong></p>
+<p><strong>2、重载之后的运算符不能改变其优先级和结合性，也不能改变其操作数的个数以及语法结构。</strong></p>
+<p>3、运算符重载是针对新类型数据的实际需要，对原有运算符进行适当的改造，重载功能应与原有功能相类似，避免没有目的地使用重载运算符。</p>
+<p><strong>4、C++中有五个运算符不可以重载：类属关系运算符“.”、成员指针运算符“*”、作用域运算符“::”、sizeof运算符和三目运算符“?:”。</strong></p>
+<h2 id="3、运算符重载方式"><a href="#3、运算符重载方式" class="headerlink" title="3、运算符重载方式"></a>3、运算符重载方式</h2><p>重载运算符是具有特殊名字的函数，它们的名字由关键字operator和其后要重载的运算符共同组成。即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">返回类型 <span class="keyword">operator</span> 运算符(参数列表)</span><br><span class="line">&#123;</span><br><span class="line">	函数体；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-1、重载为类的成员函数"><a href="#3-1、重载为类的成员函数" class="headerlink" title="3.1、重载为类的成员函数"></a>3.1、重载为类的成员函数</h3><p>重载为类的成员函数，可以自由地访问本类的数据成员，运算的操作数会以调用者或参数的形式表示。</p>
+<p>如果是双目运算符重载为类的成员函数，则它有两个操作数，左操作数一定是对象本身的数据，由this指针指出，右操作数则通过运算符重载函数的参数表来传递，即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数(右操作数)；</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line"> 	<span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">	类名A <span class="keyword">operator</span>+(<span class="keyword">const</span> A&amp; a) <span class="keyword">const</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> A(x+a.x,y+a.y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果是单目运算符重载为类的成员函数，则要分为前置运算符和后置运算符，如果是前置运算符，则它的操作数是函数调用者，函数没有参数，即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数();</span><br><span class="line"></span><br><span class="line">++a1;<span class="comment">//相当于调用a1.oprator++();</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>如果是后置单目运算符，则函数需要待一个整型参数，该参数不起任何作用，只是用来区分前置和后置。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">左操作数.运算符重载函数(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line">a1++;<span class="comment">//相当于调用a1.operator++(int);</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//const成员函数 只读数据成员 不可调用非const成员函数</span></span><br><span class="line">    	A <span class="keyword">operator</span>++()<span class="comment">//前置单目运算符</span></span><br><span class="line">        &#123;</span><br><span class="line">            ++x;</span><br><span class="line">            ++y;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    	A <span class="keyword">operator</span>++(<span class="keyword">int</span>)<span class="comment">//后置单目运算符</span></span><br><span class="line">        &#123;</span><br><span class="line">            A a = *<span class="keyword">this</span>;</span><br><span class="line">            ++(*<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span> a;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::show</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(x,y) = "</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;x&lt;&lt;<span class="string">","</span>&lt;&lt;y&lt;&lt;<span class="string">")"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1(1,2),a2(3,4);</span><br><span class="line">    (a1++).show();</span><br><span class="line">    (++a2).show();</span><br><span class="line">    </span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p><strong>前置单目运算符与后置单目运算符重载的最主要区别就算函数的形参，后置单目运算符带一个int型形参，但它只起区分作用。</strong></p>
+<h3 id="3-2、重载为类的友元函数"><a href="#3-2、重载为类的友元函数" class="headerlink" title="3.2、重载为类的友元函数"></a>3.2、重载为类的友元函数</h3><p>运算符重载为类的友元函数，只需要在函数前加一个friend 关键字。即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">friend</span> 返回类型 <span class="keyword">operator</span> 运算符(参数列表)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	函数体；</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重载为类的友元函数(类外定义的函数)时，由于没有隐含的this指针,因此操作数的个数没有变化，<strong>所有的操作数都必须通过函数的形参进行传递，函数的参数与操作数自左到右需要保持<u>一一对应</u>。</strong></p>
+<p>一般调用格式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">operator</span> 运算符(参数<span class="number">1</span>，参数<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>&lt;iostream</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//const成员函数 只读数据成员 不可调用非const成员函数</span></span><br><span class="line">    <span class="keyword">friend</span> A <span class="keyword">operator</span>+(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2);</span><br><span class="line">    <span class="keyword">friend</span> A <span class="keyword">operator</span>-(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::show</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(x,y) = "</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;x&lt;&lt;<span class="string">","</span>&lt;&lt;y&lt;&lt;<span class="string">")"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">A <span class="keyword">operator</span>+(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> A(a1.x+a2.x,a1.y+a2.y);</span><br><span class="line">&#125;</span><br><span class="line">A <span class="keyword">operator</span>-(<span class="keyword">const</span> A &amp;a1,<span class="keyword">const</span> A &amp;a2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> A(a1.x-a2.x,a1.y-a2.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1(1,2),a2(3,4);</span><br><span class="line">    A a;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a1:"</span>;</span><br><span class="line">    a1.show();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a2:"</span></span><br><span class="line">    a2.show();</span><br><span class="line">    a =a1+a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a:"</span>;</span><br><span class="line">    a.show();</span><br><span class="line">    a=a1-a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a:"</span>;</span><br><span class="line">    a.show();</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p><strong>1、一般情况下，单目运算符最好重载为类的成员函数，双目运算符最好重载为类的友元函数。</strong></p>
+<p>2、若一个运算符的操作需要修改对象的状态，选择重载为成员函数比较好。</p>
+<p><strong>3、若运算符的操作数(尤其是第一个操作数)希望有隐式类型转换，则只能选用友元函数。</strong></p>
+<p>4、具有对称性的运算符可能转换任意一端的运算对象，如算术、关系运算符等等，通常重载为非成员函数。</p>
+<p><strong>5、由4个运算符必须重载为类的成员函数：赋值(=)、下标([])、调用(())、成员访问箭头(-&gt;)。</strong></p>
+<p><strong>（new、delete、类型转换函数也算）</strong></p>
+<p><strong>6、类型转换函数只能定义为一个类的成员函数而不能定义为类的友元函数。</strong></p>
+<p><strong>7、C++规定，重载运算符必须和用户定义的自定义类型对象一起使用。</strong></p>
+<p>MyClass operator *(double,MyClass);</p>
+<p>MyClass operator *(MyClass,MyClass);</p>
+<p>MyClass operator *(MyClass,double);</p>
+<p>对于一个运算符函数来说，它或者是类的成员，或者至少包含一个类类型参数。操作符重载允许将标准C++操作符用于类对象；</p>
+<p>8、当运算符函数是一个成员函数时，最左边的操作数（或者只有最左边的操作数）必须是运算符类的一个类对象（或者是对该类对象的引用）。如果左边的操作数必须是一个不同类的对象，或者是一个内部　类型的对象，该运算符函数必须作为一个友元函数来实现。</p>
+<p>典型例子:<strong>输入输出运算符不能重载为类的成员函数</strong>，因为它们左侧的运算符对象必须式istream/ostream流对象，而如果重载为类的成员函数，则左侧的操作对象必须是我们定义的一个类对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp;,<span class="keyword">const</span> 类对象引用);</span><br><span class="line">istream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp;,类对象引用);</span><br></pre></td></tr></table></figure>
+
+<p>对于输出运算符”&lt;&lt;”来说，第一个参数是ostream对象引用，因为向六种写入数据会改变流的状态，所以不能用const修饰ostream对象。</p>
+<p>对于输入运算符“&gt;&gt;”来说，第一个参数是istream对象的引用，第二个参数要想其中存入数据的对象，不能为常量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> x;</span><br><span class="line">    	<span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">public</span></span><br><span class="line">        A(<span class="keyword">int</span> x1=<span class="number">0</span>,<span class="keyword">int</span> y1=<span class="number">0</span>):x(x1),y(y1)&#123;&#125;;</span><br><span class="line">    	<span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os,<span class="keyword">const</span> A &amp;a);</span><br><span class="line">    	<span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp; is,A &amp;a);</span><br><span class="line">&#125;;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os,<span class="keyword">const</span> A &amp;a)</span><br><span class="line">&#123;</span><br><span class="line">    os&lt;&lt;a.x&lt;&lt;a.y;</span><br><span class="line">    <span class="comment">//os&lt;&lt;"("&lt;&lt;a.x&lt;&lt;a.y&lt;&lt;")";</span></span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&gt;&gt;(istream&amp; os,A &amp;a)</span><br><span class="line">&#123;</span><br><span class="line">    is&gt;&gt;a.x&gt;&gt;a.y;</span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A A1(1,2),A2(3,4);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a1:"</span>&lt;&lt;a1&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"a2:"</span>&lt;&lt;a2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"请重新为a2对象输入数据："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;a2;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"重新输入后a2:"</span>&lt;&lt;a2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>通常情况下，输出运算符主要负责输出对象的内容，而非控制格式，即在重载时可以不需要重载格式控制符，如空格、换行、制表位等等，因为如果把格式控制符也重载进去的话，用户又是想在同一行输出一些描述性的文本，就无法完成了。</p>
+<h2 id="4、常用运算符的重载"><a href="#4、常用运算符的重载" class="headerlink" title="4、常用运算符的重载"></a>4、常用运算符的重载</h2><h3 id="4-1、输入输出运算符重载"><a href="#4-1、输入输出运算符重载" class="headerlink" title="4.1、输入输出运算符重载"></a>4.1、输入输出运算符重载</h3><p>如上所示。</p>
+<h3 id="4-2、关系运算符的重载"><a href="#4-2、关系运算符的重载" class="headerlink" title="4.2、关系运算符的重载"></a>4.2、关系运算符的重载</h3><p>注意：</p>
+<p><strong>1、通过关系运算符都要成对的重载，即重载了“&gt;”运算符，那么就要重载“&lt;”运算符，反之亦然。</strong></p>
+<p>2、通常情况下，“==”运算符应该具有传递性，即a=b,b=c,则a=c成立。(都为两个=号)</p>
+<p>3、当成对的出现运算符重载时，可以把一个运算符的工作委托给另外一个运算符，比如重载”!=”可以在重载”==”运算符基础上重载。</p>
+<h3 id="4-3、赋值运算符的重载"><a href="#4-3、赋值运算符的重载" class="headerlink" title="4.3、赋值运算符的重载"></a>4.3、赋值运算符的重载</h3><p>对于赋值运算符来说，如果不重载，那么类会自动为我们提供一个赋值运算符。这个默认的赋值运算符与默认拷贝构造函数意义，就是把一个对象的数据成员的值复制给另外一个对象相应的数据成员，即浅拷贝。如果数据成员种有指针，则无法满足要求，会造成内存泄露，这时我们应该重载赋值函数，实现深拷贝。</p>
+<h3 id="4-4、下标运算符"><a href="#4-4、下标运算符" class="headerlink" title="4.4、下标运算符"></a>4.4、下标运算符</h3><h3 id="4-5、类型转换函数"><a href="#4-5、类型转换函数" class="headerlink" title="4.5、类型转换函数"></a>4.5、类型转换函数</h3><p>类型转换函数又称类型转换运算符重载函数,<strong>是指将类对象等复杂数据类型转换为基本数据类型</strong>。即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">operator</span> 类型名();</span><br></pre></td></tr></table></figure>
+
+<p>类型转换函数也是以operator关键字开头，这点和运算符重载时的规律是一致的，只是被重载的是类型名。<strong>在函数名前面不能指定函数类型，函数也没有参数。其返回值的类型是由函数名中指定的类型名来确定的</strong>(如果类型名是double，则将类型数据转换为double类型返回)。</p>
+<p><strong>类型转换运算符重载函数只能作为类的成员函数，因为转换的主体是本类的对象。</strong></p>
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Swap</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	<span class="keyword">int</span> a,b;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	Swap(<span class="keyword">int</span> m,<span class="keyword">int</span> n):a(m),b(n)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">char</span><span class="params">()</span><span class="comment">//类型转换运算符重载函数</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">char</span>&gt;(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="string">" "</span>&lt;&lt;b&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span>   </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Swap <span class="title">s1</span><span class="params">(<span class="number">65</span>,<span class="number">2</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"s1:"</span>;</span><br><span class="line">    s1.show();</span><br><span class="line">    <span class="keyword">char</span> ch =s1;<span class="comment">//调用类型转换函数</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;ch&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">65</span> <span class="number">2</span></span><br><span class="line">A</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p><strong>类型转换函数有一个特殊功能。当需要的时候，编译系统会自动调用重载函数，建立一个无名的临时对象(或临时变量)，如上图，将s1对象赋值给ch时，如果没有重载“=”运算符，编译器会首先检查是否由类型转换函数，如果由，则调用operator char()函数将s1对象转换为一个临时的char类型变量，再将这个临时变量赋值给ch。</strong></p>
+<h3 id="4-6、转换构造函数"><a href="#4-6、转换构造函数" class="headerlink" title="4.6、转换构造函数"></a>4.6、转换构造函数</h3><p>转换构造函数是当一个构造函数只有一个参数，并且这个参数又不是本类的const引用时，这种构造函数称为转换构造函数。<strong>即它用来将基本数据变量转换为类对象等复杂数据变量。</strong></p>
+<p>转换构造函数不仅可以将一个标准类型数据转换为类对象，还可以将另一个类的对象转换为转换构造函数所在类的类对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//////////////////////////////////////</span></span><br><span class="line"><span class="comment">////////////////////////</span></span><br><span class="line"><span class="comment">//P146例4.10 包含转换构造函数、运算符重载函数和类型转换函数的程序</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//#include &lt;iostream.h&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Complex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Complex()&#123;real=<span class="number">0</span>;imag=<span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line">	Complex(<span class="keyword">double</span> r)&#123;real=r;imag=<span class="number">0</span>;&#125; <span class="comment">//转换构造函数 普通基础数据转换为类对象数据 </span></span><br><span class="line"></span><br><span class="line">	Complex(<span class="keyword">double</span> r,<span class="keyword">double</span> i)&#123;real=r;imag=i;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//operator double()&#123;return real;&#125;    //类型转换函数 类对象数据转换为普通基础数据 </span></span><br><span class="line">	<span class="comment">//后面的语句：c3=c1+2.5; //error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">friend</span> Complex <span class="keyword">operator</span> + (Complex c1,Complex c2);   <span class="comment">//运算符重载函数</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">double</span> real;</span><br><span class="line">	<span class="keyword">double</span> imag;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">///* </span></span><br><span class="line">Complex <span class="keyword">operator</span> + (Complex c1,Complex c2)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> Complex(c1.real+c2.real, c1.imag+c2.imag);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//*/   </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Complex::display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;real&lt;&lt;<span class="string">","</span>&lt;&lt;imag&lt;&lt;<span class="string">"i)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Complex c1(3,4),c2(5,-10),c3;</span><br><span class="line">	<span class="keyword">double</span> d=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	c3=c1+<span class="number">2.5</span>; <span class="comment">//需要注释前面的 //类型转换函数，否则：//error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//d = c1+2.5; //需要注释前面的  //转换构造函数，否则：//error C2666: '+' : 2 overloads have similar conversions</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//c3 = c1+2.5; 和 d = c1+2.5在此程序中不能同时出现。</span></span><br><span class="line"></span><br><span class="line">	c3.<span class="built_in">display</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*编程题（类对象的转换）。编写一个学生类和教师类信息输入/输出程序。学生类数据包括学号、姓名、班级、成绩；教师类数据包括编号、姓名、职称和部门。要求设计一个person类，作为学生类student和教师类teacher的基类，再写一个转换构造函数，可以把学生类对象转换为教师类对象，最后定义一个学生类对象和教师类对象。*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">string</span> name;</span><br><span class="line">person()&#123;&#125;;</span><br><span class="line">person(<span class="built_in">string</span> nam):name(nam)&#123;&#125;;</span><br><span class="line"><span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>;</span></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span><span class="keyword">public</span> person</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    Student(<span class="built_in">string</span> num,<span class="built_in">string</span> nam,<span class="built_in">string</span> cla,<span class="keyword">int</span> score):number(num),name(nam),classes(cla),scores(score),person(nam)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"学生："</span>&lt;&lt;name&lt;&lt;<span class="string">"，学号："</span>&lt;&lt;number&lt;&lt;<span class="string">"，班级："</span>&lt;&lt;classes&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">        <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>;</span></span><br><span class="line">        <span class="built_in">string</span> number;</span><br><span class="line">        <span class="built_in">string</span> name;</span><br><span class="line">        <span class="built_in">string</span> classes;</span><br><span class="line">        <span class="keyword">int</span> scores; </span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>:</span><span class="keyword">public</span> person </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    Teacher(<span class="built_in">string</span> num,<span class="built_in">string</span> nam,<span class="built_in">string</span> st,<span class="built_in">string</span> de):number(num),name(nam),stuff(st),department(de),person(nam)&#123;&#125;;</span><br><span class="line">Teacher(Student &amp;s):person(s.name)</span><br><span class="line">&#123;</span><br><span class="line">number = s.number;</span><br><span class="line">name = s.name;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"教师："</span>&lt;&lt;name&lt;&lt;<span class="string">"，编号："</span>&lt;&lt;number&lt;&lt;<span class="string">"，职称："</span>&lt;&lt;stuff&lt;&lt;<span class="string">"，部门："</span>&lt;&lt;department&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="built_in">string</span> number;</span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="built_in">string</span> stuff;</span><br><span class="line">    <span class="built_in">string</span> department;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> number;</span><br><span class="line">	<span class="built_in">string</span> name,sex;</span><br><span class="line">	<span class="keyword">int</span> score; </span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; number &gt;&gt; name &gt;&gt; sex &gt;&gt;score;</span><br><span class="line">	<span class="built_in">string</span> st,department;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt;st&gt;&gt;department;</span><br><span class="line">	<span class="function">person <span class="title">p</span><span class="params">(name)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">stu</span><span class="params">(number,name,sex,score)</span></span>;</span><br><span class="line">    stu.Print();</span><br><span class="line">    Teacher t = (Teacher)stu;</span><br><span class="line">    t.stuff=st;</span><br><span class="line">    t.department=department;</span><br><span class="line">    t.Print();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/21/17%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/" rel="prev" title="17函数进阶">
+      <i class="fa fa-chevron-left"></i> 17函数进阶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E6%A8%A1%E6%9D%BF)/" rel="next" title="C++复习(模板)">
+      C++复习(模板) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、运算符重载的意义"><span class="nav-number">1.</span> <span class="nav-text">1、运算符重载的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、运算符重载的规则"><span class="nav-number">2.</span> <span class="nav-text">2、运算符重载的规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、运算符重载方式"><span class="nav-number">3.</span> <span class="nav-text">3、运算符重载方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、重载为类的成员函数"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、重载为类的成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、重载为类的友元函数"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、重载为类的友元函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、常用运算符的重载"><span class="nav-number">4.</span> <span class="nav-text">4、常用运算符的重载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1、输入输出运算符重载"><span class="nav-number">4.1.</span> <span class="nav-text">4.1、输入输出运算符重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2、关系运算符的重载"><span class="nav-number">4.2.</span> <span class="nav-text">4.2、关系运算符的重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3、赋值运算符的重载"><span class="nav-number">4.3.</span> <span class="nav-text">4.3、赋值运算符的重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4、下标运算符"><span class="nav-number">4.4.</span> <span class="nav-text">4.4、下标运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5、类型转换函数"><span class="nav-number">4.5.</span> <span class="nav-text">4.5、类型转换函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6、转换构造函数"><span class="nav-number">4.6.</span> <span class="nav-text">4.6、转换构造函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
