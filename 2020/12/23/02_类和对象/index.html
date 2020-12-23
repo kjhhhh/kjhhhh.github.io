@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="类和对象目标 类和对象的概念 类和对象的关系 类的设计  01. 类和对象的概念类 和 对象 是 面向对象编程的 两个 核心概念 1.1 类 类 是对一群具有 相同 特征 或者 行为 的事物的一个统称，是抽象的，不能直接使用 特征 被称为 属性 行为 被称为 方法   类 就相当于制造飞机时的图纸，是一个 模板，是 负责创建对象的   1.2 对象 对象 是 由类创建出来的一个具体存在，可以直接使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="02_类和对象">
+<meta property="og:url" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="类和对象目标 类和对象的概念 类和对象的关系 类的设计  01. 类和对象的概念类 和 对象 是 面向对象编程的 两个 核心概念 1.1 类 类 是对一群具有 相同 特征 或者 行为 的事物的一个统称，是抽象的，不能直接使用 特征 被称为 属性 行为 被称为 方法   类 就相当于制造飞机时的图纸，是一个 模板，是 负责创建对象的   1.2 对象 对象 是 由类创建出来的一个具体存在，可以直接使">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_%E9%A3%9E%E6%9C%BA%E8%AE%BE%E8%AE%A1%E5%9B%BE%E7%BA%B8.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_%E9%A3%9E%E6%9C%BA%E5%AF%B9%E8%B1%A1.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/001_%E6%A4%8D%E7%89%A9%E5%A4%A7%E6%88%98%E5%83%B5%E5%B0%B8%E7%B1%BB%E5%9B%BE.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/15006069346510/002_Person%E7%B1%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_Person%E7%B1%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_Dog%E7%B1%BB.png">
+<meta property="article:published_time" content="2020-12-23T10:24:40.344Z">
+<meta property="article:modified_time" content="2020-12-23T10:29:07.938Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_%E9%A3%9E%E6%9C%BA%E8%AE%BE%E8%AE%A1%E5%9B%BE%E7%BA%B8.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>02_类和对象 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          02_类和对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-23 18:24:40 / 修改时间：18:29:07" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>类和对象的概念</li>
+<li>类和对象的关系</li>
+<li>类的设计</li>
+</ul>
+<h2 id="01-类和对象的概念"><a href="#01-类和对象的概念" class="headerlink" title="01. 类和对象的概念"></a>01. 类和对象的概念</h2><p><strong>类</strong> 和 <strong>对象</strong> 是 <strong>面向对象编程的 两个 核心概念</strong></p>
+<h3 id="1-1-类"><a href="#1-1-类" class="headerlink" title="1.1 类"></a>1.1 类</h3><ul>
+<li><strong>类</strong> 是对一群具有 <strong>相同 特征</strong> 或者 <strong>行为</strong> 的事物的一个统称，是抽象的，<strong>不能直接使用</strong><ul>
+<li><strong>特征</strong> 被称为 <strong>属性</strong></li>
+<li><strong>行为</strong> 被称为 <strong>方法</strong></li>
+</ul>
+</li>
+<li><strong>类</strong> 就相当于制造飞机时的<strong>图纸</strong>，是一个 <strong>模板</strong>，是 <strong>负责创建对象的</strong></li>
+</ul>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_%E9%A3%9E%E6%9C%BA%E8%AE%BE%E8%AE%A1%E5%9B%BE%E7%BA%B8.png" alt></p>
+<h3 id="1-2-对象"><a href="#1-2-对象" class="headerlink" title="1.2 对象"></a>1.2 对象</h3><ul>
+<li><strong>对象</strong> 是 <strong>由类创建出来的一个具体存在</strong>，可以直接使用</li>
+<li>由 <strong>哪一个类</strong> 创建出来的 <strong>对象</strong>，就拥有在 <strong>哪一个类</strong> 中定义的：<ul>
+<li>属性</li>
+<li>方法</li>
+</ul>
+</li>
+<li><strong>对象</strong> 就相当于用 <strong>图纸</strong> <strong>制造</strong> 的飞机</li>
+</ul>
+<blockquote>
+<p>在程序开发中，应该 <strong>先有类，再有对象</strong></p>
+</blockquote>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_%E9%A3%9E%E6%9C%BA%E5%AF%B9%E8%B1%A1.png" alt></p>
+<h2 id="02-类和对象的关系"><a href="#02-类和对象的关系" class="headerlink" title="02. 类和对象的关系"></a>02. 类和对象的关系</h2><ul>
+<li><strong>类是模板</strong>，<strong>对象</strong> 是根据 <strong>类</strong> 这个模板创建出来的，应该 <strong>先有类，再有对象</strong></li>
+<li><strong>类</strong> 只有一个，而 <strong>对象</strong> 可以有很多个<ul>
+<li><strong>不同的对象</strong> 之间 <strong>属性</strong> 可能会各不相同</li>
+</ul>
+</li>
+<li><strong>类</strong> 中定义了什么 <strong>属性和方法</strong>，<strong>对象</strong> 中就有什么属性和方法，<strong>不可能多，也不可能少</strong></li>
+</ul>
+<h2 id="03-类的设计"><a href="#03-类的设计" class="headerlink" title="03. 类的设计"></a>03. 类的设计</h2><p>在使用面相对象开发前，应该首先分析需求，确定一下，程序中需要包含哪些类！</p>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/001_%E6%A4%8D%E7%89%A9%E5%A4%A7%E6%88%98%E5%83%B5%E5%B0%B8%E7%B1%BB%E5%9B%BE.png" alt></p>
+<p>在程序开发中，要设计一个类，通常需要满足一下三个要素：</p>
+<ol>
+<li><strong>类名</strong> 这类事物的名字，<strong>满足大驼峰命名法</strong></li>
+<li><strong>属性</strong> 这类事物具有什么样的特征</li>
+<li><strong>方法</strong> 这类事物具有什么样的行为</li>
+</ol>
+<h3 id="大驼峰命名法"><a href="#大驼峰命名法" class="headerlink" title="大驼峰命名法"></a>大驼峰命名法</h3><p><code>CapWords</code></p>
+<ol>
+<li>每一个单词的首字母大写</li>
+<li>单词与单词之间没有下划线</li>
+</ol>
+<h3 id="3-1-类名的确定"><a href="#3-1-类名的确定" class="headerlink" title="3.1 类名的确定"></a>3.1 类名的确定</h3><p><strong>名词提炼法</strong> 分析 <strong>整个业务流程</strong>，出现的 <strong>名词</strong>，通常就是找到的类</p>
+<h3 id="3-2-属性和方法的确定"><a href="#3-2-属性和方法的确定" class="headerlink" title="3.2 属性和方法的确定"></a>3.2 属性和方法的确定</h3><ul>
+<li>对 <strong>对象的特征描述</strong>，通常可以定义成 <strong>属性</strong></li>
+<li><strong>对象具有的行为</strong>（动词），通常可以定义成 <strong>方法</strong></li>
+</ul>
+<blockquote>
+<p>提示：需求中没有涉及的属性或者方法在设计类时，不需要考虑</p>
+</blockquote>
+<h3 id="练习-1"><a href="#练习-1" class="headerlink" title="练习 1"></a>练习 1</h3><p><strong>需求</strong></p>
+<ul>
+<li><strong>小明</strong> 今年 <strong>18 岁</strong>，<strong>身高 1.75</strong>，每天早上 <strong>跑</strong> 完步，会去 <strong>吃</strong> 东西</li>
+<li><strong>小美</strong> 今年 <strong>17 岁</strong>，<strong>身高 1.65</strong>，小美不跑步，小美喜欢 <strong>吃</strong> 东西 </li>
+</ul>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/15006069346510/002_Person%E7%B1%BB.png" alt="002_Person类-w134"></p>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_Person%E7%B1%BB.png" alt></p>
+<h3 id="练习-2"><a href="#练习-2" class="headerlink" title="练习 2"></a>练习 2</h3><p><strong>需求</strong></p>
+<ul>
+<li>一只 <strong>黄颜色</strong> 的 <strong>狗狗</strong> 叫 <strong>大黄</strong></li>
+<li>看见生人 <strong>汪汪叫</strong></li>
+<li>看见家人 <strong>摇尾巴</strong></li>
+</ul>
+<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_Dog%E7%B1%BB.png" alt></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/23/01_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1(OOP)%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="01_面向对象(OOP)基本概念">
+      <i class="fa fa-chevron-left"></i> 01_面向对象(OOP)基本概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="next" title="03_面相对象基础语法">
+      03_面相对象基础语法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类和对象"><span class="nav-number">1.</span> <span class="nav-text">类和对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-类和对象的概念"><span class="nav-number">1.2.</span> <span class="nav-text">01. 类和对象的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-类"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-对象"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-类和对象的关系"><span class="nav-number">1.3.</span> <span class="nav-text">02. 类和对象的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-类的设计"><span class="nav-number">1.4.</span> <span class="nav-text">03. 类的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大驼峰命名法"><span class="nav-number">1.4.1.</span> <span class="nav-text">大驼峰命名法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-类名的确定"><span class="nav-number">1.4.2.</span> <span class="nav-text">3.1 类名的确定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-属性和方法的确定"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.2 属性和方法的确定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习-1"><span class="nav-number">1.4.4.</span> <span class="nav-text">练习 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习-2"><span class="nav-number">1.4.5.</span> <span class="nav-text">练习 2</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
