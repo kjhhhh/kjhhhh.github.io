@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="###并发修改异常(重点)    描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常    注意：增强for也会产生并发修改异常    如何解决： 第一： 使用普通for循环              第二(重点):使用listIterator –&gt;是List 特有的，其他集合不能使用    代码： 常用方法：a、 E">
+  <meta name="description" content="###并发修改异常(重点) 描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常    注意：增强for也会产生并发修改异常 如何解决： 第一： 使用普通for循环           第二(重点):使用listIterator --&gt;是List 特有的，其他集合不能使用   代码：常用方法：a、 E set(int in">
 <meta property="og:type" content="article">
-<meta property="og:title" content="day19集合框架第二天">
+<meta property="og:title" content="java学习笔记19_2">
 <meta property="og:url" content="http://yoursite.com/2020/12/22/day19%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AC%AC%E4%BA%8C%E5%A4%A9/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="###并发修改异常(重点)    描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常    注意：增强for也会产生并发修改异常    如何解决： 第一： 使用普通for循环              第二(重点):使用listIterator –&gt;是List 特有的，其他集合不能使用    代码： 常用方法：a、 E">
+<meta property="og:description" content="###并发修改异常(重点) 描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常    注意：增强for也会产生并发修改异常 如何解决： 第一： 使用普通for循环           第二(重点):使用listIterator --&gt;是List 特有的，其他集合不能使用   代码：常用方法：a、 E set(int in">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T11:21:13.902Z">
-<meta property="article:modified_time" content="2019-01-11T01:22:49.186Z">
+<meta property="article:modified_time" content="2020-12-23T15:11:12.631Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="java基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/22/day19%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>day19集合框架第二天 | Hexo</title>
+  <title>java学习笔记19_2 | Hexo</title>
   
 
 
@@ -173,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          day19集合框架第二天
+          java学习笔记19_2
         </h1>
 
         <div class="post-meta">
@@ -190,8 +191,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-01-11 09:22:49" itemprop="dateModified" datetime="2019-01-11T09:22:49+08:00">2019-01-11</time>
+                <time title="修改时间：2020-12-23 23:11:12" itemprop="dateModified" datetime="2020-12-23T23:11:12+08:00">2020-12-23</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
 
           
 
@@ -204,8 +214,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>###并发修改异常(重点)<br>    描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常<br>    注意：增强for也会产生并发修改异常<br>    如何解决： 第一： 使用普通for循环<br>              第二(重点):使用listIterator –&gt;是List 特有的，其他集合不能使用<br>    代码：</p>
-<h3 id="常用方法："><a href="#常用方法：" class="headerlink" title="常用方法："></a>常用方法：</h3><pre><code>a、 E set(int index, E) 修改指定索引上的元素，返回被修改之前的元素
+        <p>###并发修改异常(重点)</p>
+<pre><code>描述的是：集合和迭代器同时持有同一个对象，当集合在添加，和删除集合元素时（修改呢），迭代器并不知道，所以会发生并发修改异常   
+注意：增强for也会产生并发修改异常
+如何解决： 第一： 使用普通for循环
+          第二(重点):使用listIterator --&gt;是List 特有的，其他集合不能使用  
+代码：</code></pre><h3 id="常用方法："><a href="#常用方法：" class="headerlink" title="常用方法："></a>常用方法：</h3><pre><code>a、 E set(int index, E) 修改指定索引上的元素，返回被修改之前的元素
 b、 E remove(int index) 移除指定索引上的元素，返回被删除之前的元素
 c、 add(int index, E)将元素插入到列表的指定索引上，其他元素顺移
 d、remove(int index) 删除并返回元素</code></pre><h3 id="数据类型："><a href="#数据类型：" class="headerlink" title="数据类型："></a>数据类型：</h3><pre><code>栈   ： 手枪的弹夹 : 手枪的压栈     ---&gt; 喝酒   ---&gt;先进后出，后进先出
@@ -222,6 +236,9 @@ d、remove(int index) 删除并返回元素</code></pre><h3 id="数据类型："
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
 
         
 
@@ -229,12 +246,12 @@ d、remove(int index) 删除并返回元素</code></pre><h3 id="数据类型："
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/22/day19%E7%AC%94%E8%AE%B0/" rel="prev" title="day19笔记">
-      <i class="fa fa-chevron-left"></i> day19笔记
+    <a href="/2020/12/22/day19%E7%AC%94%E8%AE%B0/" rel="prev" title="java学习笔记19">
+      <i class="fa fa-chevron-left"></i> java学习笔记19
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/12/22/day20%E7%AC%94%E8%AE%B0/" rel="next" title="day20笔记">
-      day20笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/22/day20%E7%AC%94%E8%AE%B0/" rel="next" title="java学习笔记20">
+      java学习笔记20 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

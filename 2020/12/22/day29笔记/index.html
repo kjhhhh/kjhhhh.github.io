@@ -22,14 +22,15 @@
 
   <meta name="description" content="今日内容介绍1、JDBC2、DBUtils ###01JDBC概念和数据库驱动程序    * A: JDBC概念和数据库驱动程序        * a: JDBC概述            * JDBC（Java Data Base Connectivity,java数据库连接）是一种用于执行SQL语句的Java API，                可以为多种关系数据库提供统一访问，它由一组用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="day29笔记">
+<meta property="og:title" content="java学习笔记29">
 <meta property="og:url" content="http://yoursite.com/2020/12/22/day29%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="今日内容介绍1、JDBC2、DBUtils ###01JDBC概念和数据库驱动程序    * A: JDBC概念和数据库驱动程序        * a: JDBC概述            * JDBC（Java Data Base Connectivity,java数据库连接）是一种用于执行SQL语句的Java API，                可以为多种关系数据库提供统一访问，它由一组用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T11:21:13.984Z">
-<meta property="article:modified_time" content="2019-01-11T01:22:53.303Z">
+<meta property="article:modified_time" content="2020-12-23T15:13:30.565Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="java基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/22/day29%E7%AC%94%E8%AE%B0/">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>day29笔记 | Hexo</title>
+  <title>java学习笔记29 | Hexo</title>
   
 
 
@@ -173,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          day29笔记
+          java学习笔记29
         </h1>
 
         <div class="post-meta">
@@ -190,8 +191,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-01-11 09:22:53" itemprop="dateModified" datetime="2019-01-11T09:22:53+08:00">2019-01-11</time>
+                <time title="修改时间：2020-12-23 23:13:30" itemprop="dateModified" datetime="2020-12-23T23:13:30+08:00">2020-12-23</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
 
           
 
@@ -218,7 +228,7 @@
     insert into sort(sname,sprice,sdesc) values(&apos;洗涤&apos;,50, &apos;洗发水促销&apos;);            </code></pre><p>###04JDBC的开发步骤<br>    * A: JDBC的开发步骤<br>        * a: 步骤介绍<br>            1.注册驱动<br>                告知JVM使用的是哪一个数据库的驱动<br>            2.获得连接<br>                使用JDBC中的类,完成对MySQL数据库的连接<br>            3.获得语句执行平台<br>                通过连接对象获取对SQL语句的执行者对象<br>            4.执行sql语句<br>                使用执行者对象,向数据库执行SQL语句<br>                获取到数据库的执行后的结果<br>            5.处理结果<br>            6.释放资源  一堆close()</p>
 <p>###05导入mysql数据库驱动程序jar包<br>    * A: 导入mysql数据库驱动程序jar包<br>        * a: 步骤<br>            * 创建lib目录，用于存放当前项目需要的所有jar包<br>            * 选择jar包，右键执行build path / Add to Build Path</p>
 <p>###06注册数据库驱动程序<br>    * A: 注册数据库驱动程序<br>        * a: 案例代码<br>            public class JDBCDemo {<br>                public static void main(String[] args)throws ClassNotFoundException,SQLException{<br>                    //1.注册驱动 反射技术,将驱动类加入到内容<br>                    // 使用java.sql.DriverManager类静态方法 registerDriver(Driver driver)<br>                    // Diver是一个接口,参数传递,MySQL驱动程序中的实现类<br>                    //DriverManager.registerDriver(new Driver());<br>                    //驱动类源代码,注册2次驱动程序<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                }<br>            }</p>
-<p>###07获取数据库的连接对象<br>    * A：获取数据库的连接对象<br>        * a: 案例代码<br>            public class JDBCDemo {<br>                public static void main(String[] args)throws ClassNotFoundException,SQLException{<br>                    //1.注册驱动 反射技术,将驱动类加入到内容<br>                    // 使用java.sql.DriverManager类静态方法 registerDriver(Driver driver)<br>                    // Diver是一个接口,参数传递,MySQL驱动程序中的实现类<br>                    //DriverManager.registerDriver(new Driver());<br>                    //驱动类源代码,注册2次驱动程序<br>                    Class.forName(“com.mysql.jdbc.Driver”);</p>
+<p>​<br>​<br>###07获取数据库的连接对象<br>    * A：获取数据库的连接对象<br>        * a: 案例代码<br>            public class JDBCDemo {<br>                public static void main(String[] args)throws ClassNotFoundException,SQLException{<br>                    //1.注册驱动 反射技术,将驱动类加入到内容<br>                    // 使用java.sql.DriverManager类静态方法 registerDriver(Driver driver)<br>                    // Diver是一个接口,参数传递,MySQL驱动程序中的实现类<br>                    //DriverManager.registerDriver(new Driver());<br>                    //驱动类源代码,注册2次驱动程序<br>                    Class.forName(“com.mysql.jdbc.Driver”);</p>
 <pre><code>        //2.获得数据库连接  DriverManager类中静态方法
         //static Connection getConnection(String url, String user, String password)  
         //返回值是Connection接口的实现类,在mysql驱动程序
@@ -230,7 +240,7 @@
         Connection con = DriverManager.getConnection(url, username, password);
         System.out.println(con);                    
     }
-}</code></pre><p>###08获取SQL语句的执行对象对象<br>    * A: 获取SQL语句的执行对象对象<br>        * a: 案例代码<br>            public class JDBCDemo {<br>                public static void main(String[] args)throws ClassNotFoundException,SQLException{<br>                    //1.注册驱动 反射技术,将驱动类加入到内容<br>                    // 使用java.sql.DriverManager类静态方法 registerDriver(Driver driver)<br>                    // Diver是一个接口,参数传递,MySQL驱动程序中的实现类<br>                    //DriverManager.registerDriver(new Driver());<br>                    //驱动类源代码,注册2次驱动程序<br>                    Class.forName(“com.mysql.jdbc.Driver”);</p>
+}</code></pre><p>​<br>###08获取SQL语句的执行对象对象<br>    * A: 获取SQL语句的执行对象对象<br>        * a: 案例代码<br>            public class JDBCDemo {<br>                public static void main(String[] args)throws ClassNotFoundException,SQLException{<br>                    //1.注册驱动 反射技术,将驱动类加入到内容<br>                    // 使用java.sql.DriverManager类静态方法 registerDriver(Driver driver)<br>                    // Diver是一个接口,参数传递,MySQL驱动程序中的实现类<br>                    //DriverManager.registerDriver(new Driver());<br>                    //驱动类源代码,注册2次驱动程序<br>                    Class.forName(“com.mysql.jdbc.Driver”);</p>
 <pre><code>        //2.获得数据库连接  DriverManager类中静态方法
         //static Connection getConnection(String url, String user, String password)  
         //返回值是Connection接口的实现类,在mysql驱动程序
@@ -277,7 +287,7 @@
         stat.close();
         con.close();
     }
-}</code></pre><p>###11SQL注入攻击<br>    * A: SQL注入攻击<br>        * a: 注入问题<br>            * 假设有登录案例SQL语句如下:<br>            * SELECT * FROM 用户表 WHERE NAME = 用户输入的用户名 AND PASSWORD = 用户输的密码;<br>            * 此时，当用户输入正确的账号与密码后，查询到了信息则让用户登录。<br>                但是当用户输入的账号为XXX 密码为：XXX’  OR ‘a’=’a时，则真正执行的代码变为：<br>                * SELECT * FROM 用户表 WHERE NAME = ‘XXX’ AND PASSWORD =’ XXX’  OR ’a’=’a’;<br>            * 此时，上述查询语句时永远可以查询出结果的。那么用户就直接登录成功了，显然我们不希望看到这样的结果，这便是SQL注入问题。<br>        * b: 案例演示<br>            CREATE TABLE users(<br>                 id INT PRIMARY KEY AUTO_INCREMENT,<br>                 username VARCHAR(100),<br>                 PASSWORD VARCHAR(100)<br>            );</p>
+}</code></pre><p>​<br>###11SQL注入攻击<br>    * A: SQL注入攻击<br>        * a: 注入问题<br>            * 假设有登录案例SQL语句如下:<br>            * SELECT * FROM 用户表 WHERE NAME = 用户输入的用户名 AND PASSWORD = 用户输的密码;<br>            * 此时，当用户输入正确的账号与密码后，查询到了信息则让用户登录。<br>                但是当用户输入的账号为XXX 密码为：XXX’  OR ‘a’=’a时，则真正执行的代码变为：<br>                * SELECT * FROM 用户表 WHERE NAME = ‘XXX’ AND PASSWORD =’ XXX’  OR ’a’=’a’;<br>            * 此时，上述查询语句时永远可以查询出结果的。那么用户就直接登录成功了，显然我们不希望看到这样的结果，这便是SQL注入问题。<br>        * b: 案例演示<br>            CREATE TABLE users(<br>                 id INT PRIMARY KEY AUTO_INCREMENT,<br>                 username VARCHAR(100),<br>                 PASSWORD VARCHAR(100)<br>            );</p>
 <pre><code>INSERT INTO users (username,PASSWORD) VALUES (&apos;a&apos;,&apos;1&apos;),(&apos;b&apos;,&apos;2&apos;);
 
 SELECT * FROM users;
@@ -289,7 +299,7 @@ OR 1=1
 SELECT * FROM users WHERE username=&apos;a&apos; AND PASSWORD=&apos;1&apos;OR&apos;1=1&apos;
 键盘录入：
 1
-1&apos;OR&apos; 1=1</code></pre><p>###12SQL注入攻击用户登录案例<br>    * A: SQL注入攻击用户登录案例<br>        * a: 案例代码<br>            public class JDBCDemo2 {<br>                public static void main(String[] args)throws Exception {<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username = “root”;<br>                    String password = “123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);<br>                    Statement stat = con.createStatement();</p>
+1&apos;OR&apos; 1=1</code></pre><p>​<br>###12SQL注入攻击用户登录案例<br>    * A: SQL注入攻击用户登录案例<br>        * a: 案例代码<br>            public class JDBCDemo2 {<br>                public static void main(String[] args)throws Exception {<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username = “root”;<br>                    String password = “123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);<br>                    Statement stat = con.createStatement();</p>
 <pre><code>        Scanner sc = new Scanner(System.in);
         String user = sc.nextLine();
         String pass = sc.nextLine();
@@ -307,7 +317,7 @@ SELECT * FROM users WHERE username=&apos;a&apos; AND PASSWORD=&apos;1&apos;OR&ap
         stat.close();
         con.close();
     }
-}</code></pre><p>###13PrepareStatement接口预编译SQL语句<br>    * A: PrepareStatement接口预编译SQL语句<br>        * a: 预处理对象<br>            * 使用PreparedStatement预处理对象时，建议每条sql语句所有的实际参数，都使用逗号分隔。<br>            * String sql = “insert into sort(sid,sname) values(?,?)”;;<br>            * PreparedStatement预处理对象代码：<br>            * PreparedStatement psmt = conn.prepareStatement(sql)</p>
+}</code></pre><p>​<br>###13PrepareStatement接口预编译SQL语句<br>    * A: PrepareStatement接口预编译SQL语句<br>        * a: 预处理对象<br>            * 使用PreparedStatement预处理对象时，建议每条sql语句所有的实际参数，都使用逗号分隔。<br>            * String sql = “insert into sort(sid,sname) values(?,?)”;;<br>            * PreparedStatement预处理对象代码：<br>            * PreparedStatement psmt = conn.prepareStatement(sql)</p>
 <pre><code>* b: 执行SQL语句的方法介绍
     * int executeUpdate(); --执行insert update delete语句.
     * ResultSet executeQuery(); --执行select语句.
@@ -359,7 +369,7 @@ SELECT * FROM users WHERE username=&apos;a&apos; AND PASSWORD=&apos;1&apos;OR&ap
             pst.close();
             con.close();
         }
-    }</code></pre><p>###14PrepareStatement接口预编译SQL语句执行修改<br>    * A: PrepareStatement接口预编译SQL语句执行修改<br>        * 案例代码<br>            /*<br>             *  使用PrepareStatement接口,实现数据表的更新操作<br>             */<br>            public class JDBCDemo {<br>                public static void main(String[] args) throws Exception{<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username=”root”;<br>                    String password=”123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);    </p>
+    }</code></pre><p>​<br>###14PrepareStatement接口预编译SQL语句执行修改<br>    * A: PrepareStatement接口预编译SQL语句执行修改<br>        * 案例代码<br>            /*<br>             *  使用PrepareStatement接口,实现数据表的更新操作<br>             */<br>            public class JDBCDemo {<br>                public static void main(String[] args) throws Exception{<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username=”root”;<br>                    String password=”123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);    </p>
 <pre><code>        //拼写修改的SQL语句,参数采用?占位
         String sql = &quot;UPDATE sort SET sname=?,sprice=? WHERE sid=?&quot;;
         //调用数据库连接对象con的方法prepareStatement获取SQL语句的预编译对象
@@ -374,7 +384,7 @@ SELECT * FROM users WHERE username=&apos;a&apos; AND PASSWORD=&apos;1&apos;OR&ap
         pst.close();
         con.close();
     }
-}</code></pre><p>###15PrepareStatement接口预编译SQL语句执行查询<br>    * A: PrepareStatement接口预编译SQL语句执行查询<br>        * a: 案例代码<br>            /*<br>             *  PrepareStatement接口实现数据表的查询操作<br>             */<br>            public class JDBCDemo1 {<br>                public static void main(String[] args) throws Exception{<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username=”root”;<br>                    String password=”123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);    </p>
+}</code></pre><p>​<br>###15PrepareStatement接口预编译SQL语句执行查询<br>    * A: PrepareStatement接口预编译SQL语句执行查询<br>        * a: 案例代码<br>            /*<br>             *  PrepareStatement接口实现数据表的查询操作<br>             */<br>            public class JDBCDemo1 {<br>                public static void main(String[] args) throws Exception{<br>                    Class.forName(“com.mysql.jdbc.Driver”);<br>                    String url = “jdbc:mysql://localhost:3296/mybase”;<br>                    String username=”root”;<br>                    String password=”123”;<br>                    Connection con = DriverManager.getConnection(url, username, password);    </p>
 <pre><code>        String sql = &quot;SELECT * FROM sort&quot;;
 
         PreparedStatement pst = con.prepareStatement(sql);
@@ -388,52 +398,39 @@ SELECT * FROM users WHERE username=&apos;a&apos; AND PASSWORD=&apos;1&apos;OR&ap
         pst.close();
         con.close();
     }
-}</code></pre><p>###16JDBC的工具类和测试<br>    * A: JDBC的工具类和测试<br>        * a: 案例代码<br>            //JDBCUtils工具类代码<br>            public class JDBCUtils {<br>                private JDBCUtils(){}<br>                private static Connection con ;</p>
-<pre><code>        static{
-            try{
-                Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-                String url = &quot;jdbc:mysql://localhost:3296/mybase&quot;;
-                String username=&quot;root&quot;;
-                String password=&quot;123&quot;;
-                con = DriverManager.getConnection(url, username, password);
-            }catch(Exception ex){
-                throw new RuntimeException(ex+&quot;数据库连接失败&quot;);
-            }
-        }
+}</code></pre><p>​<br>###16JDBC的工具类和测试<br>    * A: JDBC的工具类和测试<br>        * a: 案例代码<br>            //JDBCUtils工具类代码<br>            public class JDBCUtils {<br>                private JDBCUtils(){}<br>                private static Connection con ;</p>
+<pre><code>static{
+    try{
+        Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+        String url = &quot;jdbc:mysql://localhost:3296/mybase&quot;;
+        String username=&quot;root&quot;;
+        String password=&quot;123&quot;;
+        con = DriverManager.getConnection(url, username, password);
+    }catch(Exception ex){
+        throw new RuntimeException(ex+&quot;数据库连接失败&quot;);
+    }
+}
 
-        /*
-         * 定义静态方法,返回数据库的连接对象
-         */
-        public static Connection getConnection(){
-            return con;
-        }
+/*
+ * 定义静态方法,返回数据库的连接对象
+ */
+public static Connection getConnection(){
+    return con;
+}</code></pre><p>​<br>                public static void close(Connection con,Statement stat){</p>
+<pre><code>     if(stat!=null){
+         try{
+             stat.close();
+         }catch(SQLException ex){}
+     }
 
+     if(con!=null){
+         try{
+             con.close();
+         }catch(SQLException ex){}
+     }
 
-        public static void close(Connection con,Statement stat){
-
-             if(stat!=null){
-                 try{
-                     stat.close();
-                 }catch(SQLException ex){}
-             }
-
-             if(con!=null){
-                 try{
-                     con.close();
-                 }catch(SQLException ex){}
-             }
-
-        }
-
-
-        public static void close(Connection con,Statement stat , ResultSet rs){
-             if(rs!=null){
-                 try{
-                     rs.close();
-                 }catch(SQLException ex){}
-             }
-
-             if(stat!=null){
+}</code></pre><p>​<br>                public static void close(Connection con,Statement stat , ResultSet rs){<br>                     if(rs!=null){<br>                         try{<br>                             rs.close();<br>                         }catch(SQLException ex){}<br>                     }</p>
+<pre><code>             if(stat!=null){
                  try{
                      stat.close();
                  }catch(SQLException ex){}
@@ -529,38 +526,33 @@ public class TestJDBCUtils {
                 System.out.println(s);
             }
         }
-    }</code></pre><p>###18properties配置文件<br>    * A: properties配置文件<br>        * a: 相关介绍<br>            * 开发中获得连接的4个参数（驱动、URL、用户名、密码）通常都存在配置文件中，方便后期维护，程序如果需要更换数据库，<br>                只需要修改配置文件即可。<br>            * 通常情况下，我们习惯使用properties文件，此文件我们将做如下要求：<br>                1.    文件位置：任意，建议src下<br>                2.    文件名称：任意，扩展名为properties<br>                3.    文件内容：一行一组数据，格式是“key=value”.<br>                    a)    key命名自定义，如果是多个单词，习惯使用点分隔。例如：jdbc.driver<br>                    b)    value值不支持中文，如果需要使用非英文字符，将进行unicode转换。</p>
+    }</code></pre><p>​            </p>
+<p>​<br>​<br>###18properties配置文件<br>    * A: properties配置文件<br>        * a: 相关介绍<br>            * 开发中获得连接的4个参数（驱动、URL、用户名、密码）通常都存在配置文件中，方便后期维护，程序如果需要更换数据库，<br>                只需要修改配置文件即可。<br>            * 通常情况下，我们习惯使用properties文件，此文件我们将做如下要求：<br>                1.    文件位置：任意，建议src下<br>                2.    文件名称：任意，扩展名为properties<br>                3.    文件内容：一行一组数据，格式是“key=value”.<br>                    a)    key命名自定义，如果是多个单词，习惯使用点分隔。例如：jdbc.driver<br>                    b)    value值不支持中文，如果需要使用非英文字符，将进行unicode转换。</p>
 <p>###19properties文件的创建和编写<br>    * A: properties文件的创建和编写<br>        * a: properties文件的创建<br>            * src路径下建立database.properties(其实就是一个文本文件)<br>        * b: properties文件的编写(内容如下)<br>            driverClass=com.mysql.jdbc.Driver<br>            url=jdbc:mysql://localhost:3296/mybase<br>            username=root<br>            password=123        </p>
 <p>###20加载配置文件<br>    * A: 加载配置文件<br>        * a: 案例代码<br>            /*<br>             *  加载properties配置文件<br>             *  IO读取文件,键值对存储到集合<br>             *  从集合中以键值对方式获取数据库的连接信息,完成数据库的连接<br>             */<br>            public class PropertiesDemo {<br>                public static void main(String[] args) throws Exception{<br>                    FileInputStream fis = new FileInputStream(“database.properties”);<br>                    System.out.println(fis);<br>                    //使用类的加载器<br>                    InputStream in = PropertiesDemo.class.getClassLoader().getResourceAsStream(“database.properties”);<br>                    System.out.println(in);<br>                    Properties pro = new Properties();<br>                    pro.load(in);<br>                    System.out.println(in);<br>                }<br>            }</p>
 <p>###21通过配置文件连接数据库<br>    * A: 通过配置文件连接数据库<br>        * a: 案例代码<br>            /*<br>             *  加载properties配置文件<br>             *  IO读取文件,键值对存储到集合<br>             *  从集合中以键值对方式获取数据库的连接信息,完成数据库的连接<br>             */<br>            public class PropertiesDemo {<br>                public static void main(String[] args) throws Exception{<br>                    FileInputStream fis = new FileInputStream(“database.properties”);<br>                    System.out.println(fis);<br>                    //使用类的加载器<br>                    InputStream in = PropertiesDemo.class.getClassLoader().getResourceAsStream(“database.properties”);<br>                    System.out.println(in);<br>                    Properties pro = new Properties();<br>                    pro.load(in);<br>                    //获取集合中的键值对<br>                    String driverClass=pro.getProperty(“driverClass”);<br>                    String url = pro.getProperty(“url”);<br>                    String username = pro.getProperty(“username”);<br>                    String password = pro.getProperty(“password”);<br>                    Class.forName(driverClass);<br>                    Connection con = DriverManager.getConnection(url, username, password);<br>                    System.out.println(con);</p>
 <pre><code>    }
-}</code></pre><p>###22读取配置文件的工具类<br>    * A: 读取配置文件的工具类<br>        * a: 案例代码<br>            /*<br>             *  编写数据库连接的工具类,JDBC工具类<br>             *  获取连接对象采用读取配置文件方式<br>             *  读取文件获取连接,执行一次,static{}<br>             */<br>            public class JDBCUtilsConfig {<br>                private static Connection con ;<br>                private static String driverClass;<br>                private static String url;<br>                private static String username;<br>                private static String password;</p>
-<pre><code>    static{
-        try{
-            readConfig();
-            Class.forName(driverClass);
-            con = DriverManager.getConnection(url, username, password);
-        }catch(Exception ex){
-            throw new RuntimeException(&quot;数据库连接失败&quot;);
-        }
+}</code></pre><p>​<br>###22读取配置文件的工具类<br>    * A: 读取配置文件的工具类<br>        * a: 案例代码<br>            /*<br>             *  编写数据库连接的工具类,JDBC工具类<br>             *  获取连接对象采用读取配置文件方式<br>             *  读取文件获取连接,执行一次,static{}<br>             */<br>            public class JDBCUtilsConfig {<br>                private static Connection con ;<br>                private static String driverClass;<br>                private static String url;<br>                private static String username;<br>                private static String password;</p>
+<pre><code>static{
+    try{
+        readConfig();
+        Class.forName(driverClass);
+        con = DriverManager.getConnection(url, username, password);
+    }catch(Exception ex){
+        throw new RuntimeException(&quot;数据库连接失败&quot;);
     }
+}
 
-    private static void readConfig()throws Exception{
-        InputStream in = JDBCUtilsConfig.class.getClassLoader().getResourceAsStream(&quot;database.properties&quot;);
-         Properties pro = new Properties();
-         pro.load(in);
-         driverClass=pro.getProperty(&quot;driverClass&quot;);
-         url = pro.getProperty(&quot;url&quot;);
-         username = pro.getProperty(&quot;username&quot;);
-         password = pro.getProperty(&quot;password&quot;);
-    }
-
-
-    public static Connection getConnection(){
-        return con;
-    }
-
-}            </code></pre><p>###23测试工具类<br>    * A: 测试工具类<br>        * a: 案例代码<br>            public class TestJDBCUtils {<br>                public static void main(String[] args) {<br>                    Connection con = JDBCUtilsConfig.getConnection();<br>                    System.out.println(con);<br>                }<br>            }</p>
+private static void readConfig()throws Exception{
+    InputStream in = JDBCUtilsConfig.class.getClassLoader().getResourceAsStream(&quot;database.properties&quot;);
+     Properties pro = new Properties();
+     pro.load(in);
+     driverClass=pro.getProperty(&quot;driverClass&quot;);
+     url = pro.getProperty(&quot;url&quot;);
+     username = pro.getProperty(&quot;username&quot;);
+     password = pro.getProperty(&quot;password&quot;);
+}</code></pre><p>​<br>                public static Connection getConnection(){<br>                    return con;<br>                }</p>
+<pre><code>}            </code></pre><p>###23测试工具类<br>    * A: 测试工具类<br>        * a: 案例代码<br>            public class TestJDBCUtils {<br>                public static void main(String[] args) {<br>                    Connection con = JDBCUtilsConfig.getConnection();<br>                    System.out.println(con);<br>                }<br>            }</p>
 <p>###24总结<br>    * 把今天的知识点总结一遍。</p>
 
     </div>
@@ -570,6 +562,9 @@ public class TestJDBCUtils {
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
 
         
 
@@ -577,12 +572,12 @@ public class TestJDBCUtils {
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/22/day28%E7%AC%94%E8%AE%B0/" rel="prev" title="day28笔记">
-      <i class="fa fa-chevron-left"></i> day28笔记
+    <a href="/2020/12/22/day28%E7%AC%94%E8%AE%B0/" rel="prev" title="java学习笔记28">
+      <i class="fa fa-chevron-left"></i> java学习笔记28
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/12/22/day30%E7%AC%94%E8%AE%B0/" rel="next" title="day30笔记">
-      day30笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/22/day30%E7%AC%94%E8%AE%B0/" rel="next" title="java学习笔记30">
+      java学习笔记30 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
