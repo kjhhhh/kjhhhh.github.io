@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="游戏背景目标 背景交替滚动的思路确定 显示游戏背景  01. 背景交替滚动的思路确定运行 备课代码，观察 背景图像的显示效果：  游戏启动后，背景图像 会 连续不断地 向下方 移动 在 视觉上 产生英雄的飞机不断向上方飞行的 错觉 —— 在很多跑酷类游戏中常用的套路 游戏的背景 不断变化 游戏的主角 位置保持不变    1.1 实现思路分析 解决办法  创建两张背景图像精灵 第 1 张 完全和屏幕">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏背景">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="游戏背景目标 背景交替滚动的思路确定 显示游戏背景  01. 背景交替滚动的思路确定运行 备课代码，观察 背景图像的显示效果：  游戏启动后，背景图像 会 连续不断地 向下方 移动 在 视觉上 产生英雄的飞机不断向上方飞行的 错觉 —— 在很多跑酷类游戏中常用的套路 游戏的背景 不断变化 游戏的主角 位置保持不变    1.1 实现思路分析 解决办法  创建两张背景图像精灵 第 1 张 完全和屏幕">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/013_%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E4%BA%A4%E6%9B%BF%E6%BB%9A%E5%8A%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png">
+<meta property="article:published_time" content="2020-12-24T15:04:50.134Z">
+<meta property="article:modified_time" content="2020-12-24T15:16:43.614Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/013_%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E4%BA%A4%E6%9B%BF%E6%BB%9A%E5%8A%A8.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>游戏背景 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          游戏背景
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:16:43" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="游戏背景"><a href="#游戏背景" class="headerlink" title="游戏背景"></a>游戏背景</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>背景交替滚动的思路确定</li>
+<li>显示游戏背景</li>
+</ul>
+<h2 id="01-背景交替滚动的思路确定"><a href="#01-背景交替滚动的思路确定" class="headerlink" title="01. 背景交替滚动的思路确定"></a>01. 背景交替滚动的思路确定</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 背景图像的显示效果：</p>
+<ul>
+<li>游戏启动后，<strong>背景图像</strong> 会 <strong>连续不断地</strong> <strong>向下方</strong> 移动</li>
+<li>在 <strong>视觉上</strong> 产生英雄的飞机不断向上方飞行的 <strong>错觉</strong> —— 在很多跑酷类游戏中常用的套路<ul>
+<li><strong>游戏的背景</strong> 不断变化</li>
+<li><strong>游戏的主角</strong> 位置保持不变</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-1-实现思路分析"><a href="#1-1-实现思路分析" class="headerlink" title="1.1 实现思路分析"></a>1.1 实现思路分析</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/013_%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E4%BA%A4%E6%9B%BF%E6%BB%9A%E5%8A%A8.png" alt></p>
+<p><strong>解决办法</strong></p>
+<ol>
+<li>创建两张背景图像精灵<ul>
+<li>第 <code>1</code> 张 <strong>完全和屏幕重合</strong></li>
+<li>第 <code>2</code> 张在 <strong>屏幕的正上方</strong></li>
+</ul>
+</li>
+<li>两张图像 <strong>一起向下方运动</strong><ul>
+<li><code>self.rect.y += self.speed</code></li>
+</ul>
+</li>
+<li>当 <strong>任意背景精灵</strong> 的 <code>rect.y &gt;= 屏幕的高度</code> 说明已经 <strong>移动到屏幕下方</strong></li>
+<li>将 <strong>移动到屏幕下方的这张图像</strong> 设置到 <strong>屏幕的正上方</strong><ul>
+<li><code>rect.y = -rect.height</code>  </li>
+</ul>
+</li>
+</ol>
+<h3 id="1-2-设计背景类"><a href="#1-2-设计背景类" class="headerlink" title="1.2 设计背景类"></a>1.2 设计背景类</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
+<ul>
+<li><strong>初始化方法</strong><ul>
+<li>直接指定 <strong>背景图片</strong></li>
+<li><code>is_alt</code> 判断是否是另一张图像<ul>
+<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
+<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>update()</strong> 方法<ul>
+<li>判断 <strong>是否移动出屏幕</strong>，如果是，将图像设置到 <strong>屏幕的正上方</strong>，从而实现 <strong>交替滚动</strong></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>继承</strong> 如果父类提供的方法，不能满足子类的需求：</p>
+<ul>
+<li>派生一个子类</li>
+<li>在子类中针对特有的需求，重写父类方法，并且进行扩展</li>
+</ul>
+</blockquote>
+<h2 id="02-显示游戏背景"><a href="#02-显示游戏背景" class="headerlink" title="02. 显示游戏背景"></a>02. 显示游戏背景</h2><h3 id="2-1-背景精灵的基本实现"><a href="#2-1-背景精灵的基本实现" class="headerlink" title="2.1 背景精灵的基本实现"></a>2.1 背景精灵的基本实现</h3><ul>
+<li>在 <code>plane_sprites</code> 新建 <code>Background</code> 继承自 <code>GameSprite</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Background</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""游戏背景精灵"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1. 调用父类的方法实现</span></span><br><span class="line">        super().update()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 判断是否移出屏幕，如果移出屏幕，将图像设置到屏幕的上方</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.y &gt;= SCREEN_RECT.height:</span><br><span class="line">            self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-在-plane-main-py-中显示背景精灵"><a href="#2-2-在-plane-main-py-中显示背景精灵" class="headerlink" title="2.2 在 plane_main.py 中显示背景精灵"></a>2.2 在 <code>plane_main.py</code> 中显示背景精灵</h3><ol>
+<li>在 <code>__create_sprites</code> 方法中创建 <strong>精灵</strong> 和 <strong>精灵组</strong></li>
+<li>在 <code>__update_sprites</code> 方法中，让 <strong>精灵组</strong> 调用 <code>update()</code> 和 <code>draw()</code> 方法</li>
+</ol>
+<blockquote>
+<p><code>__create_sprites</code> 方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">    bg1 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2.rect.y = -bg2.rect.height</span><br><span class="line">    </span><br><span class="line">    self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>__update_sprites</code> 方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    self.back_group.update()</span><br><span class="line">    self.back_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-利用初始化方法，简化背景精灵创建"><a href="#2-3-利用初始化方法，简化背景精灵创建" class="headerlink" title="2.3 利用初始化方法，简化背景精灵创建"></a>2.3 利用初始化方法，简化背景精灵创建</h3><blockquote>
+<p>思考 —— 上一小结完成的代码存在什么样的问题？能否简化？</p>
+</blockquote>
+<ul>
+<li>在主程序中，创建的<strong>两个背景精灵</strong>，<strong>传入了相同的图像文件路径</strong></li>
+<li>创建 <strong>第二个 背景精灵</strong> 时，<strong>在主程序中</strong>，设置背景精灵的图像位置</li>
+</ul>
+<blockquote>
+<p>思考 —— 精灵 <strong>初始位置</strong> 的设置，应该 <strong>由主程序负责</strong>？还是 <strong>由精灵自己负责</strong>？</p>
+</blockquote>
+<p><strong>答案</strong> —— <strong>由精灵自己负责</strong></p>
+<ul>
+<li>根据面向对象设计原则，应该将对象的职责，封装到类的代码内部</li>
+<li>尽量简化程序调用一方的代码调用</li>
+</ul>
+<p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
+<ul>
+<li><strong>初始化方法</strong><ul>
+<li>直接指定 <strong>背景图片</strong></li>
+<li><code>is_alt</code> 判断是否是另一张图像<ul>
+<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
+<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在 <code>plane_sprites.py</code> 中实现 <code>Background</code> 的 <strong>初始化方法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, is_alt=False)</span>:</span></span><br><span class="line"></span><br><span class="line">    image_name = <span class="string">"./images/background.png"</span></span><br><span class="line">    super().__init__(image_name)</span><br><span class="line">       </span><br><span class="line">    <span class="comment"># 判断是否交替图片，如果是，将图片设置到屏幕顶部</span></span><br><span class="line">    <span class="keyword">if</span> is_alt:</span><br><span class="line">        self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>plane_main</code> 的 <code>__create_sprites</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">bg1 = Background()</span><br><span class="line">bg2 = Background(<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/" rel="prev" title="英雄登场">
+      <i class="fa fa-chevron-left"></i> 英雄登场
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" rel="next" title="游戏框架搭建">
+      游戏框架搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#游戏背景"><span class="nav-number">1.</span> <span class="nav-text">游戏背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-背景交替滚动的思路确定"><span class="nav-number">1.2.</span> <span class="nav-text">01. 背景交替滚动的思路确定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-实现思路分析"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 实现思路分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-设计背景类"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 设计背景类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-显示游戏背景"><span class="nav-number">1.3.</span> <span class="nav-text">02. 显示游戏背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-背景精灵的基本实现"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.1 背景精灵的基本实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-在-plane-main-py-中显示背景精灵"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.2 在 plane_main.py 中显示背景精灵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-利用初始化方法，简化背景精灵创建"><span class="nav-number">1.3.3.</span> <span class="nav-text">2.3 利用初始化方法，简化背景精灵创建</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

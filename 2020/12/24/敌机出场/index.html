@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="敌机出场目标 使用 定时器 添加敌机 设计 Enemy 类  01. 使用定时器添加敌机运行 备课代码，观察 敌机的 出现规律：  游戏启动后，每隔 1 秒 会 出现一架敌机 每架敌机 向屏幕下方飞行，飞行 速度各不相同 每架敌机出现的 水平位置 也不尽相同 当敌机 从屏幕下方飞出，不会再飞回到屏幕中  1.1 定时器 在 pygame 中可以使用 pygame.time.set_timer()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="敌机出场">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="敌机出场目标 使用 定时器 添加敌机 设计 Enemy 类  01. 使用定时器添加敌机运行 备课代码，观察 敌机的 出现规律：  游戏启动后，每隔 1 秒 会 出现一架敌机 每架敌机 向屏幕下方飞行，飞行 速度各不相同 每架敌机出现的 水平位置 也不尽相同 当敌机 从屏幕下方飞出，不会再飞回到屏幕中  1.1 定时器 在 pygame 中可以使用 pygame.time.set_timer()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/014_%E6%B4%BE%E7%94%9FEnemy%E5%AD%90%E7%B1%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/006_pygame.SpriteII.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/015_%E9%A3%9E%E6%9C%BA%E5%88%9D%E5%A7%8B%E4%BD%8D%E7%BD%AE.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/15025309517247/006_pygame.SpriteII.png">
+<meta property="article:published_time" content="2020-12-24T15:04:50.126Z">
+<meta property="article:modified_time" content="2020-12-24T15:11:41.987Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/014_%E6%B4%BE%E7%94%9FEnemy%E5%AD%90%E7%B1%BB.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>敌机出场 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          敌机出场
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:11:41" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="敌机出场"><a href="#敌机出场" class="headerlink" title="敌机出场"></a>敌机出场</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>使用 <strong>定时器</strong> 添加敌机</li>
+<li>设计 <code>Enemy</code> 类</li>
+</ul>
+<h2 id="01-使用定时器添加敌机"><a href="#01-使用定时器添加敌机" class="headerlink" title="01. 使用定时器添加敌机"></a>01. 使用定时器添加敌机</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 敌机的 <strong>出现规律</strong>：</p>
+<ol>
+<li>游戏启动后，<strong>每隔 1 秒</strong> 会 <strong>出现一架敌机</strong></li>
+<li>每架敌机 <strong>向屏幕下方飞行</strong>，飞行 <strong>速度各不相同</strong></li>
+<li>每架敌机出现的 <strong>水平位置</strong> 也不尽相同</li>
+<li>当敌机 <strong>从屏幕下方飞出</strong>，不会再飞回到屏幕中</li>
+</ol>
+<h3 id="1-1-定时器"><a href="#1-1-定时器" class="headerlink" title="1.1 定时器"></a>1.1 定时器</h3><ul>
+<li>在 <code>pygame</code> 中可以使用 <code>pygame.time.set_timer()</code> 来添加 <strong>定时器</strong></li>
+<li>所谓 <strong>定时器</strong>，就是 <strong>每隔一段时间</strong>，去 <strong>执行一些动作</strong></li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_timer(eventid, milliseconds) -&gt; None</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>set_timer</code> 可以创建一个 <strong>事件</strong></li>
+<li>可以在 <strong>游戏循环</strong> 的 <strong>事件监听</strong> 方法中捕获到该事件</li>
+<li>第 1 个参数 <strong>事件代号</strong> 需要基于常量 <code>pygame.USEREVENT</code> 来指定<ul>
+<li><code>USEREVENT</code> 是一个整数，再增加的事件可以使用 <code>USEREVENT + 1</code> 指定，依次类推…</li>
+</ul>
+</li>
+<li>第 2 个参数是 <strong>事件触发</strong> 间隔的 <strong>毫秒值</strong></li>
+</ul>
+<p><strong>定时器事件的监听</strong></p>
+<ul>
+<li>通过 <code>pygame.event.get()</code> 可以获取当前时刻所有的 <strong>事件列表</strong></li>
+<li><strong>遍历列表</strong> 并且判断 <code>event.type</code> 是否等于 <code>eventid</code>，如果相等，表示 <strong>定时器事件</strong> 发生</li>
+</ul>
+<h3 id="1-2-定义并监听创建敌机的定时器事件"><a href="#1-2-定义并监听创建敌机的定时器事件" class="headerlink" title="1.2 定义并监听创建敌机的定时器事件"></a>1.2 定义并监听创建敌机的定时器事件</h3><p><code>pygame</code> 的 <strong>定时器</strong> 使用套路非常固定：</p>
+<ol>
+<li>定义 <strong>定时器常量</strong> —— <code>eventid</code></li>
+<li>在 <strong>初始化方法</strong> 中，调用 <code>set_timer</code> 方法 <strong>设置定时器事件</strong></li>
+<li>在 <strong>游戏循环</strong> 中，<strong>监听定时器事件</strong></li>
+</ol>
+<h4 id="1-定义事件"><a href="#1-定义事件" class="headerlink" title="1) 定义事件"></a>1) 定义事件</h4><ul>
+<li>在 <code>plane_sprites.py</code> 的顶部定义 <strong>事件常量</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 敌机的定时器事件常量</span></span><br><span class="line">CREATE_ENEMY_EVENT = pygame.USEREVENT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>PlaneGame</code> 的 <strong>初始化方法</strong> 中 <strong>创建用户事件</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4. 设置定时器事件 - 每秒创建一架敌机</span></span><br><span class="line">pygame.time.set_timer(CREATE_ENEMY_EVENT, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-监听定时器事件"><a href="#2-监听定时器事件" class="headerlink" title="2) 监听定时器事件"></a>2) 监听定时器事件</h4><ul>
+<li>在 <code>__event_handler</code> 方法中增加以下代码：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__event_handler</span><span class="params">(self)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># 判断是否退出游戏</span></span><br><span class="line">        <span class="keyword">if</span> event.type == pygame.QUIT:</span><br><span class="line">            PlaneGame.__game_over()</span><br><span class="line">        <span class="keyword">elif</span> event.type == CREATE_ENEMY_EVENT:</span><br><span class="line">            print(<span class="string">"敌机出场..."</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-设计-Enemy-类"><a href="#02-设计-Enemy-类" class="headerlink" title="02. 设计 Enemy 类"></a>02. 设计 <code>Enemy</code> 类</h2><ol>
+<li>游戏启动后，<strong>每隔 1 秒</strong> 会 <strong>出现一架敌机</strong></li>
+<li>每架敌机 <strong>向屏幕下方飞行</strong>，飞行 <strong>速度各不相同</strong></li>
+<li>每架敌机出现的 <strong>水平位置</strong> 也不尽相同</li>
+<li>当敌机 <strong>从屏幕下方飞出</strong>，不会再飞回到屏幕中</li>
+</ol>
+<p><img src="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/014_%E6%B4%BE%E7%94%9FEnemy%E5%AD%90%E7%B1%BB.png" alt></p>
+<ul>
+<li><strong>初始化方法</strong><ul>
+<li>指定 <strong>敌机图片</strong></li>
+<li><strong>随机</strong> 敌机的 <strong>初始位置</strong> 和 <strong>初始速度</strong></li>
+</ul>
+</li>
+<li>重写 <strong>update()</strong> 方法<ul>
+<li>判断 <strong>是否飞出屏幕</strong>，如果是，从 <strong>精灵组</strong> 删除</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-敌机类的准备"><a href="#2-1-敌机类的准备" class="headerlink" title="2.1 敌机类的准备"></a>2.1 敌机类的准备</h3><ul>
+<li>在 <code>plane_sprites</code> 新建 <code>Enemy</code> 继承自 <code>GameSprite</code></li>
+<li>重写 <strong>初始化方法</strong>，直接指定 <strong>图片名称</strong></li>
+<li>暂时 <strong>不实现</strong> <strong>随机速度</strong> 和 <strong>随机位置</strong> 的指定</li>
+<li>重写 <code>update</code> 方法，判断是否飞出屏幕</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Enemy</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""敌机精灵"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 1. 调用父类方法，创建敌机精灵，并且指定敌机的图像</span></span><br><span class="line">        super().__init__(<span class="string">"./images/enemy1.png"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 设置敌机的随机初始速度</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 3. 设置敌机的随机初始位置</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 1. 调用父类方法，让敌机在垂直方向运动</span></span><br><span class="line">        super().update()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 判断是否飞出屏幕，如果是，需要将敌机从精灵组删除</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.y &gt;= SCREEN_RECT.height:</span><br><span class="line">            print(<span class="string">"敌机飞出屏幕..."</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-创建敌机"><a href="#2-2-创建敌机" class="headerlink" title="2.2 创建敌机"></a>2.2 创建敌机</h3><p><strong>演练步骤</strong></p>
+<ol>
+<li>在 <code>__create_sprites</code>，添加 <strong>敌机精灵组</strong><ul>
+<li>敌机是 <strong>定时被创建的</strong>，因此在初始化方法中，不需要创建敌机</li>
+</ul>
+</li>
+<li>在 <code>__event_handler</code>，创建敌机，并且 <strong>添加到精灵组</strong><ul>
+<li>调用 <strong>精灵组</strong> 的 <code>add</code> 方法可以 <strong>向精灵组添加精灵</strong></li>
+</ul>
+</li>
+<li>在 <code>__update_sprites</code>，让 <strong>敌机精灵组</strong> 调用 <code>update</code> 和 <code>draw</code> 方法</li>
+</ol>
+<p><img src="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/006_pygame.SpriteII.png" alt></p>
+<p><strong>演练代码</strong></p>
+<ul>
+<li>修改 <code>plane_main</code> 的 <code>__create_sprites</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 敌机组</span></span><br><span class="line">self.enemy_group = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>plane_main</code> 的 <code>__update_sprites</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.enemy_group.update()</span><br><span class="line">self.enemy_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定时出现敌机</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> event.type == CREATE_ENEMY_EVENT:</span><br><span class="line">    self.enemy_group.add(Enemy())</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-随机敌机位置和速度"><a href="#2-3-随机敌机位置和速度" class="headerlink" title="2.3 随机敌机位置和速度"></a>2.3 随机敌机位置和速度</h3><h4 id="1-导入模块"><a href="#1-导入模块" class="headerlink" title="1) 导入模块"></a>1) 导入模块</h4><ul>
+<li>在导入模块时，<strong>建议</strong> 按照以下顺序导入</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 官方标准模块导入</span><br><span class="line"><span class="number">2.</span> 第三方模块导入</span><br><span class="line"><span class="number">3.</span> 应用程序模块导入</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>plane_sprites.py</code> 增加 <code>random</code> 的导入</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-随机位置"><a href="#2-随机位置" class="headerlink" title="2) 随机位置"></a>2) 随机位置</h4><p><img src="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/015_%E9%A3%9E%E6%9C%BA%E5%88%9D%E5%A7%8B%E4%BD%8D%E7%BD%AE.png" alt></p>
+<p>使用 <code>pygame.Rect</code> 提供的 <code>bottom</code> 属性，在指定敌机初始位置时，会比较方便</p>
+<ul>
+<li><code>bottom = y + height</code></li>
+<li><code>y = bottom - height</code></li>
+</ul>
+<h4 id="3-代码实现"><a href="#3-代码实现" class="headerlink" title="3) 代码实现"></a>3) 代码实现</h4><ul>
+<li>修改 <strong>初始化方法</strong>，随机敌机出现 <strong>速度</strong> 和 <strong>位置</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 调用父类方法，创建敌机精灵，并且指定敌机的图像</span></span><br><span class="line">    super().__init__(<span class="string">"./images/enemy1.png"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 设置敌机的随机初始速度 1 ~ 3</span></span><br><span class="line">    self.speed = random.randint(<span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 设置敌机的随机初始位置</span></span><br><span class="line">    self.rect.bottom = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    max_x = SCREEN_RECT.width - self.rect.width</span><br><span class="line">    self.rect.x = random.randint(<span class="number">0</span>, max_x)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-移出屏幕销毁敌机"><a href="#2-4-移出屏幕销毁敌机" class="headerlink" title="2.4 移出屏幕销毁敌机"></a>2.4 移出屏幕销毁敌机</h3><ul>
+<li>敌机移出屏幕之后，如果 <strong>没有撞到英雄</strong>，敌机的历史使命已经终结</li>
+<li>需要从 <strong>敌机组</strong> 删除，否则会造成 <strong>内存浪费</strong></li>
+</ul>
+<h4 id="检测敌机被销毁"><a href="#检测敌机被销毁" class="headerlink" title="检测敌机被销毁"></a>检测敌机被销毁</h4><ul>
+<li><code>__del__</code> 内置方法会在对象被销毁前调用，在开发中，可以用于 <strong>判断对象是否被销毁</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">"敌机挂了 %s"</span> % self.rect)</span><br></pre></td></tr></table></figure>
+
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><p><img src="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/15025309517247/006_pygame.SpriteII.png" alt="006_pygame.SpriteII"></p>
+<ul>
+<li>判断敌机是否飞出屏幕，如果是，调用 <code>kill()</code> 方法从所有组中删除</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    super().update()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 判断敌机是否移出屏幕</span></span><br><span class="line">    <span class="keyword">if</span> self.rect.y &gt;= SCREEN_RECT.height:</span><br><span class="line">        <span class="comment"># 将精灵从所有组中删除</span></span><br><span class="line">        self.kill()</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/" rel="prev" title="vi—终端中的编辑器">
+      <i class="fa fa-chevron-left"></i> vi—终端中的编辑器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" rel="next" title="碰撞检测">
+      碰撞检测 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#敌机出场"><span class="nav-number">1.</span> <span class="nav-text">敌机出场</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-使用定时器添加敌机"><span class="nav-number">1.2.</span> <span class="nav-text">01. 使用定时器添加敌机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-定时器"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-定义并监听创建敌机的定时器事件"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 定义并监听创建敌机的定时器事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-定义事件"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1) 定义事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-监听定时器事件"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2) 监听定时器事件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-设计-Enemy-类"><span class="nav-number">1.3.</span> <span class="nav-text">02. 设计 Enemy 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-敌机类的准备"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.1 敌机类的准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-创建敌机"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.2 创建敌机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-随机敌机位置和速度"><span class="nav-number">1.3.3.</span> <span class="nav-text">2.3 随机敌机位置和速度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-导入模块"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">1) 导入模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-随机位置"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">2) 随机位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-代码实现"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">3) 代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-移出屏幕销毁敌机"><span class="nav-number">1.3.4.</span> <span class="nav-text">2.4 移出屏幕销毁敌机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检测敌机被销毁"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">检测敌机被销毁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

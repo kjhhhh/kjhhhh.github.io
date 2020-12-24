@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="pygame 快速入门目标 项目准备 使用 pygame 创建图形窗口 理解 图像 并实现图像绘制 理解 游戏循环 和 游戏时钟 理解 精灵 和 精灵组  项目准备 新建 飞机大战 项目 新建一个 hm_01_pygame入门.py 导入 游戏素材图片  游戏的第一印象  把一些 静止的图像 绘制到 游戏窗口 中 根据 用户的交互 或其他情况，移动 这些图像，产生动画效果 根据 图像之间 是否发生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pygame 快速入门">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="pygame 快速入门目标 项目准备 使用 pygame 创建图形窗口 理解 图像 并实现图像绘制 理解 游戏循环 和 游戏时钟 理解 精灵 和 精灵组  项目准备 新建 飞机大战 项目 新建一个 hm_01_pygame入门.py 导入 游戏素材图片  游戏的第一印象  把一些 静止的图像 绘制到 游戏窗口 中 根据 用户的交互 或其他情况，移动 这些图像，产生动画效果 根据 图像之间 是否发生">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/001_pygame%E7%9A%84init%E5%92%8Cquit.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/002_%E6%B8%B8%E6%88%8F%E7%AA%97%E5%8F%A3%E5%92%8C%E5%9D%90%E6%A0%87%E7%B3%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/003_pygame.Rect.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/004_%E5%8A%A0%E8%BD%BD%E5%92%8C%E6%98%BE%E7%A4%BA%E5%9B%BE%E5%83%8F.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E6%89%8B%E7%BF%BB%E4%B9%A6%E5%8A%A8%E7%94%BB.gif">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%8C%AB%E6%83%8A%E8%AE%B6.gif">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/005_%E6%B8%B8%E6%88%8F%E4%B8%BB%E6%A8%A1%E5%9D%97.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/006_pygame.Sprite.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/007_GameSprite.png">
+<meta property="article:published_time" content="2020-12-24T15:04:50.117Z">
+<meta property="article:modified_time" content="2020-12-24T15:10:24.538Z">
+<meta property="article:author" content="KJH">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/001_pygame%E7%9A%84init%E5%92%8Cquit.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pygame 快速入门 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pygame 快速入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:10:24" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="pygame-快速入门"><a href="#pygame-快速入门" class="headerlink" title="pygame 快速入门"></a>pygame 快速入门</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>项目准备</li>
+<li>使用 <code>pygame</code> 创建图形窗口</li>
+<li>理解 <strong>图像</strong> 并实现图像绘制</li>
+<li>理解 <strong>游戏循环</strong> 和 <strong>游戏时钟</strong></li>
+<li>理解 <strong>精灵</strong> 和 <strong>精灵组</strong></li>
+</ol>
+<h2 id="项目准备"><a href="#项目准备" class="headerlink" title="项目准备"></a>项目准备</h2><ol>
+<li>新建 <strong>飞机大战</strong> 项目</li>
+<li>新建一个 <code>hm_01_pygame入门.py</code></li>
+<li>导入 <strong>游戏素材图片</strong></li>
+</ol>
+<p><strong>游戏的第一印象</strong></p>
+<ul>
+<li>把一些 <strong>静止的图像</strong> 绘制到 <strong>游戏窗口</strong> 中</li>
+<li>根据 <strong>用户的交互</strong> 或其他情况，<strong>移动</strong> 这些图像，产生动画效果</li>
+<li>根据 <strong>图像之间</strong> 是否发生重叠，判断 <strong>敌机是否被摧毁</strong> 等其他情况</li>
+</ul>
+<h2 id="01-使用-pygame-创建图形窗口"><a href="#01-使用-pygame-创建图形窗口" class="headerlink" title="01. 使用 pygame 创建图形窗口"></a>01. 使用 <code>pygame</code> 创建图形窗口</h2><h3 id="小节目标"><a href="#小节目标" class="headerlink" title="小节目标"></a>小节目标</h3><ol>
+<li>游戏的初始化和退出</li>
+<li>理解游戏中的坐标系</li>
+<li>创建游戏主窗口</li>
+<li>简单的游戏循环</li>
+</ol>
+<blockquote>
+<p>可以将图片素材 <strong>绘制</strong> 到 <strong>游戏的窗口</strong> 上，开发游戏之前需要先知道 <strong>如何建立游戏窗口</strong>！</p>
+</blockquote>
+<h3 id="1-1-游戏的初始化和退出"><a href="#1-1-游戏的初始化和退出" class="headerlink" title="1.1 游戏的初始化和退出"></a>1.1 游戏的初始化和退出</h3><ul>
+<li>要使用 <code>pygame</code> 提供的所有功能之前，需要调用 <code>init</code> 方法</li>
+<li>在游戏结束前需要调用一下 <code>quit</code> 方法 </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pygame.init()</code></td>
+<td>导入并初始化所有 <code>pygame</code> 模块，使用其他模块之前，必须先调用 <code>init</code> 方法</td>
+</tr>
+<tr>
+<td><code>pygame.quit()</code></td>
+<td>卸载所有 <code>pygame</code> 模块，在游戏结束之前调用！</td>
+</tr>
+</tbody></table>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/001_pygame%E7%9A%84init%E5%92%8Cquit.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line">pygame.init()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏代码...</span></span><br><span class="line"></span><br><span class="line">pygame.quit()</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-理解游戏中的坐标系"><a href="#1-2-理解游戏中的坐标系" class="headerlink" title="1.2 理解游戏中的坐标系"></a>1.2 理解游戏中的坐标系</h3><ul>
+<li><strong>坐标系</strong><ul>
+<li><strong>原点</strong> 在 <strong>左上角</strong> <code>(0, 0)</code></li>
+<li><strong>x 轴</strong> 水平方向向 <strong>右</strong>，逐渐增加</li>
+<li><strong>y 轴</strong> 垂直方向向 <strong>下</strong>，逐渐增加</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/002_%E6%B8%B8%E6%88%8F%E7%AA%97%E5%8F%A3%E5%92%8C%E5%9D%90%E6%A0%87%E7%B3%BB.png" alt></p>
+<ul>
+<li><p>在游戏中，<strong>所有可见的元素</strong> 都是以 <strong>矩形区域</strong> 来描述位置的</p>
+<ul>
+<li>要描述一个矩形区域有四个要素：<code>(x, y) (width, height)</code></li>
+</ul>
+</li>
+<li><p><code>pygame</code> 专门提供了一个类 <code>pygame.Rect</code> 用于描述 <strong>矩形区域</strong></p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rect(x, y, width, height) -&gt; Rect</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/003_pygame.Rect.png" alt></p>
+<p><strong>提示</strong></p>
+<ul>
+<li><code>pygame.Rect</code> 是一个比较特殊的类，内部只是封装了一些数字计算</li>
+<li>不执行 <code>pygame.init()</code> 方法同样能够直接使用</li>
+</ul>
+<h4 id="案例演练"><a href="#案例演练" class="headerlink" title="案例演练"></a>案例演练</h4><p><strong>需求</strong></p>
+<ol>
+<li>定义 <code>hero_rect</code> 矩形描述 <strong>英雄的位置和大小</strong></li>
+<li>输出英雄的 <strong>坐标原点</strong>（<code>x</code> 和 <code>y</code>）</li>
+<li>输出英雄的 <strong>尺寸</strong>（<strong>宽度</strong> 和 <strong>高度</strong>）</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hero_rect = pygame.Rect(<span class="number">100</span>, <span class="number">500</span>, <span class="number">120</span>, <span class="number">126</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"坐标原点 %d %d"</span> % (hero_rect.x, hero_rect.y))</span><br><span class="line">print(<span class="string">"英雄大小 %d %d"</span> % (hero_rect.width, hero_rect.height))</span><br><span class="line"><span class="comment"># size 属性会返回矩形区域的 (宽, 高) 元组</span></span><br><span class="line">print(<span class="string">"英雄大小 %d %d"</span> % hero_rect.size)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-创建游戏主窗口"><a href="#1-3-创建游戏主窗口" class="headerlink" title="1.3 创建游戏主窗口"></a>1.3 创建游戏主窗口</h3><ul>
+<li><code>pygame</code> 专门提供了一个 <strong>模块</strong> <code>pygame.display</code> 用于创建、管理 <strong>游戏窗口</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pygame.display.set_mode()</code></td>
+<td>初始化游戏显示窗口</td>
+</tr>
+<tr>
+<td><code>pygame.display.update()</code></td>
+<td>刷新屏幕内容显示，稍后使用</td>
+</tr>
+</tbody></table>
+<p><strong><code>set_mode</code> 方法</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_mode(resolution=(0,0), flags=0, depth=0) -&gt; Surface</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>作用</strong> —— 创建游戏显示窗口</p>
+</li>
+<li><p><strong>参数</strong></p>
+<ul>
+<li><code>resolution</code> 指定屏幕的 <code>宽</code> 和 <code>高</code>，默认创建的窗口大小和屏幕大小一致</li>
+<li><code>flags</code> 参数指定屏幕的附加选项，例如是否全屏等等，默认不需要传递</li>
+<li><code>depth</code> 参数表示颜色的位数，默认自动匹配</li>
+</ul>
+</li>
+<li><p><strong>返回值</strong></p>
+<ul>
+<li><strong>暂时</strong> 可以理解为 <strong>游戏的屏幕</strong>，<strong>游戏的元素</strong> 都需要被绘制到 <strong>游戏的屏幕</strong> 上</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>：必须使用变量记录 <code>set_mode</code> 方法的返回结果！因为：后续所有的图像绘制都基于这个返回结果</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建游戏主窗口</span></span><br><span class="line">screen = pygame.display.set_mode((<span class="number">480</span>, <span class="number">700</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-简单的游戏循环"><a href="#1-4-简单的游戏循环" class="headerlink" title="1.4 简单的游戏循环"></a>1.4 简单的游戏循环</h3><ul>
+<li>为了做到游戏程序启动后，<strong>不会立即退出</strong>，通常会在游戏程序中增加一个 <strong>游戏循环</strong></li>
+<li>所谓 <strong>游戏循环</strong> 就是一个 <strong>无限循环</strong></li>
+<li>在 <strong>创建游戏窗口</strong> 代码下方，增加一个无限循环<ul>
+<li>注意：<strong>游戏窗口不需要重复创建</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建游戏主窗口</span></span><br><span class="line">screen = pygame.display.set_mode((<span class="number">480</span>, <span class="number">700</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏循环</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="02-理解-图像-并实现图像绘制"><a href="#02-理解-图像-并实现图像绘制" class="headerlink" title="02. 理解 图像 并实现图像绘制"></a>02. 理解 <strong>图像</strong> 并实现图像绘制</h2><ul>
+<li>在游戏中，能够看到的 <strong>游戏元素</strong> 大多都是 <strong>图像</strong><ul>
+<li><strong>图像文件</strong> 初始是保存在磁盘上的，如果需要使用，<strong>第一步</strong> 就需要 <strong>被加载到内存</strong></li>
+</ul>
+</li>
+<li>要在屏幕上 <strong>看到某一个图像的内容</strong>，需要按照三个步骤：<ol>
+<li>使用 <code>pygame.image.load()</code> <strong>加载图像的数据</strong></li>
+<li>使用 <strong>游戏屏幕</strong> 对象，调用 <code>blit</code> 方法 将图像绘制到指定位置</li>
+<li>调用 <code>pygame.display.update()</code> 方法更新整个屏幕的显示</li>
+</ol>
+</li>
+</ul>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/004_%E5%8A%A0%E8%BD%BD%E5%92%8C%E6%98%BE%E7%A4%BA%E5%9B%BE%E5%83%8F.png" alt></p>
+<blockquote>
+<p>提示：要想在屏幕上看到绘制的结果，就一定要调用 <code>pygame.display.update()</code> 方法</p>
+</blockquote>
+<h3 id="代码演练-I-——-绘制背景图像"><a href="#代码演练-I-——-绘制背景图像" class="headerlink" title="代码演练 I —— 绘制背景图像"></a>代码演练 I —— 绘制背景图像</h3><p><strong>需求</strong></p>
+<ol>
+<li>加载 <code>background.png</code> 创建背景</li>
+<li>将 <strong>背景</strong> 绘制在屏幕的 <code>(0, 0)</code> 位置</li>
+<li>调用屏幕更新显示背景图像</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘制背景图像</span></span><br><span class="line"><span class="comment"># 1&gt; 加载图像</span></span><br><span class="line">bg = pygame.image.load(<span class="string">"./images/background.png"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2&gt; 绘制在屏幕</span></span><br><span class="line">screen.blit(bg, (<span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3&gt; 更新显示</span></span><br><span class="line">pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码演练-II-——-绘制英雄图像"><a href="#代码演练-II-——-绘制英雄图像" class="headerlink" title="代码演练 II —— 绘制英雄图像"></a>代码演练 II —— 绘制英雄图像</h3><p><strong>需求</strong></p>
+<ol>
+<li>加载 <code>me1.png</code> 创建英雄飞机</li>
+<li>将 <strong>英雄飞机</strong> 绘制在屏幕的 <code>(200, 500)</code> 位置</li>
+<li>调用屏幕更新显示飞机图像</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1&gt; 加载图像</span></span><br><span class="line">hero = pygame.image.load(<span class="string">"./images/me1.png"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2&gt; 绘制在屏幕</span></span><br><span class="line">screen.blit(hero, (<span class="number">200</span>, <span class="number">500</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3&gt; 更新显示</span></span><br><span class="line">pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+<p><strong>透明图像</strong> </p>
+<ul>
+<li><code>png</code> 格式的图像是支持 <strong>透明</strong> 的</li>
+<li>在绘制图像时，<strong>透明区域</strong> 不会显示任何内容</li>
+<li>但是如果<strong>下方已经有内容</strong>，会 <strong>透过</strong> <strong>透明区域</strong> 显示出来</li>
+</ul>
+<h3 id="理解-update-方法的作用"><a href="#理解-update-方法的作用" class="headerlink" title="理解 update() 方法的作用"></a>理解 <code>update()</code> 方法的作用</h3><blockquote>
+<p>可以在 <code>screen</code> 对象完成 <strong>所有</strong> <code>blit</code> 方法之后，<strong>统一调用一次</strong> <code>display.update</code> 方法，同样可以在屏幕上 <strong>看到最终的绘制结果</strong></p>
+</blockquote>
+<ul>
+<li>使用 <code>display.set_mode()</code> 创建的 <code>screen</code> <strong>对象</strong> 是一个 <strong>内存中的屏幕数据对象</strong><ul>
+<li>可以理解成是 <strong>油画</strong> 的 <strong>画布</strong></li>
+</ul>
+</li>
+<li><code>screen.blit</code> 方法可以在 <strong>画布</strong> 上绘制很多 <strong>图像</strong><ul>
+<li>例如：<strong>英雄</strong>、<strong>敌机</strong>、<strong>子弹</strong>…</li>
+<li><strong>这些图像</strong> 有可能 会彼此 <strong>重叠或者覆盖</strong></li>
+</ul>
+</li>
+<li><code>display.update()</code> 会将 <strong>画布</strong> 的 <strong>最终结果</strong> 绘制在屏幕上，这样可以 <strong>提高屏幕绘制效率</strong>，<strong>增加游戏的流畅度</strong></li>
+</ul>
+<p><strong>案例调整</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘制背景图像</span></span><br><span class="line"><span class="comment"># 1&gt; 加载图像</span></span><br><span class="line">bg = pygame.image.load(<span class="string">"./images/background.png"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2&gt; 绘制在屏幕</span></span><br><span class="line">screen.blit(bg, (<span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制英雄图像</span></span><br><span class="line"><span class="comment"># 1&gt; 加载图像</span></span><br><span class="line">hero = pygame.image.load(<span class="string">"./images/me1.png"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2&gt; 绘制在屏幕</span></span><br><span class="line">screen.blit(hero, (<span class="number">200</span>, <span class="number">500</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3&gt; 更新显示 - update 方法会把之前所有绘制的结果，一次性更新到屏幕窗口上</span></span><br><span class="line">pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-理解-游戏循环-和-游戏时钟"><a href="#03-理解-游戏循环-和-游戏时钟" class="headerlink" title="03. 理解 游戏循环 和 游戏时钟"></a>03. 理解 <strong>游戏循环</strong> 和 <strong>游戏时钟</strong></h2><blockquote>
+<p>现在 <strong>英雄飞机</strong> 已经被绘制到屏幕上了，<strong>怎么能够让飞机移动呢</strong> ？</p>
+</blockquote>
+<h3 id="3-1-游戏中的动画实现原理"><a href="#3-1-游戏中的动画实现原理" class="headerlink" title="3.1 游戏中的动画实现原理"></a>3.1 游戏中的动画实现原理</h3><ul>
+<li>跟 <strong>电影</strong> 的原理类似，游戏中的动画效果，本质上是 <strong>快速</strong> 的在屏幕上绘制 <strong>图像</strong><ul>
+<li>电影是将多张 <strong>静止的电影胶片</strong> <strong>连续、快速</strong>的播放，产生连贯的视觉效果！</li>
+</ul>
+</li>
+<li>一般在电脑上 <strong>每秒绘制 60 次</strong>，就能够达到非常 <strong>连续</strong> <strong>高品质</strong> 的动画效果<ul>
+<li>每次绘制的结果被称为 <strong>帧 Frame</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E6%89%8B%E7%BF%BB%E4%B9%A6%E5%8A%A8%E7%94%BB.gif" alt></p>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%8C%AB%E6%83%8A%E8%AE%B6.gif" alt></p>
+<h3 id="3-2-游戏循环"><a href="#3-2-游戏循环" class="headerlink" title="3.2 游戏循环"></a>3.2 <strong>游戏循环</strong></h3><h4 id="游戏的两个组成部分"><a href="#游戏的两个组成部分" class="headerlink" title="游戏的两个组成部分"></a>游戏的两个组成部分</h4><blockquote>
+<p><strong>游戏循环的开始</strong> 就意味着 <strong>游戏的正式开始</strong></p>
+</blockquote>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/005_%E6%B8%B8%E6%88%8F%E4%B8%BB%E6%A8%A1%E5%9D%97.png" alt></p>
+<h4 id="游戏循环的作用"><a href="#游戏循环的作用" class="headerlink" title="游戏循环的作用"></a>游戏循环的作用</h4><ol>
+<li>保证游戏 <strong>不会直接退出</strong></li>
+<li><strong>变化图像位置</strong> —— 动画效果<ul>
+<li>每隔 <code>1 / 60 秒</code> 移动一下所有图像的位置</li>
+<li>调用 <code>pygame.display.update()</code> 更新屏幕显示</li>
+</ul>
+</li>
+<li><strong>检测用户交互</strong> —— 按键、鼠标等…</li>
+</ol>
+<h3 id="3-3-游戏时钟"><a href="#3-3-游戏时钟" class="headerlink" title="3.3 游戏时钟"></a>3.3 游戏时钟</h3><ul>
+<li><code>pygame</code> 专门提供了一个类 <code>pygame.time.Clock</code> 可以非常方便的设置屏幕绘制速度 —— <strong>刷新帧率</strong></li>
+<li>要使用 <strong>时钟对象</strong> 需要两步：<ul>
+<li>1）在 <strong>游戏初始化</strong> 创建一个 <strong>时钟对象</strong></li>
+<li>2）在 <strong>游戏循环</strong> 中让时钟对象调用 <code>tick(帧率)</code> 方法 </li>
+</ul>
+</li>
+<li><code>tick</code> 方法会根据 <strong>上次被调用的时间</strong>，自动设置 <strong>游戏循环</strong> 中的延时</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3. 创建游戏时钟对象</span></span><br><span class="line">clock = pygame.time.Clock()</span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏循环</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置屏幕刷新帧率</span></span><br><span class="line">    clock.tick(<span class="number">60</span>)</span><br><span class="line"></span><br><span class="line">    print(i)</span><br><span class="line">    i += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-英雄的简单动画实现"><a href="#3-4-英雄的简单动画实现" class="headerlink" title="3.4 英雄的简单动画实现"></a>3.4 英雄的简单动画实现</h3><p><strong>需求</strong></p>
+<ol>
+<li>在 <strong>游戏初始化</strong> 定义一个 <code>pygame.Rect</code> 的变量记录英雄的初始位置</li>
+<li>在 <strong>游戏循环</strong> 中每次让 <strong>英雄</strong> 的 <code>y - 1</code> —— 向上移动 </li>
+<li><code>y &lt;= 0</code> 将英雄移动到屏幕的底部</li>
+</ol>
+<blockquote>
+<p>提示：</p>
+<ul>
+<li>每一次调用 <code>update()</code> 方法之前，需要把 <strong>所有的游戏图像都重新绘制一遍</strong></li>
+<li>而且应该 <strong>最先</strong> 重新绘制 <strong>背景图像</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4. 定义英雄的初始位置</span></span><br><span class="line">hero_rect = pygame.Rect(<span class="number">150</span>, <span class="number">500</span>, <span class="number">102</span>, <span class="number">126</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 可以指定循环体内部的代码执行的频率</span></span><br><span class="line">    clock.tick(<span class="number">60</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新英雄位置</span></span><br><span class="line">    hero_rect.y -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果移出屏幕，则将英雄的顶部移动到屏幕底部</span></span><br><span class="line">    <span class="keyword">if</span> hero_rect.y &lt;= <span class="number">0</span>:</span><br><span class="line">        hero_rect.y = <span class="number">700</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘制背景图片</span></span><br><span class="line">    screen.blit(bg, (<span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line">    <span class="comment"># 绘制英雄图像</span></span><br><span class="line">    screen.blit(hero, hero_rect)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新显示</span></span><br><span class="line">    pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+<h4 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h4><ol>
+<li>英雄向上飞行，当 <strong>英雄完全从上方飞出屏幕后</strong></li>
+<li>将飞机移动到屏幕的底部</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> hero_rect.y + hero_rect.height &lt;= <span class="number">0</span>:</span><br><span class="line">    hero_rect.y = <span class="number">700</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>提示</strong></p>
+<ul>
+<li><code>Rect</code> 的属性 <code>bottom = y + height</code> </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> hero_rect.bottom &lt;= <span class="number">0</span>:</span><br><span class="line">    hero_rect.y = <span class="number">700</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-在游戏循环中-监听-事件"><a href="#3-5-在游戏循环中-监听-事件" class="headerlink" title="3.5 在游戏循环中 监听 事件"></a>3.5 在游戏循环中 监听 事件</h3><h4 id="事件-event"><a href="#事件-event" class="headerlink" title="事件 event"></a>事件 <code>event</code></h4><ul>
+<li>就是游戏启动后，<strong>用户针对游戏所做的操作</strong></li>
+<li>例如：<strong>点击关闭按钮</strong>，<strong>点击鼠标</strong>，<strong>按下键盘</strong>…</li>
+</ul>
+<h4 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h4><ul>
+<li>在 <strong>游戏循环</strong> 中，判断用户 <strong>具体的操作</strong></li>
+</ul>
+<blockquote>
+<p>只有 <strong>捕获</strong> 到用户具体的操作，才能有针对性的做出响应</p>
+</blockquote>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
+<li><code>pygame</code> 中通过 <code>pygame.event.get()</code> 可以获得 <strong>用户当前所做动作</strong> 的 <strong>事件列表</strong><ul>
+<li>用户可以同一时间做很多事情</li>
+</ul>
+</li>
+<li>提示：<strong>这段代码非常的固定</strong>，几乎所有的 <code>pygame</code> 游戏都 <strong>大同小异</strong>！</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 游戏循环</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置屏幕刷新帧率</span></span><br><span class="line">    clock.tick(<span class="number">60</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 事件监听</span></span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断用户是否点击了关闭按钮</span></span><br><span class="line">        <span class="keyword">if</span> event.type == pygame.QUIT:</span><br><span class="line">            print(<span class="string">"退出游戏..."</span>)</span><br><span class="line"></span><br><span class="line">            pygame.quit()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 直接退出系统</span></span><br><span class="line">            exit()</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-理解-精灵-和-精灵组"><a href="#04-理解-精灵-和-精灵组" class="headerlink" title="04. 理解 精灵 和 精灵组"></a>04. 理解 <strong>精灵</strong> 和 <strong>精灵组</strong></h2><h3 id="4-1-精灵-和-精灵组"><a href="#4-1-精灵-和-精灵组" class="headerlink" title="4.1 精灵 和 精灵组"></a>4.1 精灵 和 精灵组</h3><ul>
+<li>在刚刚完成的案例中，<strong>图像加载</strong>、<strong>位置变化</strong>、<strong>绘制图像</strong> 都需要程序员编写代码分别处理</li>
+<li>为了简化开发步骤，<code>pygame</code> 提供了两个类<ul>
+<li><code>pygame.sprite.Sprite</code> —— 存储 <strong>图像数据 image</strong> 和 <strong>位置 rect</strong> 的 <strong>对象</strong></li>
+<li><code>pygame.sprite.Group</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/006_pygame.Sprite.png" alt></p>
+<h4 id="精灵"><a href="#精灵" class="headerlink" title="精灵"></a>精灵</h4><ul>
+<li><p>在游戏开发中，通常把 <strong>显示图像的对象</strong> 叫做精灵 <code>Sprite</code></p>
+</li>
+<li><p><strong>精灵</strong> 需要 有 <strong>两个重要的属性</strong></p>
+<ul>
+<li><code>image</code> 要显示的图像</li>
+<li><code>rect</code> 图像要显示在屏幕的位置</li>
+</ul>
+</li>
+<li><p>默认的 <code>update()</code> 方法什么事情也没做</p>
+<ul>
+<li>子类可以重写此方法，在每次刷新屏幕时，更新精灵位置</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>：<code>pygame.sprite.Sprite</code> 并没有提供 <code>image</code> 和 <code>rect</code> 两个属性</p>
+<ul>
+<li>需要程序员从 <code>pygame.sprite.Sprite</code> 派生子类</li>
+<li>并在 <strong>子类</strong> 的 <strong>初始化方法</strong> 中，设置 <code>image</code> 和 <code>rect</code> 属性</li>
+</ul>
+</li>
+</ul>
+<h4 id="精灵组"><a href="#精灵组" class="headerlink" title="精灵组"></a>精灵组</h4><ul>
+<li>一个 <strong>精灵组</strong> 可以包含多个 <strong>精灵</strong> 对象</li>
+<li>调用 <strong>精灵组</strong> 对象的 <code>update()</code> 方法<ul>
+<li>可以 <strong>自动</strong> 调用 <strong>组内每一个精灵</strong> 的 <code>update()</code> 方法</li>
+</ul>
+</li>
+<li>调用 <strong>精灵组</strong> 对象的 <code>draw(屏幕对象)</code> 方法<ul>
+<li>可以将 <strong>组内每一个精灵</strong> 的 <code>image</code> 绘制在 <code>rect</code> 位置</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Group(*sprites) -&gt; Group</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：仍然需要调用 <code>pygame.display.update()</code> 才能在屏幕看到最终结果</p>
+</blockquote>
+<h3 id="4-2-派生精灵子类"><a href="#4-2-派生精灵子类" class="headerlink" title="4.2 派生精灵子类"></a>4.2 派生精灵子类</h3><ol>
+<li>新建 <code>plane_sprites.py</code> 文件</li>
+<li>定义 <code>GameSprite</code> 继承自 <code>pygame.sprite.Sprite</code></li>
+</ol>
+<p><strong>注意</strong></p>
+<ul>
+<li>如果一个类的 <strong>父类</strong> 不是 <code>object</code></li>
+<li>在重写 <strong>初始化方法</strong> 时，<strong>一定要</strong> 先 <code>super()</code> 一下父类的 <code>__init__</code> 方法</li>
+<li><strong>保证父类中实现的 <code>__init__</code> 代码能够被正常执行</strong></li>
+</ul>
+<p><img src="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/007_GameSprite.png" alt></p>
+<p><strong>属性</strong></p>
+<ul>
+<li><code>image</code> 精灵图像，使用 <code>image_name</code> 加载</li>
+<li><code>rect</code> 精灵大小，默认使用图像大小</li>
+<li><code>speed</code> 精灵移动速度，默认为 <code>1</code></li>
+</ul>
+<p><strong>方法</strong></p>
+<ul>
+<li><code>update</code> 每次更新屏幕时在游戏循环内调用<ul>
+<li>让精灵的 <code>self.rect.y += self.speed</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>提示</strong></p>
+<ul>
+<li><code>image</code> 的 <code>get_rect()</code> 方法，可以返回 <strong>pygame.Rect(0, 0, 图像宽, 图像高)</strong> 的对象</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GameSprite</span><span class="params">(pygame.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="string">"""游戏精灵基类"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, image_name, speed=<span class="number">1</span>)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 调用父类的初始化方法</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载图像</span></span><br><span class="line">        self.image = pygame.image.load(image_name)</span><br><span class="line">        <span class="comment"># 设置尺寸</span></span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        <span class="comment"># 记录速度</span></span><br><span class="line">        self.speed = speed</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 默认在垂直方向移动</span></span><br><span class="line">        self.rect.y += self.speed</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-使用-游戏精灵-和-精灵组-创建敌机"><a href="#4-3-使用-游戏精灵-和-精灵组-创建敌机" class="headerlink" title="4.3 使用 游戏精灵 和 精灵组 创建敌机"></a>4.3 使用 游戏精灵 和 精灵组 创建敌机</h3><p><strong>需求</strong></p>
+<ul>
+<li>使用刚刚派生的 <strong>游戏精灵</strong> 和 <strong>精灵组</strong> 创建 敌机 并且实现敌机动画</li>
+</ul>
+<p><strong>步骤</strong></p>
+<ol>
+<li>使用 <code>from</code> 导入 <code>plane_sprites</code> 模块 <ul>
+<li><code>from</code> 导入的模块可以 <strong>直接使用</strong></li>
+<li><code>import</code> 导入的模块需要通过 <strong>模块名.</strong> 来使用</li>
+</ul>
+</li>
+<li>在 <strong>游戏初始化</strong> 创建 <strong>精灵对象</strong> 和 <strong>精灵组对象</strong></li>
+<li>在 <strong>游戏循环中</strong> 让 <strong>精灵组</strong> 分别调用 <code>update()</code> 和 <code>draw(screen)</code> 方法</li>
+</ol>
+<p><strong>职责</strong></p>
+<ul>
+<li>精灵<ul>
+<li>封装 <strong>图像 image</strong>、<strong>位置 rect</strong> 和 <strong>速度 speed</strong></li>
+<li>提供 <code>update()</code> 方法，根据游戏需求，<strong>更新位置 rect</strong></li>
+</ul>
+</li>
+<li>精灵组<ul>
+<li>包含 <strong>多个</strong> <strong>精灵对象</strong></li>
+<li><code>update</code> 方法，让精灵组中的所有精灵调用 <code>update</code> 方法更新位置</li>
+<li><code>draw(screen)</code> 方法，在 <code>screen</code> 上绘制精灵组中的所有精灵</li>
+</ul>
+</li>
+</ul>
+<h4 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h4><ul>
+<li>1) 导入 <code>plane_sprites</code> 模块</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> plane_sprites <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>2) 修改初始化部分代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建敌机精灵和精灵组</span></span><br><span class="line">enemy1 = GameSprite(<span class="string">"./images/enemy1.png"</span>)</span><br><span class="line">enemy2 = GameSprite(<span class="string">"./images/enemy1.png"</span>, <span class="number">2</span>)</span><br><span class="line">enemy2.rect.x = <span class="number">200</span></span><br><span class="line">enemy_group = pygame.sprite.Group(enemy1, enemy2)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>3) 修改游戏循环部分代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 让敌机组调用 update 和 draw 方法</span></span><br><span class="line">enemy_group.update()</span><br><span class="line">enemy_group.draw(screen)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新屏幕显示</span></span><br><span class="line">pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/23/%E5%BC%82%E5%B8%B8/" rel="prev" title="异常">
+      <i class="fa fa-chevron-left"></i> 异常
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/" rel="next" title="vi—终端中的编辑器">
+      vi—终端中的编辑器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pygame-快速入门"><span class="nav-number">1.</span> <span class="nav-text">pygame 快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目准备"><span class="nav-number">1.2.</span> <span class="nav-text">项目准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-使用-pygame-创建图形窗口"><span class="nav-number">1.3.</span> <span class="nav-text">01. 使用 pygame 创建图形窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小节目标"><span class="nav-number">1.3.1.</span> <span class="nav-text">小节目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-游戏的初始化和退出"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.1 游戏的初始化和退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-理解游戏中的坐标系"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.2 理解游戏中的坐标系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#案例演练"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">案例演练</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-创建游戏主窗口"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3 创建游戏主窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-简单的游戏循环"><span class="nav-number">1.3.5.</span> <span class="nav-text">1.4 简单的游戏循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-理解-图像-并实现图像绘制"><span class="nav-number">1.4.</span> <span class="nav-text">02. 理解 图像 并实现图像绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码演练-I-——-绘制背景图像"><span class="nav-number">1.4.1.</span> <span class="nav-text">代码演练 I —— 绘制背景图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码演练-II-——-绘制英雄图像"><span class="nav-number">1.4.2.</span> <span class="nav-text">代码演练 II —— 绘制英雄图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解-update-方法的作用"><span class="nav-number">1.4.3.</span> <span class="nav-text">理解 update() 方法的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-理解-游戏循环-和-游戏时钟"><span class="nav-number">1.5.</span> <span class="nav-text">03. 理解 游戏循环 和 游戏时钟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-游戏中的动画实现原理"><span class="nav-number">1.5.1.</span> <span class="nav-text">3.1 游戏中的动画实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-游戏循环"><span class="nav-number">1.5.2.</span> <span class="nav-text">3.2 游戏循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏的两个组成部分"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">游戏的两个组成部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#游戏循环的作用"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">游戏循环的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-游戏时钟"><span class="nav-number">1.5.3.</span> <span class="nav-text">3.3 游戏时钟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-英雄的简单动画实现"><span class="nav-number">1.5.4.</span> <span class="nav-text">3.4 英雄的简单动画实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作业"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">作业</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-在游戏循环中-监听-事件"><span class="nav-number">1.5.5.</span> <span class="nav-text">3.5 在游戏循环中 监听 事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事件-event"><span class="nav-number">1.5.5.1.</span> <span class="nav-text">事件 event</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听"><span class="nav-number">1.5.5.2.</span> <span class="nav-text">监听</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">1.5.5.3.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-理解-精灵-和-精灵组"><span class="nav-number">1.6.</span> <span class="nav-text">04. 理解 精灵 和 精灵组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-精灵-和-精灵组"><span class="nav-number">1.6.1.</span> <span class="nav-text">4.1 精灵 和 精灵组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#精灵"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">精灵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#精灵组"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">精灵组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-派生精灵子类"><span class="nav-number">1.6.2.</span> <span class="nav-text">4.2 派生精灵子类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-使用-游戏精灵-和-精灵组-创建敌机"><span class="nav-number">1.6.3.</span> <span class="nav-text">4.3 使用 游戏精灵 和 精灵组 创建敌机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现步骤"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">实现步骤</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
