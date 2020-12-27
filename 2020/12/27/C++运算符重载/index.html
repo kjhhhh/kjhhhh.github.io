@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、运算符的定义 运算符重载就是运算符的“一符多用”。重载运算符是具有特殊名称的函数：保留字 operator 后接需定义的操作符符号。像任意其他函数一样，重载操作符具有返回类型和形参表，每个操作符用于内置类型都有关联的定义，当内置操作符和类型上的操作存在逻辑对应关系时，操作符重载最有用，最直观，使用重载操作符并不是创造命名操作。 二、在哪种情况下使用哪种重载运算符的方式合适？ C++ 提供了两种">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++运算符重载">
+<meta property="og:url" content="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、运算符的定义 运算符重载就是运算符的“一符多用”。重载运算符是具有特殊名称的函数：保留字 operator 后接需定义的操作符符号。像任意其他函数一样，重载操作符具有返回类型和形参表，每个操作符用于内置类型都有关联的定义，当内置操作符和类型上的操作存在逻辑对应关系时，操作符重载最有用，最直观，使用重载操作符并不是创造命名操作。 二、在哪种情况下使用哪种重载运算符的方式合适？ C++ 提供了两种">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-27T07:22:33.261Z">
+<meta property="article:modified_time" content="2020-12-27T07:23:22.344Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="C++基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++运算符重载 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++运算符重载
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 15:22:33 / 修改时间：15:23:22" itemprop="dateCreated datePublished" datetime="2020-12-27T15:22:33+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一、运算符的定义</p>
+<p>运算符重载就是运算符的“一符多用”。重载运算符是具有特殊名称的函数：保留字 operator 后接需定义的操作符符号。像任意其他函数一样，重载操作符具有返回类型和形参表，每个操作符用于内置类型都有关联的定义，当内置操作符和类型上的操作存在逻辑对应关系时，操作符重载最有用，最直观，使用重载操作符并不是创造命名操作。</p>
+<p>二、在哪种情况下使用哪种重载运算符的方式合适？</p>
+<p>C++ 提供了两种重载运算符的方式，在大多数情况下：</p>
+<ul>
+<li>只有一个操作数的运算符（一目）使用类运算符重载方式为好；</li>
+<li>一般地说，如果运算符要修改操作数（类对象）的状态（值），则应使用类运算符（成员形式）。（在计算中可能改变操作数的值得运算符被称为有副作用的运算符，诸如：=、+=、-=、*=、/=、%=、++、– 等）；</li>
+<li>C++规定，运算符=、()、[ ]、-&gt; 只能采用类运算符形式重载；</li>
+<li>有两个操作数的运算符（二目）使用友元运算符重载方式为好；</li>
+<li>友元运算符重载方式在操作数的数据类型自动转换方面更为宽容，尤其是第一个操作数希望能够隐式类型转换时，则应采用友元形式；</li>
+<li>不允许重载的运算符有：&amp;&amp;、||、. 、:: 、 * 、?: 。</li>
+</ul>
+<p>三、运算符重载具体讨论（返回值和参数，这里讨论几个常用的运算符）</p>
+<p>默认地，重载运算符必须与内置操作符保持一致，也就是说重载后的运算符必须与本来内置操作符保持特性一致。函数最主要的两个就是返回值和形参。</p>
+<p>3.1、前缀++类运算符重载函数（前缀–类似）</p>
+<p>自增（自减）操作符的前置式定义：累加（递减）而后取出；后置式定义：取出而后累加（递减）。</p>
+<p>我们知道，在C语言里整型变量是允许连续前缀++两次的，也叫链式操作。这样为了保证重载运算符与内置操作符++类型一致，就要求前缀++类运算符重载函数也支持连续操作（链式操作），所以前缀++类运算符重载函数的返回值必须是类名的引用。上面第二点也说了，++作为单目运算符，并且会修改操作数的值，则应定义为类运算符，这样重载函数无形参。我们就可申明该前缀++类运算符重载函数如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zoo</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	Zoo(<span class="keyword">int</span> lion_n = <span class="number">0</span>, <span class="keyword">int</span> tiger_n = <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		lion = lion_n; tiger = tiger_n; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	~Zoo()&#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	Zoo&amp; <span class="keyword">operator</span>++();<span class="comment">//无参，返回值为类名的引用</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> lion;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>下面就是前缀++类运算符重载函数的实现了</p>
+<p>内置类型前缀++操作符是直接修改了操作数，然后返回修改后的操作数本身（唯一地址），不存在复制的情况，所以重载函数也应遵循这一点：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Zoo&amp; Zoo::<span class="keyword">operator</span>++()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++lion;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>由于函数的返回值类型被定义为引用，所以不会发生复制，返回的是操作数本身，完全符合内置前缀++的语法定义。</p>
+<p>我们再来考虑错误情况：如果前缀++类运算符重载函数的返回值是类型，也就是返回一个对象，其对应实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Zoo Zoo::<span class="keyword">operator</span>++()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++lion;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>咋一看上面的也实现了前缀++的功能，但是返回值是对象，在函数返回时会发生复制，虽然该函数成功将操作类对象的成员修改了，但是函数返回的是一个复制品，然后再执行++链式操作时，修改的会是这个复制品的值（相当于这个复制品调用前缀++类运算符重载函数），本尊并没有修改，也就是不能成功实现链式操作，不符合内置++的语法定义（ C++中，前缀++是可以连续前缀两次以上的，但后缀++则不可以）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Zoo zoo;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">++(++zoo);</span><br></pre></td></tr></table></figure>
+
+<p>上面执行后，zoo.lion = 1，zoo.tiger = 1 。并不是期望的2。</p>
+<p>至于返回其余类型那就更加错误了。</p>
+<p>3.2、后缀++类运算符重载函数（后缀–类似）</p>
+<p>与前缀++操作符一样，后缀++也是单目操作符，也会修改操作书本身，所以二者的形参数目和类型相同，为了区别函数，后缀++操作符接受一个额外的（即，无用的）int 型形参。使用后缀++操作符时，编译器提供0作为这个形参的实参。</p>
+<p>与前缀++类运算符截然相反的是，后缀++返回值的类型恰恰不能是类的引用，其目的是在返回值时引起复制，即让一个并未自增的替身对象去参加表达式的后续运算，另外C/C++在语法上不允许后缀++连续运算两次以上，也就不要求返回引用，并且必须返回 const 对象。我们看看内置后缀++操作符：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j = i++;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">i++++;  <span class="comment">//违法</span></span><br></pre></td></tr></table></figure>
+
+<p>内置后缀++操作符，操作数 i 本身已经完成了自增，但是后续的赋值操作并不是将自增后的 i 赋值给j，而是将并未自增的替身参与赋值运算。所以在重载后缀++类运算符的时候，我们应该考虑这点，另外必须返回一个 const 对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Zoo Zoo::<span class="keyword">operator</span>++(<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">Zoo <span class="title">ret</span><span class="params">(*<span class="keyword">this</span>)</span></span>;<span class="comment">//拷贝构造函数，构造复制品</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++lion;<span class="comment">//本尊自增</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;<span class="comment">//返回复制品</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在已经定义了前缀++类运算符重载函数的情况下，后缀++类运算符重载函数一般这样实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Zoo Zoo::<span class="keyword">operator</span>++(<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">Zoo <span class="title">ret</span><span class="params">(*<span class="keyword">this</span>)</span></span>;<span class="comment">//拷贝构造函数，构造复制品</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	++(*<span class="keyword">this</span>);<span class="comment">//本尊自增</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;<span class="comment">//返回复制品</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.3、二目运算符重载（+=，-=，+，-） </p>
+<p>先说复合赋值操作符，上面“+=”，“-=”也可认为是赋值操作符。内置+=、-=、%= 是允许进行链式操作的（如果不确定是否允许，可以写一个测试程序判断），所以为了与内置类型的操作一致，重载函数毫无疑问是返回一个引用，也避免了创建和撤销结果的临时副本。</p>
+<p>但是“+”“-” 等是返回一个新的结果，这就要求算术运算符的重载不能返回一个引用，另外+的表达式也不能作为左值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">i = i + j + j;<span class="comment">//可以连续+，但是右边的i,j还是原值，(i+j) = i + i;错误！</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       i += (i += j);<span class="comment">//复合了赋值操作符，这样是允许的</span></span><br></pre></td></tr></table></figure>
+
+<p>有了前面分析，不难写出上面的重载函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Zoo&amp; Zoo::<span class="keyword">operator</span>+=(Zoo &amp;rhs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	lion += rhs.lion;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	tiger += rhs.tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继而过来讨论“+”“-”：</p>
+<p><strong>返回值是一个右值</strong></p>
+<p>前面说到了，“+”“-”是返回一个新的结果，算术运算符通常产生一个新值，该值是两个操作数的计算结果，它不同于任一操作数且在一个局部变量中计算，返回对那个变量的引用是一个运行时错误。通俗一点，假如算术运算符重载函数返回一个对象的引用，这个引用是两个操作的计算结果，它的本体就会是一个局部变量（对象），返回一个局部变量的引用，是错误的。所以对于类算术运算符的重载，只能返回一个右值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Zoo <span class="keyword">operator</span>+(Zoo &amp;first, Zoo &amp;second)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">Zoo <span class="title">ret</span><span class="params">(first)</span></span>;<span class="comment">//拷贝构造函数，构造一个局部变量，用于返回值</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ret += second;<span class="comment">//运算操作</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;<span class="comment">//返回一个值</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二目算术运算符重载通常使用友元运算符重载方式。</p>
+<p>从上面也可以看出，类运算符的重载最好与内置运算符保持一致，虽然没硬性规定，但这俨然成了一个默认规定。</p>
+<p>另外 !（逻辑反）、~（按位与）、-（负号）等与二目算术运算符有类似之处，那就他们都不会修改原对象数据成员，而是将运算结果交给一个新值，所以在重载时，需要构造一个临时对象作为返回值，返回值也就同样不能是引用。</p>
+<p>3.4、输入输出操作符重载</p>
+<p>支持I/O操作的类所提供的I/O操作接口，一般应该与标准库iostream为内置类型定义的接口相同。</p>
+<p>1、输出操作符 &lt;&lt; 的重载</p>
+<p>为了与I/O标准库一致，操作符应接受 ostream&amp; 作为第一个形参，对类类型 const 对象的引用作为第二个形参，并返回对 ostream 形参的引用。</p>
+<p>重载输出操作符可能相对于比较难理解，这里简单的说下，我们只能以自定义类的友元函数的形式重载这两个运算符，这是因为如果我们用成员函数的形式来重载的话，就要改动系统的流类 istream 和 ostream 定义，这是C++不允许的，如果不定义为友元函数的话，将无法调用类对象成员数据输出。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; stream, <span class="keyword">const</span> Zoo &amp;object)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//对object所引用的对象的数据进行的输出操作</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	stream &lt;&lt; object.lion;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	stream &lt;&lt; object.tiger;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> stream;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看看上面这个输出操作符重载函数，第一个参数是 ostream 类的引用，而函数的返回值也是 ostream 类的引用。毫无疑问，我们调用这个运算符重载函数时。实参肯定是 cout，这样就造成了这样一种情况：实参 stream 引用 cout，而函数的返回值又引用 stream，等于函数返回值引用的实体还是 cout。这样做的目的是实现了连续的输出操作。当执行下面语句：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; zoo_a &lt;&lt; zoo_b;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//上面 cout &lt;&lt; zoo_a 实质就是调用 operator&lt;&lt;(cout, zoo_a),然后返回 cout</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//下一个 &lt;&lt; 就相当于执行 cout &lt;&lt; zoo_b, 同上</span></span><br></pre></td></tr></table></figure>
+
+<p>我们不能将该操作符重载函数定义为类的成员函数，否则，左操作数将只能是该类类型的对象。IO操作符通常要对非公用数据成员进行读写，因此，类通常将IO操作符（输入输出）设为友元。</p>
+<p>2、输入操作符 &gt;&gt; 的重载</p>
+<p>为了与IO标准库一致，操作符应接受 istream&amp; 作为第一个形参，指向它要读的流，并且返回的也是对同一个流的引用（链式操作）。它的第二个形参是对要读入的对象的非 const 引用，该形参必须为非 const，因为输入操作符的目的是将数据读到这个对象中。</p>
+<p>更重要但通常重视不够的是，输入和输出操作符有如下区别：输入操作符必须处理错误和文件结束的可能性。</p>
+<p>输入期间的错误：任何读操作都可能因为提供的值不正确而失败；任何读入都可能碰到输入流中的文件结束或其他一些错误。也就需要对输入进行附加检查，发现有这些错误就需要我们进行处理。</p>
+<p>3.5、不能重载的运算符 &amp;&amp;、|| 和 , 操作符</p>
+<p>和 C 一样，C++ 对于真假值表达式采用所谓骤死式评估方式。意思是一旦该表达式的真假值去顶，纵使表达式中还有部分尚未检验，整个评估工作仍告结束。比如下面这种情况：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *p;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">……</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((p != <span class="literal">NULL</span>) &amp;&amp; (<span class="built_in">strlen</span>(p) &gt; <span class="number">10</span>) ……</span><br></pre></td></tr></table></figure>
+
+<p>你无需担心调用 strlen 时 p 是否为 NULL 指针，因为如果 p 是否为NULL 的测试结果是否定的，strlen 就绝不会被调用。事实上，对一个 NULL 指针调用 strlen，结果未可预期。</p>
+<p>回到重载，C++ 允许我们为用户定制型别量身定做各类操作符，包括 &amp;&amp; 和 ||，操作符重载语义上是允许的，但是我们要考虑重载会不会改变对应内置操作符的规则。拿 &amp;&amp; 和 || 来说，重载则是对 operator &amp;&amp; 和 operator || 两函数进行重载工作，值得注意的是，函数调用语义将会取代骤死式语义，也就是说，如果你将operator &amp;&amp; 重载，下面这个虱子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression1 &amp;&amp; expression2) ……</span><br></pre></td></tr></table></figure>
+
+<p>会被编译器视为以下两者之一：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression1.<span class="keyword">operator</span>&amp;&amp;(expression2)) ……</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//假设 operator&amp;&amp; 是个 member function</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">operator</span>&amp;&amp;(expression1, expression2)) ……</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//假设 operator&amp;&amp; 是个全局函数</span></span><br></pre></td></tr></table></figure>
+
+<p>上面函数调用语义和所谓骤死式语义有两个重大的不同。第一，当函数调用动作被执行起来，所有参数值都必须评估完成，所以当我们调用 operator&amp;&amp; 和 operator|| 时，两个参数都已评估完成，没有什么骤死式语义。第二，C++ 语言规格并未明定函数调用动作中各参数的评估次序，所以没办法知道 expression1 和 expression2 哪个会先被评估，而内置的真假值表达式，则总是由左向右评估其自变量。</p>
+<p>C++ 中，运算符重载的一个重要参考就是：不能修改运算符的内置语义。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># C++基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="prev" title="C语言内存管理：malloc、calloc、free的实现">
+      <i class="fa fa-chevron-left"></i> C语言内存管理：malloc、calloc、free的实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="C++指针与引用的区别">
+      C++指针与引用的区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

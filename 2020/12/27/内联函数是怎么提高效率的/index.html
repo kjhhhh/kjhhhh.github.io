@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="C++和C99均支持内联函数inline，按这个名称的意思应该是“在字里行间展开”，内联函数会在它被调用的位置展开 。 讨论之前，我们先来看一个故事：实验室搬至六楼，小件器件特别多，一同学正一件一件地往六楼搬，老师借给他一个大袋子，这同学一次就把这些小物件搬上了六楼，虽然增加了一个大袋子的重量，却省去了上下六楼100多趟之苦。这个大袋子就充当了内联函数的功能。 我们都知道，一个函数的调用要付出时间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内联函数是怎么提高效率的">
+<meta property="og:url" content="http://yoursite.com/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C++和C99均支持内联函数inline，按这个名称的意思应该是“在字里行间展开”，内联函数会在它被调用的位置展开 。 讨论之前，我们先来看一个故事：实验室搬至六楼，小件器件特别多，一同学正一件一件地往六楼搬，老师借给他一个大袋子，这同学一次就把这些小物件搬上了六楼，虽然增加了一个大袋子的重量，却省去了上下六楼100多趟之苦。这个大袋子就充当了内联函数的功能。 我们都知道，一个函数的调用要付出时间">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-27T07:30:01.011Z">
+<meta property="article:modified_time" content="2020-12-27T07:30:40.520Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="C++基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>内联函数是怎么提高效率的 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内联函数是怎么提高效率的
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 15:30:01 / 修改时间：15:30:40" itemprop="dateCreated datePublished" datetime="2020-12-27T15:30:01+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>C++和C99均支持内联函数inline，按这个名称的意思应该是“在字里行间展开”，内联函数会在它被调用的位置展开 。</p>
+<p>讨论之前，我们先来看一个故事：实验室搬至六楼，小件器件特别多，一同学正一件一件地往六楼搬，老师借给他一个大袋子，这同学一次就把这些小物件搬上了六楼，虽然增加了一个大袋子的重量，却省去了上下六楼100多趟之苦。这个大袋子就充当了内联函数的功能。</p>
+<p>我们都知道，一个函数的调用要付出时间上的代价，其大致过程为：</p>
+<p>\1. 保护现场，就是先将主调函数里的函数调用返回后要执行的指令的地址压入栈中保存；</p>
+<p>\2. 把被调函数的形参和auto存储类型的变量压入栈区保存，这一步压入的所有变量所占有的存储我们称之为被调函数的数据现场；</p>
+<p>\3. 执行完被调函数之后，把被调函数数据现场释放(出栈)；</p>
+<p>\4. 把第1步压入的指令地址出栈，即恢复现场，然后找到这个地址继续执行。</p>
+<p>要是一个函数被调用了许多次，那么编译系统需要来来回回的往返许多趟，存在栈内存创建和释放的开销，于是C++(C99)的编译系统提供了一个大袋子。在被调函数的定义前加一个标志(inline)告诉编译系统，编译系统看到这个标志后，实际编译出的可执行程序，就如同用函数体合理地置换了函数被调用处一样，我们称之为内联机制。</p>
+<p>内联机制可以消除函数调用和返回带来的开销(寄存器存储和恢复)，另外，编译器也会把调用函数的代码和函数本身放在一起进行优化，那么，是不是干脆把所有的函数都定义称内联函数呢，天底下没有免费的午餐，在计算机科学中，空间和时间永远是个矛盾体。内联是以代码膨胀(复制)为代价，仅仅省去了函数调用的开销，需要占用更多的内存空间或者更多的指令缓存，最终生成的可执行程序的体积会有膨胀，这是典型的以空间换时间的做法。</p>
+<p>这是对于函数体比较短小的情况，但如果函数体比较大，执行函数体内代码的时间，相比于函数调用的开销比较大，那么效率的收获会很少，而且，每一处内联函数的调用都要拷贝一份代码，将使程序的总代码量增大，消耗更多的内存空间，这样就不值得了。</p>
+<p>一般来说，具有以下特征的函数适宜定义成内联函数：</p>
+<p>\1. 函数体内的语句数量较少，如果函数体内代码比较长，使用内联将导致内存消耗代价较高；</p>
+<p>\2. 函数体内没有循环，递归等。出现循环，执行函数体内代码的时间要比函数调用的开销大；</p>
+<p>\3. 在满足上面两个前提下，函数实际调用次数却很多的情况。就可以考虑将函数定义为内联来提高效率。</p>
+<p>那么内联函数究竟是如何工作的呢？</p>
+<p>当我们定义了一个函数之后，编译器会将其编译成一个指令集合。这个指令集合在程序运行的时候会出现在内存的代码区里，并且在调用此函数时程序执行的地址会跳转到这个指令集合的入口地址，当指令集合执行完后，再跳回到主调函数。换句话说，任何时候内存中只有一个指令集，如果该函数被调用10次，则运行时就会跳转到同一入口地址10次。</p>
+<p>如果定义为inline函数，编译器并不创建真实函数，内联函数不仅同普通函数一样经过检查后保存函数名称、参数类型和返回值类型，还会把内联函数的本体也一并存入符号表中，在之后的编译过程中一旦遇到该函数被调用时会首先检查调用是否合法，然后编译器会将inline函数的指令集合(函数代码)复制嵌入到主调函数中的调用位置，内联函数的代码就会直接替换函数调用，这样就不需要函数调用的跳转开销了。如果函数被调用了10次，就相当于内存中就包含10个相同指令集合的拷贝，没有一次调用。</p>
+<p>了解了内联函数是怎么工作的，那么内联机制的优劣就好理解了。需要清楚的是，我们定义为inline函数只是建议编译器进行内联，而不是命令编译器进行内联，所以最后是不是内联函数取决于编译器。还有关键字inline必须与函数定义放在一起才能使函数成为内联(最后由编译器决定)，仅放在函数声明前面不起作用。因为inline是在编译时展开，必须有实体，在编译阶段，编译器看到inline标志就会根据该函数体情况去判断是否应该将该函数体定义为内联。没看到本体怎么判断勒。</p>
+<p>inline是一种“用于实现的关键字”，内联函数不能带有virtual关键字。常把inline函数定义为static类型，可以在不同文件中定义同名文件，而不必担心命名冲突，所有未加static前缀的函数都具有全局可见性，其他源文件也能访问。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># C++基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/27/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="prev" title="单例设计模式">
+      <i class="fa fa-chevron-left"></i> 单例设计模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" rel="next" title="STL空间配置器(一) 构造和析构">
+      STL空间配置器(一) 构造和析构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

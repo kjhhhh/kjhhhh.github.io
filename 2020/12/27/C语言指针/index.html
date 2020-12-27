@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="指针是一个特殊的变量，它里面存储的数值被解释成为内存（用户空间的虚拟内存）里的一个地址。 一、指针的属性一个指针包含四个方面的内容：指针的类型、指针所指向的类型、指针所指向的内存区、指针本身所占据的内存区。 接下来就下面几个例子作说明： 123451、 int *p;2、 char *p；3、 int **p;4、 int (*p)[3];5、 int *(*p)[4];12345   1.1、指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言指针">
+<meta property="og:url" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="指针是一个特殊的变量，它里面存储的数值被解释成为内存（用户空间的虚拟内存）里的一个地址。 一、指针的属性一个指针包含四个方面的内容：指针的类型、指针所指向的类型、指针所指向的内存区、指针本身所占据的内存区。 接下来就下面几个例子作说明： 123451、 int *p;2、 char *p；3、 int **p;4、 int (*p)[3];5、 int *(*p)[4];12345   1.1、指">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116184402036">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116201704585">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116202758886">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117125236102">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117131117792">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117144211853">
+<meta property="og:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117144345249">
+<meta property="article:published_time" content="2020-12-27T07:04:46.301Z">
+<meta property="article:modified_time" content="2020-12-27T07:06:11.002Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="C基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116184402036">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C语言指针 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言指针
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 15:04:46 / 修改时间：15:06:11" itemprop="dateCreated datePublished" datetime="2020-12-27T15:04:46+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>指针是一个特殊的变量，它里面存储的数值被解释成为内存（用户空间的虚拟内存）里的一个地址。</p>
+<h3 id="一、指针的属性"><a href="#一、指针的属性" class="headerlink" title="一、指针的属性"></a><strong>一、指针的属性</strong></h3><p>一个指针包含四个方面的内容：<strong>指针的类型、指针所指向的类型、指针所指向的内存区、指针本身所占据的内存区。</strong></p>
+<p>接下来就下面几个例子作说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、 int *p;</span><br><span class="line">2、 char *p；</span><br><span class="line">3、 int **p;</span><br><span class="line">4、 int (*p)[3];</span><br><span class="line">5、 int *(*p)[4];12345</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="1-1、指针的类型"><a href="#1-1、指针的类型" class="headerlink" title="1.1、指针的类型"></a><strong>1.1、指针的类型</strong></h4><p><strong>从语法的角度，只要把指针声明语句里的指针名字去掉，剩下的部分就是这个指针的类型，即指针本身所具有的类型。</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="keyword">int</span> *p;        <span class="comment">//指针的类型是 int*</span></span><br><span class="line"><span class="number">2</span>、 <span class="keyword">char</span> *p；      <span class="comment">//指针的类型是  char*</span></span><br><span class="line"><span class="number">3</span>、 <span class="keyword">int</span> **p;       <span class="comment">//指针的类型是 int**</span></span><br><span class="line"><span class="number">4</span>、 <span class="keyword">int</span> (*p)[<span class="number">3</span>];   <span class="comment">//指针的类型是 int(*)[3]</span></span><br><span class="line"><span class="number">5</span>、 <span class="keyword">int</span> *(*p)[<span class="number">4</span>];  <span class="comment">//指针的类型是 int*(*)[3]12345</span></span><br></pre></td></tr></table></figure>
+
+<p>然后有的人还是不知道怎么读…（后面再说）<br>插播：指针类型说明原则：<strong>从变量名处起，根据运算符优先级结合，一步一步分析。</strong></p>
+<hr>
+<h4 id="1-2、指针所指向的类型"><a href="#1-2、指针所指向的类型" class="headerlink" title="1.2、指针所指向的类型"></a><strong>1.2、指针所指向的类型</strong></h4><p><strong>通过指针来访问指针所指向的内存区时，指针所指向的类型决定了编译器将把那片内存区里的内容当做什么看待，简而言之，就是编译器会在内存中预留出多大的内存空间给这个指针</strong></p>
+<p>从语法上，把指针声明语句中的指针名字和名字左边的指针声明符*去掉，剩下的就是指针所指向的类型。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="keyword">int</span> *p;        <span class="comment">//指针所指向的类型是 int</span></span><br><span class="line"><span class="number">2</span>、 <span class="keyword">char</span> *p；      <span class="comment">//指针所指向的类型是 char</span></span><br><span class="line"><span class="number">3</span>、 <span class="keyword">int</span> **p;       <span class="comment">//指针所指向的类型是 int*</span></span><br><span class="line"><span class="number">4</span>、 <span class="keyword">int</span> (*p)[<span class="number">3</span>];   <span class="comment">//指针所指向的类型是 int()[3]</span></span><br><span class="line"><span class="number">5</span>、 <span class="keyword">int</span> *(*p)[<span class="number">4</span>];  <span class="comment">//指针所指向的类型是 int*()[3]12345</span></span><br></pre></td></tr></table></figure>
+
+<p>注意指针的类型和指针所指向的类型是两个概念，当然第一个其实没什么卵用，后面这个概念才是重点。</p>
+<p>指针所指向的类型，表示了编译器为给这个指针所指向的区域分配了多大内存，这个概念是非常重要的，尤其在指针进行自增自减，以及加减常数运算的时候。<br>比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="keyword">int</span> *p;        <span class="comment">//对于这个编译器为p所指向的类型预留了4个字节的空间(int类型)，p++的时候，</span></span><br><span class="line">                  <span class="comment">//是以4个字节为单位进行递增的（p+2，实则是偏移了2*4个字节的位置）</span></span><br><span class="line"><span class="number">2</span>、 <span class="keyword">char</span> *p；      <span class="comment">//以一个字节为单位（char占用1个字节）</span></span><br><span class="line"><span class="number">3</span>、 <span class="keyword">int</span> **p;       <span class="comment">//以4个字节为单位（int * 占用4个字节）</span></span><br><span class="line"><span class="number">4</span>、 <span class="keyword">int</span> (*p)[<span class="number">3</span>];   <span class="comment">//首先这是个数组指针（指向一个大小为3的数组，里面存放的是int类型），以12个字节为单位</span></span><br><span class="line"><span class="number">5</span>、 <span class="keyword">int</span> *(*p)[<span class="number">4</span>];  <span class="comment">//同样12个字节为单位，数组里面存放的是int*类型（4个字节）</span></span><br><span class="line"><span class="number">6</span>、 <span class="class"><span class="keyword">struct</span> <span class="title">str</span> *<span class="title">p</span>;</span> <span class="comment">//就是以sizeof(struct str)为单位了</span></span><br><span class="line"><span class="number">7</span>、 <span class="keyword">void</span> *p;       <span class="comment">//p++,就出错了，因为p所指向的类型是未定义的，即编译器不知道该为这个p所指向的类型分配多大空间     12345678</span></span><br></pre></td></tr></table></figure>
+
+<p>这个概念非常重要，尤其在处理指针偏移量的时候，是以该指针所指向的数据类型为单位。</p>
+<p>在32位系统下，任何指针变量所占用的空间都是4个字节（32位），包括void*，这样意味着每个指针变量的寻址空间是0~2^32-1（即4G的寻址空间）。</p>
+<hr>
+<h4 id="1-3、指针所指向的内存区域地址"><a href="#1-3、指针所指向的内存区域地址" class="headerlink" title="1.3、指针所指向的内存区域地址"></a><strong>1.3、指针所指向的内存区域地址</strong></h4><p><strong>指针的值就是指针本身存储的数值，这个值被编译器当做一个地址，指针所指向的内存区就是从指针的数值所表示的那个内存地址开始，长度为 sizeof(指针所指向的类型)的一片内存区。</strong></p>
+<p>结合上面的第二点（指针所指向的类型），定义一个指针，我们就可以知道这个指针的有效区域，什么意思呢，看下面</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="keyword">int</span> *p; <span class="comment">//p数值表示这块区域的首地址，哪个地方结束呢，（unsigned long）p+sizeof(int)1</span></span><br></pre></td></tr></table></figure>
+
+<p>编译器会划定长度为 sizeof(指针所指向的类型)的一片内存区给这个指针变量，就是说用户程序使用这个指针变量（解引用*）时，编译器得知道p所表示的地址后面还有多少的空间数据是属于这个指针变量的，不多也不少。</p>
+<hr>
+<h4 id="1-4、指针本身所占据的内存区"><a href="#1-4、指针本身所占据的内存区" class="headerlink" title="1.4、指针本身所占据的内存区"></a><strong>1.4、指针本身所占据的内存区</strong></h4><p>前面说了，32位平台里，指针本身占据了4个字节的长度。<br><strong>一个指针本身占据有内存的话，那么这个指针是一个左值，否则就不是一个左值。</strong></p>
+<p>用哲学的观点解释就是，世界是物质的，一个变量要作为左值，它得自身占据一个内存空间， 不然赋值给它的对象放在哪</p>
+<p>如果一个表达式的结果是一个指针，那么这个表达式就叫指针表达式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="keyword">int</span> *pa;</span><br><span class="line">pa = &amp;a;<span class="comment">//&amp;a是一个指针，但是它不能作为左值，因为&amp;a它本身没有占据明确的内存123</span></span><br></pre></td></tr></table></figure>
+
+<p>x=y;<br><strong>左值</strong>：在这个上下文环境中，编译器认为 x 的含义是 x 所代表的地址。这个地址只有编译器知道，在编译的时候确定，编译器在一个特定的区域保存这个地址，我们无需知道；<br><strong>右值</strong>，在这个上下文环境中，编译器认为 y 的含义是 y 所代表的地址里面的内容，这个内容是什么，只有到运行时才知道。</p>
+<p>pa 与 &amp;a 在编译器看来是不一样的。编译器没有为 &amp;a 这个东东分配一块内存来存其地址，皮之不存毛将安附焉。</p>
+<hr>
+<h3 id="二、指针的算术运算"><a href="#二、指针的算术运算" class="headerlink" title="二、指针的算术运算"></a><strong>二、指针的算术运算</strong></h3><h4 id="2-1、指针的加减整数"><a href="#2-1、指针的加减整数" class="headerlink" title="2.1、指针的加减整数"></a><strong>2.1、指针的加减整数</strong></h4><p>指针可以加上或减去一个整数。但是它加减的单位不是单纯的整数，而是整数*sizeof(指针所指向的类型)，这个在前面的第2点讲述了，这里不赘述。</p>
+<p>强制类型转换不会改变原有指针的类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char str[20] &#x3D; &quot;hello world&quot;;</span><br><span class="line">int *p &#x3D; (int *)str;  &#x2F;&#x2F;str的类型不变</span><br><span class="line">++p;  &#x2F;&#x2F; *p的值？123</span><br></pre></td></tr></table></figure>
+
+<p>str的类型不变是什么意思呢，就是str++还是以sizeof(char)为单位进行运算的。</p>
+<p>p 被初始化为指向整型变量str，我们知道str表示这个char数组的首地址，第二行语句就是把这个首地址赋值给p，进行强制转换的意图就是重新把str所指向的这块区域进行细分，原来是char类型，是以1个字节为单位划分的，现在是int类型，就成了以4个字节为单位划分的。</p>
+<p><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116184402036" alt="这里写图片描述"></p>
+<p>所以++p之后，p就到了图中p+1的位置处，那么++p之后<em>p的值呢？<br>为方便说明，我们令 pt = p+1; 那么pt对应的区域就是 o wo这四个字符占据的空间，然后转换为asscii码就是（十六进制） 6F,20,77,6F, *pt的值还需要考虑你测试机器的大小端模式，X86是小端模式，所以 *pt = 0x6F77206F = 1870078063<br>\</em> ((char*)p) = ‘o’</p>
+<p>对此，我们要清楚的认识到，<strong>指针的运算实值是地址的偏移，加往后偏移，减则往前面偏移</strong>， 所以 a[-1]是正确的，当然前提是这个位置是定义了的，而不是未映射区域。由此可以导出一点，指针的偏移操作不能超出范围（指针语义上没错，但一旦应用程序中这样使用，保你崩溃）</p>
+<p>另外，<strong>两个指针不能进行加法运算</strong>，进行加法后，得到的结构指向一个不知所向的地方；<strong>两个指针可以进行减法操作，但必须类型相同</strong>，一般用于确定两个同类型指针变量之间的偏移量，linux内核数据结构 list 就是很好的应用这一特性的典范。</p>
+<hr>
+<h4 id="2-2、运算符-amp-和"><a href="#2-2、运算符-amp-和" class="headerlink" title="2.2、运算符&amp;和*"></a><strong>2.2、运算符&amp;和*</strong></h4><p>这里讨论是C语言中的指针，&amp; 不涉及到C++中的引用语义。<br>这里 &amp; 是取地址运算符，之前我们说过世界是物质的，在计算机内存中也不例外，一个有效变量它总会在内存的某个地方占据一个对应的空间大小，用于存放这个数值，而&amp;则是获取这个变量存放的地址。</p>
+<p>&amp;a 的结果自然是一个指针，<em>习惯称之为解引用，</em>p就是获取p所指向的内容。</p>
+<hr>
+<h3 id="三、指针和数组"><a href="#三、指针和数组" class="headerlink" title="三、指针和数组"></a><strong>三、指针和数组</strong></h3><p><strong>指针是指针，数组是数组，两个是不一样的东西</strong></p>
+<ul>
+<li>指针就是指针，指针变量在32位系统下，永远占4个byte，其值为某一个内存的地址，指针可以指向任何地方，但不是任何地方你都能通过这个指针访问到。</li>
+<li>数组就是数组，其大小与元素的类型和个数有关，定义数组时，必须指定其元素的类型和个数、数组可以存任何类型的数据，但不能存函数，可以存函数指针。</li>
+</ul>
+<p><strong>指针与数组之间的恩恩怨怨起源于，数组名表示数组首元素的地址</strong></p>
+<blockquote>
+<p>C语言中，当一维数组作为函数参数的时候，编译器总是把它解析成一个指向其首元素首地址的指针。（仅限于一维数组）</p>
+</blockquote>
+<p>这也是为什么无法向函数传递一个数组，而必须在传递的同时指定数组的长度。</p>
+<p>看下面</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">//a  表示数组首元素的地址，即a[0]的地址，*a = 1</span></span><br><span class="line"><span class="comment">//&amp;a 表示数组的首地址</span></span><br><span class="line"><span class="comment">//&amp;a[0] 也表示数组首元素的地址1234</span></span><br></pre></td></tr></table></figure>
+
+<p>有趣的事，上面三个变量的数值是一样的，其数值就是数组的首位置地址。但是意义是不同的，用前面第一章第2点的说法（指针所指的数据类型）来解释就是，这三个变量代表的意义是不同的，这就表示它们自增之后的数值就不一样了。<br><strong>a+n 的值是 &amp;a[0] + n * sizeof(int)；</strong><br><strong>&amp;a+1 的值是 &amp;a[0] + 1 * sizeof(a) = &amp;a[0] + 1*5*sizeof(int);</strong></p>
+<p>那么 a 和 &amp;a[0] 的区别在哪呢，这两个变量作为右值的话，是没有区别的，都是表示数组首元素的地址，而不是数组的地址。</p>
+<p>但是，a 不能作为左值，编译器没有为数组a分配一块内存来存其地址，另外我们只能访问数组的某个元素而无法把数组当一个总体进行访问。</p>
+<p>因为数组名表示该数组首元素的地址，所以我们可以用指针获取这个地址值，然后增加偏移量来读取数组元素</p>
+<p>就一维数组和一级指针而言，二者在一定程度上是等效的，根据上面的分析，很好理解应用。</p>
+<hr>
+<h4 id="二维数组与指针"><a href="#二维数组与指针" class="headerlink" title="二维数组与指针"></a><strong>二维数组与指针</strong></h4><p>看看二维数组，首先把内存看做是一个连续的一维大数组，二维只是我们为了方便处理把它意识形态上的划分为二维，其本质还是一维的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">4</span>];<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>上面声明了一个二维数组，三行四列，<br><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116201704585" alt="这里写图片描述"></p>
+<p>然后尝试用指针对这个二维数组进行元素访问。由上图可知，<strong>编译器总是将二维数组看成一个一维数组（更高维数也是一样的），而一维数组的每一个元素又都是一个数组。</strong><br>a[0]这个一维数组的三个元素分别为 a[0],a[1],a[2]，而这个a[0],a[1],a[2]又都是一个有四个元素的一维数组</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160116202758886" alt="这里写图片描述"></p>
+<p>所以上面后面的a[0],a[1],a[2]的首地址分别为 &amp;a[0], &amp;a[0] + 1<em>sizeof(a[0]), &amp;a[0] + 2</em>sizeof(a[0]);</p>
+<p>也就是说 a[i] 的首地址为 &amp;a[0] + i * sizeof(a[0]); 而后a[i] 中有是个int 类型的元素，其每个元素的首地址分别为 &amp;a[i], &amp;a[i] + sizeof(int),&amp;a[i] + 2<em>sizeof(int),&amp;a[i] + 3</em>sizeof(int);<br>所以 a[i][j] 的首地址为 &amp;a[i]+j*sizeof(int) ，在把 &amp;a[i] 的值用 &amp;a[0] 表示：</p>
+<p>a[i][j]元素的首地址为 &amp;a[0] + i * sizeof(a[0]) + j<em>sizeof(int) , &amp;a[0] 和 a 作为右值是一样的，所以上面就等于 a + i * sizeof(a[0]) + j</em>sizeof(int) ;其中的a[0]就是上图中的包含4个int变量的一维数组。</p>
+<p>再回到第一章的第二点（指针所指向的数据类型），a[0] 是一个一维数组，a 等效于 &amp;a[0]，a+i 就等同于 &amp;a[0] + i + sizeof(a[0]) //把a[0]当做一个整体元素看待，这里 a+i 就表示了a这个二维数组中的第i个一维数组，<em>(a+i) 就是取这个二维数组的第i个元素，这个元素是个一维数组，所以取到的值是这个一维数组的首地址，上面后面 + j*sizeof(int)，就是这个一维数组偏移 j*sizeof(int) 个字节位置，等效于</em> (a+i)+j，定位到了这个一维数组的第j个元素的首地址，所以再取这个元素值就是 * ( *(a+i)+j)。</p>
+<p>所以，由此会衍生一个问题，就是二维数组的初始化声明的时候，第一个数字是可以不填写的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;<span class="comment">//correct</span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>][] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;<span class="comment">//error12</span></span><br></pre></td></tr></table></figure>
+
+<p>原因相信你们都知道，看到第一个知道怎么划分，第二个声明呢，你会知道怎么划分么？3<em>4，3</em>5…</p>
+<hr>
+<h3 id="四、二级指针"><a href="#四、二级指针" class="headerlink" title="四、二级指针"></a><strong>四、二级指针</strong></h3><p>二级指针也是经常用的，比如函数传参，一级指针传参是为了修改其值，二级指针传值就是为了修改其一级指针，比如C语言实现链表结构，创建链表不带返回值时，就需要借助二级指针。</p>
+<p>二级指针它终究是指针，它表示的也还是一个地址，只是这个地址里面的内容仍然是一个地址，对于一维数组需要 * 解引用一次，对于二维数组则需要 * 解引用两次。</p>
+<hr>
+<h4 id="二维数组和二级指针"><a href="#二维数组和二级指针" class="headerlink" title="二维数组和二级指针"></a><strong>二维数组和二级指针</strong></h4><p>首先，指针和数组是两个概念，一维数组和一级指针在一定程度上可以等效，因为，然后二维数组和二级指针就真没什么关系了。</p>
+<p>事实上，我们可以利用一维数组与一级指针的某种等效关系，将两个“降维”处理再进行等效。</p>
+<p>上一节说到，二维数组必须指定维数，必须指定后面的维数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> (*p)[<span class="number">4</span>] = a;<span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>看到“降维”了吧，p 是一个数组指针，指向一个数组，每个数组里面有4个int变量。<br>p 是一个数组指针，指向的是一个有4个 int 变量的数组，这里是{0,1,2,3} 四个元素，p+1 指向的数组里面的元素就是{4,5,6,7}</p>
+<p>p+1 地址偏移了多少个字节，就看 p 这个指针指向的数据是什么类型的，这里是 一个存放四个 int 变量的数组，所以 p+1 偏移的字节数就是 4 * sizeof(int) bytes。<br><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117125236102" alt="这里写图片描述"></p>
+<p>那么回过头，可以不可以用 指针数组 替代呢？<br>回答这个问题前，我们先来了解下 数组指针 和 指针数组</p>
+<hr>
+<h3 id="五、复杂指针类型"><a href="#五、复杂指针类型" class="headerlink" title="五、复杂指针类型"></a><strong>五、复杂指针类型</strong></h3><h4 id="5-1、数组指针和指针数组"><a href="#5-1、数组指针和指针数组" class="headerlink" title="5.1、数组指针和指针数组"></a><strong>5.1、数组指针和指针数组</strong></h4><ul>
+<li><strong>数组指针：首先它是一个指针，它指向一个数组。在32位系统下永远是占4个字节，至于它指向的数组占多少个字节，看声明。它是“指向数组的指针”的简称。</strong></li>
+<li><strong>指针数组：首先他是一个数组，数组的元素都是指针，数组占多少字节由数组本身决定（指针本身占用的字节是固定的），它是“存储指针的数组”的简称。</strong></li>
+</ul>
+<p>到底如何判断是数组指针还是指针数组，以及后面的函数指针，函数指针数组等等更为复杂的指针类型，就涉及到<em>复杂指针的读法</em>了。<br>原则上：<strong>从变量名处起，根据运算符优先级结合，一步一步分析。</strong></p>
+<p>这里先看数组指针和指针数组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int *p1[10];    &#x2F;&#x2F;A</span><br><span class="line">int (*p2)[10];  &#x2F;&#x2F;B12</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的元组，根据运算符优先级结合<br>对于A，[] 的优先级高于 * ，所以 p1 首先跟[] 结合，p1 是一个数组，这个数组存储的元素是什么类型的呢？ int<em>，所以 p1 是一个指针数组，且存放了10个这样的 int</em> 。<br>对于B，()的优先级高于[]，看()里面，* 与p2构成一个指针，所以p2首先是一个指针，再看外头的[]，这个指针指向一个数组，所以p2是一个数组指针，那么这个数组里面存放的数据类型是什么呢，int。</p>
+<p><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117131117792" alt="这里写图片描述"></p>
+<p>从上面的分析步骤，我们看到一个指针也好看到一个数组也好，首先要有这么个概念：<strong>看到指针要分析它的四要素，其实主要就是第二个，即这个指针指向的数据类型是什么，看到数组要分析这个数组存放的数据类型是什么，看到函数要分析这个函数的参数和返回值是什么类型的。</strong></p>
+<p>ok，再回到前面，我们得知，可以用数组指针代替一个二维数组，那么可否用指针数组来代替一个二维数组呢？</p>
+<p>但是不行的，其实看了上面的指针数组和数组指针的内存布局，你就知道原因了，上图的第二个数组指针的内存布局和二维数组的内存布局是一样的，一个线性连续数组里面存放的都是int型变量，但是数组指针就不是了，里面存放的是 int*，数据类型都不一样了，你说能替代么？</p>
+<p>那么很显然，<strong>二维数组也是不能通过二级指针替代的</strong>，二维数组需要明确知道第二维的维数(即第二个数字)，你用二级指针替代，编译器完全不知道内部内存的划分细节了，二级指针变量解引用一次后自增，编译器不知道该偏移多少字节位置。</p>
+<hr>
+<h4 id="5-2、函数指针"><a href="#5-2、函数指针" class="headerlink" title="5.2、函数指针"></a><strong>5.2、函数指针</strong></h4><p>函数指针顾名思义就是函数的指针，即指向一个函数的指针。<br>这个应用相当广泛，游览 linux kernel 的源码，随处可见，内核协议栈，VFS，文件操作函数等等充当各种接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char* (*fun1)(char *p1, char *p2);</span><br><span class="line">char** fun2(char *p1, char *p2);</span><br><span class="line">char* fun3(char *p1, char *p2);123</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的优先级结合原则，和另一原则，看到指针分析它指向数据类型，看到函数分析它的形参和返回值类型。</p>
+<p>对于fun1，首先它是一个指针，从变量名处开始，()锁定优先级高，然后<em>与fun1结合，这个指针指向什么类型呢，看到后面有个()，说明这个指针指向一个函数，那麽这个函数的类型的，括号里面是函数形参，两个 char*</em>，返回值也是char<em>；<br>对于fun2，首先人家是一个函数（看优先级()高于 * ），不是指针类型，这个函数的返回值类型是char*</em>；<br>对于fun3，很普通的函数。</p>
+<p>那么函数指针有何用处？最大的好处就是增加函数调用的灵活性，最常用于函数接口。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * <span class="doctag">NOTE:</span></span></span><br><span class="line"><span class="comment"> * read, write, poll, fsync, readv, writev can be called</span></span><br><span class="line"><span class="comment"> *   without the big kernel lock held in all filesystems.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">file_operations</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">module</span> *<span class="title">owner</span>;</span></span><br><span class="line">    <span class="keyword">loff_t</span> (*llseek) (struct file *, <span class="keyword">loff_t</span>, <span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">ssize_t</span> (*read) (struct file *, <span class="keyword">char</span> *, <span class="keyword">size_t</span>, <span class="keyword">loff_t</span> *);</span><br><span class="line">    <span class="keyword">ssize_t</span> (*write) (struct file *, <span class="keyword">const</span> <span class="keyword">char</span> *, <span class="keyword">size_t</span>, <span class="keyword">loff_t</span> *);</span><br><span class="line">    <span class="keyword">int</span> (*readdir) (struct file *, <span class="keyword">void</span> *, <span class="keyword">filldir_t</span>);</span><br><span class="line">    <span class="function"><span class="keyword">unsigned</span> <span class="title">int</span> <span class="params">(*poll)</span> <span class="params">(struct file *, struct poll_table_struct *)</span></span>;</span><br><span class="line">    <span class="keyword">int</span> (*ioctl) (struct inode *, struct file *, <span class="keyword">unsigned</span> <span class="keyword">int</span>, <span class="keyword">unsigned</span> <span class="keyword">long</span>);</span><br><span class="line">    <span class="keyword">int</span> (*mmap) (struct file *, struct vm_area_struct *);</span><br><span class="line">    <span class="keyword">int</span> (*open) (struct inode *, struct file *);</span><br><span class="line">    <span class="keyword">int</span> (*flush) (struct file *);</span><br><span class="line">    <span class="keyword">int</span> (*release) (struct inode *, struct file *);</span><br><span class="line">    <span class="keyword">int</span> (*fsync) (struct file *, struct dentry *, <span class="keyword">int</span> datasync);</span><br><span class="line">    <span class="keyword">int</span> (*fasync) (<span class="keyword">int</span>, struct file *, <span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">int</span> (*lock) (struct file *, <span class="keyword">int</span>, struct file_lock *);</span><br><span class="line">    <span class="keyword">ssize_t</span> (*readv) (struct file *, <span class="keyword">const</span> struct iovec *, <span class="keyword">unsigned</span> <span class="keyword">long</span>, <span class="keyword">loff_t</span> *);</span><br><span class="line">    <span class="keyword">ssize_t</span> (*writev) (struct file *, <span class="keyword">const</span> struct iovec *, <span class="keyword">unsigned</span> <span class="keyword">long</span>, <span class="keyword">loff_t</span> *);</span><br><span class="line">&#125;;<span class="number">1234567891011121314151617181920212223</span></span><br></pre></td></tr></table></figure>
+
+<p>上面就是linux 内核中文件系统部分的源码，文件操作函数集，定义这个通用函数接口，编写内核驱动的时候，你可以自己实现对应的函数，然后把你的函数名赋值给上面的函数指针，这样就会调用你自己实现的函数了，这样就实现了，同样的函数接口可以通过调用不同的函数来实现不同的驱动。</p>
+<hr>
+<h4 id="5-3、函数指针数组"><a href="#5-3、函数指针数组" class="headerlink" title="5.3、函数指针数组"></a><strong>5.3、函数指针数组</strong></h4><p>首先它是一个数组，数组里面存放的是函数指针。<br>怎么定义一个函数指针数组？<br>层层封装，首先是一个数组 pf[3]，然后是指针数组 <em>pf[3]，再然后是函数指针数组 (</em>pf[3])()；ok 到了函数了，是什么形参什么返回值，个人需求了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int* (*pf[3])(int *p);</span><br><span class="line">&#x2F;&#x2F;pf 是一个存放3个指针类型的数组，这个指针指向一个函数，这个函数的形参和返回值均是int* 类型12</span><br></pre></td></tr></table></figure>
+
+<p>学过C++的一定知道，C++实现多态的虚函数表，实际上是一个函数指针数组。详见<a href="http://blog.csdn.net/wenqian1991/article/details/19205505" target="_blank" rel="noopener">C++对象模型</a></p>
+<p>至于函数指针数组的指针，我们就不说了，举一反三，层层抽离、封装即可。</p>
+<p>另外，函数名跟数组名是一个调调，都会被编译器解析为地址</p>
+<hr>
+<h4 id="5-4、复杂指针类型读法牛刀小试"><a href="#5-4、复杂指针类型读法牛刀小试" class="headerlink" title="5.4、复杂指针类型读法牛刀小试"></a><strong>5.4、复杂指针类型读法牛刀小试</strong></h4><h5 id="5-4-1-void-0"><a href="#5-4-1-void-0" class="headerlink" title="5.4.1 ( * (void(*) () )0 )();"></a><strong>5.4.1 ( * (void(*) () )0 )();</strong></h5><p>这是《C Traps and Pitfalls》这本经典书中的一个例子。怎么分析，读是层层剥离（优先级顺序），定义是层层封装（从右到左）</p>
+<ol>
+<li>void(*)()，这是一个函数指针，无参无返回值；</li>
+<li>（void(*)()）0，这是将 0 强制转换为函数指针类型，0 是一个地址，就是说，这个函数保存在首地址为 0 的一段区域内（32平台下，这段区域长度是4个字节）；</li>
+<li>（* （void(* ) ()）0），增加一个解引用符号 *，即取 0 地址开始的一段内存里面的内容，其内容就是保存在首地址为 0 的一段区域内的函数，直白点，内容就是一个函数；</li>
+<li>( * (void(*) () )0 )()，函数调用。</li>
+</ol>
+<p>上面虽然没有看到习惯上的变量名，但是有 0 这个变量，常数也是变量啊</p>
+<hr>
+<h3 id="六、指针与结构体"><a href="#六、指针与结构体" class="headerlink" title="六、指针与结构体"></a><strong>六、指针与结构体</strong></h3><p>指针可以指向任何数据类型，自然也包括结构类型。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//#pragma pack(1)</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="keyword">int</span> a;</span><br><span class="line">        <span class="keyword">char</span> c;</span><br><span class="line">        <span class="keyword">int</span> b;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> <span class="title">ss</span> = &#123;</span> <span class="number">20</span>, <span class="string">'w'</span>, <span class="number">40</span> &#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> *<span class="title">pss</span> = &amp;<span class="title">ss</span>;</span></span><br><span class="line">    <span class="keyword">int</span> *ptr = (<span class="keyword">int</span> *) &amp;ss;<span class="number">1234567891011</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的注释我就免了，如果看到这里，你还不知道，我只好说，你不适合走编程这条路。</p>
+<p>我们都知道访问结构体成员的时候，我们都是这样的访问的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss.a;</span><br><span class="line">pss-&gt;b;<span class="comment">//建议用这种，也最常用12</span></span><br></pre></td></tr></table></figure>
+
+<p>那么后面我们可以不可以通过 ptr 指针来访问呢，答案是否定的，这是因为结构体成员对齐的原因。<br><strong>编译器在存放结构体对象的时候，一般会考虑字节对齐或双字节对齐等等，则需要在相邻两个非对齐成员（不同类型）之间补上若干个“填充字节”用于对齐。</strong><br>因为结构体是把不同个数据类型成员捆绑在一起，不像数组里面的元素都是同一种类型。</p>
+<p>回到上面，为何不能用 ptr 指针访问？<br>首先你可以通过 <em>*ptr 获得第一个int 成员的值，</em> <em>ptr == 20；<br>第二个char成员呢，你可以这样获得 * (((char</em>)ptr)+1) ==’w’;<br>那么后面的成员b，你怎么通过 ptr 获得，由 ptr 偏移 sizeof(int) + sizeof(char) 个字节？你可以试试，但是我会告诉你得到的结果绝对不是40，除非你的编译器是对结构器不对齐的，或者你添加了 #pragma pack(1)</p>
+<p><strong>看内存布局：</strong><br>默认对齐方式下：</p>
+<p><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117144211853" alt="这里写图片描述"></p>
+<p>不对齐方式下（以1byte对齐），不注释#pragma pack(1)</p>
+<p><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/20160117144345249" alt="这里写图片描述"></p>
+<p>其余的不用看，直接看两种方式下，结构体中的成员的地址。</p>
+<hr>
+<h3 id="七、指针类型转换"><a href="#七、指针类型转换" class="headerlink" title="七、指针类型转换"></a><strong>七、指针类型转换</strong></h3><p>其实前面我们或多或少的讲到了指针类型转换，记住一个原则，你在应用指针类型转换的时候，你要清楚转换对象与被转换对象的内存布局，上面的指针与结构类型一节就涉及到了。</p>
+<p><strong>强制类型转换之后，原来的指针的一切属性都没有被修改，转换后的指针，它所运算（指针加减）的单位变了。</strong></p>
+<p>char* 强制转换为 int*，转换后加减的单位成了4个字节，但是原来的指针还是不变的。</p>
+<p>指针类型转换，在linux 内核网络协议栈中尤为常见，而且那里还是结构体类型的强制转换，不过人家大神在写那些结构体的时候，设计的时候都是严格按照成员对齐方式的，即使从链路层抽离网络层的ip首部，之后还是可以正确访问到ip首部数据的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面代码来源于linux kernel 源码，以及博文中发送skb代码</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> struct iphdr *<span class="title">ip_hdr</span><span class="params">(<span class="keyword">const</span> struct sk_buff *skb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (struct iphdr *)skb_network_header(skb);</span><br><span class="line">&#125;</span><br><span class="line">……</span><br><span class="line">    udph = (struct udphdr*)skb_push(skb, <span class="keyword">sizeof</span>(struct udphdr));</span><br><span class="line">    iph = (struct iphdr*)skb_push(skb, <span class="keyword">sizeof</span>(struct iphdr));</span><br><span class="line">    ethdr = (struct ethhdr*)skb_push(skb, <span class="keyword">sizeof</span>(struct ethhdr));<span class="number">123456789</span></span><br></pre></td></tr></table></figure>
+
+<p>突然发现，linux kernel 源码真是一个学习C语言的好项目啊。</p>
+<hr>
+<h3 id="八、指针安全"><a href="#八、指针安全" class="headerlink" title="八、指针安全"></a><strong>八、指针安全</strong></h3><p>前面一到七章，从各个层面分析了C语言中指针的好处，这也是C语言风靡至今屹立不倒的一个重要原因，但技术总是一把双刃剑，在带来强大功能的同时，也会带来一些列安全问题。</p>
+<p>正因为指针可以指向用户空间内存的任意位置，这就意味着，我们可以读取甚至修改用户空间中用户程序可以访问的任一内存。</p>
+<p>这是比较恐怖的，万一你通过指针去修改的那块内存，恰恰是一个代码段，或者另一个线程空间，那么程序就会崩溃。</p>
+<p>为什么说一个进程下的某一个线程崩溃了，就会导致进程崩溃？首先确定这个崩溃是由于内存访问造成的。因为线程没有自己独立的内存地址空间，一个进程下的所有线程都是共享进程下的内存地址空间的，在一个线程中把另外一个线程的栈空间写坏是再正常不过的事情了。因为一个线程都可以通过内存地址（指针）访问到其他线程的栈空间，所以指针数据的错误可以导致任何同地址空间内其他线程的崩溃，当然也可以导致进程崩溃。</p>
+<p>所以编写程序，在使用指针时，程序员心里必须非常清楚：我的指针究竟指向了哪里，用指针访问数组的时候，注意不要越界。换言之，你要确保你用指针访问的内存区域是安全的，对它进行访问不会产生安全隐患，不要去访问未定义区域。</p>
+<hr>
+<h3 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a><strong>结束语</strong></h3><p>至此，算是把C语言中的指针剖析的差不多了吧，本人做技术比较喜欢追溯内部细节和底层原理，知其然并知其所以然。</p>
+<p>建议大家在学习C语言指针的时候，一定要手动编写程序逐个测试，做技术忌眼高手低。我个人初学（几年前了）的时候，比较喜欢调试，不是直接运行看结果，监视各个变量以及地址，再者就是通过反汇编看起汇编代码，熟悉内部原理。</p>
+<p>visual studio 2013 这个 IDE 用于学习C和C++内部原理还是非常方便的，个人不打Windows和Linux的口水仗，但我还是喜欢在 linux下开发</p>
+<p>阅读一些优秀的开源项目 linux kernel、STL（C++）等，在Windows下用SourceInsight看源码，然后在linux下开发，怪不得开发人员都要有两台电脑。</p>
+<p>另外，由于 MarkDown 编辑器的原因，符号‘<em>’在该编辑器中是一个操作符，所以在可能在某些地方声明指针的时候，可能会出现</em> 被编辑器当作操作符处理了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># C基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/25/C++%E6%96%87%E4%BB%B61/" rel="prev" title="C++文件1">
+      <i class="fa fa-chevron-left"></i> C++文件1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" rel="next" title="C++对象模型">
+      C++对象模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、指针的属性"><span class="nav-number">1.</span> <span class="nav-text">一、指针的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1、指针的类型"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、指针的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2、指针所指向的类型"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、指针所指向的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3、指针所指向的内存区域地址"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、指针所指向的内存区域地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4、指针本身所占据的内存区"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、指针本身所占据的内存区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、指针的算术运算"><span class="nav-number">2.</span> <span class="nav-text">二、指针的算术运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1、指针的加减整数"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、指针的加减整数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2、运算符-amp-和"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、运算符&amp;和*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、指针和数组"><span class="nav-number">3.</span> <span class="nav-text">三、指针和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二维数组与指针"><span class="nav-number">3.1.</span> <span class="nav-text">二维数组与指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、二级指针"><span class="nav-number">4.</span> <span class="nav-text">四、二级指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二维数组和二级指针"><span class="nav-number">4.1.</span> <span class="nav-text">二维数组和二级指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、复杂指针类型"><span class="nav-number">5.</span> <span class="nav-text">五、复杂指针类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1、数组指针和指针数组"><span class="nav-number">5.1.</span> <span class="nav-text">5.1、数组指针和指针数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2、函数指针"><span class="nav-number">5.2.</span> <span class="nav-text">5.2、函数指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3、函数指针数组"><span class="nav-number">5.3.</span> <span class="nav-text">5.3、函数指针数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4、复杂指针类型读法牛刀小试"><span class="nav-number">5.4.</span> <span class="nav-text">5.4、复杂指针类型读法牛刀小试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-1-void-0"><span class="nav-number">5.4.1.</span> <span class="nav-text">5.4.1 ( * (void(*) () )0 )();</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、指针与结构体"><span class="nav-number">6.</span> <span class="nav-text">六、指针与结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、指针类型转换"><span class="nav-number">7.</span> <span class="nav-text">七、指针类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、指针安全"><span class="nav-number">8.</span> <span class="nav-text">八、指针安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结束语"><span class="nav-number">9.</span> <span class="nav-text">结束语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
