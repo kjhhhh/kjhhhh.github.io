@@ -155,6 +155,513 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day15%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day15%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记15</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:08:39" itemprop="dateModified" datetime="2020-12-23T23:08:39+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、Object<br>2、String<br>3、StringBuilder</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01API概念</p>
+<pre><code>* A:API(Application Programming Interface) 
+    * 应用程序编程接口
+* B:Java API
+    * 就是Java提供给我们使用的类，这些类将底层的实现封装了起来，
+    * 我们不需要关心这些类是如何实现的，只需要学习这些类如何使用。
+* C: 演示查看Object类中的相关方法</code></pre><p>###02Object类概述<br>    * A:Object类概述<br>        * 类层次结构的根类<br>        * 所有类都直接或者间接的继承自该类<br>        * Object中描述的所有方法子类都可以使用<br>        * 所有类在创建对象的时候，最终找的父类就是Object。<br>    * B:构造方法<br>        * public Object()<br>        * 回想面向对象中为什么说：<br>            * 子类的构造方法默认访问的是父类的无参构造方法</p>
+<p>​<br>###03equals方法比较内存地址<br>    * A:equals方法比较内存地址<br>        * a: Object类中的equals方法<br>            * 用于比较两个对象是否相同，Object类中就是使用两个对象的内存地址在比较。<br>            * Object类中的equals方法内部使用的就是==比较运算符。</p>
+<pre><code>* b: 案例代码
+
+    public class Person extends Object{
+        private String name;
+        private int age;
+
+        public Person(){}
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+        /*
+         * 将父类的equals方法写过来,重写父类的方法
+         * 但是,不改变父类方法的源代码, 方法equals 比较两个对象的内存地址
+         *                 
+         */
+        public boolean equals(Object obj){                    
+            return this == obj;
+        }        
+
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public int getAge() {
+            return age;
+        }
+        public void setAge(int age) {
+            this.age = age;
+        }                 
+    }
+    //测试代码
+    public class TestEquals {
+        public static void main(String[] args) {
+            //Person类继承Object类,继承下来了父类的方法equals
+            Person p1 = new Person(&quot;李四&quot;,20);
+            Person p2 = new Person(&quot;张三&quot;,20);</code></pre><p>​<br>                    //Person对象p1,调用父类的方法equals,进行对象的比较<br>                    boolean b = p1.equals(p1);<br>                    System.out.println(b);</p>
+<pre><code>    }
+}</code></pre><p>###04重写equals方法<br>    * A: 重写equals方法<br>        * a: 开发中要比较两个对象是否相同，经常会根据对象中的属性值进行比较<br>        * b: 在开发经常需要子类重写equals方法根据对象的属性值进行比较。<br>        * c: ==号和equals方法的区别<br>            * ==是一个比较运算符号,既可以比较基本数据类型,也可以比较引用数据类型,基本数据类型比较的是值,引用数据类型比较的是地址值<br>            * equals方法是一个方法,只能比较引用数据类型,所有的对象都会继承Object类中的方法,如果没有重写Object类中的equals方法,<br>                equals方法和==号比较引用数据类型无区别,重写后的equals方法比较的是对象中的属性<br>        * d: 案例代码<br>            public class Person extends Object{<br>                private String name;<br>                private int age;</p>
+<pre><code>public Person(){}
+
+public Person(String name, int age) {
+    this.name = name;
+    this.age = age;
+}
+/*
+ * 重写父类的方法toString()
+ * 没有必要让调用者看到内存地址
+ * 要求: 方法中,返回类中所有成员变量的值
+ */
+public String toString(){
+    return name + age;
+}</code></pre><p>​<br>                /*<br>                 * 将父类的equals方法写过来,重写父类的方法<br>                 * 但是,不改变父类方法的源代码, 方法equals 比较两个对象的内存地址<br>                 *<br>                 * 两个对象,比较地址,没有意义<br>                 * 比较两个对象的成员变量,age<br>                 * 两个对象变量age相同,返回true,不同返回false<br>                 *<br>                 * 重写父类的equals,自己定义自己对象的比较方式<br>                 */<br>                public boolean equals(Object obj){<br>                    if( this == obj){<br>                        return true;<br>                    }</p>
+<pre><code>        //对参数obj,非null判断
+        if( obj == null){
+            return false;
+        }
+
+        if( obj instanceof Person){
+            // 参数obj接受到是Person对象,才能转型
+            // 对obj参数进行类型的向下转型,obj转成Person类型
+            Person p = (Person)obj;
+            return this.age ==  p.age;
+        }
+        return false;
+    }                
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }                 
+}
+//测试代码
+public class TestEquals {
+    public static void main(String[] args) {
+        //Person类继承Object类,继承下来了父类的方法equals
+        Person p1 = new Person(&quot;李四&quot;,20);
+        Person p2 = new Person(&quot;张三&quot;,20);</code></pre><p>​<br>                    //Person对象p1,调用父类的方法equals,进行对象的比较<br>                    boolean b = p1.equals(p1);<br>                    System.out.println(b);</p>
+<pre><code>    }
+}            </code></pre><p>###05重写toString方法<br>    * A: 重写toString方法<br>        * a: 为什么要重写toString方法<br>            * toString方法返回该对象的字符串表示，其实该字符串内容就是对象的类型+@+内存地址值。<br>            * 由于toString方法返回的结果是内存地址，而在开发中，经常需要按照对象的属性得到相应的字符串表现形式，因此也需要重写它。<br>            * Object类中的toString的核心代码<br>                getClass().getName() + “@” + Integer.toHexString(hashCode())<br>            * 由于默认情况下的数据对我们来说没有意义，一般建议重写该方法。<br>        * b: 案例核心代码(重写Person类中的toString方法)<br>            /*<br>             * 重写父类的方法toString()<br>             * 没有必要让调用者看到内存地址<br>             * 要求: 方法中,返回类中所有成员变量的值<br>             <em>/<br>            public String toString(){<br>                return name + age;<br>            }<br>            //Eclipse中自动生成的toString<br>            @Override<br>            public String toString() {<br>                return “Person [name=” + name + “, age=” + age + “]”;<br>            }<br>            //测试代码<br>            public class TestToString {<br>                public static void main(String[] args) {<br>                    //调用Person类的方法toString()<br>                    //输出语句中,写的是一个对象,默认调用对象的toString方法<br>                    Person p = new Person(“张三”,20);<br>                    String s = p.toString();<br>                    System.out.println(p);<br>                    System.out.println(s);<br>                    /</em><br>                     * System.out.println(p);<br>                     * System.out.println(p.toString());<br>                     */</p>
+<pre><code>        /*Random r = new Random();
+        System.out.println(r.toString());
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println(sc.toString());*/
+    }
+}</code></pre><p>========================================================第二节课开始===================================================</p>
+<p>###06String类的概念和不变性<br>    * A: String类的概念和不变性<br>        * a:String类<br>            * API中的String类的描述，发现String 类代表字符串<br>            * Java 程序中的所有字符串字面值（如 “abc” ）都作为此类的实例实现。<br>            * 字符串是常量,在创建之后不能更改<br>            * 其实就是说一旦这个字符串确定了，那么就会在内存区域中就生成了这个字符串。字符串本身不能改变，但str变量中记录的地址值是可以改变的。<br>            * 源码分析,String类底层采用的是字符数组:<br>                private final char value[]<br>                private 修饰说明value只能在String类内部使用,而且又没有提供get方法,所以外部无法获取value数组,就无法改变数组中元素的值<br>                final修饰说明value是常量,一旦创建,就不能被改变,value一旦被初始化成某个数组,将永远指向这个数组,不可能再指向其它的数组了</p>
+<pre><code>* b: 案例代码
+    /*
+     *   String类特点:
+     *     一切都是对象,字符串事物 &quot;&quot; 也是对象
+     *     类是描述事物,String类,描述字符串对象的类
+     *     所有的 &quot;&quot; 都是String类的对象
+     *     
+     *     字符串是一个常量,一旦创建,不能改变
+     */
+    public class StringDemo {
+        public static void main(String[] args) {
+            //引用变量str执行内存变化
+            //定义好的字符串对象,不变
+            String str = &quot;itcast&quot;;
+            System.out.println(str);
+            str = &quot;itheima&quot;;
+            System.out.println(str);</code></pre><p>​<br>                }<br>            }</p>
+<p>###07String类创建方式和比较<br>    * A: String类创建方式和比较<br>        * a: 创建对象的数量比较<br>            * String s3 = “abc”;<br>                * 在内存中只有一个对象。这个对象在字符串常量池中<br>            * String s4 = new String(“abc”);<br>                * 在内存中有两个对象。一个new的对象在堆中，一个字符串本身对象，在字符串常量池中<br>        * b: 案例代码<br>            public class StringDemo2 {<br>                public static void main(String[] args) {<br>                    //字符串定义方式2个, 直接=  使用String类的构造方法<br>                    String str1 = new String(“abc”);<br>                    String str2 = “abc”;<br>                    System.out.println(str1);<br>                    System.out.println(str2);</p>
+<pre><code>        System.out.println(str1==str2);//引用数据类型,比较对象的地址 false
+        System.out.println(str1.equals(str2));//true
+    }
+}</code></pre><p>###08String类构造方法<br>    * A: String类构造方法<br>        * a: 常见构造方法<br>            * public String():空构造<br>            * public String(byte[] bytes):把字节数组转成字符串<br>            * public String(byte[] bytes,int index,int length):把字节数组的一部分转成字符串<br>            * public String(String original):把字符串常量值转成字符串<br>        * b: 案例代码<br>            public class StringDemo3 {<br>                public static void main(String[] args) {<br>                    function_1();<br>                }<br>                /*<br>                 *  定义方法,String类的构造方法<br>                 *  String(byte[] bytes)  传递字节数组<br>                 *  字节数组转成字符串<br>                 *  通过使用平台的默认字符集解码指定的 byte 数组，构造一个新的 String。<br>                 *  平台 : 机器操作系统<br>                 *  默认字符集: 操作系统中的默认编码表, 默认编码表GBK<br>                 *  将字节数组中的每个字节,查询了编码表,得到的结果<br>                 *  字节是负数,汉字的字节编码就是负数, 默认编码表 ,一个汉字采用2个字节表示<br>                 *<br>                 *  String(byte[] bytes, int offset, int length) 传递字节数组<br>                 *  字节数组的一部分转成字符串<br>                 *  offset 数组的起始的索引<br>                 *  length 个数,转几个   , 不是结束的索引<br>                 */<br>                public static void function(){<br>                    byte[] bytes = {97,98,99,100};<br>                    //调用String类的构造方法,传递字节数组<br>                    String s = new String(bytes);<br>                    System.out.println(s);</p>
+<pre><code>        byte[] bytes1 ={65,66,67,68,69};
+        //调用String构造方法,传递数组,传递2个int值
+        String s1 = new String(bytes1,1,3);
+        System.out.println(s1);
+    }
+}</code></pre><p>###09String类构造方法_2<br>    * A: String类构造方法<br>        * a: 常见构造方法<br>            * public String(char[] value):把字符数组转成字符串<br>            * public String(char[] value,int index,int count):把字符数组的一部分转成字符串<br>    * B: 案例代码<br>         /*<br>          *  String类构造方法<br>          *  String类的构造方法,重载形式<br>          *<br>          <em>/<br>        public class StringDemo3 {<br>            public static void main(String[] args) {<br>                function_1();<br>            }<br>            /</em><br>             * String(char[] value) 传递字符数组<br>             * 将字符数组,转成字符串, 字符数组的参数,不查询编码表<br>             *<br>             * String(char[] value, int offset, int count) 传递字符数组<br>             * 将字符数组的一部分转成字符串<br>             * offset  数组开始索引<br>             * count   个数<br>             */<br>            public static void function_1(){<br>                char[] ch = {‘a’,’b’,’c’,’d’,’e’,’f’};<br>                //调用String构造方法,传递字符数组<br>                String s = new String(ch);<br>                System.out.println(s);</p>
+<pre><code>        String s1 = new String(ch,1,4);
+        System.out.println(s1);
+    }
+}</code></pre><p>​<br>###10String类的其他方法<br>    * A：String类的其他方法<br>        * a: 方法介绍<br>            * int length(): 返回字符串的长度<br>            * String substring(int beginIndex,int endIndex): 获取字符串的一部分<br>            * String substring(int beginIndex): 获取字符串的一部分<br>            * boolean startsWith(String prefix): 判断一个字符串是不是另一个字符串的前缀,开头<br>            * boolean endsWith(String prefix): 判断一个字符串是不是另一个字符串的后缀,结尾<br>            * boolean contains (String s): 判断一个字符串中,是否包含另一个字符串<br>            * int indexOf(char ch):  查找一个字符,在字符串中第一次出现的索引,被查找的字符不存在,返回-1<br>            * byte[] getBytes(): 将字符串转成字节数组,此功能和String构造方法相反,byte数组相关的功能,查询编码表<br>            * char[] toCharArray(): 将字符串转成字符数组,功能和构造方法相反<br>            * boolean equals(Object obj): 方法传递字符串,判断字符串中的字符是否完全相同,如果完全相同返回true<br>            * boolean equalsIgnoreCase(String s): 传递字符串,判断字符串中的字符是否相同,忽略大小写            </p>
+<pre><code>* b: 案例代码
+
+    public class StringDemo4 {
+        public static void main(String[] args) {
+            function_9();
+        }
+        /*
+         *  boolean equals(Object obj)
+         *  方法传递字符串,判断字符串中的字符是否完全相同,如果完全相同返回true
+         *  
+         *  boolean equalsIgnoreCase(String s)
+         *  传递字符串,判断字符串中的字符是否相同,忽略大小写
+         */
+        public static void function_9(){
+            String str1 = &quot;Abc&quot;;
+            String str2 = &quot;abc&quot;;
+            //分别调用equals和equalsIgnoreCase
+            boolean b1 = str1.equals(str2);
+            boolean b2 = str1.equalsIgnoreCase(str2);
+            System.out.println(b1);
+            System.out.println(b2);
+        }
+
+        /*
+         * char[] toCharArray() 将字符串转成字符数组
+         * 功能和构造方法相反
+         */
+        public static void function_8(){
+            String str = &quot;itcast&quot;;
+            //调用String类的方法toCharArray()
+            char[] ch = str.toCharArray();
+            for(int i = 0 ; i &lt; ch.length ; i++){
+                System.out.println(ch[i]);
+            }
+        }
+
+        /*
+         *  byte[] getBytes() 将字符串转成字节数组
+         *  此功能和String构造方法相反
+         *  byte数组相关的功能,查询编码表
+         */
+        public static void function_7(){
+            String str = &quot;abc&quot;;
+            //调用String类方法getBytes字符串转成字节数组
+            byte[] bytes = str.getBytes();
+            for(int i = 0 ; i &lt; bytes.length ; i++){
+                System.out.println(bytes[i]);
+            }
+        }
+
+        /*
+         *  int indexOf(char ch)
+         *  查找一个字符,在字符串中第一次出现的索引
+         *  被查找的字符不存在,返回-1
+         */
+        public static void function_6(){
+            String str = &quot;itcast.cn&quot;;
+            //调用String类的方法indexOf
+            int index = str.indexOf(&apos;x&apos;);
+            System.out.println(index);
+        }
+
+        /*
+         *  boolean contains (String s)
+         *  判断一个字符串中,是否包含另一个字符串
+         */
+        public static void function_5(){
+            String str = &quot;itcast.cn&quot;;
+            //调用String类的方法contains
+            boolean b =str.contains(&quot;ac&quot;);
+            System.out.println(b);
+        }
+
+        /*
+         * boolean endsWith(String prefix)
+         * 判断一个字符串是不是另一个字符串的后缀,结尾
+         * Demo.java
+         *     .java
+         */
+        public static void function_4(){
+            String str = &quot;Demo.java&quot;;
+            //调用String类方法endsWith
+            boolean b = str.endsWith(&quot;.java&quot;);
+            System.out.println(b);
+        }
+
+        /*
+         * boolean startsWith(String prefix)  
+         * 判断一个字符串是不是另一个字符串的前缀,开头
+         * howareyou
+         * hOw
+         */
+          public static void function_3(){
+              String str = &quot;howareyou&quot;;
+              //调用String类的方法startsWith
+              boolean b = str.startsWith(&quot;hOw&quot;);
+              System.out.println(b);
+          }
+
+        /*
+         *  String substring(int beginIndex,int endIndex) 获取字符串的一部分
+         *  返回新的字符串
+         *  包含头,不包含尾巴
+         *  
+         *  String substring(int beginIndex)获取字符串的一部分
+         *  包含头,后面的字符全要
+         */
+        public static void function_2(){
+            String str = &quot;howareyou&quot;;
+            //调用String类方法substring获取字符串一部分
+            str= str.substring(1, 5);
+            System.out.println(str);
+
+            String str2 = &quot;HelloWorld&quot;;
+            str2 = str2.substring(1);
+            System.out.println(str2);
+        }
+
+        /*
+         *  int length() 返回字符串的长度
+         *  包含多少个字符
+         */
+        public static void function(){
+            String str = &quot;cfxdf#$REFewfrt54GT&quot;;
+            //调用String类方法length,获取字符串长度
+            int length = str.length();
+            System.out.println(length);
+        }
+    }</code></pre><p>###11String类练习<br>    * A: 获取指定字符串中，大写字母、小写字母、数字的个数<br>        * a: 题目分析<br>            * 为了统计大写字母、小写字母、数字的个数。创建3个计数的变量。<br>            * 为了获取到字符串中的每个字符，进行字符串的遍历，得到每个字符。<br>            * 对得到的字符进行判断，如果该字符为大写字母，则大写字母个数+1；如果该字符为小写字母，则小写字母个数+1；如果该字符为数字，则数字个数+1。<br>            * 显示大写字母、小写字母、数字的个数</p>
+<pre><code>* b: 解题步骤
+    * 略
+* 案例代码
+    public class StringTest {
+        public static void main(String[] args) {
+            getCount(&quot;A%A3eBr1FFy&quot;);                    
+        }
+
+        /*
+         * 获取指定字符串中，大写字母、小写字母、数字的个数。
+         * 思想:
+         *   1. 计数器,就是int变量,满足一个条件 ++
+         *   2. 遍历字符串, 长度方法length() + charAt() 遍历
+         *   3. 字符判断是大写,是小写,还是数字
+         */
+        public static void getCount(String str){
+            //定义三个变量,计数
+            int upper = 0;
+            int lower = 0;
+            int digit = 0;
+            //对字符串遍历
+            for(int i = 0 ; i &lt; str.length() ; i++){
+                //String方法charAt,索引,获取字符
+                char c = str.charAt(i);
+                //利用编码表 65-90  97-122  48-57
+                if(c &gt;=&apos;A&apos; &amp;&amp; c &lt;=90){
+                    upper++;
+                }else if( c &gt;= 97 &amp;&amp; c &lt;= 122){
+                    lower++;
+                }else if( c &gt;= 48 &amp;&amp; c &lt;=&apos;9&apos;){
+                    digit++;
+                }
+            }
+            System.out.println(upper);
+            System.out.println(lower);
+            System.out.println(digit);
+        }
+    }</code></pre><p>###12String类练习_2<br>    * A: 将字符串中，第一个字母转换成大写，其他字母转换成小写，并打印改变后的字符串。<br>        * a: 题目分析<br>            * 把字符串分为两个部分，第一部分为字符串中第一个字母，第二部分为剩下的字符串。<br>            * 把第一部分字符串转换成大写字母，把第二部分字符串转换成小写字母<br>            * 把两部分字符串连接在一起，得到一个完整的字符串<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            public class StringTest {<br>                public static void main(String[] args) {</p>
+<pre><code>        System.out.println(toConvert(&quot;aBc5%4dEF&quot;));
+
+    }
+
+    /*
+     *  将字符串的首字母转成大写,其他内容转成小写
+     *  思想:
+     *    获取首字母, charAt(0)  substring(0,1)
+     *    转成大写 toUpperCase()
+     *    
+     *    获取剩余字符串, substring(1)  toLowerCase()
+     */
+    public static String toConvert(String str){
+        //定义变量,保存首字母,和剩余字符
+        String first = str.substring(0,1);
+        String after = str.substring(1);
+        //调用String类方法,大写,小写转换
+        first = first.toUpperCase();
+        after = after.toLowerCase();
+        return first+after;
+    }
+}</code></pre><p>###13String类练习_3<br>    * A: 查询大字符串中，出现指定小字符串的次数<br>        * a: 题目分析<br>            * 在大串中，查找小串出现的位置，出现了就次数+1<br>            * 在上次小串出现位置的后面继续查找，需要更改大串的内容为上次未查询到的字符串。<br>            * 回到第一步，继续查找小串出现的位置，直到大串中查询不到小串为止<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            package cn.itcast.demo02;</p>
+<pre><code>public class StringTest {
+    public static void main(String[] args) {        
+        System.out.println(getStringCount(&quot;hellojava,nijavahaojava,javazhenbang&quot;, &quot;java&quot;));
+    }
+    /*
+     *  获取一个字符串中,另一个字符串出现的次数
+     *  思想:
+     *    1. indexOf到字符串中到第一次出现的索引
+     *    2. 找到的索引+被找字符串长度,截取字符串
+     *    3. 计数器++
+     */
+    public static int getStringCount(String str, String key){
+        //定义计数器
+        int count = 0;
+        //定义变量,保存indexOf查找后的索引的结果
+        int index = 0;
+        //开始循环找,条件,indexOf==-1 字符串没有了
+        while(( index = str.indexOf(key) )!= -1){
+            count++;
+            //获取到的索引,和字符串长度求和,截取字符串
+            str = str.substring(index+key.length());
+        }
+        return count;
+    }
+}</code></pre><p>======================================================================第三节课开始=========================================================</p>
+<p>###14StringBuffer特点可变字符数组<br>    * A:StringBuffer类概述<br>        * 通过JDK提供的API，查看StringBuffer类的说明<br>        * 线程安全的可变字符序列<br>        * 底层采用字符数组实现,初始容量为16<br>    * B:StringBuffer和String的区别<br>        * String是一个不可变的字符序列<br>        * StringBuffer是一个可变的字符序列</p>
+<p>###15StringBuffer类的方法<br>    * A: StringBuffer类的方法<br>        * a: 方法介绍<br>            * StringBuffer append(), 将任意类型的数据,添加缓冲区<br>                *  append 返回值,写return this<br>                *  调用者是谁,返回值就是谁<br>            * delete(int start,int end): 删除缓冲区中字符<br>                *  开始索引包含,结尾索引不包含<br>            * insert(int index, 任意类型): 将任意类型数据,插入到缓冲区的指定索引上<br>            * replace(int start,int end, String str): 将指定的索引范围内的所有字符,替换成新的字符串<br>            * reverse(): 将缓冲区中的字符反转<br>            * String toString(): 继承Object,重写toString()<br>                *   将缓冲区中的所有字符,变成字符串<br>        * b: 案例代码<br>            public class StringBufferDemo {<br>                public static void main(String[] args) {<br>                    function_5();<br>                }<br>                /*<br>                 *  StringBuffer类的方法<br>                 *   String toString() 继承Object,重写toString()<br>                 *   将缓冲区中的所有字符,变成字符串<br>                 */<br>                public static void function_5(){<br>                    StringBuffer buffer = new StringBuffer();<br>                    buffer.append(“abcdef”);<br>                    buffer.append(12345);</p>
+<pre><code>        //将可变的字符串缓冲区对象,变成了不可变String对象
+        String s = buffer.toString();
+        System.out.println(s);
+    }
+
+    /*
+     *  StringBuffer类的方法
+     *    reverse() 将缓冲区中的字符反转
+     */
+    public static void function_4(){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&quot;abcdef&quot;);
+
+        buffer.reverse();
+
+        System.out.println(buffer);
+    }
+
+    /*
+     *  StringBuffer类方法
+     *    replace(int start,int end, String str)
+     *    将指定的索引范围内的所有字符,替换成新的字符串
+     */
+    public static void function_3(){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&quot;abcdef&quot;);
+
+        buffer.replace(1, 4, &quot;Q&quot;);
+
+        System.out.println(buffer);
+    }
+
+    /*
+     *  StringBuffer类方法 insert
+     *    insert(int index, 任意类型)
+     *  将任意类型数据,插入到缓冲区的指定索引上
+     */
+     public static void function_2(){
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(&quot;abcdef&quot;);     
+
+         buffer.insert(3, 9.5);
+         System.out.println(buffer);
+     }
+
+    /*
+     * StringBuffer类方法
+     *   delete(int start,int end) 删除缓冲区中字符
+     *   开始索引包含,结尾索引不包含
+     */
+    public static void function_1(){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&quot;abcdef&quot;);
+
+        buffer.delete(1,5);
+        System.out.println(buffer);
+    }
+
+    /*
+     *  StringBuffer类方法
+     *   StringBuffer append, 将任意类型的数据,添加缓冲区
+     *   append 返回值,写return this
+     *   调用者是谁,返回值就是谁
+     */
+    public static void function(){
+        StringBuffer buffer = new StringBuffer();
+        //调用StringBuffer方法append向缓冲区追加内容
+        buffer.append(6).append(false).append(&apos;a&apos;).append(1.5);
+        System.out.println(buffer);
+    }
+}</code></pre><p>​<br>###16StringBuilder类<br>    * A:StringBuilder的概述<br>        * 通过查看API了解一下StringBuilder类<br>    * B:面试题<br>        * String,StringBuffer,StringBuilder的区别<br>            * StringBuffer和StringBuilder的区别<br>                * StringBuffer是jdk1.0版本的,是线程安全的,效率低<br>                * StringBuilder是jdk1.5版本的,是线程不安全的,效率高</p>
+<pre><code>* String和StringBuffer,StringBuilder的区别
+    * String是一个不可变的字符序列
+    * StringBuffer,StringBuilder是可变的字符序列</code></pre><p>###17StringBuffer类案例拼接数组<br>    * A: StringBuffer类案例拼接数组<br>        * a: 题目分析<br>            * 定义StringBuffer对象<br>            * 遍历数组,按照格式要求拼接处新的字符串,追加到StringBuffer容器中<br>            * 将StringBuffer中的内容以String的形式返回<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            public class StringBufferTest {<br>                public static void main(String[] args) {<br>                    int[] arr = {4,1,4,56,7,8,76};<br>                    System.out.println(toString(arr));<br>                }<br>               /*<br>                * int[] arr = {34,12,89,68};将一个int[]中元素转成字符串<br>                * 格式 [34,12,89,68]<br>                * String s = “[“<br>                * 数组遍历<br>                *   s+= arr[i];<br>                *  s+”]”<br>                *  StringBuffer实现,节约内存空间, String + 在缓冲区中,append方法<br>                */<br>                public static String toString(int[] arr){<br>                    //创建字符串缓冲区<br>                    StringBuffer buffer = new StringBuffer();<br>                    buffer.append(“[“);<br>                    //数组遍历<br>                    for(int i = 0 ; i &lt; arr.length;i++){<br>                        //判断是不是数组的最后一个元素<br>                        if(i == arr.length-1){<br>                            buffer.append(arr[i]).append(“]”);<br>                        }else{<br>                            buffer.append(arr[i]).append(“,”);<br>                        }<br>                    }<br>                    return buffer.toString();<br>                }<br>            }<br>###18总结</p>
+<ul>
+<li>把今天的知识点总结一遍。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day14%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4172,393 +4679,6 @@ public class Shopp{
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day05%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day05%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记5</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:01:24" itemprop="dateModified" datetime="2020-12-23T23:01:24+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、方法基础知识<br>2、方法高级内容<br>3、方法案例</p>
-<p>###01方法的概述<br>    * A: 为什么要有方法<br>        * 提高代码的复用性<br>    * B: 什么是方法<br>        * 完成特定功能的代码块。 </p>
-<p>​<br>###02方法的定义格式<br>    * A: 方法的格式<br>    *<br>            修饰符 返回值类型 方法名(参数类型 参数名1,参数类型 参数名2…) {<br>                方法体语句;<br>                return 返回值;<br>            }<br>    * B: 方法的格式说明<br>        * 修饰符：目前就用 public static。后面我们再详细的讲解其他的修饰符。<br>        * 返回值类型：就是功能结果的数据类型。<br>        * 方法名：符合命名规则即可。方便我们的调用。<br>        * 参数：<br>            * 实际参数：就是实际参与运算的。<br>            * 形式参数；就是方法定义上的，用于接收实际参数的。<br>        * 参数类型：就是参数的数据类型<br>        * 参数名：就是变量名<br>        * 方法体语句：就是完成功能的代码。<br>        * return：结束方法的。<br>        * 返回值：就是功能的结果，由return带给调用者。 </p>
-<p>​<br>###03定义方法计算面积<br>    * A: 定义方法计算面积<br>        public class MethodDemo{</p>
-<pre><code>    public static void main(String[] args){
-         //调用方法, 方法执行起来
-         // 在方法main中,调用方法 getArea
-
-         int area = getArea(5,6);
-         System.out.println(&quot;面积是: &quot;+area);
-
-    }
-    /*
-       要求: 计算一个长方形的面积
-       定义方法解决这个要求
-       分析方法定义过程:
-          1.明确方法计算后的结果的数据类型 int  定义格式对应的就是返回值类型
-          2.方法计算过程中,有没有未知的数据, 宽和长, 未知数据的数据类型 int
-              未知数的变量,定义在方法的小括号内
-    */
-    public static int  getArea(int w, int h){
-        //实现方法的功能主体
-        //int area = w * h;
-        return w * h;
-    }
-}</code></pre><p>###04调用方法<br>    * A: 调用方法<br>        * a: 在main函数中调用方法，让方法执行起来<br>        * b: 方法的形参<br>            * 方法要什么参数我们就给什么类型的参数。<br>        * c: 方法的返回值<br>            * 方法返回什么类型的值我们就用对应的数据类型的变量来接收</p>
-<p>###05调用方法执行流程<br>    * A: 调用方法执行流程<br>        * a: 方法的定义是没有顺序的，写在main函数的上边或者下边都可以。<br>        * b: 方法的执行，是把实参传递给形参，从而来执行的。<br>        * c: 方法只有被调用才会执行。</p>
-<p>###06方法调用的内存图<br>    * A: 方法调用的内存图<br>        * a: 参见\day05\day05(Java基础语法)\day05_source\方法内存图.JPG</p>
-<p>###07方法调用的练习<br>    * A: 案例代码<br>        /*<br>           方法的定义练习<br>        */<br>        import java.util.Scanner;<br>        public class MethodDemo_1{<br>            public static void main(String[] args){<br>                //printRect();<br>                //int number = getNumber();<br>                //System.out.println(getNumber());<br>                //printRect2(3,5);<br>                double avg = getAvg(2,2,3);<br>                System.out.println(avg);<br>            }</p>
-<pre><code>    /*
-       定义有返回值有参数方法，如求三个数的平均值
-       明确方法计算后的数据类型, 返回值类型 double
-       明确方法未知数, 三个未知的整数
-    */
-    public static double getAvg(double a, double b,double c){
-         return (a+b+c)/3;
-    }
-
-    /*
-        定义无返回值有参数方法，如打印指定M行，每行N个*号的矩形
-        明确方法计算后结果,控制台输出图形,没有返回值的
-        方法中有没有未知数,图形行数,和列数,是未知的, 数据类型整数int
-    */
-    public static void printRect2(int m,int n){
-        for(int i = 0 ; i &lt; m ; i++){
-            for(int j = 0 ; j &lt; n ;  j++){
-                System.out.print(&quot;*&quot;);
-            }
-            System.out.println();
-        }
-    }
-
-    /*
-       定义有返回值无参数方法，如键盘录入得到一个整数
-       明确方法计算后结果的数据类型 int
-       明确有没有未知数,没
-    */
-    public static int getNumber(){
-        Scanner sc = new Scanner(System.in);
-        //int number = sc.nextInt();
-        return sc.nextInt();
-    }
-
-    /*
-       定义无返回值无参数方法，如打印3行，每行3个*号的矩形
-       为什么没有返回值:
-           打印矩形 ,输出效果,不需要将结果返回
-           明确未知数: 不需要未知数
-    */
-    public static void printRect(){
-        for(int i = 0 ; i &lt; 3 ; i++){
-            for(int j = 0 ; j &lt; 3 ;j++){
-                System.out.print(&quot;*&quot;);
-            }
-            System.out.println();
-        }
-    }
-}</code></pre><p>###08方法的定义和使用的注意事项<br>    * A: 方法的定义和使用的注意事项<br>        * a: 方法不能定义在另一个方法的里面<br>         * b: 写错方法名字<br>        * c: 写错了参数列表<br>        * d: 方法返回值是void,方法中可以省略return 不写<br>             return 下面不能有代码<br>        * e 方法返回值类型,和return 后面数据类型必须匹配<br>        * f: 方法重复定义问题<br>        * g: 调用方法的时候,返回值是void, 不能写在输出语句中</p>
-<p>###09方法的重载<br>    * A: 方法的重载<br>        * 在同一个类中，方法名相同，参数列表不同。与返回值类型无关。</p>
-<pre><code>    * 参数列表不同：
-        * A:参数个数不同
-        * B:参数类型不同
-        * C:参数的顺序不同(算重载,但是在开发中不用)
-
-* B: 案例代码
-    public static int getSum(int a,int b){
-        System.out.println(&quot;两个int参数&quot;);
-        return a+b;
-    }
-    public static int getSum(int a,int b,int c){
-        System.out.println(&quot;三个int参数&quot;);
-        return a+b+c;
-    }
-    public static double getSum(double a,double b){
-        System.out.println(&quot;两个double参数&quot;);
-        return a+b;
-    }</code></pre><p>​<br>###10方法重载注意事项<br>    * A: 方法重载注意事项<br>        * a: 参数列表必须不同<br>        * b: 重载和参数变量名无关<br>        * c: 重载和返回值类型无关<br>        * d: 重载和修饰符无关<br>        * e: 技巧: 重载看方法名和参数列表</p>
-<p>​<br>###11方法参数是基本数据类型<br>    * A: 方法参数是基本数据类型<br>        * a: 方法参数是基本类型时，传递的是值。</p>
-<p>###12方法参数是引用数据类型<br>    * A: 方法参数是引用数据类型<br>        * a: 方法参数是引用类型时，传递的是内存地址值。</p>
-<p>###13随机点名器<br>    * A: 案例代码<br>        /*<br>           实现随机点名器<br>             1.存储所有学生姓名<br>             2.预览所有学生姓名,遍历数组<br>             3.随机数作为索引,到数组中找元素</p>
-<pre><code>    将功能独立出来, 作成方法,调用方法即可
-
-    定义三个功能, 用到同一个姓名数据
-    姓名存储到数组中,三个方法,使用一个数组中的数据, 方法传递参数
-*/
-import java.util.Random;
-public class CallName{
-    public static void main(String[] args){
-        //定义数组,存储学生姓名
-        String[] names = new String[8];
-        //调用添加姓名方法
-        addStudent(names);
-        //调用遍历数组方法
-        printStudentName(names);
-        //调用随机姓名的方法
-        String name = randomStudentName(names);
-        System.out.println(name);
-    }
-    /*
-      定义方法,随机数,做索引,数组中找到学生姓名
-      返回值?  学生姓名
-      参数?  数组
-    */
-    public static String randomStudentName(String[] names){
-        Random ran = new Random();
-        int index = ran.nextInt(names.length);
-        return names[index];
-    }
-
-    /*
-       定义方法,遍历数组
-       返回值? 没有
-       参数? 数组
-    */
-    public static void printStudentName(String[] names){
-        for(int i = 0 ; i &lt; names.length ;i++){
-            System.out.println(names[i]);
-        }
-    }
-
-    /*
-       定义方法,实现向数组中添加学生姓名
-       返回值? 没有,
-       参数?  参数就是数组
-    */
-    public static void addStudent(String[] names){
-        names[0] = &quot;张三&quot;;
-        names[1] = &quot;李四&quot;;
-        names[2] = &quot;王五&quot;;
-        names[3] = &quot;李蕾&quot;;
-        names[4] = &quot;韩梅梅&quot;;
-        names[5] = &quot;小名&quot;;
-        names[6] = &quot;老王&quot;;
-        names[7] = &quot;小华&quot;;
-    }
-}</code></pre><p>###14库存案例代码实现_1<br>    * A: 案例代码<br>        /*<br>           实现商品的库存管理<br>             功能:<br>                1.展示用户选择功能清单<br>                2.根据选择的功能编号,进行不同的操作<br>                   A. 展示所有库存<br>                   B. 修改库存数量</p>
-<pre><code>      分析:
-        1.展示用户清单:
-           输出语句, 用户输入, 选择功能序号
-        2.根据选择,调用不同的方法
-            switch语句
-              case 1 2 3
-
-           A  展示库存
-             将存储商品的数组,遍历
-           B  修改库存
-
-              修改所有的库存数量
-*/
-import java.util.Scanner;
-public class Shopp{
-    public static void main(String[] args){
-
-    }
-
-    /*
-       定义方法,展示所有的库存清单,遍历
-       返回值,没有
-       参数, 数组
-    */
-    public static void printStore(String[] brand,double[] size,double[] price,int[] count){
-        System.out.println(&quot;----------商场库存清单----------&quot;);
-        System.out.println(&quot;品牌型号     尺寸    价格    库存数&quot;);
-        //定义变量,计算总库存数,和总价格
-        int totalCount = 0;
-        int totalMoney = 0;
-        //遍历数组,将数组中所有的商品信息打印出来
-        for(int i = 0 ; i &lt; brand.length ; i++){
-            System.out.println(brand[i]+&quot;   &quot;+size[i]+&quot;    &quot;+price[i]+&quot;   &quot;+count[i]);
-            totalCount += count[i];
-            totalMoney += count[i]*price[i];
-        }
-        System.out.println(&quot;总库存数: &quot;+totalCount);
-        System.out.println(&quot;商品库存总金额: &quot;+totalMoney);
-    }
-
-    /*
-      定义方法,实现用户的选择功能,功能的需要返回来
-      返回值, int
-      参数, 没有
-    */
-    public static int chooseFunction(){
-        System.out.println(&quot;-------------库存管理------------&quot;);
-        System.out.println(&quot;1.查看库存清单&quot;);
-        System.out.println(&quot;2.修改商品库存数量&quot;);
-        System.out.println(&quot;3.退出&quot;);
-        System.out.println(&quot;请输入要执行的操作序号：&quot;);
-        //接受键盘输入
-        Scanner sc = new Scanner(System.in);
-        int chooseNumber = sc.nextInt();
-        return chooseNumber;
-    }
-}</code></pre><p>###15库存案例代码实现_2<br>    * A: 案例代码<br>        /*<br>          定义方法,修改所有商品的库存<br>            用户输入1个,修改1个<br>            返回值,没有<br>            参数, 库存数的数组, 品名数组<br>        */<br>        public static void update(String[] brand, int[] count){<br>            //遍历数组,遍历到一个,修改一个<br>            //接受键盘输入<br>            Scanner sc = new Scanner(System.in);<br>            //遍历数组<br>            for(int i = 0; i &lt; brand.length ; i++){<br>                System.out.println(“请输入”+brand[i]+”的库存数”);<br>                //键盘输入,录入库存, 存储到库存的数组中<br>                int newCount = sc.nextInt();<br>                count[i] = newCount;<br>            }<br>            //int chooseNumber = sc.nextInt();<br>        }</p>
-<p>###16库存案例代码测试<br>    * A: 案例<br>        /*<br>           实现商品的库存管理<br>             功能:<br>                1.展示用户选择功能清单<br>                2.根据选择的功能编号,进行不同的操作<br>                   A. 展示所有库存<br>                   B. 修改库存数量</p>
-<pre><code>      分析:
-        1.展示用户清单:
-           输出语句, 用户输入, 选择功能序号
-        2.根据选择,调用不同的方法
-            switch语句
-              case 1 2 3
-
-           A  展示库存
-             将存储商品的数组,遍历
-           B  修改库存
-
-              修改所有的库存数量
-*/
-import java.util.Scanner;
-public class Shopp{
-    public static void main(String[] args){
-        //使用数组,保存商品的信息
-        //品名,尺寸,价格,库存数, 定义5个数组
-        String[] brand = {&quot;MacBookAir&quot;,&quot;ThinkpadT450&quot;};
-        double[] size = {13.3,15.6};
-        double[] price = {9998.97,6789.56};
-        int[] count = {0,0};
-        while(true){
-            int choose = chooseFunction();
-            switch(choose){
-                case 1:
-                  //调用查看库存清单方法
-                  printStore(brand,size,price,count);
-                break;
-
-                case 2:
-                  //调用修改库存的方法
-                  update(brand,count);
-                break;
-
-                case 3:
-                 return ;
-                default:
-                  System.out.println(&quot;没有这个功能&quot;);
-                break;
-            }
-        }
-    }
-    /*
-      定义方法,修改所有商品的库存
-        用户输入1个,修改1个
-        返回值,没有
-        参数, 库存数的数组, 品名数组
-    */
-    public static void update(String[] brand, int[] count){
-        //遍历数组,遍历到一个,修改一个
-        //接受键盘输入
-        Scanner sc = new Scanner(System.in);
-        //遍历数组
-        for(int i = 0; i &lt; brand.length ; i++){
-            System.out.println(&quot;请输入&quot;+brand[i]+&quot;的库存数&quot;);
-            //键盘输入,录入库存, 存储到库存的数组中
-            int newCount = sc.nextInt();
-            count[i] = newCount;
-        }
-        //int chooseNumber = sc.nextInt();
-    }
-
-    /*
-       定义方法,展示所有的库存清单,遍历
-       返回值,没有
-       参数, 数组
-    */
-    public static void printStore(String[] brand,double[] size,double[] price,int[] count){
-        System.out.println(&quot;----------商场库存清单----------&quot;);
-        System.out.println(&quot;品牌型号     尺寸    价格    库存数&quot;);
-        //定义变量,计算总库存数,和总价格
-        int totalCount = 0;
-        int totalMoney = 0;
-        //遍历数组,将数组中所有的商品信息打印出来
-        for(int i = 0 ; i &lt; brand.length ; i++){
-            System.out.println(brand[i]+&quot;   &quot;+size[i]+&quot;    &quot;+price[i]+&quot;   &quot;+count[i]);
-            totalCount += count[i];
-            totalMoney += count[i]*price[i];
-        }
-        System.out.println(&quot;总库存数: &quot;+totalCount);
-        System.out.println(&quot;商品库存总金额: &quot;+totalMoney);
-    }
-
-    /*
-      定义方法,实现用户的选择功能,功能的需要返回来
-      返回值, int
-      参数, 没有
-    */
-    public static int chooseFunction(){
-        System.out.println(&quot;-------------库存管理------------&quot;);
-        System.out.println(&quot;1.查看库存清单&quot;);
-        System.out.println(&quot;2.修改商品库存数量&quot;);
-        System.out.println(&quot;3.退出&quot;);
-        System.out.println(&quot;请输入要执行的操作序号：&quot;);
-        //接受键盘输入
-        Scanner sc = new Scanner(System.in);
-        int chooseNumber = sc.nextInt();
-        return chooseNumber;
-    }
-}</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -4628,7 +4748,7 @@ public class Shopp{
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

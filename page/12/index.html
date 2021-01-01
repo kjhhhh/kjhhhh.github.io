@@ -155,6 +155,337 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day24%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day24%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记24</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:12:25" itemprop="dateModified" datetime="2020-12-23T23:12:25+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、转换流<br>2、缓冲流</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01转换流概述<br>    * A: 转换流概述<br>        * a: 转换流概述<br>            * OutputStreamWriter 是字符流通向字节流的桥梁：可使用指定的字符编码表，将要写入流中的字符编码成字节<br>            * 将字符串按照指定的编码表转成字节，在使用字节流将这些字节写出去</p>
+<p>​<br>###02转换流_字符转字节的过程<br>    * A: 转换流_字符转字节的过程<br>        * a.图解<br>            * 详见day24_source/转换流.JPG图片</p>
+<p>​<br>###03OutputStreamWriter写文本文件<br>    * A: OutputStreamWriter写文本文件<br>        * a: OutputStreamWriter<br>            * java.io.OutputStreamWriter 继承Writer类<br>            * 就是一个字符输出流，写文本文件<br>            * write()字符，字符数组，字符串<br>            * 字符通向字节的桥梁，将字符流转字节流<br>            * OutputStreamWriter 使用方式<br>                * 构造方法：<br>                    * OutputStreamWriter(OuputStream out)接收所有的字节输出流<br>                    * 字节输出流：  FileOutputStream<br>                    * OutputStreamWriter(OutputStream out, String charsetName)<br>                    * String charsetName 传递编码表名字 GBK  UTF-8<br>            * OutputStreamWriter 有个子类，  FileWriter<br>        * b: 案例代码</p>
+<pre><code>public class OutputStreamWriterDemo {
+    public static void main(String[] args)throws IOException {
+//        writeGBK();
+        writeUTF();
+    }
+    /*
+     * 转换流对象OutputStreamWriter写文本
+     * 采用UTF-8编码表写入
+     */
+    public static void writeUTF()throws IOException{
+        //创建字节输出流，绑定文件
+        FileOutputStream fos = new FileOutputStream(&quot;c:\\utf.txt&quot;);
+        //创建转换流对象，构造方法保证字节输出流，并指定编码表是UTF-8
+        OutputStreamWriter osw = new OutputStreamWriter(fos,&quot;UTF-8&quot;);
+        osw.write(&quot;你好&quot;);
+        osw.close();
+    }
+
+    /*
+     * 转换流对象 OutputStreamWriter写文本
+     * 文本采用GBK的形式写入
+     */
+    public static void writeGBK()throws IOException{
+        //创建字节输出流，绑定数据文件
+        FileOutputStream fos = new FileOutputStream(&quot;c:\\gbk.txt&quot;);
+        //创建转换流对象，构造方法，绑定字节输出流，使用GBK编码表
+        OutputStreamWriter osw = new OutputStreamWriter(fos);
+        //转换流写数据
+        osw.write(&quot;你好&quot;);
+
+        osw.close();
+    }
+}</code></pre><p>###04转换流_字节转字符流过程<br>    * A: 转换流_字节转字符流过程<br>        * a: InputStreamReader<br>            * java.io.InputStreamReader 继承 Reader<br>            * 字符输入流，读取文本文件<br>            * 字节流向字符的敲了，将字节流转字符流<br>            * 读取的方法:<br>                * read() 读取1个字符，读取字符数组<br>            * 技巧<br>                * OuputStreamWriter写了文件<br>                * InputStreamReader读取文件<br>            * OutputStreamWriter(OutputStream out)所有字节输出流<br>            * InputStreamReader(InputStream in) 接收所有的字节输入流<br>            * 可以传递的字节输入流： FileInputStream<br>            * InputStreamReader(InputStream in,String charsetName) 传递编码表的名字<br>        * b: 图解<br>            * 详见day24_source/转换流.JPG图片</p>
+<p>###05InputSteamReader读取文本文件<br>    * A: InputSteamReader读取文本文件<br>        * a: 案例代码<br>            public class InputStreamReaderDemo {<br>                public static void main(String[] args) throws IOException {<br>            //        readGBK();<br>                    readUTF();<br>                }<br>                /*<br>                 *  转换流,InputSteamReader读取文本<br>                 *  采用UTF-8编码表,读取文件utf<br>                 <em>/<br>                public static void readUTF()throws IOException{<br>                    //创建自己输入流,传递文本文件<br>                    FileInputStream fis = new FileInputStream(“c:\utf.txt”);<br>                    //创建转换流对象,构造方法中,包装字节输入流,同时写编码表名<br>                    InputStreamReader isr = new InputStreamReader(fis,”UTF-8”);<br>                    char[] ch = new char[1024];<br>                    int len = isr.read(ch);<br>                    System.out.println(new String(ch,0,len));<br>                    isr.close();<br>                }<br>                /</em><br>                 *  转换流,InputSteamReader读取文本<br>                 *  采用系统默认编码表,读取GBK文件<br>                 */<br>                public static void readGBK()throws IOException{<br>                    //创建自己输入流,传递文本文件<br>                    FileInputStream fis = new FileInputStream(“c:\gbk.txt”);<br>                    //创建转换流对象,构造方法,包装字节输入流<br>                    InputStreamReader isr = new InputStreamReader(fis);<br>                    char[] ch = new char[1024];<br>                    int len = isr.read(ch);<br>                    System.out.println(new String(ch,0,len));</p>
+<pre><code>        isr.close();
+    }
+}</code></pre><p>​<br>###06转换流子类父类的区别<br>    * A: 转换流子类父类的区别<br>        * a: 继承关系<br>            OutputStreamWriter:<br>                |–FileWriter:<br>            InputStreamReader:<br>                |–FileReader;<br>        * b: 区别<br>            * OutputStreamWriter和InputStreamReader是字符和字节的桥梁：也可以称之为字符转换流。字符转换流原理：字节流+编码表。<br>            * FileWriter和FileReader：作为子类，仅作为操作字符文件的便捷类存在。<br>                当操作的字符文件，使用的是默认编码表时可以不用父类，而直接用子类就完成操作了，简化了代码。<br>            * 以下三句话功能相同<br>                * InputStreamReader isr = new InputStreamReader(new FileInputStream(“a.txt”));//默认字符集。<br>                * InputStreamReader isr = new InputStreamReader(new FileInputStream(“a.txt”),”GBK”);//指定GBK字符集。<br>                * FileReader fr = new FileReader(“a.txt”);</p>
+<p>###07缓冲流概述<br>    * A: 缓冲流概述<br>        * a: 概述<br>            * 可提高IO流的读写速度<br>            * 分为字节缓冲流与字符缓冲流 </p>
+<p>​<br>###08字节输出流缓冲流BufferedOutputStream<br>    * A: 字节输出流缓冲流BufferedOutputStream<br>        * a: BufferedOutputStream<br>            * 字节输出流的缓冲流<br>            * java.io.BufferedOuputStream 作用: 提高原有输出流的写入效率<br>            * BufferedOuputStream 继承 OutputStream<br>            * 方法,写入 write 字节,字节数组<br>            * 构造方法:<br>                * BufferedOuputStream(OuputStream out)<br>                * 可以传递任意的字节输出流, 传递的是哪个字节流,就对哪个字节流提高效率  </p>
+<pre><code>* b: 案例代码
+    public class BufferedOutputStreamDemo {
+        public static void main(String[] args)throws IOException {
+            //创建字节输出流,绑定文件
+            //FileOutputStream fos = new FileOutputStream(&quot;c:\\buffer.txt&quot;);
+            //创建字节输出流缓冲流的对象,构造方法中,传递字节输出流
+            BufferedOutputStream bos = new
+                    BufferedOutputStream(new FileOutputStream(&quot;c:\\buffer.txt&quot;));
+
+            bos.write(55);
+
+            byte[] bytes = &quot;HelloWorld&quot;.getBytes();
+
+            bos.write(bytes);
+
+            bos.write(bytes, 3, 2);
+
+            bos.close();
+        }
+    }</code></pre><p>###09字节输入流缓冲流BufferedInputStream<br>    * A: 字节输入流缓冲流BufferedInputStream<br>        * a: BufferedInputStream<br>            * 字节输入流的缓冲流<br>            * 继承InputStream,标准的字节输入流<br>            * 读取方法  read() 单个字节,字节数组<br>            * 构造方法:<br>                * BufferedInputStream(InputStream in)<br>                * 可以传递任意的字节输入流,传递是谁,就提高谁的效率<br>                * 可以传递的字节输入流 FileInputStream<br>        * b: 案例代码<br>            public class BufferedInputStreamDemo {<br>                public static void main(String[] args) throws IOException{<br>                    //创建字节输入流的缓冲流对象,构造方法中包装字节输入流,包装文件<br>                    BufferedInputStream bis = new<br>                            BufferedInputStream(new FileInputStream(“c:\buffer.txt”));<br>                    byte[] bytes = new byte[10];<br>                    int len = 0 ;<br>                    while((len = bis.read(bytes))!=-1){<br>                        System.out.print(new String(bytes,0,len));<br>                    }<br>                    bis.close();<br>                }<br>            }</p>
+<p>​<br>###10四种文件复制方式的效率比较<br>    * A：四种文件复制方式的效率比较<br>        * a: 四中复制方式<br>            * 字节流读写单个字节                    125250 毫秒<br>            * 字节流读写字节数组                    193    毫秒  OK<br>            * 字节流缓冲区流读写单个字节            1210   毫秒<br>            * 字节流缓冲区流读写字节数组            73     毫秒  OK        </p>
+<pre><code>* b: 案例代码
+
+    public class Copy {
+        public static void main(String[] args)throws IOException {
+            long s = System.currentTimeMillis();
+            copy_4(new File(&quot;c:\\q.exe&quot;), new File(&quot;d:\\q.exe&quot;));
+            long e = System.currentTimeMillis();
+            System.out.println(e-s);
+        }
+        /*
+         * 方法,实现文件复制
+         *  4. 字节流缓冲区流读写字节数组
+         */
+        public static void copy_4(File src,File desc)throws IOException{
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(src));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desc));
+            int len = 0 ;
+            byte[] bytes = new byte[1024];
+            while((len = bis.read(bytes))!=-1){
+                bos.write(bytes,0,len);
+            }
+            bos.close();
+            bis.close();
+        }
+        /*
+         * 方法,实现文件复制
+         *  3. 字节流缓冲区流读写单个字节
+         */
+        public static void copy_3(File src,File desc)throws IOException{
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(src));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desc));
+            int len = 0 ;
+            while((len = bis.read())!=-1){
+                bos.write(len);
+            }
+            bos.close();
+            bis.close();
+        }
+
+        /*
+         * 方法,实现文件复制
+         *  2. 字节流读写字节数组
+         */
+        public static void copy_2(File src,File desc)throws IOException{
+            FileInputStream fis = new FileInputStream(src);
+            FileOutputStream fos = new FileOutputStream(desc);
+            int len = 0 ;
+            byte[] bytes = new byte[1024];
+            while((len = fis.read(bytes))!=-1){
+                fos.write(bytes,0,len);
+            }
+            fos.close();
+            fis.close();
+        }
+
+        /*
+         * 方法,实现文件复制
+         *  1. 字节流读写单个字节
+         */
+        public static void copy_1(File src,File desc)throws IOException{
+            FileInputStream fis = new FileInputStream(src);
+            FileOutputStream fos = new FileOutputStream(desc);
+            int len = 0 ;
+            while((len = fis.read())!=-1){
+                fos.write(len);
+            }
+            fos.close();
+            fis.close();
+        }
+    }</code></pre><p>​<br>###11字符输出流缓冲流BufferedWriter<br>    * A: 字符输出流缓冲流BufferedWriter<br>        * a: BufferedWriter<br>            * 字符输出流缓冲区流<br>            * java.io.BufferedWriter 继承 Writer<br>            * 写入方法 write () 单个字符,字符数组,字符串</p>
+<pre><code>    * 构造方法:
+        * BufferedWriter(Writer w)传递任意字符输出流
+        * 传递谁,就高效谁
+        * 能传递的字符输出流 FileWriter, OutputStreamWriter
+* b: 案例代码
+    public class BufferedWrierDemo {
+        public static void main(String[] args) throws IOException{
+            //创建字符输出流,封装文件
+            FileWriter fw = new FileWriter(&quot;c:\\buffer.txt&quot;);
+            BufferedWriter bfw = new BufferedWriter(fw);
+
+            bfw.write(100);
+            bfw.flush();
+            bfw.write(&quot;你好&quot;.toCharArray());
+            bfw.flush();</code></pre><p>​<br>                    bfw.write(“你好”);</p>
+<pre><code>bfw.flush();</code></pre><p>​<br>                    bfw.write(“我好好”);</p>
+<pre><code>        bfw.flush();
+
+        bfw.write(&quot;大家都好&quot;);
+        bfw.flush();
+
+        bfw.close();
+
+    }
+}</code></pre><p>###12字符输出流缓冲流BufferedWriter特有方法newLine<br>    * A: 字符输出流缓冲流BufferedWriter特有方法newLine<br>        * a: 方法介绍<br>            * void  newLine() 写换行</p>
+<pre><code>    * newLine()文本中换行, \r\n也是文本换行
+    * 方法具有平台无关性
+    * Windows  \r\n
+    * Linux    \n
+
+    * newLine()运行结果,和操作系统是相互关系
+    * JVM: 安装的是Windows版本,newLine()写的就是\r\n
+    * 安装的是Linux版本,newLine()写的就是\n
+    /*
+     *  将数据源 c:\\a.txt
+     *  复制到 d:\\a.txt  数据目的
+     *  字节输入流,绑定数据源
+     *  字节输出流,绑定数据目的
+     *  
+     *  输入,读取1个字节
+     *  输出,写1个字节
+     */
+* b: 案例代码
+    public class BufferedWrierDemo {
+        public static void main(String[] args) throws IOException{
+            //创建字符输出流,封装文件
+            FileWriter fw = new FileWriter(&quot;c:\\buffer.txt&quot;);
+            BufferedWriter bfw = new BufferedWriter(fw);
+
+            bfw.write(100);
+            bfw.flush();
+            bfw.write(&quot;你好&quot;.toCharArray());
+            bfw.flush();
+
+            bfw.write(&quot;你好&quot;);
+            bfw.newLine();
+            bfw.flush();</code></pre><p>​<br>                    bfw.write(“我好好”);<br>                    bfw.newLine();<br>                    bfw.flush();</p>
+<pre><code>        bfw.write(&quot;大家都好&quot;);
+        bfw.flush();
+
+        bfw.close();
+
+    }
+}</code></pre><p>###13字符输入流缓冲流BufferedReader<br>    * A: 字符输入流缓冲流BufferedReader<br>        * a: 概述<br>            * 从字符输入流中读取文本，缓冲各个字符，从而实现字符、数组和行的高效读取<br>            * public String readLine() 读取一个文本行，包含该行内容的字符串，不包含任何行终止符，如果已到达流末尾，则返回 null</p>
+<p>###14字符输入流缓冲流BufferedReader读取文本行<br>    * A: 字符输入流缓冲流BufferedReader读取文本行<br>        * a: BufferedReader<br>            * 字符输入流缓冲流<br>            * java.io.BufferedReader 继承 Reader<br>            * 读取功能 read() 单个字符,字符数组<br>            * 构造方法:<br>                * BufferedReader(Reader r)<br>                * 可以任意的字符输入流<br>                   FileReader  InputStreamReader<br>            * BufferedReader自己的功能<br>                * String readLine() 读取文本行 \r\n<br>                    * 方法读取到流末尾,返回null<br>        * b: 小特点<br>             * 获取内容的方法一般都有返回值<br>             * int 没有返回的都是负数<br>             * 引用类型 找不到返回null<br>             * boolean 找不到返回false</p>
+<pre><code>* c: 案例代码
+    public class BufferedReaderDemo {
+        public static void main(String[] args) throws IOException {
+            int lineNumber = 0;
+            //创建字符输入流缓冲流对象,构造方法传递字符输入流,包装数据源文件
+            BufferedReader bfr = new BufferedReader(new FileReader(&quot;c:\\a.txt&quot;));
+            //调用缓冲流的方法 readLine()读取文本行
+            //循环读取文本行, 结束条件 readLine()返回null
+            String line = null;
+            while((line = bfr.readLine())!=null){
+                lineNumber++;
+                System.out.println(lineNumber+&quot;  &quot;+line);
+            }
+            bfr.close();
+        }
+    }
+
+    /*
+     * String line = bfr.readLine();
+            System.out.println(line);
+
+            line = bfr.readLine();
+            System.out.println(line);
+
+            line = bfr.readLine();
+            System.out.println(line);
+
+            line = bfr.readLine();
+            System.out.println(line);
+
+            line = bfr.readLine();
+            System.out.println(line);
+     */</code></pre><p>###15字符流缓冲区流复制文本文件<br>    * A: 字符流缓冲区流复制文本文件<br>        * a: 案例代码<br>            /*<br>             *  使用缓冲区流对象,复制文本文件<br>             *  数据源  BufferedReader+FileReader 读取<br>             *  数据目的 BufferedWriter+FileWriter 写入<br>             *  读取文本行, 读一行,写一行,写换行<br>             */<br>            public class Copy_1 {<br>                public static void main(String[] args) throws IOException{<br>                    BufferedReader bfr = new BufferedReader(new FileReader(“c:\w.log”));<br>                    BufferedWriter bfw = new BufferedWriter(new FileWriter(“d:\w.log”));<br>                    //读取文本行, 读一行,写一行,写换行<br>                    String line = null;<br>                    while((line = bfr.readLine())!=null){<br>                        bfw.write(line);<br>                        bfw.newLine();<br>                        bfw.flush();<br>                    }<br>                    bfw.close();<br>                    bfr.close();<br>                }<br>            }</p>
+<p>​<br>###16IO流对象的操作规律<br>    * A: IO流对象的操作规律<br>        * a: 明确一：要操作的数据是数据源还是数据目的。<br>            * 源：InputStream    Reader<br>            * 目的：OutputStream Writer<br>            * 先根据需求明确要读，还是要写。</p>
+<pre><code>* b: 明确二：要操作的数据是字节还是文本呢？
+    * 源：
+        * 字节：InputStream
+        * 文本：Reader
+    * 目的：
+        * 字节：OutputStream
+        * 文本：Writer
+* c: 明确三：明确数据所在的具体设备。
+    * 源设备：
+        * 硬盘：文件  File开头。
+        * 内存：数组，字符串。
+        * 键盘：System.in;
+        * 网络：Socket
+    * 目的设备：
+        * 硬盘：文件  File开头。
+        * 内存：数组，字符串。
+        * 屏幕：System.out
+        * 网络：Socket
+        * 完全可以明确具体要使用哪个流对象。
+* d: 明确四：是否需要额外功能呢？
+    * 额外功能：
+        * 转换吗？转换流。InputStreamReader OutputStreamWriter
+        * 高效吗？缓冲区对象。BufferedXXX
+        * 已经明确到了具体的体系上。</code></pre><p>###17总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day23%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2708,513 +3039,6 @@ System.out.println(1.301 / 100);//0.013009999999999999
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day15%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day15%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记15</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:08:39" itemprop="dateModified" datetime="2020-12-23T23:08:39+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、Object<br>2、String<br>3、StringBuilder</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01API概念</p>
-<pre><code>* A:API(Application Programming Interface) 
-    * 应用程序编程接口
-* B:Java API
-    * 就是Java提供给我们使用的类，这些类将底层的实现封装了起来，
-    * 我们不需要关心这些类是如何实现的，只需要学习这些类如何使用。
-* C: 演示查看Object类中的相关方法</code></pre><p>###02Object类概述<br>    * A:Object类概述<br>        * 类层次结构的根类<br>        * 所有类都直接或者间接的继承自该类<br>        * Object中描述的所有方法子类都可以使用<br>        * 所有类在创建对象的时候，最终找的父类就是Object。<br>    * B:构造方法<br>        * public Object()<br>        * 回想面向对象中为什么说：<br>            * 子类的构造方法默认访问的是父类的无参构造方法</p>
-<p>​<br>###03equals方法比较内存地址<br>    * A:equals方法比较内存地址<br>        * a: Object类中的equals方法<br>            * 用于比较两个对象是否相同，Object类中就是使用两个对象的内存地址在比较。<br>            * Object类中的equals方法内部使用的就是==比较运算符。</p>
-<pre><code>* b: 案例代码
-
-    public class Person extends Object{
-        private String name;
-        private int age;
-
-        public Person(){}
-
-        public Person(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-        /*
-         * 将父类的equals方法写过来,重写父类的方法
-         * 但是,不改变父类方法的源代码, 方法equals 比较两个对象的内存地址
-         *                 
-         */
-        public boolean equals(Object obj){                    
-            return this == obj;
-        }        
-
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-        public int getAge() {
-            return age;
-        }
-        public void setAge(int age) {
-            this.age = age;
-        }                 
-    }
-    //测试代码
-    public class TestEquals {
-        public static void main(String[] args) {
-            //Person类继承Object类,继承下来了父类的方法equals
-            Person p1 = new Person(&quot;李四&quot;,20);
-            Person p2 = new Person(&quot;张三&quot;,20);</code></pre><p>​<br>                    //Person对象p1,调用父类的方法equals,进行对象的比较<br>                    boolean b = p1.equals(p1);<br>                    System.out.println(b);</p>
-<pre><code>    }
-}</code></pre><p>###04重写equals方法<br>    * A: 重写equals方法<br>        * a: 开发中要比较两个对象是否相同，经常会根据对象中的属性值进行比较<br>        * b: 在开发经常需要子类重写equals方法根据对象的属性值进行比较。<br>        * c: ==号和equals方法的区别<br>            * ==是一个比较运算符号,既可以比较基本数据类型,也可以比较引用数据类型,基本数据类型比较的是值,引用数据类型比较的是地址值<br>            * equals方法是一个方法,只能比较引用数据类型,所有的对象都会继承Object类中的方法,如果没有重写Object类中的equals方法,<br>                equals方法和==号比较引用数据类型无区别,重写后的equals方法比较的是对象中的属性<br>        * d: 案例代码<br>            public class Person extends Object{<br>                private String name;<br>                private int age;</p>
-<pre><code>public Person(){}
-
-public Person(String name, int age) {
-    this.name = name;
-    this.age = age;
-}
-/*
- * 重写父类的方法toString()
- * 没有必要让调用者看到内存地址
- * 要求: 方法中,返回类中所有成员变量的值
- */
-public String toString(){
-    return name + age;
-}</code></pre><p>​<br>                /*<br>                 * 将父类的equals方法写过来,重写父类的方法<br>                 * 但是,不改变父类方法的源代码, 方法equals 比较两个对象的内存地址<br>                 *<br>                 * 两个对象,比较地址,没有意义<br>                 * 比较两个对象的成员变量,age<br>                 * 两个对象变量age相同,返回true,不同返回false<br>                 *<br>                 * 重写父类的equals,自己定义自己对象的比较方式<br>                 */<br>                public boolean equals(Object obj){<br>                    if( this == obj){<br>                        return true;<br>                    }</p>
-<pre><code>        //对参数obj,非null判断
-        if( obj == null){
-            return false;
-        }
-
-        if( obj instanceof Person){
-            // 参数obj接受到是Person对象,才能转型
-            // 对obj参数进行类型的向下转型,obj转成Person类型
-            Person p = (Person)obj;
-            return this.age ==  p.age;
-        }
-        return false;
-    }                
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
-    }                 
-}
-//测试代码
-public class TestEquals {
-    public static void main(String[] args) {
-        //Person类继承Object类,继承下来了父类的方法equals
-        Person p1 = new Person(&quot;李四&quot;,20);
-        Person p2 = new Person(&quot;张三&quot;,20);</code></pre><p>​<br>                    //Person对象p1,调用父类的方法equals,进行对象的比较<br>                    boolean b = p1.equals(p1);<br>                    System.out.println(b);</p>
-<pre><code>    }
-}            </code></pre><p>###05重写toString方法<br>    * A: 重写toString方法<br>        * a: 为什么要重写toString方法<br>            * toString方法返回该对象的字符串表示，其实该字符串内容就是对象的类型+@+内存地址值。<br>            * 由于toString方法返回的结果是内存地址，而在开发中，经常需要按照对象的属性得到相应的字符串表现形式，因此也需要重写它。<br>            * Object类中的toString的核心代码<br>                getClass().getName() + “@” + Integer.toHexString(hashCode())<br>            * 由于默认情况下的数据对我们来说没有意义，一般建议重写该方法。<br>        * b: 案例核心代码(重写Person类中的toString方法)<br>            /*<br>             * 重写父类的方法toString()<br>             * 没有必要让调用者看到内存地址<br>             * 要求: 方法中,返回类中所有成员变量的值<br>             <em>/<br>            public String toString(){<br>                return name + age;<br>            }<br>            //Eclipse中自动生成的toString<br>            @Override<br>            public String toString() {<br>                return “Person [name=” + name + “, age=” + age + “]”;<br>            }<br>            //测试代码<br>            public class TestToString {<br>                public static void main(String[] args) {<br>                    //调用Person类的方法toString()<br>                    //输出语句中,写的是一个对象,默认调用对象的toString方法<br>                    Person p = new Person(“张三”,20);<br>                    String s = p.toString();<br>                    System.out.println(p);<br>                    System.out.println(s);<br>                    /</em><br>                     * System.out.println(p);<br>                     * System.out.println(p.toString());<br>                     */</p>
-<pre><code>        /*Random r = new Random();
-        System.out.println(r.toString());
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println(sc.toString());*/
-    }
-}</code></pre><p>========================================================第二节课开始===================================================</p>
-<p>###06String类的概念和不变性<br>    * A: String类的概念和不变性<br>        * a:String类<br>            * API中的String类的描述，发现String 类代表字符串<br>            * Java 程序中的所有字符串字面值（如 “abc” ）都作为此类的实例实现。<br>            * 字符串是常量,在创建之后不能更改<br>            * 其实就是说一旦这个字符串确定了，那么就会在内存区域中就生成了这个字符串。字符串本身不能改变，但str变量中记录的地址值是可以改变的。<br>            * 源码分析,String类底层采用的是字符数组:<br>                private final char value[]<br>                private 修饰说明value只能在String类内部使用,而且又没有提供get方法,所以外部无法获取value数组,就无法改变数组中元素的值<br>                final修饰说明value是常量,一旦创建,就不能被改变,value一旦被初始化成某个数组,将永远指向这个数组,不可能再指向其它的数组了</p>
-<pre><code>* b: 案例代码
-    /*
-     *   String类特点:
-     *     一切都是对象,字符串事物 &quot;&quot; 也是对象
-     *     类是描述事物,String类,描述字符串对象的类
-     *     所有的 &quot;&quot; 都是String类的对象
-     *     
-     *     字符串是一个常量,一旦创建,不能改变
-     */
-    public class StringDemo {
-        public static void main(String[] args) {
-            //引用变量str执行内存变化
-            //定义好的字符串对象,不变
-            String str = &quot;itcast&quot;;
-            System.out.println(str);
-            str = &quot;itheima&quot;;
-            System.out.println(str);</code></pre><p>​<br>                }<br>            }</p>
-<p>###07String类创建方式和比较<br>    * A: String类创建方式和比较<br>        * a: 创建对象的数量比较<br>            * String s3 = “abc”;<br>                * 在内存中只有一个对象。这个对象在字符串常量池中<br>            * String s4 = new String(“abc”);<br>                * 在内存中有两个对象。一个new的对象在堆中，一个字符串本身对象，在字符串常量池中<br>        * b: 案例代码<br>            public class StringDemo2 {<br>                public static void main(String[] args) {<br>                    //字符串定义方式2个, 直接=  使用String类的构造方法<br>                    String str1 = new String(“abc”);<br>                    String str2 = “abc”;<br>                    System.out.println(str1);<br>                    System.out.println(str2);</p>
-<pre><code>        System.out.println(str1==str2);//引用数据类型,比较对象的地址 false
-        System.out.println(str1.equals(str2));//true
-    }
-}</code></pre><p>###08String类构造方法<br>    * A: String类构造方法<br>        * a: 常见构造方法<br>            * public String():空构造<br>            * public String(byte[] bytes):把字节数组转成字符串<br>            * public String(byte[] bytes,int index,int length):把字节数组的一部分转成字符串<br>            * public String(String original):把字符串常量值转成字符串<br>        * b: 案例代码<br>            public class StringDemo3 {<br>                public static void main(String[] args) {<br>                    function_1();<br>                }<br>                /*<br>                 *  定义方法,String类的构造方法<br>                 *  String(byte[] bytes)  传递字节数组<br>                 *  字节数组转成字符串<br>                 *  通过使用平台的默认字符集解码指定的 byte 数组，构造一个新的 String。<br>                 *  平台 : 机器操作系统<br>                 *  默认字符集: 操作系统中的默认编码表, 默认编码表GBK<br>                 *  将字节数组中的每个字节,查询了编码表,得到的结果<br>                 *  字节是负数,汉字的字节编码就是负数, 默认编码表 ,一个汉字采用2个字节表示<br>                 *<br>                 *  String(byte[] bytes, int offset, int length) 传递字节数组<br>                 *  字节数组的一部分转成字符串<br>                 *  offset 数组的起始的索引<br>                 *  length 个数,转几个   , 不是结束的索引<br>                 */<br>                public static void function(){<br>                    byte[] bytes = {97,98,99,100};<br>                    //调用String类的构造方法,传递字节数组<br>                    String s = new String(bytes);<br>                    System.out.println(s);</p>
-<pre><code>        byte[] bytes1 ={65,66,67,68,69};
-        //调用String构造方法,传递数组,传递2个int值
-        String s1 = new String(bytes1,1,3);
-        System.out.println(s1);
-    }
-}</code></pre><p>###09String类构造方法_2<br>    * A: String类构造方法<br>        * a: 常见构造方法<br>            * public String(char[] value):把字符数组转成字符串<br>            * public String(char[] value,int index,int count):把字符数组的一部分转成字符串<br>    * B: 案例代码<br>         /*<br>          *  String类构造方法<br>          *  String类的构造方法,重载形式<br>          *<br>          <em>/<br>        public class StringDemo3 {<br>            public static void main(String[] args) {<br>                function_1();<br>            }<br>            /</em><br>             * String(char[] value) 传递字符数组<br>             * 将字符数组,转成字符串, 字符数组的参数,不查询编码表<br>             *<br>             * String(char[] value, int offset, int count) 传递字符数组<br>             * 将字符数组的一部分转成字符串<br>             * offset  数组开始索引<br>             * count   个数<br>             */<br>            public static void function_1(){<br>                char[] ch = {‘a’,’b’,’c’,’d’,’e’,’f’};<br>                //调用String构造方法,传递字符数组<br>                String s = new String(ch);<br>                System.out.println(s);</p>
-<pre><code>        String s1 = new String(ch,1,4);
-        System.out.println(s1);
-    }
-}</code></pre><p>​<br>###10String类的其他方法<br>    * A：String类的其他方法<br>        * a: 方法介绍<br>            * int length(): 返回字符串的长度<br>            * String substring(int beginIndex,int endIndex): 获取字符串的一部分<br>            * String substring(int beginIndex): 获取字符串的一部分<br>            * boolean startsWith(String prefix): 判断一个字符串是不是另一个字符串的前缀,开头<br>            * boolean endsWith(String prefix): 判断一个字符串是不是另一个字符串的后缀,结尾<br>            * boolean contains (String s): 判断一个字符串中,是否包含另一个字符串<br>            * int indexOf(char ch):  查找一个字符,在字符串中第一次出现的索引,被查找的字符不存在,返回-1<br>            * byte[] getBytes(): 将字符串转成字节数组,此功能和String构造方法相反,byte数组相关的功能,查询编码表<br>            * char[] toCharArray(): 将字符串转成字符数组,功能和构造方法相反<br>            * boolean equals(Object obj): 方法传递字符串,判断字符串中的字符是否完全相同,如果完全相同返回true<br>            * boolean equalsIgnoreCase(String s): 传递字符串,判断字符串中的字符是否相同,忽略大小写            </p>
-<pre><code>* b: 案例代码
-
-    public class StringDemo4 {
-        public static void main(String[] args) {
-            function_9();
-        }
-        /*
-         *  boolean equals(Object obj)
-         *  方法传递字符串,判断字符串中的字符是否完全相同,如果完全相同返回true
-         *  
-         *  boolean equalsIgnoreCase(String s)
-         *  传递字符串,判断字符串中的字符是否相同,忽略大小写
-         */
-        public static void function_9(){
-            String str1 = &quot;Abc&quot;;
-            String str2 = &quot;abc&quot;;
-            //分别调用equals和equalsIgnoreCase
-            boolean b1 = str1.equals(str2);
-            boolean b2 = str1.equalsIgnoreCase(str2);
-            System.out.println(b1);
-            System.out.println(b2);
-        }
-
-        /*
-         * char[] toCharArray() 将字符串转成字符数组
-         * 功能和构造方法相反
-         */
-        public static void function_8(){
-            String str = &quot;itcast&quot;;
-            //调用String类的方法toCharArray()
-            char[] ch = str.toCharArray();
-            for(int i = 0 ; i &lt; ch.length ; i++){
-                System.out.println(ch[i]);
-            }
-        }
-
-        /*
-         *  byte[] getBytes() 将字符串转成字节数组
-         *  此功能和String构造方法相反
-         *  byte数组相关的功能,查询编码表
-         */
-        public static void function_7(){
-            String str = &quot;abc&quot;;
-            //调用String类方法getBytes字符串转成字节数组
-            byte[] bytes = str.getBytes();
-            for(int i = 0 ; i &lt; bytes.length ; i++){
-                System.out.println(bytes[i]);
-            }
-        }
-
-        /*
-         *  int indexOf(char ch)
-         *  查找一个字符,在字符串中第一次出现的索引
-         *  被查找的字符不存在,返回-1
-         */
-        public static void function_6(){
-            String str = &quot;itcast.cn&quot;;
-            //调用String类的方法indexOf
-            int index = str.indexOf(&apos;x&apos;);
-            System.out.println(index);
-        }
-
-        /*
-         *  boolean contains (String s)
-         *  判断一个字符串中,是否包含另一个字符串
-         */
-        public static void function_5(){
-            String str = &quot;itcast.cn&quot;;
-            //调用String类的方法contains
-            boolean b =str.contains(&quot;ac&quot;);
-            System.out.println(b);
-        }
-
-        /*
-         * boolean endsWith(String prefix)
-         * 判断一个字符串是不是另一个字符串的后缀,结尾
-         * Demo.java
-         *     .java
-         */
-        public static void function_4(){
-            String str = &quot;Demo.java&quot;;
-            //调用String类方法endsWith
-            boolean b = str.endsWith(&quot;.java&quot;);
-            System.out.println(b);
-        }
-
-        /*
-         * boolean startsWith(String prefix)  
-         * 判断一个字符串是不是另一个字符串的前缀,开头
-         * howareyou
-         * hOw
-         */
-          public static void function_3(){
-              String str = &quot;howareyou&quot;;
-              //调用String类的方法startsWith
-              boolean b = str.startsWith(&quot;hOw&quot;);
-              System.out.println(b);
-          }
-
-        /*
-         *  String substring(int beginIndex,int endIndex) 获取字符串的一部分
-         *  返回新的字符串
-         *  包含头,不包含尾巴
-         *  
-         *  String substring(int beginIndex)获取字符串的一部分
-         *  包含头,后面的字符全要
-         */
-        public static void function_2(){
-            String str = &quot;howareyou&quot;;
-            //调用String类方法substring获取字符串一部分
-            str= str.substring(1, 5);
-            System.out.println(str);
-
-            String str2 = &quot;HelloWorld&quot;;
-            str2 = str2.substring(1);
-            System.out.println(str2);
-        }
-
-        /*
-         *  int length() 返回字符串的长度
-         *  包含多少个字符
-         */
-        public static void function(){
-            String str = &quot;cfxdf#$REFewfrt54GT&quot;;
-            //调用String类方法length,获取字符串长度
-            int length = str.length();
-            System.out.println(length);
-        }
-    }</code></pre><p>###11String类练习<br>    * A: 获取指定字符串中，大写字母、小写字母、数字的个数<br>        * a: 题目分析<br>            * 为了统计大写字母、小写字母、数字的个数。创建3个计数的变量。<br>            * 为了获取到字符串中的每个字符，进行字符串的遍历，得到每个字符。<br>            * 对得到的字符进行判断，如果该字符为大写字母，则大写字母个数+1；如果该字符为小写字母，则小写字母个数+1；如果该字符为数字，则数字个数+1。<br>            * 显示大写字母、小写字母、数字的个数</p>
-<pre><code>* b: 解题步骤
-    * 略
-* 案例代码
-    public class StringTest {
-        public static void main(String[] args) {
-            getCount(&quot;A%A3eBr1FFy&quot;);                    
-        }
-
-        /*
-         * 获取指定字符串中，大写字母、小写字母、数字的个数。
-         * 思想:
-         *   1. 计数器,就是int变量,满足一个条件 ++
-         *   2. 遍历字符串, 长度方法length() + charAt() 遍历
-         *   3. 字符判断是大写,是小写,还是数字
-         */
-        public static void getCount(String str){
-            //定义三个变量,计数
-            int upper = 0;
-            int lower = 0;
-            int digit = 0;
-            //对字符串遍历
-            for(int i = 0 ; i &lt; str.length() ; i++){
-                //String方法charAt,索引,获取字符
-                char c = str.charAt(i);
-                //利用编码表 65-90  97-122  48-57
-                if(c &gt;=&apos;A&apos; &amp;&amp; c &lt;=90){
-                    upper++;
-                }else if( c &gt;= 97 &amp;&amp; c &lt;= 122){
-                    lower++;
-                }else if( c &gt;= 48 &amp;&amp; c &lt;=&apos;9&apos;){
-                    digit++;
-                }
-            }
-            System.out.println(upper);
-            System.out.println(lower);
-            System.out.println(digit);
-        }
-    }</code></pre><p>###12String类练习_2<br>    * A: 将字符串中，第一个字母转换成大写，其他字母转换成小写，并打印改变后的字符串。<br>        * a: 题目分析<br>            * 把字符串分为两个部分，第一部分为字符串中第一个字母，第二部分为剩下的字符串。<br>            * 把第一部分字符串转换成大写字母，把第二部分字符串转换成小写字母<br>            * 把两部分字符串连接在一起，得到一个完整的字符串<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            public class StringTest {<br>                public static void main(String[] args) {</p>
-<pre><code>        System.out.println(toConvert(&quot;aBc5%4dEF&quot;));
-
-    }
-
-    /*
-     *  将字符串的首字母转成大写,其他内容转成小写
-     *  思想:
-     *    获取首字母, charAt(0)  substring(0,1)
-     *    转成大写 toUpperCase()
-     *    
-     *    获取剩余字符串, substring(1)  toLowerCase()
-     */
-    public static String toConvert(String str){
-        //定义变量,保存首字母,和剩余字符
-        String first = str.substring(0,1);
-        String after = str.substring(1);
-        //调用String类方法,大写,小写转换
-        first = first.toUpperCase();
-        after = after.toLowerCase();
-        return first+after;
-    }
-}</code></pre><p>###13String类练习_3<br>    * A: 查询大字符串中，出现指定小字符串的次数<br>        * a: 题目分析<br>            * 在大串中，查找小串出现的位置，出现了就次数+1<br>            * 在上次小串出现位置的后面继续查找，需要更改大串的内容为上次未查询到的字符串。<br>            * 回到第一步，继续查找小串出现的位置，直到大串中查询不到小串为止<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            package cn.itcast.demo02;</p>
-<pre><code>public class StringTest {
-    public static void main(String[] args) {        
-        System.out.println(getStringCount(&quot;hellojava,nijavahaojava,javazhenbang&quot;, &quot;java&quot;));
-    }
-    /*
-     *  获取一个字符串中,另一个字符串出现的次数
-     *  思想:
-     *    1. indexOf到字符串中到第一次出现的索引
-     *    2. 找到的索引+被找字符串长度,截取字符串
-     *    3. 计数器++
-     */
-    public static int getStringCount(String str, String key){
-        //定义计数器
-        int count = 0;
-        //定义变量,保存indexOf查找后的索引的结果
-        int index = 0;
-        //开始循环找,条件,indexOf==-1 字符串没有了
-        while(( index = str.indexOf(key) )!= -1){
-            count++;
-            //获取到的索引,和字符串长度求和,截取字符串
-            str = str.substring(index+key.length());
-        }
-        return count;
-    }
-}</code></pre><p>======================================================================第三节课开始=========================================================</p>
-<p>###14StringBuffer特点可变字符数组<br>    * A:StringBuffer类概述<br>        * 通过JDK提供的API，查看StringBuffer类的说明<br>        * 线程安全的可变字符序列<br>        * 底层采用字符数组实现,初始容量为16<br>    * B:StringBuffer和String的区别<br>        * String是一个不可变的字符序列<br>        * StringBuffer是一个可变的字符序列</p>
-<p>###15StringBuffer类的方法<br>    * A: StringBuffer类的方法<br>        * a: 方法介绍<br>            * StringBuffer append(), 将任意类型的数据,添加缓冲区<br>                *  append 返回值,写return this<br>                *  调用者是谁,返回值就是谁<br>            * delete(int start,int end): 删除缓冲区中字符<br>                *  开始索引包含,结尾索引不包含<br>            * insert(int index, 任意类型): 将任意类型数据,插入到缓冲区的指定索引上<br>            * replace(int start,int end, String str): 将指定的索引范围内的所有字符,替换成新的字符串<br>            * reverse(): 将缓冲区中的字符反转<br>            * String toString(): 继承Object,重写toString()<br>                *   将缓冲区中的所有字符,变成字符串<br>        * b: 案例代码<br>            public class StringBufferDemo {<br>                public static void main(String[] args) {<br>                    function_5();<br>                }<br>                /*<br>                 *  StringBuffer类的方法<br>                 *   String toString() 继承Object,重写toString()<br>                 *   将缓冲区中的所有字符,变成字符串<br>                 */<br>                public static void function_5(){<br>                    StringBuffer buffer = new StringBuffer();<br>                    buffer.append(“abcdef”);<br>                    buffer.append(12345);</p>
-<pre><code>        //将可变的字符串缓冲区对象,变成了不可变String对象
-        String s = buffer.toString();
-        System.out.println(s);
-    }
-
-    /*
-     *  StringBuffer类的方法
-     *    reverse() 将缓冲区中的字符反转
-     */
-    public static void function_4(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(&quot;abcdef&quot;);
-
-        buffer.reverse();
-
-        System.out.println(buffer);
-    }
-
-    /*
-     *  StringBuffer类方法
-     *    replace(int start,int end, String str)
-     *    将指定的索引范围内的所有字符,替换成新的字符串
-     */
-    public static void function_3(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(&quot;abcdef&quot;);
-
-        buffer.replace(1, 4, &quot;Q&quot;);
-
-        System.out.println(buffer);
-    }
-
-    /*
-     *  StringBuffer类方法 insert
-     *    insert(int index, 任意类型)
-     *  将任意类型数据,插入到缓冲区的指定索引上
-     */
-     public static void function_2(){
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(&quot;abcdef&quot;);     
-
-         buffer.insert(3, 9.5);
-         System.out.println(buffer);
-     }
-
-    /*
-     * StringBuffer类方法
-     *   delete(int start,int end) 删除缓冲区中字符
-     *   开始索引包含,结尾索引不包含
-     */
-    public static void function_1(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(&quot;abcdef&quot;);
-
-        buffer.delete(1,5);
-        System.out.println(buffer);
-    }
-
-    /*
-     *  StringBuffer类方法
-     *   StringBuffer append, 将任意类型的数据,添加缓冲区
-     *   append 返回值,写return this
-     *   调用者是谁,返回值就是谁
-     */
-    public static void function(){
-        StringBuffer buffer = new StringBuffer();
-        //调用StringBuffer方法append向缓冲区追加内容
-        buffer.append(6).append(false).append(&apos;a&apos;).append(1.5);
-        System.out.println(buffer);
-    }
-}</code></pre><p>​<br>###16StringBuilder类<br>    * A:StringBuilder的概述<br>        * 通过查看API了解一下StringBuilder类<br>    * B:面试题<br>        * String,StringBuffer,StringBuilder的区别<br>            * StringBuffer和StringBuilder的区别<br>                * StringBuffer是jdk1.0版本的,是线程安全的,效率低<br>                * StringBuilder是jdk1.5版本的,是线程不安全的,效率高</p>
-<pre><code>* String和StringBuffer,StringBuilder的区别
-    * String是一个不可变的字符序列
-    * StringBuffer,StringBuilder是可变的字符序列</code></pre><p>###17StringBuffer类案例拼接数组<br>    * A: StringBuffer类案例拼接数组<br>        * a: 题目分析<br>            * 定义StringBuffer对象<br>            * 遍历数组,按照格式要求拼接处新的字符串,追加到StringBuffer容器中<br>            * 将StringBuffer中的内容以String的形式返回<br>        * b: 解题步骤<br>            * 略<br>        * C: 案例代码<br>            public class StringBufferTest {<br>                public static void main(String[] args) {<br>                    int[] arr = {4,1,4,56,7,8,76};<br>                    System.out.println(toString(arr));<br>                }<br>               /*<br>                * int[] arr = {34,12,89,68};将一个int[]中元素转成字符串<br>                * 格式 [34,12,89,68]<br>                * String s = “[“<br>                * 数组遍历<br>                *   s+= arr[i];<br>                *  s+”]”<br>                *  StringBuffer实现,节约内存空间, String + 在缓冲区中,append方法<br>                */<br>                public static String toString(int[] arr){<br>                    //创建字符串缓冲区<br>                    StringBuffer buffer = new StringBuffer();<br>                    buffer.append(“[“);<br>                    //数组遍历<br>                    for(int i = 0 ; i &lt; arr.length;i++){<br>                        //判断是不是数组的最后一个元素<br>                        if(i == arr.length-1){<br>                            buffer.append(arr[i]).append(“]”);<br>                        }else{<br>                            buffer.append(arr[i]).append(“,”);<br>                        }<br>                    }<br>                    return buffer.toString();<br>                }<br>            }<br>###18总结</p>
-<ul>
-<li>把今天的知识点总结一遍。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3284,7 +3108,7 @@ public class TestEquals {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
