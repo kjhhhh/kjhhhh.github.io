@@ -155,6 +155,912 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day28%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day28%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记28</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:13:46" itemprop="dateModified" datetime="2020-12-23T23:13:46+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、网络三要素及传输协议<br>2、实现UDP协议的发送端和接收端<br>3、实现TCP协议的客户端和服务器<br>4、TCP上传文件案例</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01网络模型<br>  *A:网络模型<br>     TCP/IP协议中的四层分别是应用层、传输层、网络层和链路层，每层分别负责不同的通信功能，接下来针对这四层进行详细地讲解。<br>       链路层：链路层是用于定义物理传输通道，通常是对某些网络连接设备的驱动协议，例如针对光纤、网线提供的驱动。<br>       网络层：网络层是整个TCP/IP协议的核心，它主要用于将传输的数据进行分组，将分组数据发送到目标计算机或者网络。<br>       传输层：主要使网络程序进行通信，在进行网络通信时，可以采用TCP协议，也可以采用UDP协议。<br>       应用层：主要负责应用程序的协议，例如HTTP协议、FTP协议等。</p>
+<p>###02IP地址<br> *A:IP地址<br>      在TCP/IP协议中，这个标识号就是IP地址，它可以唯一标识一台计算机，<br>      目前，IP地址广泛使用的版本是IPv4，它是由4个字节大小的二进制数来表示，如：00001010000000000000000000000001。<br>      由于二进制形式表示的IP地址非常不便记忆和处理，因此通常会将IP地址写成十进制的形式，<br>      每个字节用一个十进制数字(0-255)表示，数字间用符号“.”分开，如 “192.168.1.100”<br>      127.0.0.1 为本地主机地址(本地回环地址)<br>###03端口号<br> *A:端口号<br>    通过IP地址可以连接到指定计算机，但如果想访问目标计算机中的某个应用程序，还需要指定端口号。<br>    在计算机中，不同的应用程序是通过端口号区分的。<br>    端口号是用两个字节（16位的二进制数）表示的，它的取值范围是0<del>65535，<br>    其中，0</del>1023之间的端口号用于一些知名的网络服务和应用，用户的普通应用程序需要使用1024以上的端口号，从而避免端口号被另外一个应用或服务所占用</p>
+<p>###04InetAddress类<br>  <em>A:InetAddress类<br>     /</em><br>      *  表示互联网中的IP地址<br>      *    java.net.InetAddress<br>      *  静态方法<br>      *    static InetAddress  getLocalHost()   LocalHost本地主机<br>      *    返回本地主机,返回值InetAddress对象<br>      *<br>      *    static InetAddress getByName(String hostName)传递主机名,获取IP地址对象<br>      *<br>      *  非静态方法<br>      *     String getHoustAddress()获取主机IP地址<br>      *     String getHoustName()获取主机名<br>      *<br>      <em>/<br>     public class InetAddressDemo {<br>      public static void main(String[] args)throws UnknownHostException {<br>        function_1();<br>      }<br>      /</em><br>       * static InetAddress getByName(String hostName)传递主机名,获取IP地址对象<br>       */<br>      public static void function_1()throws UnknownHostException {<br>        InetAddress inet = InetAddress.getByName(“<a href="http://www.baidu.com&quot;" target="_blank" rel="noopener">www.baidu.com&quot;</a>);<br>        System.out.println(inet);<br>      }</p>
+<pre><code> /*
+  *  static InetAddress  getLocalHost()   LocalHost本地主机
+  */
+ public static void function() throws UnknownHostException{
+   InetAddress inet = InetAddress.getLocalHost();
+   //输出结果就是主机名,和 IP地址
+   System.out.println(inet.toString());
+
+   String ip = inet.getHostAddress();
+   String name = inet.getHostName();
+   System.out.println(ip+&quot;   &quot;+name);
+
+   /*String host = inet.toString();
+   String[] str = host.split(&quot;/&quot;);
+   for(String s : str){
+     System.out.println(s);
+   }*/
+ }
+}</code></pre><p>###05UDP协议<br>   A:UDP协议<br>     a:UDP协议概述:<br>      UDP是无连接通信协议，即在数据传输时，数据的发送端和接收端不建立逻辑连接。<br>      简单来说，当一台计算机向另外一台计算机发送数据时，发送端不会确认接收端是否存在，就会发出数据，同样接收端在收到数据时，也不会向发送端反馈是否收到数据。<br>     b:UDP协议特点:<br>      由于使用UDP协议消耗资源小，通信效率高，所以通常都会用于音频、视频和普通数据的传输例如视频会议都使用UDP协议，<br>      因为这种情况即使偶尔丢失一两个数据包，也不会对接收结果产生太大影响。</p>
+<p>###06TCP协议<br>  *A:TCP协议<br>    TCP协议是面向连接的通信协议，即在传输数据前先在发送端和接收端建立逻辑连接，然后再传输数据，它提供了两台计算机之间可靠无差错的数据传输。<br>    在TCP连接中必须要明确客户端与服务器端，<br>      由客户端向服务端发出连接请求，每次连接的创建都需要经过“三次握手”。<br>      第一次握手，客户端向服务器端发出连接请求，等待服务器确认<br>      第二次握手，服务器端向客户端回送一个响应，通知客户端收到了连接请求<br>      第三次握手，客户端再次向服务器端发送确认信息，确认连接</p>
+<p>========================================第二节课=========================================<br>###07数据包和发送对象介绍<br>  *A:数据包和发送对象介绍:<br>    DatagramPacket数据包的作用就如同是“集装箱”，<br>       可以将发送端或者接收端的数据封装起来。然而运输货物只有“集装箱”是不够的，还需要有码头。<br>       在程序中需要实现通信只有DatagramPacket数据包也同样不行，为此JDK中提供的一个DatagramSocket类。<br>       DatagramSocket类的作用就类似于码头，使用这个类的实例对象就可以发送和接收DatagramPacket数据包<br>    DatagramPacket:封装数据<br>    DatagramSocket:发送DatagramPacket</p>
+<p>###08UDP发送端<br>   <em>A:UDP发送端<br>         /</em><br>        *  实现UDP协议的发送端:<br>        *    实现封装数据的类 java.net.DatagramPacket  将你的数据包装<br>        *    实现数据传输的类 java.net.DatagramSocket  将数据包发出去<br>        *<br>        *  实现步骤:<br>        *    1. 创建DatagramPacket对象,封装数据, 接收的地址和端口<br>        *    2. 创建DatagramSocket<br>        *    3. 调用DatagramSocket类方法send,发送数据包<br>        *    4. 关闭资源<br>        *<br>        *    DatagramPacket构造方法:<br>        *      DatagramPacket(byte[] buf, int length, InetAddress address, int port)<br>        *<br>        *    DatagramSocket构造方法:<br>        *      DatagramSocket()空参数<br>        *      方法: send(DatagramPacket d)<br>        *<br>        */<br>       public class UDPSend {<br>        public static void main(String[] args) throws IOException{<br>          //创建数据包对象,封装要发送的数据,接收端IP,端口<br>          byte[] date = “你好UDP”.getBytes();<br>          //创建InetAddress对象,封装自己的IP地址<br>          InetAddress inet = InetAddress.getByName(“127.0.0.1”);<br>          DatagramPacket dp = new DatagramPacket(date, date.length, inet,6000);<br>          //创建DatagramSocket对象,数据包的发送和接收对象<br>          DatagramSocket ds = new DatagramSocket();<br>          //调用ds对象的方法send,发送数据包<br>          ds.send(dp);<br>          //关闭资源<br>          ds.close();<br>        }<br>       }</p>
+<p>###09UDP接收端<br>   <em>A:UDP接收端<br>       /</em><br>        *  实现UDP接收端<br>        *    实现封装数据包 java.net.DatagramPacket 将数据接收<br>        *    实现输出传输     java.net.DatagramSocket 接收数据包<br>        *<br>        *  实现步骤:<br>        *     1. 创建DatagramSocket对象,绑定端口号<br>        *         要和发送端端口号一致<br>        *     2. 创建字节数组,接收发来的数据<br>        *     3. 创建数据包对象DatagramPacket<br>        *     4. 调用DatagramSocket对象方法<br>        *        receive(DatagramPacket dp)接收数据,数据放在数据包中<br>        *     5. 拆包<br>        *          发送的IP地址<br>        *            数据包对象DatagramPacket方法getAddress()获取的是发送端的IP地址对象<br>        *            返回值是InetAddress对象<br>        *          接收到的字节个数<br>        *            数据包对象DatagramPacket方法 getLength()<br>        *          发送方的端口号<br>        *            数据包对象DatagramPacket方法 getPort()发送端口<br>        *     6. 关闭资源<br>        */<br>       public class UDPReceive {<br>        public static void main(String[] args)throws IOException {<br>          //创建数据包传输对象DatagramSocket 绑定端口号<br>          DatagramSocket ds = new DatagramSocket(6000);<br>          //创建字节数组<br>          byte[] data = new byte[1024];<br>          //创建数据包对象,传递字节数组<br>          DatagramPacket dp = new DatagramPacket(data, data.length);<br>          //调用ds对象的方法receive传递数据包<br>          ds.receive(dp);</p>
+<pre><code> }
+}</code></pre><p>###10UDP接收端的拆包<br>   *A:UDP接收端的拆包 </p>
+<pre><code>/*
+ *  实现UDP接收端
+ *    实现封装数据包 java.net.DatagramPacket 将数据接收
+ *    实现输出传输     java.net.DatagramSocket 接收数据包
+ *    
+ *  实现步骤:
+ *     1. 创建DatagramSocket对象,绑定端口号
+ *         要和发送端端口号一致
+ *     2. 创建字节数组,接收发来的数据
+ *     3. 创建数据包对象DatagramPacket
+ *     4. 调用DatagramSocket对象方法
+ *        receive(DatagramPacket dp)接收数据,数据放在数据包中
+ *     5. 拆包
+ *          发送的IP地址
+ *            数据包对象DatagramPacket方法getAddress()获取的是发送端的IP地址对象
+ *            返回值是InetAddress对象
+ *          接收到的字节个数
+ *            数据包对象DatagramPacket方法 getLength()
+ *          发送方的端口号
+ *            数据包对象DatagramPacket方法 getPort()发送端口
+ *     6. 关闭资源
+ */
+public class UDPReceive {
+  public static void main(String[] args)throws IOException {
+    //创建数据包传输对象DatagramSocket 绑定端口号
+    DatagramSocket ds = new DatagramSocket(6000);
+    //创建字节数组
+    byte[] data = new byte[1024];
+    //创建数据包对象,传递字节数组
+    DatagramPacket dp = new DatagramPacket(data, data.length);
+    //调用ds对象的方法receive传递数据包
+    ds.receive(dp);
+
+    //获取发送端的IP地址对象
+    String ip=dp.getAddress().getHostAddress();
+
+    //获取发送的端口号
+    int port = dp.getPort();
+
+    //获取接收到的字节个数
+    int length = dp.getLength();
+    System.out.println(new String(data,0,length)+&quot;...&quot;+ip+&quot;:&quot;+port);
+    ds.close();
+  }
+}</code></pre><p>###11键盘输入的聊天<br>   <em>A:键盘输入的聊天<br>    *a:发送端:<br>      /</em><br>       * 实现UDP发送,键盘输入的形式<br>       * 输入完毕,发送给接收端<br>       <em>/<br>      public class UDPSend {<br>        public static void main(String[] args) throws IOException{<br>          Scanner sc = new Scanner(System.in);<br>          DatagramSocket ds = new DatagramSocket();<br>          InetAddress inet = InetAddress.getByName(“127.0.0.1”);<br>          while(true){<br>          String message = sc.nextLine();<br>          /*if(“886”.equals(message)){<br>            break;<br>          }</em>/<br>          byte[] date = message.getBytes();<br>          DatagramPacket dp = new DatagramPacket(date, date.length, inet,6000);<br>          ds.send(dp);<br>          }<br>        //  ds.close();<br>        }<br>      }</p>
+<pre><code>/*
+ *  实现UDP接收端
+ *  永不停歇的接收端
+ */
+public class UDPReceive {
+ public static void main(String[] args)throws IOException {
+   //创建数据包传输对象DatagramSocket 绑定端口号
+   DatagramSocket ds = new DatagramSocket(6000);
+   //创建字节数组
+   byte[] data = new byte[1024];
+   //创建数据包对象,传递字节数组
+   while(true){
+   DatagramPacket dp = new DatagramPacket(data, data.length);
+   //调用ds对象的方法receive传递数据包
+   ds.receive(dp);
+
+   //获取发送端的IP地址对象
+   String ip=dp.getAddress().getHostAddress();
+
+   //获取发送的端口号
+   int port = dp.getPort();
+
+   //获取接收到的字节个数
+   int length = dp.getLength();
+   System.out.println(new String(data,0,length)+&quot;...&quot;+ip+&quot;:&quot;+port);
+   }
+   //ds.close();
+ }
+}</code></pre><p>=======================第三节课======================================<br>###12TCP的客户端和服务器<br>   *A:TCP的客户端和服务器<br>      TCP通信同UDP通信一样，都能实现两台计算机之间的通信，通信的两端都需要创建socket对象。<br>      区别在于，UDP中只有发送端和接收端，不区分客户端与服务器端，计算机之间可以任意地发送数据。<br>      而TCP通信是严格区分客户端与服务器端的，在通信时，必须先由客户端去连接服务器端才能实现通信，<br>      服务器端不可以主动连接客户端，并且服务器端程序需要事先启动，等待客户端的连接。<br>      在JDK中提供了两个类用于实现TCP程序，一个是ServerSocket类，用于表示服务器端，一个是Socket类，用于表示客户端。<br>      通信时，首先创建代表服务器端的ServerSocket对象，该对象相当于开启一个服务，并等待客户端的连接，然后创建代表客户端的Socket对象向服务器端发出连接请求，服务器端响应请求，两者建立连接开始通信。</p>
+<p>###13TCP的客户端程序<br>  <em>A:TCP的客户端程序<br>   /</em><br>    *  实现TCP客户端,连接到服务器<br>    *  和服务器实现数据交换<br>    *  实现TCP客户端程序的类 java.net.Socket<br>    *<br>    *  构造方法:<br>    *      Socket(String host, int port)  传递服务器IP和端口号<br>    *      注意:构造方法只要运行,就会和服务器进行连接,连接失败,抛出异常<br>    *<br>    *    OutputStream  getOutputStream() 返回套接字的输出流<br>    *      作用: 将数据输出,输出到服务器<br>    *<br>    *    InputStream getInputStream() 返回套接字的输入流<br>    *      作用: 从服务器端读取数据<br>    *<br>    *    客户端服务器数据交换,必须使用套接字对象Socket中的获取的IO流,自己new流,不行<br>    */<br>   public class TCPClient {<br>    public static void main(String[] args)throws IOException {<br>      //创建Socket对象,连接服务器<br>      Socket socket = new Socket(“127.0.0.1”, 8888);<br>      //通过客户端的套接字对象Socket方法,获取字节输出流,将数据写向服务器<br>      OutputStream out = socket.getOutputStream();<br>      out.write(“服务器OK”.getBytes());</p>
+<pre><code>  socket.close();
+}</code></pre><p>   }</p>
+<p>###14TCP的服务器程序accept方法<br>   A:TCP的服务器程序accept方法<br>     /*<br>      *  实现TCP服务器程序<br>      *  表示服务器程序的类 java.net.ServerSocket<br>      *  构造方法:<br>      *    ServerSocket(int port) 传递端口号<br>      *<br>      *  很重要的事情: 必须要获得客户端的套接字对象Socket<br>      *    Socket  accept()<br>      */<br>     public class TCPServer {<br>      public static void main(String[] args) throws IOException{<br>        ServerSocket server = new ServerSocket(8888);<br>        //调用服务器套接字对象中的方法accept() 获取客户端套接字对象<br>        Socket socket = server.accept();<br>        //通过客户端套接字对象,socket获取字节输入流,读取的是客户端发送来的数据<br>        InputStream in = socket.getInputStream();<br>        byte[] data = new byte[1024];<br>        int len = in.read(data);<br>        System.out.println(new String(data,0,len));</p>
+<pre><code>   socket.close();
+   server.close();
+ }
+}</code></pre><p>###15TCP的服务器程序读取客户端数据<br>   A:TCP的服务器程序读取客户端数据</p>
+<pre><code>/*
+ *  实现TCP客户端,连接到服务器
+ *  和服务器实现数据交换
+ *  实现TCP客户端程序的类 java.net.Socket
+ *  
+ *  构造方法:
+ *      Socket(String host, int port)  传递服务器IP和端口号
+ *      注意:构造方法只要运行,就会和服务器进行连接,连接失败,抛出异常
+ *      
+ *    OutputStream  getOutputStream() 返回套接字的输出流
+ *      作用: 将数据输出,输出到服务器
+ *      
+ *    InputStream getInputStream() 返回套接字的输入流
+ *      作用: 从服务器端读取数据
+ *      
+ *    客户端服务器数据交换,必须使用套接字对象Socket中的获取的IO流,自己new流,不行
+ */
+public class TCPClient {
+  public static void main(String[] args)throws IOException {
+    //创建Socket对象,连接服务器
+    Socket socket = new Socket(&quot;127.0.0.1&quot;, 8888);
+    //通过客户端的套接字对象Socket方法,获取字节输出流,将数据写向服务器
+    OutputStream out = socket.getOutputStream();
+    out.write(&quot;服务器OK&quot;.getBytes());
+    socket.close();
+  }
+}
+/*
+ *  实现TCP服务器程序
+ *  表示服务器程序的类 java.net.ServerSocket
+ *  构造方法:
+ *    ServerSocket(int port) 传递端口号
+ *  
+ *  很重要的事情: 必须要获得客户端的套接字对象Socket
+ *    Socket  accept()
+ */
+public class TCPServer {
+  public static void main(String[] args) throws IOException{
+    ServerSocket server = new ServerSocket(8888);
+    //调用服务器套接字对象中的方法accept() 获取客户端套接字对象
+    Socket socket = server.accept();
+    //通过客户端套接字对象,socket获取字节输入流,读取的是客户端发送来的数据
+    InputStream in = socket.getInputStream();
+    byte[] data = new byte[1024];
+    int len = in.read(data);
+    System.out.println(new String(data,0,len));
+
+  }
+}</code></pre><p>###16TCP的服务器和客户端的数据交换<br>   A:TCP的服务器和客户端的数据交换<br>      /*<br>       *  实现TCP客户端,连接到服务器<br>       *  和服务器实现数据交换<br>       *  实现TCP客户端程序的类 java.net.Socket<br>       *<br>       *  构造方法:<br>       *      Socket(String host, int port)  传递服务器IP和端口号<br>       *      注意:构造方法只要运行,就会和服务器进行连接,连接失败,抛出异常<br>       *<br>       *    OutputStream  getOutputStream() 返回套接字的输出流<br>       *      作用: 将数据输出,输出到服务器<br>       *<br>       *    InputStream getInputStream() 返回套接字的输入流<br>       *      作用: 从服务器端读取数据<br>       *<br>       *    客户端服务器数据交换,必须使用套接字对象Socket中的获取的IO流,自己new流,不行<br>       */<br>      public class TCPClient {<br>        public static void main(String[] args)throws IOException {<br>          //创建Socket对象,连接服务器<br>          Socket socket = new Socket(“127.0.0.1”, 8888);<br>          //通过客户端的套接字对象Socket方法,获取字节输出流,将数据写向服务器<br>          OutputStream out = socket.getOutputStream();<br>          out.write(“服务器OK”.getBytes());</p>
+<pre><code>    //读取服务器发回的数据,使用socket套接字对象中的字节输入流
+    InputStream in = socket.getInputStream();
+    byte[] data = new byte[1024];
+    int len = in.read(data);
+    System.out.println(new String(data,0,len));
+
+    socket.close();
+  }
+}
+/*
+ *  实现TCP服务器程序
+ *  表示服务器程序的类 java.net.ServerSocket
+ *  构造方法:
+ *    ServerSocket(int port) 传递端口号
+ *  
+ *  很重要的事情: 必须要获得客户端的套接字对象Socket
+ *    Socket  accept()
+ */
+public class TCPServer {
+  public static void main(String[] args) throws IOException{
+    ServerSocket server = new ServerSocket(8888);
+    //调用服务器套接字对象中的方法accept() 获取客户端套接字对象
+    Socket socket = server.accept();
+    //通过客户端套接字对象,socket获取字节输入流,读取的是客户端发送来的数据
+    InputStream in = socket.getInputStream();
+    byte[] data = new byte[1024];
+    int len = in.read(data);
+    System.out.println(new String(data,0,len));
+
+    //服务器向客户端回数据,字节输出流,通过客户端套接字对象获取字节输出流
+    OutputStream out = socket.getOutputStream();
+    out.write(&quot;收到,谢谢&quot;.getBytes());
+
+    socket.close();
+    server.close();
+  }
+}</code></pre><p>###17TCP的中的流对象<br>    *A:TCP的中的流对象<br>        参见图解TCP中的流对象.jpg  </p>
+<p>======================================第四节课=================================================<br>###18TCP图片上传案例分析<br>    *A:图片上传案例分析<br>         参见图解TCP上传图片案例.jpg  </p>
+<p>###19TCP上传客户端<br>   <em>A TCP上传客户端<br>   /</em><br>    *  实现TCP图片上传客户端<br>    *  实现步骤:<br>    *    1. Socket套接字连接服务器<br>    *    2. 通过Socket获取字节输出流,写图片<br>    *    3. 使用自己的流对象,读取图片数据源<br>    *         FileInputStream<br>    *    4. 读取图片,使用字节输出流,将图片写到服务器<br>    *       采用字节数组进行缓冲<br>    *    5. 通过Socket套接字获取字节输入流<br>    *       读取服务器发回来的上传成功<br>    *    6. 关闭资源<br>    */<br>   public class TCPClient {<br>    public static void main(String[] args) throws IOException{<br>      Socket socket = new Socket(“127.0.0.1”, 8000);<br>      //获取字节输出流,图片写到服务器<br>      OutputStream out = socket.getOutputStream();<br>      //创建字节输入流,读取本机上的数据源图片<br>      FileInputStream fis = new FileInputStream(“c:\t.jpg”);<br>      //开始读写字节数组<br>      int len = 0 ;<br>      byte[] bytes = new byte[1024];<br>      while((len = fis.read(bytes))!=-1){<br>        out.write(bytes, 0, len);<br>      }<br>      //给服务器写终止序列<br>      //socket.shutdownOutput();</p>
+<pre><code>  //获取字节输入流,读取服务器的上传成功
+  InputStream in = socket.getInputStream();
+
+  len = in.read(bytes);
+  System.out.println(new String(bytes,0,len));
+
+  fis.close();
+  socket.close();
+}</code></pre><p>   }<br>###20TCP上传服务器<br>   A:TCP上传服务器<br>   /*<br>    *  TCP图片上传服务器<br>    *   1. ServerSocket套接字对象,监听端口8000<br>    *   2. 方法accept()获取客户端的连接对象<br>    *   3. 客户端连接对象获取字节输入流,读取客户端发送图片<br>    *   4. 创建File对象,绑定上传文件夹<br>    *       判断文件夹存在, 不存,在创建文件夹<br>    *   5. 创建字节输出流,数据目的File对象所在文件夹<br>    *   6. 字节流读取图片,字节流将图片写入到目的文件夹中<br>    *   7. 将上传成功会写客户端<br>    *   8. 关闭资源<br>    *<br>    */<br>   public class TCPServer {<br>    public static void main(String[] args) throws IOException{<br>      ServerSocket server = new ServerSocket(8000);<br>      Socket socket = server.accept();<br>      //通过客户端连接对象,获取字节输入流,读取客户端图片<br>      InputStream in = socket.getInputStream();<br>      //将目的文件夹封装到File对象<br>      File upload = new File(“d:\upload”);<br>      if(!upload.exists())<br>        upload.mkdirs();</p>
+<pre><code>  //创建字节输出流,将图片写入到目的文件夹中                         
+  FileOutputStream fos = new FileOutputStream(upload+&quot;t.jpg&quot;);
+  //读写字节数组
+  byte[] bytes = new byte[1024];
+  int len = 0 ;
+  while((len = in.read(bytes))!=-1){
+    fos.write(bytes, 0, len);
+  }
+  //通过客户端连接对象获取字节输出流
+  //上传成功写回客户端
+  socket.getOutputStream().write(&quot;上传成功&quot;.getBytes());
+
+  fos.close();
+  socket.close();
+  server.close();
+}</code></pre><p>   }<br>###21TCP图片上传问题解决<br>/*</p>
+<ul>
+<li><p>实现TCP图片上传客户端</p>
+</li>
+<li><p>实现步骤:</p>
+</li>
+<li><ol>
+<li>Socket套接字连接服务器</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>通过Socket获取字节输出流,写图片</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>使用自己的流对象,读取图片数据源</li>
+</ol>
+</li>
+<li><p>FileInputStream</p>
+</li>
+<li><ol start="4">
+<li>读取图片,使用字节输出流,将图片写到服务器</li>
+</ol>
+</li>
+<li><p>采用字节数组进行缓冲</p>
+</li>
+<li><ol start="5">
+<li>通过Socket套接字获取字节输入流</li>
+</ol>
+</li>
+<li><p>读取服务器发回来的上传成功</p>
+</li>
+<li><ol start="6">
+<li>关闭资源</li>
+</ol>
+</li>
+<li><p>/<br>public class TCPClient {<br>  public static void main(String[] args) throws IOException{<br>  Socket socket = new Socket(“127.0.0.1”, 8000);<br>  //获取字节输出流,图片写到服务器<br>  OutputStream out = socket.getOutputStream();<br>  //创建字节输入流,读取本机上的数据源图片<br>  FileInputStream fis = new FileInputStream(“c:\t.jpg”);<br>  //开始读写字节数组<br>  int len = 0 ;<br>  byte[] bytes = new byte[1024];<br>  while((len = fis.read(bytes))!=-1){</p>
+<pre><code>out.write(bytes, 0, len);</code></pre><p>  }<br>  //给服务器写终止序列<br>  socket.shutdownOutput();//想服务端写入一个结束标志</p>
+<p>  //获取字节输入流,读取服务器的上传成功<br>  InputStream in = socket.getInputStream();</p>
+<p>  len = in.read(bytes);<br>  System.out.println(new String(bytes,0,len));</p>
+<p>  fis.close();<br>  socket.close();<br>  }<br>}</p>
+</li>
+</ul>
+<p>###TCP上传文件名<br>  <em>A:TCP上传文件名<br>   /</em><br>    *  TCP图片上传服务器<br>    *   1. ServerSocket套接字对象,监听端口8000<br>    *   2. 方法accept()获取客户端的连接对象<br>    *   3. 客户端连接对象获取字节输入流,读取客户端发送图片<br>    *   4. 创建File对象,绑定上传文件夹<br>    *       判断文件夹存在, 不存,在创建文件夹<br>    *   5. 创建字节输出流,数据目的File对象所在文件夹<br>    *   6. 字节流读取图片,字节流将图片写入到目的文件夹中<br>    *   7. 将上传成功会写客户端<br>    *   8. 关闭资源<br>    *<br>    */<br>   public class TCPServer {<br>    public static void main(String[] args) throws IOException{<br>      ServerSocket server = new ServerSocket(8000);<br>      Socket socket = server.accept();<br>      //通过客户端连接对象,获取字节输入流,读取客户端图片<br>      InputStream in = socket.getInputStream();<br>      //将目的文件夹封装到File对象<br>      File upload = new File(“d:\upload”);<br>      if(!upload.exists())<br>        upload.mkdirs();</p>
+<pre><code>  //防止文件同名被覆盖,从新定义文件名字
+  //规则:  域名+毫秒值+6位随机数
+  String filename=&quot;itcast&quot;+System.currentTimeMillis()+new Random().nextInt(999999)+&quot;.jpg&quot;;
+  //创建字节输出流,将图片写入到目的文件夹中                         
+  FileOutputStream fos = new FileOutputStream(upload+File.separator+filename);
+  //读写字节数组
+  byte[] bytes = new byte[1024];
+  int len = 0 ;
+  while((len = in.read(bytes))!=-1){
+    fos.write(bytes, 0, len);
+  }
+  //通过客户端连接对象获取字节输出流
+  //上传成功写回客户端
+  socket.getOutputStream().write(&quot;上传成功&quot;.getBytes());
+
+  fos.close();
+  socket.close();
+  server.close();
+}</code></pre><p>   }</p>
+<p>###多线程上传案例<br>*A:多线程上传案例<br>  public class TCPThreadServer {<br>    public static void main(String[] args) throws IOException {<br>      ServerSocket server = new ServerSocket(8000);<br>      while (true) {<br>        // 获取到一个客户端,必须开启新线程,为这个客户端服务<br>        Socket socket = server.accept();<br>        new Thread(new Upload(socket)).start();<br>      }<br>    }<br>  }</p>
+<p>  public class Upload implements Runnable {</p>
+<pre><code>private Socket socket;
+
+public Upload(Socket socket) {
+  this.socket = socket;
+}
+
+public void run() {
+  try {
+    // 通过客户端连接对象,获取字节输入流,读取客户端图片
+    InputStream in = socket.getInputStream();
+    // 将目的文件夹封装到File对象
+    File upload = new File(&quot;d:\\upload&quot;);
+    if (!upload.exists())
+      upload.mkdirs();
+
+    // 防止文件同名被覆盖,从新定义文件名字
+    // 规则: 域名+毫秒值+6位随机数
+    String filename = &quot;itcast&quot; + System.currentTimeMillis() + new Random().nextInt(999999) + &quot;.jpg&quot;;
+    // 创建字节输出流,将图片写入到目的文件夹中
+    FileOutputStream fos = new FileOutputStream(upload + File.separator + filename);
+    // 读写字节数组
+    byte[] bytes = new byte[1024];
+    int len = 0;
+    while ((len = in.read(bytes)) != -1) {
+      fos.write(bytes, 0, len);
+    }
+    // 通过客户端连接对象获取字节输出流
+    // 上传成功写回客户端
+    socket.getOutputStream().write(&quot;上传成功&quot;.getBytes());
+
+    fos.close();
+    socket.close();
+  } catch (Exception ex) {
+
+  }
+}</code></pre><p>  }</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day27%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day27%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记27</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:12:58" itemprop="dateModified" datetime="2020-12-23T23:12:58+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、多线程安全问题<br>2、等待唤醒机制</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01线程操作共享数据的安全问题<br>  *A:线程操作共享数据的安全问题<br>    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。<br>    程序每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。</p>
+<p>###02售票的案例<br> <em>A:售票的案例<br>     /</em><br>      * 多线程并发访问同一个数据资源<br>      * 3个线程,对一个票资源,出售<br>      */<br>     public class ThreadDemo {<br>      public static void main(String[] args) {<br>        //创建Runnable接口实现类对象<br>        Tickets t = new Tickets();<br>        //创建3个Thread类对象,传递Runnable接口实现类<br>        Thread t0 = new Thread(t);<br>        Thread t1 = new Thread(t);<br>        Thread t2 = new Thread(t);</p>
+<pre><code>   t0.start();
+   t1.start();
+   t2.start();
+
+ }
+}
+
+public class Tickets implements Runnable{
+
+ //定义出售的票源
+ private int ticket = 100;
+ private Object obj = new Object();
+
+ public void run(){
+   while(true){
+
+       if( ticket &gt; 0){
+
+         System.out.println(Thread.currentThread().getName()+&quot; 出售第 &quot;+ticket--);
+       }
+
+   }
+ }
+}</code></pre><p>###03线程安全问题引发<br> <em>A:线程安全问题引发<br>    /</em><br>     * 多线程并发访问同一个数据资源<br>     * 3个线程,对一个票资源,出售<br>     */<br>    public class ThreadDemo {<br>     public static void main(String[] args) {<br>       //创建Runnable接口实现类对象<br>       Tickets t = new Tickets();<br>       //创建3个Thread类对象,传递Runnable接口实现类<br>       Thread t0 = new Thread(t);<br>       Thread t1 = new Thread(t);<br>       Thread t2 = new Thread(t);</p>
+<pre><code>   t0.start();
+   t1.start();
+   t2.start();
+
+ }
+}
+/*
+ *  通过线程休眠,出现安全问题
+ */
+public class Tickets implements Runnable{
+
+ //定义出售的票源
+ private int ticket = 100;
+ private Object obj = new Object();
+
+ public void run(){
+   while(true){
+
+     //对票数判断,大于0,可以出售,变量--操作
+       if( ticket &gt; 0){
+         try{
+            Thread.sleep(10); //加了休眠让其他线程有执行机会
+         }catch(Exception ex){}
+         System.out.println(Thread.currentThread().getName()+&quot; 出售第 &quot;+ticket--);
+       }
+   }
+ }
+}</code></pre><p>###04同步代码块解决线程安全问题<br>  <em>A:同步代码块解决线程安全问题<br>      *A:售票的案例<br>          /</em><br>           * 多线程并发访问同一个数据资源<br>           * 3个线程,对一个票资源,出售<br>           */<br>          public class ThreadDemo {<br>           public static void main(String[] args) {<br>             //创建Runnable接口实现类对象<br>             Tickets t = new Tickets();<br>             //创建3个Thread类对象,传递Runnable接口实现类<br>             Thread t0 = new Thread(t);<br>             Thread t1 = new Thread(t);<br>             Thread t2 = new Thread(t);</p>
+<pre><code>   t0.start();
+   t1.start();
+   t2.start();
+
+ }
+}
+/*
+ *  通过线程休眠,出现安全问题
+ *  解决安全问题,Java程序,提供技术,同步技术
+ *  公式:
+ *    synchronized(任意对象){
+ *      线程要操作的共享数据
+ *    }
+ *    同步代码块
+ */
+public class Tickets implements Runnable{
+
+ //定义出售的票源
+ private int ticket = 100;
+ private Object obj = new Object();
+
+ public void run(){
+   while(true){
+     //线程共享数据,保证安全,加入同步代码块
+     synchronized(obj){
+     //对票数判断,大于0,可以出售,变量--操作
+       if( ticket &gt; 0){
+         try{
+            Thread.sleep(10);
+         }catch(Exception ex){}
+         System.out.println(Thread.currentThread().getName()+&quot; 出售第 &quot;+ticket--);
+       }
+     }
+   }
+ }
+}</code></pre><p>###05同步代码块的执行原理<br>   A:同步代码块的执行原理<br>     同步代码块: 在代码块声明上 加上synchronized<br>     synchronized (锁对象) {<br>       可能会产生线程安全问题的代码<br>     }<br>     同步代码块中的锁对象可以是任意的对象；但多个线程时，要使用同一个锁对象才能够保证线程安全。</p>
+<p>=======================第二节课开始=============================================<br>###06同步的上厕所原理<br>  *A:同步的上厕所原理<br>    a:不使用同步:线程在执行的过程中会被打扰<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>      第一个人正在上厕所,上到一半,被另外一个人拉出来<br>    b:使用同步:<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>       锁比喻成厕所门<br>      第一个人上厕所,会锁门<br>      第二个人上厕所,看到门锁上了,等待第一个人上完再去上厕所</p>
+<p>###07同步方法<br>  <em>A:同步方法:<br>  /</em></p>
+<ul>
+<li><p>多线程并发访问同一个数据资源</p>
+</li>
+<li><p>3个线程,对一个票资源,出售<br> */<br>public class ThreadDemo {</p>
+<p>public static void main(String[] args) {<br> //创建Runnable接口实现类对象<br> Tickets t = new Tickets();<br> //创建3个Thread类对象,传递Runnable接口实现类<br> Thread t0 = new Thread(t);<br> Thread t1 = new Thread(t);<br> Thread t2 = new Thread(t);</p>
+<p> t0.start();<br> t1.start();<br> t2.start();</p>
+<p>}<br>}</p>
+<p><em>A:同步方法<br>/</em></p>
+<ul>
+<li><p>采用同步方法形式,解决线程的安全问题</p>
+</li>
+<li><p>好处: 代码简洁</p>
+</li>
+<li><p>将线程共享数据,和同步,抽取到一个方法中</p>
+</li>
+<li><p>在方法的声明上,加入同步关键字</p>
+</li>
+<li></li>
+<li><p>问题:</p>
+</li>
+<li><p>同步方法有锁吗,肯定有,同步方法中的对象锁,是本类对象引用 this</p>
+</li>
+<li><p>如果方法是静态的呢,同步有锁吗,绝对不是this</p>
+</li>
+<li><p>锁是本类自己.class 属性</p>
+</li>
+<li><p>静态方法,同步锁,是本类类名.class属性</p>
+</li>
+<li><p>/<br>public class Tickets implements Runnable{</p>
+<p>//定义出售的票源<br>private  int ticket = 100;</p>
+<p>public void run(){<br> while(true){<br>   payTicket();<br> }<br>}</p>
+<p>public  synchronized void payTicket(){<br>   if( ticket &gt; 0){</p>
+<pre><code>try{
+   Thread.sleep(10);
+}catch(Exception ex){}
+System.out.println(Thread.currentThread().getName()+&quot; 出售第 &quot;+ticket--);</code></pre><p>   }</p>
+<p>}<br>}</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>###08JDK1.5新特性Lock接口<br>   *A:JDK1.5新特性Lock接口<br>        查阅API，查阅Lock接口描述，Lock 实现提供了比使用 synchronized 方法和语句可获得的更广泛的锁定操作。<br>       Lock接口中的常用方法<br>            void lock()<br>            void unlock()<br>      Lock提供了一个更加面对对象的锁，在该锁中提供了更多的操作锁的功能。<br>      我们使用Lock接口,以及其中的lock()方法和unlock()方法替代同步，对电影院卖票案例中Ticket</p>
+<p>###09Lock接口改进售票案例<br>   <em>A:Lock接口改进售票案例<br>      /</em><br>       * 多线程并发访问同一个数据资源<br>       * 3个线程,对一个票资源,出售<br>       */<br>      public class ThreadDemo {<br>        public static void main(String[] args) {<br>          //创建Runnable接口实现类对象<br>          Tickets t = new Tickets();<br>          //创建3个Thread类对象,传递Runnable接口实现类<br>          Thread t0 = new Thread(t);<br>          Thread t1 = new Thread(t);<br>          Thread t2 = new Thread(t);</p>
+<pre><code>    t0.start();
+    t1.start();
+    t2.start();
+
+  }
+}
+/*
+ *  使用JDK1.5 的接口Lock,替换同步代码块,实现线程的安全性
+ *  Lock接口方法:
+ *     lock() 获取锁
+ *     unlock()释放锁
+ *  实现类ReentrantLock
+ */
+public class Tickets implements Runnable{
+
+  //定义出售的票源
+  private int ticket = 100;
+  //在类的成员位置,创建Lock接口的实现类对象
+  private Lock lock = new ReentrantLock();
+
+  public void run(){
+    while(true){
+      //调用Lock接口方法lock获取锁
+        lock.lock();
+      //对票数判断,大于0,可以出售,变量--操作
+        if( ticket &gt; 0){
+          try{
+             Thread.sleep(10);
+             System.out.println(Thread.currentThread().getName()+&quot; 出售第 &quot;+ticket--);
+          }catch(Exception ex){
+
+          }finally{
+            //释放锁,调用Lock接口方法unlock
+            lock.unlock();
+          }
+        }
+    }
+  }
+}</code></pre><p>=======================第三节课开始=============================================<br>###10线程的死锁原理<br>   *A:线程的死锁原理<br>     当线程任务中出现了多个同步(多个锁)  时，如果同步中嵌套了其他的同步。这时容易引发一种现象：程序出现无限等待，这种现象我们称为死锁。这种情况能避免就避免掉。<br>        synchronzied(A锁){<br>            synchronized(B锁){</p>
+<pre><code>    }
+}</code></pre><p>###11线程的死锁代码实现<br>   *A:线程的死锁代码实现<br>       public class DeadLock implements Runnable{<br>        private int i = 0;<br>        public void run(){<br>          while(true){<br>            if(i%2==0){<br>              //先进入A同步,再进入B同步<br>              synchronized(LockA.locka){<br>                System.out.println(“if…locka”);<br>                synchronized(LockB.lockb){<br>                  System.out.println(“if…lockb”);<br>                }<br>              }<br>            }else{<br>              //先进入B同步,再进入A同步<br>              synchronized(LockB.lockb){<br>                System.out.println(“else…lockb”);<br>                synchronized(LockA.locka){<br>                  System.out.println(“else…locka”);<br>                }<br>              }<br>            }<br>            i++;<br>          }<br>        }<br>       }</p>
+<pre><code>public class DeadLockDemo {
+  public static void main(String[] args) {
+    DeadLock dead = new DeadLock();
+    Thread t0 = new Thread(dead);
+    Thread t1 = new Thread(dead);
+    t0.start();
+    t1.start();
+  }
+}
+
+
+public class LockA {
+  private LockA(){}
+
+  public  static final LockA locka = new LockA();
+}</code></pre><p>​<br>      public class LockB {<br>        private LockB(){}</p>
+<pre><code>  public static final LockB lockb = new LockB();
+}</code></pre><p> ###12线程等待与唤醒案例介绍<br>   *A:线程等待与唤醒案例介绍<br>     等待唤醒机制所涉及到的方法：<br>         wait（） :等待，将正在执行的线程释放其执行资格 和 执行权，并存储到线程池中。<br>         notify（）：唤醒，唤醒线程池中被wait（）的线程，一次唤醒一个，而且是任意的。<br>         notifyAll（）： 唤醒全部：可以将线程池中的所有wait() 线程都唤醒。<br>       其实，所谓唤醒的意思就是让 线程池中的线程具备执行资格。必须注意的是，这些方法都是在 同步中才有效。同时这些方法在使用时必须标明所属锁，这样才可以明确出这些方法操作的到底是哪个锁上的线程。</p>
+<p>###13线程等待与唤醒案例资源类编写<br>  <em>A:线程等待与唤醒案例资源类编写<br>    /</em><br>     *  定义资源类,有2个成员变量<br>     *  name,sex<br>     *  同时有2个线程,对资源中的变量操作<br>     *  1个对name,age赋值<br>     *  2个对name,age做变量的输出打印<br>     */<br>    public class Resource {<br>      public String name;<br>      public String sex;<br>    }</p>
+<p>###14线程等待与唤醒案例输入和输出线程<br>   A:线程等待与唤醒案例输入和输出线程<br>     /*<br>       *  输入的线程,对资源对象Resource中成员变量赋值<br>       *  一次赋值 张三,男<br>       *  下一次赋值 lisi,nv<br>     */<br>      public class Input implements Runnable {<br>        private Resource r=new Resource();</p>
+<pre><code>  public void run() {
+    int i=0;
+    while(true){
+      if(i%2==0){
+         r.name=&quot;张三&quot;;
+         r.sex=&quot;男&quot;;
+       }else{
+          r.name=&quot;lisi&quot;;
+          r.sex=&quot;女&quot;;
+        }
+      i++;
+    }
+  }
+}
+
+/*
+ *  输出线程,对资源对象Resource中成员变量,输出值
+ */
+public class Output implements Runnable {
+  private Resource r=new Resource() ;
+
+  public void run() {
+    while(true){
+       System.out.println(r.name+&quot;...&quot;+r.sex); 
+      }
+    }
+}</code></pre><p>=================================第四节课=========================================<br>###15线程等待与唤醒案例测试类<br>   A:线程等待与唤醒案例测试类<br>      /*<br>       *  开启输入线程和输出线程,实现赋值和打印值<br>       */<br>      public class ThreadDemo{<br>        public static void main(String[] args) {</p>
+<pre><code>    Resource r = new Resource();
+
+    Input in = new Input();
+    Output out = new Output();
+
+    Thread tin = new Thread(in);
+    Thread tout = new Thread(out);
+
+    tin.start();
+    tout.start();
+  }
+}</code></pre><p>###16线程等待与唤醒案例null值解决<br>   A:线程等待与唤醒案例null值解决<br>        /*<br>        *  输入的线程,对资源对象Resource中成员变量赋值<br>        *  一次赋值 张三,男<br>        *  下一次赋值 lisi,nv<br>      */<br>       public class Input implements Runnable {<br>         private Resource r;<br>         public Input(Resource r){<br>           this.r=r;<br>         }</p>
+<pre><code>  public void run() {
+    int i=0;
+    while(true){
+      if(i%2==0){
+         r.name=&quot;张三&quot;;
+         r.sex=&quot;男&quot;;
+       }else{
+          r.name=&quot;lisi&quot;
+          r.sex=&quot;女&quot;
+        }
+      i++;
+    }
+  }
+}
+
+/*
+ *  输出线程,对资源对象Resource中成员变量,输出值
+ */ 
+public class Output implements Runnable {
+  private Resource r;
+  public Output(Resource r){
+     this.r=r;
+  } 
+  public void run() {
+    while(true){
+       System.out.println(r.name+&quot;...&quot;+r.sex); 
+      }
+    }
+  }
+
+}
+/*
+ *  开启输入线程和输出线程,实现赋值和打印值
+ */
+public class ThreadDemo{
+  public static void main(String[] args) {
+
+    Resource r = new Resource();
+
+    Input in = new Input(r);
+    Output out = new Output(r);
+
+    Thread tin = new Thread(in);
+    Thread tout = new Thread(out);
+
+    tin.start();
+    tout.start();
+  }
+}</code></pre><p>###17线程等待与唤醒案例数据安全解决<br>    A:线程等待与唤醒案例数据安全解决<br>            /*<br>              *  输入的线程,对资源对象Resource中成员变量赋值<br>              *  一次赋值 张三,男<br>              *  下一次赋值 lisi,nv<br>            */<br>             public class Input implements Runnable {<br>               private Resource r;<br>               public Input(Resource r){<br>                 this.r=r;<br>               }</p>
+<pre><code>  public void run() {
+    int i=0;
+    while(true){
+     synchronized(r){
+      if(i%2==0){
+         r.name=&quot;张三&quot;;
+         r.sex=&quot;男&quot;;
+       }else{
+          r.name=&quot;lisi&quot;
+          r.sex=&quot;女&quot;
+        }
+      i++;
+    }
+
+  }
+}
+
+/*
+ *  输出线程,对资源对象Resource中成员变量,输出值
+ */ 
+public class Output implements Runnable {
+  private Resource r;
+  public Output(Resource r){
+     this.r=r;
+  } 
+  public void run() {
+    while(true){
+       synchronized(r){
+        System.out.println(r.name+&quot;...&quot;+r.sex); 
+       }
+      }
+    }
+  }
+
+}
+/*
+ *  开启输入线程和输出线程,实现赋值和打印值
+ */
+public class ThreadDemo{
+  public static void main(String[] args) {
+
+    Resource r = new Resource();
+
+    Input in = new Input(r);
+    Output out = new Output(r);
+
+    Thread tin = new Thread(in);
+    Thread tout = new Thread(out);
+
+    tin.start();
+    tout.start();
+  }
+}</code></pre><p>###18线程等待与唤醒案例通信的分析<br>    *A:线程等待与唤醒案例通信的分析<br>        输入:赋值后,执行方法wait()永远等待<br>        输出:变量值打印输出,在输出等待之前,唤醒<br>        输入的notify(),自己在wait()永远等待<br>        输入:被唤醒后,重新对变量赋值,赋值后,必须唤醒输出的线程notify(),<br>             自己的wait()</p>
+<p>###19线程等待与唤醒案例的实现<br>   *A 线程等待与唤醒案例的实现</p>
+<pre><code>/*
+ *  定义资源类,有2个成员变量
+ *  name,sex
+ *  同时有2个线程,对资源中的变量操作
+ *  1个对name,age赋值
+ *  2个对name,age做变量的输出打印
+ */
+public class Resource {
+ public String name;
+ public String sex;
+ public boolean flag = false;
+}
+
+/*
+ *  输入的线程,对资源对象Resource中成员变量赋值
+ *  一次赋值 张三,男
+ *  下一次赋值 lisi,nv
+ */
+public class Input implements Runnable {
+ private Resource r ;
+
+ public Input(Resource r){
+   this.r = r;
+ }
+
+ public void run() {
+   int i = 0 ;
+   while(true){
+     synchronized(r){
+       //标记是true,等待
+         if(r.flag){
+           try{r.wait();}catch(Exception ex){}
+         }
+
+       if(i%2==0){
+         r.name = &quot;张三&quot;;
+         r.sex = &quot;男&quot;;
+       }else{
+         r.name = &quot;lisi&quot;;
+         r.sex = &quot;nv&quot;;
+       }
+       //将对方线程唤醒,标记改为true
+       r.flag = true;
+       r.notify();
+     }
+     i++;
+   }
+ }
+
+}
+
+/*
+ *  输出线程,对资源对象Resource中成员变量,输出值
+ */
+public class Output implements Runnable {
+ private Resource r ;
+
+ public Output(Resource r){
+   this.r = r;
+ }
+ public void run() {
+   while(true){
+     synchronized(r){  
+       //判断标记,是false,等待
+     if(!r.flag){
+       try{r.wait();}catch(Exception ex){}
+       }
+     System.out.println(r.name+&quot;..&quot;+r.sex);
+     //标记改成false,唤醒对方线程
+     r.flag = false;
+     r.notify();
+     }
+   }
+ }
+
+}
+
+/*
+ *  开启输入线程和输出线程,实现赋值和打印值
+ */
+public class ThreadDemo{
+ public static void main(String[] args) {
+
+   Resource r = new Resource();
+
+   Input in = new Input(r);
+   Output out = new Output(r);
+
+   Thread tin = new Thread(in);
+   Thread tout = new Thread(out);
+
+   tin.start();
+   tout.start();
+ }
+}</code></pre><p>###20eclipse问题<br>   A:eclipse问题</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day26%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2420,782 +3326,10 @@ d、remove(int index) 删除并返回元素</code></pre><h3 id="数据类型："
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day19%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day19%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记19</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:10:51" itemprop="dateModified" datetime="2020-12-23T23:10:51+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、List接口<br>2、Set接口<br>3、判断集合唯一性原理</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01List接口的特点<br>  A:List接口的特点:<br>   a:它是一个元素存取有序的集合。<br>        例如，存元素的顺序是11、22、33。那么集合中，元素的存储就是按照11、22、33的顺序完成的）。<br>   b:它是一个带有索引的集合，通过索引就可以精确的操作集合中的元素（与数组的索引是一个道理）。<br>   <br>     c:集合中可以有重复的元素，通过元素的equals方法，来比较是否为重复的元素。</p>
-<pre><code>d:List接口的常用子类有：</code></pre><p>      ArrayList集合<br>      LinkedList集合</p>
-<p>###02List接口的特有方法<br>    A:List接口的特有方法(带索引的方法)<br>   a:增加元素方法<br>   add(Object e)：向集合末尾处，添加指定的元素<br>   add(int index, Object e)   向集合指定索引处，添加指定的元素，原有元素依次后移</p>
-<pre><code>/*
-  *  add(int index, E)
-  *  将元素插入到列表的指定索引上
-  *  带有索引的操作,防止越界问题
-  *  java.lang.IndexOutOfBoundsException
-  *     ArrayIndexOutOfBoundsException
-  *     StringIndexOutOfBoundsException
-  */
- public static void function(){
-   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
-   list.add(&quot;abc1&quot;);
-   list.add(&quot;abc2&quot;);
-   list.add(&quot;abc3&quot;);
-   list.add(&quot;abc4&quot;);
-   System.out.println(list);
-
-   list.add(1, &quot;itcast&quot;);
-   System.out.println(list);
- }</code></pre><p>   b:删除元素删除<br>   remove(Object e)：将指定元素对象，从集合中删除，返回值为被删除的元素<br>   remove(int index)：将指定索引处的元素，从集合中删除，返回值为被删除的元素<br>     /*<br>       *  E remove(int index)<br>       *  移除指定索引上的元素<br>       *  返回被删除之前的元素<br>       */<br>      public static void function_1(){<br>        List<Double> list = new ArrayList<Double>();<br>        list.add(1.1);<br>        list.add(1.2);<br>        list.add(1.3);<br>        list.add(1.4);</Double></Double></p>
-<pre><code>  Double d = list.remove(0);
-  System.out.println(d);
-  System.out.println(list);
-}</code></pre><p>   c:替换元素方法<br>   set(int index, Object e)：将指定索引处的元素，替换成指定的元素，返回值为替换前的元素<br>      /*<br>       *  E set(int index, E)<br>       *  修改指定索引上的元素<br>       *  返回被修改之前的元素<br>       */<br>      public static void function_2(){<br>        List<Integer> list = new ArrayList<Integer>();<br>        list.add(1);<br>        list.add(2);<br>        list.add(3);<br>        list.add(4);</Integer></Integer></p>
-<pre><code>    Integer i = list.set(0, 5);
-    System.out.println(i);
-    System.out.println(list);
-  }
-d:查询元素方法</code></pre><p>   get(int index)：获取指定索引处的元素，并返回该元素</p>
-<p>###03迭代器的并发修改异常<br>    A:迭代器的并发修改异常</p>
-<pre><code>/*
- *  迭代器的并发修改异常 java.util.ConcurrentModificationException
- *  就是在遍历的过程中,使用了集合方法修改了集合的长度,不允许的
- */
-public class ListDemo1 {
- public static void main(String[] args) {
-   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
-   list.add(&quot;abc1&quot;);
-   list.add(&quot;abc2&quot;);
-   list.add(&quot;abc3&quot;);
-   list.add(&quot;abc4&quot;);
-
-   //对集合使用迭代器进行获取,获取时候判断集合中是否存在 &quot;abc3&quot;对象
-   //如果有,添加一个元素 &quot;ABC3&quot;
-   Iterator&lt;String&gt; it = list.iterator();
-   while(it.hasNext()){
-     String s = it.next();
-     //对获取出的元素s,进行判断,是不是有&quot;abc3&quot;
-     if(s.equals(&quot;abc3&quot;)){
-       list.add(&quot;ABC3&quot;);
-     }
-     System.out.println(s);
-   }
- }
-}
-
-运行上述代码发生了错误 java.util.ConcurrentModificationException这是什么原因呢？
-  在迭代过程中，使用了集合的方法对元素进行操作。
-  导致迭代器并不知道集合中的变化，容易引发数据的不确定性。
-
-并发修改异常解决办法：
-   在迭代时，不要使用集合的方法操作元素。
-   或者通过ListIterator迭代器操作元素是可以的，ListIterator的出现，解决了使用Iterator迭代过程中可能会发生的错误情况。</code></pre><p>###04数据的存储结构<br>    A:数据的存储结构<br>     a:栈结构:后进先出/先进后出(手枪弹夹) FILO (first in last out)<br>     b:队列结构:先进先出/后进后出(银行排队) FIFO(first in first out)<br>     c:数组结构:<br>               查询快:通过索引快速找到元素<br>               增删慢:每次增删都需要开辟新的数组,将老数组中的元素拷贝到新数组中<br>                      开辟新数组耗费资源<br>     d:链表结构<br>               查询慢:每次都需要从链头或者链尾找起<br>               增删快:只需要修改元素记录的下个元素的地址值即可不需要移动大量元素</p>
-<p>=======================第二节课开始=============================================<br>###05ArrayList集合的自身特点<br>   A:ArrayList集合的自身特点<br>     底层采用的是数组结构<br>     ArrayList al=new ArrayList();//创建了一个长度为0的Object类型数组<br>     al.add(“abc”);//底层会创建一个长度为10的Object数组 Object[] obj=new Object[10]<br>                   //obj[0]=”abc”<br>                  //如果添加的元素的超过10个,底层会开辟一个1.5*10的长度的新数组<br>                  //把原数组中的元素拷贝到新数组,再把最后一个元素添加到新数组中<br>   原数组:<br>     a b c d e f g h k l<br>   添加m:<br>     a b c d e f g h k l m null null null null</p>
-<p>###06LinkedList集合的自身特点<br>  A:LinkedList集合的自身特点<br>     底层采用链表结构,每次查询都要从链头或链尾找起,查询相对数组较慢<br>     但是删除直接修改元素记录的地址值即可,不要大量移动元素</p>
-<pre><code>LinkedList的索引决定是从链头开始找还是从链尾开始找
-如果该元素小于元素长度一半,从链头开始找起,如果大于元素长度的一半,则从链尾找起</code></pre><p>###07LinkedList特有方法<br>   <em>A:LinkedList特有方法:获取,添加,删除<br>       /</em><br>     *  LinkedList 链表集合的特有功能<br>     *    自身特点: 链表底层实现,查询慢,增删快<br>     *<br>     *  子类的特有功能,不能多态调用<br>     */<br>    public class LinkedListDemo {<br>      public static void main(String[] args) {<br>        function_3();<br>      }</p>
-<pre><code>/*
- *  E removeFirst() 移除并返回链表的开头
- *  E removeLast() 移除并返回链表的结尾
- */
-public static void function_3(){
-  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
-  link.add(&quot;1&quot;);
-  link.add(&quot;2&quot;);
-  link.add(&quot;3&quot;);
-  link.add(&quot;4&quot;);
-
-  String first = link.removeFirst();
-  String last = link.removeLast();
-  System.out.println(first);
-  System.out.println(last);
-
-  System.out.println(link);
-}
-
-/*
- * E getFirst() 获取链表的开头
- * E getLast() 获取链表的结尾
- */
-public static void function_2(){
-  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
-  link.add(&quot;1&quot;);
-  link.add(&quot;2&quot;);
-  link.add(&quot;3&quot;);
-  link.add(&quot;4&quot;);
-
-  if(!link.isEmpty()){
-    String first = link.getFirst();
-    String last = link.getLast();
-    System.out.println(first);
-    System.out.println(last);
-  }
-}
-
-public static void function_1(){
-  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
-  link.addLast(&quot;a&quot;);
-  link.addLast(&quot;b&quot;);
-  link.addLast(&quot;c&quot;);
-  link.addLast(&quot;d&quot;);
-
-  link.addFirst(&quot;1&quot;);
-  link.addFirst(&quot;2&quot;);
-  link.addFirst(&quot;3&quot;);
-  System.out.println(link);
-}
-
-/*
- *  addFirst(E) 添加到链表的开头
- *  addLast(E) 添加到链表的结尾
- */
-public static void function(){
-  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
-
-  link.addLast(&quot;heima&quot;);
-
-  link.add(&quot;abc&quot;);
-  link.add(&quot;bcd&quot;);
-
-  link.addFirst(&quot;itcast&quot;);
-  System.out.println(link);</code></pre><p>​<br>      }<br>    }</p>
-<p>###08Vector类的特点<br>   *A:Vector类的特点<br>       Vector集合数据存储的结构是数组结构，为JDK中最早提供的集合,它是线程同步的<br>       Vector中提供了一个独特的取出方式，就是枚举Enumeration，它其实就是早期的迭代器。<br>       此接口Enumeration的功能与 Iterator 接口的功能是类似的。<br>       Vector集合已被ArrayList替代。枚举Enumeration已被迭代器Iterator替代。</p>
-<p>=======================第三节课开始=============================================<br>###09Set接口的特点<br>   A:Set接口的特点<br>     a:它是个不包含重复元素的集合。<br>     b:Set集合取出元素的方式可以采用：迭代器、增强for。<br>     c:Set集合有多个子类，这里我们介绍其中的HashSet、LinkedHashSet这两个集合。</p>
-<p>###10Set集合存储和迭代<br>   A:Set集合存储和迭代<br>      /*<br>       *  Set接口,特点不重复元素,没索引<br>       *<br>       *  Set接口的实现类,HashSet (哈希表)<br>       *  特点: 无序集合,存储和取出的顺序不同,没有索引,不存储重复元素<br>       *  代码的编写上,和ArrayList完全一致<br>       */<br>      public class HashSetDemo {<br>        public static void main(String[] args) {<br>          Set<String> set = new HashSet<String>();<br>          set.add(“cn”);<br>          set.add(“heima”);<br>          set.add(“java”);<br>          set.add(“java”);<br>          set.add(“itcast”);</String></String></p>
-<pre><code>    Iterator&lt;String&gt; it = set.iterator();
-    while(it.hasNext()){
-      System.out.println(it.next());
-    }
-    System.out.println(&quot;==============&quot;);
-
-    for(String s : set){
-      System.out.println(s);
-    }
-  }
-}</code></pre><p>###11哈希表的数据结构<br>    A:哈希表的数据结构:(参见图解)</p>
-<pre><code>加载因子:表中填入的记录数/哈希表的长度
-例如:
-加载因子是0.75 代表:
-  数组中的16个位置,其中存入16*0.75=12个元素
-
-如果在存入第十三个(&gt;12)元素,导致存储链子过长,会降低哈希表的性能,那么此时会扩充哈希表(在哈希),底层会开辟一个长度为原长度2倍的数组,把老元素拷贝到新数组中,再把新元素添加数组中
-
-当存入元素数量&gt;哈希表长度*加载因子,就要扩容,因此加载因子决定扩容时机</code></pre><p>###12字符串对象的哈希值<br>      A:字符串对象的哈希值<br>      /*<br>       *  对象的哈希值,普通的十进制整数<br>       *  父类Object,方法 public int hashCode() 计算结果int整数<br>       */<br>      public class HashDemo {<br>        public static void main(String[] args) {<br>          Person p = new Person();<br>          int i = p.hashCode();<br>          System.out.println(i);</p>
-<pre><code>    String s1 = new String(&quot;abc&quot;);
-    String s2 = new String(&quot;abc&quot;);
-    System.out.println(s1.hashCode());
-    System.out.println(s2.hashCode());
-
-    /*System.out.println(&quot;重地&quot;.hashCode());
-    System.out.println(&quot;通话&quot;.hashCode());*/
-  }
-}
-
-//String类重写hashCode()方法
-//字符串都会存储在底层的value数组中{&apos;a&apos;,&apos;b&apos;,&apos;c&apos;}
-public int hashCode() {
-        int h = hash;//hash初值为0
-        if (h == 0 &amp;&amp; value.length &gt; 0) {
-            char val[] = value;
-
-            for (int i = 0; i &lt; value.length; i++) {
-                h = 31 * h + val[i];
-            }
-            hash = h;
-        }
-        return h;
-    }</code></pre><p>​<br>###13哈希表的存储过程<br>   A:哈希表的存储过程<br>     public static void main(String[] args) {<br>        HashSet<String> set = new HashSet<String>();<br>        set.add(new String(“abc”));<br>        set.add(new String(“abc”));<br>        set.add(new String(“bbc”));<br>        set.add(new String(“bbc”));<br>        System.out.println(set);<br>    }</String></String></p>
-<p>  存取原理:<br>    每存入一个新的元素都要走以下三步:</p>
-<pre><code>1.首先调用本类的hashCode()方法算出哈希值
-
-2.在容器中找是否与新元素哈希值相同的老元素,
-  如果没有直接存入
-  如果有转到第三步
-
-3.新元素会与该索引位置下的老元素利用equals方法一一对比
-  一旦新元素.equals(老元素)返回true,停止对比,说明重复,不再存入
-  如果与该索引位置下的老元素都通过equals方法对比返回false,说明没有重复,存入</code></pre><p>=======================第四节课开始=============================================<br>###14哈希表的存储自定义对象<br>   A:哈希表的存储自定义对象<br>     /*<br>      *  HashSet集合的自身特点:<br>      *    底层数据结构,哈希表<br>      *    存储,取出都比较快<br>      *    线程不安全,运行速度快<br>      */<br>     public class HashSetDemo1 {<br>      public static void main(String[] args) {</p>
-<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
-    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
-    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
-    setPerson.add(new Person(&quot;a&quot;,11));
-    setPerson.add(new Person(&quot;b&quot;,10));
-    setPerson.add(new Person(&quot;b&quot;,10));
-    setPerson.add(new Person(&quot;c&quot;,25));
-    setPerson.add(new Person(&quot;d&quot;,19));
-    setPerson.add(new Person(&quot;e&quot;,17));//每个对象的地址值都不同,调用Obejct类的hashCode方法返回不同哈希值,直接存入
-    System.out.println(setPerson);
-  }
- }
-
-public class Person {
-  private String name;
-  private int age;
-
-  public String getName() {
-    return name;
-  }
-  public void setName(String name) {
-    this.name = name;
-  }
-  public int getAge() {
-    return age;
-  }
-  public void setAge(int age) {
-    this.age = age;
-  }
-  public Person(String name, int age) {
-    super();
-    this.name = name;
-    this.age = age;
-  }
-  public Person(){}
-
-  public String toString(){
-    return name+&quot;..&quot;+age;
-  }
-
-
-
- }</code></pre><p>​      </p>
-<p>###15自定义对象重写hashCode和equals<br>     A:自定义对象重写hashCode和equals<br>      /*<br>          *  HashSet集合的自身特点:<br>          *    底层数据结构,哈希表<br>          *    存储,取出都比较快<br>          *    线程不安全,运行速度快<br>          */<br>         public class HashSetDemo1 {<br>          public static void main(String[] args) {</p>
-<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
-    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
-    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
-    setPerson.add(new Person(&quot;a&quot;,11));
-    setPerson.add(new Person(&quot;b&quot;,10));
-    setPerson.add(new Person(&quot;b&quot;,10));
-    setPerson.add(new Person(&quot;c&quot;,25));
-    setPerson.add(new Person(&quot;d&quot;,19));
-    setPerson.add(new Person(&quot;e&quot;,17));
-    System.out.println(setPerson);
-  }
- }
-
-public class Person {
-  private String name;
-  private int age;
-
-  /*
-   *  没有做重写父类,每次运行结果都是不同整数
-   *  如果子类重写父类的方法,哈希值,自定义的
-   *  存储到HashSet集合的依据
-   *   
-   *  尽可能让不同的属性值产生不同的哈希值,这样就不用再调用equals方法去比较属性
-   *
-   */
-  public int hashCode(){
-    return name.hashCode()+age*55;
-  }
-  //方法equals重写父类,保证和父类相同
-  //public boolean equals(Object obj){}
-  public boolean equals(Object obj){
-    if(this == obj)
-      return true;
-    if(obj == null)
-      return false;
-    if(obj instanceof Person){
-      Person p = (Person)obj;
-      return name.equals(p.name) &amp;&amp; age==p.age;
-    }
-    return false;
-  }
-
-  public String getName() {
-    return name;
-  }
-  public void setName(String name) {
-    this.name = name;
-  }
-  public int getAge() {
-    return age;
-  }
-  public void setAge(int age) {
-    this.age = age;
-  }
-  public Person(String name, int age) {
-    super();
-    this.name = name;
-    this.age = age;
-  }
-  public Person(){}
-
-  public String toString(){
-    return name+&quot;..&quot;+age;
-  }
-
-
-
- }</code></pre><p>###16LinkedHashSet集合<br>  A:LinkedHashSet集合<br>    /*<br>     *   LinkedHashSet 基于链表的哈希表实现<br>     *   继承自HashSet<br>     *<br>     *   LinkedHashSet 自身特性,具有顺序,存储和取出的顺序相同的<br>     *   线程不安全的集合,运行速度块<br>     */<br>    public class LinkedHashSetDemo {</p>
-<pre><code>  public static void main(String[] args) {
-    LinkedHashSet&lt;Integer&gt; link = new LinkedHashSet&lt;Integer&gt;();
-    link.add(123);
-    link.add(44);
-    link.add(33);
-    link.add(33);
-    link.add(66);
-    link.add(11);
-    System.out.println(link);
-  }
-}</code></pre><p>###17ArrayList,HashSet判断对象是否重复的原因<br>  A:ArrayList,HashSet判断对象是否重复的原因<br>     a:ArrayList的contains方法原理:底层依赖于equals方法<br>       ArrayList的contains方法会使用调用方法时，<br>         传入的元素的equals方法依次与集合中的旧元素所比较，<br>         从而根据返回的布尔值判断是否有重复元素。<br>         此时，当ArrayList存放自定义类型时，由于自定义类型在未重写equals方法前，<br>         判断是否重复的依据是地址值，所以如果想根据内容判断是否为重复元素，需要重写元素的equals方法。</p>
-<pre><code>b:HashSet的add()方法和contains方法()底层都依赖 hashCode()方法与equals方法()
-
- Set集合不能存放重复元素，其添加方法在添加时会判断是否有重复元素，有重复不添加，没重复则添加。
- HashSet集合由于是无序的，其判断唯一的依据是元素类型的hashCode与equals方法的返回结果。规则如下：
- 先判断新元素与集合内已经有的旧元素的HashCode值
-  如果不同，说明是不同元素，添加到集合。
-  如果相同，再判断equals比较结果。返回true则相同元素；返回false则不同元素，添加到集合。
- 所以，使用HashSet存储自定义类型，如果没有重写该类的hashCode与equals方法，则判断重复时，使用的是地址值，如果想通过内容比较元素是否相同，需要重写该元素类的hashcode与equals方法。</code></pre><p>###18hashCode和equals方法的面试题<br> A:hashCode和equals的面试题<br> /*</p>
-<ul>
-<li><p>两个对象  Person  p1 p2</p>
-</li>
-<li><p>问题: 如果两个对象的哈希值相同 p1.hashCode()==p2.hashCode()</p>
-</li>
-<li><p>两个对象的equals一定返回true吗  p1.equals(p2) 一定是true吗</p>
-</li>
-<li><p>正确答案:不一定</p>
-</li>
-<li></li>
-<li><p>如果两个对象的equals方法返回true,p1.equals(p2)==true</p>
-</li>
-<li><p>两个对象的哈希值一定相同吗</p>
-</li>
-<li><p>正确答案: 一定<br>*/<br>在 Java 应用程序执行期间，<br>1.如果根据 equals(Object) 方法，两个对象是相等的，那么对这两个对象中的每个对象调用 hashCode 方法都必须生成相同的整数结果。<br>2.如果根据 equals(java.lang.Object) 方法，两个对象不相等，那么对这两个对象中的任一对象上调用 hashCode 方法不 要求一定生成不同的整数结果。 </p>
-<p>两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值相同</p>
-<p>两个对象调用hashCode()方法哈希值不同=====&gt;equals返回true</p>
-</li>
-</ul>
-<pre><code>两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值不同
-
-两个对象调用hashCode()方法哈希值相同=====&gt;equals返回true</code></pre><p>   所以说两个对象哈希值无论相同还是不同,equals都可能返回true</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day18%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day18%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记18</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:10:24" itemprop="dateModified" datetime="2020-12-23T23:10:24+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、集合<br>2、Iterator迭代器<br>3、增强for循环<br>4、泛型</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01集合使用的回顾<br>     *A:集合使用的回顾<br>       *a.ArrayList集合存储5个int类型元素<br>          public static void main(String[] args) {<br>               ArrayList<Integer> list = new ArrayList<Integer>();<br>            list.add(111);<br>            list.add(222);<br>            list.add(333);<br>            list.add(444);<br>            list.add(555);<br>            for(int i=0; i&lt;list.size(); i++){<br>                   System.out.println(list.get(i));<br>           }<br>          }</Integer></Integer></p>
-<pre><code>*b.ArrayList集合存储5个Person类型元素
-   public static void main(String[] args) {
-    ArrayList&lt;Person&gt; list = new ArrayList&lt;Person&gt;();
-    list.add(new Person(“小强”));
-    list.add(new Person(“老王”));
-    list.add(new Person(“小虎”));
-    list.add(new Person(“小泽”));
-    list.add(new Person(“小红”));
-    for(int i=0; i&lt;list.size(); i++){
-      Person p = list.get(i);
-            System.out.println(p);
-     }
-   }</code></pre><p>###02集合的学习目标<br>       集合，集合是java中提供的一种容器，可以用来存储多个数据。<br>     在前面的学习中，我们知道数据多了，可以使用数组存放或者使用ArrayList集合进行存放数据。那么，集合和数组既然都是容器，它们有啥区别呢？<br>       数组的长度是固定的。集合的长度是可变的。<br>       集合中存储的元素必须是引用类型数据</p>
-<p>###03集合继承关系图<br>    A:集合继承关系图<br>     a:ArrayList的继承关系:<br>     查看ArrayList类发现它继承了抽象类AbstractList同时实现接口List，而List接口又继承了Collection接口。Collection接口为最顶层集合接口了。<br>     源代码：<br>      interface List extends Collection {<br>      }<br>      public class ArrayList extends AbstractList implements List{<br>      }</p>
-<pre><code>b:集合继承体系
- 这说明我们在使用ArrayList类时，该类已经把所有抽象方法进行了重写。那么，实现Collection接口的所有子类都会进行方法重写。
-   Collecton接口常用的子接口有：List接口、Set接口
-   List接口常用的子类有：ArrayList类、LinkedList类
-   Set接口常用的子类有：HashSet类、LinkedHashSet类
-
-                          Collection 接口     
-                               |
- ----------------------------------------------------------------
- |                                                              |
-List接口                                                       Set接口
- |                                                              |</code></pre><hr>
-<p> |              |                                             |            |<br>ArrayList类    LinkedList类                                 HashSet类     LinkedHashSet类</p>
-<p>###04集合Collection的方法<br>    A:集合Collection的方法<br>     /*<br>      *  Collection接口中的方法<br>      *  是集合中所有实现类必须拥有的方法<br>      *  使用Collection接口的实现类,程序的演示<br>      *  ArrayList implements List<br>      *  List extends Collection<br>      *  方法的执行,都是实现的重写<br>      */<br>     public class CollectionDemo {<br>      public static void main(String[] args) {<br>        function_2();<br>      }</p>
-<p>​<br>      /*  Collection接口方法<br>       *  Object[] toArray() 集合中的元素,转成一个数组中的元素, 集合转成数组<br>       *  返回是一个存储对象的数组, 数组存储的数据类型是Object<br>       */<br>      private static void function_2() {<br>        Collection<String> coll = new ArrayList<String>();<br>        coll.add(“abc”);<br>        coll.add(“itcast”);<br>        coll.add(“itheima”);<br>        coll.add(“money”);<br>        coll.add(“123”);</String></String></p>
-<pre><code>   Object[] objs = coll.toArray();
-   for(int i = 0 ; i &lt; objs.length ; i++){
-     System.out.println(objs[i]);
-   }
- }
- /*
-  * 学习Java中三种长度表现形式
-  *   数组.length 属性  返回值 int
-  *   字符串.length() 方法,返回值int
-  *   集合.size()方法, 返回值int
-  */
-
- /*
-  * Collection接口方法
-  * boolean contains(Object o) 判断对象是否存在于集合中,对象存在返回true
-  * 方法参数是Object类型
-  */
- private static void function_1() {
-   Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
-   coll.add(&quot;abc&quot;);
-   coll.add(&quot;itcast&quot;);
-   coll.add(&quot;itheima&quot;);
-   coll.add(&quot;money&quot;);
-   coll.add(&quot;123&quot;);
-
-   boolean b = coll.contains(&quot;itcast&quot;);
-   System.out.println(b);
- }
-
-
- /*
-  * Collection接口的方法
-  * void clear() 清空集合中的所有元素
-  * 集合容器本身依然存在
-  */
- public static void function(){
-   //接口多态的方式调用
-   Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
-   coll.add(&quot;abc&quot;);
-   coll.add(&quot;bcd&quot;);
-   System.out.println(coll);
-
-   coll.clear();
-
-   System.out.println(coll);
-
- }
-}</code></pre><p>###05集合Collection的remove方法<br>   A:05集合Collection的remove方法<br>    /*<br>     * Collection接口方法<br>     * boolean remove(Object o)移除集合中指定的元素<br>     */<br>    private static void function_3(){<br>      Collection<String> coll = new ArrayList<String>();<br>      coll.add(“abc”);<br>      coll.add(“money”);<br>      coll.add(“itcast”);<br>      coll.add(“itheima”);<br>      coll.add(“money”);<br>      coll.add(“123”);<br>      System.out.println(coll);</String></String></p>
-<pre><code>  boolean b = coll.remove(&quot;money&quot;);
-  System.out.println(b);
-  System.out.println(coll);
-}</code></pre><p>=======================第二节课开始=============================================<br>###06迭代器的概述<br>  A:迭代器概述:<br>   a:java中提供了很多个集合，它们在存储元素时，采用的存储方式不同。<br>    我们要取出这些集合中的元素，可通过一种通用的获取方式来完成。</p>
-<p>   b:Collection集合元素的通用获取方式：在取元素之前先要判断集合中有没有元素，<br>  如果有，就把这个元素取出来，继续在判断，如果还有就再取出出来。一直把集合中的所有元素全部取出。这种取出方式专业术语称为迭代。</p>
-<p>   c:每种集合的底层的数据结构不同,例如ArrayList是数组,LinkedList底层是链表,但是无论使用那种集合,我们都会有判断是否有元素<br>     以及取出里面的元素的动作,那么Java为我们提供一个迭代器定义了统一的判断元素和取元素的方法 </p>
-<p>###07迭代器的实现原理<br>   <em>A:迭代器的实现原理<br>      /</em><br>     *  集合中的迭代器:<br>     *    获取集合中元素方式<br>     *  接口 Iterator : 两个抽象方法<br>     *     boolean hasNext() 判断集合中还有没有可以被取出的元素,如果有返回true<br>     *     next() 取出集合中的下一个元素<br>     *<br>     *  Iterator接口,找实现类.<br>     *    Collection接口定义方法<br>     *       Iterator  iterator()<br>     *    ArrayList 重写方法 iterator(),返回了Iterator接口的实现类的对象<br>     *    使用ArrayList集合的对象<br>     *     Iterator it =array.iterator(),运行结果就是Iterator接口的实现类的对象<br>     *     it是接口的实现类对象,调用方法 hasNext 和 next 集合元素迭代<br>     */</p>
-<p>###08迭代器的代码实现<br>   *A:迭代器的代码实现<br>      public class IteratorDemo {<br>        public static void main(String[] args) {<br>          Collection<String> coll = new ArrayList<String>();<br>          coll.add(“abc1”);<br>          coll.add(“abc2”);<br>          coll.add(“abc3”);<br>          coll.add(“abc4”);<br>          //迭代器,对集合ArrayList中的元素进行取出</String></String></p>
-<pre><code>//调用集合的方法iterator()获取出,Iterator接口的实现类的对象
-Iterator&lt;String&gt; it = coll.iterator();
-//接口实现类对象,调用方法hasNext()判断集合中是否有元素
-//boolean b = it.hasNext();
-//System.out.println(b);
-//接口的实现类对象,调用方法next()取出集合中的元素
-//String s = it.next();
-//System.out.println(s);
-
-//迭代是反复内容,使用循环实现,循环的条件,集合中没元素, hasNext()返回了false
-while(it.hasNext()){
-  String s = it.next();
-  System.out.println(s);
-}</code></pre><p>​<br>​<br>        }<br>      }<br>###09迭代器的执行过程<br>   A:迭代器的执行过程<br>     a:迭代器的原理:<br>       while(it.hasNext()) {<br>            System.out.println(it.next());<br>       }</p>
-<pre><code>  //cursor记录的索引值不等于集合的长度返回true,否则返回false
-    public boolean hasNext() {       
-      return cursor != size; //cursor初值为0
-
-    }
-
-   //next()方法作用:
-   //①返回cursor指向的当前元素 
-   //②cursor++
-   public Object next() {            
-            int i = cursor; 
-            cursor = i + 1;  
-            return  elementData[lastRet = i]; 
-
-        }
-b:for循环迭代写法:
-   for (Iterator&lt;String&gt; it2 = coll.iterator(); it2.hasNext();  ) {
-    System.out.println(it2.next());
-  } </code></pre><p>###10集合迭代中的转型<br>   A:集合迭代中的转型<br>     a:在使用集合时，我们需要注意以下几点：<br>       集合中存储其实都是对象的地址。<br>       集合中可以存储基本数值吗？jdk1.5版本以后可以存储了。<br>         因为出现了基本类型包装类，它提供了自动装箱操作（基本类型对象），这样，集合中的元素就是基本数值的包装类对象。</p>
-<pre><code>b:存储时提升了Object。取出时要使用元素的特有内容，必须向下转型。
- Collection coll = new ArrayList();
- coll.add(&quot;abc&quot;);
- coll.add(&quot;aabbcc&quot;);
- coll.add(&quot;shitcast&quot;);
- Iterator it = coll.iterator();
- while (it.hasNext()) {
-  //由于元素被存放进集合后全部被提升为Object类型
- //当需要使用子类对象特有方法时，需要向下转型
-  String str = (String) it.next();
-  System.out.println(str.length());
- }
- 注意：如果集合中存放的是多个对象，这时进行向下转型会发生类型转换异常。</code></pre><p>​<br>    c:Iterator接口也可以使用&lt;&gt;来控制迭代元素的类型的。代码演示如下：<br>     Collection<String> coll = new ArrayList<String>();<br>     coll.add(“abc”);<br>     coll.add(“aabbcc”);<br>     coll.add(“shitcast”);<br>     Iterator<String> it = coll.iterator();<br>     while (it.hasNext()) {<br>      String str =  it.next();<br>     //当使用Iterator<String>控制元素类型后，就不需要强转了。获取到的元素直接就是String类型<br>      System.out.println(str.length());<br>     }</String></String></String></String></p>
-<p>=========================第三节课开始====================================<br>###11增强for循环遍历数组<br>   <em>A:增强for循环遍历数组<br>     a:格式:<br>     /</em><br>      *  JDK1.5新特性,增强for循环<br>      *  JDK1.5版本后,出现新的接口 java.lang.Iterable<br>      *    Collection开是继承Iterable<br>      *    Iterable作用,实现增强for循环<br>      *<br>      *    格式:<br>      *      for( 数据类型  变量名 : 数组或者集合 ){<br>      *         sop(变量);<br>      *      }<br>      */<br>     public static void function_1(){<br>        //for对于对象数组遍历的时候,能否调用对象的方法呢<br>        String[] str = {“abc”,”itcast”,”cn”};<br>        for(String s : str){<br>          System.out.println(s.length());<br>        }<br>      }</p>
-<pre><code>/*
- *  实现for循环,遍历数组
- *  好处: 代码少了,方便对容器遍历
- *  弊端: 没有索引,不能操作容器里面的元素
- */
-public static void function(){
-  int[] arr = {3,1,9,0};
-  for(int i : arr){
-    System.out.println(i+1);
-  }
-  System.out.println(arr[0]);
-}</code></pre><p>###12增强for循环遍历集合<br>      A:增强for循环遍历集合<br>        /*<br>         *  增强for循环遍历集合<br>         *  存储自定义Person类型<br>         */<br>        public static void function_2(){<br>          ArrayList<Person> array = new ArrayList<Person>();<br>          array.add(new Person(“a”,20));<br>          array.add(new Person(“b”,10));<br>          for(Person p : array){<br>            System.out.println(p);// System.out.println(p.toString());<br>          }<br>        }</Person></Person></p>
-<p>###13泛型的引入<br>   A:泛型的引入<br>    在前面学习集合时，我们都知道集合中是可以存放任意对象的，<br>    只要把对象存储集合后，那么这时他们都会被提升成Object类型。<br>    当我们在取出每一个对象，并且进行相应的操作，这时必须采用类型转换。比如下面程序：<br>    public class GenericDemo {<br>      public static void main(String[] args) {<br>        List list = new ArrayList();<br>        list.add(“abc”);<br>        list.add(“itcast”);<br>        list.add(5);//由于集合没有做任何限定，任何类型都可以给其中存放<br>                    //相当于:Object obj=new Integer(5);</p>
-<pre><code>    Iterator it = list.iterator();
-    while(it.hasNext()){
-      //需要打印每个字符串的长度,就要把迭代出来的对象转成String类型
-      String str = (String) it.next();//String str=(String)obj;
-                                      //编译时期仅检查语法错误,String是Object的儿子可以向下转型
-                                      //运行时期String str=(String)(new Integer(5))
-                                      //String与Integer没有父子关系所以转换失败
-                                      //程序在运行时发生了问题java.lang.ClassCastException
-      System.out.println(str.length());
-    }
-  }
-}</code></pre><p>​    </p>
-<p>###14泛型的定义和使用<br>  A:泛型的定义和使用<br>    /*<br>     * JDK1.5 出现新的安全机制,保证程序的安全性<br>     *   泛型: 指明了集合中存储数据的类型  &lt;数据类型&gt;<br>     */</p>
-<pre><code>public class GenericDemo {
-  public static void main(String[] args) {
-    function();
-  }
-
-  public static void function(){
-    Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
-    coll.add(&quot;abc&quot;);
-    coll.add(&quot;rtyg&quot;);
-    coll.add(&quot;43rt5yhju&quot;);
-//    coll.add(1);
-
-    Iterator&lt;String&gt; it = coll.iterator();
-    while(it.hasNext()){
-      String s = it.next();
-      System.out.println(s.length());
-    }
-  }
-}</code></pre><p>###15Java中的伪泛型<br>     A:Java中的伪泛型：<br>       泛型只在编译时存在,编译后就被擦除,在编译之前我们就可以限制集合的类型,起到作用<br>     例如:ArrayList<String> al=new ArrayList<String>();<br>     编译后:ArrayList al=new ArrayList();</String></String></p>
-<p>================================第四节课开始======================================================<br>###16泛型类<br>  A:泛型类:<br>    a:定义格式：<br>      修饰符 class 类名&lt;代表泛型的变量&gt; {  }</p>
-<pre><code>  例如，API中的ArrayList集合：
-  class ArrayList&lt;E&gt;{ 
-       public boolean add(E e){ }
-    public E get(int index){  }
-  }
-
-b:使用格式：
-  创建对象时，确定泛型的类型
-
-  例如，ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
-  此时，变量E的值就是String类型
-  class ArrayList&lt;String&gt;{ 
-    public boolean add(String e){ }
-    public String get(int index){  }
-  }
-
-  例如，ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-  此时，变量E的值就是Integer类型
-  class ArrayList&lt;Integer&gt;{ 
-       public boolean add(Integer e){ }
-       public Integer get(int index){  }
-  }</code></pre><p>###17泛型的方法<br>  A:泛型的方法<br>    a:定义格式：修饰符 &lt;代表泛型的变量&gt; 返回值类型 方法名(参数){  }<br>    b:泛型方法的使用:<br>     1:例如，API中的ArrayList集合中的方法：<br>      public <T> T[] toArray(T[] a){  }<br>      //该方法，用来把集合元素存储到指定数据类型的数组中，返回已存储集合元素的数组</T></p>
-<pre><code>  使用格式：调用方法时，确定泛型的类型
-例如:
-      ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
-      String[] arr = new String[100];
-      String[] result = list.toArray(arr);
-   此时，变量T的值就是String类型。变量T，可以与定义集合的泛型不同
-   public &lt;String&gt; String[] toArray(String[] a){  } 
-
-
-  例如:
-      ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
-      Integer[] arr = new Integer[100];
-      Integer [] result = list.toArray(arr);
-
-  此时，变量T的值就是Integer类型。变量T，可以与定义集合的泛型不同
-  public &lt;Integer&gt; Integer[] toArray(Integer[] a){  } </code></pre><p>###18泛型的接口<br>   A:泛型的接口:<br>     /*<br>      *  带有泛型的接口<br>      *<br>      *  public interface List <E>{<br>      *    abstract boolean add(E e);<br>      *  }<br>      *<br>      *  实现类,先实现接口,不理会泛型<br>      *  public class ArrayList<E> implements List<E>{<br>      *  }<br>      *  调用者 : new ArrayList<String>() 后期创建集合对象的时候,指定数据类型<br>      *<br>      *<br>      *  实现类,实现接口的同时,也指定了数据类型<br>      *  public class XXX implements List<String>{<br>      *  }<br>      *  new XXX()<br>      */<br>     public class GenericDemo2 {</String></String></E></E></E></p>
-<pre><code>}</code></pre><p>###19泛型的好处<br>  A:泛型的好处<br>    a:将运行时期的ClassCastException，转移到了编译时期变成了编译失败。<br>    b:避免了类型强转的麻烦。<br>    演示下列代码：<br>    public class GenericDemo {<br>      public static void main(String[] args) {<br>        List<String> list = new ArrayList<String>();<br>        list.add(“abc”);<br>        list.add(“itcast”);<br>        //list.add(5);//当集合明确类型后，存放类型不一致就会编译报错<br>                     //集合已经明确具体存放的元素类型，那么在使用迭代器的时候，迭代器也同样会知道具体遍历元素类型</String></String></p>
-<pre><code>    Iterator&lt;String&gt; it = list.iterator();
-    while(it.hasNext()){
-       String str = it.next();
-       System.out.println(str.length()); //当使用Iterator&lt;String&gt;      
-                                        //控制元素类型后，就不需要强转了。获取到的元素直接就是String类型
-    }
-  }
-}</code></pre><p>###20泛型的通配符<br>   A:泛型的通配符<br>   /*<br>    *  泛型的通配符<br>    */<br>   public class GenericDemo {<br>    public static void main(String[] args) {<br>      ArrayList<String> array = new ArrayList<String>();</String></String></p>
-<pre><code>  HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
-
-  array.add(&quot;123&quot;);
-  array.add(&quot;456&quot;);
-
-  set.add(789);
-  set.add(890);
-
-  iterator(array);
-  iterator(set);
-}
-/*
- *  定义方法,可以同时迭代2个集合
- *  参数: 怎么实现 , 不能写ArrayList,也不能写HashSet
- *  参数: 或者共同实现的接口
- *  泛型的通配,匹配所有的数据类型  ?
- */
-public static void iterator(Collection&lt;?&gt; coll){
-  Iterator&lt;?&gt; it = coll.iterator();
-  while(it.hasNext()){
-    //it.next()获取的对象,什么类型
-    System.out.println(it.next());
-  }
-}</code></pre><p>   }</p>
-<p>###21泛型的限定<br> A:泛型的限定<br>   /*<br>    *  将的酒店员工,厨师,服务员,经理,分别存储到3个集合中<br>    *  定义方法,可以同时遍历3集合,遍历三个集合的同时,可以调用工作方法<br>    */<br>   import java.util.ArrayList;<br>   import java.util.Iterator;<br>   public class GenericTest {<br>    public static void main(String[] args) {<br>      //创建3个集合对象<br>      ArrayList<ChuShi> cs = new ArrayList<ChuShi>();<br>      ArrayList<FuWuYuan> fwy = new ArrayList<FuWuYuan>();<br>      ArrayList<JingLi> jl = new ArrayList<JingLi>();</JingLi></JingLi></FuWuYuan></FuWuYuan></ChuShi></ChuShi></p>
-<pre><code>//每个集合存储自己的元素
-cs.add(new ChuShi(&quot;张三&quot;, &quot;后厨001&quot;));
-cs.add(new ChuShi(&quot;李四&quot;, &quot;后厨002&quot;));
-
-fwy.add(new FuWuYuan(&quot;翠花&quot;, &quot;服务部001&quot;));
-fwy.add(new FuWuYuan(&quot;酸菜&quot;, &quot;服务部002&quot;));
-
-jl.add(new JingLi(&quot;小名&quot;, &quot;董事会001&quot;, 123456789.32));
-jl.add(new JingLi(&quot;小强&quot;, &quot;董事会002&quot;, 123456789.33));</code></pre><p>   //   ArrayList<String> arrayString = new ArrayList<String>();<br>      iterator(jl);<br>      iterator(fwy);<br>      iterator(cs);</String></String></p>
-<pre><code>}
-/*
- * 定义方法,可以同时遍历3集合,遍历三个集合的同时,可以调用工作方法 work
- * ? 通配符,迭代器it.next()方法取出来的是Object类型,怎么调用work方法
- * 强制转换:  it.next()=Object o ==&gt; Employee
- * 方法参数: 控制,可以传递Employee对象,也可以传递Employee的子类的对象
- * 泛型的限定  本案例,父类固定Employee,但是子类可以无限?
- *   ? extends Employee 限制的是父类, 上限限定, 可以传递Employee,传递他的子类对象
- *   ? super   Employee 限制的是子类, 下限限定, 可以传递Employee,传递他的父类对象
- */
-public static void iterator(ArrayList&lt;? extends Employee&gt; array){
-
-   Iterator&lt;? extends Employee&gt; it = array.iterator();
-   while(it.hasNext()){
-     //获取出的next() 数据类型,是什么Employee
-     Employee e = it.next();
-     e.work();
-   }
-}</code></pre><p>   }</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -3261,7 +3395,7 @@ public static void iterator(ArrayList&lt;? extends Employee&gt; array){
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

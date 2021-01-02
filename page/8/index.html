@@ -155,6 +155,399 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/" class="post-title-link" itemprop="url">英雄登场</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:57" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="英雄登场"><a href="#英雄登场" class="headerlink" title="英雄登场"></a>英雄登场</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>设计 <strong>英雄</strong> 和 <strong>子弹</strong> 类</li>
+<li>使用 <code>pygame.key.get_pressed()</code> 移动英雄</li>
+<li>发射子弹</li>
+</ul>
+<h2 id="01-设计-英雄-和-子弹-类"><a href="#01-设计-英雄-和-子弹-类" class="headerlink" title="01. 设计 英雄 和 子弹 类"></a>01. 设计 <strong>英雄</strong> 和 <strong>子弹</strong> 类</h2><h3 id="英雄需求"><a href="#英雄需求" class="headerlink" title="英雄需求"></a>英雄需求</h3><ol>
+<li>游戏启动后，<strong>英雄</strong> 出现在屏幕的 <strong>水平中间</strong> 位置，距离 <strong>屏幕底部</strong> <code>120</code> <strong>像素</strong></li>
+<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li>
+<li><strong>英雄</strong> 默认不会移动，需要通过 <strong>左/右</strong> 方向键，控制 <strong>英雄</strong> 在水平方向移动</li>
+</ol>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AE.png" alt></p>
+<h3 id="子弹需求"><a href="#子弹需求" class="headerlink" title="子弹需求"></a>子弹需求</h3><ol>
+<li><strong>子弹</strong> 从 <strong>英雄</strong> 的正上方发射 <strong>沿直线</strong> 向 <strong>上方</strong> 飞行</li>
+<li><strong>飞出屏幕后</strong>，需要从 <strong>精灵组</strong> 中删除</li>
+</ol>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/016_%E6%B4%BE%E7%94%9F%E8%8B%B1%E9%9B%84%E5%92%8C%E5%AD%90%E5%BC%B9%E5%AD%90%E7%B1%BB.png" alt></p>
+<h3 id="Hero-——-英雄"><a href="#Hero-——-英雄" class="headerlink" title="Hero —— 英雄"></a>Hero —— 英雄</h3><ul>
+<li><strong>初始化方法</strong><ul>
+<li>指定 <strong>英雄图片</strong></li>
+<li><strong>初始速度 = 0</strong> —— 英雄默认静止不动</li>
+<li>定义 <code>bullets</code> <strong>子弹精灵组</strong> 保存子弹精灵</li>
+</ul>
+</li>
+<li>重写 <strong>update()</strong> 方法<ul>
+<li>英雄需要 <strong>水平移动</strong></li>
+<li>并且需要保证不能 <strong>移出屏幕</strong></li>
+</ul>
+</li>
+<li>增加 <code>bullets</code> 属性，记录所有 <strong>子弹精灵</strong></li>
+<li>增加 <code>fire</code> 方法，用于发射子弹</li>
+</ul>
+<h3 id="Bullet-——-子弹"><a href="#Bullet-——-子弹" class="headerlink" title="Bullet —— 子弹"></a>Bullet —— 子弹</h3><ul>
+<li><strong>初始化方法</strong><ul>
+<li>指定 <strong>子弹图片</strong></li>
+<li><strong>初始速度 = -2</strong> —— 子弹需要向上方飞行</li>
+</ul>
+</li>
+<li>重写 <strong>update()</strong> 方法<ul>
+<li>判断 <strong>是否飞出屏幕</strong>，如果是，从 <strong>精灵组</strong> 删除</li>
+</ul>
+</li>
+</ul>
+<h2 id="02-创建英雄"><a href="#02-创建英雄" class="headerlink" title="02. 创建英雄"></a>02. 创建英雄</h2><h3 id="2-1-准备英雄类"><a href="#2-1-准备英雄类" class="headerlink" title="2.1 准备英雄类"></a>2.1 准备英雄类</h3><ul>
+<li>在 <code>plane_sprites</code> 新建 <code>Hero</code> 类</li>
+<li>重写 <strong>初始化方法</strong>，直接指定 <strong>图片名称</strong>，并且将初始速度设置为 <code>0</code></li>
+<li>设置 <strong>英雄的初始位置</strong></li>
+</ul>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/003_pygame.Rect.png" alt></p>
+<ul>
+<li><code>centerx = x + 0.5 * width</code></li>
+<li><code>centery = y + 0.5 * height</code></li>
+<li><code>bottom = y + height</code></li>
+</ul>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AE.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hero</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""英雄精灵"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        super().__init__(<span class="string">"./images/me1.png"</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置初始位置</span></span><br><span class="line">        self.rect.centerx = SCREEN_RECT.centerx</span><br><span class="line">        self.rect.bottom = SCREEN_RECT.bottom - <span class="number">120</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-绘制英雄"><a href="#2-2-绘制英雄" class="headerlink" title="2.2 绘制英雄"></a>2.2 绘制英雄</h3><ol>
+<li>在 <code>__create_sprites</code>，添加 <strong>英雄精灵</strong> 和 <strong>英雄精灵组</strong><ul>
+<li>后续要针对 <strong>英雄</strong> 做 <strong>碰撞检测</strong> 以及 <strong>发射子弹</strong></li>
+<li>所以 <strong>英雄</strong> 需要 <strong>单独定义成属性</strong></li>
+</ul>
+</li>
+<li>在 <code>__update_sprites</code>，让 <strong>英雄精灵组</strong> 调用 <code>update</code> 和 <code>draw</code> 方法</li>
+</ol>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
+<li>修改 <code>__create_sprites</code> 方法如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 英雄组</span></span><br><span class="line">self.hero = Hero()</span><br><span class="line">self.hero_group = pygame.sprite.Group(self.hero)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>__update_sprites</code> 方法如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.hero_group.update()</span><br><span class="line">self.hero_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-移动英雄位置"><a href="#03-移动英雄位置" class="headerlink" title="03. 移动英雄位置"></a>03. 移动英雄位置</h2><blockquote>
+<p>在 <code>pygame</code> 中针对 <strong>键盘按键的捕获</strong>，有 <strong>两种</strong> 方式</p>
+</blockquote>
+<ul>
+<li><strong>第一种方式</strong> 判断 <code>event.type == pygame.KEYDOWN</code></li>
+<li><strong>第二种方式</strong> <ol>
+<li>首先使用 <code>pygame.key.get_pressed()</code> 返回 <strong>所有按键元组</strong></li>
+<li>通过 <strong>键盘常量</strong>，判断元组中 <strong>某一个键是否被按下</strong> —— 如果被按下，对应数值为 <code>1</code></li>
+</ol>
+</li>
+</ul>
+<p><strong>提问</strong> 这两种方式之间有什么区别呢？</p>
+<ul>
+<li>第一种方式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> event.type == pygame.KEYDOWN <span class="keyword">and</span> event.key == pygame.K_RIGHT:</span><br><span class="line">    print(<span class="string">"向右移动..."</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第二种方式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回所有按键的元组，如果某个键被按下，对应的值会是1</span></span><br><span class="line">keys_pressed = pygame.key.get_pressed()</span><br><span class="line"><span class="comment"># 判断是否按下了方向键</span></span><br><span class="line"><span class="keyword">if</span> keys_pressed[pygame.K_RIGHT]:</span><br><span class="line">    print(<span class="string">"向右移动..."</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>结论</strong></p>
+<ul>
+<li><strong>第一种方式</strong> <code>event.type</code> 用户 <strong>必须要抬起按键</strong> 才算一次 <strong>按键事件</strong>，<strong>操作灵活性会大打折扣</strong></li>
+<li><strong>第二种方式</strong> 用户可以按住方向键不放，就能够实现持续向某一个方向移动了，<strong>操作灵活性更好</strong></li>
+</ul>
+<h3 id="3-1-移动英雄位置"><a href="#3-1-移动英雄位置" class="headerlink" title="3.1 移动英雄位置"></a>3.1 移动英雄位置</h3><p><strong>演练步骤</strong></p>
+<ol>
+<li>在 <code>Hero</code> 类中重写 <code>update</code> 方法<ul>
+<li>用 <strong>速度</strong> <code>speed</code> 和 <strong>英雄</strong> <code>rect.x</code> 进行叠加</li>
+<li><strong>不需要调用父类方法</strong> —— 父类方法只是实现了单纯的垂直运动</li>
+</ul>
+</li>
+<li>在 <code>__event_handler</code> 方法中根据 <strong>左右方向键</strong> 设置英雄的 <strong>速度</strong><ul>
+<li><strong>向右</strong> =&gt; <code>speed = 2</code></li>
+<li><strong>向左</strong> =&gt; <code>speed = -2</code></li>
+<li><strong>其他</strong> =&gt; <code>speed = 0</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>代码演练</strong></p>
+<ul>
+<li>在 <code>Hero</code> 类，重写 <code>update()</code> 方法，<strong>根据速度水平移动</strong> 英雄的飞机</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 飞机水平移动</span></span><br><span class="line">    self.rect.x += self.speed</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>调整键盘按键代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取用户按键</span></span><br><span class="line">keys_pressed = pygame.key.get_pressed()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> keys_pressed[pygame.K_RIGHT]:</span><br><span class="line">    self.hero.speed = <span class="number">2</span></span><br><span class="line"><span class="keyword">elif</span> keys_pressed[pygame.K_LEFT]:</span><br><span class="line">    self.hero.speed = <span class="number">-2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    self.hero.speed = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-控制英雄运动边界"><a href="#3-2-控制英雄运动边界" class="headerlink" title="3.2 控制英雄运动边界"></a>3.2 控制英雄运动边界</h3><ul>
+<li>在 <code>Hero</code> 类的 <code>update()</code> 方法判断 <strong>英雄</strong> 是否超出 <strong>屏幕边界</strong></li>
+</ul>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/003_pygame.Rect.png" alt></p>
+<ul>
+<li><code>right = x + width</code> 利用 <code>right</code> 属性可以非常容易的针对右侧设置精灵位置</li>
+</ul>
+<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AEII.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 飞机水平移动</span></span><br><span class="line">    self.rect.x += self.speed</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 判断屏幕边界</span></span><br><span class="line">    <span class="keyword">if</span> self.rect.left &lt; <span class="number">0</span>:</span><br><span class="line">        self.rect.left = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> self.rect.right &gt; SCREEN_RECT.right:</span><br><span class="line">        self.rect.right = SCREEN_RECT.right</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-发射子弹"><a href="#04-发射子弹" class="headerlink" title="04. 发射子弹"></a>04. 发射子弹</h2><h3 id="需求回顾-——-英雄需求"><a href="#需求回顾-——-英雄需求" class="headerlink" title="需求回顾 —— 英雄需求"></a>需求回顾 —— 英雄需求</h3><ol>
+<li>游戏启动后，<strong>英雄</strong> 出现在屏幕的 <strong>水平中间</strong> 位置，距离 <strong>屏幕底部</strong> <code>120</code> <strong>像素</strong></li>
+<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li>
+<li><strong>英雄</strong> 默认不会移动，需要通过 <strong>左/右</strong> 方向键，控制 <strong>英雄</strong> 在水平方向移动</li>
+</ol>
+<h3 id="4-1-添加发射子弹事件"><a href="#4-1-添加发射子弹事件" class="headerlink" title="4.1 添加发射子弹事件"></a>4.1 添加发射子弹事件</h3><p><code>pygame</code> 的 <strong>定时器</strong> 使用套路非常固定：</p>
+<ol>
+<li>定义 <strong>定时器常量</strong> —— <code>eventid</code></li>
+<li>在 <strong>初始化方法</strong> 中，调用 <code>set_timer</code> 方法 <strong>设置定时器事件</strong></li>
+<li>在 <strong>游戏循环</strong> 中，<strong>监听定时器事件</strong></li>
+</ol>
+<p><strong>代码实现</strong></p>
+<ul>
+<li>在 <code>Hero</code> 中定义 <code>fire</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">"发射子弹..."</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>plane_main.py</code> 的顶部定义 <strong>发射子弹</strong> 事件常量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 英雄发射子弹事件</span></span><br><span class="line">HERO_FIRE_EVENT = pygame.USEREVENT + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>__init__</code> 方法末尾中添加 <strong>发射子弹</strong> 事件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每隔 0.5 秒发射一次子弹</span></span><br><span class="line">pygame.time.set_timer(HERO_FIRE_EVENT, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>__event_handler</code> 方法中让英雄发射子弹</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> event.type == HERO_FIRE_EVENT:</span><br><span class="line">    self.hero.fire()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-定义子弹类"><a href="#4-2-定义子弹类" class="headerlink" title="4.2 定义子弹类"></a>4.2 定义子弹类</h3><h4 id="需求回顾-——-子弹需求"><a href="#需求回顾-——-子弹需求" class="headerlink" title="需求回顾 —— 子弹需求"></a>需求回顾 —— 子弹需求</h4><ol>
+<li><strong>子弹</strong> 从 <strong>英雄</strong> 的正上方发射 <strong>沿直线</strong> 向 <strong>上方</strong> 飞行</li>
+<li><strong>飞出屏幕后</strong>，需要从 <strong>精灵组</strong> 中删除</li>
+</ol>
+<h4 id="Bullet-——-子弹-1"><a href="#Bullet-——-子弹-1" class="headerlink" title="Bullet —— 子弹"></a>Bullet —— 子弹</h4><ul>
+<li><strong>初始化方法</strong><ul>
+<li>指定 <strong>子弹图片</strong></li>
+<li><strong>初始速度 = -2</strong> —— 子弹需要向上方飞行</li>
+</ul>
+</li>
+<li>重写 <strong>update()</strong> 方法<ul>
+<li>判断 <strong>是否飞出屏幕</strong>，如果是，从 <strong>精灵组</strong> 删除</li>
+</ul>
+</li>
+</ul>
+<h4 id="定义子弹类"><a href="#定义子弹类" class="headerlink" title="定义子弹类"></a>定义子弹类</h4><ul>
+<li>在 <code>plane_sprites</code> 新建 <code>Bullet</code> 继承自 <code>GameSprite</code></li>
+<li>重写 <strong>初始化方法</strong>，直接指定 <strong>图片名称</strong>，并且设置 <strong>初始速度</strong></li>
+<li>重写 <code>update()</code> 方法，判断子弹 <strong>飞出屏幕从精灵组删除</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bullet</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""子弹精灵"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        super().__init__(<span class="string">"./images/bullet1.png"</span>, <span class="number">-2</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    </span><br><span class="line">        super().update()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 判断是否超出屏幕，如果是，从精灵组删除</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.bottom &lt; <span class="number">0</span>:</span><br><span class="line">            self.kill()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-发射子弹"><a href="#4-3-发射子弹" class="headerlink" title="4.3 发射子弹"></a>4.3 发射子弹</h3><p><strong>演练步骤</strong></p>
+<ol>
+<li>在 <code>Hero</code> 的 <strong>初始化方法</strong> 中创建 <strong>子弹精灵组</strong> 属性</li>
+<li>修改 <code>plane_main.py</code> 的 <code>__update_sprites</code> 方法，让 <strong>子弹精灵组</strong> 调用 <code>update</code> 和 <code>draw</code> 方法</li>
+<li>实现 <code>fire()</code> 方法<ul>
+<li>创建子弹精灵</li>
+<li>设置初始位置 —— 在 <strong>英雄的正上方</strong></li>
+<li>将 <strong>子弹</strong> 添加到精灵组</li>
+</ul>
+</li>
+</ol>
+<p><strong>代码实现</strong></p>
+<ul>
+<li>初始化方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建子弹的精灵组</span></span><br><span class="line">self.bullets = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>fire()</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 创建子弹精灵</span></span><br><span class="line">    bullet = Bullet()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 设置精灵的位置</span></span><br><span class="line">    bullet.rect.bottom = self.rect.y - <span class="number">20</span></span><br><span class="line">    bullet.rect.centerx = self.rect.centerx</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 将精灵添加到精灵组</span></span><br><span class="line">    self.bullets.add(bullet)</span><br></pre></td></tr></table></figure>
+
+<h4 id="一次发射三枚子弹"><a href="#一次发射三枚子弹" class="headerlink" title="一次发射三枚子弹"></a>一次发射三枚子弹</h4><p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AEIII.png" alt></p>
+<ul>
+<li>修改 <code>fire()</code> 方法，一次发射三枚子弹</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>):</span><br><span class="line">        <span class="comment"># 1. 创建子弹精灵</span></span><br><span class="line">        bullet = Bullet()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 设置精灵的位置</span></span><br><span class="line">        bullet.rect.bottom = self.rect.y - i * <span class="number">20</span></span><br><span class="line">        bullet.rect.centerx = self.rect.centerx</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 将精灵添加到精灵组</span></span><br><span class="line">        self.bullets.add(bullet)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/" class="post-title-link" itemprop="url">项目实战 —— 飞机大战</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:48" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="项目实战-——-飞机大战"><a href="#项目实战-——-飞机大战" class="headerlink" title="项目实战 —— 飞机大战"></a>项目实战 —— 飞机大战</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>强化 <strong>面向对象</strong> 程序设计</li>
+<li>体验使用 <code>pygame</code> 模块进行 <strong>游戏开发</strong></li>
+</ul>
+<h2 id="实战步骤"><a href="#实战步骤" class="headerlink" title="实战步骤"></a>实战步骤</h2><ol>
+<li><code>pygame</code> 快速体验</li>
+<li><strong>飞机大战</strong> 实战</li>
+</ol>
+<h2 id="确认模块-——-pygame"><a href="#确认模块-——-pygame" class="headerlink" title="确认模块 —— pygame"></a>确认模块 —— pygame</h2><ul>
+<li><code>pygame</code> 就是一个 Python 模块，专为电子游戏设计</li>
+<li>官方网站：<a href="https://www.pygame.org/" target="_blank" rel="noopener">https://www.pygame.org/</a><ul>
+<li><strong>提示</strong>：要学习第三方模块，通常最好的参考资料就在官方网站</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>网站栏目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GettingStarted</code></td>
+<td>在各平台安装模块的说明</td>
+</tr>
+<tr>
+<td><code>Docs</code></td>
+<td><code>pygame</code> 模块所有 <strong>类</strong> 和 <strong>子类</strong> 的参考手册</td>
+</tr>
+</tbody></table>
+<h3 id="安装-pygame"><a href="#安装-pygame" class="headerlink" title="安装 pygame"></a>安装 pygame</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip3 install pygame</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m pygame.examples.aliens</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2819,499 +3212,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">类属性和类方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 22:59:33" itemprop="dateModified" datetime="2020-12-24T22:59:33+08:00">2020-12-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="类属性和类方法"><a href="#类属性和类方法" class="headerlink" title="类属性和类方法"></a>类属性和类方法</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>类的结构</li>
-<li>类属性和实例属性</li>
-<li>类方法和静态方法</li>
-</ul>
-<h2 id="01-类的结构"><a href="#01-类的结构" class="headerlink" title="01. 类的结构"></a>01. 类的结构</h2><h3 id="1-1-术语-——-实例"><a href="#1-1-术语-——-实例" class="headerlink" title="1.1 术语 —— 实例"></a>1.1 术语 —— 实例</h3><ol>
-<li>使用面相对象开发，<strong>第 1 步</strong> 是设计 <strong>类</strong></li>
-<li>使用 <strong>类名()</strong> 创建对象，<strong>创建对象</strong> 的动作有两步：<ul>
-<li>1) 在内存中为对象 <strong>分配空间</strong></li>
-<li>2) 调用初始化方法 <code>__init__</code> 为 <strong>对象初始化</strong></li>
-</ul>
-</li>
-<li>对象创建后，<strong>内存</strong> 中就有了一个对象的 <strong>实实在在</strong> 的存在 —— <strong>实例</strong></li>
-</ol>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/017_%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BEI.png" alt></p>
-<p>因此，通常也会把：</p>
-<ol>
-<li>创建出来的 <strong>对象</strong> 叫做 <strong>类</strong> 的 <strong>实例</strong></li>
-<li>创建对象的 <strong>动作</strong> 叫做 <strong>实例化</strong></li>
-<li><strong>对象的属性</strong> 叫做 <strong>实例属性</strong></li>
-<li><strong>对象调用的方法</strong> 叫做 <strong>实例方法</strong></li>
-</ol>
-<p>在程序执行时：</p>
-<ol>
-<li>对象各自拥有自己的 <strong>实例属性</strong></li>
-<li>调用对象方法，可以通过 <code>self.</code> <ul>
-<li>访问自己的属性</li>
-<li>调用自己的方法</li>
-</ul>
-</li>
-</ol>
-<p><strong>结论</strong></p>
-<ul>
-<li><strong>每一个对象</strong> 都有自己 <strong>独立的内存空间</strong>，<strong>保存各自不同的属性</strong></li>
-<li><strong>多个对象的方法</strong>，<strong>在内存中只有一份</strong>，在调用方法时，<strong>需要把对象的引用</strong> 传递到方法内部</li>
-</ul>
-<h3 id="1-2-类是一个特殊的对象"><a href="#1-2-类是一个特殊的对象" class="headerlink" title="1.2 类是一个特殊的对象"></a>1.2 类是一个特殊的对象</h3><blockquote>
-<p><code>Python</code> 中 <strong>一切皆对象</strong>：</p>
-<ul>
-<li><code>class AAA:</code> 定义的类属于 <strong>类对象</strong></li>
-<li><code>obj1 = AAA()</code> 属于 <strong>实例对象</strong></li>
-</ul>
-</blockquote>
-<ul>
-<li>在程序运行时，<strong>类</strong> 同样 <strong>会被加载到内存</strong></li>
-<li>在 <code>Python</code> 中，<strong>类</strong> 是一个特殊的对象 —— <strong>类对象</strong></li>
-<li>在程序运行时，<strong>类对象</strong> 在内存中 <strong>只有一份</strong>，使用 <strong>一个类</strong> 可以创建出 <strong>很多个对象实例</strong></li>
-<li>除了封装 <strong>实例</strong> 的 <strong>属性</strong> 和 <strong>方法</strong>外，<strong>类对象</strong> 还可以拥有自己的 <strong>属性</strong> 和 <strong>方法</strong><ol>
-<li><strong>类属性</strong></li>
-<li><strong>类方法</strong></li>
-</ol>
-</li>
-<li>通过 <strong>类名.</strong> 的方式可以 <strong>访问类的属性</strong> 或者 <strong>调用类的方法</strong></li>
-</ul>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/017_%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BEII.png" alt></p>
-<h2 id="02-类属性和实例属性"><a href="#02-类属性和实例属性" class="headerlink" title="02. 类属性和实例属性"></a>02. 类属性和实例属性</h2><h3 id="2-1-概念和使用"><a href="#2-1-概念和使用" class="headerlink" title="2.1 概念和使用"></a>2.1 概念和使用</h3><ul>
-<li><strong>类属性</strong> 就是给 <strong>类对象</strong> 中定义的 <strong>属性</strong></li>
-<li>通常用来记录 <strong>与这个类相关</strong> 的特征</li>
-<li><strong>类属性</strong> <strong>不会用于</strong>记录 <strong>具体对象的特征</strong></li>
-</ul>
-<p><strong>示例需求</strong></p>
-<ul>
-<li>定义一个 <strong>工具类</strong></li>
-<li>每件工具都有自己的 <code>name</code></li>
-<li><strong>需求</strong> —— 知道使用这个类，创建了多少个工具对象？</li>
-</ul>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/018_%E7%B1%BB%E5%B1%9E%E6%80%A7%E6%A1%88%E4%BE%8BI.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tool</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用赋值语句，定义类属性，记录创建工具对象的总数</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 针对类属性做一个计数+1</span></span><br><span class="line">        Tool.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建工具对象</span></span><br><span class="line">tool1 = Tool(<span class="string">"斧头"</span>)</span><br><span class="line">tool2 = Tool(<span class="string">"榔头"</span>)</span><br><span class="line">tool3 = Tool(<span class="string">"铁锹"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 知道使用 Tool 类到底创建了多少个对象?</span></span><br><span class="line">print(<span class="string">"现在创建了 %d 个工具"</span> % Tool.count)</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-属性的获取机制（科普）"><a href="#2-2-属性的获取机制（科普）" class="headerlink" title="2.2 属性的获取机制（科普）"></a>2.2 属性的获取机制（科普）</h3><ul>
-<li>在 <code>Python</code> 中 <strong>属性的获取</strong> 存在一个 <strong>向上查找机制</strong></li>
-</ul>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/019_%E9%80%9A%E8%BF%87%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E7%B1%BB%E5%B1%9E%E6%80%A7.png" alt></p>
-<ul>
-<li>因此，要访问类属性有两种方式：<ol>
-<li><strong>类名.类属性</strong></li>
-<li><strong>对象.类属性</strong> （不推荐）</li>
-</ol>
-</li>
-</ul>
-<p><strong>注意</strong></p>
-<ul>
-<li>如果使用 <code>对象.类属性 = 值</code> 赋值语句，只会 <strong>给对象添加一个属性</strong>，而不会影响到 <strong>类属性的值</strong></li>
-</ul>
-<h2 id="03-类方法和静态方法"><a href="#03-类方法和静态方法" class="headerlink" title="03. 类方法和静态方法"></a>03. 类方法和静态方法</h2><h3 id="3-1-类方法"><a href="#3-1-类方法" class="headerlink" title="3.1 类方法"></a>3.1 类方法</h3><ul>
-<li><strong>类属性</strong> 就是针对 <strong>类对象</strong> 定义的属性<ul>
-<li>使用 <strong>赋值语句</strong> 在 <code>class</code> 关键字下方可以定义 <strong>类属性</strong></li>
-<li><strong>类属性</strong> 用于记录 <strong>与这个类相关</strong> 的特征</li>
-</ul>
-</li>
-<li><strong>类方法</strong> 就是针对 <strong>类对象</strong> 定义的方法<ul>
-<li>在 <strong>类方法</strong> 内部可以直接访问 <strong>类属性</strong> 或者调用其他的 <strong>类方法</strong></li>
-</ul>
-</li>
-</ul>
-<p><strong>语法如下</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> 类方法名<span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>类方法需要用 <strong>修饰器</strong> <code>@classmethod</code> 来标识，<strong>告诉解释器这是一个类方法</strong></li>
-<li>类方法的 <strong>第一个参数</strong> 应该是 <code>cls</code><ul>
-<li>由 <strong>哪一个类</strong> 调用的方法，方法内的 <code>cls</code> 就是 <strong>哪一个类的引用</strong></li>
-<li>这个参数和 <strong>实例方法</strong> 的第一个参数是 <code>self</code> 类似</li>
-<li><strong>提示</strong> 使用其他名称也可以，不过习惯使用 <code>cls</code></li>
-</ul>
-</li>
-</ul>
-<ol start="3">
-<li>通过 <strong>类名.</strong> 调用 <strong>类方法</strong>，<strong>调用方法时</strong>，不需要传递 <code>cls</code> 参数</li>
-<li><strong>在方法内部</strong><ul>
-<li>可以通过 <code>cls.</code> <strong>访问类的属性</strong></li>
-<li>也可以通过 <code>cls.</code> <strong>调用其他的类方法</strong></li>
-</ul>
-</li>
-</ol>
-<p><strong>示例需求</strong></p>
-<ul>
-<li>定义一个 <strong>工具类</strong></li>
-<li>每件工具都有自己的 <code>name</code></li>
-<li><strong>需求</strong> —— 在 <strong>类</strong> 封装一个 <code>show_tool_count</code> 的类方法，输出使用当前这个类，创建的对象个数</li>
-</ul>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/020_%E7%B1%BB%E6%96%B9%E6%B3%95%E6%A1%88%E4%BE%8B.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_tool_count</span><span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="string">"""显示工具对象的总数"""</span></span><br><span class="line">    print(<span class="string">"工具对象的总数 %d"</span> % cls.count)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>在类方法内部，可以直接使用 <code>cls</code> 访问 <strong>类属性</strong> 或者 <strong>调用类方法</strong></p>
-</blockquote>
-<h3 id="3-2-静态方法"><a href="#3-2-静态方法" class="headerlink" title="3.2 静态方法"></a>3.2 静态方法</h3><ul>
-<li><p>在开发时，如果需要在 <strong>类</strong> 中封装一个方法，这个方法：</p>
-<ul>
-<li>既 <strong>不需要</strong> 访问 <strong>实例属性</strong> 或者调用 <strong>实例方法</strong></li>
-<li>也 <strong>不需要</strong> 访问 <strong>类属性</strong> 或者调用 <strong>类方法</strong></li>
-</ul>
-</li>
-<li><p>这个时候，可以把这个方法封装成一个 <strong>静态方法</strong></p>
-</li>
-</ul>
-<p><strong>语法如下</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> 静态方法名<span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>静态方法</strong> 需要用 <strong>修饰器</strong> <code>@staticmethod</code> 来标识，<strong>告诉解释器这是一个静态方法</strong></li>
-<li>通过 <strong>类名.</strong> 调用 <strong>静态方法</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 狗对象计数</span></span><br><span class="line">    dog_count = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 不需要访问实例属性也不需要访问类属性的方法</span></span><br><span class="line">        print(<span class="string">"狗在跑..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-3-方法综合案例"><a href="#3-3-方法综合案例" class="headerlink" title="3.3 方法综合案例"></a>3.3 方法综合案例</h3><p><strong>需求</strong></p>
-<ol>
-<li>设计一个 <code>Game</code> 类</li>
-<li>属性：<ul>
-<li>定义一个 <strong>类属性</strong> <code>top_score</code> 记录游戏的 <strong>历史最高分</strong></li>
-<li>定义一个 <strong>实例属性</strong> <code>player_name</code> 记录 <strong>当前游戏的玩家姓名</strong></li>
-</ul>
-</li>
-<li>方法：<ul>
-<li><strong>静态方法</strong> <code>show_help</code> 显示游戏帮助信息</li>
-<li><strong>类方法</strong> <code>show_top_score</code> 显示历史最高分</li>
-<li><strong>实例方法</strong> <code>start_game</code> 开始当前玩家的游戏</li>
-</ul>
-</li>
-<li>主程序步骤<ul>
-<li>1) 查看帮助信息</li>
-<li>2) 查看历史最高分</li>
-<li>3) 创建游戏对象，开始游戏</li>
-</ul>
-</li>
-</ol>
-<p><img src="/2020/12/23/%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E7%B1%BB%E6%96%B9%E6%B3%95/021_%E6%96%B9%E6%B3%95%E7%BB%BC%E5%90%88%E6%A1%88%E4%BE%8B.png" alt></p>
-<h4 id="案例小结"><a href="#案例小结" class="headerlink" title="案例小结"></a>案例小结</h4><ol>
-<li><strong>实例方法</strong> —— 方法内部需要访问 <strong>实例属性</strong><ul>
-<li><strong>实例方法</strong> 内部可以使用 <strong>类名.</strong> 访问类属性</li>
-</ul>
-</li>
-<li><strong>类方法</strong> —— 方法内部 <strong>只</strong> 需要访问 <strong>类属性</strong></li>
-<li><strong>静态方法</strong> —— 方法内部，不需要访问 <strong>实例属性</strong> 和 <strong>类属性</strong></li>
-</ol>
-<p><strong>提问</strong></p>
-<p>如果方法内部 即需要访问 <strong>实例属性</strong>，又需要访问 <strong>类属性</strong>，应该定义成什么方法？</p>
-<p><strong>答案</strong></p>
-<ul>
-<li>应该定义 <strong>实例方法</strong></li>
-<li>因为，<strong>类只有一个</strong>，在 <strong>实例方法</strong> 内部可以使用 <strong>类名.</strong> 访问类属性</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 游戏最高分，类属性</span></span><br><span class="line">    top_score = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_help</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"帮助信息：让僵尸走进房间"</span>)</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_top_score</span><span class="params">(cls)</span>:</span></span><br><span class="line">        print(<span class="string">"游戏最高分是 %d"</span> % cls.top_score)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, player_name)</span>:</span></span><br><span class="line">        self.player_name = player_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_game</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"[%s] 开始游戏..."</span> % self.player_name)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 使用类名.修改历史最高分</span></span><br><span class="line">        Game.top_score = <span class="number">999</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 查看游戏帮助</span></span><br><span class="line">Game.show_help()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 查看游戏最高分</span></span><br><span class="line">Game.show_top_score()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 创建游戏对象，开始游戏</span></span><br><span class="line">game = Game(<span class="string">"小明"</span>)</span><br><span class="line"></span><br><span class="line">game.start_game()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 游戏结束，查看游戏最高分</span></span><br><span class="line">Game.show_top_score()</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E7%BB%A7%E6%89%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/%E7%BB%A7%E6%89%BF/" class="post-title-link" itemprop="url">继承</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 22:59:16" itemprop="dateModified" datetime="2020-12-24T22:59:16+08:00">2020-12-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>单继承</li>
-<li>多继承</li>
-</ul>
-<p><strong>面向对象三大特性</strong></p>
-<ol>
-<li><strong>封装</strong> 根据 <strong>职责</strong> 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>继承</strong> <strong>实现代码的重用</strong>，相同的代码不需要重复的编写</li>
-<li><strong>多态</strong> 不同的对象调用相同的方法，产生不同的执行结果，<strong>增加代码的灵活度</strong></li>
-</ol>
-<h2 id="01-单继承"><a href="#01-单继承" class="headerlink" title="01. 单继承"></a>01. 单继承</h2><h3 id="1-1-继承的概念、语法和特点"><a href="#1-1-继承的概念、语法和特点" class="headerlink" title="1.1 继承的概念、语法和特点"></a>1.1 继承的概念、语法和特点</h3><p><strong>继承的概念</strong>：<strong>子类</strong> 拥有 <strong>父类</strong> 的所有 <strong>方法</strong> 和 <strong>属性</strong></p>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/011_%E7%BB%A7%E6%89%BF%E5%AF%B9%E6%AF%94%E5%9B%BE%E7%A4%BA.png" alt></p>
-<h4 id="1-继承的语法"><a href="#1-继承的语法" class="headerlink" title="1) 继承的语法"></a>1) 继承的语法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 类名<span class="params">(父类名)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>子类</strong> 继承自 <strong>父类</strong>，可以直接 <strong>享受</strong> 父类中已经封装好的方法，不需要再次开发</li>
-<li><strong>子类</strong> 中应该根据 <strong>职责</strong>，封装 <strong>子类特有的</strong> <strong>属性和方法</strong></li>
-</ul>
-<h4 id="2-专业术语"><a href="#2-专业术语" class="headerlink" title="2) 专业术语"></a>2) 专业术语</h4><ul>
-<li><code>Dog</code> 类是 <code>Animal</code> 类的<strong>子类</strong>，<code>Animal</code> 类是 <code>Dog</code> 类的<strong>父类</strong>，<code>Dog</code> 类从 <code>Animal</code> 类<strong>继承</strong></li>
-<li><code>Dog</code> 类是 <code>Animal</code> 类的<strong>派生类</strong>，<code>Animal</code> 类是 <code>Dog</code> 类的<strong>基类</strong>，<code>Dog</code> 类从 <code>Animal</code> 类<strong>派生</strong></li>
-</ul>
-<h4 id="3-继承的传递性"><a href="#3-继承的传递性" class="headerlink" title="3) 继承的传递性"></a>3) 继承的传递性</h4><ul>
-<li><code>C</code> 类从 <code>B</code> 类继承，<code>B</code> 类又从 <code>A</code> 类继承</li>
-<li>那么 <code>C</code> 类就具有 <code>B</code> 类和 <code>A</code> 类的所有属性和方法</li>
-</ul>
-<p><strong>子类</strong> 拥有 <strong>父类</strong> 以及 <strong>父类的父类</strong> 中封装的所有 <strong>属性</strong> 和 <strong>方法</strong></p>
-<p><strong>提问</strong></p>
-<p><strong>哮天犬</strong> 能够调用 <code>Cat</code> 类中定义的 <code>catch</code> 方法吗？</p>
-<p><strong>答案</strong></p>
-<p><strong>不能</strong>，因为 <strong>哮天犬</strong> 和 <code>Cat</code> 之间没有 <strong>继承</strong> 关系</p>
-<h3 id="1-2-方法的重写"><a href="#1-2-方法的重写" class="headerlink" title="1.2 方法的重写"></a>1.2 方法的重写</h3><ul>
-<li><strong>子类</strong> 拥有 <strong>父类</strong> 的所有 <strong>方法</strong> 和 <strong>属性</strong></li>
-<li><strong>子类</strong> 继承自 <strong>父类</strong>，可以直接 <strong>享受</strong> 父类中已经封装好的方法，不需要再次开发</li>
-</ul>
-<p><strong>应用场景</strong></p>
-<ul>
-<li>当 <strong>父类</strong> 的方法实现不能满足子类需求时，可以对方法进行 <strong>重写(override)</strong></li>
-</ul>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/012_%E7%BB%A7%E6%89%BF%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E5%86%99.png" alt></p>
-<p><strong>重写</strong> 父类方法有两种情况：</p>
-<ol>
-<li><strong>覆盖</strong> 父类的方法</li>
-<li>对父类方法进行 <strong>扩展</strong></li>
-</ol>
-<h4 id="1-覆盖父类的方法"><a href="#1-覆盖父类的方法" class="headerlink" title="1) 覆盖父类的方法"></a>1) 覆盖父类的方法</h4><ul>
-<li>如果在开发中，<strong>父类的方法实现</strong> 和 <strong>子类的方法实现</strong>，<strong>完全不同</strong></li>
-<li>就可以使用 <strong>覆盖</strong> 的方式，<strong>在子类中</strong> <strong>重新编写</strong> 父类的方法实现</li>
-</ul>
-<blockquote>
-<p>具体的实现方式，就相当于在 <strong>子类中</strong> 定义了一个 <strong>和父类同名的方法并且实现</strong></p>
-</blockquote>
-<p>重写之后，在运行时，<strong>只会调用</strong> 子类中重写的方法，而不再会调用 <strong>父类封装的方法</strong></p>
-<h4 id="2-对父类方法进行-扩展"><a href="#2-对父类方法进行-扩展" class="headerlink" title="2) 对父类方法进行 扩展"></a>2) 对父类方法进行 <strong>扩展</strong></h4><ul>
-<li>如果在开发中，<strong>子类的方法实现</strong> 中 <strong>包含</strong> <strong>父类的方法实现</strong><ul>
-<li><strong>父类原本封装的方法实现</strong> 是 <strong>子类方法的一部分</strong></li>
-</ul>
-</li>
-<li>就可以使用 <strong>扩展</strong> 的方式<ol>
-<li><strong>在子类中</strong> <strong>重写</strong> 父类的方法</li>
-<li>在需要的位置使用 <code>super().父类方法</code> 来调用父类方法的执行</li>
-<li>代码其他的位置针对子类的需求，编写 <strong>子类特有的代码实现</strong></li>
-</ol>
-</li>
-</ul>
-<h5 id="关于-super"><a href="#关于-super" class="headerlink" title="关于 super"></a>关于 <code>super</code></h5><ul>
-<li>在 <code>Python</code> 中 <code>super</code> 是一个 <strong>特殊的类</strong></li>
-<li><code>super()</code> 就是使用 <code>super</code> 类创建出来的对象</li>
-<li><strong>最常</strong> 使用的场景就是在 <strong>重写父类方法时</strong>，调用 <strong>在父类中封装的方法实现</strong></li>
-</ul>
-<h5 id="调用父类方法的另外一种方式（知道）"><a href="#调用父类方法的另外一种方式（知道）" class="headerlink" title="调用父类方法的另外一种方式（知道）"></a>调用父类方法的另外一种方式（知道）</h5><blockquote>
-<p>在 <code>Python 2.x</code> 时，如果需要调用父类的方法，还可以使用以下方式：</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">父类名.方法(self)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这种方式，目前在 <code>Python 3.x</code> 还支持这种方式</li>
-<li>这种方法 <strong>不推荐使用</strong>，因为一旦 <strong>父类发生变化</strong>，方法调用位置的 <strong>类名</strong> 同样需要修改</li>
-</ul>
-<p><strong>提示</strong></p>
-<ul>
-<li>在开发时，<code>父类名</code> 和 <code>super()</code> 两种方式不要混用</li>
-<li>如果使用 <strong>当前子类名</strong> 调用方法，会形成递归调用，<strong>出现死循环</strong></li>
-</ul>
-<h3 id="1-3-父类的-私有属性-和-私有方法"><a href="#1-3-父类的-私有属性-和-私有方法" class="headerlink" title="1.3 父类的 私有属性 和 私有方法"></a>1.3 父类的 私有属性 和 私有方法</h3><ol>
-<li><strong>子类对象</strong> <strong>不能</strong> 在自己的方法内部，<strong>直接</strong> 访问 父类的 <strong>私有属性</strong> 或 <strong>私有方法</strong></li>
-<li><strong>子类对象</strong> 可以通过 <strong>父类</strong> 的 <strong>公有方法</strong> <strong>间接</strong> 访问到 <strong>私有属性</strong> 或 <strong>私有方法</strong></li>
-</ol>
-<blockquote>
-<ul>
-<li><strong>私有属性、方法</strong> 是对象的隐私，不对外公开，<strong>外界</strong> 以及 <strong>子类</strong> 都不能直接访问</li>
-<li><strong>私有属性、方法</strong> 通常用于做一些内部的事情</li>
-</ul>
-</blockquote>
-<p><strong>示例</strong></p>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/013_%E7%88%B6%E7%B1%BB%E7%9A%84%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95.png" alt></p>
-<ul>
-<li><code>B</code> 的对象不能直接访问 <code>__num2</code> 属性</li>
-<li><code>B</code> 的对象不能在 <code>demo</code> 方法内访问 <code>__num2</code> 属性</li>
-<li><code>B</code> 的对象可以在 <code>demo</code> 方法内，调用父类的 <code>test</code> 方法</li>
-<li>父类的 <code>test</code> 方法内部，能够访问 <code>__num2</code> 属性和 <code>__test</code> 方法</li>
-</ul>
-<h2 id="02-多继承"><a href="#02-多继承" class="headerlink" title="02. 多继承"></a>02. 多继承</h2><p><strong>概念</strong></p>
-<ul>
-<li><strong>子类</strong> 可以拥有 <strong>多个父类</strong>，并且具有 <strong>所有父类</strong> 的 <strong>属性</strong> 和 <strong>方法</strong></li>
-<li>例如：<strong>孩子</strong> 会继承自己 <strong>父亲</strong> 和 <strong>母亲</strong> 的 <strong>特性</strong></li>
-</ul>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/014_%E5%A4%9A%E7%BB%A7%E6%89%BF.png" alt></p>
-<p><strong>语法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 子类名<span class="params">(父类名<span class="number">1</span>, 父类名<span class="number">2.</span>..)</span></span></span><br><span class="line"><span class="class">    <span class="title">pass</span></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-1-多继承的使用注意事项"><a href="#2-1-多继承的使用注意事项" class="headerlink" title="2.1 多继承的使用注意事项"></a>2.1 多继承的使用注意事项</h3><p><strong>问题的提出</strong></p>
-<ul>
-<li>如果 <strong>不同的父类</strong> 中存在 <strong>同名的方法</strong>，<strong>子类对象</strong> 在调用方法时，会调用 <strong>哪一个父类中</strong>的方法呢？</li>
-</ul>
-<blockquote>
-<p>提示：<strong>开发时，应该尽量避免这种容易产生混淆的情况！</strong> —— 如果 <strong>父类之间</strong> 存在 <strong>同名的属性或者方法</strong>，应该 <strong>尽量避免</strong> 使用多继承</p>
-</blockquote>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/015_%E5%A4%9A%E7%BB%A7%E6%89%BFII.png" alt></p>
-<h4 id="Python-中的-MRO-——-方法搜索顺序（知道）"><a href="#Python-中的-MRO-——-方法搜索顺序（知道）" class="headerlink" title="Python 中的 MRO —— 方法搜索顺序（知道）"></a>Python 中的 MRO —— 方法搜索顺序（知道）</h4><ul>
-<li><code>Python</code> 中针对 <strong>类</strong> 提供了一个 <strong>内置属性</strong> <code>__mro__</code> 可以查看 <strong>方法</strong> 搜索顺序</li>
-<li>MRO 是 <code>method resolution order</code>，主要用于 <strong>在多继承时判断 方法、属性 的调用 路径</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(C.__mro__)</span><br></pre></td></tr></table></figure>
-
-<p><strong>输出结果</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.A&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;object&#39;&gt;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在搜索方法时，是按照 <code>__mro__</code> 的输出结果 <strong>从左至右</strong> 的顺序查找的</li>
-<li>如果在当前类中 <strong>找到方法，就直接执行，不再搜索</strong></li>
-<li>如果 <strong>没有找到，就查找下一个类</strong> 中是否有对应的方法，<strong>如果找到，就直接执行，不再搜索</strong></li>
-<li>如果找到最后一个类，还没有找到方法，程序报错</li>
-</ul>
-<h3 id="2-2-新式类与旧式（经典）类"><a href="#2-2-新式类与旧式（经典）类" class="headerlink" title="2.2 新式类与旧式（经典）类"></a>2.2 新式类与旧式（经典）类</h3><blockquote>
-<p><code>object</code> 是 <code>Python</code> 为所有对象提供的 <strong>基类</strong>，提供有一些内置的属性和方法，可以使用 <code>dir</code> 函数查看</p>
-</blockquote>
-<ul>
-<li><p><strong>新式类</strong>：以 <code>object</code> 为基类的类，<strong>推荐使用</strong></p>
-</li>
-<li><p><strong>经典类</strong>：不以 <code>object</code> 为基类的类，<strong>不推荐使用</strong></p>
-</li>
-<li><p>在 <code>Python 3.x</code> 中定义类时，如果没有指定父类，会 <strong>默认使用</strong> <code>object</code> 作为该类的 <strong>基类</strong> —— <code>Python 3.x</code> 中定义的类都是 <strong>新式类</strong></p>
-</li>
-<li><p>在 <code>Python 2.x</code> 中定义类时，如果没有指定父类，则不会以 <code>object</code> 作为 <strong>基类</strong></p>
-</li>
-</ul>
-<blockquote>
-<p><strong>新式类</strong> 和 <strong>经典类</strong> 在多继承时 —— <strong>会影响到方法的搜索顺序</strong></p>
-</blockquote>
-<p>为了保证编写的代码能够同时在 <code>Python 2.x</code> 和 <code>Python 3.x</code> 运行！<br>今后在定义类时，<strong>如果没有父类，建议统一继承自 <code>object</code></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 类名<span class="params">(object)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -3377,7 +3281,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

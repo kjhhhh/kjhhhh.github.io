@@ -155,6 +155,778 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day19%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day19%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记19</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:10:51" itemprop="dateModified" datetime="2020-12-23T23:10:51+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、List接口<br>2、Set接口<br>3、判断集合唯一性原理</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01List接口的特点<br>  A:List接口的特点:<br>   a:它是一个元素存取有序的集合。<br>        例如，存元素的顺序是11、22、33。那么集合中，元素的存储就是按照11、22、33的顺序完成的）。<br>   b:它是一个带有索引的集合，通过索引就可以精确的操作集合中的元素（与数组的索引是一个道理）。<br>   <br>     c:集合中可以有重复的元素，通过元素的equals方法，来比较是否为重复的元素。</p>
+<pre><code>d:List接口的常用子类有：</code></pre><p>      ArrayList集合<br>      LinkedList集合</p>
+<p>###02List接口的特有方法<br>    A:List接口的特有方法(带索引的方法)<br>   a:增加元素方法<br>   add(Object e)：向集合末尾处，添加指定的元素<br>   add(int index, Object e)   向集合指定索引处，添加指定的元素，原有元素依次后移</p>
+<pre><code>/*
+  *  add(int index, E)
+  *  将元素插入到列表的指定索引上
+  *  带有索引的操作,防止越界问题
+  *  java.lang.IndexOutOfBoundsException
+  *     ArrayIndexOutOfBoundsException
+  *     StringIndexOutOfBoundsException
+  */
+ public static void function(){
+   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+   list.add(&quot;abc1&quot;);
+   list.add(&quot;abc2&quot;);
+   list.add(&quot;abc3&quot;);
+   list.add(&quot;abc4&quot;);
+   System.out.println(list);
+
+   list.add(1, &quot;itcast&quot;);
+   System.out.println(list);
+ }</code></pre><p>   b:删除元素删除<br>   remove(Object e)：将指定元素对象，从集合中删除，返回值为被删除的元素<br>   remove(int index)：将指定索引处的元素，从集合中删除，返回值为被删除的元素<br>     /*<br>       *  E remove(int index)<br>       *  移除指定索引上的元素<br>       *  返回被删除之前的元素<br>       */<br>      public static void function_1(){<br>        List<Double> list = new ArrayList<Double>();<br>        list.add(1.1);<br>        list.add(1.2);<br>        list.add(1.3);<br>        list.add(1.4);</Double></Double></p>
+<pre><code>  Double d = list.remove(0);
+  System.out.println(d);
+  System.out.println(list);
+}</code></pre><p>   c:替换元素方法<br>   set(int index, Object e)：将指定索引处的元素，替换成指定的元素，返回值为替换前的元素<br>      /*<br>       *  E set(int index, E)<br>       *  修改指定索引上的元素<br>       *  返回被修改之前的元素<br>       */<br>      public static void function_2(){<br>        List<Integer> list = new ArrayList<Integer>();<br>        list.add(1);<br>        list.add(2);<br>        list.add(3);<br>        list.add(4);</Integer></Integer></p>
+<pre><code>    Integer i = list.set(0, 5);
+    System.out.println(i);
+    System.out.println(list);
+  }
+d:查询元素方法</code></pre><p>   get(int index)：获取指定索引处的元素，并返回该元素</p>
+<p>###03迭代器的并发修改异常<br>    A:迭代器的并发修改异常</p>
+<pre><code>/*
+ *  迭代器的并发修改异常 java.util.ConcurrentModificationException
+ *  就是在遍历的过程中,使用了集合方法修改了集合的长度,不允许的
+ */
+public class ListDemo1 {
+ public static void main(String[] args) {
+   List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+   list.add(&quot;abc1&quot;);
+   list.add(&quot;abc2&quot;);
+   list.add(&quot;abc3&quot;);
+   list.add(&quot;abc4&quot;);
+
+   //对集合使用迭代器进行获取,获取时候判断集合中是否存在 &quot;abc3&quot;对象
+   //如果有,添加一个元素 &quot;ABC3&quot;
+   Iterator&lt;String&gt; it = list.iterator();
+   while(it.hasNext()){
+     String s = it.next();
+     //对获取出的元素s,进行判断,是不是有&quot;abc3&quot;
+     if(s.equals(&quot;abc3&quot;)){
+       list.add(&quot;ABC3&quot;);
+     }
+     System.out.println(s);
+   }
+ }
+}
+
+运行上述代码发生了错误 java.util.ConcurrentModificationException这是什么原因呢？
+  在迭代过程中，使用了集合的方法对元素进行操作。
+  导致迭代器并不知道集合中的变化，容易引发数据的不确定性。
+
+并发修改异常解决办法：
+   在迭代时，不要使用集合的方法操作元素。
+   或者通过ListIterator迭代器操作元素是可以的，ListIterator的出现，解决了使用Iterator迭代过程中可能会发生的错误情况。</code></pre><p>###04数据的存储结构<br>    A:数据的存储结构<br>     a:栈结构:后进先出/先进后出(手枪弹夹) FILO (first in last out)<br>     b:队列结构:先进先出/后进后出(银行排队) FIFO(first in first out)<br>     c:数组结构:<br>               查询快:通过索引快速找到元素<br>               增删慢:每次增删都需要开辟新的数组,将老数组中的元素拷贝到新数组中<br>                      开辟新数组耗费资源<br>     d:链表结构<br>               查询慢:每次都需要从链头或者链尾找起<br>               增删快:只需要修改元素记录的下个元素的地址值即可不需要移动大量元素</p>
+<p>=======================第二节课开始=============================================<br>###05ArrayList集合的自身特点<br>   A:ArrayList集合的自身特点<br>     底层采用的是数组结构<br>     ArrayList al=new ArrayList();//创建了一个长度为0的Object类型数组<br>     al.add(“abc”);//底层会创建一个长度为10的Object数组 Object[] obj=new Object[10]<br>                   //obj[0]=”abc”<br>                  //如果添加的元素的超过10个,底层会开辟一个1.5*10的长度的新数组<br>                  //把原数组中的元素拷贝到新数组,再把最后一个元素添加到新数组中<br>   原数组:<br>     a b c d e f g h k l<br>   添加m:<br>     a b c d e f g h k l m null null null null</p>
+<p>###06LinkedList集合的自身特点<br>  A:LinkedList集合的自身特点<br>     底层采用链表结构,每次查询都要从链头或链尾找起,查询相对数组较慢<br>     但是删除直接修改元素记录的地址值即可,不要大量移动元素</p>
+<pre><code>LinkedList的索引决定是从链头开始找还是从链尾开始找
+如果该元素小于元素长度一半,从链头开始找起,如果大于元素长度的一半,则从链尾找起</code></pre><p>###07LinkedList特有方法<br>   <em>A:LinkedList特有方法:获取,添加,删除<br>       /</em><br>     *  LinkedList 链表集合的特有功能<br>     *    自身特点: 链表底层实现,查询慢,增删快<br>     *<br>     *  子类的特有功能,不能多态调用<br>     */<br>    public class LinkedListDemo {<br>      public static void main(String[] args) {<br>        function_3();<br>      }</p>
+<pre><code>/*
+ *  E removeFirst() 移除并返回链表的开头
+ *  E removeLast() 移除并返回链表的结尾
+ */
+public static void function_3(){
+  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+  link.add(&quot;1&quot;);
+  link.add(&quot;2&quot;);
+  link.add(&quot;3&quot;);
+  link.add(&quot;4&quot;);
+
+  String first = link.removeFirst();
+  String last = link.removeLast();
+  System.out.println(first);
+  System.out.println(last);
+
+  System.out.println(link);
+}
+
+/*
+ * E getFirst() 获取链表的开头
+ * E getLast() 获取链表的结尾
+ */
+public static void function_2(){
+  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+  link.add(&quot;1&quot;);
+  link.add(&quot;2&quot;);
+  link.add(&quot;3&quot;);
+  link.add(&quot;4&quot;);
+
+  if(!link.isEmpty()){
+    String first = link.getFirst();
+    String last = link.getLast();
+    System.out.println(first);
+    System.out.println(last);
+  }
+}
+
+public static void function_1(){
+  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+  link.addLast(&quot;a&quot;);
+  link.addLast(&quot;b&quot;);
+  link.addLast(&quot;c&quot;);
+  link.addLast(&quot;d&quot;);
+
+  link.addFirst(&quot;1&quot;);
+  link.addFirst(&quot;2&quot;);
+  link.addFirst(&quot;3&quot;);
+  System.out.println(link);
+}
+
+/*
+ *  addFirst(E) 添加到链表的开头
+ *  addLast(E) 添加到链表的结尾
+ */
+public static void function(){
+  LinkedList&lt;String&gt; link = new LinkedList&lt;String&gt;();
+
+  link.addLast(&quot;heima&quot;);
+
+  link.add(&quot;abc&quot;);
+  link.add(&quot;bcd&quot;);
+
+  link.addFirst(&quot;itcast&quot;);
+  System.out.println(link);</code></pre><p>​<br>      }<br>    }</p>
+<p>###08Vector类的特点<br>   *A:Vector类的特点<br>       Vector集合数据存储的结构是数组结构，为JDK中最早提供的集合,它是线程同步的<br>       Vector中提供了一个独特的取出方式，就是枚举Enumeration，它其实就是早期的迭代器。<br>       此接口Enumeration的功能与 Iterator 接口的功能是类似的。<br>       Vector集合已被ArrayList替代。枚举Enumeration已被迭代器Iterator替代。</p>
+<p>=======================第三节课开始=============================================<br>###09Set接口的特点<br>   A:Set接口的特点<br>     a:它是个不包含重复元素的集合。<br>     b:Set集合取出元素的方式可以采用：迭代器、增强for。<br>     c:Set集合有多个子类，这里我们介绍其中的HashSet、LinkedHashSet这两个集合。</p>
+<p>###10Set集合存储和迭代<br>   A:Set集合存储和迭代<br>      /*<br>       *  Set接口,特点不重复元素,没索引<br>       *<br>       *  Set接口的实现类,HashSet (哈希表)<br>       *  特点: 无序集合,存储和取出的顺序不同,没有索引,不存储重复元素<br>       *  代码的编写上,和ArrayList完全一致<br>       */<br>      public class HashSetDemo {<br>        public static void main(String[] args) {<br>          Set<String> set = new HashSet<String>();<br>          set.add(“cn”);<br>          set.add(“heima”);<br>          set.add(“java”);<br>          set.add(“java”);<br>          set.add(“itcast”);</String></String></p>
+<pre><code>    Iterator&lt;String&gt; it = set.iterator();
+    while(it.hasNext()){
+      System.out.println(it.next());
+    }
+    System.out.println(&quot;==============&quot;);
+
+    for(String s : set){
+      System.out.println(s);
+    }
+  }
+}</code></pre><p>###11哈希表的数据结构<br>    A:哈希表的数据结构:(参见图解)</p>
+<pre><code>加载因子:表中填入的记录数/哈希表的长度
+例如:
+加载因子是0.75 代表:
+  数组中的16个位置,其中存入16*0.75=12个元素
+
+如果在存入第十三个(&gt;12)元素,导致存储链子过长,会降低哈希表的性能,那么此时会扩充哈希表(在哈希),底层会开辟一个长度为原长度2倍的数组,把老元素拷贝到新数组中,再把新元素添加数组中
+
+当存入元素数量&gt;哈希表长度*加载因子,就要扩容,因此加载因子决定扩容时机</code></pre><p>###12字符串对象的哈希值<br>      A:字符串对象的哈希值<br>      /*<br>       *  对象的哈希值,普通的十进制整数<br>       *  父类Object,方法 public int hashCode() 计算结果int整数<br>       */<br>      public class HashDemo {<br>        public static void main(String[] args) {<br>          Person p = new Person();<br>          int i = p.hashCode();<br>          System.out.println(i);</p>
+<pre><code>    String s1 = new String(&quot;abc&quot;);
+    String s2 = new String(&quot;abc&quot;);
+    System.out.println(s1.hashCode());
+    System.out.println(s2.hashCode());
+
+    /*System.out.println(&quot;重地&quot;.hashCode());
+    System.out.println(&quot;通话&quot;.hashCode());*/
+  }
+}
+
+//String类重写hashCode()方法
+//字符串都会存储在底层的value数组中{&apos;a&apos;,&apos;b&apos;,&apos;c&apos;}
+public int hashCode() {
+        int h = hash;//hash初值为0
+        if (h == 0 &amp;&amp; value.length &gt; 0) {
+            char val[] = value;
+
+            for (int i = 0; i &lt; value.length; i++) {
+                h = 31 * h + val[i];
+            }
+            hash = h;
+        }
+        return h;
+    }</code></pre><p>​<br>###13哈希表的存储过程<br>   A:哈希表的存储过程<br>     public static void main(String[] args) {<br>        HashSet<String> set = new HashSet<String>();<br>        set.add(new String(“abc”));<br>        set.add(new String(“abc”));<br>        set.add(new String(“bbc”));<br>        set.add(new String(“bbc”));<br>        System.out.println(set);<br>    }</String></String></p>
+<p>  存取原理:<br>    每存入一个新的元素都要走以下三步:</p>
+<pre><code>1.首先调用本类的hashCode()方法算出哈希值
+
+2.在容器中找是否与新元素哈希值相同的老元素,
+  如果没有直接存入
+  如果有转到第三步
+
+3.新元素会与该索引位置下的老元素利用equals方法一一对比
+  一旦新元素.equals(老元素)返回true,停止对比,说明重复,不再存入
+  如果与该索引位置下的老元素都通过equals方法对比返回false,说明没有重复,存入</code></pre><p>=======================第四节课开始=============================================<br>###14哈希表的存储自定义对象<br>   A:哈希表的存储自定义对象<br>     /*<br>      *  HashSet集合的自身特点:<br>      *    底层数据结构,哈希表<br>      *    存储,取出都比较快<br>      *    线程不安全,运行速度快<br>      */<br>     public class HashSetDemo1 {<br>      public static void main(String[] args) {</p>
+<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
+    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
+    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
+    setPerson.add(new Person(&quot;a&quot;,11));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;c&quot;,25));
+    setPerson.add(new Person(&quot;d&quot;,19));
+    setPerson.add(new Person(&quot;e&quot;,17));//每个对象的地址值都不同,调用Obejct类的hashCode方法返回不同哈希值,直接存入
+    System.out.println(setPerson);
+  }
+ }
+
+public class Person {
+  private String name;
+  private int age;
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+  public int getAge() {
+    return age;
+  }
+  public void setAge(int age) {
+    this.age = age;
+  }
+  public Person(String name, int age) {
+    super();
+    this.name = name;
+    this.age = age;
+  }
+  public Person(){}
+
+  public String toString(){
+    return name+&quot;..&quot;+age;
+  }
+
+
+
+ }</code></pre><p>​      </p>
+<p>###15自定义对象重写hashCode和equals<br>     A:自定义对象重写hashCode和equals<br>      /*<br>          *  HashSet集合的自身特点:<br>          *    底层数据结构,哈希表<br>          *    存储,取出都比较快<br>          *    线程不安全,运行速度快<br>          */<br>         public class HashSetDemo1 {<br>          public static void main(String[] args) {</p>
+<pre><code>    //将Person对象中的姓名,年龄,相同数据,看作同一个对象
+    //判断对象是否重复,依赖对象自己的方法 hashCode,equals
+    HashSet&lt;Person&gt; setPerson = new HashSet&lt;Person&gt;();
+    setPerson.add(new Person(&quot;a&quot;,11));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;b&quot;,10));
+    setPerson.add(new Person(&quot;c&quot;,25));
+    setPerson.add(new Person(&quot;d&quot;,19));
+    setPerson.add(new Person(&quot;e&quot;,17));
+    System.out.println(setPerson);
+  }
+ }
+
+public class Person {
+  private String name;
+  private int age;
+
+  /*
+   *  没有做重写父类,每次运行结果都是不同整数
+   *  如果子类重写父类的方法,哈希值,自定义的
+   *  存储到HashSet集合的依据
+   *   
+   *  尽可能让不同的属性值产生不同的哈希值,这样就不用再调用equals方法去比较属性
+   *
+   */
+  public int hashCode(){
+    return name.hashCode()+age*55;
+  }
+  //方法equals重写父类,保证和父类相同
+  //public boolean equals(Object obj){}
+  public boolean equals(Object obj){
+    if(this == obj)
+      return true;
+    if(obj == null)
+      return false;
+    if(obj instanceof Person){
+      Person p = (Person)obj;
+      return name.equals(p.name) &amp;&amp; age==p.age;
+    }
+    return false;
+  }
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+  public int getAge() {
+    return age;
+  }
+  public void setAge(int age) {
+    this.age = age;
+  }
+  public Person(String name, int age) {
+    super();
+    this.name = name;
+    this.age = age;
+  }
+  public Person(){}
+
+  public String toString(){
+    return name+&quot;..&quot;+age;
+  }
+
+
+
+ }</code></pre><p>###16LinkedHashSet集合<br>  A:LinkedHashSet集合<br>    /*<br>     *   LinkedHashSet 基于链表的哈希表实现<br>     *   继承自HashSet<br>     *<br>     *   LinkedHashSet 自身特性,具有顺序,存储和取出的顺序相同的<br>     *   线程不安全的集合,运行速度块<br>     */<br>    public class LinkedHashSetDemo {</p>
+<pre><code>  public static void main(String[] args) {
+    LinkedHashSet&lt;Integer&gt; link = new LinkedHashSet&lt;Integer&gt;();
+    link.add(123);
+    link.add(44);
+    link.add(33);
+    link.add(33);
+    link.add(66);
+    link.add(11);
+    System.out.println(link);
+  }
+}</code></pre><p>###17ArrayList,HashSet判断对象是否重复的原因<br>  A:ArrayList,HashSet判断对象是否重复的原因<br>     a:ArrayList的contains方法原理:底层依赖于equals方法<br>       ArrayList的contains方法会使用调用方法时，<br>         传入的元素的equals方法依次与集合中的旧元素所比较，<br>         从而根据返回的布尔值判断是否有重复元素。<br>         此时，当ArrayList存放自定义类型时，由于自定义类型在未重写equals方法前，<br>         判断是否重复的依据是地址值，所以如果想根据内容判断是否为重复元素，需要重写元素的equals方法。</p>
+<pre><code>b:HashSet的add()方法和contains方法()底层都依赖 hashCode()方法与equals方法()
+
+ Set集合不能存放重复元素，其添加方法在添加时会判断是否有重复元素，有重复不添加，没重复则添加。
+ HashSet集合由于是无序的，其判断唯一的依据是元素类型的hashCode与equals方法的返回结果。规则如下：
+ 先判断新元素与集合内已经有的旧元素的HashCode值
+  如果不同，说明是不同元素，添加到集合。
+  如果相同，再判断equals比较结果。返回true则相同元素；返回false则不同元素，添加到集合。
+ 所以，使用HashSet存储自定义类型，如果没有重写该类的hashCode与equals方法，则判断重复时，使用的是地址值，如果想通过内容比较元素是否相同，需要重写该元素类的hashcode与equals方法。</code></pre><p>###18hashCode和equals方法的面试题<br> A:hashCode和equals的面试题<br> /*</p>
+<ul>
+<li><p>两个对象  Person  p1 p2</p>
+</li>
+<li><p>问题: 如果两个对象的哈希值相同 p1.hashCode()==p2.hashCode()</p>
+</li>
+<li><p>两个对象的equals一定返回true吗  p1.equals(p2) 一定是true吗</p>
+</li>
+<li><p>正确答案:不一定</p>
+</li>
+<li></li>
+<li><p>如果两个对象的equals方法返回true,p1.equals(p2)==true</p>
+</li>
+<li><p>两个对象的哈希值一定相同吗</p>
+</li>
+<li><p>正确答案: 一定<br>*/<br>在 Java 应用程序执行期间，<br>1.如果根据 equals(Object) 方法，两个对象是相等的，那么对这两个对象中的每个对象调用 hashCode 方法都必须生成相同的整数结果。<br>2.如果根据 equals(java.lang.Object) 方法，两个对象不相等，那么对这两个对象中的任一对象上调用 hashCode 方法不 要求一定生成不同的整数结果。 </p>
+<p>两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值相同</p>
+<p>两个对象调用hashCode()方法哈希值不同=====&gt;equals返回true</p>
+</li>
+</ul>
+<pre><code>两个对象不同(对象属性值不同) equals返回false=====&gt;两个对象调用hashCode()方法哈希值不同
+
+两个对象调用hashCode()方法哈希值相同=====&gt;equals返回true</code></pre><p>   所以说两个对象哈希值无论相同还是不同,equals都可能返回true</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day18%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day18%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记18</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:10:24" itemprop="dateModified" datetime="2020-12-23T23:10:24+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、集合<br>2、Iterator迭代器<br>3、增强for循环<br>4、泛型</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01集合使用的回顾<br>     *A:集合使用的回顾<br>       *a.ArrayList集合存储5个int类型元素<br>          public static void main(String[] args) {<br>               ArrayList<Integer> list = new ArrayList<Integer>();<br>            list.add(111);<br>            list.add(222);<br>            list.add(333);<br>            list.add(444);<br>            list.add(555);<br>            for(int i=0; i&lt;list.size(); i++){<br>                   System.out.println(list.get(i));<br>           }<br>          }</Integer></Integer></p>
+<pre><code>*b.ArrayList集合存储5个Person类型元素
+   public static void main(String[] args) {
+    ArrayList&lt;Person&gt; list = new ArrayList&lt;Person&gt;();
+    list.add(new Person(“小强”));
+    list.add(new Person(“老王”));
+    list.add(new Person(“小虎”));
+    list.add(new Person(“小泽”));
+    list.add(new Person(“小红”));
+    for(int i=0; i&lt;list.size(); i++){
+      Person p = list.get(i);
+            System.out.println(p);
+     }
+   }</code></pre><p>###02集合的学习目标<br>       集合，集合是java中提供的一种容器，可以用来存储多个数据。<br>     在前面的学习中，我们知道数据多了，可以使用数组存放或者使用ArrayList集合进行存放数据。那么，集合和数组既然都是容器，它们有啥区别呢？<br>       数组的长度是固定的。集合的长度是可变的。<br>       集合中存储的元素必须是引用类型数据</p>
+<p>###03集合继承关系图<br>    A:集合继承关系图<br>     a:ArrayList的继承关系:<br>     查看ArrayList类发现它继承了抽象类AbstractList同时实现接口List，而List接口又继承了Collection接口。Collection接口为最顶层集合接口了。<br>     源代码：<br>      interface List extends Collection {<br>      }<br>      public class ArrayList extends AbstractList implements List{<br>      }</p>
+<pre><code>b:集合继承体系
+ 这说明我们在使用ArrayList类时，该类已经把所有抽象方法进行了重写。那么，实现Collection接口的所有子类都会进行方法重写。
+   Collecton接口常用的子接口有：List接口、Set接口
+   List接口常用的子类有：ArrayList类、LinkedList类
+   Set接口常用的子类有：HashSet类、LinkedHashSet类
+
+                          Collection 接口     
+                               |
+ ----------------------------------------------------------------
+ |                                                              |
+List接口                                                       Set接口
+ |                                                              |</code></pre><hr>
+<p> |              |                                             |            |<br>ArrayList类    LinkedList类                                 HashSet类     LinkedHashSet类</p>
+<p>###04集合Collection的方法<br>    A:集合Collection的方法<br>     /*<br>      *  Collection接口中的方法<br>      *  是集合中所有实现类必须拥有的方法<br>      *  使用Collection接口的实现类,程序的演示<br>      *  ArrayList implements List<br>      *  List extends Collection<br>      *  方法的执行,都是实现的重写<br>      */<br>     public class CollectionDemo {<br>      public static void main(String[] args) {<br>        function_2();<br>      }</p>
+<p>​<br>      /*  Collection接口方法<br>       *  Object[] toArray() 集合中的元素,转成一个数组中的元素, 集合转成数组<br>       *  返回是一个存储对象的数组, 数组存储的数据类型是Object<br>       */<br>      private static void function_2() {<br>        Collection<String> coll = new ArrayList<String>();<br>        coll.add(“abc”);<br>        coll.add(“itcast”);<br>        coll.add(“itheima”);<br>        coll.add(“money”);<br>        coll.add(“123”);</String></String></p>
+<pre><code>   Object[] objs = coll.toArray();
+   for(int i = 0 ; i &lt; objs.length ; i++){
+     System.out.println(objs[i]);
+   }
+ }
+ /*
+  * 学习Java中三种长度表现形式
+  *   数组.length 属性  返回值 int
+  *   字符串.length() 方法,返回值int
+  *   集合.size()方法, 返回值int
+  */
+
+ /*
+  * Collection接口方法
+  * boolean contains(Object o) 判断对象是否存在于集合中,对象存在返回true
+  * 方法参数是Object类型
+  */
+ private static void function_1() {
+   Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
+   coll.add(&quot;abc&quot;);
+   coll.add(&quot;itcast&quot;);
+   coll.add(&quot;itheima&quot;);
+   coll.add(&quot;money&quot;);
+   coll.add(&quot;123&quot;);
+
+   boolean b = coll.contains(&quot;itcast&quot;);
+   System.out.println(b);
+ }
+
+
+ /*
+  * Collection接口的方法
+  * void clear() 清空集合中的所有元素
+  * 集合容器本身依然存在
+  */
+ public static void function(){
+   //接口多态的方式调用
+   Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
+   coll.add(&quot;abc&quot;);
+   coll.add(&quot;bcd&quot;);
+   System.out.println(coll);
+
+   coll.clear();
+
+   System.out.println(coll);
+
+ }
+}</code></pre><p>###05集合Collection的remove方法<br>   A:05集合Collection的remove方法<br>    /*<br>     * Collection接口方法<br>     * boolean remove(Object o)移除集合中指定的元素<br>     */<br>    private static void function_3(){<br>      Collection<String> coll = new ArrayList<String>();<br>      coll.add(“abc”);<br>      coll.add(“money”);<br>      coll.add(“itcast”);<br>      coll.add(“itheima”);<br>      coll.add(“money”);<br>      coll.add(“123”);<br>      System.out.println(coll);</String></String></p>
+<pre><code>  boolean b = coll.remove(&quot;money&quot;);
+  System.out.println(b);
+  System.out.println(coll);
+}</code></pre><p>=======================第二节课开始=============================================<br>###06迭代器的概述<br>  A:迭代器概述:<br>   a:java中提供了很多个集合，它们在存储元素时，采用的存储方式不同。<br>    我们要取出这些集合中的元素，可通过一种通用的获取方式来完成。</p>
+<p>   b:Collection集合元素的通用获取方式：在取元素之前先要判断集合中有没有元素，<br>  如果有，就把这个元素取出来，继续在判断，如果还有就再取出出来。一直把集合中的所有元素全部取出。这种取出方式专业术语称为迭代。</p>
+<p>   c:每种集合的底层的数据结构不同,例如ArrayList是数组,LinkedList底层是链表,但是无论使用那种集合,我们都会有判断是否有元素<br>     以及取出里面的元素的动作,那么Java为我们提供一个迭代器定义了统一的判断元素和取元素的方法 </p>
+<p>###07迭代器的实现原理<br>   <em>A:迭代器的实现原理<br>      /</em><br>     *  集合中的迭代器:<br>     *    获取集合中元素方式<br>     *  接口 Iterator : 两个抽象方法<br>     *     boolean hasNext() 判断集合中还有没有可以被取出的元素,如果有返回true<br>     *     next() 取出集合中的下一个元素<br>     *<br>     *  Iterator接口,找实现类.<br>     *    Collection接口定义方法<br>     *       Iterator  iterator()<br>     *    ArrayList 重写方法 iterator(),返回了Iterator接口的实现类的对象<br>     *    使用ArrayList集合的对象<br>     *     Iterator it =array.iterator(),运行结果就是Iterator接口的实现类的对象<br>     *     it是接口的实现类对象,调用方法 hasNext 和 next 集合元素迭代<br>     */</p>
+<p>###08迭代器的代码实现<br>   *A:迭代器的代码实现<br>      public class IteratorDemo {<br>        public static void main(String[] args) {<br>          Collection<String> coll = new ArrayList<String>();<br>          coll.add(“abc1”);<br>          coll.add(“abc2”);<br>          coll.add(“abc3”);<br>          coll.add(“abc4”);<br>          //迭代器,对集合ArrayList中的元素进行取出</String></String></p>
+<pre><code>//调用集合的方法iterator()获取出,Iterator接口的实现类的对象
+Iterator&lt;String&gt; it = coll.iterator();
+//接口实现类对象,调用方法hasNext()判断集合中是否有元素
+//boolean b = it.hasNext();
+//System.out.println(b);
+//接口的实现类对象,调用方法next()取出集合中的元素
+//String s = it.next();
+//System.out.println(s);
+
+//迭代是反复内容,使用循环实现,循环的条件,集合中没元素, hasNext()返回了false
+while(it.hasNext()){
+  String s = it.next();
+  System.out.println(s);
+}</code></pre><p>​<br>​<br>        }<br>      }<br>###09迭代器的执行过程<br>   A:迭代器的执行过程<br>     a:迭代器的原理:<br>       while(it.hasNext()) {<br>            System.out.println(it.next());<br>       }</p>
+<pre><code>  //cursor记录的索引值不等于集合的长度返回true,否则返回false
+    public boolean hasNext() {       
+      return cursor != size; //cursor初值为0
+
+    }
+
+   //next()方法作用:
+   //①返回cursor指向的当前元素 
+   //②cursor++
+   public Object next() {            
+            int i = cursor; 
+            cursor = i + 1;  
+            return  elementData[lastRet = i]; 
+
+        }
+b:for循环迭代写法:
+   for (Iterator&lt;String&gt; it2 = coll.iterator(); it2.hasNext();  ) {
+    System.out.println(it2.next());
+  } </code></pre><p>###10集合迭代中的转型<br>   A:集合迭代中的转型<br>     a:在使用集合时，我们需要注意以下几点：<br>       集合中存储其实都是对象的地址。<br>       集合中可以存储基本数值吗？jdk1.5版本以后可以存储了。<br>         因为出现了基本类型包装类，它提供了自动装箱操作（基本类型对象），这样，集合中的元素就是基本数值的包装类对象。</p>
+<pre><code>b:存储时提升了Object。取出时要使用元素的特有内容，必须向下转型。
+ Collection coll = new ArrayList();
+ coll.add(&quot;abc&quot;);
+ coll.add(&quot;aabbcc&quot;);
+ coll.add(&quot;shitcast&quot;);
+ Iterator it = coll.iterator();
+ while (it.hasNext()) {
+  //由于元素被存放进集合后全部被提升为Object类型
+ //当需要使用子类对象特有方法时，需要向下转型
+  String str = (String) it.next();
+  System.out.println(str.length());
+ }
+ 注意：如果集合中存放的是多个对象，这时进行向下转型会发生类型转换异常。</code></pre><p>​<br>    c:Iterator接口也可以使用&lt;&gt;来控制迭代元素的类型的。代码演示如下：<br>     Collection<String> coll = new ArrayList<String>();<br>     coll.add(“abc”);<br>     coll.add(“aabbcc”);<br>     coll.add(“shitcast”);<br>     Iterator<String> it = coll.iterator();<br>     while (it.hasNext()) {<br>      String str =  it.next();<br>     //当使用Iterator<String>控制元素类型后，就不需要强转了。获取到的元素直接就是String类型<br>      System.out.println(str.length());<br>     }</String></String></String></String></p>
+<p>=========================第三节课开始====================================<br>###11增强for循环遍历数组<br>   <em>A:增强for循环遍历数组<br>     a:格式:<br>     /</em><br>      *  JDK1.5新特性,增强for循环<br>      *  JDK1.5版本后,出现新的接口 java.lang.Iterable<br>      *    Collection开是继承Iterable<br>      *    Iterable作用,实现增强for循环<br>      *<br>      *    格式:<br>      *      for( 数据类型  变量名 : 数组或者集合 ){<br>      *         sop(变量);<br>      *      }<br>      */<br>     public static void function_1(){<br>        //for对于对象数组遍历的时候,能否调用对象的方法呢<br>        String[] str = {“abc”,”itcast”,”cn”};<br>        for(String s : str){<br>          System.out.println(s.length());<br>        }<br>      }</p>
+<pre><code>/*
+ *  实现for循环,遍历数组
+ *  好处: 代码少了,方便对容器遍历
+ *  弊端: 没有索引,不能操作容器里面的元素
+ */
+public static void function(){
+  int[] arr = {3,1,9,0};
+  for(int i : arr){
+    System.out.println(i+1);
+  }
+  System.out.println(arr[0]);
+}</code></pre><p>###12增强for循环遍历集合<br>      A:增强for循环遍历集合<br>        /*<br>         *  增强for循环遍历集合<br>         *  存储自定义Person类型<br>         */<br>        public static void function_2(){<br>          ArrayList<Person> array = new ArrayList<Person>();<br>          array.add(new Person(“a”,20));<br>          array.add(new Person(“b”,10));<br>          for(Person p : array){<br>            System.out.println(p);// System.out.println(p.toString());<br>          }<br>        }</Person></Person></p>
+<p>###13泛型的引入<br>   A:泛型的引入<br>    在前面学习集合时，我们都知道集合中是可以存放任意对象的，<br>    只要把对象存储集合后，那么这时他们都会被提升成Object类型。<br>    当我们在取出每一个对象，并且进行相应的操作，这时必须采用类型转换。比如下面程序：<br>    public class GenericDemo {<br>      public static void main(String[] args) {<br>        List list = new ArrayList();<br>        list.add(“abc”);<br>        list.add(“itcast”);<br>        list.add(5);//由于集合没有做任何限定，任何类型都可以给其中存放<br>                    //相当于:Object obj=new Integer(5);</p>
+<pre><code>    Iterator it = list.iterator();
+    while(it.hasNext()){
+      //需要打印每个字符串的长度,就要把迭代出来的对象转成String类型
+      String str = (String) it.next();//String str=(String)obj;
+                                      //编译时期仅检查语法错误,String是Object的儿子可以向下转型
+                                      //运行时期String str=(String)(new Integer(5))
+                                      //String与Integer没有父子关系所以转换失败
+                                      //程序在运行时发生了问题java.lang.ClassCastException
+      System.out.println(str.length());
+    }
+  }
+}</code></pre><p>​    </p>
+<p>###14泛型的定义和使用<br>  A:泛型的定义和使用<br>    /*<br>     * JDK1.5 出现新的安全机制,保证程序的安全性<br>     *   泛型: 指明了集合中存储数据的类型  &lt;数据类型&gt;<br>     */</p>
+<pre><code>public class GenericDemo {
+  public static void main(String[] args) {
+    function();
+  }
+
+  public static void function(){
+    Collection&lt;String&gt; coll = new ArrayList&lt;String&gt;();
+    coll.add(&quot;abc&quot;);
+    coll.add(&quot;rtyg&quot;);
+    coll.add(&quot;43rt5yhju&quot;);
+//    coll.add(1);
+
+    Iterator&lt;String&gt; it = coll.iterator();
+    while(it.hasNext()){
+      String s = it.next();
+      System.out.println(s.length());
+    }
+  }
+}</code></pre><p>###15Java中的伪泛型<br>     A:Java中的伪泛型：<br>       泛型只在编译时存在,编译后就被擦除,在编译之前我们就可以限制集合的类型,起到作用<br>     例如:ArrayList<String> al=new ArrayList<String>();<br>     编译后:ArrayList al=new ArrayList();</String></String></p>
+<p>================================第四节课开始======================================================<br>###16泛型类<br>  A:泛型类:<br>    a:定义格式：<br>      修饰符 class 类名&lt;代表泛型的变量&gt; {  }</p>
+<pre><code>  例如，API中的ArrayList集合：
+  class ArrayList&lt;E&gt;{ 
+       public boolean add(E e){ }
+    public E get(int index){  }
+  }
+
+b:使用格式：
+  创建对象时，确定泛型的类型
+
+  例如，ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
+  此时，变量E的值就是String类型
+  class ArrayList&lt;String&gt;{ 
+    public boolean add(String e){ }
+    public String get(int index){  }
+  }
+
+  例如，ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+  此时，变量E的值就是Integer类型
+  class ArrayList&lt;Integer&gt;{ 
+       public boolean add(Integer e){ }
+       public Integer get(int index){  }
+  }</code></pre><p>###17泛型的方法<br>  A:泛型的方法<br>    a:定义格式：修饰符 &lt;代表泛型的变量&gt; 返回值类型 方法名(参数){  }<br>    b:泛型方法的使用:<br>     1:例如，API中的ArrayList集合中的方法：<br>      public <T> T[] toArray(T[] a){  }<br>      //该方法，用来把集合元素存储到指定数据类型的数组中，返回已存储集合元素的数组</T></p>
+<pre><code>  使用格式：调用方法时，确定泛型的类型
+例如:
+      ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
+      String[] arr = new String[100];
+      String[] result = list.toArray(arr);
+   此时，变量T的值就是String类型。变量T，可以与定义集合的泛型不同
+   public &lt;String&gt; String[] toArray(String[] a){  } 
+
+
+  例如:
+      ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
+      Integer[] arr = new Integer[100];
+      Integer [] result = list.toArray(arr);
+
+  此时，变量T的值就是Integer类型。变量T，可以与定义集合的泛型不同
+  public &lt;Integer&gt; Integer[] toArray(Integer[] a){  } </code></pre><p>###18泛型的接口<br>   A:泛型的接口:<br>     /*<br>      *  带有泛型的接口<br>      *<br>      *  public interface List <E>{<br>      *    abstract boolean add(E e);<br>      *  }<br>      *<br>      *  实现类,先实现接口,不理会泛型<br>      *  public class ArrayList<E> implements List<E>{<br>      *  }<br>      *  调用者 : new ArrayList<String>() 后期创建集合对象的时候,指定数据类型<br>      *<br>      *<br>      *  实现类,实现接口的同时,也指定了数据类型<br>      *  public class XXX implements List<String>{<br>      *  }<br>      *  new XXX()<br>      */<br>     public class GenericDemo2 {</String></String></E></E></E></p>
+<pre><code>}</code></pre><p>###19泛型的好处<br>  A:泛型的好处<br>    a:将运行时期的ClassCastException，转移到了编译时期变成了编译失败。<br>    b:避免了类型强转的麻烦。<br>    演示下列代码：<br>    public class GenericDemo {<br>      public static void main(String[] args) {<br>        List<String> list = new ArrayList<String>();<br>        list.add(“abc”);<br>        list.add(“itcast”);<br>        //list.add(5);//当集合明确类型后，存放类型不一致就会编译报错<br>                     //集合已经明确具体存放的元素类型，那么在使用迭代器的时候，迭代器也同样会知道具体遍历元素类型</String></String></p>
+<pre><code>    Iterator&lt;String&gt; it = list.iterator();
+    while(it.hasNext()){
+       String str = it.next();
+       System.out.println(str.length()); //当使用Iterator&lt;String&gt;      
+                                        //控制元素类型后，就不需要强转了。获取到的元素直接就是String类型
+    }
+  }
+}</code></pre><p>###20泛型的通配符<br>   A:泛型的通配符<br>   /*<br>    *  泛型的通配符<br>    */<br>   public class GenericDemo {<br>    public static void main(String[] args) {<br>      ArrayList<String> array = new ArrayList<String>();</String></String></p>
+<pre><code>  HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
+
+  array.add(&quot;123&quot;);
+  array.add(&quot;456&quot;);
+
+  set.add(789);
+  set.add(890);
+
+  iterator(array);
+  iterator(set);
+}
+/*
+ *  定义方法,可以同时迭代2个集合
+ *  参数: 怎么实现 , 不能写ArrayList,也不能写HashSet
+ *  参数: 或者共同实现的接口
+ *  泛型的通配,匹配所有的数据类型  ?
+ */
+public static void iterator(Collection&lt;?&gt; coll){
+  Iterator&lt;?&gt; it = coll.iterator();
+  while(it.hasNext()){
+    //it.next()获取的对象,什么类型
+    System.out.println(it.next());
+  }
+}</code></pre><p>   }</p>
+<p>###21泛型的限定<br> A:泛型的限定<br>   /*<br>    *  将的酒店员工,厨师,服务员,经理,分别存储到3个集合中<br>    *  定义方法,可以同时遍历3集合,遍历三个集合的同时,可以调用工作方法<br>    */<br>   import java.util.ArrayList;<br>   import java.util.Iterator;<br>   public class GenericTest {<br>    public static void main(String[] args) {<br>      //创建3个集合对象<br>      ArrayList<ChuShi> cs = new ArrayList<ChuShi>();<br>      ArrayList<FuWuYuan> fwy = new ArrayList<FuWuYuan>();<br>      ArrayList<JingLi> jl = new ArrayList<JingLi>();</JingLi></JingLi></FuWuYuan></FuWuYuan></ChuShi></ChuShi></p>
+<pre><code>//每个集合存储自己的元素
+cs.add(new ChuShi(&quot;张三&quot;, &quot;后厨001&quot;));
+cs.add(new ChuShi(&quot;李四&quot;, &quot;后厨002&quot;));
+
+fwy.add(new FuWuYuan(&quot;翠花&quot;, &quot;服务部001&quot;));
+fwy.add(new FuWuYuan(&quot;酸菜&quot;, &quot;服务部002&quot;));
+
+jl.add(new JingLi(&quot;小名&quot;, &quot;董事会001&quot;, 123456789.32));
+jl.add(new JingLi(&quot;小强&quot;, &quot;董事会002&quot;, 123456789.33));</code></pre><p>   //   ArrayList<String> arrayString = new ArrayList<String>();<br>      iterator(jl);<br>      iterator(fwy);<br>      iterator(cs);</String></String></p>
+<pre><code>}
+/*
+ * 定义方法,可以同时遍历3集合,遍历三个集合的同时,可以调用工作方法 work
+ * ? 通配符,迭代器it.next()方法取出来的是Object类型,怎么调用work方法
+ * 强制转换:  it.next()=Object o ==&gt; Employee
+ * 方法参数: 控制,可以传递Employee对象,也可以传递Employee的子类的对象
+ * 泛型的限定  本案例,父类固定Employee,但是子类可以无限?
+ *   ? extends Employee 限制的是父类, 上限限定, 可以传递Employee,传递他的子类对象
+ *   ? super   Employee 限制的是子类, 下限限定, 可以传递Employee,传递他的父类对象
+ */
+public static void iterator(ArrayList&lt;? extends Employee&gt; array){
+
+   Iterator&lt;? extends Employee&gt; it = array.iterator();
+   while(it.hasNext()){
+     //获取出的next() 数据类型,是什么Employee
+     Employee e = it.next();
+     e.work();
+   }
+}</code></pre><p>   }</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day17%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3288,839 +4060,10 @@ public class Network extends Maintainer{
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day09%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day09%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记9</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:02:15" itemprop="dateModified" datetime="2020-12-23T23:02:15+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、面向对象思想<br>2、类与对象的关系<br>3、局部变量和成员变量的关系<br>4、封装思想<br>5、private,this关键字<br>6、随机点名器</p>
-<p>###01面向对象和面向过程的思想<br>    * A: 面向过程与面向对象都是我们编程中，编写程序的一种思维方式<br>        * a: 面向过程的程序设计方式，是遇到一件事时，思考“我该怎么做”，然后一步步实现的过程。<br>        * b: 面向对象的程序设计方式，是遇到一件事时，思考“我该让谁来做”，然后那个“谁”就是对象，他要怎么做这件事是他自己的事，反正最后一群对象合力能把事就好就行了。</p>
-<p>###02面向对象的思想的生活案例<br>    * A: 买电脑（组装机）<br>        * a: 面向过程：自己该怎么做<br>        * b: 面向对象：找人帮我们做</p>
-<p>​<br>###03面向对象好处<br>    * A: 面向对象好处<br>        * a: 面向对象思维方式是一种更符合人们思考习惯的思想<br>        * b: 面向过程思维方式中更多的体现的是执行者（自己做事情），面向对象中更多的体现是指挥者（指挥对象做事情）。<br>        * c: 面向对象思维方式将复杂的问题简单化。</p>
-<p>###04大象装进冰箱的代码案例<br>    * A: 需求：把大象装冰箱里<br>        * a: 面向过程<br>            * 自己打开冰箱门<br>            * 自己将大象装进去<br>            * 自己关闭冰箱门<br>        * b: 面向对象<br>            * 分析发现打开、装、关闭都是冰箱的功能。即冰箱对象具    备如下功能<br>            * 冰箱打开<br>            * 冰箱存储<br>            * 冰箱关闭</p>
-<pre><code>* B: 通过伪代码描述大象和冰箱
-    * 描述大象：
-        class 大象
-        {
-        }
-    * 描述冰箱
-        class冰箱
-        {
-            void 打开(){}
-            void 存储(大象){}
-            void 关闭(){}
-        }</code></pre><p>​<br>    * C: 使用对象：<br>        * 1、创建冰箱的对象<br>            * 冰箱 bx = new 冰箱();<br>        * 2、调用冰箱的功能<br>            * 对象.功能()；<br>            * bx.打开();<br>            * bx.存储(new 大象());<br>            * bx.关闭();<br>    * D：总结：<br>        * 1、先按照名词提炼问题领域中的对象<br>        * 2、对对象进行描述，其实就是在明确对象中应该具备的属性和功能<br>        * 3、通过new的方式就可以创建该事物的具体对象<br>        * 4、通过该对象调用它以后的功能。</p>
-<p>###05定义小汽车类<br>    * A: 分析小汽车的属性和功能<br>        * 属性<br>            * 颜色<br>            * 轮胎个数<br>        * 功能<br>            * 运行<br>    * B: 通过伪代码描述小汽车<br>        * 小汽车{<br>            * 颜色<br>            * 轮胎个数<br>            * 运行(){}<br>        * }<br>    * C：通过JAVA代码描述小汽车<br>        * public class Car {<br>            * String color;<br>            * int number;</p>
-<pre><code>    * void run() {
-        * System.out.println(color + &quot;:&quot; + number);
-    * }
-* }</code></pre><p>###01测试汽车类<br>    * A: 创见对象的格式<br>        * a: 类名 变量名 = new 类名();<br>    * B: 测试汽车类<br>        public class CarDemo {<br>            public static void main(String[] args) {<br>                /*<br>                 测试：Car类中的run方法。<br>                 */<br>                // 1,创建Car的对象。给对象起个名字。<br>                Car c = new Car();// c是类类型的变量。c指向了一个具体的Car类型的对象。<br>                // 2,通过已有的对象调用该对象的功能。格式：对象.对象成员;<br>                // 3,可以该对象的属性赋值。<br>                c.color = “red”;<br>                c.number = 4;<br>                c.run();<br>            }<br>        }</p>
-<p>###02对象的内存图<br>    * 见课后资料：对象的内存图.JPG</p>
-<p>###03类和对象的关系<br>    * A: 类和对象的关系<br>        * 类是对某一类事物的抽象描述，而对象用于表示现实中该类事物的个体<br>    * B: 举例<br>        * 可以将玩具模型看作是一个类，将一个个玩具看作对象，从玩具模型和玩具之间的关系便可以看出类与对象之间的关系</p>
-<p>###04成员变量和局部变量的区别</p>
-<ul>
-<li>区别一：定义的位置不同<ul>
-<li>定义在类中的变量是成员变量</li>
-<li>定义在方法中或者{}语句里面的变量是局部变量</li>
-</ul>
-</li>
-<li>区别二：在内存中的位置不同<ul>
-<li>成员变量存储在对内存的对象中</li>
-<li>局部变量存储在栈内存的方法中</li>
-</ul>
-</li>
-<li>区别三：声明周期不同<ul>
-<li>成员变量随着对象的出现而出现在堆中，随着对象的消失而从堆中消失</li>
-<li>局部变量随着方法的运行而出现在栈中，随着方法的弹栈而消失</li>
-</ul>
-</li>
-<li>区别四：初始化不同<ul>
-<li>成员变量因为在堆内存中，所有默认的初始化值</li>
-<li>局部变量没有默认的初始化值，必须手动的给其赋值才可以使用。</li>
-</ul>
-</li>
-</ul>
-<p>###01方法参数是基本数据类型和引用数据类型<br>    * A.基本类型<br>        class Demo<br>        {<br>            public static void main(String[] args)<br>            {<br>                int x = 4;<br>                show(x);<br>                System.out.println(“x=”+x);<br>            }<br>            public static void show(int x)<br>            {<br>                x = 5;</p>
-<pre><code>        }
-    }     
-    基本类型作为参数传递时，其实就是将基本类型变量x空间中的值复制了一份传递给调用的方法show()，当在show()方法中x接受到了复制的值，再在show()方法中对x变量进行操作，这时只会影响到show中的x。当show方法执行完成，弹栈后，程序又回到main方法执行，main方法中的x值还是原来的值。
-* B.引用类型
-    class Demo 
-    {
-        int x ;
-        public static void main(String[] args) 
-        {
-
-            Demo d = new Demo();
-            d.x = 5;
-            show(d);
-            System.out.println(&quot;x=&quot;+d.x);
-        }
-        public static void show(Demo d)
-        {
-            d.x = 6;
-        }
-    }     
-    当引用变量作为参数传递时，这时其实是将引用变量空间中的内存地址(引用)复制了一份传递给了show方法的d引用变量。这时会有两个引用同时指向堆中的同一个对象。当执行show方法中的d.x=6时，会根据d所持有的引用找到堆中的对象，并将其x属性的值改为6.show方法弹栈。
-    由于是两个引用指向同一个对象，不管是哪一个引用改变了引用的所指向的对象的中的值，其他引用再次使用都是改变后的值。
-* C.结论
-    * 对于基本类型形式参数改变不会影响到实际参数
-    * 对于引用类型形式参数改变会影响到实际参数 </code></pre><p>###02封装的概述<br>    * A.面向对象三大特征<br>        * 封装、继承、多态<br>    * B.封装表现<br>        * 1、方法就是一个最基本封装体<br>        * 2、类其实也是一个封装体<br>    * C.封装的好处<br>        * 1、提高了代码的复用性<br>        * 2、隐藏了实现细节，还要对外提供可以访问的方式。便于调用者的使用。这是核心之一，也可以理解为就是封装的概念<br>        * 3、提高了安全性<br>###03封装的生活中的举例<br>    * A.封装的生活中的举例<br>        机箱：<br>        一台电脑，它是由CPU、主板、显卡、内存、硬盘、电源等部件组长，其实我们将这些部件组装在一起就可以使用电脑了，但是发现这些部件都散落在外面，很容造成不安全因素，于是，使用机箱壳子，把这些部件都装在里面，并在机箱壳上留下一些插口等，若不留插口，大家想想会是什么情况。<br>        总结：机箱其实就是隐藏了办卡设备的细节，对外提供了插口以及开关等访问内部细节的方式。<br>    * B.总结<br>        * 机箱其实就是隐藏了办卡设备的细节，对外提供了插口以及开关等访问内部细节的方式</p>
-<p>###04private关键字<br>    * A.private概述<br>        * private可以修饰成员内容包括成员方法和成员变量<br>        * 被private修饰的内容不能在其他类访问<br>    * B.使用步骤<br>        * 1、通过private修饰属性<br>    * C.完整代码<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>    public void show() {
-        System.out.println(&quot;age=&quot; + age + &quot;,name&quot; + name);
-    }
-}</code></pre><p>###01get和set方法<br>    * A.get和set方法<br>        * 年龄已被私有，错误的值无法赋值，可是正确的值也赋值不了，这样还是不行，那肿么办呢？按照之前所学习的封装的原理，隐藏后，还需要提供访问方式。只要对外提供可以访问的方法，让其他程序访问这些方法。同时在方法中可以对数据进行验证。<br>一般对成员属性的访问动作：赋值(设置 set)，取值(获取 get)，因此对私有的变量访问的方式可以提供对应的 setXxx或者getXxx的方法。<br>        class Person {<br>            // 私有成员变量<br>            private int age;<br>            private String name;</p>
-<pre><code>    // 对外提供设置成员变量的方法
-    public void setAge(int a) {
-        // 由于是设置成员变量的值，这里可以加入数据的验证
-        if (a &lt; 0 || a &gt; 130) {
-            System.out.println(a + &quot;不符合年龄的数据范围&quot;);
-            return;
-        }
-        age = a; 
-    }
-
-    // 对外提供访问成员变量的方法
-    public void getAge() {
-        return age;
-    }
-}
-* 总结
-    * 类中不需要对外提供的内容都私有化，包括属性和方法。</code></pre><p>以后再描述事物，属性都私有化，并提供setXxx getXxx方法对其进行访问<br>        * 注意<br>            * 私有仅仅是封装的体现形式而已<br>###02私有化Person类带get,set<br>    * 标准代码<br>        package cn.itcast.demo05;</p>
-<pre><code>    /*
-     *   类描述人:
-     *     属性: 姓名和年龄
-     *     方法: 说话
-     *   
-     *   私有化所有的属性 (成员变量) ,必须写对应的get/set方法
-     *   凡是自定义的类,自定义成员变量,应该私有化,提供get/set
-     *   
-     *   this关键字:
-     *     区分成员变量和局部变量同名情况
-     *     方法中,方位成员变量,写this.
-     */
-    public class Person {
-        private String name;
-        private int age;
-
-        // set方法,变量name,age赋值
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        // get方法,变量name,age获取值
-        public int getAge() {
-            return age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void speak() {
-            String  name = &quot;哈哈&quot;;
-            int age = 16;
-
-            System.out.println(&quot;人在说话  &quot; + this.name + &quot;...&quot; + this.age);
-        }
-    }
-* 标准测试代码
-    package cn.itcast.demo05;
-
-    public class PersonTest {
-        public static void main(String[] args) {
-            Person p = new Person();
-            //调用set方法,对成员变量赋值
-            p.setAge(18);
-            p.setName(&quot;旺财&quot;);
-            p.speak();</code></pre><p>​<br>                //调用get方法,获取成员变量的值<br>        //        System.out.println(p.getName());<br>        //        System.out.println(p.getAge());<br>            }<br>        }</p>
-<p>###03this关键字_区分成员变量和局部变量的同名<br>    * A.什么时候用<br>        * 当类中存在成员变量和局部变量同名的时候为了区分，就需要使用this关键字<br>    * B.代码<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>    public void speak() {
-        this.name = &quot;小强&quot;;
-        this.age = 18;
-        System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
-    }
-}
-
-class PersonDemo {
-    public static void main(String[] args) {
-        Person p = new Person();
-        p.speak();
-    }
-}</code></pre><p>###04this内存图<br>    * A.this内存图<br>        * 见附件：this内存图.jpg</p>
-<p>###01this的年龄比较<br>    * A.需求：在Person类中定义功能，判断两个人是否是同龄人<br>    * B.代码<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void speak() {
-        System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
-    }
-
-    // 判断是否为同龄人
-    public boolean equalsAge(Person p) {
-        // 使用当前调用该equalsAge方法对象的age和传递进来p的age进行比较
-        // 由于无法确定具体是哪一个对象调用equalsAge方法，这里就可以使用this来代替
-        /*
-         * if(this.age == p.age) { return true; } return false;
-         */
-        return this.age == p.age;
-    }
-}</code></pre><p>###02随机点名器案例重构<br>    * A.需求：随机点名器，即在全班同学中随机的找出一名同学，打印这名同学的个人信息<br>        它具备以下3个内容：<br>        存储所有同学姓名<br>        总览全班同学姓名<br>        随机点名其中一人，打印到控制台<br>    * B.代码<br>        import java.util.ArrayList;<br>        import java.util.Random;<br>        import java.util.Scanner;</p>
-<pre><code>/**
- * 思路：
- * 第一步：存储全班同学信息
- * 第二步：打印全班同学每一个人的信息
- * 第三部：随机对学生点名，打印学生信息
- */
-public class Test {
-    public static void main(String[] args) {
-        ArrayList&lt;Student&gt; list = new ArrayList&lt;Student&gt;(); //1.1创建一个可以存储多个同学名字的容器
-         //1.存储全班同学信息
-        addStudent(list);
-         //2.打印全班同学每一个人的信息（姓名、年龄）
-        printStudent(list);
-         //3.随机对学生点名，打印学生信息
-        randomStudent(list);
-    }
-    public static void addStudent(ArrayList&lt;Student&gt; list) {
-        //键盘输入多个同学名字存储到容器中
-        Scanner sc = new Scanner(System.in);
-        for (int i = 0; i &lt; 3; i++) {
-            //创建学生
-            Student s = new Student();
-            System.out.println(&quot;存储第&quot;+i+&quot;个学生姓名：&quot;);
-            String name = sc.next();
-            s.setName(name);
-            System.out.println(&quot;存储第&quot;+i+&quot;个学生年龄：&quot;);
-            int age = sc.nextInt();
-            s.setAge(age);
-            //添加学生到集合
-            list.add(s);
-        }
-    }
-    /**
-     2.打印全班同学每一个人的信息（姓名、年龄）
-     */
-    public static void printStudent (ArrayList&lt;Student&gt; list) {
-        for (int i = 0; i &lt; list.size(); i++) {
-            Student s = list.get(i);
-            System.out.println(&quot;姓名：&quot;+s.getName() +&quot;,年龄：&quot;+s.getAge());
-        }
-    }
-    /**
-     3.随机对学生点名，打印学生信息
-     */
-    public static void randomStudent (ArrayList&lt;Student&gt; list) {
-        //在班级总人数范围内，随机产生一个随机数
-        int index = new Random().nextInt(list.size());
-        //在容器（ArrayList集合）中，查找该随机数所对应的同学信息（姓名、年龄）
-        Student s = list.get(index);
-        System.out.println(&quot;被随机点名的同学：&quot;+s.getName() + &quot;，年龄:&quot; + s.getAge());
-    }
-}
-
-/**
- * 学生信息类
- */
-public class Student {
-    private String name; // 姓名
-    private int age; // 年龄
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-}    </code></pre><p>​        </p>
-<p>###03总结</p>
-<ul>
-<li><p>A.类与对象</p>
-<ul>
-<li>类，用于描述多个对象的共同特征，它是对象的模板。</li>
-<li>对象，用于描述现实中的个体，它是类的实例。</li>
-<li>类的定义：使用关键字class来定义java中的类</li>
-<li>格式：</li>
-<li>class 类名 {</li>
-<li>//属性</li>
-<li>数据类型 变量名;</li>
-<li>…</li>
-<li>//方法</li>
-<li>修饰符 返回值类型 方法名(参数){   }</li>
-<li>…</li>
-<li>}</li>
-<li></li>
-</ul>
-</li>
-<li><p>B.创建对象：</p>
-<ul>
-<li>格式：</li>
-<li>类名 对象名 = new 类名();</li>
-</ul>
-</li>
-<li><p>C.封装（private关键字）</p>
-<ul>
-<li>封装，把对象的属性与方法的实现细节隐藏，仅对外提供一些公共的访问方式</li>
-<li>封装的体现：</li>
-<li>变量:使用 private 修饰，这就是变量的封装</li>
-<li>方法:也是一种封装，封装了多条代码</li>
-<li>类： 也是一种封装，封装了多个方法</li>
-</ul>
-</li>
-<li><p>D.private关键字，私有的意思</p>
-<ul>
-<li>它可以用来修饰类中的成员(成员变量，成员方法)</li>
-<li>private的特点：</li>
-<li>private修饰的成员只能在当前类中访问，其他类中无法直接访问</li>
-</ul>
-</li>
-<li><p>E.this关键字</p>
-<ul>
-<li>this关键字，本类对象的引用</li>
-<li>this是在方法中使用的，哪个对象调用了该方法，那么，this就代表调用该方法的对象引用</li>
-<li>this什么时候存在的？当创建对象的时候，this存在的</li>
-<li>this的作用：用来区别同名的成员变量与局部变量（this.成员变量）</li>
-<li>public void setName(String name) {</li>
-<li>this.name = name;</li>
-<li>}</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day08%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day08%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记8</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:02:03" itemprop="dateModified" datetime="2020-12-23T23:02:03+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、Eclipse开发工具<br>2、超市库存管理系统</p>
-<p>###01Eclipse的下载安装<br>    * A: Eclipse的下载安装        <br>        * a: 下载<br>            * <a href="http://www.eclipse.org" target="_blank" rel="noopener">http://www.eclipse.org</a><br>        * b: 安装<br>            * 只需要解压后就能使用<br>        * c: 卸载<br>            * 只需要将文件夹删除就可以了<br>        * d: 注意<br>            * 开发软件的安装目录中，尽量不要出现空格与中文<br>    * B: Eclipse的特点<br>        * a: 免费<br>        * b: 纯Java语言编写<br>        * c: 免安装<br>        * d: 扩展性强</p>
-<p>###02Eclipse的工作空间和新建工程<br>    * A: Eclipse的工作空间和新建工程<br>        * a: 工作空间<br>            *  其实就是我们写的源代码所在的目录<br>        * b: 创建工程(项目)<br>            * 右键/Package Explore 空白区/new /Java Project/输入项目名称如day08/<br>        * c: 创建包(后面讲包的概念)<br>            *　打开上面建立的day08项目/右键/new/package/在弹出的对话框的name中输入报名如”com.itheima.tests”/finish<br>        * d: 创建类<br>            * 创建一个java类:右击包名/new/class/在对话框的name中输入类名/finish<br>    * B: 编译与执行<br>        * a: 编译<br>            * 自动编译，当java代码保存的时候，自动 编译class文件<br>        * b: 运行<br>            * 方式1：点击菜单工具栏中的 绿色带有三角形的 run按钮 运行<br>            * 方式2：点击菜单栏中Run， 点击Run 运行  快捷键是 ctrl+F11<br>            * 方式3：选中要运行的java文件，或者在编写代码的空白区域，右键选择 Run As –&gt; 运行java程序</p>
-<p>​<br>###03Eclipse的HelloWorld编写<br>    * A:HelloWorld编写<br>        * a: 编写过程(参照上个知识点)<br>            * 建立day08项目<br>            * 建立包结构(包的概念还没有学到,不建立包的话,使用默认包结构default)<br>            * 创建HelloWorld类(自动生成main方法)<br>        * b: 案例代码<br>            public class HelloWorld {<br>                public static void main(String[] args) {<br>                    System.out.println(“Hello World”);<br>                }<br>            }</p>
-<p>​    </p>
-<p>###04Eclipse的字体设置<br>    * A: Eclipse的字体设置<br>        * a: 修改编译环境和运行环境<br>            * 编译环境：Window – Preferences – Java - Compiler<br>            * 运行环境：Window – Preferences – Java - Installed JREs</p>
-<pre><code>* b: 显示行号与隐藏行号
-    * 显示：在代码区域的左边空白区域，右键 -- Show Line Numbers
-    * 隐藏：将上面的操作再做一遍
-
-* c: 更改字体大小与颜色
-    * Java代码区域的字体大小和颜色：
-        * window -- Preferences -- General -- Appearance -- Colors And Fonts --Java修改 -- Java Edit Text Font--edit进行修改
-    * 控制台
-        * window -- Preferences -- General -- Appearance -- Colors And Fonts -- Debug -- Console font
-    * 其他文件
-        * window -- Preferences -- General -- Appearance -- Colors And Fonts -- Basic -- Text Font</code></pre><p>###05Eclipse的窗口设置<br>    * A: 窗口设置<br>        * a: 显示的窗口乱了，还原默认显示模式<br>            * Window – Perspective – Reset Prespective<br>        * b: 显示控制台<br>            * Window–Show View—Console        </p>
-<p>###06Eclipse的去掉多余的注释<br>    * A: Eclipse的去掉多余的注释<br>        * a:如何去掉默认注释<br>            * Window – Preferences – Java – Code Style – Code Templates – Comments – Methods，点击Edit ，将注释部分删除 (不建议删除)<br>            * Window – Preferences – Java – Code Style – Code Templates – Code – Method body，点击Edit ，将注释部分删除<br>        * b: 切换工作空间<br>            * File – Switch Workspace – 指定工作空间 – ok</p>
-<p>###07Eclipse的快捷键<br>    * A: Eclipse的快捷键<br>        * a: 内容辅助键  Alt+/<br>            * 自动补齐main方法  main 然后 Alt+/<br>            * 自动补齐输出语句  syso 然后 Alt+/<br>        * b: 格式化代码<br>            * Ctrl+Shift+f<br>            * 代码区域右键 – Source – Format<br>        * c: 自动导包<br>            * Ctrl+Shift+o<br>            * 如果当前类在多个包中都存在，这时候，使用Ctrl+shift+o,进行选择一个包导入即可。<br>        * d: 注释<br>            * 单行注释<br>                * 加注释： 先选中需要注释的内容，然后 Ctrl+/<br>                * 取消注释：先选中需要取消注释的内容， 然后 Ctrl+/<br>            * 多行注释<br>                * 加注释： 先选中需要注释的内容，然后 Ctrl+Shift+/<br>                * 取消注释：先选中需要取消注释的内容， 然后 Ctrl+Shift+<br>        * e: 补充<br>            * 代码上下移动<br>                * 选中代码alt+上/下箭头<br>            * 查看源码<br>                * 选中类名(F3或者Ctrl+鼠标点击)<br>            * 查找具体的类<br>                * ctrl + shift + t，输入要查找的类的名称–&gt;确定<br>            * 查找具体类的具体方法<br>                * ctrl + o<br>            * 给建议<br>                * ctrl+1,根据右边生成左边的数据类型,生成方法<br>            * 删除代码<br>                * ctrl + d<br>            * 抽取方法<br>                * alt + shift + m<br>            * 改名<br>                * alt + shift + r（类名，方法名，变量名）</p>
-<p>###08Eclipse的断点调试<br>    * A:断点调试(又称为Debug调试)的作用<br>        * 调试程序<br>        * 查看程序执行流程<br>    * B:如何查看程序执行流程<br>        * 什么是断点：<br>            * 就是一个标记，从哪里开始。</p>
-<pre><code>* 如何设置断点：
-    * 你想看哪里的程序，你就在那个有效程序的左边双击即可。
-
-* 在哪里设置断点：
-    * 哪里不会点哪里。
-    * 目前：我们就在每个方法的第一条有效语句上都加。
-
-* 如何运行设置断点后的程序：
-    * 右键 -- Debug as -- Java Application
-
-* 看哪些地方：
-    * Debug：断点测试的地方
-        * 在这个地方，记住F6，或者点击也可以。一次看一行的执行过程。
-    * Variables：查看程序的变量变化
-    * ForDemo：被查看的源文件
-    * Console：控制台
-
-* 如何去断点：
-    * a:再次双击即可
-    * b:找到Debug视图，Variables界面，找到Breakpoints，并点击，然后看到所有的断点，最后点击那个双叉        </code></pre><p>###09Eclipse的工程删除和导入<br>    * A:删除项目<br>        * 选中项目 – 右键 – 删除<br>            * 从项目区域中删除<br>            * 从硬盘上删除<br>    * B:导入项目<br>        * 在项目区域右键找到import<br>        * 找到General，展开，并找到<br>        * Existing Projects into Workspace<br>        * 点击next,然后选择你要导入的项目<br>        * 注意：这里选择的是项目名称</p>
-<p>###10超市管理系统功能介绍<br>    * A：超市管理系统功能介绍<br>        * a: 显示主菜单</p>
-<pre><code>    ============欢迎光临ItCast超市============
-    1: 货物 清单   2: 添加货物   3: 删除货物   4: 修改货物  5: 退出
-    请您输入要操作的功能序号
-
-* b: 货物清单
-
-    输入1:货物清单
-    ================商品库存清单================
-    商品编号         商品名称                商品单价
-    9527               少林寺酥饼核桃               12.7
-    9008               尚康杂粮牡丹饼              5.6
-    9879               新疆原产哈密瓜             599.6
-
-* c: 添加新货物
-
-    输入2:添加新货物    
-
-    请输入新商品的编号:9523
-    请输入新商品的名字:斯柯达苹果醋
-    请输入新商品的单价:19.9
-    商品添加成功
-
-* d: 删除货物
-
-    输入3:删除货物
-
-    选择的是删除功能
-    请输入商品的编号:9523
-    货物信息删除完毕
-
-* e: 修改货物
-
-    输入4:修改货物
-
-    选择的是修改功能
-    请输入您要修改的商品的编号:9527
-    输入新的商品编号:100
-    输入新的商品名字:味道好凤梨干
-    输入新的商品价格:6.5
-    商品修改成功
-* f: 输入5:退出系统</code></pre><p>###11超市管理系统案例分析<br>    * A: 超市管理系统案例分析<br>        * 完成超市商品初始化。创建商品，将商品添加到集合<br>        * 显示来到超市能做的操作，也就是显示主菜单<br>        * 根据接收到的功能选项，执行对应的功能<br>        * 库存货物查询<br>        * 添加新货物<br>        * 删除货物<br>        * 修改货物<br>        * 退出系统,结束main方法的运行<br>        * 循环，回到 2.显示主菜单</p>
-<p>​<br>###12自定义商品类<br>    * A: 自定义商品类<br>        * a: 目的<br>            * 每种库存商品都拥有多项商品信息，为了方便管理每种商品的信息，我们对商品信息进行封装，编写FruitItem.java文件<br>        * b：案例代码<br>            public class FruitItem {<br>                int  ID;            //商品编号<br>                String  name;        //商品名称<br>                double  price;        //商品单价<br>                double  number;        //商品数量<br>                double  money;        //商品金额<br>            }<br>        * 补充<br>            * 上述代码中，对商品信息（编号、名称、单价、数量、金额）进行了封装。这样做的好处在于以后只要找到这个商品，就能够知道该商品的每项信息了。</p>
-<p>###13初始化商品属性<br>    * A: 初始化商品属性<br>        * a: 案例代码<br>            import java.util.ArrayList;<br>            import java.util.Scanner;</p>
-<pre><code>/*
- *   超市管理系统主
- *   实现:
- *     1. 商品数据的初始化
- *     2. 用户的菜单选择
- *     3. 根据选择执行不同的功能
- *       3.1 Read    查看商品
- *       3.2 Create  添加商品
- *       3.3 Delete  删除商品
- *       3.4 Update  修改商品
- *       
- *       
- *   所有功能 ,必须定义方法实现
- *   主方法main  调用作用
- */
-public class Shopp {
-
-    public static void main(String[] args) {
-        //创建ArrayList集合,存储商品类型,存储数据类型FruitItem类型
-        ArrayList&lt;FruitItem&gt; array = new ArrayList&lt;FruitItem&gt;();
-        //调用商品初始化方法,传递集合
-        init(array);
-
-        }
-    }    
-    /*
-     * 定义方法,实现商品数据的初始化
-     * 先将一部分数据,存储集合中
-     * 返回值: 无
-     * 参数 : 集合
-     * 方法名: init
-     */
-    public static void init(ArrayList&lt;FruitItem&gt; array){
-        //创建出多个FruitItem类型,并且属性赋值
-        FruitItem f1 = new FruitItem();
-        f1.ID = 9527;
-        f1.name = &quot;少林寺酥饼核桃&quot;;
-        f1.price = 12.7;
-
-        FruitItem f2 = new FruitItem();
-        f2.ID = 9008;
-        f2.name = &quot;尚康杂粮牡丹饼&quot;;
-        f2.price = 5.6;
-
-        FruitItem f3 = new FruitItem();
-        f3.ID = 9879;
-        f3.name = &quot;新疆原产哈密瓜&quot;;
-        f3.price = 599.6;
-
-        //创建的3个FruitItem类型变量,存储到集合中
-        array.add(f1);
-        array.add(f2);
-        array.add(f3);
-    }
-
-}</code></pre><p>###14主菜单功能<br>    * A: 主菜单功能<br>        * a: 案例代码</p>
-<pre><code>import java.util.ArrayList;
-import java.util.Scanner;
-/*
- *   超市管理系统主
- *   实现:
- *     1. 商品数据的初始化
- *     2. 用户的菜单选择
- *     3. 根据选择执行不同的功能
- *       3.1 Read    查看商品
- *       3.2 Create  添加商品
- *       3.3 Delete  删除商品
- *       3.4 Update  修改商品
- *       
- *       
- *   所有功能 ,必须定义方法实现
- *   主方法main  调用作用
- */
-public class Shopp {
-
-    public static void main(String[] args) {
-        //创建ArrayList集合,存储商品类型,存储数据类型FruitItem类型
-        ArrayList&lt;FruitItem&gt; array = new ArrayList&lt;FruitItem&gt;();
-        //调用商品初始化方法,传递集合
-        init(array);
-        while(true){
-            //调用菜单方法
-            mainMenu();            
-        }
-    }    
-    /*
-     * 定义方法,实现主菜单
-     * 提示用户哪些选择 让选择序号
-     * 返回值: 无
-     * 参数: 无
-     */
-    public static void mainMenu(){
-        System.out.println();
-        System.out.println(&quot;============欢迎光临ItCast超市============&quot;);
-        System.out.println(&quot;1: 货物 清单   2: 添加货物   3: 删除货物   4: 修改货物  5: 退出&quot;);
-        System.out.println(&quot;请您输入要操作的功能序号&quot;);
-    }
-
-    /*
-     * 定义方法,实现商品数据的初始化
-     * 先将一部分数据,存储集合中
-     * 返回值: 无
-     * 参数 : 集合
-     * 方法名: init
-     */
-    public static void init(ArrayList&lt;FruitItem&gt; array){
-        //创建出多个FruitItem类型,并且属性赋值
-        FruitItem f1 = new FruitItem();
-        f1.ID = 9527;
-        f1.name = &quot;少林寺酥饼核桃&quot;;
-        f1.price = 12.7;
-
-        FruitItem f2 = new FruitItem();
-        f2.ID = 9008;
-        f2.name = &quot;尚康杂粮牡丹饼&quot;;
-        f2.price = 5.6;
-
-        FruitItem f3 = new FruitItem();
-        f3.ID = 9879;
-        f3.name = &quot;新疆原产哈密瓜&quot;;
-        f3.price = 599.6;
-
-        //创建的3个FruitItem类型变量,存储到集合中
-        array.add(f1);
-        array.add(f2);
-        array.add(f3);
-    }
-
-}                </code></pre><p>###15用户选择功能<br>    * A: 用户选择功能<br>        * a: 案例代码<br>            import java.util.ArrayList;<br>            import java.util.Scanner;</p>
-<pre><code>/*
- *   超市管理系统主
- *   实现:
- *     1. 商品数据的初始化
- *     2. 用户的菜单选择
- *     3. 根据选择执行不同的功能
- *       3.1 Read    查看商品
- *       3.2 Create  添加商品
- *       3.3 Delete  删除商品
- *       3.4 Update  修改商品
- *       
- *       
- *   所有功能 ,必须定义方法实现
- *   主方法main  调用作用
- */
-public class Shopp {
-
-    public static void main(String[] args) {
-        //创建ArrayList集合,存储商品类型,存储数据类型FruitItem类型
-        ArrayList&lt;FruitItem&gt; array = new ArrayList&lt;FruitItem&gt;();
-        //调用商品初始化方法,传递集合
-        init(array);
-        while(true){
-            //调用菜单方法
-            mainMenu();
-            //调用用户选择序号方法
-            int choose = chooseFunction();
-            switch (choose) {
-            case 1:
-                //调用1: 货物 清单
-                showFruitList(array);
-            break;
-
-            case 2:
-                //2: 添加货物
-                addFruit(array);
-            break;
-
-            case 3:
-                //3: 删除货物
-                deleteFruit(array);
-            break;
-
-            case 4:
-                //4: 修改货物
-                updateFruit(array);
-            break;
-
-            case 5:
-                return ;
-
-            default:
-                System.out.println(&quot;输入的序号没有&quot;);
-                break;
-            }
-        }
-    }    
-    /*
-     *  定义方法,实现接受用户的键盘输入
-     *  返回编号
-     */
-    public static int chooseFunction(){
-        Scanner sc = new Scanner(System.in);
-        return sc.nextInt();
-    }
-
-    /*
-     * 定义方法,实现主菜单
-     * 提示用户哪些选择 让选择序号
-     * 返回值: 无
-     * 参数: 无
-     */
-    public static void mainMenu(){
-        System.out.println();
-        System.out.println(&quot;============欢迎光临ItCast超市============&quot;);
-        System.out.println(&quot;1: 货物 清单   2: 添加货物   3: 删除货物   4: 修改货物  5: 退出&quot;);
-        System.out.println(&quot;请您输入要操作的功能序号&quot;);
-    }
-
-    /*
-     * 定义方法,实现商品数据的初始化
-     * 先将一部分数据,存储集合中
-     * 返回值: 无
-     * 参数 : 集合
-     * 方法名: init
-     */
-    public static void init(ArrayList&lt;FruitItem&gt; array){
-        //创建出多个FruitItem类型,并且属性赋值
-        FruitItem f1 = new FruitItem();
-        f1.ID = 9527;
-        f1.name = &quot;少林寺酥饼核桃&quot;;
-        f1.price = 12.7;
-
-        FruitItem f2 = new FruitItem();
-        f2.ID = 9008;
-        f2.name = &quot;尚康杂粮牡丹饼&quot;;
-        f2.price = 5.6;
-
-        FruitItem f3 = new FruitItem();
-        f3.ID = 9879;
-        f3.name = &quot;新疆原产哈密瓜&quot;;
-        f3.price = 599.6;
-
-        //创建的3个FruitItem类型变量,存储到集合中
-        array.add(f1);
-        array.add(f2);
-        array.add(f3);
-    }
-
-}</code></pre><p>###16商品的清单功能<br>    * A: 商品的清单功能<br>        * a: 案例代码(显示商品清单的showFruitList(ArrayList<FruitItem>)方法的代码如下)<br>            /*<br>             *  定义方法,实现显示货物清单功能<br>             *  返回值: 无<br>             *  参数: 集合<br>             *  遍历集合,获取集合中的每个FruitItem变量,变量,调用属性<br>             <em>/<br>            public static void showFruitList(ArrayList<FruitItem> array){<br>                System.out.println();<br>                System.out.println(“================商品库存清单================”);<br>                System.out.println(“商品编号         商品名称                商品单价”);<br>                //遍历集合<br>                for(int i = 0 ; i &lt; array.size(); i++){<br>                    //集合get方法,获取出每个FruitItem变量,可以使用FruitItem接受get结果<br>                    FruitItem item = array.get(i);<br>                    //变量item调用类中属性<br>                    System.out.println(item.ID+”   “+item.name+”        “+item.price);<br>                }<br>            }<br>###17商品的添加功能<br>    * A: 商品的添加功能<br>        * a: 案例代码(商品添加功能的addFruit(ArrayList<FruitItem>)方法的代码如下)<br>            /</FruitItem></FruitItem></em><br>             * 定义方法,实现商品的添加功能<br>             * 返回值:无<br>             * 参数: 集合<br>             * 提示用户选择的是添加商品的功能<br>             *<br>             * 提示用户输入的是什么<br>             *<br>             * 创建FruitItem变量,变量调用的属性<br>             * 将输入的每个商品属性进行赋值<br>             <em>/<br>            public static void addFruit(ArrayList<FruitItem> array){<br>                System.out.println(“选择的是添加商品功能”);<br>                //创建Scanner变量<br>                Scanner sc = new Scanner(System.in);<br>                System.out.print(“请输入新商品的编号:”);<br>                //输入商品的编号<br>                int ID = sc.nextInt();<br>                //输入商品的名字<br>                System.out.print(“请输入新商品的名字:”);<br>                String name = sc.next();<br>                //输入商品的单价<br>                System.out.print(“请输入新商品的单价:”);<br>                double price = sc.nextDouble();<br>                //创建FruitItem变量<br>                FruitItem item = new FruitItem();<br>                //item.属性赋值<br>                item.ID = ID;<br>                item.name = name;<br>                item.price = price;<br>                array.add(item);<br>                System.out.println(“商品添加成功”);<br>            }<br>###18商品的删除功能<br>    * A: 商品的删除功能(删除商品deleteFruit(ArrayList<FruitItem>)方法的代码如下)<br>        * a: 案例代码<br>            /</FruitItem></FruitItem></em><br>             *  定义方法,实现商品的删除功能<br>             *  返回值:　无<br>             *  参数：　集合<br>             *<br>             *  删除依靠的是商品的编号<br>             *  提示用户选择的是删除功能<br>             *  键盘输入商品的编号<br>             *  遍历集合，获取集合中的每个FruitItem变量<br>             *  变量调用属性　ID， 和用户的输入的编号,对比,相同就删除<br>             */<br>            public static void deleteFruit(ArrayList<FruitItem> array){<br>                System.out.println(“选择的是删除功能”);<br>                System.out.print(“请输入商品的编号:”);<br>                Scanner sc = new Scanner(System.in);</FruitItem></FruitItem></p>
-<pre><code>    int ID = sc.nextInt();
-    //遍历集合
-    for(int i = 0 ; i &lt; array.size(); i++){
-        //获取到每个FruitItem变量
-        FruitItem item = array.get(i);
-        //变量,调用属性ID,和用户输入的编号比较
-        if( item.ID == ID){
-            //移除集合中的元素
-            //集合的方法remove实现
-            array.remove(i);
-            System.out.println(&quot;删除成功&quot;);
-            return;
-        }
-    }
-    System.out.println(&quot;你输入的编号不存在&quot;);
-}</code></pre><p>###19商品的修改功能<br>    * A: 商品的修改功能<br>        * a: 案例代码(修改商品updateFruit(ArrayList<FruitItem>)方法的代码如下)<br>            /*<br>             *  定义方法,实现商品的修改功能<br>             *  返回值:　无<br>             *  参数：　集合<br>             *<br>             *  提示用户选择的是修改功能<br>             *  提示用户输入需要修改的商品编号<br>             *  遍历集合,获取每个FruitItem变量<br>             *  变量调用ID属性,属性和用户输入的编号比较<br>             *  如果相同:<br>             *    修改调FruitItem中的属性值<br>             *    键盘输入<br>             */<br>            public static void updateFruit(ArrayList<FruitItem> array){<br>                System.out.println(“选择的是修改功能”);<br>                System.out.print(“请输入您要修改的商品的编号:”);</FruitItem></FruitItem></p>
-<pre><code>    Scanner sc = new Scanner(System.in);
-    int ID = sc.nextInt();
-    //遍历集合,获取每个FruitItem变量
-    for(int i = 0 ; i &lt; array.size(); i++){
-        FruitItem item = array.get(i);
-        //获取FruitItem的属性ID,和用户输入的ID比较
-        if(item.ID == ID){
-            System.out.print(&quot;输入新的商品编号:&quot;);
-            item.ID = sc.nextInt();
-
-            System.out.print(&quot;输入新的商品名字:&quot;);
-            item.name = sc.next();
-
-            System.out.print(&quot;输入新的商品价格:&quot;);
-            item.price = sc.nextDouble();
-            System.out.println(&quot;商品修改成功&quot;);
-            return ;
-        }
-    }
-    System.out.println(&quot;输入的编号不存在&quot;);
-}</code></pre><p>###20总结</p>
-<ul>
-<li>把今天的知识点总结一遍。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -4186,7 +4129,7 @@ public class Shopp {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
