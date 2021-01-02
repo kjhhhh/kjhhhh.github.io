@@ -155,6 +155,182 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/" class="post-title-link" itemprop="url">游戏背景</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:23:07" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="游戏背景"><a href="#游戏背景" class="headerlink" title="游戏背景"></a>游戏背景</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>背景交替滚动的思路确定</li>
+<li>显示游戏背景</li>
+</ul>
+<h2 id="01-背景交替滚动的思路确定"><a href="#01-背景交替滚动的思路确定" class="headerlink" title="01. 背景交替滚动的思路确定"></a>01. 背景交替滚动的思路确定</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 背景图像的显示效果：</p>
+<ul>
+<li>游戏启动后，<strong>背景图像</strong> 会 <strong>连续不断地</strong> <strong>向下方</strong> 移动</li>
+<li>在 <strong>视觉上</strong> 产生英雄的飞机不断向上方飞行的 <strong>错觉</strong> —— 在很多跑酷类游戏中常用的套路<ul>
+<li><strong>游戏的背景</strong> 不断变化</li>
+<li><strong>游戏的主角</strong> 位置保持不变</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-1-实现思路分析"><a href="#1-1-实现思路分析" class="headerlink" title="1.1 实现思路分析"></a>1.1 实现思路分析</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/013_%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E4%BA%A4%E6%9B%BF%E6%BB%9A%E5%8A%A8.png" alt></p>
+<p><strong>解决办法</strong></p>
+<ol>
+<li>创建两张背景图像精灵<ul>
+<li>第 <code>1</code> 张 <strong>完全和屏幕重合</strong></li>
+<li>第 <code>2</code> 张在 <strong>屏幕的正上方</strong></li>
+</ul>
+</li>
+<li>两张图像 <strong>一起向下方运动</strong><ul>
+<li><code>self.rect.y += self.speed</code></li>
+</ul>
+</li>
+<li>当 <strong>任意背景精灵</strong> 的 <code>rect.y &gt;= 屏幕的高度</code> 说明已经 <strong>移动到屏幕下方</strong></li>
+<li>将 <strong>移动到屏幕下方的这张图像</strong> 设置到 <strong>屏幕的正上方</strong><ul>
+<li><code>rect.y = -rect.height</code>  </li>
+</ul>
+</li>
+</ol>
+<h3 id="1-2-设计背景类"><a href="#1-2-设计背景类" class="headerlink" title="1.2 设计背景类"></a>1.2 设计背景类</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
+<ul>
+<li><strong>初始化方法</strong><ul>
+<li>直接指定 <strong>背景图片</strong></li>
+<li><code>is_alt</code> 判断是否是另一张图像<ul>
+<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
+<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>update()</strong> 方法<ul>
+<li>判断 <strong>是否移动出屏幕</strong>，如果是，将图像设置到 <strong>屏幕的正上方</strong>，从而实现 <strong>交替滚动</strong></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>继承</strong> 如果父类提供的方法，不能满足子类的需求：</p>
+<ul>
+<li>派生一个子类</li>
+<li>在子类中针对特有的需求，重写父类方法，并且进行扩展</li>
+</ul>
+</blockquote>
+<h2 id="02-显示游戏背景"><a href="#02-显示游戏背景" class="headerlink" title="02. 显示游戏背景"></a>02. 显示游戏背景</h2><h3 id="2-1-背景精灵的基本实现"><a href="#2-1-背景精灵的基本实现" class="headerlink" title="2.1 背景精灵的基本实现"></a>2.1 背景精灵的基本实现</h3><ul>
+<li>在 <code>plane_sprites</code> 新建 <code>Background</code> 继承自 <code>GameSprite</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Background</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""游戏背景精灵"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1. 调用父类的方法实现</span></span><br><span class="line">        super().update()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 判断是否移出屏幕，如果移出屏幕，将图像设置到屏幕的上方</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.y &gt;= SCREEN_RECT.height:</span><br><span class="line">            self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-在-plane-main-py-中显示背景精灵"><a href="#2-2-在-plane-main-py-中显示背景精灵" class="headerlink" title="2.2 在 plane_main.py 中显示背景精灵"></a>2.2 在 <code>plane_main.py</code> 中显示背景精灵</h3><ol>
+<li>在 <code>__create_sprites</code> 方法中创建 <strong>精灵</strong> 和 <strong>精灵组</strong></li>
+<li>在 <code>__update_sprites</code> 方法中，让 <strong>精灵组</strong> 调用 <code>update()</code> 和 <code>draw()</code> 方法</li>
+</ol>
+<blockquote>
+<p><code>__create_sprites</code> 方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">    bg1 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2.rect.y = -bg2.rect.height</span><br><span class="line">    </span><br><span class="line">    self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>__update_sprites</code> 方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    self.back_group.update()</span><br><span class="line">    self.back_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-利用初始化方法，简化背景精灵创建"><a href="#2-3-利用初始化方法，简化背景精灵创建" class="headerlink" title="2.3 利用初始化方法，简化背景精灵创建"></a>2.3 利用初始化方法，简化背景精灵创建</h3><blockquote>
+<p>思考 —— 上一小结完成的代码存在什么样的问题？能否简化？</p>
+</blockquote>
+<ul>
+<li>在主程序中，创建的<strong>两个背景精灵</strong>，<strong>传入了相同的图像文件路径</strong></li>
+<li>创建 <strong>第二个 背景精灵</strong> 时，<strong>在主程序中</strong>，设置背景精灵的图像位置</li>
+</ul>
+<blockquote>
+<p>思考 —— 精灵 <strong>初始位置</strong> 的设置，应该 <strong>由主程序负责</strong>？还是 <strong>由精灵自己负责</strong>？</p>
+</blockquote>
+<p><strong>答案</strong> —— <strong>由精灵自己负责</strong></p>
+<ul>
+<li>根据面向对象设计原则，应该将对象的职责，封装到类的代码内部</li>
+<li>尽量简化程序调用一方的代码调用</li>
+</ul>
+<p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
+<ul>
+<li><strong>初始化方法</strong><ul>
+<li>直接指定 <strong>背景图片</strong></li>
+<li><code>is_alt</code> 判断是否是另一张图像<ul>
+<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
+<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在 <code>plane_sprites.py</code> 中实现 <code>Background</code> 的 <strong>初始化方法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, is_alt=False)</span>:</span></span><br><span class="line"></span><br><span class="line">    image_name = <span class="string">"./images/background.png"</span></span><br><span class="line">    super().__init__(image_name)</span><br><span class="line">       </span><br><span class="line">    <span class="comment"># 判断是否交替图片，如果是，将图片设置到屏幕顶部</span></span><br><span class="line">    <span class="keyword">if</span> is_alt:</span><br><span class="line">        self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>plane_main</code> 的 <code>__create_sprites</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">bg1 = Background()</span><br><span class="line">bg2 = Background(<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3115,103 +3291,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/eval%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/eval%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">eval` 函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 23:02:27" itemprop="dateModified" datetime="2020-12-24T23:02:27+08:00">2020-12-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="eval-函数"><a href="#eval-函数" class="headerlink" title="eval` 函数"></a>eval` 函数</h1><p><code>eval()</code> 函数十分强大 —— <strong>将字符串</strong> 当成 <strong>有效的表达式</strong> 来求值 并 <strong>返回计算结果</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本的数学计算</span></span><br><span class="line">In [<span class="number">1</span>]: eval(<span class="string">"1 + 1"</span>)</span><br><span class="line">Out[<span class="number">1</span>]: <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符串重复</span></span><br><span class="line">In [<span class="number">2</span>]: eval(<span class="string">"'*' * 10"</span>)</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">'**********'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将字符串转换成列表</span></span><br><span class="line">In [<span class="number">3</span>]: type(eval(<span class="string">"[1, 2, 3, 4, 5]"</span>))</span><br><span class="line">Out[<span class="number">3</span>]: list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将字符串转换成字典</span></span><br><span class="line">In [<span class="number">4</span>]: type(eval(<span class="string">"&#123;'name': 'xiaoming', 'age': 18&#125;"</span>))</span><br><span class="line">Out[<span class="number">4</span>]: dict</span><br></pre></td></tr></table></figure>
-
-<h2 id="案例-计算器"><a href="#案例-计算器" class="headerlink" title="案例 - 计算器"></a>案例 - 计算器</h2><p><strong>需求</strong></p>
-<ol>
-<li>提示用户输入一个 <strong>加减乘除混合运算</strong></li>
-<li>返回计算结果</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">input_str = input(<span class="string">"请输入一个算术题："</span>)</span><br><span class="line"></span><br><span class="line">print(eval(input_str))</span><br></pre></td></tr></table></figure>
-
-<h2 id="不要滥用-eval"><a href="#不要滥用-eval" class="headerlink" title="不要滥用 eval"></a>不要滥用 <code>eval</code></h2><blockquote>
-<p>在开发时千万不要使用 <code>eval</code> 直接转换 <code>input</code> 的结果</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__import__(<span class="string">'os'</span>).system(<span class="string">'ls'</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>等价代码</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">os.system(<span class="string">"终端命令"</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>执行成功，返回 0</li>
-<li>执行失败，返回错误信息</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3281,7 +3360,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">172</span>
+          <span class="site-state-item-count">173</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

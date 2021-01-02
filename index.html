@@ -155,6 +155,676 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%80%BB%E5%A4%8D%E4%B9%A0%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%80%BB%E5%A4%8D%E4%B9%A0%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/" class="post-title-link" itemprop="url">汇编语言总复习（部分）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-02 23:23:56 / 修改时间：23:25:29" itemprop="dateCreated datePublished" datetime="2021-01-02T23:23:56+08:00">2021-01-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>《汇编语言程序设计》总复习</strong></p>
+<p><strong>第一：五星复习内容如下：</strong></p>
+<p><strong>一、重点例题1:计算 345AH-3348CH=?</strong></p>
+<p><strong>各状态标志位值？DEBUG显示值？**</strong>教材P213至P219 图11.1**</p>
+<p><strong>“CPAZSTIDO  0 2 4 6 7 8 9 10 11”**</strong>这表示什么意思？**</p>
+<p><strong>二、循环程序分析题</strong></p>
+<p><strong>类似题计算：S=1+2+3+…+100  (原课堂讲过6个)</strong></p>
+<p> <strong>四、子程序设计（段内、段间、模块间,返回RET），中断程序设计格式与调用格式（模块间，返回IRET），编写用户中断程序的步骤和上机操作步骤？</strong></p>
+<p><strong>1**</strong>、子程序创建格式：**</p>
+<p>  <strong>子程序名   proc  far/near</strong></p>
+<p>​    <strong>……**</strong>（代码部分）**</p>
+<p>   <strong>Ret</strong></p>
+<p>  <strong>子程序名  endp</strong></p>
+<p>  <strong>End</strong>  <strong>子程序名</strong></p>
+<p> <strong>2**</strong>、子程序调用格式**</p>
+<p><strong>（1）段内调用：CALL [NEAR PTR] 子程序名</strong>  </p>
+<p><strong>(2)**</strong>段间调用：CALL FAR PTR 子程序名**</p>
+<p><strong>例1：子程序段间调用举例，主程序显示“OK！”，主程序通过段间调用子程序SUB1,子程序SUB1显示“OK！”</strong></p>
+<p>data segment     </p>
+<p>a db ‘OK!$’</p>
+<p>b db ‘Heelo$’</p>
+<p>data ends</p>
+<p>code1 segment</p>
+<p>assume cs:code1,ds:data</p>
+<p>   start:mov ax,data</p>
+<p>​     mov ds,ax</p>
+<p>​     lea dx,a</p>
+<p>​     mov ah,9</p>
+<p>​     int 21h</p>
+<p>​     mov dl,0dh</p>
+<p>​     mov ah,2</p>
+<p>​     int 21h</p>
+<p>​     mov dl,0ah</p>
+<p>​     mov ah,2</p>
+<p>​     int 21h</p>
+<p>​     <strong>call far ptr sub1</strong></p>
+<p>​     mov ah,4ch</p>
+<p>​     int 21h</p>
+<p>​     code1 ends</p>
+<p>​     code2 segment</p>
+<p>​     assume cs:code2</p>
+<p>​      <strong>sub1 proc far</strong>  </p>
+<p>​     <strong>lea dx,b</strong></p>
+<p>​     <strong>mov ah,9</strong></p>
+<p>​     <strong>int 21h</strong></p>
+<p>​     <strong>ret</strong></p>
+<p>​     <strong>sub1 endp</strong></p>
+<p>​     code2 ends</p>
+<p>​     end start</p>
+<p>​       </p>
+<p><strong>例2：子程序段内调用举例，主程序显示“OK！”，主程序通过段内调用子程序SUB1,子程序SUB1显示“OK！”</strong></p>
+<p>data segment     </p>
+<p>a db ‘OK!$’</p>
+<p>b db ‘Heelo$’</p>
+<p>data ends</p>
+<p>code segment</p>
+<p>assume cs:code,ds:data</p>
+<p>   start:mov ax,data</p>
+<p>​     mov ds,ax</p>
+<p>​     lea dx,a</p>
+<p>​     mov ah,9</p>
+<p>​     int 21h</p>
+<p>​     mov dl,0dh</p>
+<p>​     mov ah,2</p>
+<p>​     int 21h</p>
+<p>​     mov dl,0ah</p>
+<p>​     mov ah,2</p>
+<p>​     int 21h</p>
+<p>​     <strong>call near  ptr sub1</strong></p>
+<p>​     mov ah,4ch</p>
+<p>​     int 21h</p>
+<p>​     <strong>sub1 proc far</strong>  </p>
+<p>​     <strong>lea dx,b</strong></p>
+<p>​     <strong>mov ah,9</strong></p>
+<p>​     <strong>int 21h</strong></p>
+<p>​     <strong>ret</strong></p>
+<p>​     <strong>sub1 endp</strong></p>
+<p>​     code ends</p>
+<p>​     end start</p>
+<p><strong>五、汇编MASM5.0系统组成？上机步骤？汇编上机产生的文件（.ASM, .OBJ, LST, .EXE, .CRF, .REF, .MAP）的含义？如何产生的？（2020.12.16日，周三下午详细讲解了）</strong></p>
+<p><strong>六．DOS中断调用（INT 21H 的功能号：1，2，5，9，10，4CH）</strong></p>
+<p><strong>1**</strong>、DOS功能调用的步骤**</p>
+<p><strong>第一步：置入口参数</strong></p>
+<p><strong>第二步：功能号送AH</strong></p>
+<p><strong>第三步：执行INT 21H</strong></p>
+<p><strong>2**</strong>、键盘输入一个字符的ASCII值保存到AL中。**</p>
+<p><strong>MOV AH, 1</strong></p>
+<p><strong>INT 21H</strong></p>
+<p><strong>3.**</strong>屏幕显示一个字符**</p>
+<p><strong>MOV DL,</strong> <strong>字符的ASCII值</strong></p>
+<p><strong>MOV AH, 2</strong></p>
+<p><strong>INT 21H</strong></p>
+<p><strong>4.</strong> <strong>打印机输出一个字符</strong></p>
+<p><strong>MOV DL,</strong> <strong>字符的ASCII值</strong></p>
+<p><strong>MOV AH, 5</strong></p>
+<p><strong>INT 21H</strong></p>
+<p><strong>5**</strong>．屏幕显示一串字符**</p>
+<p>  <strong>LEA DX,</strong> <strong>存放字符串变量名首址</strong></p>
+<p>  <strong>MOV AH, 9</strong></p>
+<p>  <strong>INT 21H</strong></p>
+<p><strong>6.**</strong>键盘输入一串字符保存在变量缓冲区中。**</p>
+<p> <strong>LEA DX,</strong> <strong>字符串变量名</strong></p>
+<p> <strong>MOV AH, 10</strong></p>
+<p> <strong>INT 21H</strong></p>
+<p><strong>7.**</strong>程序结束**</p>
+<p> <strong>MOV AH, 4CH</strong></p>
+<p> <strong>INT 21H</strong></p>
+<p><strong>七、键盘输入整数的程序段从键盘接收十进制数存入BX程序</strong></p>
+<p><strong>思想:键盘与CPU是通过ASCII字符传送,即要把输入的数字字符转换成数字,下面程序段的算法思想是:( 例输入数字字符：374 输入其它非数字字符退出)</strong></p>
+<p><strong>（（（0×10)+3) ×10+7) ×10)+4 ，即将字符’3’,’7’,’4’ 转数值：374</strong></p>
+<p><strong>程序段：</strong></p>
+<p>   <strong>MOV BX, 0</strong></p>
+<p> <strong>NEW:MOV AH, 1</strong></p>
+<p>   <strong>INT  21H</strong></p>
+<p>   <strong>SUB AL,30H</strong></p>
+<p>   <strong>JL EXIT</strong></p>
+<p>   <strong>CMP AL,9</strong></p>
+<p>   <strong>JG EXIT</strong></p>
+<p><strong>CBW</strong></p>
+<p><strong>XCHG AX, BX</strong></p>
+<p><strong>MOV CX, 10</strong></p>
+<p><strong>MUL CX</strong></p>
+<p><strong>XCHG BX,AX</strong></p>
+<p><strong>ADD BX**</strong>，AX**</p>
+<p><strong>JMP NEW</strong></p>
+<p><strong>EXIT:  ………</strong></p>
+<p>例1：编写一个程序，计算S=1+2+3+…+100.主程序段调用子程序outp输出结果。</p>
+<p>data segment</p>
+<p>  s dw 0</p>
+<p>data ends</p>
+<p>  code segment</p>
+<p>  assume cs:code,ds:data</p>
+<p>  start:mov ax,data</p>
+<p>​     mov ds,ax</p>
+<p>​     mov ax,1</p>
+<p>​     mov s,0</p>
+<p>​     mov cx,100</p>
+<p>​    <strong><em>aa1:add s,ax\</em></strong>  <strong><em>；完成S=1+2+3+…+100\</em></strong></p>
+<p>​    <strong><em>inc ax\</em></strong></p>
+<p>​    <strong><em>loop aa1\</em></strong></p>
+<p>​    <strong>call outp</strong>  <strong>；段内调用子程序outp</strong></p>
+<p>​    mov ah,4ch</p>
+<p>​    int 21h</p>
+<p>​    <strong>outp proc</strong>  <strong>；子程序outp 显示结果S</strong></p>
+<p>​    <strong>mov cx,0</strong> </p>
+<p>​    <strong>mov ax,s</strong></p>
+<p><strong>aa2:inc cx</strong></p>
+<p>​     <strong>mov dx,0</strong></p>
+<p>​     <strong>mov bx,10</strong></p>
+<p>​    <strong>div bx</strong></p>
+<p>​    <strong>push dx</strong></p>
+<p>​    <strong>cmp ax,0</strong></p>
+<p>​    <strong>jnz aa2</strong></p>
+<p><strong>aa3:pop dx</strong></p>
+<p>​    <strong>or dl,30h</strong></p>
+<p>​    <strong>mov ah,2</strong></p>
+<p>​    <strong>int 21h</strong></p>
+<p>​    <strong>loop aa3</strong></p>
+<p>​    <strong>ret</strong></p>
+<p>​    <strong>outp endp</strong></p>
+<p>code ends</p>
+<p>end start</p>
+<p><strong>思考：请同学们将该程序改写成段间调用</strong></p>
+<p><strong>第二：系统复习内容如下：</strong></p>
+<p><strong>第一部分</strong> <strong>基础知识</strong></p>
+<p>\1.  各种进制及其转换</p>
+<p>\2.  进制运算</p>
+<p>例：3A2BH+987CH=?D2A7</p>
+<p>10110011B-101110011B=?1000100110</p>
+<p>\3.  计算机中数的和字符的表示</p>
+<p>（1） 原码、反码、补码</p>
+<p>例： X= -3 ，在16位机上，求X的原码、反码、补码=?FFFDH</p>
+<p>原1000 0000 0000 0011</p>
+<p>反 1111 1111 1111 1100</p>
+<p>补 1111 1111 1111 1101</p>
+<p>真值 x = -133d = -1000 0101b , b是二进制数后缀, d是十进制数后缀，</p>
+<p>[-x]原 =1000 0000 1000 0101b,</p>
+<p>以上原码最高位dao是符号位, 1表示负数 , 符号位与数值位之间的空位补0，补齐16位</p>
+<p>[-x]反 =1111 1111 0111 1010b ， 将原码除符号位之外的数值位取反得反码</p>
+<p>[-x]补 =1111 1111 0111 1011b ，将反码末位加1得补码</p>
+<p>（2） ASCII码的概念</p>
+<p>记住下列字符的ASCII值（用十六进制表示）</p>
+<p><strong>‘**</strong>a’<strong>**，</strong> <strong>‘**</strong>A<strong>**’，</strong> <strong>数字‘**</strong>0<strong><strong>’，回车符</strong></strong>CR<strong><strong>，换行符</strong></strong>LF<strong><strong>，空格符</strong></strong>SPACE<strong>**，</strong></p>
+<p><strong>（**</strong>61H<strong><strong>，</strong></strong>41H<strong><strong>，</strong></strong>30H<strong><strong>，</strong></strong>0DH, 0AH<strong><strong>，</strong></strong>20H<strong>**）</strong></p>
+<p>ASCII码的奇、偶校检码概念</p>
+<p>例：字符‘A’的奇校验ASCII值用十六进制表示为：<strong>C1H</strong></p>
+<p>重要知识点： 数字+30H=数字字符的ASCII值</p>
+<p>​       大写字符ASCII值+20H=小写字符的ASCII值</p>
+<p>​       小写字符ASCII值-20H=大写字符的ASCII值</p>
+<p>十六进制数字A<del>F + 37H= ‘A’</del>‘F’的ASCII值。    </p>
+<p>（3）BCD码知识：</p>
+<p>非压缩BCD码、压缩BCD码</p>
+<p>例：十进制数53非压缩BCD码表示为：00000101 00000011</p>
+<p>​         压缩BCD码表示为：01010011</p>
+<p>（4）、在汇编语言中程序设计中数字所带尾符</p>
+<p>H、D（或缺省）、O、B ；例：35H， 35， 1011B 35O</p>
+<p>（5）、几种逻辑运算</p>
+<p>AND、OR、NOT、XOR</p>
+<p><strong>第二部分</strong>   <strong>80X86**</strong>计算机组织**</p>
+<p>1、80X86微处理器的发展  </p>
+<p>2、8086CPU的寄存器组（共14个16位的寄存器）</p>
+<p>（1）8个通用寄存器：AX、BX、CX、DX、SI、DI、BP、SP</p>
+<p>其中AX：AH AL ； BX：BH BL</p>
+<p>  CX：CH CL  ； DX：DH DL</p>
+<p> 注：弄清16位寄存器与8位寄存器的关系。</p>
+<p>（2）4个段寄存器：CS、DS、ES、SS</p>
+<p>（3）2个控制寄存器：IP、FLAGS</p>
+<p>CPU 主要三部分：ALU、控制逻辑、工作寄存器组 </p>
+<p>（4）8086的FLAGS是一个16位的寄存器，有9个标志位，其中6个状态标志位（CF、PF、AF、ZF、SF、OF），3个控制标志位（TF、IF、DF） 标志位在FLAGS的分布（0 2 4 6 8 9 10 11），）P213 图11.1。</p>
+<p><strong>注：在汇编指令中，可放在中括号**</strong>[ ]<strong><strong>的寄存器有</strong></strong>4<strong><strong>个（</strong></strong>SI<strong><strong>，</strong></strong>DI<strong><strong>，</strong></strong>BX<strong><strong>，</strong></strong>BP<strong>**）</strong></p>
+<p><strong>重点例题：计算**</strong>9A3BH-3CD5H=?**</p>
+<p><strong>并指出**</strong>6<strong><strong>个状态标志位的值及</strong></strong>DEBUG<strong>**显示值</strong></p>
+<p><strong>CF=   0   DEBUG**</strong>显示：<strong>**NC</strong></p>
+<p><strong>PF=   1   DEBUG**</strong>显示：<strong>**PE</strong></p>
+<p><strong>AF=    0  DEBUG**</strong>显示：<strong>**NA</strong></p>
+<p><strong>ZF=    0  DEBUG**</strong>显示：<strong>**NZ</strong></p>
+<p><strong>SF=     0  DEBUG**</strong>显示：<strong>**PL</strong></p>
+<p><strong>OF=     1 DEBUG**</strong>显示：<strong>**OV</strong></p>
+<p>（5）8086CPU引脚数（40）、数据线（16）、地址线（20）</p>
+<p>物理地址、逻辑地址及其相互关系，逻辑地址=段地址：偏移地址</p>
+<p>物理地址=段地址×10H+偏移地址</p>
+<p>段的起始地址的规定，小段的首地址：能被16整除的20位物理地址</p>
+<p><strong>第三部分</strong> <strong>80X86**</strong>的指令系统及寻址方式**</p>
+<p>1、指令格式</p>
+<p>操作码 操作数1, 操作数2，……，操作数n</p>
+<p><strong><em>2***</em></strong>、*<strong><strong><em>8086*</em></strong></strong>寻址方式*** <strong><em>（略）\</em></strong></p>
+<p><strong><em>立即寻址、寄存器寻址、直接寻址、寄存器间接寻址、寄存器相对寻址、基址变址寻址、相对基址变址寻址\</em></strong> <strong><em>（共***</em></strong>7*<strong><em>**种）\</em></strong></p>
+<p><strong><em>重点例题：指出下列指令源操作数与目标操作的寻址方式\</em></strong></p>
+<p><strong><em>（1）\</em></strong> <strong><em>MOV AX***</em></strong>，*<strong><em>**[2002H]\</em></strong></p>
+<p><strong><em>（2）\</em></strong> <strong><em>ADD  AX***</em></strong>，*<strong><em>**A[BX+SI]\</em></strong></p>
+<p><strong><em>（3）\</em></strong> <strong><em>MOV BX***</em></strong>，*<strong><em>**2002H\</em></strong></p>
+<p><strong><em>（4）\</em></strong> <strong><em>MOV [BX]***</em></strong>，*<strong><em>**AX\</em></strong></p>
+<p><strong><em>（5）\</em></strong> <strong><em>以第***</em></strong>2*<strong><strong><em>小题为例解答，*</em></strong></strong>ADD  AX*<strong><strong><em>，*</em></strong></strong>A[BX+SI]***</p>
+<p><strong><em>答：源操作数为***</em></strong>A[BX+SI]*<strong><strong><em>，属于相对基址变址寻址；目标操作数为*</em></strong></strong>AX*<strong><em>**，属于寄存器寻址。\</em></strong></p>
+<p><strong><em>3***</em></strong>、指令中操作数的有效地址计算，***</p>
+<p><strong><em>注：指令中存储器操作数默认的段寄存器为***</em></strong>DS***</p>
+<p>4、操作数种类：立即数、寄存器操作数、<strong>存储器操作数（即带**</strong>[ ]<strong>**的操作数）</strong>，操作数的逻辑地址表示法，物理地址表示法。</p>
+<p>例1：8086某存储单元的逻辑地址为1234H :0005H,该单元的物理地址为：12345H。</p>
+<p>例2．某CPU的地址总线宽度为n位，该CPU的寻址能力为2n字节。</p>
+<p><strong>5**</strong>、<strong><strong>8086</strong></strong>的指令系统（本课程重点）**</p>
+<p>（1）数据传送指令</p>
+<p>助记符：MOV、PUSH、POP、PUSHF、POPF、XCHG、LAHF、SAHF、LEA、LDS、LES 等。</p>
+<p>注意指令的格式以及操作数类型的要求</p>
+<p>考试典型题：</p>
+<p>1、执行下列指令序后，CF与PF的值是（ B ）</p>
+<p>​    MOV AX，34BDH</p>
+<p>​    PUSH AX</p>
+<p>​    POPF</p>
+<p>（A）0，0  （B）0，1  （C）1，0   （D）1，1</p>
+<p>0011 0100 1011 1100</p>
+<p>2、（略）累加器专用指令（输入输出指令、端口输入输出指令、长格式和短格式等提法）</p>
+<p>IN、 OUT</p>
+<p>考试典型题：</p>
+<p>1、     用两种方法将字节数据43H从61H端口输出</p>
+<p>方法一：（直接输出或称长格式） MOV AL，43H</p>
+<p>​               OUT 61H，AL</p>
+<p>方法二：（间接输出或称短格式） MOV AL，43H</p>
+<p>​               MOV DX，61H</p>
+<p>​               OUT DX，AL</p>
+<p>注：换码指令 XLAT</p>
+<p>功能： （AL）←((BX)+(AL))</p>
+<p>3、地址传送指令<br> LEA、LDS、LES</p>
+<p>注意地址、地址单元内容、字节、字、双字的概念。</p>
+<p><strong>重点考试题型：</strong>注意根据数据段，画出数据段的数据存储分配示意图以及填写程序段指令旁边寄存器的值。</p>
+<p>4、标志寄存器传送指令  P57</p>
+<p>LAHF、SAHF、PUSHF、POPF</p>
+<p><strong>考试题型：</strong>1、执行下列指令序后，标志寄存器的CF、SF的值是（ B ）</p>
+<p>​      MOV AX，3968H</p>
+<p>​      SAHF</p>
+<p>0011 1001 0110 1000</p>
+<p>（A）0，0   （B）0，1  （C）1，0   （D）1，1</p>
+<p>5、类型转换指令 </p>
+<p>CBW、CWD</p>
+<p>CBW 将AL的符号位扩展到AH</p>
+<p>CWD 将AX的符号位扩展到DX</p>
+<p><strong>考试题型：</strong>1、执行下列指令后，寄存器DX的值是（  D  ）</p>
+<p>​       MOV AX，825AH</p>
+<p>​       CWD</p>
+<p>DX1111 1111 1111 1111（ FFFFH ）AX 1000 0010 0101 1010</p>
+<p>（A）0000H  （B）00FFH  （C）FF00H  （D）FFFFH</p>
+<p>6、算术指令（重点之中的重点内容）</p>
+<p>ADD、ADC、INC、SUB、SBB、DEC、NEG、CMP、TEST、MUL、IMUL、DIV、IDIV、A<strong>AA**</strong>、<strong><strong>AAS</strong></strong>、<strong><strong>DAA</strong></strong>、<strong><strong>DAS</strong></strong>、<strong><strong>AAM</strong></strong>、<strong>**AAD</strong></p>
+<p>考试题型：</p>
+<p>（1）、执行下列指令序列后，寄存器AX的值是（ C ）</p>
+<p>​     MOV AX，0308H</p>
+<p>​     AAD;AH*10+AL-&gt;AX AX=38</p>
+<p>​     MOV BL，9</p>
+<p>​     DIV BL</p>
+<p>38/9 AH=2 AL=4</p>
+<p>（A）0056H   （B）0038H   （C）0204H   （D）0402H</p>
+<p>（2）、执行下列指令序列后，寄存器AX的值是（ C  ）</p>
+<p>​     MOV AL，7</p>
+<p>​     MUL AL</p>
+<p>（A）0049H   （B）0007H   （C）0031H   （D）0707H</p>
+<p>（3）、执行下列指令序列后，寄存器AX的值是（  D ）</p>
+<p>​     MOV AX，0038H AX=56</p>
+<p>​     MOV BL，-9 //BL=256-9=247</p>
+<p>​     IDIV BL</p>
+<p>56/-9 AH=-2 AL=-6 </p>
+<p>（A）0206H   （B）0602H  （C）02FAH  （D）FEFAH</p>
+<p><strong>重点编程题或程序填空题：</strong>(详见BCD码运算实验2程序)</p>
+<p>多位数非压缩BCD码或压缩BCD码的加减法运算程序</p>
+<p>例：计算 3457895+1239877=？（<strong>十分重点</strong>）</p>
+<p>计算 87665-23478=?</p>
+<p>7、逻辑指令（按位运算）</p>
+<p>AND、OR、NOT、XOR、TEST</p>
+<p><strong>重点考试题型：</strong></p>
+<p>（1） 写出4条指令（单条指令）实现对累加器AX清零</p>
+<p>MOV AX, 0</p>
+<p>SUB AX, AX</p>
+<p>XOR AX, AX</p>
+<p>AND  AX, 0</p>
+<p>（2） 实现对AL寄存器的高4位与低4位互换</p>
+<p>MOV  CL, 4</p>
+<p>ROR  AL, CL</p>
+<p>（3） 实现对AL的高4位清零，低4位不变</p>
+<p>AND  AL, 0FH</p>
+<p>8、移位指令</p>
+<p>SHL、SHR、SAL、SAR、ROL、ROR、RCL、RCR</p>
+<p><strong>重点考试题型</strong></p>
+<p>（1） 实现AL的高4位与低4位互换</p>
+<p>（2） 利用移位指令实现对AL的乘2操作、除2操作。</p>
+<p>9、转移类指令</p>
+<p>JXXX 目标处</p>
+<p>（1） 无条件转移指令（段内、段间、直接、间接）</p>
+<p>JMP 标号</p>
+<p>（2） 有条件转移指令</p>
+<p>无符号数比较转移指令：JA/JNBE， JAE/JNB， JE/JZ ， JB/JNAE ，JBE/JNA</p>
+<p>有符号数转移指令：JG/JNLE，JGE/JNL， JE/JZ，JL/JNGE，JLE/JNG</p>
+<p>标志转移指令：JO, JNO, JS, JNS, JP/JPE(PF=1为偶转)，JNP/JPO(PF=0为奇转转)</p>
+<p>10、<strong>(**</strong>略<strong><strong>)</strong></strong>串处理指令**</p>
+<p>MOVS、CMPS、SCAS、LODS、STOS</p>
+<p>串操作指令前缀：REP、REPE/REPZ、REPNE/REPNZ</p>
+<p>重点知识复习：</p>
+<p>串操作指令操作前的准备工作：源串所在段送寄存器DS，源串起始偏移地址送SI；</p>
+<p>目标串所在段送寄存器ES，目标串偏移地址送DI；清方向CLD（保证地址增方向）；重复串操作的次数送寄存器CX。</p>
+<p><strong>考试重点题型（编程题）</strong>：在变量缓冲区A处有一串字符：abcde，现要求传送到内存缓冲区B处，传送完后，并显示B处字符串。</p>
+<p>程序清单：</p>
+<p>​    DATA1 SEGMENT</p>
+<p>​      A DB ‘abcde$’</p>
+<p>​      B DB 6 DUP(‘$’)</p>
+<p>​    DATA1 ENDS</p>
+<p>​    CODE SEGMENT</p>
+<p>​    ASSUME CS:CDE,DS:DATA,ES:DATA</p>
+<p>​    START:MOV AX, DATA ;装填DS、ES的值</p>
+<p>​       MOV DS, AX</p>
+<p>​       MOV ES, AX</p>
+<p>​       MOV CX, 6   ；传送字符数送CX</p>
+<p>​       LEA SI, A   ；源串首址送SI</p>
+<p>​       LEA DI, B   ；目标串首址送DI</p>
+<p>​       CLD      ；清地址方向，正向传送</p>
+<p>​       REP MOVSB  ；重复传送CX次</p>
+<p>​       LEA DX, B  ；显示B处字串</p>
+<p>​       MOV AH, 9</p>
+<p>​       INT 21H</p>
+<p>​       MOV AH, 4CH ；程序结束</p>
+<p>​       INT 21H</p>
+<p>​      CODE ENDS</p>
+<p>​      END START</p>
+<p><strong>习题**</strong>：<strong><strong>编程统计内存变量</strong></strong>A<strong><strong>处字符串中有多少个字符</strong></strong>‘<strong><strong>y’</strong></strong>？**</p>
+<p><strong>提示**</strong>：<strong><strong>利用串操作指令</strong></strong>SCASB<strong>**编程</strong>    </p>
+<p>10、控制转移类指令 P85~P95</p>
+<p>JMP  标号、形如JXX 标号 指令</p>
+<p>（1） 无符号数比较</p>
+<p>（2） 有符号数比较</p>
+<p>（3） 根据标志位值转移指令</p>
+<p>11、循环指令</p>
+<p>LOOP、LOOPZ/LOOPE 、 LOOPNE/LOOPNZ</p>
+<p>考试题型：（1）、编程计算S=1+2+3+…+100</p>
+<p>​     （2）、编程计算S=1×2+2×3+…+10×11</p>
+<p>12、处理机指令</p>
+<p>CLC、STC、CMC、CLI、STI、CLD、STD、NOP、HLT</p>
+<p>ESC 等</p>
+<p>13、子程序设计</p>
+<p>（1）子程序调用指令：CALL 子程序名</p>
+<p>（2）子程序返回主程序指令：RET</p>
+<p>（3）子程序的定义与调用格式，详见《实验3》、《实验4》</p>
+<p>必须搞清调用的书写格式：段内调用（同一个程序且在同一个段之内），段间调用（同一个程序文件中）、段间调用（不同程序文件间）</p>
+<p>14、中断调用</p>
+<p>（1）DOS中断调用格式或步骤</p>
+<p>第一步：置入口参数</p>
+<p>第二步：功能号送AH</p>
+<p>第三步：执行 INT 21H</p>
+<p>(2)必须掌握的DOS中断调用</p>
+<p>功能号：1、2、5、9、10、4CH</p>
+<p>（3）中断处理程序的入口地址，存放在内存最低端地址：即00000H~003FFH处，共1K字节，每个向量号占4字节，低字存放中断处理程序的IP值，高字存放中断处理程序的CS值。中断向量表可管理256个中断处理程序的入口地址，CS：IP值。中断向量号乘4得到该中断向量的IP与CS在中断向量表的位置。</p>
+<p>考试典型题：计算INT 13H 在中断向量表的位置，即向量号13H的IP存放的在中断向量表中的起始地址，向量号13H的CS存放在中断向量表中起始地址。</p>
+<p>（4） 中断处理程序的调用与返回</p>
+<p>调用：INT n  ; 中断返回 IRET</p>
+<p>15、作业P107~P116</p>
+<p><strong>第四部分</strong> <strong>汇编语言程序格式</strong></p>
+<p>1、伪操作</p>
+<p>（1）段定义的格式 </p>
+<p>段名  SEGMENT [定位类型] [组合类型] [使用类型][类别]</p>
+<p> ……</p>
+<p>段名  ENDS</p>
+<p><strong>定位类型**</strong>:** PARA (默认)，被16整除，段地址形如XXX0H;</p>
+<p>​     BYTE</p>
+<p>​     WORD</p>
+<p>​     PAGE 被256整除，段地址形如XX00H</p>
+<p><strong>组合类型</strong>：说明程序连接时段的合并方法，PRIVATE 私有段（默认），在连接时不与其它模块的同名段合并。PUBLIC 公有段，连接时，不同模块同名段连续接形成一个段。COMMON 连接时，不同模块的同名段重叠形成一个段。AT &lt;表达式&gt; 指定段地址值（但不能指定代码段）。MEMORY 与PUBLIC 同义。<strong>STACK:</strong>把不同模块中的同名段组合而形成一个堆栈段。</p>
+<p><strong>使用类型：</strong>只适用于386机型，USE16（默认） 使用16位寻址方式；USE32 使用32位寻址方式。</p>
+<p><strong>类别（**</strong>’CLASS’<strong><strong>）</strong></strong>:<strong>**在引号给出连接时组成段组的类型名，段不合并，但在连接后形成的装入模块中，可以把它们的位置靠在一起。</strong></p>
+<p><strong>例：定义一个**</strong>200<strong><strong>字节的堆栈段，段名</strong></strong>SABC<strong>**。</strong></p>
+<p>  <strong>SABC SEGMENT  STACK</strong></p>
+<p><strong>DW  100 DUP(?)</strong></p>
+<p>  <strong>SABC  ENDS</strong></p>
+<p>（2）数据定义伪指令：DB、DW、DD  </p>
+<p>数值返回操作符  （略）</p>
+<p>TYPE、SIZE、LENGTH、OFFSET、SEG</p>
+<p>2、汇编语言上机过程</p>
+<p>（1）汇编MASM5.0系统文件组成</p>
+<p>MASM.EXE  LINK.EXE   LIB.EXE  CREF.EXE</p>
+<p>EDIT.COM  DEBUG.COM 这些文件功能是什么？</p>
+<p>LIB.EXE 库管理程序，用于建立和管理汇编语言子程序库（.LIB 文件），库文件（.LIB）供连接生成.EXE文件时作为公用程序库调用。</p>
+<p>DEBUG.COM 调试程序，是调试汇编语言的有力工具，共提供了19条命令。（A、C、D、E、T、F、G、H、I、L、M、N、O、P、Q、R、S、T、U、W）</p>
+<p>（2） 汇编上机时可产生哪些文件？</p>
+<p>.ASM  .OBJ  .LST  .CRF .REF .MAP ,EXE</p>
+<p>这些文件是如何产生的？哪些是编辑产生的？哪些是汇编产生的？哪些是边接产生的？ 这些文件的是干什么的？</p>
+<p>.ASM文件：汇编语言源程序文件，用文本编辑工具编辑产生的。</p>
+<p>.OBJ文件：汇编生成的目标文件，它是通过汇编程序MASM.EXE对汇编语言源程序（.asm文件）进行汇编时生成的。</p>
+<p>.LST文件：列表文件，此文件是对汇编语言源程序进行汇编（运行MASM.EXE)时产生的(是汇编时输出文件的可选项），.LST文件包含源程序及注释、地址和目标码（即汇编后的目标程序），它是一种ASCII文件，可用文本编辑工具打开查阅。</p>
+<p>.CRF文件：交叉索引文件，在对源程序进行汇编时（运行MASM.EXE)产生的（是汇编时输出文件的可选项）。它是用来了解源程序中每个符号是在哪里定义的，哪些指令用到了这个符号，给出该指令的行号。注：要查阅.CRF文件内容，必须通过运行交叉索引程序（CREF.EXE）对交叉索引文件（.CRF）生成交叉索引列表文件（.REF)，再用文本编辑工具打开.REF文件查阅。注：交叉索引文件（.CRF）对较大的程序很有用，可以用于帮助查错。</p>
+<p>.REF 文件：交叉索引列表文件，它是运行交叉索引程序（CREF.EXE）产生的一个文件(是交叉索引程序运行的输出项)，具体是针对汇编生成的交叉索相文件（.CRF），然后再运行（CREF.EXE）生成交叉索引列表文件（.REF）。</p>
+<p>.MAP 文件：列表映象文件，它是运行连接程序LINK.EXE时产生的，即对汇编生成的目标文件.OBJ再连接生成可执行文件时生成的（是连接时输出文件的可选项）,。MAP文件提供了各段的名字、起始地址和长度以及程序入口地址。</p>
+<p>.EXE文件：可执行文件，连接生成的。具体运行连接程序LINK.EXE，针对汇编生成的目标文件（.OBJ），再连接生成（.EXE）可执行文件，它可在操作系统环境中双击鼠标或作为运行命令（或在提示符下，输入：文件名 回车）直接运行。</p>
+<p>（3） 汇编操作过程</p>
+<p>编辑、汇编、连接、运行（含调试运行）</p>
+<p>3、DEBUG上机过程及DEBUG命令</p>
+<p>（1）如何启动与退出DEBUG？</p>
+<p>（2）必须掌握的DEBUG命令</p>
+<p>A、G、T、D、E、Q、N、L、W、U 等</p>
+<p>第五部分  补充复习内容</p>
+<p>1、     宏的定义</p>
+<p>宏指令名 MACRO [参数表]</p>
+<p>  指令序列</p>
+<p>ENDM</p>
+<p>2、     宏的调用</p>
+<p>  宏指令名 [实在参数]</p>
+<p>3、     堆栈的定义</p>
+<p>例：定义一个具有100个字节空间的堆栈</p>
+<p>STACK  SEGMENT   <strong>STACK</strong></p>
+<p>​     DW 50 DUP（？）</p>
+<p>SATCK  ENDS</p>
+<p>4、     汇编语言程序的结束方式</p>
+<p>方法一：</p>
+<p>​    MOV AH，4CH</p>
+<p>   INT 21H</p>
+<p>方法二：（利用子程序设计的方法）</p>
+<p>CODE SEGMENT</p>
+<p>​    ASSUME CS：CDOE。DS：DATA</p>
+<p> 子程序名 PROC FAR</p>
+<p>​      PUSH DS</p>
+<p>​      XOR AX，AX</p>
+<p>​      PUSH AX</p>
+<p>​      指令序列</p>
+<p>​      ……</p>
+<p>​      RET</p>
+<p>子程序名 ENDP</p>
+<p>CODE ENDS</p>
+<p>​    END 子程序名</p>
+<p>第5章      重点编程题</p>
+<p>1、键盘输入一串字符，屏幕显示该字符串</p>
+<p>2、将一串字符中的小字字符全部转换成大写字符并输出。</p>
+<p>3、将二进制数：10110011B转换成十进制、八进制和十六进制输出</p>
+<p>（本程序参看做实验中的宏：OUTP）</p>
+<p>4、计算126754+66435=?  912675-22356=？并输出结果</p>
+<p>5、S=1+2+3+…+100 并输出结果</p>
+<p>6、S=1！+2！+3！+…5! 并输出结果</p>
+<p>7、S=12+22+32+…+102 并输出结果</p>
+<p>8、S=1×2+2×3+…+10×11并输出结果</p>
+<p>9、计算S=8！</p>
+<p>10、计算100及其以内奇数和与偶数和。</p>
+<p>​                             </p>
+<p>特别重点题：填写下列程序指令旁边寄存器的值,假定数据段DATA汇编后的段地址为1234H。</p>
+<p>DATA SEGMENT</p>
+<p>A DB 123H ,’123’</p>
+<p>B DW  345H, ‘CD’</p>
+<p>C DD  56789H</p>
+<p>D DW B+3  ;D存放B+3的偏移地址</p>
+<p>E DD C+2  ；E的低字存放C+2的偏移地址，E的高字存放C+2所在段的段地址。</p>
+<p>DATA ENDS</p>
+<p>CODE SEGMENT</p>
+<p>ASSUME CS:CODE,DS:DATA</p>
+<p>START:MOV AX, DATA      ; AX=( 1234H )</p>
+<p>​    MOV DS,  AX</p>
+<p>​    MOV AX, WORD PTR A+2; AX=(3101H)</p>
+<p>​    MOV AX, B+1      ;  AX=(4403H)</p>
+<p>​    MOV AL, BYTE PTR C+3  ;  AL=( 00H)</p>
+<p>​    MOV AX, D+1       ;AX=( 0B00H)</p>
+<p>​    LEA AX, B       ;  AX=(0005H )</p>
+<p>​    LDS AX, C+1     ; AX=( 0567H  ), DS=(0800H )</p>
+<p>​    LES  AX, E     ; AX=(000BH ), ES=(1234H )</p>
+<p>​    MOV AH,4CH</p>
+<p>​    INT 21H</p>
+<p>CODE ENDS</p>
+<p>   END START</p>
+<p><strong>DATA**</strong>段的存储示意图见下表：**</p>
+<p>​       段地址：1234H</p>
+<table>
+<thead>
+<tr>
+<th>存储单元偏移地址</th>
+<th>存储字节单元内容</th>
+<th>变量名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000</td>
+<td>23H</td>
+<td>A</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>01H</td>
+<td></td>
+</tr>
+<tr>
+<td>0002</td>
+<td>31H</td>
+<td></td>
+</tr>
+<tr>
+<td>0003</td>
+<td>32H</td>
+<td></td>
+</tr>
+<tr>
+<td>0004</td>
+<td>33H</td>
+<td></td>
+</tr>
+<tr>
+<td>0005</td>
+<td>45H</td>
+<td>B</td>
+</tr>
+<tr>
+<td>0006</td>
+<td>03H</td>
+<td></td>
+</tr>
+<tr>
+<td>0007</td>
+<td>44H（即‘D’）</td>
+<td></td>
+</tr>
+<tr>
+<td>0008</td>
+<td>43H（即‘C’）</td>
+<td></td>
+</tr>
+<tr>
+<td>0009</td>
+<td>89H</td>
+<td>C</td>
+</tr>
+<tr>
+<td>000A</td>
+<td>67H</td>
+<td></td>
+</tr>
+<tr>
+<td>000B</td>
+<td>05H</td>
+<td></td>
+</tr>
+<tr>
+<td>000C</td>
+<td>00H</td>
+<td></td>
+</tr>
+<tr>
+<td>000D</td>
+<td>08H</td>
+<td>D</td>
+</tr>
+<tr>
+<td>000E</td>
+<td>00H</td>
+<td></td>
+</tr>
+<tr>
+<td>000F</td>
+<td>0BH</td>
+<td>E</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>00H</td>
+<td></td>
+</tr>
+<tr>
+<td>0011</td>
+<td>34H</td>
+<td></td>
+</tr>
+<tr>
+<td>0012</td>
+<td>12H</td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A43/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4428,121 +5098,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AF%84%E5%AD%98%E5%99%A8%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AF%84%E5%AD%98%E5%99%A8%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">汇编语言寄存器应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-01-01 20:19:10" itemprop="dateCreated datePublished" datetime="2021-01-01T20:19:10+08:00">2021-01-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-02 10:00:44" itemprop="dateModified" datetime="2021-01-02T10:00:44+08:00">2021-01-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>综合分析题</p>
-<p>已知汇编语言程序：dzy.asm 清单如下：</p>
-<p>（一）填写程序中指令旁边寄存器的值</p>
-<p>DATA SEGMENT AT 1234H；<strong>AT是组合类型bai AT 表达式 它表示当前段应du该按绝对地址定zhi位，其段地址即为表达式dao之值。</strong></p>
-<p>A DB ‘A’，23H，’123’</p>
-<p>B DW ‘ab’，1234H，22H</p>
-<p>C DD  44556677H</p>
-<p>D DW B+1  ；D存放B+1所在段的偏移地址</p>
-<p>E DD  C+2  ；E的低字存放C+2所在段的偏移地址，E的高字存放C+2所在段的段地址</p>
-<p>DATA ENDS</p>
-<p>STACK SEGMENT  STACK ’STACK‘</p>
-<p>DW 200 DUP（？）</p>
-<p>STACK ENDS</p>
-<p>CODE SEGMENT PAGE PRIVATE USE16 ‘CODE’</p>
-<p>ASSUME CS：CODE，DS：DATA，SS：STACK</p>
-<p>START：MOV AX， DATA        ；AX=（  ①  ）</p>
-<p>​    MOV DS， AX；         </p>
-<p>​    <strong>MOV AX， WORD PTR A+2   ；AX=（  ②  ）</strong></p>
-<p>​    LEA  AX，B+2          ；AX=（  ③ ）</p>
-<p>​    MOV DX，OFFSET B+2      ；DX=（ ④  ）</p>
-<p>​    MOV AX， WORD PTR C+1   ；AX=（  ⑤ ）</p>
-<p>​    MOV AX， D          ；AX=（  ⑥  ）</p>
-<p>​    MOV AX， B+1         ；AX=（  ⑦ ）</p>
-<p>​    MOV AL，BYTE PTR C     ；AL=（  ⑧  ）</p>
-<p>​    LDS  DX，E           ；DX=（  ⑨ ），DS=（ ⑩  ）</p>
-<p>​    MOV AH, 4CH</p>
-<p>​    INT 21H</p>
-<p>​    CODE ENDS</p>
-<p>​    END START</p>
-<p><a href="javascript:void(0)">正确答案：</a></p>
-<p><em>第一空：</em> 1234H<br><strong><em>第二空：</em> 3231H</strong><br><em>第三空：</em> 0007H<br><em>第四空：</em> 0007H<br><em>第五空：</em> 5566H<br><em>第六空：</em> 0006H<br><em>第七空：</em> 3461H<br><em>第八空：</em> 77H<br><em>第九空：</em> 000DH<br><em>第十空：</em> 1234H</p>
-<p>我的答案：得分： 4.0分</p>
-<p><em>第一空：</em> 1234H</p>
-<p><em>第二空：</em> 0004H</p>
-<p><em>第三空：</em> 0034H</p>
-<p><em>第四空：</em> 0007H</p>
-<p><em>第五空：</em> 0013H</p>
-<p><em>第六空：</em> 0006H</p>
-<p><em>第七空：</em> 0006H</p>
-<p><em>第八空：</em> 11H</p>
-<p><em>第九空：</em> 0013H</p>
-<p><em>第十空：</em> 1234H</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -4612,7 +5167,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">172</span>
+          <span class="site-state-item-count">173</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
