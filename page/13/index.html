@@ -155,6 +155,392 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day22%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day22%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记22</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:11:56" itemprop="dateModified" datetime="2020-12-23T23:11:56+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、File<br>2、递归</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01IO技术概述.avi（02:49）<br>    * A:IO技术概述<br>        * a: Output<br>            * 把内存中的数据存储到持久化设备上这个动作称为输出（写）Output操作<br>        * b: Input<br>            * 把持久设备上的数据读取到内存中的这个动作称为输入（读）Input操作<br>        * c: IO操作<br>            * 把上面的这种输入和输出动作称为IO操作</p>
+<p>###02File类的概述和作用<br>    * A:File类的概述和作用<br>        * a: File的概念<br>            * File类是文件和目录路径名的抽象表示形式<br>            * Java中把文件或者目录（文件夹）都封装成File对象<br>            * 我们要去操作硬盘上的文件，或者文件夹只要找到File这个类即可</p>
+<p>###03File类静态的成员变量<br>    * A:File类静态的成员变量<br>        * a: pathSeparator<br>            * 与系统有关的路径分隔符，为了方便，它被表示为一个字符串<br>        * b: separator<br>            * 与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串</p>
+<pre><code>* c: 案例代码
+
+    /*
+     *  java.io.File
+     *    将操作系统中的,文件,目录(文件夹),路径,封装成File对象
+     *    提供方法,操作系统中的内容
+     *    File与系统无关的类
+     *    文件 file
+     *    目录 directory
+     *    路径 path
+     */
+    public class FileDemo {
+        public static void main(String[] args) {
+            //File类静态成员变量
+            //与系统有关的路径分隔符
+            String separator = File.pathSeparator;
+            System.out.println(separator);// 是一个分号,目录的分割(window中环境变量配置各个路径用分号分割，表示一个完整的路径结束)  Linux中是冒号 :
+
+            //与系统有关的默认名称分隔符
+            separator = File.separator;
+            System.out.println(separator);// 向右 \  目录名称分割  Linux / 
+        }
+    }</code></pre><p>​    </p>
+<p>###04File类构造方法_1<br>    * A: File类构造方法_1<br>        * a: File(String pathname)<br>            * 通过将给定路径名字符串转换为一个File对象,之后可以使用File中的方法<br>            * windows中的路径或文件名不区分大小写<br>        * d: 案例代码<br>            public class FileDemo1 {<br>                public static void main(String[] args) {<br>                    function();<br>                }<br>                /*<br>                 *  File(String pathname)<br>                 *  传递路径名: 可以写到文件夹,可以写到一个文件<br>                 *  c:\abc   c:\abc\Demo.java<br>                 *  将路径封装File类型对象<br>                 */<br>                public static void function(){<br>                    File file = new File(“d:\eclipse”);<br>                    System.out.println(file);<br>                }<br>            }</p>
+<p>###05相对路径和绝对路径<br>    * A: 相对路径和绝对路径<br>        * a: 绝对路径<br>            * 绝对路径是一个固定的路径,从盘符开始<br>        * b: 相对路径<br>            * 相对路径相对于某个位置,在eclipse下是指当前项目下<br>        * c: 路径<br>                绝对路径<br>                    在系统中具有唯一性<br>                    c:\windows\system32<br>                相对路径<br>                    表示路径之间的关系<br>                    D:\develop\Java\jdk1.7.0_72\bin<br>                    D:\develop\Java\jre7<br>                    路径之间关系<br>                        Java 父目录是D:\develop<br>                        Java 子目录是：jdk1.7.0_72<br>                    父路径是 唯一性<br>                    子目录是可以多个</p>
+<p>​<br>###06File类的构造方法_2<br>    * A: File类的构造方法_2<br>        * a:File(String parent, String child)<br>            * 根据 parent 路径名字符串和 child 路径名字符串创建一个新 File 对象</p>
+<pre><code>* b: File(File parent, String child)
+
+* c: 案例代码
+public class FileDemo1 {
+    public static void main(String[] args) {
+        function_2();
+    }
+    /*
+     *  File(File parent,String child)
+     *  传递路径,传递File类型父路径,字符串子路径
+     *  好处: 父路径是File类型,父路径可以直接调用File类方法
+     */
+    public static void function_2(){
+        File parent = new File(&quot;d:&quot;);
+        File file = new File(parent,&quot;eclipse&quot;);
+        System.out.println(file);
+    }
+
+    /*
+     *  File(String parent,String child)
+     *  传递路径,传递字符串父路径,字符串子路径
+     *  好处: 单独操作父路径和子路径
+     */
+    public static void function_1(){
+        File file = new File(&quot;d:&quot;,&quot;eclipse&quot;);
+        System.out.println(file);
+    }
+}</code></pre><p>​<br>###07File类创建文件功能<br>    * A: File类创建文件功能<br>        * a: public boolean createNewFile()<br>            * 创建文件 如果存在这样的文件，就不创建了</p>
+<pre><code>* b: 案例代码
+    public class FileDemo2 {
+        public static void main(String[] args)throws IOException {
+            function();
+        }                        
+        /*
+         *  File创建文件的功能
+         *  boolean createNewFile()
+         *  创建的文件路径和文件名,在File构造方法中给出
+         *  文件已经存在了,不在创建
+         */
+        public static void function()throws IOException{
+            File file = new File(&quot;c:\\a.txt&quot;);
+            boolean b = file.createNewFile();
+            System.out.println(b);
+        }
+    }</code></pre><p>​<br>###08File类创建目录功能<br>    * A: File类创建目录功能<br>        * a: 创建目录<br>            * public boolean mkdir():创建文件夹 如果存在这样的文件夹，就不创建了<br>            * public boolean mkdirs():创建文件夹,如果父文件夹不存在，会帮你创建出来<br>        * b: 案例代码<br>            public class FileDemo2 {<br>                public static void main(String[] args)throws IOException {<br>                    function_1();<br>                }<br>                /*<br>                 *  File创建文件夹功能<br>                 *  boolean mkdirs() 创建多层文件夹<br>                 *  创建的路径也在File构造方法中给出<br>                 *  文件夹已经存在了,不在创建<br>                 */<br>                public static void function_1(){<br>                    File file = new File(“c:\abc”);<br>                    boolean b = file.mkdirs();<br>                    System.out.println(b);<br>                }<br>            }</p>
+<p>###09File类删除功能<br>    * A: File类删除功能<br>        * a: 删除功能<br>            * public boolean delete():删除文件或者文件夹<br>    * B: 案例代码<br>        public class FileDemo2 {<br>            public static void main(String[] args)throws IOException {<br>                function_2();<br>            }<br>            /*<br>             *  File类的删除功能<br>             *  boolean delete()<br>             *  删除的文件或者是文件夹,在File构造方法中给出<br>             *  删除成功返回true,删除失败返回false<br>             *  删除方法,不走回收站,直接从硬盘中删除<br>             *  删除有风险,运行需谨慎<br>             */<br>            public static void function_2(){<br>                File file = new File(“c:\a.txt”);<br>                boolean b = file.delete();<br>                System.out.println(b);<br>            }<br>        }</p>
+<p>###10File类获取功能<br>    * A：File类获取功能<br>        * a: 方法介绍<br>            * String getName(): 返回路径中表示的文件或者文件夹名<br>                * 获取路径中的最后部分的名字<br>            * long length(): 返回路径中表示的文件的字节数<br>            * String getAbsolutePath(): 获取绝对路径,返回String对象<br>            * File   getAbsoluteFile() : 获取绝对路径,返回File对象<br>                * eclipse环境中,写一个相对路径,绝对位置工程根目录<br>            * String getParent(): 获取父路径,返回String对象<br>            * File getParentFile(): 获取父路径,返回File对象</p>
+<pre><code>* b: 案例代码
+
+    public class FileDemo3 {
+        public static void main(String[] args) {
+            function_3();
+        }
+        /*
+         * File类的获取功能
+         * String getParent() 返回String对象
+         * File getParentFile()返回File对象
+         * 获取父路径
+         */
+        public static void function_3(){
+            File file = new File(&quot;d:\\eclipse\\eclipse.exe&quot;);
+            File parent = file.getParentFile();
+            System.out.println(parent);
+        }
+
+        /*
+         * File类获取功能
+         * String getAbsolutePath() 返回String对象
+         * File   getAbsoluteFile() 返回File对象
+         * 获取绝对路径
+         * eclipse环境中,写的是一个相对路径,绝对位置工程根目录
+         */
+        public static void function_2(){
+            File file = new File(&quot;src&quot;);
+            File absolute = file.getAbsoluteFile();
+            System.out.println(absolute);
+        }
+
+        /*
+         * File类获取功能
+         * long length()
+         * 返回路径中表示的文件的字节数
+         */
+        public static void function_1(){
+            File file = new File(&quot;d:\\eclipse\\eclipse.exe&quot;);
+            long length = file.length();
+            System.out.println(length);
+        }
+
+        /*
+         *  File类的获取功能
+         *  String getName()
+         *  返回路径中表示的文件或者文件夹名
+         *  获取路径中的最后部分的名字
+         */
+        public static void function(){
+            File file = new File(&quot;d:\\eclipse\\eclipse.exe&quot;);
+            String name = file.getName();
+            System.out.println(name);
+
+            /*String path = file.getPath();
+            System.out.println(path);*/
+    //        System.out.println(file);
+        }
+    }</code></pre><p>​<br>###11File类判断功能<br>    * A: File类判断功能<br>        * a: 方法介绍<br>            * boolean exists(): 判断File构造方法中封装路径是否存在<br>                * 存在返回true,不存在返回false<br>            * boolean isDirectory(): 判断File构造方法中封装的路径是不是文件夹<br>                * 如果是文件夹,返回true,不是文件返回false<br>            * boolean isFile(): 判断File构造方法中封装的路径是不是文件<br>                * 如果是文件,返回true,不是文件返回false</p>
+<pre><code>* b: 案例代码
+    public class FileDemo4 {
+        public static void main(String[] args) {
+            function_1();
+        }
+        /*
+         *  File判断功能
+         *  boolean isDirectory()
+         *  判断File构造方法中封装的路径是不是文件夹
+         *  如果是文件夹,返回true,不是文件返回false
+         *  
+         *  boolean isFile()
+         *  判断File构造方法中封装的路径是不是文件
+         */
+        public static void function_1(){
+            File file = new File(&quot;d:\\eclipse\\eclipse.exe&quot;);
+            if(file.exists()){
+                boolean b = file.isDirectory();
+                System.out.println(b);
+            }
+        }
+
+        /*
+         *  File判断功能
+         *  boolean exists()
+         *  判断File构造方法中封装路径是否存在
+         *  存在返回true,不存在返回false
+         */
+        public static void function(){
+            File file = new File(&quot;src&quot;);
+            boolean b = file.exists();
+            System.out.println(b);
+        }
+    }</code></pre><p>###12File类list获取功能<br>    * A: File类list获取功能<br>        * a: 方法介绍<br>            * String[] list()：获取到File构造方法中封装的路径中的文件和文件夹名 (遍历一个目录)<br>                * 返回只有名字<br>            * File[] listFiles()：获取到,File构造方法中封装的路径中的文件和文件夹名 (遍历一个目录)<br>                * 返回的是目录或者文件的全路径<br>            * static File[] listRoots(): 列出可用的文件系统根 </p>
+<pre><code>* b: 案例代码
+    public class FileDemo {
+        public static void main(String[] args) {
+            function_2();
+        }
+        public static void function_2(){
+            //获取系统中的所有根目录
+            File[] fileArr = File.listRoots();
+            for(File f : fileArr){
+                System.out.println(f);
+            }
+        }
+
+        /*
+         *  File类的获取功能
+         *  File[] listFiles()
+         *  获取到,File构造方法中封装的路径中的文件和文件夹名 (遍历一个目录)
+         *  返回的是目录或者文件的全路径
+         */
+        public static void function_1(){
+            File file = new File(&quot;d:\\eclipse&quot;);
+            File[] fileArr = file.listFiles();
+            for(File f : fileArr){
+                System.out.println(f);
+            }
+        }
+
+        /*
+         *  File类的获取功能
+         *  String[] list()
+         *  获取到,File构造方法中封装的路径中的文件和文件夹名 (遍历一个目录)
+         *  返回只有名字
+         */
+        public static void function(){
+            File file = new File(&quot;c:&quot;);
+            String[] strArr = file.list();
+            System.out.println(strArr.length);
+            for(String str : strArr){
+                System.out.println(str);
+            }
+        }
+    }</code></pre><p>###13文件过滤器<br>    * A: 文件过滤器<br>        * a: 作用<br>            * 过滤一个目录下的指定扩展名的文件，或者包含某些关键字的文件夹</p>
+<pre><code>* b: 方法介绍
+    * public String[] list(FilenameFilter filter)
+    * public File[] listFiles(FileFilter filter)
+
+* C: 案例代码    
+    /*
+     *  自定义过滤器
+     *  实现FileFilter接口,重写抽象方法
+     */
+    public class MyFilter implements FileFilter{
+        public boolean accept(File pathname)  {
+            /*
+             * pathname 接受到的也是文件的全路径
+             * c:\\demo\\1.txt
+             * 对路径进行判断,如果是java文件,返回true,不是java文件,返回false
+             * 文件的后缀结尾是.java
+             */
+            //String name = pathname.getName();
+            return pathname.getName().endsWith(&quot;.java&quot;);
+
+        }
+    }
+
+    /*
+     *  File类的获取,文件获取过滤器
+     *  遍历目录的时候,可以根据需要,只获取满足条件的文件
+     *  遍历目录方法 listFiles()重载形式
+     *  listFiles(FileFilter filter)接口类型
+     *  传递FileFilter接口的实现类
+     *  自定义FileFilter接口实现类,重写抽象方法,
+     *  接口实现类对象传递到遍历方法listFiles
+     */
+    public class FileDemo1 {
+        public static void main(String[] args) {
+            File file = new File(&quot;c:\\demo&quot;);
+            File[] fileArr = file.listFiles(new MyFilter());
+            for(File f : fileArr){
+                System.out.println(f);
+            }
+        }
+    }</code></pre><p>###14文件过滤器_原理分析<br>    * A:文件过滤器_原理分析<br>        * listFiles()遍历目录的同时，获取到了文件名全路径，调用过滤器的方法accept，将获取到的路径传递给accept方法的参数pathname<br>        * accept方法接收了参数pathname，参数是listFiles传递来的<br>        * 在accept方法中，进行判断，如果这个路径是Java文件，返回true，走着返回false<br>        * 一旦方法返回了true<br>        * listFiles将路径保存到File数组中</p>
+<p>###15递归遍历全目录<br>    * A: 递归遍历全目录<br>        * a: 案例代码<br>            /*<br>             *  对一个目录的下的所有内容,进行完全的遍历<br>             *  编程技巧,方法的递归调用,自己调用自己<br>             <em>/<br>            public class FileDemo {<br>                public static void main(String[] args) {<br>                    File dir = new File(“d:\eclipse”);<br>                    getAllDir(dir);<br>                }<br>                /</em><br>                 *  定义方法,实现目录的全遍历<br>                 */<br>                public static void getAllDir(File dir){<br>                    System.out.println(dir);<br>                    //调用方法listFiles()对目录,dir进行遍历<br>                    File[] fileArr = dir.listFiles();<br>                    for(File f : fileArr){<br>                        //判断变量f表示的路径是不是文件夹<br>                        if(f.isDirectory()){<br>                            //是一个目录,就要去遍历这个目录<br>                            //本方法,getAllDir,就是给个目录去遍历<br>                            //继续调用getAllDir,传递他目录<br>                            getAllDir(f);<br>                        }else{<br>                            System.out.println(f);<br>                        }<br>                    }<br>                }<br>            }</p>
+<p>​<br>###16递归概念和注意事项<br>    * A:递归概念和注意事项<br>        * a: 递归概念<br>            * 递归，指在当前方法内调用自己的这种现象<br>            * 递归分为两种，直接递归和间接递归<br>            * 直接递归称为方法自身调用自己。间接递归可以A方法调用B方法，B方法调用C方法，C方法调用A方法<br>        * b: 注意事项<br>            * 递归一定要有出口, 必须可以让程序停下<br>            * 递归次数不能过多<br>            * 构造方法,禁止递归</p>
+<p>###17递归求和计算<br>    * A: 递归求和计算<br>        * a: 题目分析<br>            * 1+2+3+…+(n-1)+n:求1到n的和<br>            * 总结规律：1到n的和等于1到(n-1)的和再加n<br>            * getSum(n-1)+ n<br>            * 递归出口：getSum(1) return 1;</p>
+<pre><code>* b: 案例代码    
+    /*
+     *  方法的递归调用
+     *    方法自己调用自己
+     *  适合于,方法中运算的主体不变,但是运行的时候,参与运行的方法参数会变化
+     *  注意:
+     *     递归一定要有出口, 必须可以让程序停下
+     *     递归次数不能过多
+     *     构造方法,禁止递归
+     */
+    public class DiGuiDemo {
+        public static void main(String[] args) {
+            int sum = getSum(3);
+            System.out.println(sum);
+        }</code></pre><p>​<br>                /*<br>                 *  计算 1+2+3+100和 = 5050<br>                 *  计算规律:<br>                 *    n+(n-1)+(n-2)<br>                 *    100+(100-1)+(99-1)+…1<br>                 */<br>                public static int getSum(int n){<br>                    if( n == 1)<br>                        return 1;<br>                    return n + getSum(n-1);<br>                }</p>
+<pre><code>}</code></pre><p>###18递归求阶乘<br>    * A: 递归求和计算<br>        * a: 题目分析<br>            * 5!=5<em>4</em>3<em>2</em>1<br>            *   =5<em>4!<br>            * 4!=4<em>3!<br>            * 3!=3</em>2!<br>            * 2!=2*1!<br>            * 1!=1<br>            * n!=n</em>(n-1)!<br>            * 递归出口：n<em>getJieCheng(n-1):  getJieCheng(1) return 1;<br>        * b: 案例代码<br>            /</em><br>             *  方法的递归调用<br>             *    方法自己调用自己<br>             *  适合于,方法中运算的主体不变,但是运行的时候,参与运行的方法参数会变化<br>             *  注意:<br>             *     递归一定要有出口, 必须可以让程序停下<br>             *     递归次数不能过多<br>             *     构造方法,禁止递归<br>             */<br>            public class DiGuiDemo {<br>                public static void main(String[] args) {<br>                    System.out.println(getJieCheng(5));</p>
+<pre><code>    }
+
+    /* 
+     *  计算阶乘 5!
+     *   5*4*3*2*1
+     */
+    public static int getJieCheng(int n){
+        if ( n == 1)
+            return 1;
+        return n * getJieCheng(n-1);
+    }                                
+}</code></pre><p>###19递归计算斐波那契数列<br>    * A: 递归计算斐波那契数列<br>        * a：题目分析<br>            * 1 1 2 3 5 8 13 21<br>            * 从第三项开始，后面的每一项都等于前面两项的和，第一项和第二项的值为1，作为程序的出口<br>        * b: 案例代码<br>            /*<br>             *  方法的递归调用<br>             *    方法自己调用自己<br>             *  适合于,方法中运算的主体不变,但是运行的时候,参与运行的方法参数会变化<br>             *  注意:<br>             *     递归一定要有出口, 必须可以让程序停下<br>             *     递归次数不能过多<br>             *     构造方法,禁止递归<br>             <em>/<br>            public class DiGuiDemo {<br>                public static void main(String[] args) {<br>                    System.out.println(getFBNQ(12));<br>                }<br>                /</em><br>                 *  方法递归,计算斐波那契数列<br>                 *<br>                 */<br>                public static int getFBNQ(int month){<br>                    if( month == 1)<br>                        return 1;<br>                    if( month == 2)<br>                        return 1;<br>                    return getFBNQ(month-1)+getFBNQ(month-2);<br>                }<br>            }<br>###20遍历目录下的所有java文件<br>    * A: 遍历目录下的所有java文件<br>        * a: 案例代码<br>            public class MyJavaFilter implements FileFilter {<br>                public boolean accept(File pathname) {<br>                    //判断获取的是目录,直接返回true<br>                    if(pathname.isDirectory())<br>                        return true;<br>                    return pathname.getName().toLowerCase().endsWith(“.java”);<br>                }</p>
+<pre><code>}
+/*
+ *  遍历目录,获取目录下的所有.java文件
+ *  遍历多级目录,方法递归实现
+ *  遍历的过程中,使用过滤器
+ */
+public class FileDemo1 {
+    public static void main(String[] args) {
+        getAllJava(new File(&quot;c:\\demo&quot;));
+//        new File(&quot;c:\\demo&quot;).delete();
+    }
+    /*
+     * 定义方法,实现遍历指定目录
+     * 获取目录中所有的.java文件
+     */
+    public static void getAllJava(File dir){
+        //调用File对象方法listFiles()获取,加入过滤器
+        File[] fileArr = dir.listFiles(new MyJavaFilter());
+        for(File f : fileArr){
+            //对f路径,判断是不是文件夹
+            if(f.isDirectory()){
+                //递归进入文件夹遍历
+                getAllJava(f);
+            }else{
+                System.out.println(f);
+            }
+        }
+    }
+}</code></pre><p>###21总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day21%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2919,449 +3305,6 @@ this.jiangJin = jiangJin;</code></pre><p>  }</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day13%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day13%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记13</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:08:17" itemprop="dateModified" datetime="2020-12-23T23:08:17+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、final 关键字<br>2、static 关键字<br>3、匿名对象<br>4、内部类<br>5、包的声明与访问<br>6、访问修饰符<br>7、代码块</p>
-<p>第一节课<br>###01(面向对象)final关键字概念.avi                               02:20<br>###02(面向对象)final修饰类.avi                                    04:25<br>###03(面向对象)final修饰方法.avi                                 04:01<br>###04(面向对象)final修饰局部变量.avi                             05:57<br>###05(面向对象)final修饰成员变量.avi                              10:04<br>###06(面向对象)static的概念.avi                                 09:28</p>
-<p>第二节课<br>###07(面向对象)static修饰的对象特有数据.avi                      06:53<br>###08(面向对象)static的内存图.avi                               14:09<br>###09(面向对象)static注意事项_静态不能直接调用非静态.avi         08:02<br>###10(面向对象)static静态的使用场景.avi                            08:14<br>###11(面向对象)对象中的静态调用.avi                              06:45<br>###12(面向对象)定义静态常量.avi                                  03:44</p>
-<p>第三节课<br>###13(面向对象)匿名对象.avi                                      12:46<br>###14(面向对象)内部类.avi                                       03:34<br>###15(面向对象)成员内部类的调用格式.avi                         09:19<br>###16(面向对象)成员内部类的同名变量调用.avi                     02:59<br>###17(面向对象)局部内部类.avi                                  07:18<br>###18(面向对象)匿名内部类.avi                                      12:22 </p>
-<p>第四节课<br>###19(面向对象)匿名内部类_2.avi                                 04:19<br>###20(面向对象)包的概念.avi                                      02:29<br>###21(面向对象)导入包.avi                                     06:48<br>###22(面向对象)权限修饰符.avi                                    12:47<br>###23(面向对象)代码块.avi                                      05:17</p>
-<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01final关键字概念<br>    * A: 概述<br>            继承的出现提高了代码的复用性，并方便开发。但随之也有问题，有些类在描述完之后，不想被继承，<br>            或者有些类中的部分方法功能是固定的，不想让子类重写。可是当子类继承了这些特殊类之后，<br>            就可以对其中的方法进行重写，那怎么解决呢？<br>            要解决上述的这些问题，需要使用到一个关键字final，final的意思为最终，不可变。<br>            final是个修饰符，它可以用来修饰类，类的成员，以及局部变量。</p>
-<p>###02final修饰类义<br>    * A: final 修饰类<br>            final修饰类不可以被继承，但是可以继承其他类。<br>    * B: 案例<br>            class Yy {}<br>            final class Fu extends Yy{} //可以继承Yy类<br>            class Zi extends Fu{} //不能继承Fu类</p>
-<p>​<br>​<br>###03final修饰方法<br>    * A: final修饰方法<br>                final修饰的方法不可以被覆盖,但父类中没有被final修饰方法，子类覆盖后可以加final。<br>    * B: 案例<br>             class Fu {<br>                // final修饰的方法，不可以被覆盖，但可以继承使用<br>                public final void method1(){}<br>                public void method2(){}<br>            }<br>            class Zi extends Fu {<br>                //重写method2方法<br>                public final void method2(){}<br>            }</p>
-<p>###04final修饰局部变量<br>    * A:修饰基本数据类型变量<br>        final修饰的变量称为常量，这些变量只能赋值一次</p>
-<pre><code>* B:案例1
-        final int i = 20;
-        i = 30; //赋值报错，final修饰的变量只能赋值一次
-
-* C: 修饰引用数据类型
-        引用类型的变量值为对象地址值，地址值不能更改，但是地址内的对象属性值可以修改
-
-* D: 修饰引用数据类型
-        final Person p = new Person();
-        Person p2 = new Person();
-        p = p2; //final修饰的变量p，所记录的地址值不能改变
-        p.name = &quot;小明&quot;;//可以更改p对象中name属性值
-        p不能为别的对象，而p对象中的name或age属性值可更改。</code></pre><p>​<br>###05final修饰成员变量<br>    * A: 修饰成员变量<br>         修饰成员变量，需要在创建对象前赋值，否则报错。(当没有显式赋值时，多个构造方法的均需要为其赋值。)</p>
-<pre><code>* B: 案例
-        class Demo {
-            //直接赋值
-            final int m = 100;
-
-            //final修饰的成员变量，需要在创建对象前赋值，否则报错。
-            final int n; 
-            public Demo(){
-                //可以在创建对象时所调用的构造方法中，为变量n赋值
-                n = 2016;
-            }
-        }</code></pre><p>###06static的概念<br>    * A：概念<br>        当在定义类的时候，类中都会有相应的属性和方法。而属性和方法都是通过创建本类对象调用的。<br>        当在调用对象的某个方法时，这个方法没有访问到对象的特有数据时，方法创建这个对象有些多余。<br>        可是不创建对象，方法又调用不了，这时就会想，那么我们能不能不创建对象，就可以调用方法呢？<br>        可以的，我们可以通过static关键字来实现。static它是静态修饰符，一般用来修饰类中的成员。</p>
-<p>==============================第二节课开始====================================    </p>
-<p>###07static修饰的对象特有数据<br>    * A：特点1:<br>            被static修饰的成员变量属于类，不属于这个类的某个对象。<br>            （也就是说，多个对象在访问或修改static修饰的成员变量时，其中一个对象将static成员变量值进行了修改，<br>            其他对象中的static成员变量值跟着改变，即多个对象共享同一个static成员变量）<br>    * B: 代码演示<br>            class Demo {<br>                public static int num = 100;<br>            }</p>
-<pre><code>class Test {
-    public static void main(String[] args) {
-        Demo d1 = new Demo();
-        Demo d2 = new Demo();
-        d1.num = 200;
-        System.out.println(d1.num); //结果为200
-        System.out.println(d2.num); //结果为200
-    }
-}</code></pre><p>​    </p>
-<p>###08static的内存图<br>    * A: 略<br>            参考day13_source 静态的内存图.jpg</p>
-<p>​<br>###09static注意事项_静态不能直接调用非静态<br>    * A: 注意事项<br>            被static修饰的成员可以并且建议通过类名直接访问。</p>
-<pre><code>* B: 访问静态成员的格式：
-        类名.静态成员变量名
-        类名.静态成员方法名(参数)
-        对象名.静态成员变量名             ------不建议使用该方式，会出现警告
-        对象名.静态成员方法名(参数)     ------不建议使用该方式，会出现警告
-
-* C: 代码演示
-        class Demo {
-            //静态成员变量
-            public static int num = 100;
-            //静态方法
-            public static void method(){
-                System.out.println(&quot;静态方法&quot;);
-            }
-        }
-        class Test {
-            public static void main(String[] args) {
-                System.out.println(Demo.num);
-                Demo.method();
-            }
-        }</code></pre><p>​        </p>
-<p>###10static静态的使用场景<br>    * A: 使用场景<br>        static可以修饰成员变量和成员方法。<br>        什么时候使用static修饰成员变量？<br>            加static修饰成员的时候，这个成员会被类的所有对象所共享。一般我们把共性数据定义为静态的变量<br>        什么时候使用static修饰成员方法？<br>            静态的方法只能访问静态的成员，如果静态方法中引用到了静态的其他成员，那么这个方法需要声明为静态的方法。</p>
-<p>###11对象中的静态调用<br>    * A: 对象的静态调用<br>      在多态中，非静态编译看父类，运行看子类，父类没有编译失败。<br>      但多态中的静态方法,编译看父类,运行仍然看父类。因为静态和对象没有关系，属于静态绑定。</p>
-<pre><code>* B: 举例
-    public class Test{
-        public static void main(String[] args){
-            Fu f = new Zi();
-            f.show();   //父类的引用和父类的方法绑定,和对象无关,不会在运行时动态的执行子类特有的方法。
-        }
-    }</code></pre><p>###12定义静态常量<br>    * A: 静态常量<br>        开发中，我们想在类中定义一个静态常量，通常使用public static final修饰的变量来完成定义。<br>        此时变量名用全部大写，多个单词使用下划线连接。<br>    * B: 定义格式：<br>        public static final 数据类型 变量名 = 值;</p>
-<pre><code>* C: 如下演示：
-    class Company {
-        public static final String COMPANY_NAME = &quot;传智播客&quot;;
-        public static void method(){
-            System.out.println(&quot;一个静态方法&quot;);
-        }
-    }
-
-    当我们想使用类的静态成员时，不需要创建对象，直接使用类名来访问即可。
-    System.out.println(Company.COMPANY_NAME); //打印传智播客
-    Company.method(); // 调用一个静态方法
-
-* D: 注意：
-    接口中的每个成员变量都默认使用public static final修饰。
-    所有接口中的成员变量已是静态常量，由于接口没有构造方法，所以必须显示赋值。可以直接用接口名访问。
-    interface Inter {
-        public static final int COUNT = 100;
-    }
-        访问接口中的静态变量
-    Inter.COUNT</code></pre><p>​<br>==============================第三节课开始====================================</p>
-<p>###13匿名对象<br>    * A:匿名对象的概述<br>        * 匿名对象是指创建对象时，只有创建对象的语句，却没有把对象地址值赋值给某个变量。<br>    * B:案例<br>        public class Person{<br>            public void eat(){<br>                System.out.println();<br>        }<br>        }</p>
-<pre><code>    创建一个普通对象
-    Person p = new Person();
-    创建一个匿名对象
-    new Person();
-
-* C: 匿名对象的特点
-    a:创建匿名对象直接使用，没有变量名。
-        new Person().eat()  //eat方法被一个没有名字的Person对象调用了。
-
-    b:匿名对象在没有指定其引用变量时，只能使用一次。
-        new Person().eat(); 创建一个匿名对象，调用eat方法
-        new Person().eat(); 想再次调用eat方法，重新创建了一个匿名对象
-
-    c:匿名对象可以作为方法接收的参数、方法返回值使用
-        class Demo {
-            public static Person getPerson(){
-                //普通方式
-                //Person p = new Person();    
-                //return p;
-
-                //匿名对象作为方法返回值
-                return new Person(); 
-            }
-
-            public static void method(Person p){}
-        }
-
-        class Test {
-            public static void main(String[] args) {
-                //调用getPerson方法，得到一个Person对象
-                Person person = Demo.getPerson();
-
-                //调用method方法
-                Demo.method(person);
-                //匿名对象作为方法接收的参数
-                Demo.method(new Person());
-            }
-        }</code></pre><p>​<br>###14内部类<br>    * A: 内部类的概述<br>        将类写在其他类的内部，可以写在其他类的成员位置和局部位置，这时写在其他类内部的类就称为内部类。<br>        其他类也称为外部类。<br>    * B: 什么时候使用内部类<br>        在描述事物时，若一个事物内部还包含其他可能包含的事物，比如在描述汽车时，汽车中还包含这发动机，<br>        这时发动机就可以使用内部类来描述。<br>        class 汽车 { //外部类<br>            class 发动机 { //内部类<br>            }<br>        }<br>    * C: 内部类的分类<br>        内部类分为成员内部类与局部内部类。<br>        我们定义内部类时，就是一个正常定义类的过程，同样包含各种修饰符、继承与实现关系等。<br>        在内部类中可以直接访问外部类的所有成员。</p>
-<p>###15成员内部类的调用格式<br>    * A: 格式<br>        成员内部类，定义在外部类中的成员位置。与类中的成员变量相似，可通过外部类对象进行访问<br>    * B: 定义格式<br>        class 外部类 {<br>            修饰符 class 内部类 {<br>                //其他代码<br>            }<br>        }</p>
-<pre><code>* C: 访问方式
-    外部类名.内部类名 变量名 = new 外部类名().new 内部类名();
-
-* D: 成员内部类代码演示
-    class Body {//外部类，身体
-         private boolean life= true; //生命状态
-         public class Heart { //内部类，心脏
-             public void jump() {
-                 System.out.println(&quot;心脏噗通噗通的跳&quot;)
-                    System.out.println(&quot;生命状态&quot; + life); //访问外部类成员变量
-            }
-        }
-    }
-
-    访问内部类
-    public static void main(String[] args) {
-        //创建内部类对象
-        Body.Heart bh = new Body().new Heart();
-        //调用内部类中的方法
-        bh.jump();
-    }</code></pre><p>​        </p>
-<p>###16成员内部类的同名变量调用<br>    * A: 代码实现<br>        public class Outer {<br>            int i  = 1;<br>            class Inner {<br>                int i  = 2;<br>                public void inner(){<br>                    int i = 3;<br>                    System.out.println(Outer.this.i);<br>                }<br>            }<br>        }</p>
-<p>​<br>###17局部内部类<br>    * A 局部内部类，定义在外部类方法中的局部位置。与访问方法中的局部变量相似，可通过调用方法进行访问.<br>    * B 定义格式<br>        class 外部类 {<br>            修饰符 返回值类型 方法名(参数) {<br>                class 内部类 {<br>                    //其他代码<br>                }<br>            }<br>        }<br>    * C 访问方式<br>        在外部类方法中，创建内部类对象，进行访问</p>
-<pre><code>* D 局部内部类代码演示
-    定义类
-    class Party {//外部类，聚会
-        public void puffBall(){// 吹气球方法
-            class Ball {// 内部类，气球
-                  public void puff(){
-                    System.out.println(&quot;气球膨胀了&quot;);
-                  }
-            }
-            //创建内部类对象，调用puff方法
-            new Ball().puff();
-        }
-    }
-    访问内部类
-    public static void main(String[] args) {    
-        //创建外部类对象
-        Party p = new Party();
-        //调用外部类中的puffBall方法
-        p.puffBall();
-    }</code></pre><p>==============================第四节课开始====================================</p>
-<p>###18匿名内部类<br>     * A: 概述<br>     内部类是为了应对更为复杂的类间关系。查看源代码中会涉及到，而在日常业务中很难遇到，这里不做赘述。<br>     最常用到的内部类就是匿名内部类，它是局部内部类的一种。<br>     定义的匿名内部类有两个含义：<br>     临时定义某一指定类型的子类<br>     定义后即刻创建刚刚定义的这个子类的对象</p>
-<pre><code>* B: 本质
- 匿名内部类的本质是一个实现了接口或继承了某个类的子类匿名对象.
-
-* C: 案例
-public interface Smoking {
-    public abstract void smoking();
-    }
-    /*
-     *  实现类,实现接口 重写接口抽象方法,创建实现类对象
-     *  class XXX implements Smoking{
-     *      public void smoking(){
-     *      
-     *      }
-     *  }
-     *  XXX x = new XXX();
-     *  x.smoking(); 
-     *  Smoking s = new XXX();
-     *  s.smoking();
-     *  
-     *  匿名内部类,简化问题:  定义实现类,重写方法,建立实现类对象,合为一步完成
-     */
-
-测试类:
-public class Test {
-    public static void main(String[] args) {
-        //使用匿名内部类
-        /*
-         *  定义实现类,重写方法,创建实现类对象,一步搞定
-         *  格式:
-         *    new 接口或者父类(){
-         *       重写抽象方法
-         *    };
-         *    从 new开始,到分号结束
-         *    创建了接口的实现类的对象
-         */
-        new Smoking(){
-            public void smoking(){
-                System.out.println(&quot;人在吸烟&quot;);
-            }
-        }.smoking();
-    }
-}</code></pre><p>###19匿名内部类_2<br>     * A: 匿名内部类案例演示<br>        public abstract class Animal {<br>            public abstract void eat();<br>            public abstract void sleep();<br>        }</p>
-<pre><code>测试代码
-/*
- *    new Animal(){
-            public void eat(){
-                System.out.println(&quot;在吃饭&quot;);
-            } 
-            public void sleep(){
-                System.out.println(&quot;在睡觉&quot;);
-            }
-         };
-    以上代码,就是Animal的子类的对象
-    多态性, 父类引用 = 子类的对象
-
- */
-public class Test2 {
-    public static void main(String[] args) {
-        Animal a= new Animal(){
-            public void eat(){
-                System.out.println(&quot;在吃饭&quot;);
-            } 
-            public void sleep(){
-                System.out.println(&quot;在睡觉&quot;);
-            }
-         };
-         a.eat();
-         a.sleep();
-    }
-}</code></pre><p>###20包的概念<br>     * A: 概念<br>        java的包，其实就是我们电脑系统中的文件夹，包里存放的是类文件。<br>        当类文件很多的时候，通常我们会采用多个包进行存放管理他们，这种方式称为分包管理。<br>        在项目中，我们将相同功能的类放到一个包中，方便管理。并且日常项目的分工也是以包作为边界。<br>        类中声明的包必须与实际class文件所在的文件夹情况相一致，即类声明在a包下，则生成的.class文件必须在a文件夹下，否则，程序运行时会找不到类。</p>
-<pre><code>* B 声明格式
-    通常使用公司网址反写，可以有多层包，包名采用全部小写字母，多层包之间用”.”连接
-        类中包的声明格式： 
-    package 包名.包名.包名…;
-        如：黑马程序员网址itheima.com那么网址反写就为com.itheima
-            传智播客 itcast.cn  那么网址反写就为 cn.itcast
-        注意：声明包的语句，必须写在程序有效代码的第一行（注释不算）
-    代码演示：
-    package cn.itcast; //包的声明，必须在有效代码的第一行
-
-    import java.util.Scanner;
-    import java.util.Random;
-
-    public class Demo {}
-
-* C: 包的访问
-    在访问类时，为了能够找到该类，必须使用含有包名的类全名（包名.类名）。
-    包名.包名….类名
-    如： java.util.Scanner
-         java.util.Random
-        cn.itcast.Demo
-    带有包的类，创建对象格式：包名.类名 变量名 = new包名.类名();
-         cn.itcast.Demo d = new cn.itcast.Demo();
-        前提：包的访问与访问权限密切相关，这里以一般情况来说，即类用public修饰的情况。
-
-        类的简化访问
-    当我们要使用一个类时，这个类与当前程序在同一个包中（即同一个文件夹中），或者这个类是java.lang包中的类时通常可以省略掉包名，直接使用该类。
-    如：cn.itcast包中有两个类，PersonTest类，与Person类。我们在PersonTest类中，访问Person类时，由于是同一个包下，访问时可以省略包名，即直接通过类名访问 Person。
-    类名 变量名 = new类名();
-    Person p = new Person();
-
-        当我们要使用的类，与当前程序不在同一个包中（即不同文件夹中），要访问的类必须用public修饰才可访问。
-    package cn.itcst02;
-    public class Person {}</code></pre><p>​<br>###22导入包<br>      * A:导入包<br>        我们每次使用类时，都需要写很长的包名。很麻烦，我们可以通过import导包的方式来简化。<br>        可以通过导包的方式使用该类，可以避免使用全类名编写（即，包类.类名）。<br>        导包的格式：<br>        import 包名.类名;</p>
-<pre><code>    当程序导入指定的包后，使用类时，就可以简化了。演示如下
-//导入包前的方式
-//创建对象
-java.util.Random r1 = new java.util.Random();
-java.util.Random r2 = new java.util.Random();
-java.util.Scanner sc1 = new java.util.Scanner(System.in);
-java.util.Scanner sc2 = new java.util.Scanner(System.in);
-
-//导入包后的方式
-import java.util.Random;
-import java.util.Scanner;
-//创建对象
-Random r1 = new Random();
-Random r2 = new Random();
-Scanner sc1 = new Scanner(System.in);
-Scanner sc2 = new Scanner(System.in);
-import导包代码书写的位置：在声明包package后，定义所有类class前，使用导包import包名.包名.类名;</code></pre><p>​<br>###23权限修饰符<br>     * A 权限修饰符有哪些<br>             在Java中提供了四种访问权限，使用不同的访问权限时，被修饰的内容会有不同的访问权限，<br>             以下表来说明不同权限的访问能力：<br>                                    public            protected      default        private<br>             同一类中                  √                   √             √               √<br>             同一包中(子类与无关类)      √                   √              √<br>             不同包的子类              √                   √<br>             不同包中的无关类          √<br>    * B: 小结<br>        归纳一下：在日常开发过程中，编写的类、方法、成员变量的访问<br>        要想仅能在本类中访问使用private修饰；<br>        要想本包中的类都可以访问不加修饰符即可；<br>        要想本包中的类与其他包中的子类可以访问使用protected修饰<br>        要想所有包中的所有类都可以访问使用public修饰。<br>        注意：如果类用public修饰，则类名必须与文件名相同。一个文件中只能有一个public修饰的类。</p>
-<p>###24代码块<br>     * A: 概述:<br>        程序中用大括号括起来的代码叫代码块<br>     * B: 分类<br>      局部代码块  构造代码块  静态代码块  同步代码块</p>
-<pre><code> * C 局部代码块:
-    局部代码块是定义在方法或语句中
-    特点：
-        以”{}”划定的代码区域，此时只需要关注作用域的不同即可
-        方法和类都是以代码块的方式划定边界的
-
-      class Demo{
-            public static void main(String[] args)    {
-                {
-                         int x = 1;
-                         System.out.println(&quot;普通代码块&quot; + x);
-                }
-                int x = 99;
-                System.out.println(&quot;代码块之外&quot; + x);
-            }
-      }
-      结果：
-        普通代码块1
-        代码块之外99
-      局部代码块作用:可以限定变量的声明周期.
-
-* D: 构造代码块
-    构造代码块是定义在类中成员位置的代码块
-    特点：
-        优先于构造方法执行，构造代码块用于执行所有对象均需要的初始化动作
-        每创建一个对象均会执行一次构造代码块。
-    public class Person {
-        private String name;
-        private int age;
-
-         //构造代码块
-        {
-            System.out.println(&quot;构造代码块执行了&quot;);
-        }
-        Person(){
-            System.out.println(&quot;Person无参数的构造函数执行&quot;);
-        }
-        Person(int age){
-            this.age = age;
-            System.out.println(&quot;Person（age）参数的构造函数执行&quot;);
-        }
-    }
-    class PersonDemo{
-        public static void main(String[] args)    {
-            Person p = new Person();
-            Person p1 = new Person(23);
-        }
-    }
-
-* E: 静态代码块
-    静态代码块是定义在成员位置，使用static修饰的代码块。
-    特点：
-        它优先于主方法执行、优先于构造代码块执行，当以任意形式第一次使用到该类时执行。
-        该类不管创建多少对象，静态代码块只执行一次。
-        可用于给静态变量赋值，用来给类进行初始化。
-        public class Person {
-            private String name;
-            private int age;
-             //静态代码块
-            static{
-                System.out.println(&quot;静态代码块执行了&quot;);
-            }
-        }
-
-* F: 同步代码块(多线程学习)</code></pre><p>###25总结<br>    * 把今天的知识点总结一遍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3431,7 +3374,7 @@ import导包代码书写的位置：在声明包package后，定义所有类clas
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

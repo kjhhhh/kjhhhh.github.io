@@ -155,6 +155,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A41/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A41/" class="post-title-link" itemprop="url">汇编语言的所有指令1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-01 22:18:30 / 修改时间：22:23:38" itemprop="dateCreated datePublished" datetime="2021-01-01T22:18:30+08:00">2021-01-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1、数据传送指令集"><a href="#1、数据传送指令集" class="headerlink" title="1、数据传送指令集**"></a>1、数据传送指令集**</h2><p><strong>MOV</strong><br>功能: 把源操作数送给目的操作数<br>语法: MOV 目的操作数,源操作数<br>格式: MOV r1,r2<br>MOV r,m<br>MOV m,r<br>MOV r,data</p>
+<p><strong>XCHG</strong><br>功能: 交换两个操作数的数据<br>语法: XCHG<br>格式: XCHG r1,r2 XCHG m,r XCHG r,m</p>
+<p><strong>PUSH,POP</strong><br>功能: 把操作数压入或取出堆栈<br>语法: PUSH 操作数 POP 操作数<br>格式: PUSH r PUSH M PUSH data POP r POP m</p>
+<p><strong>PUSHF,POPF,PUSHA,POPA</strong><br>功能: 堆栈指令群<br>格式: PUSHF POPF PUSHA POPA</p>
+<p><strong>LEA,LDS,LES</strong><br>功能: 取地址至寄存器<br>语法: LEA r,m LDS r,m LES r,m</p>
+<p><strong>XLAT(XLATB)</strong><br>功能: 查表指令<br>语法: XLAT XLAT m</p>
+<h2 id="2、算数运算指令"><a href="#2、算数运算指令" class="headerlink" title="2、算数运算指令"></a><strong>2、算数运算指令</strong></h2><p><strong>ADD,ADC</strong><br>功能: 加法指令<br>语法: ADD OP1,OP2 ADC OP1,OP2<br>格式: ADD r1,r2 ADD r,m ADD m,r ADD r,data<br>影响标志: C,P,A,Z,S,O</p>
+<p><strong>SUB,SBB</strong><br>功能:减法指令<br>语法: SUB OP1,OP2 SBB OP1,OP2<br>格式: SUB r1,r2 SUB r,m SUB m,r SUB r,data SUB m,data<br>影响标志: C,P,A,Z,S,O</p>
+<p><strong>INC,DEC</strong><br>功能: 把OP的值加一或减一<br>语法: INC OP DEC OP<br>格式: INC r/m DEC r/m<br>影响标志: P,A,Z,S,O</p>
+<p><strong>NEG</strong><br>功能: 将OP的符号反相(取二进制补码)<br>语法: NEG OP<br>格式: NEG r/m<br>影响标志: C,P,A,Z,S,O</p>
+<p><strong>MUL,IMUL</strong><br>功能: 乘法指令<br>语法: MUL OP IMUL OP<br>格式: MUL r/m IMUL r/m<br>影响标志: C,P,A,Z,S,O(仅IMUL会影响S标志)</p>
+<p><strong>DIV,IDIV</strong><br>功能:除法指令<br>语法: DIV OP IDIV OP<br>格式: DIV r/m IDIV r/m</p>
+<p><strong>CBW,CWD</strong><br>功能: 有符号数扩展指令<br>语法: CBW CWD</p>
+<p><strong>AAA,AAS,AAM,AAD</strong><br>功能: 非压BCD码运算调整指令<br>语法: AAA AAS AAM AAD<br>影响标志: A,C(AAA,AAS) S,Z,P(AAM,AAD)</p>
+<p><strong>DAA,DAS</strong><br>功能: 压缩BCD码调整指令<br>语法: DAA DAS<br>影响标志: C,P,A,Z,S</p>
+<h2 id="3、位运算指令集"><a href="#3、位运算指令集" class="headerlink" title="3、位运算指令集"></a><strong>3、位运算指令集</strong></h2><p><strong>AND,OR,XOR,NOT,TEST</strong><br>功能: 执行BIT与BIT之间的逻辑运算<br>语法: AND r/m,r/m/data OR r/m,r/m/data XOR r/m,r/m/data TEST r/m,r/m/data NOT r/m<br>影响标志: C,O,P,Z,S(其中C与O两个标志会被设为0) NOT指令不影响任何标志位</p>
+<p><strong>SHR,SHL,SAR,SAL</strong><br>功能: 移位指令<br>语法: SHR r/m,data/CL SHL r/m,data/CL SAR r/m,data/CL SAL r/m,data/CL<br>影响标志: C,P,Z,S,O</p>
+<p><strong>ROR,ROL,RCR,RCL</strong><br>功能: 循环移位指令<br>语法: ROR r/m,data/CL ROL r/m,data/CL RCR r/m,data/CL RCL r/m,data/CL<br>影响标志: C,P,Z,S,O<br>程序流程控制指令集</p>
+<p><strong>CLC,STC,CMC</strong><br>功能: 设定进位标志<br>语法: CLC STC CMC<br>标志位: C</p>
+<p><strong>CLD,STD</strong><br>功能: 设定方向标志<br>语法: CLD STD<br>标志位: D</p>
+<p><strong>CLI,STI</strong><br>功能: 设定中断标志<br>语法: CLI STI<br>标志位: I</p>
+<p><strong>CMP</strong><br>功能: 比较OP1与OP2的值<br>语法: CMP r/m,r/m/data<br>标志位: C,P,A,Z,O</p>
+<p><strong>JMP</strong><br>功能: 跳往指定地址执行<br>语法: JMP 地址</p>
+<p><strong>JXX</strong><br>功能: 当特定条件成立则跳往指定地址执行<br>语法: JXX 地址<br>注:<br>A: ABOVE,当C=0,Z=0时成立<br>B: BELOW,当C=1时成立<br>C: CARRY,当弁时成立 CXZ: CX寄存器的值为0(ZERO)时成立<br>E: EQUAL,当Z=1时成立<br>G: GREATER(大于),当Z=0且S=0时成立<br>L: LESS(小于),当S不为零时成立<br>N: NOT(相反条件),需和其它符号配合使用<br>O: OVERFLOW,O=1时成立<br>P: PARITY,P=1时成立<br>PE: PARITY EVEN,P=1时成立<br>PO: PARITY ODD,P=0时成立<br>S: SIGN,S=1时成立<br>Z: ZERO,Z=1时成立</p>
+<p><strong>LOOP</strong><br>功能: 循环指令集<br>语法: LOOP 地址</p>
+<p><strong>LOOPE(Z)</strong><br>地址 LOOPNE(Z) 地址<br>标志位: 无</p>
+<p><strong>CALL,RET</strong><br>功能: 子程序调用,返回指令<br>语法: CALL 地址 RET RET n<br>标志位: 无</p>
+<p><strong>INT,IRET</strong><br>功能: 中断调用及返回指令<br>语法: INT n IRET<br>标志位: 在执行INT时,CPU会自动将标志寄存器的值入栈,在执行IRET时则会将堆栈中的标志值弹回寄存器<br>字符串操作指令集</p>
+<p><strong>MOVSB,MOVSW,MOVSD</strong><br>功能: 字符串传送指令<br>语法: MOVSB MOVSW MOVSD<br>标志位: 无</p>
+<p><strong>CMPSB,CMPSW,CMPSD</strong><br>功能: 字符串比较指令<br>语法: CMPSB CMPSW CMPSD<br>标志位: C,P,Z,S,O</p>
+<p><strong>SCASB,SCASW</strong><br>功能: 字符串搜索指令<br>语法: SCASB SCASW<br>标志位: C,P,Z,S,O</p>
+<p><strong>LODSB,LODSW,STOSB,STOSW</strong><br>功能: 字符串载入或存贮指令<br>语法: LODSB LODSW STOSB STOSW<br>标志位: 无</p>
+<p><strong>REP,REPE,REPNE</strong><br>功能: 重复前缀指令集<br>语法: REP 指令S REPE 指令S REPNE 指令S<br>标志位: 依指令S而定</p>
+<p>对于IBM PC机它有它的指令系统，其中包括：数据传送指令、串处理指令、算术指令、控制移动指令、逻辑指令、处理机控制指令。</p>
+<p><strong>1)数据传送指令：</strong><br>负责把数据、地址或立即数传送到寄存器或存储单元中。<br>数据传送指令类型 指 令 说 明<br>通用数据传送指令 MOV（传送）、PUSH（进栈）、POP（出栈）、XCHG（交换）<br>累加器专用传送指令 IN（输入指令） 、OUT（输入指令）<br>地址传送指令 LEA（有效地址送寄存器）、LDS（指针送寄存器和DS）、LES（指针送寄存器和ES）<br>标志寄存器传送指令 LAHF（标志送AH）、SAHF（AH送标志寄存器）、PUSHF（标志进栈）、POPF（标志出栈）</p>
+<p><strong>2）算术指令：</strong><br>用来执行算术运算。<br>算术指令类型 指 令 说 明<br>加法指令 ADD（加法）、ADC（带进位加法）、INC（加1）<br>减法指令 SUB（减法）、SBB（带借位减法）、DEC（减1）、NEG（求补）、CMP（比较）<br>乘法指令 MUL（无符号数乘法）、IMUL（带符号数乘法）<br>除法指令 DIV（无符号数除法）、IDIV（带符号数除法）、CBW（字节转换为字）、CWD（字转换为双字）</p>
+<p><strong>3）逻辑指令：</strong><br>对字或字节执行逻辑运算。<br>逻辑指令类型 指 令 说 明<br>逻辑运算指令 AND（逻辑与）、OR（逻辑或）、NOT（逻辑非）、XOR（异或）、TEST（测试）<br>移动指令 SHL（逻辑左移）、SAL（算术左移）、SHR（逻辑右移）、SAR（算术右移）、ROL（循环左移）、ROR（循环右移）、RCL（带进位循环左移）、RCR（带进位右移）</p>
+<p><strong>4）串处理指令：</strong><br>处理存放存储器里的数据串。<br>串处理指令类型 指 令 说 明<br>指 令 MOVS（串传送）、CMPS（串比较）、SCAS（串扫描）、LODS（从串取）、STOS（存入串）</p>
+<p><strong>5）控制转移指令：</strong><br>用来控制程序的执行流程。<br>控制转移指令类型 指 令 说 明<br>无条件转移指令 JMP（段间和段内转移）<br>条件转移指令 JZ（结果为0（或相等）则转移）、JS（结果为负则转移）、JNS（结果为正则转移）、JO（溢出则转移）、JNO（不溢出则转移）、JP（奇偶位为1则转移）、JNP（奇偶位为0则转移）<br>循环指令 LOOP（循环指令）、LOOPPZ/LOOPE（当为0或相等时循环指令）、LOOPNZ/LOOPNE（当不为0或不相等时循环指令）<br>子程序指令 CALL（调用指令）、RET（返回指令）<br>中断指令 INT（中断）、INTO（如溢出则中断）、RIET（从中断返回）</p>
+<p><strong>6）处理机控制指令：</strong><br>处理机控制指令类型 指 令 说 明<br>标志处理指令 CLC（进位位置0指令）、CMC（进位位求反指令）、STC（进位位置为1指令）、CLD（方向标志置1指令）、STD（方向标志位置1指令）、CLI（中断标志置0指令）、STI（中断标志置1指令）<br>其他处理机控制指令 NOP（无操作）、HLT（停机）、WAIT（等待）、ESC（换码）、LOCK（封锁）</p>
+<p><strong>汇编语言程序格式</strong><br>汇编语言源程序用语句书写，MASM中可使用的语句分成两类，他们是指令性语句和伪指令语句</p>
+<p>1．指令性语句：指令性语句与机器指令相对应，汇编程序将他翻译成目标代码（机器指令代码）。语句格为：<br>标号： 指令助记符 操作数，操作数；注释<br>标号表示指令语句的符号地址，标号后面必须紧跟“：”。标号可以省略，他经常作为转移指令或CALL指令的一个操作数，用以表示地址的转移。<br>指令助记符是该语句的指令名称的代表号码，他指出操作的类型，汇编程序将其翻译成机器指令。不可省略。<br>操作数表示参加本指令的运算数据，根据指令的操作类型，操作数不同，中间必须用“，”隔开。<br>注释指明一条指令的功能，可以省略。</p>
+<p>2．伪指令语句<br>伪指令语句没有对应的机器指令。汇编程序汇编源程序时对伪指令进行处理，他可以完成数据定义，存储区分配，段定义，段分配，指示程序结束功能。伪指令语句的格式为：<br>名字 伪指令指示符 操作数，操作数；注释<br>名字时给伪指令取得名称，他用符号地址表示。伪指令中的名字通常是变量名，段名，过程名、符号名等。<br>伪指令指示符是汇编程序MASM规定的符号。<br>操作数是根据伪指令的具体要求来得。</p>
+<p>3．数据项<br>汇编语言中使用的操作数，可以是常数、寄存器、存储器、变量、标号活表达式，其中藏书、变量和标号是三种基本数据项。<br>⑴常数必须是固定的值，没有属性，是确定的数据。<br>⑵变量在程序运行中是可以修改的。所有的变量具有三种属性<br>①段值（SEGMENT）：指明变量所在段的基址。<br>②段内偏移地址（OFFSET）：指变量所在地址与段首地址之间的偏移字节数。<br>③类型（TYPE）：变量的类型属性指变量中每个单元所包含的字节数，类型有：字节变量（BYTE）、字变量（WORD）、双字变量（DOUBLE WORD）<br>⑶标号：标号是指可执行指令语句的地址的符号表示，他可作为转移指令和调用指令的目标操作数，以确定程序转换的目标地址，他具有三个属性。<br>①段值（SEGMENT）：指明标号所在段的基址。<br>②段内偏移地址（OFFSET）：指标号所在地址与所在段段首地址之间的偏移字节数。<br>③类型（TYPE）：标号的类型属性指在转移指令中标号可转移的距离类型.NEAR，表示近标号只能实现在本代码段内转移或调用；FAR，表示远标号，可；以作为其他代码段中的目标地址，实现段间调用或转移。</p>
+<p><strong>伪指令汇总</strong></p>
+<p>1．数据定义语句<br>格式一：变量名 助记符 操作数，操作数…；注释<br>格式二：变量名 助记符 n DUP(操作数，操作数…)；注释<br>功能：将操作数存入变量名指定的存储单元中，或者只分配存储空间不存入数据。<br>变量名，用符号表示，可以省略。汇编程序时将此变量的助记符后的第一个字节的偏移地址作为他的符号地址。<br>助记符主要有：<br>DB：用来定义字节，表示每个操作数占用一个字节；<br>DW：用来定义字，表示每个操作数占用一个字；<br>DD：用来定义双字，表示每个操作数占用两个字；<br>DQ：用来定义四个字，表示每个操作数占用四个字；<br>DT：用来定义十个字节，表示每个操作数占用十个字节；<br>在格式二中，用n DUP表示时，n必须是整数，表示括号中的操作数的重复次数。DUP后面必须带括号。</p>
+<p>2．表达式赋值语句<br>⑴赋值语句EQU<br>格式：符号名 EQU 表达式<br>功能：用来给变量、标号、常数、指令、表达式等定义一个符号名，程序中用到EQU左边得变量、标号时可以用右边的常数值或表达式来代替，但是一经定义在同一个程序模块中不能再重新定义。<br>⑵符号语句＝<br>符号语句“＝”与EQU语句具有相同功能，区别仅在于EQU中左边的标号不允许重新定义，而用“＝”定义的语句可以重新定义。<br>3段定义语句<br>存储器的物理地址由段基址和偏移地址组合而成，任何一个逻辑段，无论是数码段，数据段，堆栈段，附加段都必须定义。以便连接程序把不同段和模块连成一个可执行的程序。<br>⑴段定义语句SEGMENT…ENDS<br>格式：段名 SEGMENT 定位类型 组合类型 ‘分类名’<br>逻辑段内容<br>段名 ENDS<br>功能：将一个逻辑段定义成一个整体<br>段名，是逻辑段的标识符，不能省略。他确定了逻辑段在存储器中的地址。必须以SEGMENT开始，以ENDS结束，前后段名必须一致。<br>定位类型，定位类型参数是对该段起始地址的定位。定位类型参数主要有下面4种：<br>①PARA：指定定位段的起始地址必须在节的整数边界，当定位类型缺省时，就当成PARA<br>②BYTE：指定定位段的起始地址定位在存储单元的任何字节地址。<br>③WORD：指定定位段的起始地址定位在字的边界，即段的首地址必须是偶数。<br>④PAGE：指定定位段的起始地址定位在页的边界，即段的首地址必须是256的整数倍。<br>组合类型：组合类型参数主要提供了各个逻辑段之间的组合方式<br>①NONE：该段与其他同名段不进行连接，各段独立于存储器中，NONE可作为缺省参数。<br>②PUBLIC：该段与其他模块中的同名段连接时，由低地址到高地址连接起来，组成一个逻辑段，连接次序由连接命令指定。<br>③COMMON：该段在连接时与其他模块中的同名段有相同的起始地址，采用覆盖的方式在存储器中存放，连接长度为各分段中最大长度。<br>④AT表达式：定位该段的起始地址在表达式所指定的节（16的整数倍）边界上。当用户要求某个逻辑段在指定节的边界上时，就要用AT参数来实现。<br>⑤STACK：指定该段为堆栈段，此参数在堆栈段中不可省略。<br>⑥MEMORY：定位该段与其他模块中的同名段有相同的首地址，采用覆盖的方法在存储器中组合连接。其功能与COMMON相似，区别是第一个带MEMORY参数的逻辑段覆盖在其他同名段的最上层，其他带此参数的同名段按照COMMON方式处理。<br>⑶“分类名”（CLASS NAME）<br>其主要作用是汇编程序连接时将所有的分类名相同的逻辑段组成一个段组。</p>
+<p>2．段分配语句（ASSUME）<br>格式：ASSUME CS:段名，DS:段名，SS:段名，ES:段名<br>功能：定义4个逻辑段，指明段和寄存器的关系。</p>
+<p>3．过程定义语句<br>格式：过程名 PROC 属性<br>过程内容<br>RET N<br>过程名 ENDP<br>功能：定义一个过程，主程序可以用CALL 指令调用他<br>过程名：给所定义的过程取得名字，不可省略。象标号一样具有三个属性：段属性、偏移地址属性和距离属性。<br>RET N为过程内部的返回指令。过程中至少一条RET，可以在任何位置，使过程返回到主程序调用他的CALL指令之下的一条指令。N为弹出值，可以缺省，表示从程返回以后，堆栈中应有N个字节的值作废。</p>
+<p>4．程序开始和结束语句<br>⑴NAME:<br>格式：NAME 程序名<br>功能：为源程序目标模块赋名字。<br>⑵TITLE<br>格式：TITLE 文本名<br>功能：将文本名赋给源程序目标模块作名字，功能同NAM…<br>⑶ORG<br>格式：ORG 表达式<br>功能：给汇编程序设置位置指针，指定下面语句的起始偏移地址。<br>⑷END<br>格式：END 标号名<br>功能：标记汇编源程序结束</p>
+<p>5．外部伪指令及对准伪指令<br>程序中包含多个模块时，有些程序或数据在各个模块间要相互共享，可用外部伪指令PUBLIC和EXTRN来实现此功能。<br>⑴外部伪指令<br>PUBLIC用来定义共享模块，EXTAN用来调用共享模块<br>格式：PUBLIC 名称，名称，…<br>EXTRN 名称：类型，名称：类型…<br>⑵对准伪指令<br>格式：EVEN<br>功能：EVEN伪指令使下一语句的地址调整为偶地址<br>⑶LABEL<br>LABEL伪指令给已定义的变量或标号取另一个名字，并可重新定义他的类属性<br>格式：名称 LABEL 类型属性</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3754,63 +3872,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构快速排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:53:28" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:28+08:00">2020-12-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3880,7 +3941,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -155,6 +155,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E5%BC%82%E5%B8%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/23/%E5%BC%82%E5%B8%B8/" class="post-title-link" itemprop="url">异常</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-24 23:00:57" itemprop="dateModified" datetime="2020-12-24T23:00:57+08:00">2020-12-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>异常的概念</li>
+<li>捕获异常</li>
+<li>异常的传递</li>
+<li>抛出异常</li>
+</ul>
+<h2 id="01-异常的概念"><a href="#01-异常的概念" class="headerlink" title="01. 异常的概念"></a>01. 异常的概念</h2><ul>
+<li>程序在运行时，如果 <code>Python 解释器</code> <strong>遇到</strong> 到一个错误，<strong>会停止程序的执行，并且提示一些错误信息</strong>，这就是 <strong>异常</strong></li>
+<li><strong>程序停止执行并且提示错误信息</strong> 这个动作，我们通常称之为：<strong>抛出(raise)异常</strong></li>
+</ul>
+<p><img src="/2020/12/23/%E5%BC%82%E5%B8%B8/024_%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8.png" alt></p>
+<blockquote>
+<p>程序开发时，很难将 <strong>所有的特殊情况</strong> 都处理的面面俱到，通过 <strong>异常捕获</strong> 可以针对突发事件做集中的处理，从而保证程序的 <strong>稳定性和健壮性</strong></p>
+</blockquote>
+<h2 id="02-捕获异常"><a href="#02-捕获异常" class="headerlink" title="02. 捕获异常"></a>02. 捕获异常</h2><h3 id="2-1-简单的捕获异常语法"><a href="#2-1-简单的捕获异常语法" class="headerlink" title="2.1 简单的捕获异常语法"></a>2.1 简单的捕获异常语法</h3><ul>
+<li>在程序开发中，如果 <strong>对某些代码的执行不能确定是否正确</strong>，可以增加 <code>try(尝试)</code> 来 <strong>捕获异常</strong></li>
+<li>捕获异常最简单的语法格式：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    尝试执行的代码</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    出现错误的处理</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>try</code> <strong>尝试</strong>，下方编写要尝试代码，不确定是否能够正常执行的代码</li>
+<li><code>except</code> <strong>如果不是</strong>，下方编写尝试失败的代码</li>
+</ul>
+<h4 id="简单异常捕获演练-——-要求用户输入整数"><a href="#简单异常捕获演练-——-要求用户输入整数" class="headerlink" title="简单异常捕获演练 —— 要求用户输入整数"></a>简单异常捕获演练 —— 要求用户输入整数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 提示用户输入一个数字</span></span><br><span class="line">    num = int(input(<span class="string">"请输入数字："</span>))</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"请输入正确的数字"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-错误类型捕获"><a href="#2-2-错误类型捕获" class="headerlink" title="2.2 错误类型捕获"></a>2.2 错误类型捕获</h3><ul>
+<li><p>在程序执行时，可能会遇到 <strong>不同类型的异常</strong>，并且需要 <strong>针对不同类型的异常，做出不同的响应</strong>，这个时候，就需要捕获错误类型了</p>
+</li>
+<li><p>语法如下：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 尝试执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> 错误类型<span class="number">1</span>:</span><br><span class="line">    <span class="comment"># 针对错误类型1，对应的代码处理</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> (错误类型<span class="number">2</span>, 错误类型<span class="number">3</span>):</span><br><span class="line">    <span class="comment"># 针对错误类型2 和 3，对应的代码处理</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当 <code>Python</code> 解释器 <strong>抛出异常</strong> 时，<strong>最后一行错误信息的第一个单词，就是错误类型</strong></li>
+</ul>
+<h4 id="异常类型捕获演练-——-要求用户输入整数"><a href="#异常类型捕获演练-——-要求用户输入整数" class="headerlink" title="异常类型捕获演练 —— 要求用户输入整数"></a>异常类型捕获演练 —— 要求用户输入整数</h4><p><strong>需求</strong></p>
+<ol>
+<li>提示用户输入一个整数</li>
+<li>使用 <code>8</code> 除以用户输入的整数并且输出</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = int(input(<span class="string">"请输入整数："</span>))</span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="捕获未知错误"><a href="#捕获未知错误" class="headerlink" title="捕获未知错误"></a>捕获未知错误</h4><ul>
+<li>在开发时，<strong>要预判到所有可能出现的错误</strong>，还是有一定难度的</li>
+<li>如果希望程序 <strong>无论出现任何错误</strong>，都不会因为 <code>Python</code> 解释器 <strong>抛出异常而被终止</strong>，可以再增加一个 <code>except</code></li>
+</ul>
+<p>语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-异常捕获完整语法"><a href="#2-3-异常捕获完整语法" class="headerlink" title="2.3 异常捕获完整语法"></a>2.3 异常捕获完整语法</h3><ul>
+<li>在实际开发中，为了能够处理复杂的异常情况，完整的异常语法如下：</li>
+</ul>
+<blockquote>
+<p>提示：</p>
+<ul>
+<li>有关完整语法的应用场景，在后续学习中，<strong>结合实际的案例</strong>会更好理解</li>
+<li>现在先对这个语法结构有个印象即可</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 尝试执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> 错误类型<span class="number">1</span>:</span><br><span class="line">    <span class="comment"># 针对错误类型1，对应的代码处理</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> 错误类型<span class="number">2</span>:</span><br><span class="line">    <span class="comment"># 针对错误类型2，对应的代码处理</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> (错误类型<span class="number">3</span>, 错误类型<span class="number">4</span>):</span><br><span class="line">    <span class="comment"># 针对错误类型3 和 4，对应的代码处理</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    <span class="comment"># 打印错误信息</span></span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 没有异常才会执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="comment"># 无论是否有异常，都会执行的代码</span></span><br><span class="line">    print(<span class="string">"无论是否有异常，都会执行的代码"</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>else</code> 只有在没有异常时才会执行的代码</p>
+</li>
+<li><p><code>finally</code> 无论是否有异常，都会执行的代码</p>
+</li>
+<li><p>之前一个演练的 <strong>完整捕获异常</strong> 的代码如下：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = int(input(<span class="string">"请输入整数："</span>))</span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"正常执行"</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">"执行完成，但是不保证正确"</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-异常的传递"><a href="#03-异常的传递" class="headerlink" title="03. 异常的传递"></a>03. 异常的传递</h2><ul>
+<li><strong>异常的传递</strong> —— 当 <strong>函数/方法</strong> 执行 <strong>出现异常</strong>，会 <strong>将异常传递</strong> 给 函数/方法 的 <strong>调用一方</strong></li>
+<li>如果 <strong>传递到主程序</strong>，仍然 <strong>没有异常处理</strong>，程序才会被终止</li>
+</ul>
+<blockquote>
+<p>提示</p>
+</blockquote>
+<ul>
+<li>在开发中，可以在主函数中增加 <strong>异常捕获</strong></li>
+<li>而在主函数中调用的其他函数，只要出现异常，都会传递到主函数的 <strong>异常捕获</strong> 中</li>
+<li>这样就不需要在代码中，增加大量的 <strong>异常捕获</strong>，能够保证代码的整洁</li>
+</ul>
+<p><strong>需求</strong></p>
+<ol>
+<li>定义函数 <code>demo1()</code> <strong>提示用户输入一个整数并且返回</strong></li>
+<li>定义函数 <code>demo2()</code> 调用 <code>demo1()</code></li>
+<li>在主程序中调用 <code>demo2()</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> demo1()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(demo2())</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-抛出-raise-异常"><a href="#04-抛出-raise-异常" class="headerlink" title="04. 抛出 raise 异常"></a>04. 抛出 <code>raise</code> 异常</h2><h3 id="4-1-应用场景"><a href="#4-1-应用场景" class="headerlink" title="4.1 应用场景"></a>4.1 应用场景</h3><ul>
+<li>在开发中，除了 <strong>代码执行出错</strong> <code>Python</code> 解释器会 <strong>抛出</strong> 异常之外</li>
+<li>还可以根据 <strong>应用程序</strong> <strong>特有的业务需求</strong> <strong>主动抛出异常</strong></li>
+</ul>
+<p><strong>示例</strong></p>
+<ul>
+<li>提示用户 <strong>输入密码</strong>，如果 <strong>长度少于 8</strong>，抛出 <strong>异常</strong></li>
+</ul>
+<p><img src="/2020/12/23/%E5%BC%82%E5%B8%B8/15016413521006/024_%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8.png" alt="024_自定义异常-w822"></p>
+<p><strong>注意</strong></p>
+<ul>
+<li>当前函数 <strong>只负责</strong> 提示用户输入密码，如果 <strong>密码长度不正确，需要其他的函数进行额外处理</strong></li>
+<li>因此可以 <strong>抛出异常</strong>，由其他需要处理的函数 <strong>捕获异常</strong></li>
+</ul>
+<h3 id="4-2-抛出异常"><a href="#4-2-抛出异常" class="headerlink" title="4.2 抛出异常"></a>4.2 抛出异常</h3><ul>
+<li><code>Python</code> 中提供了一个 <code>Exception</code> <strong>异常类</strong></li>
+<li>在开发时，如果满足 <strong>特定业务需求时</strong>，希望 <strong>抛出异常</strong>，可以：<ol>
+<li><strong>创建</strong> 一个 <code>Exception</code> 的 <strong>对象</strong></li>
+<li>使用 <code>raise</code> <strong>关键字</strong> 抛出 <strong>异常对象</strong></li>
+</ol>
+</li>
+</ul>
+<p><strong>需求</strong></p>
+<ul>
+<li>定义 <code>input_password</code> 函数，提示用户输入密码</li>
+<li>如果用户输入长度 &lt; 8，抛出异常</li>
+<li>如果用户输入长度 &gt;=8，返回输入的密码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">input_password</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 提示用户输入密码</span></span><br><span class="line">    pwd = input(<span class="string">"请输入密码："</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 判断密码长度，如果长度 &gt;= 8，返回用户输入的密码</span></span><br><span class="line">    <span class="keyword">if</span> len(pwd) &gt;= <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">return</span> pwd</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 密码长度不够，需要抛出异常</span></span><br><span class="line">    <span class="comment"># 1&gt; 创建异常对象 - 使用异常的错误信息字符串作为参数</span></span><br><span class="line">    ex = Exception(<span class="string">"密码长度不够"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2&gt; 抛出异常对象</span></span><br><span class="line">    <span class="keyword">raise</span> ex</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    user_pwd = input_password()</span><br><span class="line">    print(user_pwd)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"发现错误：%s"</span> % result)</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1893,170 +2091,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/" class="post-title-link" itemprop="url">面向对象封装案例</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-23 18:24:40 / 修改时间：23:28:44" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="面向对象封装案例"><a href="#面向对象封装案例" class="headerlink" title="面向对象封装案例"></a>面向对象封装案例</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>封装</li>
-<li>小明爱跑步</li>
-<li>存放家具</li>
-</ul>
-<h3 id="01-封装"><a href="#01-封装" class="headerlink" title="01. 封装"></a>01. 封装</h3><ol>
-<li><strong>封装</strong> 是面向对象编程的一大特点</li>
-<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
-<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li>
-</ol>
-<h2 id="02-小明爱跑步"><a href="#02-小明爱跑步" class="headerlink" title="02. 小明爱跑步"></a>02. 小明爱跑步</h2><p><strong>需求</strong></p>
-<ol>
-<li><strong>小明</strong> <strong>体重</strong> <code>75.0</code> 公斤</li>
-<li>小明每次 <strong>跑步</strong> 会减肥 <code>0.5</code> 公斤</li>
-<li>小明每次 <strong>吃东西</strong> 体重增加 <code>1</code> 公斤</li>
-</ol>
-<p><img src="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/007_%E5%B0%8F%E6%98%8E%E7%88%B1%E8%B7%91%E6%AD%A5.png" alt></p>
-<blockquote>
-<p>提示：在 <strong>对象的方法内部</strong>，是可以 <strong>直接访问对象的属性</strong> 的！</p>
-</blockquote>
-<ul>
-<li>代码实现：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="string">"""人类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, weight)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = name</span><br><span class="line">        self.weight = weight</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"我的名字叫 %s 体重 %.2f 公斤"</span> % (self.name, self.weight)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""跑步"""</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 爱跑步，跑步锻炼身体"</span> % self.name)</span><br><span class="line">        self.weight -= <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""吃东西"""</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 是吃货，吃完这顿再减肥"</span> % self.name)</span><br><span class="line">        self.weight += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoming = Person(<span class="string">"小明"</span>, <span class="number">75</span>)</span><br><span class="line"></span><br><span class="line">xiaoming.run()</span><br><span class="line">xiaoming.eat()</span><br><span class="line">xiaoming.eat()</span><br><span class="line"></span><br><span class="line">print(xiaoming)</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-1-小明爱跑步扩展-——-小美也爱跑步"><a href="#2-1-小明爱跑步扩展-——-小美也爱跑步" class="headerlink" title="2.1 小明爱跑步扩展 —— 小美也爱跑步"></a>2.1 小明爱跑步扩展 —— 小美也爱跑步</h3><p><strong>需求</strong></p>
-<ol>
-<li><strong>小明</strong> 和 <strong>小美</strong> 都爱跑步</li>
-<li><strong>小明</strong> <strong>体重</strong> <code>75.0</code> 公斤</li>
-<li><strong>小美</strong> <strong>体重</strong> <code>45.0</code> 公斤</li>
-<li>每次 <strong>跑步</strong> 都会减少 <code>0.5</code> 公斤</li>
-<li>每次 <strong>吃东西</strong> 都会增加 <code>1</code> 公斤</li>
-</ol>
-<p><img src="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/007_%E5%B0%8F%E6%98%8E%E7%88%B1%E8%B7%91%E6%AD%A5.png" alt></p>
-<p><strong>提示</strong></p>
-<ol>
-<li>在 <strong>对象的方法内部</strong>，是可以 <strong>直接访问对象的属性</strong> 的</li>
-<li><strong>同一个类</strong> 创建的 <strong>多个对象</strong> 之间，<strong>属性</strong> 互不干扰！</li>
-</ol>
-<p><img src="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/15006177106970/001_%E6%A4%8D%E7%89%A9%E5%A4%A7%E6%88%98%E5%83%B5%E5%B0%B8.png" alt="001_植物大战僵尸"></p>
-<h2 id="03-摆放家具"><a href="#03-摆放家具" class="headerlink" title="03. 摆放家具"></a>03. 摆放家具</h2><p><strong>需求</strong></p>
-<ol>
-<li><strong>房子(House)</strong> 有 <strong>户型</strong>、<strong>总面积</strong> 和 <strong>家具名称列表</strong><ul>
-<li>新房子没有任何的家具</li>
-</ul>
-</li>
-<li><strong>家具(HouseItem)</strong> 有 <strong>名字</strong> 和 <strong>占地面积</strong>，其中<ul>
-<li><strong>席梦思(bed)</strong> 占地 <code>4</code> 平米</li>
-<li><strong>衣柜(chest)</strong> 占地 <code>2</code> 平米</li>
-<li><strong>餐桌(table)</strong> 占地 <code>1.5</code> 平米</li>
-</ul>
-</li>
-<li>将以上三件 <strong>家具</strong> <strong>添加</strong> 到 <strong>房子</strong> 中</li>
-<li>打印房子时，要求输出：<strong>户型</strong>、<strong>总面积</strong>、<strong>剩余面积</strong>、<strong>家具名称列表</strong></li>
-</ol>
-<p><img src="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/008_%E6%91%86%E6%94%BE%E5%AE%B6%E5%85%B7.png" alt></p>
-<p><strong>剩余面积</strong></p>
-<ol>
-<li>在创建房子对象时，定义一个 <strong>剩余面积的属性</strong>，<strong>初始值和总面积相等</strong></li>
-<li>当调用 <code>add_item</code> 方法，向房间 <strong>添加家具</strong> 时，让 <strong>剩余面积</strong> -= <strong>家具面积</strong></li>
-</ol>
-<p><strong>思考</strong>：应该先开发哪一个类？</p>
-<p><strong>答案</strong> —— <strong>家具类</strong></p>
-<ol>
-<li>家具简单</li>
-<li>房子要使用到家具，<strong>被使用的类</strong>，通常应该先开发</li>
-</ol>
-<h3 id="3-1-创建家具"><a href="#3-1-创建家具" class="headerlink" title="3.1 创建家具"></a>3.1 创建家具</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HouseItem</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, area)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        :param name: 家具名称</span></span><br><span class="line"><span class="string">        :param area: 占地面积</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.area = area</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"[%s] 占地面积 %.2f"</span> % (self.name, self.area)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 创建家具</span></span><br><span class="line">bed = HouseItem(<span class="string">"席梦思"</span>, <span class="number">4</span>)</span><br><span class="line">chest = HouseItem(<span class="string">"衣柜"</span>, <span class="number">2</span>)</span><br><span class="line">table = HouseItem(<span class="string">"餐桌"</span>, <span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">print(bed)</span><br><span class="line">print(chest)</span><br><span class="line">print(table)</span><br></pre></td></tr></table></figure>
-
-<p><strong>小结</strong></p>
-<ol>
-<li>创建了一个 <strong>家具类</strong>，使用到 <code>__init__</code> 和 <code>__str__</code> 两个内置方法</li>
-<li>使用 <strong>家具类</strong> 创建了 <strong>三个家具对象</strong>，并且 <strong>输出家具信息</strong></li>
-</ol>
-<h3 id="3-2-创建房间"><a href="#3-2-创建房间" class="headerlink" title="3.2 创建房间"></a>3.2 创建房间</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">House</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, house_type, area)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        :param house_type: 户型</span></span><br><span class="line"><span class="string">        :param area: 总面积</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.house_type = house_type</span><br><span class="line">        self.area = area</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 剩余面积默认和总面积一致</span></span><br><span class="line">        self.free_area = area</span><br><span class="line">        <span class="comment"># 默认没有任何的家具</span></span><br><span class="line">        self.item_list = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Python 能够自动的将一对括号内部的代码连接在一起</span></span><br><span class="line">        <span class="keyword">return</span> (<span class="string">"户型：%s\n总面积：%.2f[剩余：%.2f]\n家具：%s"</span></span><br><span class="line">                % (self.house_type, self.area,</span><br><span class="line">                   self.free_area, self.item_list))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_item</span><span class="params">(self, item)</span>:</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"要添加 %s"</span> % item)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 创建房子对象</span></span><br><span class="line">my_home = House(<span class="string">"两室一厅"</span>, <span class="number">60</span>)</span><br><span class="line"></span><br><span class="line">my_home.add_item(bed)</span><br><span class="line">my_home.add_item(chest)</span><br><span class="line">my_home.add_item(table)</span><br><span class="line"></span><br><span class="line">print(my_home)</span><br></pre></td></tr></table></figure>
-
-<p><strong>小结</strong></p>
-<ol>
-<li>创建了一个 <strong>房子类</strong>，使用到 <code>__init__</code> 和 <code>__str__</code> 两个内置方法</li>
-<li>准备了一个 <code>add_item</code> 方法 <strong>准备添加家具</strong></li>
-<li>使用 <strong>房子类</strong> 创建了 <strong>一个房子对象</strong></li>
-<li>让 <strong>房子对象</strong> 调用了三次 <code>add_item</code> 方法，将 <strong>三件家具</strong> 以实参传递到 <code>add_item</code> 内部</li>
-</ol>
-<h3 id="3-3-添加家具"><a href="#3-3-添加家具" class="headerlink" title="3.3 添加家具"></a>3.3 添加家具</h3><p><strong>需求</strong></p>
-<ul>
-<li>1&gt; <strong>判断</strong> <strong>家具的面积</strong> 是否 <strong>超过剩余面积</strong>，<strong>如果超过</strong>，提示不能添加这件家具</li>
-<li>2&gt; 将 <strong>家具的名称</strong> 追加到 <strong>家具名称列表</strong> 中</li>
-<li>3&gt; 用 <strong>房子的剩余面积</strong> - <strong>家具面积</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_item</span><span class="params">(self, item)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"要添加 %s"</span> % item)</span><br><span class="line">    <span class="comment"># 1. 判断家具面积是否大于剩余面积</span></span><br><span class="line">    <span class="keyword">if</span> item.area &gt; self.free_area:</span><br><span class="line">        print(<span class="string">"%s 的面积太大，不能添加到房子中"</span> % item.name)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 将家具的名称追加到名称列表中</span></span><br><span class="line">    self.item_list.append(item.name)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 计算剩余面积</span></span><br><span class="line">    self.free_area -= item.area</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-4-小结"><a href="#3-4-小结" class="headerlink" title="3.4 小结"></a>3.4 小结</h3><ul>
-<li>主程序只负责创建 <strong>房子</strong> 对象和 <strong>家具</strong> 对象</li>
-<li>让 <strong>房子</strong> 对象调用 <code>add_item</code> 方法 <strong>将家具添加到房子</strong>中</li>
-<li><strong>面积计算</strong>、<strong>剩余面积</strong>、<strong>家具列表</strong> 等处理都被 <strong>封装</strong> 到 <strong>房子类的内部</strong></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2126,7 +2160,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
