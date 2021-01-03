@@ -155,6 +155,763 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/" class="post-title-link" itemprop="url">汇编语言数据传送指令1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-01 22:58:11 / 修改时间：22:59:13" itemprop="dateCreated datePublished" datetime="2021-01-01T22:58:11+08:00">2021-01-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="数据传送类指令"><a href="#数据传送类指令" class="headerlink" title="数据传送类指令"></a>数据传送类指令</h1><p>作用：把数据、地址或立即数传送到寄存器或存储单元中</p>
+<h3 id="通用传送指令"><a href="#通用传送指令" class="headerlink" title="通用传送指令"></a>通用传送指令</h3><h5 id="传送指令MOV"><a href="#传送指令MOV" class="headerlink" title="传送指令MOV"></a>传送指令MOV</h5><ul>
+<li>格式：MOV 目的操作数，源操作数<br>功能：将源操作数的内容传送给目的操作数，源操作数不变</li>
+</ul>
+<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507141512860.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>注：MOV指令不改变标志位。<br>操作数的位数需要匹配。即8位配8位，16位配16位<br>两个操作数不能同时为段寄存器，也不能为存储器<br>CS不能作为目的操作数<br>IP不能做目的操作数和源操作数<br>立即数不能直接传送给段寄存器<br>对于存储器单元与立即数同时作为操作数的情况，必须显式指明；byte ptr指示字节类型，word ptr指示字类型、</li>
+<li>例子<br>MOV AX, 1010H<br>MOV BL, 58H<br>MOV BYTE PTR [BX], 10H<br>MOV WORD PTR [BX], 2255H<br>MOV BYTE PTR [SI+20H], 10H</li>
+</ul>
+<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200721144944886.png" alt="在这里插入图片描述"></p>
+<h5 id="数据交换指令XCHG"><a href="#数据交换指令XCHG" class="headerlink" title="数据交换指令XCHG"></a>数据交换指令XCHG</h5><ul>
+<li>格式：XCHG 寄存器，存储器操作数/寄存器</li>
+<li>功能：实现源操作数和目的操作数之间的的内容互换</li>
+<li>注：不能存储器与存储器之间交换<br>XCHG指令不影响标志位</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov ax,1234h	；ax&#x3D;1234h</span><br><span class="line">mov bx,5678h	；bx&#x3D;5678h</span><br><span class="line">xchg ax,bx</span><br><span class="line">；ax&#x3D;5678h，bx&#x3D;1234h</span><br><span class="line">xchg ah,al	；ax&#x3D;7856h</span><br><span class="line">12345</span><br></pre></td></tr></table></figure>
+
+<h5 id="表转换指令XLAT-（了解）"><a href="#表转换指令XLAT-（了解）" class="headerlink" title="表转换指令XLAT （了解）"></a>表转换指令XLAT （了解）</h5><ul>
+<li>格式 XLAT 或XLAT 首地址</li>
+<li>功能：将AL与BX寄存器内容之和作为偏移地中，将其所对应的存储单元的内容送入AL寄存器。</li>
+<li>执行前：在内存建立一个字节表格，内含要转换成的目的代码<br>BX——存放表格首地址<br>AL——存放相对表格首地址的偏移量</li>
+<li>执行后：将AL寄存器的内容转换为目标代码<br><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507142450852.png" alt="在这里插入图片描述"></li>
+</ul>
+<h3 id="堆栈存储指令（字操作-2个字节）"><a href="#堆栈存储指令（字操作-2个字节）" class="headerlink" title="堆栈存储指令（字操作 2个字节）"></a>堆栈存储指令（字操作 2个字节）</h3><ul>
+<li>堆栈：后进先出FILO，位于堆栈段；SS段寄存器记录其段地址</li>
+<li>堆栈只有一个出口，即当前栈顶；用堆栈指针寄存器SP指定</li>
+</ul>
+<h5 id="进栈指令PUSH"><a href="#进栈指令PUSH" class="headerlink" title="进栈指令PUSH"></a>进栈指令PUSH</h5><ul>
+<li>PUSH：进栈指令先使堆栈指针SP-2，然后把一个字操作数存入堆栈顶部</li>
+<li>格式： PUSH r16/m6/seg；sp&lt;-sp-2(高地址向低地址）<br>；SS：【SP】&lt;-r16/m16/seg<br><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507144307680.png" alt="在这里插入图片描述"></li>
+</ul>
+<h5 id="出栈指令POP"><a href="#出栈指令POP" class="headerlink" title="出栈指令POP"></a>出栈指令POP</h5><ul>
+<li>POP：出栈指令把栈顶的一个字传送至指定的目的操作数，然后堆栈指针SP+2</li>
+<li>POP r16/m16/seg ;r16/m16/seg&lt;-SS:[SP]<br>;SP&lt;-SP+2</li>
+</ul>
+<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507144403629.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>堆栈操作的单位是字，进栈和出栈只对字量<br>字量数据从栈顶压入和弹出时，都是低地址字节送低字节，高地址字节送高字节</li>
+<li>堆栈操作遵循先进后出原则，但可用存储器寻址方式随机存取堆栈中的数据</li>
+<li>作用：临时存放数据，传递参数，保存和恢复寄存器</li>
+</ul>
+<h3 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h3><p>功能：地址传送指令将存储器单元的逻辑地址送至指定的寄存器</p>
+<h5 id="有效地址传送指令LEA"><a href="#有效地址传送指令LEA" class="headerlink" title="有效地址传送指令LEA"></a>有效地址传送指令LEA</h5><ul>
+<li>特点：传送的是存储器操作数的地址（偏移地址，段地址），而不是内容源操作数必须是存储器操作数，目的操作数是16位通用寄存器。<br>OPD可为一个16位的通用寄存器，通常为：BX、BP、SI、DI。OPS可为变量名、标号或地址表达式。</li>
+<li>LEA r16，mem<br>功能：将源操作数的有效地址传送至指定的16通用寄存器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV BX,0400H</span><br><span class="line">MOV SI,3CH</span><br><span class="line">LEA BX,[BX+SI+0F62H] ；BX＝0400h＋003ch＋0f62h＝139EH</span><br><span class="line"></span><br><span class="line">1234</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>例子<br>设BX=0100H,DI=0030H,DS:[0030H]=2436H, 变量DATA的有效地址为0050H<br>LEA BP, [3000H] ;执行后 BP=3000H<br>LEA BX, [BX+DI] ;执行后 BX=0130H<br>LEA SI, DATA ;执行后 SI＝0050<br>LEA SI, [DI] ;执行后 SI=0030H<br>MOV SI, [DI] ;执行后 SI＝2436H</li>
+</ul>
+<h5 id="指针传送指令LDS-LES"><a href="#指针传送指令LDS-LES" class="headerlink" title="指针传送指令LDS,LES"></a>指针传送指令LDS,LES</h5><ul>
+<li>LDS r16,mem；r16←mem， DS←mem+2<br>LDS指令将主存中mem指定的字送至r16，并将mem的下一字送DS寄存器</li>
+<li>LES r16,mem；r16←mem， ES←mem+2<br>LES指令将主存中mem指定的字送至r16，并将mem的下一字送ES寄存器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV WORD PTR [3060H],0100H</span><br><span class="line">MOV WORD PTR [3062H],1450H</span><br><span class="line">LES DI,[3060H]	；DI&#x3D;0100H，ES&#x3D;1450H</span><br><span class="line">LDS SI,[3060H]	；SI&#x3D;0100H，DS&#x3D;1450H</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A42/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A42/" class="post-title-link" itemprop="url">汇编语言的所有指令2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-01 22:22:47 / 修改时间：22:23:29" itemprop="dateCreated datePublished" datetime="2021-01-01T22:22:47+08:00">2021-01-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="通用寄存器及使用"><a href="#通用寄存器及使用" class="headerlink" title="通用寄存器及使用"></a>通用寄存器及使用</h2><p>IA-32系列有8个32位通用寄存器，名称分别为：EAX,EBX,ECX,EDX,ESP,EBP,ESI,EDI，如图：</p>
+<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A42/006tNbRwgy1fvx9rqlkatj31ae0tz7wh.jpg" alt="image-20181005131233985"></p>
+<h4 id="简单传送指令"><a href="#简单传送指令" class="headerlink" title="简单传送指令"></a>简单传送指令</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MOV</td>
+<td>传送指令</td>
+<td>MOV DEST,SRC</td>
+<td>DEST&lt;=SRC</td>
+<td></td>
+</tr>
+<tr>
+<td>XCHG</td>
+<td>交换指令</td>
+<td>XCHG OPER1,OPER2</td>
+<td>把操作数oper1的内容与操作数oper2的内容交换</td>
+<td>oper1和oper2可以是通用寄存器或存储单元，但不能同时是操作单元，也不能是立即数。</td>
+</tr>
+</tbody></table>
+<h4 id="简单加减指令"><a href="#简单加减指令" class="headerlink" title="简单加减指令"></a>简单加减指令</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ADD</td>
+<td>加法指令</td>
+<td>ADD DEST,SRC</td>
+<td>DEST&lt;=DEST SRC</td>
+<td>两数相加</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>减法指令</td>
+<td>SUB DEST,SRC</td>
+<td>DEST&lt;=DEST-SRC</td>
+<td>两数相减</td>
+</tr>
+<tr>
+<td>INC</td>
+<td>加1指令</td>
+<td>INC DEST</td>
+<td>DEST&lt;=DEST 1</td>
+<td></td>
+</tr>
+<tr>
+<td>DEC</td>
+<td>减1指令</td>
+<td>DEC DEST</td>
+<td>DEST&lt;=DEST-1</td>
+<td></td>
+</tr>
+<tr>
+<td>NEG</td>
+<td>取补指令</td>
+<td>NEG OPRD</td>
+<td>OPRD=0-OPRD</td>
+<td>对操作数取补（相反数）</td>
+</tr>
+</tbody></table>
+<h2 id="标志寄存器及其使用"><a href="#标志寄存器及其使用" class="headerlink" title="标志寄存器及其使用"></a>标志寄存器及其使用</h2><h3 id="状态标志"><a href="#状态标志" class="headerlink" title="状态标志"></a>状态标志</h3><table>
+<thead>
+<tr>
+<th>标志</th>
+<th>中文名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CF（carry flag）</td>
+<td>进位标志</td>
+<td>主要反映算术运算是否产生进位或借位，若产生，则CF=1，否则CF=0</td>
+</tr>
+<tr>
+<td>ZF</td>
+<td>零标志</td>
+<td>反映运算结果是否为0</td>
+</tr>
+<tr>
+<td>SF（sign flag）</td>
+<td>符号标志</td>
+<td>根据运算结果的最高位，若最高位为1则SF为1，否则为0，反映了有符号数运算结果的正负（0正1负）</td>
+</tr>
+<tr>
+<td>OF（overflow flag）</td>
+<td>溢出标志</td>
+<td>反映有符号数运算结果是否产生溢出，是置1，否置0</td>
+</tr>
+<tr>
+<td>PF（parity flag）</td>
+<td>奇偶标志</td>
+<td>偶数置1奇数置0</td>
+</tr>
+<tr>
+<td>AF</td>
+<td>辅助进位标志</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="状态标志操作指令"><a href="#状态标志操作指令" class="headerlink" title="状态标志操作指令"></a>状态标志操作指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CLC（clear carry flag）</td>
+<td>清进位标志指令</td>
+<td>CLC</td>
+<td>使进位标志CF为0</td>
+</tr>
+<tr>
+<td>STC(set carry flag)</td>
+<td>置进位标志指令</td>
+<td>STC</td>
+<td>使进位标志CF为1</td>
+</tr>
+<tr>
+<td>CMC（complement carry flag）</td>
+<td>进位标志取反指令</td>
+<td>CMC</td>
+<td>使进位标志CF取反</td>
+</tr>
+<tr>
+<td>LAHF（load status flags into AH register）</td>
+<td>获取状态标志操作指令</td>
+<td>LAHF</td>
+<td>把位于标志寄存器低端的5个状态标志位（p26图2.3）信息同时送到寄存器AH的对应位</td>
+</tr>
+<tr>
+<td>SAHF（store AH into Flags）</td>
+<td>设置状态标志操作指令</td>
+<td>SAHF</td>
+<td>对标志寄存器中的低8位产生影响，使得状态标志位SF、ZF、AF、PF和CF分别成为来自寄存器AH中对应位的值，但保留位（位1、位3、位5）不受影响</td>
+</tr>
+</tbody></table>
+<h3 id="带进位加减指令"><a href="#带进位加减指令" class="headerlink" title="带进位加减指令"></a>带进位加减指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ADC（add with carry）</td>
+<td>带进位加法指令</td>
+<td>ADC DEST,SRC</td>
+<td>DEST&lt;=DEST SRC CF</td>
+<td>与add指令不同之处是要再加上进位标志cf的值</td>
+</tr>
+<tr>
+<td>SBB(substraction with borrow)</td>
+<td>带借位减法</td>
+<td>SBB DEST,SRC</td>
+<td>DEST&lt;=DEST-(SRC CF)</td>
+<td>与sub指令不同之处是要再减上借位标志cf的值</td>
+</tr>
+</tbody></table>
+<h3 id="取有效地址指令"><a href="#取有效地址指令" class="headerlink" title="取有效地址指令"></a>取有效地址指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LEA（load effective address）</td>
+<td>取有效地址指令</td>
+<td>LEA REC,OPRD</td>
+<td>把操作数oprd的有效地址传送到操作数rec，源操作数oprd必须是一个存储器操作数，目的操作数rec必须是一个16位或32位的通用寄存器</td>
+<td>与mov指令的区别：mov：移动地址中的值lea：将地址进行移动</td>
+</tr>
+</tbody></table>
+<h3 id="指令指针寄存器和简单控制转移指令"><a href="#指令指针寄存器和简单控制转移指令" class="headerlink" title="指令指针寄存器和简单控制转移指令"></a>指令指针寄存器和简单控制转移指令</h3><h4 id="常用条件转移指令"><a href="#常用条件转移指令" class="headerlink" title="常用条件转移指令"></a>常用条件转移指令</h4><p>location：p45</p>
+<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A42/006tNbRwgy1fvxm0ya707j30vo0ychdt.jpg" alt="image-20181005201637040"></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CMP</td>
+<td>比较指令</td>
+<td>CMP DEST,SRC</td>
+<td>根据dest-src的差影响各状态标志寄存器</td>
+<td>不把dest-src的结果送入dest</td>
+</tr>
+<tr>
+<td>JMP</td>
+<td>无条件段内直接转移指令</td>
+<td>JMP LABEL</td>
+<td>使控制无条件地转移到标号为label的位置</td>
+<td>无条件转移指令本身不影响标志</td>
+</tr>
+</tbody></table>
+<h3 id="堆栈和堆栈操作"><a href="#堆栈和堆栈操作" class="headerlink" title="堆栈和堆栈操作"></a>堆栈和堆栈操作</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PUSH</td>
+<td>进栈指令</td>
+<td>PUSH SRC</td>
+<td>把源操作数src压入堆栈</td>
+<td>源操作数src可以是32位通用寄存器、16位通用寄存器和段寄存器，也可以是双字存储单元或者字符存储单元，还可以是立即数</td>
+</tr>
+<tr>
+<td>POP</td>
+<td>出栈指令</td>
+<td>POP DEST</td>
+<td>从栈顶弹出一个双字或字数据到目的操作数</td>
+<td>如果目的操作数是双字的，那么就从栈顶弹出一个双字数据，否则，从栈顶弹出一个字数据，出栈至少弹出一个字（16位）</td>
+</tr>
+<tr>
+<td>PUSHA</td>
+<td>16位通用寄存器全进栈指令</td>
+<td>PUSHA</td>
+<td>将所有8个16位通用寄存器的内容压入堆栈</td>
+<td>压入顺序是AX CX DX BX SP BP SI DI，然后对战指针寄存器SP的值减16，所以SP进栈的内容是PUSHA指令执行之前的值</td>
+</tr>
+<tr>
+<td>POPA</td>
+<td>16位通用寄存器全出栈指令</td>
+<td>POPA</td>
+<td>以PUSHA相反的顺序从堆栈中弹出内容，从而恢复PUSHA之前的寄存器状态</td>
+<td>SP的值不是由堆栈弹出的，而是通过增加16来恢复</td>
+</tr>
+<tr>
+<td>PUSHAD</td>
+<td>32位通用寄存器全进栈指令</td>
+<td>PUSHAD</td>
+<td>将所有8个32位通用寄存器的内容压入堆栈</td>
+<td>压入顺序是EAX ECX EDX EBX ESP EBP ESI EDI，然后对战指针寄存器SP的值减32，所以SP进栈的内容是PUSHAD指令执行之前的值</td>
+</tr>
+<tr>
+<td>POPAD</td>
+<td>32位通用寄存器全出栈指令</td>
+<td>POPAD</td>
+<td>以PUSHAD相反的顺序从堆栈中弹出内容，从而恢复PUSHAD之前的寄存器状态</td>
+<td>ESP的值不是由堆栈弹出的，而是通过增加32来恢复</td>
+</tr>
+</tbody></table>
+<h2 id="过程调用和返回指令"><a href="#过程调用和返回指令" class="headerlink" title="过程调用和返回指令"></a>过程调用和返回指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CALL</td>
+<td>过程调用指令</td>
+<td>CALL LABEL</td>
+<td>段内直接调用LABEL</td>
+<td>与jmp的区别在于call指令会在调用label之前保存返回地址（call 中return之后主程序还可以继续执行，jmp 当label执行完毕后不能返回主程序继续执行）</td>
+</tr>
+<tr>
+<td>RET</td>
+<td>段内过程返回指令</td>
+<td>RET</td>
+<td>使子程序结束，继续执行主程序</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="算术逻辑运算指令"><a href="#算术逻辑运算指令" class="headerlink" title="算术逻辑运算指令"></a>算术逻辑运算指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MUL</td>
+<td>无符号数乘法指令</td>
+</tr>
+<tr>
+<td>IMUL</td>
+<td>有符号数乘法指令</td>
+</tr>
+<tr>
+<td>IMUL DEST，SRC</td>
+<td>有符号数乘法指令</td>
+</tr>
+<tr>
+<td>IMUL DEST,SRC1,SRC2</td>
+<td>有符号数乘法指令</td>
+</tr>
+<tr>
+<td>DIV</td>
+<td>无符号数除法指令</td>
+</tr>
+<tr>
+<td>IDIV OPRD</td>
+<td>有符号数除法指令</td>
+</tr>
+</tbody></table>
+<h2 id="符号拓展指令"><a href="#符号拓展指令" class="headerlink" title="符号拓展指令"></a>符号拓展指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CBW</td>
+<td>字节转化为字指令</td>
+<td>CBW</td>
+<td>把寄存器AL中的值符号拓展到寄存器AH</td>
+</tr>
+<tr>
+<td>CWD</td>
+<td>字转化为双字指令</td>
+<td>CWD</td>
+<td>把寄存器AX中的值符号拓展到寄存器DX</td>
+</tr>
+<tr>
+<td>CDQ</td>
+<td>双字转化为四字指令</td>
+<td>CDQ</td>
+<td>把寄存器EAX中的值符号拓展到EDX</td>
+</tr>
+<tr>
+<td>CWDE</td>
+<td>字转化为双字指令</td>
+<td>CWDE</td>
+<td>把AX中的值符号拓展到EAX的高16位</td>
+</tr>
+</tbody></table>
+<h2 id="拓展传送指令"><a href="#拓展传送指令" class="headerlink" title="拓展传送指令"></a>拓展传送指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MOVSX</td>
+<td>符号拓展传送指令</td>
+<td>MOVSX DEST,SRC</td>
+<td>把源操作数SRC符号拓展后送至目的操作数DEST</td>
+<td>src可以是通用寄存器或者存储单元，但是dest只能是通用寄存器（零拓展传送指令不会改变源操作数，也不影响标志寄存器的状态）</td>
+</tr>
+<tr>
+<td>MOVZX</td>
+<td></td>
+<td>MOVZX DEST,SRC</td>
+<td>把源操作数SRC零拓展后送至目的操作数DEST</td>
+<td>零拓展传送指令不会改变源操作数，也不影响标志寄存器的状态</td>
+</tr>
+</tbody></table>
+<h2 id="逻辑运算指令"><a href="#逻辑运算指令" class="headerlink" title="逻辑运算指令"></a>逻辑运算指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NOT</td>
+<td>否运算指令</td>
+<td>NOT OPRD</td>
+<td>把操作数OPRD按位取反，然后送回OPRD</td>
+<td></td>
+</tr>
+<tr>
+<td>AND</td>
+<td>与运算指令</td>
+<td>AND DEST，SRC</td>
+<td>把两个操作数进行与运算之后结果送回DEST</td>
+<td>同1得1，否则得0</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>或运算指令</td>
+<td>OR DEST，SRC</td>
+<td>把两个操作数进行或运算之后结果送回DEST</td>
+<td>同0得0，否则得1</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>异或运算</td>
+<td>XOR DEST，SRC</td>
+<td>把两个操作数进行异或运算之后结果送回DEST</td>
+<td>相同得0不同得1</td>
+</tr>
+<tr>
+<td>TEST</td>
+<td>测试指令</td>
+<td>TEST DEST，SRC</td>
+<td>与AND指令类似，将各位相与，但是结果不送回DEST，仅影响状态位标志，指令执行后，ZF、PF、SF反映运算结果，CF和OF被清零</td>
+<td>通常用于检测某些位是否为1，但又不希望改变操作数的值</td>
+</tr>
+</tbody></table>
+<h2 id="移位指令"><a href="#移位指令" class="headerlink" title="移位指令"></a>移位指令</h2><h4 id="一般移位指令"><a href="#一般移位指令" class="headerlink" title="一般移位指令"></a>一般移位指令</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SAL</td>
+<td>算术左移</td>
+<td>SAL OPRD，count</td>
+<td>把操作数oprd左移count位，右边补0</td>
+<td>与shl指令一样 通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>SHL</td>
+<td>逻辑左移</td>
+<td>SHL OPRD，count</td>
+<td>把操作数oprd左移count位，右边补0</td>
+<td>与sal指令一样 通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>SAR</td>
+<td>算术右移</td>
+<td>SAR OPRD，count</td>
+<td>把操作数oprd右移count位，同时每右移一位，左边补符号位，移出的最低位进入标志位CF</td>
+<td>通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>SHR</td>
+<td>逻辑右移</td>
+<td>SHR OPRD，count</td>
+<td>把操作数oprd右移count位，左边补0，移出的最低位进入标志位CF</td>
+<td>通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+</tbody></table>
+<h4 id="循环移位指令"><a href="#循环移位指令" class="headerlink" title="循环移位指令"></a>循环移位指令</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ROL</td>
+<td>左循环移位指令</td>
+<td>ROL OPRD,count</td>
+<td></td>
+<td>通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>ROR</td>
+<td>右循环移位指令</td>
+<td>ROR OPRD,count</td>
+<td></td>
+<td>通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>RCL</td>
+<td>带进位左循环移位</td>
+<td>RCL OPRD,count</td>
+<td>相当于CF在最高位参与循环移位</td>
+<td>大循环左移 通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+<tr>
+<td>RCR</td>
+<td>带进位右循环移位</td>
+<td>RCR OPRD,count</td>
+<td>相当于CF在最高位参与循环移位</td>
+<td>大循环右移 通过截取count的低5位，实际的移位数被限于0到31之间。</td>
+</tr>
+</tbody></table>
+<h3 id="循环指令"><a href="#循环指令" class="headerlink" title="循环指令"></a>循环指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文名</th>
+<th>格式</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LOOP</td>
+<td>计数循环指令</td>
+<td>LOOP LABEL</td>
+<td>使ECX的值减1，当ECX的值不为0的时候跳转至LABEL，否则执行LOOP之后的语句</td>
+<td></td>
+</tr>
+<tr>
+<td>LOOPE</td>
+<td>等于循环指令</td>
+<td>LOOPE LABEL</td>
+<td>使ECX的值减1，如果结果不等于0并且零标志ZF等于1（表示相等），那么就转移到LABEL，否则执行LOOPE之后的语句</td>
+<td></td>
+</tr>
+<tr>
+<td>LOOPZ</td>
+<td>零循环指令</td>
+<td>LOOPZ LABEL</td>
+<td>使ECX的值减1，如果结果不等于0并且零标志ZF等于1（表示相等），那么就转移到LABEL，否则执行LOOPZ之后的语句</td>
+<td></td>
+</tr>
+<tr>
+<td>LOOPNE</td>
+<td>不等于循环指令</td>
+<td>LOOPE LABEL</td>
+<td>使ECX的值减1，如果结果不等于0并且零标志ZF等于0（表示不相等），那么就转移到LABEL，否则执行LOOPNE之后的语句</td>
+<td></td>
+</tr>
+<tr>
+<td>LOOPNZ</td>
+<td>非零循环指令</td>
+<td>LOOPNZ LABEL</td>
+<td>使ECX的值减1，如果结果不等于0并且零标志ZF等于0（表示不相等），那么9就转移到LABEL，否则执行LOOPNZ之后的语句</td>
+<td></td>
+</tr>
+<tr>
+<td>JECXZ</td>
+<td>计数转移指令</td>
+<td>JECXZ LABEL</td>
+<td>当寄存器ECX的值为0时转移到LABEL，否则顺序执行</td>
+<td>通常在循环开始之前使用该指令，所以循环次数为0时，就可以跳过循环体</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A41/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3758,120 +4515,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">数据结构八大排序对比总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:54:01" itemprop="dateCreated datePublished" datetime="2020-12-29T21:54:01+08:00">2020-12-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构桶排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:53:44" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:44+08:00">2020-12-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3941,7 +4584,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">176</span>
+          <span class="site-state-item-count">178</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="数字逻辑知识点总结  第一章 数制与编码  1.1十进制与二进制数的表示  1、十进制（D）：基数为10，十个独立的符号（0-9），满十进一。 推广：N进制：N个独立的符号（0-N），满N进一。  2、在一个采用进位计数制表示的数中，不同数位上的固定常数称为“权”。例如十进制数632.45，从左至右各位的权分别是： 10 2 ， 10,10,10,10。   位置计数表示法：632.453、表示方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字逻辑知识点汇总1">
+<meta property="og:url" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数字逻辑知识点总结  第一章 数制与编码  1.1十进制与二进制数的表示  1、十进制（D）：基数为10，十个独立的符号（0-9），满十进一。 推广：N进制：N个独立的符号（0-N），满N进一。  2、在一个采用进位计数制表示的数中，不同数位上的固定常数称为“权”。例如十进制数632.45，从左至右各位的权分别是： 10 2 ， 10,10,10,10。   位置计数表示法：632.453、表示方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-03T10:07:08.859Z">
+<meta property="article:modified_time" content="2021-01-03T10:08:04.682Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="数字逻辑基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数字逻辑知识点汇总1 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数字逻辑知识点汇总1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-03 18:07:08 / 修改时间：18:08:04" itemprop="dateCreated datePublished" datetime="2021-01-03T18:07:08+08:00">2021-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数字逻辑知识点总结 </p>
+<p>第一章 数制与编码 </p>
+<p>1.1十进制与二进制数的表示 </p>
+<p>1、十进制（D）：基数为10，十个独立的符号（0-9），满十进一。 推广：N进制：N个独立的符号（0-N），满N进一。 </p>
+<p>2、在一个采用进位计数制表示的数中，不同数位上的固定常数称为“权”。例如十进制数632.45，从左至右各位的权分别是：</p>
+<p>10</p>
+<p>2</p>
+<p>，</p>
+<p>10,10,10,10。 </p>
+<p> 位置计数表示法：632.453、表示方法 按权展开表示法： </p>
+<p>632.456<em>103</em>102<em>104</em>105*10 </p>
+<p>2</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>2</p>
+<p>1012</p>
+<p>4、二进制运算：加法（1+1=0），减法，乘法，除法</p>
+<p>5、十六进制（H）：数码：0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F.</p>
+<p>6、不同进位计数制的各种数码： 十进制数（r=10） 二进制数（r=2） 00000100012001030011401005010160110701118100091001101010111011121100131101141110151111</p>
+<p>八进制数（r=8） </p>
+<p>00010203040506071011121314151617</p>
+<p>十六进制数（r=16） 0123456789ABCDEF</p>
+<p>1 / 5</p>
+<p>1.2二进制与十进制的转换 </p>
+<p>1、二进制转十进制：将二进制数写成按权展开式，并将式中各乘积项的积算出来，然后各项相加，即可得到相对应的十进制数。 2、十进制转二进制： 整数部分：除二取余，将余数倒序排列。          小数部分：“乘二取整”，先将十进制小数部分乘以2，取其整数1或0作为二进制小数的最高位，然后将乘积的小数部分再乘以2，并再取整数作为次高位。重复上述过程，直到小数部分为0或达到所要求的精度。(0.625)10(0.101)2。 例题：将(58.625)10转换成二进制数 解</p>
+<p>(58.625)=(58)(0.625)(111010)(0.101)(111010.101) </p>
+<p>10</p>
+<p>10</p>
+<p>10</p>
+<p>2</p>
+<p>2</p>
+<p>2</p>
+<p>3、八进制数、十六进制数与二进制数的转换 </p>
+<p> 二进制数            八进制数或十六进制数  的 </p>
+<p>方法：从小数点开始，分别向左、右按3位（转换成八进制）或4位（转换成十六进制）分组，最后不满3位或4位的则需加0。将每组以对应的八进制或十六进制数代替，即为等值的八进制数和十六进制数。</p>
+<p>八进制：      2 5 7 . 0  5 5  4二进制：     0 1 0 1 0 1 1 1 1 . 0 0 0 1 0 1 1 0 1 1 0 0十六进制：      A  F   1  6  C </p>
+<p>2 / 5</p>
+<p>1.3带符号数的代码表示 </p>
+<p>1、真值：直接用正号和负号来表示带符号的二进制数 </p>
+<p>2、原码：第一位为符号位（0：正数，1：负数），其余各位表示数制部分 3、反码（对1的补救）：第一位为符号位（0：正数，1：负数）。对于负数，反码的数制是将原码数制按位求反，即原码某位为1，反码的相应位就为0，或者原码的某位为0，反码的相应位就为1。对于正数，原码和反码相同。 4、补码（对2的补救）：正数的表示同原码与反码的表示一样。对于负数，其符号位为1，数值位是将原码按位取反，再在最低位加1。 5、机器数   原码        反码        补码 负数： </p>
+<p>​     符号位     按位取反      加1</p>
+<p> -010101011011110</p>
+<p>真值      原码      反码      补码     正数： </p>
+<p>​     符号位     按位取反      加1</p>
+<p> +010001000100010</p>
+<p>真值      原码      反码      补码   6、表示范围： 表示位数 4位 8位 16位 N位  </p>
+<p>3 / 5</p>
+<p>范围 0000-111100000000-11111111 </p>
+<p>(2</p>
+<p>N1</p>
+<p>个数 </p>
+<p>2=16个 2=256个 2</p>
+<p>168</p>
+<p>4</p>
+<p>个 个 </p>
+<p>1)~(2) </p>
+<p>N1</p>
+<p>2</p>
+<p>N</p>
+<p>1.3.2机器数的加减法 </p>
+<p>1、原码运算：原码中的符号位仅用于表示数的正负，不参与运算，进行运算的只是数值部分。原码运算首先比较两个数的符号，若两数的符号不同，就需要进一步比较两数值的相对大小，两数相加是将数值较大的数减去数值较小的数，结构的符号与数值较大的数的符号相同。</p>
+<p>2、补码运算：运算时，符号位和数值位一样参加运算，如果符号位产生进位，则需将此进位“丢掉”。运算结果符号位为0时，说明是正数的补码，为1时，说明是负数的补码。 </p>
+<p>例如：已知真值N1=-0.1100，N2=-0.0010，求（N1+N2）补，（N1-N2）补。 </p>
+<p>解：（N1+N2）补=1.0100+1.1110=1.0010（符号相同），（N1-N2）补 （N1-N2）补=1.0100-1.1110=1.0100+0.0010=1.0110</p>
+<p>3、反码运算：运算时，符号位和数制位一样参加运算，如果符号位产生了进位，则此进位应与运算结果的最低位求和，称之为“循环进位”。 </p>
+<p>例如：已知真值N1=0.1001，N2=0.0011，求（N1+N2）反，（N1-N2）反。 </p>
+<p>解：（N1+N2）反=0.1001+0.0011=0.1100</p>
+<p>  （N1-N2）反=（N1）反+（-N1）反=0.1001+1.1100=（10.0101）=0.0101+1=0.0110（循环进位） </p>
+<p>4 / 5</p>
+<p>1.4数的定点表示和浮点表示 </p>
+<p>1、数的定点表示： 带符号的数：一般以左边最高位表示符号位。          不带符号的数：一般表示逻辑量或某些特征值，逻辑运算时按位进行的。 +10101100</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>1</p>
+<p>0</p>
+<p>.</p>
+<p>-0.11011011</p>
+<p>.</p>
+<p>1</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>符号 小数点  </p>
+<p>​                 数值部分 2、数的浮点表示：N码的基数）  0</p>
+<p>1</p>
+<p>2</p>
+<p>j</p>
+<p>*s（S：尾数，J：阶码，2：阶</p>
+<p>2</p>
+<p>10</p>
+<p>*0.101 0</p>
+<p>001010</p>
+<p>阶符     阶码J   尾符       尾数S</p>
+<p>1.5数码和字符的代码表示 </p>
+<p>1、余3码=8421码+0011十进制数码 5</p>
+<p>8421BCD码 0101</p>
+<p>2421码 1011</p>
+<p>余3码 1000</p>
+<p>2、可靠性编码 格雷码        奇偶校验码 </p>
+<p>5 / 5</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数字逻辑基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/" rel="prev" title="数字逻辑复习题">
+      <i class="fa fa-chevron-left"></i> 数字逻辑复习题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/" rel="next" title="数字逻辑知识点汇总2">
+      数字逻辑知识点汇总2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="数字电子技术（江晓安）第三版  第一章 数制与代码  进位计数制的基本概念，进位基数和数位的权值。  常用进位计数制：十进制二进制八进制十六进制  数制转换：  把非十进制数转换成十进制数：按权展开相加。  十进制数转换成其它进制数：整数转换，采用基数连除法。  纯小数转换，采用基数连乘法。  二进制数转换成八进制数或十六进制数：以二进制数的小数点为起点，分别向左、 向右，每三位(或四位)分一组。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字逻辑知识点汇总2">
+<meta property="og:url" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数字电子技术（江晓安）第三版  第一章 数制与代码  进位计数制的基本概念，进位基数和数位的权值。  常用进位计数制：十进制二进制八进制十六进制  数制转换：  把非十进制数转换成十进制数：按权展开相加。  十进制数转换成其它进制数：整数转换，采用基数连除法。  纯小数转换，采用基数连乘法。  二进制数转换成八进制数或十六进制数：以二进制数的小数点为起点，分别向左、 向右，每三位(或四位)分一组。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-03T10:10:01.588Z">
+<meta property="article:modified_time" content="2021-01-03T10:10:45.075Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="数字逻辑基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数字逻辑知识点汇总2 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数字逻辑知识点汇总2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-03 18:10:01 / 修改时间：18:10:45" itemprop="dateCreated datePublished" datetime="2021-01-03T18:10:01+08:00">2021-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数字电子技术（江晓安）第三版 </p>
+<p>第一章 数制与代码 </p>
+<p>进位计数制的基本概念，进位基数和数位的权值。 </p>
+<p>常用进位计数制：十进制二进制八进制十六进制 </p>
+<p>数制转换： </p>
+<p>把非十进制数转换成十进制数：按权展开相加。 </p>
+<p>十进制数转换成其它进制数：整数转换，采用基数连除法。 </p>
+<p>纯小数转换，采用基数连乘法。 </p>
+<p>二进制数转换成八进制数或十六进制数：以二进制数的小数点为起点，分别向左、</p>
+<p>向右，每三位(或四位)分一组。对于小数部分，最低位一组不足三位(或四位)时，必须在有效位右边补0，使其足位。然后，把每一组二进制数转换成八进制(或十六进制)数，并保持原排序。对于整数部分，最高位一组不足位时，可在有效位的左边补0，也可不补。 </p>
+<p>八进制(或十六进制)数转换成二进制数：只要把八进制(或十六进制)数的每一位数</p>
+<p>码分别转换成三位(或四位)的二进制数， 并保持原排序即可。整数最高位一组左边的0，及小数最低位一组右边的0，可以省略。 </p>
+<p>常用代码：二-十进制码 （BCD码 Binary Coded Decimal) </p>
+<p>—— 用二进制码元来表示十进制数符“0 ~ 9”主要有： 8421BCD码 2421码 余3码 （注意区分有权码和无权码） </p>
+<p>可靠性代码：格雷码和奇偶校验码 </p>
+<p>具有如下特点的代码叫格雷码： 任何相邻的两个码组(包括首、尾两个码组)中，只有一个码元不同。格雷码还具有反射特性，即按教材表中所示的对称轴，除最高位互补反射外，其余低位码元以对称轴镜像反射。格雷码属于无权码。</p>
+<p>在编码技术中，把两个码组中不同的码元的个数叫做这两个码组的距离，简称码距。由于格雷码的任意相邻的两个码组的距离均为1，故又称之为单位距离码。另外，由于首尾两个码组也具有单位距离特性，因而格雷码也叫循环码。 </p>
+<p>奇偶校验码是一种可以检测一位错误的代码。它由信息位和校验位两部分组成。 （要掌握奇偶校验原理及校验位的形成及检测方法） </p>
+<p>字符代码：ASCII码 (American Standard Code for Information Interchange，美国信</p>
+<p>息交换标准代码)</p>
+<p>1</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第二章 基本逻辑运算及集成逻辑门 </p>
+<p>基本逻辑运算: 与逻辑、或逻辑、非逻辑 </p>
+<p>常用复合逻辑：“与非”逻辑、“或非”逻辑、“与或非”逻辑 </p>
+<p>“异或”逻辑 及“同或”逻辑 </p>
+<p>两变量的“异或逻辑”和“同或逻辑”互为反函数。 A⊕B和A⊙B互为对偶式。 </p>
+<p>多变量的“异或”及“同或”： </p>
+<p>  偶数个变量的“同或”等于这偶数个变量的“异或”之非。即 </p>
+<p>​    </p>
+<p>​     </p>
+<p>n个变量的“异或”逻辑的输出值和输入变量取值的对应关系是：输入变量的取值组合中，有奇数个1时，“异或”逻辑的输出值为1；反之，输出值为0。 </p>
+<p>利用此特性，可作为奇偶校验码校验位的产生/校验电路。 </p>
+<p>​    正负逻辑 </p>
+<p>​    在数字系统中，逻辑值是用逻辑电平表示的。若用逻辑高电平UH表示逻</p>
+<p>辑“真”，用逻辑低电平UL表示逻辑“假”，则称为正逻辑；反之，则称为负逻辑。本教材采用正逻辑。（注意：同一个逻辑电路实现的输入输出的电平关系是确定的，但规定正逻辑与负逻辑后实现的逻辑关系是不同的）     </p>
+<p>逻辑运算的优先级别      </p>
+<p>逻辑运算的完备性 </p>
+<p>​    “与”、“或”、“非”是逻辑代数中三种最基本的逻辑运算。 任何逻</p>
+<p>辑函数都可以用这三种运算的组合来构成。即任何数字系统都可以用这三种逻辑门来实现。因此，称“与”、“或”、 “非”是一个完备集合，简称完备集。但是，它不是最好的完备集，因为用它实现逻辑函数，必须同时使用三种不同的逻辑门，这对数字系统的制造、维修都不方便。</p>
+<p>由反演律(参见第三章 摩根定理)可以看出，利用“与”和“非”可以</p>
+<p>2</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>得出“或”；利用“或”和“非”可以得出“与”。因此，“与非”、“或非”、 “与或非”这三种复合运算中的任何一种都能实现“与”、 “或”、“非”的功能，即这三种复合运算各自都是完备集。 </p>
+<p>集成逻辑门 </p>
+<p>由于软件工程专业没有电路、模拟电子的先修课程，此部分涉及到电路细节部分不作要求，只概念性地了解相关集成逻辑芯片的逻辑功能及芯片系列的参数等。</p>
+<p>​    把若干个有源器件和无源器件及其连线，按照一定的功能要求，制做在</p>
+<p>同一块半导体基片上，这样的产品叫集成电路。若它完成的功能是逻辑功能或数字功能， 则称为逻辑集成电路或数字集成电路。最简单的数字集成电路是集成逻辑门。 </p>
+<p>​    集成逻辑门，按照其组成的有源器件的不同可分为两大类： </p>
+<p> 一类是双极性（型）晶体管逻辑门（TTL门晶体管-晶体管逻辑门）； 另一类是单极性（型）绝缘栅场效应管逻辑门，简称MOS门。 </p>
+<p>​    单极性MOS门主要有PMOS门(P沟道增强型MOS管构成的逻辑门)、</p>
+<p>NMOS门(N沟道增强型MOS管构成的逻辑门)和CMOS门(利用PMOS管和NMOS管构成的互补电路构成的门电路，故又叫做互补MOS门。 </p>
+<p>OC门与三态门 </p>
+<p>   OC门可实现“线与”功能，这是TTL门电路做不到的。 </p>
+<p>三态门的输出除了“0”、“1”状态外，还有“高阻”态。(控制端信号的作用：选通) </p>
+<p>TTL与 MOS集成逻辑门 多余输入端的处理：  与门/与非门——多余输入端接高电平  或门/或非门——多余输入端接低电平 </p>
+<p>要牢记各种门电路的逻辑符号！（教材 P243~244）      </p>
+<p>3</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第三章 布尔代数与逻辑函数化简 </p>
+<p>基本公式     </p>
+<p>基本法则： </p>
+<p>代入法则：逻辑等式中的任何变量A，都可用另一函数Z代替，等式仍然成立。 对偶法则：对于任何一个逻辑表达式 F， 如果将其中的“+”换成“·”， “·”</p>
+<p>换成“+”， “１”换成“0”， “0”换成“1”，并保持原先的逻辑优先级，变量不变，两变量以上的非号不动，则可得原函数 F的对偶式 G，且 F和 G互为对偶式。 根据对偶法则知原式F成立，则其对偶式也一定成立。 </p>
+<p>反演法则：将原函数F中的“·”换成“+”, “+”换成“·”； “0”换成“1”， </p>
+<p>“1”换成“0”； 原变量换成反变量，反变量换成原变量，长非号即两个或两个以上变量的非号不变，即可得反函数。 </p>
+<p> 由原函数求反函数，称为反演或求反。摩根定律是进行反演的重要工具。</p>
+<p>多次应用摩根定律，可以求出一个函数的反函数。当函数较复杂时， 求反过程就相当麻烦。为此，人们从实践中归纳出求反演法则，可一步快速求出反函数</p>
+<p>逻辑函数不同形式的转换 </p>
+<p>逻辑函数的表达形式通常可分为五种：(要掌握 画对应的逻辑电路图)  与或式、与非-与非式、与或非式、或与式、或非-或非式 </p>
+<p>4</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>逻辑函数的代数法化简 逻辑函数化简的原则 </p>
+<p>​    逻辑函数化简， 并没有一个严格的原则，通常遵循以下几条原则：     (1)逻辑电路所用的门最少；     (2)各个门的输入端要少；     (3)逻辑电路所用的级数要少；     (4)逻辑电路能可靠地工作。</p>
+<p>卡诺图化简 （依据：逻辑相邻的两个与项可以合并为一项并消去一个变量） 最小项标准式的定义 </p>
+<p>由一般式获得最小项标准式的方法 最小项的性质： 21</p>
+<p>(1)对任何变量的函数式来讲，全部最小项之和为1， 即 mi1</p>
+<p>i0</p>
+<p>(2)两个不同最小项之积为 0， 即 mimj0(ij)(3) n变量有 2n 项最小项， 且对每一最小项而言， 有n个最小项与之相邻。 </p>
+<p>卡诺图的结构 相邻最小项合并规律 </p>
+<p>​    (1)两相邻项可合并为一项， 消去一个取值不同的变量，保留相同变量；   (2)四相邻项可合并为一项， 消去两个取值不同的变量，保留相同变量，</p>
+<p>  标注为1→原变量，0→反变量； </p>
+<p>​    (3)八相邻项可合并为一项，消去三个取值不同的变量，保留相同变量， </p>
+<p>标注与变量关系同上。 </p>
+<p>卡诺图的画圈原则是把具有循环相邻关系的最小项圈在一起 </p>
+<p>与或逻辑形式的卡诺图化简步骤 </p>
+<p>​    (1)将原始函数用卡诺图表示（最小项标准式、一般与或式均可）；     (2)根据最小项合并规律画卡诺圈， 圈住全部“１”方格；     (3)将上述全部卡诺圈的化简结果，“或”起来即得化简后的新函数。 </p>
+<p>与非逻辑形式的卡诺图化简步骤（将与或式两次求反即得与非式）。 </p>
+<p>第一步： 在卡诺图上圈“１”方格， 求得最简与或式；</p>
+<p>第二步： 将最简与或式两次求反， 用求反律展开一次，得到与非表示式； </p>
+<p>或与逻辑形式的卡诺图化简步骤 </p>
+<p> 首先从卡诺图上求其反函数，其方法是圈“０”方格， 然后再取反用反演法则（或摩根定理）即得原函数的或与式。 </p>
+<p>n</p>
+<p> 5</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>无关项及无关项的应用 </p>
+<p>逻辑问题分完全描述和非完全描述两种。 </p>
+<p>对应于变量的每一组取值，函数都有定义，即在每一组变量取值下， 函数 F都有确定的值，不是“１”就是“０”， 逻辑函数与每个最小项均有关，这类问题称为完全描述问题。 </p>
+<p> 在实际的逻辑问题中，变量的某些取值组合不允许出现， 或者是变量之</p>
+<p>间具有一定的制约关系。我们将这类问题称为非完全描述，该函数只与部分最小项有关，而与另一些最小项无关，我们用或者用φ表示。 </p>
+<p>两种表示法：  </p>
+<p>F(1,5,8,12)d(3,7,10,11,14,15)。</p>
+<p>或： FABCABC</p>
+<p>__</p>
+<p>__</p>
+<p></p>
+<p>约束条件为ABACBC0（满足约束关系式的输入变量取值为“合法”取值， 不满足约束关系式的输入变量取值为“非法”取值——无关项×） </p>
+<p>有利于逻辑函数的化简时可以利用相应的无关项。 </p>
+<p>逻辑函数的描述方法常用的有： </p>
+<p>真值表法、布尔代数法、卡诺图法、逻辑图法、波形(时序)图法 （其中 布尔代数法、逻辑图法 具有“多样性”） </p>
+<p>真值表  逻辑函数（最小项标准）式 （原函数，反函数） 卡诺图       </p>
+<p>6</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第四章 组合逻辑电路 </p>
+<p>组合逻辑电路的定义  </p>
+<p>组合逻辑电路的分析过程： </p>
+<p>​    (1)由给定的逻辑电路图， 写出输出端（关于输入）的逻辑表达式；   (2)列出真值表 </p>
+<p>​    (3)从真值表概括出逻辑功能 </p>
+<p>​    (4)对原电路进行改进设计，寻找最佳方案(这一步不一定都要进行)。 </p>
+<p>组合逻辑电路的设计步骤： </p>
+<p>  (1)将文字描述的逻辑命题变换为真值表，这是十分重要的一步。 </p>
+<p>作出真值表前要仔细分析解决逻辑问题的条件，作出输入、输出变量的 逻辑规定 </p>
+<p>  (2)进行函数化简， 化简形式应依据选择什么门而定。   (3)根据化简结果和选定的门电路， 画出逻辑电路图。 </p>
+<p>常用中规模组合逻辑部件的原理和应用 </p>
+<p>以掌握原理和器件的外部特性（逻辑关系）为主，内部电路的细节不必深究！ </p>
+<p>半加器与全加器的定义（理解掌握全加器真值表） </p>
+<p>全加器的应用（了解） </p>
+<p>编码器 优先编码器 </p>
+<p>译码器及其应用 </p>
+<p>集成电路译码器的特点：     ① 为了减轻信号的负载，故集成电路输入一般都采用缓冲级，这样外界</p>
+<p>信号只驱动一个门。 </p>
+<p>​    ② 为了降低功率损耗，译码器的输出端常常是反码输出，即输出低电位</p>
+<p>有效。 </p>
+<p>​    ③ 为了便于扩大功能，增加了一些功能端，如使能端等。 </p>
+<p>译码器的应用：译码器除了用来驱动各种显示器件外，还可实现存储系统 和其它数字系统的地址译码、组成脉冲分配器、程序计数器、代码转换和</p>
+<p>​     由变量译码器可知，它的输出端就表示一项最小项（集成电路译码器</p>
+<p>7</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>输出端就表示一项最小项的“非”），而逻辑函数可以用最小项表示，利用这个特点，可以实现组合逻辑电路的设计，而不需要经过化简过程。 </p>
+<p>数据选择器及其应用 </p>
+<p>数字比较器（集成数字比较器）（了解） </p>
+<p>组合逻辑电路中的竞争与冒险 竞争冒险的概念及其产生原理 </p>
+<p>由于各路径逻辑门电路传输时间的不同，造成输入端的信号到达终点的时间有先有后，这种现象称为竞争。 由于竞争的存在，在某些特定情况下，会令输出出现短暂的“误动作”——出现不应出现的正脉冲（偏“0”冒险）或负脉冲（偏“1”冒险）。 消除竞争冒险的方法（了解） </p>
+<p> （1）修改逻辑设计（增加多余项）。  （2）利用滤波电路。  （3）增加选通电路。            </p>
+<p>8</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第五章 触 发 器 </p>
+<p>时序逻辑电路的特点：在任何时刻电路产生的稳定输出信号不仅与该时刻电路的输入信号有关，而且还与电路过去的状态有关。由于它与过去的状态有关，所以电路中必须具有“记忆”功能的器件（触发器），记住电路过去的状态，并与输入信号共同决定电路的现时输出。 </p>
+<p>时序电路分类： </p>
+<p>同步时序电路和异步时序电路。（有无统一的CP脉冲） </p>
+<p>米里(Mealy)型和莫尔(Moore)型。（按输出变量的依从关系来分） 米里型电路的输出是输入变量及现态的函数； 莫尔型电路的输出只与电路状态的现态有关 </p>
+<p>触发器的基本性质是： </p>
+<p>(1)具有两个稳定的状态，分别表示二进制数码的“1”和“0” </p>
+<p>(2)由一个稳态到另一稳态，必须有外界信号的触发。否则它将长期稳定在某</p>
+<p>个状态，即长期保持所记忆的信息； </p>
+<p>(3)具有两个输出端：原码输出 Q和反码输出 Q。一般用 Q 的状态表明触</p>
+<p>发器的状态。如外界信号使 Q=Q， 则破坏了触发器的状态，这种情况在实际运用中是不允许出现的。</p>
+<p>触发器（Flip Flop）台湾译作正反器， </p>
+<p>学名“双稳态多谐振荡器”（Bistable Multivibrator）。 </p>
+<p>基本RS触发器 </p>
+<p>时钟控制的RS触发器 </p>
+<p>D触发器 特征方程：Qn+1=D </p>
+<p>T触发器 </p>
+<p>’n1nn</p>
+<p>JK触发器 特征方程： （JK触发器可构造T触发器、D触发器） QJQKQ </p>
+<p>集成触发器 ——为解决触发器的空翻和振荡现象而设计的边沿触发的实用器件。 常采用的电路结构：维持阻塞触发器、边沿触发器、主从触发器 </p>
+<p>触发器的直接置位（Sd  Pr）端 和 直接复位（Rd Clear）端 </p>
+<p>触发器的逻辑符号（具有多输入控制端的集成触发器——各信号相“与”） </p>
+<p>9</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第六章 时序逻辑电路 </p>
+<p>时序电路的分析步骤 （同步、异步）  1.看清电路 </p>
+<p>2.写出方程(激励方程、次态方程、输出方程)3.列出状态迁移（真值）表 4.作出状态转换图 5.功能描述 </p>
+<p>同步时序电路的设计步骤（不同问题步骤不一定相同） 1.根据设计要求建立原始状态图（或已有指定）</p>
+<p>2.状态化简*、状态分配（要考虑能否自启动，必要时修改设计） 3.根据状态转换图 确立状态迁移（真值）表 5.选择（或按要求使用指定的）触发器类型 6.根据状态真值表确定 激励方程和 输出方程 </p>
+<p>7.有利用无关项化简时有时要检查自启动情况必要时修改设计* 8.画出逻辑图 </p>
+<p>*注：有时无此步骤 </p>
+<p>计 数 器 计数器的分类</p>
+<p>1.按进位模数来分  (1)模2 计数器：进位模数为 2n 的计数器均称为模2计数器。其中n为触</p>
+<p>发器级数。 </p>
+<p>(2)非模2计数器：进位模数非2n,用得较多的如十进制计数器。 2. </p>
+<p>(1)同步计数器：计数脉冲引至所有触发器的CP端，使应翻转的触发器同</p>
+<p>(2)异步计数器：计数脉冲并不引至所有触发器的CP端，有的触发器的CP</p>
+<p>端，是其它触发器的输出，因此触发器不是同时动作。 3.按计数增减趋势分 </p>
+<p>(1)递增计数器：每来一个计数脉冲，触发器组成的状态就按二进制代码</p>
+<p>(2)递减计数器：每来一个计数脉冲，触发器组成的状态，按二进制代码</p>
+<p>规律减少。有时又称为减法计数器。 </p>
+<p>(3)双向计数器：又称可逆计数器，计数规律可按递增规律，也可按递减</p>
+<p>规律，由控制端决定。 </p>
+<p>10</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>4.按电路集成度分 </p>
+<p>(1)小规模集成计数器：由若干个集成触发器和门电路， 经外部连线，构</p>
+<p>成具有计数功能的逻辑电路。 </p>
+<p>(2)中规模集成计数器：一般用4个集成触发器和若干个门电路，经内部</p>
+<p>连接集成在一块硅片上，它是计数功能比较完善，并能进行功能扩展的逻辑部件。由于计数器是时序电路，故它的分析与设计与时序电路的分析、 设计完全一样。</p>
+<p>2n进制计数器组成规律 J0K01 </p>
+<p>n</p>
+<p>JKQ110 </p>
+<p>nn J2K2Q0Q1</p>
+<p> nnnn</p>
+<p>J3K3Q0Q1Q2J2Q2</p>
+<p>nnnnn</p>
+<p>J4K4Q0Q1Q2Q3J3Q3 </p>
+<p> ： ：</p>
+<p>​    </p>
+<p>“1”</p>
+<p>1JC11K</p>
+<p>Q0</p>
+<p>nnnnn</p>
+<p>JmKmQ0Q1QmQJQ2m1m1m1 </p>
+<p>CP</p>
+<p>1J</p>
+<p>C11K</p>
+<p>Q1</p>
+<p>&amp;</p>
+<p>1JC11K</p>
+<p>Q2</p>
+<p>&amp;</p>
+<p>1JC11K</p>
+<p>Q3</p>
+<p>同步四位二进制加法计数器 </p>
+<p>2n进制同步减法计数器 </p>
+<p> J0K01 </p>
+<hr>
+<p> J1K1Q0n _____</p>
+<p>J2K2Q0nQ1n </p>
+<p><strong><strong>____</strong></strong> nnn</p>
+<p>J3K3Q0Q1Q2J2Q2n</p>
+<p><strong><strong>__</strong></strong>nnnn J4K4Q0Q1Q2Q3J3Q3n</p>
+<hr>
+<p>nnnnn</p>
+<p> JmKmQ0Q1Qm2Qm1Jm1Qm1</p>
+<p>11</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>2n进制异步加法计数器    </p>
+<p>三位二进制异步加法计数器的逻辑图和波形图(下降沿)      </p>
+<p>三位二进制异步加法计数器的逻辑图和波形图(上升沿)  </p>
+<p>2n进制异步减法计数器  CP “1”“1”Q0“1” Q0</p>
+<p>Q0Q1Q2</p>
+<p> 1J1J1J</p>
+<p>CP2CP0CP1</p>
+<p>CPC1C1C1 Q1</p>
+<p>Q0Q1Q2</p>
+<p>1K1K1KQ1 </p>
+<p>(a)</p>
+<p> Q2</p>
+<p>(b) </p>
+<p>三位二进制异步减法计数器的逻辑图和波形图(下降沿)  </p>
+<p>12</p>
+<p>CP1</p>
+<p>CP2</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>​    </p>
+<p>三位二进制异步减法计数器的逻辑图和波形图(上升沿)</p>
+<p>集成计数器功能分析及其应用 </p>
+<p>异步清零端。当清零控制端Cr=0，立即清零，与CP无关。 </p>
+<p> 同步预置端。当预置端 LD = 0,而Cr=1 时，在置数输入端预置某个数据， </p>
+<p>在CP上升沿的时刻，才将数据送入计数器。必须在CP作用下</p>
+<p>寄存器与移位寄存器 </p>
+<p>寄存器  </p>
+<p> 锁存器是由电平触发器完成的，N个电平触发器的时钟端连在一起，</p>
+<p>在CP作用下能接受 N位二进制信息。 Q1Q2Q3Q4 D1D2D3D4</p>
+<p>1D1D1D1D</p>
+<p> F1F2F3F4</p>
+<p>Q1Q2Q3Q4</p>
+<p> C1C1C1C1 CP</p>
+<p>四位锁存器的逻辑图 </p>
+<p>基本寄存器 </p>
+<p>移位寄存器及应用（串行/并行转换、组成移位型计数器） </p>
+<p>两种常用的移位型计数器：即环型计数器和扭环型计数器（约翰逊计数器） </p>
+<p>13</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数字逻辑基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/" rel="prev" title="数字逻辑知识点汇总1">
+      <i class="fa fa-chevron-left"></i> 数字逻辑知识点汇总1
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
