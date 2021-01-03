@@ -155,6 +155,607 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day21%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day21%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记21</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:11:42" itemprop="dateModified" datetime="2020-12-23T23:11:42+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、异常概述和继承体系<br>2、异常原因以及处理方式<br>3、运行时期异常<br>4、方法重写的异常处理<br>5、Throwable类常见方法<br>6、自定义异常</p>
+<p>第一节课 异常的继续体系和异常处理(46:21)<br>###01异常的概述.avi(01:43)<br>###02异常的继续体系和错误的区别.avi(07:56)<br>###03异常对象的产生原因和处理方式.avi(13:25)<br>###04方法内部抛出对象throw关键字.avi(13:38)<br>###05方法声明异常关键字throws.avi(09:37)</p>
+<p>第二节课 异常处理方式讲解(42:37)<br>###06(异常)try…catch异常处理.avi(19:50)<br>###07(异常)多catch处理.avi(02:46)<br>###08(异常)多catch处理细节.avi(10:44)<br>###09(异常)finally代码块.avi(04:21)<br>###10(异常)调用抛出异常方法try和throws处理方式.avi(04:54)</p>
+<p>第三节课 运行时期异常和方法重写的异常处理(39:45)<br>###11(异常)运行时期异常的特点.avi(11:00)<br>###12(异常)运行异常的案例.avi(08:53)<br>###13(异常)方法重写时候异常的处理.avi(11:6)<br>###14(异常)Throwable类方法.avi(08:45)</p>
+<p>第四节课 自定义异常与总结(13:32)<br>###15(异常)自定义异常.avi(13:32)</p>
+<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01异常的概述<br>    * A: 异常的概述<br>        * a:什么是异常<br>            * Java代码在运行时期发生的问题就是异常。<br>        * b:异常类<br>            * 在Java中，把异常信息封装成了一个类。<br>            * 当出现了问题时，就会创建异常类对象并抛出异常相关的信息（如异常出现的位置、原因等）。<br>        * c：我们见过的异常：数组角标越界异常ArrayIndexOutOfBoundsException,空指针异常NullPointerException</p>
+<p>###02异常的继续体系和错误的区别<br>    * A: 异常的继承体系<br>        Throwable: 它是所有错误与异常的超类（祖宗类）<br>            |- Error 错误<br>            |- Exception 编译期异常,进行编译JAVA程序时出现的问题<br>                |- RuntimeException 运行期异常, JAVA程序运行过程中出现的问题<br>    * B：异常与错误的区别<br>        * a：异常<br>            * 指程序在编译、运行期间发生了某种异常(XxxException)，我们可以对异常进行具体的处理。<br>            * 若不处理异常，程序将会结束运行。<br>            * 案例演示：<br>                public static void main(String[] args) {<br>                    int[] arr = new int[3];<br>                    System.out.println(arr[0]);<br>                    System.out.println(arr[3]);<br>                    // 该句运行时发生了数组索引越界异常ArrayIndexOutOfBoundsException，<br>                    // 由于没有处理异常，导致程序无法继续执行，程序结束。<br>                    System.out.println(“over”); // 由于上面代码发生了异常，此句代码不会执行<br>                }</p>
+<pre><code>* b：错误
+    * 指程序在运行期间发生了某种错误(XxxError)，Error错误通常没有具体的处理方式，程序将会结束运行。
+    * Error错误的发生往往都是系统级别的问题，都是jvm所在系统发生的，并反馈给jvm的。
+    * 我们无法针对处理，只能修正代码。
+    * 案例演示：
+        public static void main(String[] args) {
+            int[] arr = new int[1024*1024*100];
+            //该句运行时发生了内存溢出错误OutOfMemoryError，开辟了过大的数组空间，
+            //导致JVM在分配数组空间时超出了JVM内存空间，直接发生错误。
+        }</code></pre><p>###03异常对象的产生原因和处理方式<br>    * A: 异常对象的产生原因<br>        * 案例代码：<br>            * 工具类<br>            class ArrayTools{<br>                //对给定的数组通过给定的角标获取元素。<br>                public static int getElement(int[] arr,int index)    {<br>                    int element = arr[index];<br>                    return element;<br>                }<br>            }<br>            * 测试类<br>            class ExceptionDemo2 {<br>                public static void main(String[] args)     {<br>                    int[] arr = {34,12,67};<br>                    int num = ArrayTools.getElement(arr,4)<br>                    System.out.println(“num=”+num);<br>                    System.out.println(“over”);<br>                }<br>            }<br>        * 原因分析：<br>            * a: 由于没找到4索引，导致运行时发生了异常。这个异常JVM认识：ArrayIndexOutOfBoundsException。<br>                这个异常Java本身有描述：异常的名称、异常的内容、异常的产生位置。<br>                java将这些信息直接封装到异常对象中。new ArrayIndexOutOfBoundsException(4);<br>            * b：throw new ArrayIndexOutOfBoundsException(4);产生异常对象。JVM将产生的异常抛给调用者main()方法。<br>            * c：main()方法接收到了数组索引越界异常对象。<br>                由于main()方法并没有进行处理异常，main()方法就会继续把异常抛给调用者JVM。<br>                当JVM收到异常后，将异常对象中的名称、异常内容、位置都显示在就控制台上。同时让程序立刻终止。<br>    * B：异常的处理方式<br>        * a：JVM的默认处理方式<br>            * 把异常的名称,原因,位置等信息输出在控制台，同时会结束程序。<br>            * 一旦有异常发生，其后来的代码不能继续执行。<br>        * b：解决程序中异常的手动方式<br>            * a)：编写处理代码 try…catch…finally<br>            * b)：抛出 throws</p>
+<p>###04方法内部抛出对象throw关键字<br>    在java中，提供了一个throw关键字，它用来抛出一个指定的异常对象。<br>    * A: 什么时候使用throw关键字？<br>        * 当调用方法使用接受到的参数时，首先需要先对参数数据进行合法的判断，<br>          数据若不合法，就应该告诉调用者，传递合法的数据进来。<br>          这时需要使用抛出异常的方式来告诉调用者。<br>    * B: 使用throw关键字具体操作<br>        * a: 创建一个异常对象。封装一些提示信息(信息可以自己编写)。<br>        * b: 通过关键字throw将这个异常对象告知给调用者。throw 异常对象；<br>        throw 用在方法内，用来抛出一个异常对象，将这个异常对象传递到调用者处，并结束当前方法的执行。<br>    * C: throw关键字使用格式<br>        * throw new 异常类名(参数);<br>        * 例如：<br>            throw new NullPointerException(“要访问的arr数组不存在”);<br>            throw new ArrayIndexOutOfBoundsException(“该索引在数组中不存在，已超出范围”);<br>    * D：案例演示<br>        * throw的使用</p>
+<p>###05方法声明异常关键字throws<br>    * A: 声明<br>        * 将问题标识出来，报告给调用者。如果方法内通过throw抛出了编译时异常，而没有捕获处理（稍后讲解该方式），那么必须通过throws进行声明，让调用者去处理。<br>    * B: 声明异常格式<br>        * 修饰符 返回值类型 方法名(参数) throws 异常类名1,异常类名2… {   }<br>    * C：注意事项：<br>        * throws用于进行异常类的声明，若该方法可能有多种异常情况产生，那么在throws后面可以写多个异常类，用逗号隔开。<br>    * D：代码演示：<br>        * 多个异常的处理</p>
+<p>​<br>​<br>==============================第二节课开始====================================        </p>
+<p>​                </p>
+<p>###06try…catch异常处理<br>    * A: 捕获<br>        * Java中对异常有针对性的语句进行捕获，可以对出现的异常进行指定方式的处理<br>    * B: 捕获异常格式<br>        try {<br>            //需要被检测的语句。<br>        }<br>        catch(异常类 变量) { //参数。<br>            //异常的处理语句。<br>        }<br>        finally {<br>            //一定会被执行的语句。<br>        }<br>    * C: 格式说明<br>        * a: try<br>            * 该代码块中编写可能产生异常的代码。<br>        * b: catch<br>            * 用来进行某种异常的捕获，实现对捕获到的异常进行处理。<br>        * c: finally：<br>            * 有一些特定的代码无论异常是否发生，都需要执行。<br>            * 另外，因为异常会引发程序跳转，导致有些语句执行不到。<br>            * 而finally就是解决这个问题的，在finally代码块中存放的代码都是一定会被执行的。<br>        * d：try…catch…处理掉异常后，程序可以继续执行<br>    * D：案例演示<br>        * 捕获异常格式</p>
+<p>###07多catch处理<br>    * A：一个try 多个catch组合<br>        * 对代码进行异常检测，并对检测的异常传递给catch处理。对每种异常信息进行不同的捕获处理。<br>    * B：多catch处理的格式<br>        void show(){ //不用throws<br>            try{<br>                throw new Exception();//产生异常，直接捕获处理<br>            }catch(XxxException e){<br>                //处理方式<br>            }catch(YyyException e){<br>                //处理方式<br>            }catch(ZzzException e){<br>                //处理方式<br>            }<br>        }<br>        注意事项：在捕获异常处理中，变量也是有作用域的，如可以定义多个catch中异常变量名为e。</p>
+<p>###08多catch处理细节<br>    * A：细节：多个catch小括号中，写的是异常类的类名，有没有顺序的概念？<br>        * 有顺序关系。<br>    * B：平级异常：<br>        * 抛出的异常类之间,没有继承关系,没有顺序<br>            NullPointerException extends RuntimeException<br>            NoSuchElementException extends RuntimeException<br>            ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException extends RuntimeException<br>    * C：上下级关系的异常<br>        * 越高级的父类,越写在下面<br>            NullPointerException extends RuntimeException extends Exception</p>
+<p>###09finally代码块<br>    * A: finally的特点<br>        * 被finally控制的语句体一定会执行<br>    * B：finally的作用<br>        * finally,无论程序是否有异常出现,程序必须执行释放资源在<br>          如：IO流操作和数据库操作中会见到</p>
+<p>###10调用抛出异常方法try和throws处理方式<br>    * A: 在实际开发中使用哪种异常处理方式呢？<br>        * 能自己处理的尽量自己处理。(建议用try…catch)</p>
+<p>​<br>==============================第三节课开始====================================<br>​<br>###11运行时期异常的特点<br>    * A: 运行时期异常的概述:<br>        * RuntimeException和他的所有子类异常,都属于运行时期异常。<br>            NullPointerException,ArrayIndexOutOfBoundsException等都属于运行时期异常.<br>    * B：运行时期异常的特点<br>        * a：方法中抛出运行时期异常,方法定义中无需throws声明,调用者也无需处理此异常。<br>        * b：运行时期异常一旦发生,需要程序人员修改源代码。<br>        设计原因:<br>            运行异常,不能发生,但是如果发生了,程序人员停止程序修改源代码<br>            运行异常: 一旦发生,不要处理,请你修改源代码,运行异常一旦发生,后面的代码没有执行的意义</p>
+<p>###12运行异常的案例<br>    * A: 计算圆的面积案例<br>        定义方法,计算圆形的面积<br>        传递参数0,或者负数,计算的时候没有问题<br>        但是,违反了真实情况<br>        参数小于=0, 停止程序,不要在计算了<br>    * B：数组索引越界案例<br>        使用数组中不存在的索引<br>        public class RuntimeExceptionDemo {<br>            public static void main(String[] args) {<br>                    double d = getArea(1);<br>                    System.out.println(d);<br>            }</p>
+<pre><code>    /*
+     *  定义方法,计算圆形的面积
+     *  传递参数0,或者负数,计算的时候没有问题
+     *  但是,违反了真实情况
+     *  参数小于=0, 停止程序,不要在计算了
+     */
+    public static double getArea(double r){
+        if(r &lt;= 0)
+            throw new RuntimeException(&quot;圆形不存在&quot;);
+        return r*r*Math.PI;
+    }
+
+    public static void function(){
+        int[] arr = {1,2,3};
+        //对数组的5索引进行判断,如果5索引大于100,请将5索引上的数据/2,否则除以3
+        //索引根本就没有
+        if(arr[5] &gt; 100){
+            arr[5] = arr[5]/2;
+        }else{
+            arr[5] = arr[5]/3;
+        }
+}</code></pre><p>###13方法重写时候异常的处理<br>    * A：方法重写时候异常的处理<br>        * a：子类覆盖父类方法时，如果父类的方法声明异常，子类只能声明父类异常或者该异常的子类，或者不声明。<br>            例如：<br>            class Fu {<br>                public void method () throws RuntimeException {<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method() throws RuntimeException { }  //抛出父类一样的异常<br>                //public void method() throws NullPointerException{ } //抛出父类子异常<br>            }<br>        * b：当父类方法声明多个异常时，子类覆盖时只能声明多个异常的子集。<br>            例如：<br>            class Fu {<br>                public void method () throws NullPointerException, ClassCastException{<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method()throws NullPointerException, ClassCastException { }<br>                public void method() throws NullPointerException{ } //抛出父类异常中的一部分<br>                public void method() throws ClassCastException { } //抛出父类异常中的一部分<br>            }<br>        * c：当被覆盖的方法没有异常声明时，子类覆盖时无法声明异常的。<br>            例如：<br>            class Fu {<br>                public void method (){<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method() throws Exception { }//错误的方式<br>            }<br>    * B：问题：父类中会存在下列这种情况，接口也有这种情况。<br>                接口中没有声明异常，而实现的子类覆盖方法时发生了异常，怎么办？<br>         回答：无法进行throws声明，只能catch的捕获。<br>                万一问题处理不了呢？catch中继续throw抛出，但是只能将异常转换成RuntimeException子类抛出。</p>
+<p>###14Throwable类方法<br>    * A: 常见方法<br>        * a：getMessage()方法<br>            返回该异常的详细信息字符串，即异常提示信息<br>        * b：toString()方法<br>            返回该异常的名称与详细信息字符串<br>        * c：printStackTrace()方法<br>            在控制台输出该异常的名称与详细信息字符串、异常出现的代码位置<br>    * B：案例演示<br>        异常的常用方法代码演示<br>            try {<br>                Person p= null;<br>                if (p==null) {<br>                    throw new NullPointerException(“出现空指针异常了，请检查对象是否为null”);<br>                }<br>            } catch (NullPointerException e) {<br>                String message = e.getMesage();<br>                System.out.println(message ); </p>
+<pre><code>    String result = e.toString();
+    System.out.println(result);    
+
+    e.printStackTrace(); 
+}</code></pre><p>​<br>​<br>======================第四节课开始=========</p>
+<p>###15自定义异常<br>    * A: 自定义异常的定义<br>        * a：通过阅读源码，发现规律：<br>            每个异常中都调用了父类的构造方法，把异常描述信息传递给了父类，让父类帮我们进行异常信息的封装。<br>        * b：格式：<br>            Class 异常名 extends Exception{ //或继承RuntimeException<br>                public 异常名(){<br>                }<br>                public 异常名(String s){<br>                    super(s);<br>                }<br>            }    </p>
+<pre><code>    * c：自定义异常继承Exception演示
+    * d：自定义异常继承RuntimeException演示
+* B：自定义异常的练习
+    在Person类的有参数构造方法中，进行年龄范围的判断，
+    若年龄为负数或大于200岁，则抛出NoAgeException异常，异常提示信息“年龄数值非法”。
+    要求：在测试类中，调用有参数构造方法，完成Person对象创建，并进行异常的处理。
+
+* C：关于构造方法抛出异常总结
+    构造函数到底抛出这个NoAgeException是继承Exception呢？还是继承RuntimeException呢？
+    * a：继承Exception，必须要throws声明，一声明就告知调用者进行捕获，一旦问题处理了调用者的程序会继续执行。
+    * b：继承RuntimeExcpetion,不需要throws声明的，这时调用是不需要编写捕获代码的，因为调用根本就不知道有问题。
+        一旦发生NoAgeException，调用者程序会停掉，并有jvm将信息显示到屏幕，让调用者看到问题，修正代码。</code></pre><p>​<br>###16总结</p>
+<ul>
+<li>把今天的知识点总结一遍。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day20%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day20%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记20</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:11:25" itemprop="dateModified" datetime="2020-12-23T23:11:25+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、Map接口<br>2、模拟斗地主洗牌发牌</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01Map集合概述<br>  A:Map集合概述:<br>    我们通过查看Map接口描述,发现Map接口下的集合与Collection接口下的集合，它们存储数据的形式不同<br>        a:Collection中的集合，元素是孤立存在的（理解为单身），向集合中存储元素采用一个个元素的方式存储。<br>    <br>        b:Map中的集合，元素是成对存在的(理解为夫妻)。每个元素由键与值两部分组成，通过键可以找对所对应的值。<br>    <br>        Collection中的集合称为单列集合，Map中的集合称为双列集合。<br>        需要注意的是，Map中的集合不能包含重复的键，值可以重复；每个键只能对应一个值。<br>    Map<br>     |–HashMap<br>     |–LinkedHashMap</p>
+<p>###02Map接口中的常用方法<br>  A:Map接口中的常用方法<br>       /*<br>        *  Map接口中的常用方法<br>        *    使用Map接口的实现类 HashMap<br>        <em>/<br>       public class MapDemo {<br>           public static void main(String[] args) {<br>               function_2();<br>           }<br>           /</em><br>            *  移除集合中的键值对,返回被移除之前的值<br>            *  V remove(K)<br>            */<br>           public static void function_2(){<br>               Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>               map.put(1, “a”);<br>               map.put(2, “b”);<br>               map.put(3, “c”);<br>               System.out.println(map);</p>
+<pre><code>        String value = map.remove(33);
+        System.out.println(value);
+        System.out.println(map);
+    }
+
+    /*
+     * 通过键对象,获取值对象
+     * V get(K)
+     * 如果集合中没有这个键,返回null
+     */
+    public static void function_1(){
+        //创建集合对象,作为键的对象整数,值的对象存储字符串
+        Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();
+        map.put(1, &quot;a&quot;);
+        map.put(2, &quot;b&quot;);
+        map.put(3, &quot;c&quot;);
+        System.out.println(map);
+
+        String value = map.get(4);
+        System.out.println(value);
+    }
+
+    /*
+     *  将键值对存储到集合中
+     *  V put(K,V) K 作为键的对象, V作为值的对象
+     *  存储的是重复的键,将原有的值,覆盖
+     *  返回值一般情况下返回null,
+     *  存储重复键的时候,返回被覆盖之前的值
+     */
+    public static void function(){
+        //创建集合对象,HashMap,存储对象,键是字符串,值是整数
+        Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();
+        map.put(&quot;a&quot;, 1);
+
+        map.put(&quot;b&quot;, 2);
+
+        map.put(&quot;c&quot;, 3);
+
+        System.out.println(map);
+    }
+}</code></pre><p>###03Map集合遍历方式keySet方法<br>  A:Map集合遍历方式keySet方法<br>     1.获取Map集合中所有的键，由于键是唯一的，所以返回一个Set集合存储所有的键<br>     2.遍历键的Set集合，得到每一个键<br>     3.根据键利用get(key)去Map找所对应的值<br>     /*<br>      *  Map集合的遍历<br>      *    利用键获取值<br>      *    Map接口中定义方法keySet<br>      *    所有的键,存储到Set集合<br>      <em>/<br>     public class MapDemo1 {<br>         public static void main(String[] args) {<br>             /</em><br>              *  1. 调用map集合的方法keySet,所有的键存储到Set集合中<br>              *  2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)<br>              *  3. 调用map集合方法get,通过键获取到值<br>              */<br>             Map&lt;String,Integer&gt; map = new HashMap&lt;String,Integer&gt;();<br>             map.put(“a”, 11);<br>             map.put(“b”, 12);<br>             map.put(“c”, 13);<br>             map.put(“d”, 14);</p>
+<pre><code>        //1. 调用map集合的方法keySet,所有的键存储到Set集合中
+        Set&lt;String&gt; set = map.keySet();
+        //2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)
+        Iterator&lt;String&gt; it = set.iterator();
+        while(it.hasNext()){
+            //it.next返回是Set集合元素,也就是Map中的键
+            //3. 调用map集合方法get,通过键获取到值
+            String key = it.next();
+            Integer value = map.get(key);
+            System.out.println(key+&quot;....&quot;+value);
+        }
+
+        System.out.println(&quot;=======================&quot;);
+
+
+        for(String key : map.keySet()){
+            Integer value = map.get(key);
+            System.out.println(key+&quot;....&quot;+value);
+        }
+    }
+}</code></pre><p>###04Map集合Entry对象<br>   A:Map集合Entry对象<br>     interface Map{<br>         interface Entry{//Entry是Map的一个内部接口<br>                        //由Map的子类的内部类实现</p>
+<pre><code>    }
+}
+class HashMap{
+    static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {//Entry对象指的就是该类的对象
+       final K key;
+             V value;
+    }
+}
+在Map类设计时，提供了一个嵌套接口：Entry。
+Entry将键值对的对应关系封装成了对象。
+即键值对对象，这样我们在遍历Map集合时，就可以从每一个键值对（Entry）对象中获取对应的键与对应的值。
+  a:Entry是Map接口中提供的一个静态内部嵌套接口。
+  b:相关方法
+     getKey()方法：获取Entry对象中的键
+  getValue()方法：获取Entry对象中的值
+  entrySet()方法：用于返回Map集合中所有的键值对(Entry)对象，以Set集合形式返回。</code></pre><p>###05Map集合遍历方式entrySet方法<br>   A:Map集合遍历方式entrySet方法<br>    *<br>     *  Map集合获取方式<br>     *  entrySet方法,键值对映射关系(结婚证)获取<br>     *  实现步骤:<br>     *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>     *        Set&lt;Entry &lt;K,V&gt; &gt;<br>     *    2. 迭代Set集合<br>     *    3. 获取出的Set集合的元素,是映射关系对象<br>     *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>     *<br>     *    创建内部类对象 外部类.内部类 = new<br>     */<br>    public class MapDemo2 {<br>        public static void main(String[] args) {<br>            Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>            map.put(1, “abc”);<br>            map.put(2, “bcd”);<br>            map.put(3, “cde”);<br>            //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>            Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>            //2. 迭代Set集合<br>            Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>            while(it.hasNext()){<br>                //  3. 获取出的Set集合的元素,是映射关系对象<br>                // it.next 获取的是什么对象,也是Map.Entry对象<br>                Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                Integer key = entry.getKey();<br>                String value = entry.getValue();<br>                System.out.println(key+”….”+value);<br>            }</p>
+<pre><code>    }
+}</code></pre><p>=======================第二节课开始============================================<br>###06Map集合遍历方式增强for循环<br>   A:Map集合遍历方式增强for循环<br>     A:Map集合遍历方式entrySet方法<br>      *<br>       *  Map集合获取方式<br>       *  entrySet方法,键值对映射关系(结婚证)获取<br>       *  实现步骤:<br>       *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>       *        Set&lt;Entry &lt;K,V&gt; &gt;<br>       *    2. 迭代Set集合<br>       *    3. 获取出的Set集合的元素,是映射关系对象<br>       *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>       *<br>       *    创建内部类对象 外部类.内部类 = new<br>       */<br>      public class MapDemo2 {<br>          public static void main(String[] args) {<br>              Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>              map.put(1, “abc”);<br>              map.put(2, “bcd”);<br>              map.put(3, “cde”);<br>              //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>              Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>              //2. 迭代Set集合<br>              Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>              while(it.hasNext()){<br>                  //  3. 获取出的Set集合的元素,是映射关系对象<br>                  // it.next 获取的是什么对象,也是Map.Entry对象<br>                  Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                  //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                  Integer key = entry.getKey();<br>                  String value = entry.getValue();<br>                  System.out.println(key+”….”+value);<br>              }</p>
+<pre><code>        System.out.println(&quot;=========================&quot;);
+        for(Map.Entry&lt;Integer, String&gt; entry : map.entrySet()){
+            System.out.println(entry.getKey()+&quot;...&quot;+entry.getValue());
+        }
+    }
+}
+
+注意：Map集合不能直接使用迭代器或者foreach进行遍历。但是转成Set之后就可以使用了。</code></pre><p>###07HashMap集合存储和遍历<br>  A:HashMap集合存储和遍历<br>     /*<br>      *  使用HashMap集合,存储自定义的对象<br>      *  自定义对象,作为键,出现,作为值出现<br>      <em>/<br>     public class HashMapDemo {<br>         public static void main(String[] args) {<br>             function_1();<br>         }<br>         /</em><br>          * HashMap 存储自定义对象Person,作为键出现<br>          * 键的对象,是Person类型,值是字符串<br>          * 保证键的唯一性,存储到键的对象,重写hashCode equals<br>          */<br>         public static void function_1(){<br>             HashMap&lt;Person, String&gt; map = new HashMap&lt;Person, String&gt;();<br>             map.put(new Person(“a”,20), “里约热内卢”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“c”,19), “百慕大”);<br>             for(Person key : map.keySet()){<br>                 String value = map.get(key);<br>                 System.out.println(key+”…”+value);<br>             }<br>             System.out.println(“===================”);<br>             for(Map.Entry&lt;Person, String&gt; entry : map.entrySet()){<br>                 System.out.println(entry.getKey()+”…”+entry.getValue());<br>             }<br>         }</p>
+<pre><code>    /*
+     * HashMap 存储自定义的对象Person,作为值出现
+     * 键的对象,是字符串,可以保证唯一性
+     */
+    public static void function(){
+        HashMap&lt;String, Person&gt; map = new HashMap&lt;String, Person&gt;();
+        map.put(&quot;beijing&quot;, new Person(&quot;a&quot;,20));
+        map.put(&quot;tianjin&quot;, new Person(&quot;b&quot;,18));
+        map.put(&quot;shanghai&quot;, new Person(&quot;c&quot;,19));
+        for(String key : map.keySet()){
+            Person value = map.get(key);
+            System.out.println(key+&quot;...&quot;+value);
+        }
+        System.out.println(&quot;=================&quot;);
+        for(Map.Entry&lt;String, Person&gt; entry : map.entrySet()){
+            String key = entry.getKey();
+            Person value = entry.getValue();
+            System.out.println(key+&quot;...&quot;+value);
+        }
+    }
+}</code></pre><p>###08LinkedHashMap的特点<br>   *A:LinkedHashMap的特点</p>
+<pre><code>/*
+ *  LinkedHashMap继承HashMap
+ *  保证迭代的顺序
+ */
+public class LinkedHashMapDemo {
+    public static void main(String[] args) {
+        LinkedHashMap&lt;String, String&gt; link = new LinkedHashMap&lt;String, String&gt;();
+        link.put(&quot;1&quot;, &quot;a&quot;);
+        link.put(&quot;13&quot;, &quot;a&quot;);
+        link.put(&quot;15&quot;, &quot;a&quot;);
+        link.put(&quot;17&quot;, &quot;a&quot;);
+        System.out.println(link);
+    }
+}</code></pre><p>###09Hashtable的特点<br>   <em>A:Hashtable的特点<br>       /</em><br>        *  Map接口实现类 Hashtable<br>        *  底层数据结果哈希表,特点和HashMap是一样的<br>        *  Hashtable 线程安全集合,运行速度慢<br>        *  HashMap 线程不安全的集合,运行速度快<br>        *<br>        *  Hashtable命运和Vector是一样的,从JDK1.2开始,被更先进的HashMap取代<br>        *<br>        *  HashMap 允许存储null值,null键<br>        *  Hashtable 不允许存储null值,null键<br>        *<br>        *  Hashtable他的孩子,子类 Properties 依然活跃在开发舞台<br>        */<br>       public class HashtableDemo {<br>           public static void main(String[] args) {<br>               Map&lt;String,String&gt; map = new Hashtable&lt;String,String&gt;();<br>               map.put(null, null);<br>               System.out.println(map);<br>           }<br>       }</p>
+<p>###10静态导入<br>   <em>A:静态导入:如果本类中有和静态导入的同名方法会优先使用本类的<br>               如果还想使用静态导入的,依然需要类名来调用<br>       /</em><br>        * JDK1.5新特性,静态导入<br>        * 减少开发的代码量<br>        * 标准的写法,导入包的时候才能使用<br>        *<br>        * import static java.lang.System.out;最末尾,必须是一个静态成员<br>        */<br>       import static java.lang.System.out;<br>       import static java.util.Arrays.sort;</p>
+<pre><code>public class StaticImportDemo {
+    public static void main(String[] args) {
+        out.println(&quot;hello&quot;);
+
+        int[] arr = {1,4,2};
+        sort(arr);
+    }
+}</code></pre><p>###11方法的可变参数<br>   <em>A:方法的可变参数<br>     /</em><br>      *  JDK1.5新的特性,方法的可变参数<br>      *  前提: 方法参数数据类型确定,参数的个数任意<br>      *  可变参数语法: 数据类型…变量名<br>      *  可变参数,本质就是一个数组<br>      */<br>     public class VarArgumentsDemo {<br>         public static void main(String[] args) {<br>             //调用一个带有可变参数的方法,传递参数,可以任意<br>         //    getSum();<br>             int sum = getSum(5,34,3,56,7,8,0);<br>             System.out.println(sum);</p>
+<pre><code>    }
+
+    /*
+     * 定义方法,计算10个整数和
+     * 方法的可变参数实现
+     */
+    public static int getSum(int...a){
+        int sum = 0 ;
+        for(int i : a){
+            sum = sum + i;
+        }
+        return sum;
+    }
+
+    /*
+     * 定义方法,计算3个整数和
+     */
+    /*public static int getSum(int a,int b ,int c){
+        return a+b+c;
+    }*/
+
+    /*
+     * 定义方法,计算2个整数和
+     */
+    /*public static int getSum(int a,int b){
+        return a+b;
+    }*/
+}</code></pre><p>###12可变参数的注意事项<br>   <em>A:可变参数的注意事项<br>       /</em><br>        * 可变参数的注意事项<br>        * 1. 一个方法中,可变参数只能有一个<br>        * 2. 可变参数,必须写在参数列表的最后一位<br>        */<br>        public static void function(Object…o){</p>
+<pre><code>}</code></pre><p>=======================第三节课开始=============================================<br>###13Collections工具类<br>   A:Collections工具类<br>      /*<br>       *  集合操作的工具类<br>       *    Collections<br>       <em>/<br>      public class CollectionsDemo {<br>          public static void main(String[] args) {<br>              function_2();<br>          }<br>          /</em><br>           * Collections.shuffle方法<br>           * 对List集合中的元素,进行随机排列<br>           */<br>          public static void function_2(){<br>              List<Integer> list = new ArrayList<Integer>();<br>              list.add(1);<br>              list.add(5);<br>              list.add(9);<br>              list.add(11);<br>              list.add(8);<br>              list.add(10);<br>              list.add(15);<br>              list.add(20);<br>              System.out.println(list);</Integer></Integer></p>
+<pre><code>        //调用工具类方法shuffle对集合随机排列
+        Collections.shuffle(list);
+        System.out.println(list);
+    }
+
+    /*
+     * Collections.binarySearch静态方法
+     * 对List集合进行二分搜索,方法参数,传递List集合,传递被查找的元素
+     */
+    public static void function_1(){
+        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        list.add(1);
+        list.add(5);
+        list.add(8);
+        list.add(10);
+        list.add(15);
+        list.add(20);
+        //调用工具类静态方法binarySearch
+        int index = Collections.binarySearch(list, 16);
+        System.out.println(index);
+    }
+
+    /*
+     *  Collections.sort静态方法
+     *  对于List集合,进行升序排列
+     */
+    public static void function(){
+        //创建List集合
+        List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+        list.add(&quot;ewrew&quot;);
+        list.add(&quot;qwesd&quot;);
+        list.add(&quot;Qwesd&quot;);
+        list.add(&quot;bv&quot;);
+        list.add(&quot;wer&quot;);
+        System.out.println(list);
+        //调用集合工具类的方法sort
+        Collections.sort(list);
+        System.out.println(list);
+    }
+}</code></pre><p>###14集合的嵌套<br>   A:集合的嵌套<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
+<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
+    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+    //定义传智播客集合容器,键是班级名字,值是两个班级容器
+    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+    czbk.put(&quot;基础班&quot;, javase);
+    czbk.put(&quot;就业班&quot;, javaee);
+
+     keySet(czbk);
+
+}</code></pre><p>###15集合的嵌套keySet遍历<br>   A:集合的嵌套keySet遍历<br>       /*<br>        *  Map集合的嵌套,Map中存储的还是Map集合<br>        *  要求:<br>        *    传智播客<br>        *      Java基础班<br>        *        001  张三<br>        *        002  李四<br>        *<br>        *      Java就业班<br>        *        001  王五<br>        *        002  赵六<br>        *  对以上数据进行对象的存储<br>        *   001 张三  键值对<br>        *   Java基础班: 存储学号和姓名的键值对<br>        *   Java就业班:<br>        *   传智播客: 存储的是班级<br>        *<br>        *   基础班Map   &lt;学号,姓名&gt;<br>        *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>        */<br>       public class MapMapDemo {<br>           public static void main(String[] args) {<br>               //定义基础班集合<br>               HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>               //定义就业班集合<br>               HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>               //向班级集合中,存储学生信息<br>               javase.put(“001”, “张三”);<br>               javase.put(“002”, “李四”);</p>
+<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
+    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+    //定义传智播客集合容器,键是班级名字,值是两个班级容器
+    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+    czbk.put(&quot;基础班&quot;, javase);
+    czbk.put(&quot;就业班&quot;, javaee);
+
+     keySet(czbk);
+
+}</code></pre><p>​<br>​<br>           public static void keySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){<br>               //调用czbk集合方法keySet将键存储到Set集合<br>               Set<String> classNameSet = czbk.keySet();<br>               //迭代Set集合<br>               Iterator<String> classNameIt = classNameSet.iterator();<br>               while(classNameIt.hasNext()){<br>                   //classNameIt.next获取出来的是Set集合元素,czbk集合的键<br>                   String classNameKey = classNameIt.next();<br>                   //czbk集合的方法get获取值,值是一个HashMap集合<br>                   HashMap&lt;String,String&gt; classMap = czbk.get(classNameKey);<br>                   //调用classMap集合方法keySet,键存储到Set集合<br>                   Set<String> studentNum = classMap.keySet();<br>                   Iterator<String> studentIt = studentNum.iterator();</String></String></String></String></p>
+<pre><code>            while(studentIt.hasNext()){
+                //studentIt.next获取出来的是classMap的键,学号
+                String numKey = studentIt.next();
+                //调用classMap集合中的get方法获取值
+                String nameValue = classMap.get(numKey);
+                System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+            }
+        }
+
+        System.out.println(&quot;==================================&quot;);
+        for(String className: czbk.keySet()){
+           HashMap&lt;String, String&gt; hashMap = czbk.get(className);    
+           for(String numKey : hashMap.keySet()){
+               String nameValue = hashMap.get(numKey);
+               System.out.println(className+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+           }
+        }
+    }
+
+} </code></pre><p>###16集合的嵌套entrySet遍历<br>    A:集合的嵌套entrySet遍历<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
+<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
+    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
+    //定义传智播客集合容器,键是班级名字,值是两个班级容器
+    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
+            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
+    czbk.put(&quot;基础班&quot;, javase);
+    czbk.put(&quot;就业班&quot;, javaee);
+
+    entrySet(czbk);
+}
+
+public static void entrySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){
+    //调用czbk集合方法entrySet方法,将czbk集合的键值对关系对象,存储到Set集合
+    Set&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; 
+                             classNameSet = czbk.entrySet();
+    //迭代器迭代Set集合
+    Iterator&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; classNameIt = classNameSet.iterator();
+    while(classNameIt.hasNext()){
+        //classNameIt.next方法,取出的是czbk集合的键值对关系对象
+        Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt; classNameEntry =  classNameIt.next();
+        //classNameEntry方法 getKey,getValue
+        String classNameKey = classNameEntry.getKey();
+        //获取值,值是一个Map集合
+        HashMap&lt;String,String&gt; classMap = classNameEntry.getValue();
+        //调用班级集合classMap方法entrySet,键值对关系对象存储Set集合
+        Set&lt;Map.Entry&lt;String, String&gt;&gt; studentSet = classMap.entrySet();
+        //迭代Set集合
+        Iterator&lt;Map.Entry&lt;String, String&gt;&gt; studentIt = studentSet.iterator();
+        while(studentIt.hasNext()){
+            //studentIt方法next获取出的是班级集合的键值对关系对象
+            Map.Entry&lt;String, String&gt; studentEntry = studentIt.next();
+            //studentEntry方法 getKey getValue
+            String numKey = studentEntry.getKey();
+            String nameValue = studentEntry.getValue();
+            System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
+        }
+    }
+     System.out.println(&quot;==================================&quot;);
+
+    for (Map.Entry&lt;String, HashMap&lt;String, String&gt;&gt; me : czbk.entrySet()) {
+        String classNameKey = me.getKey();
+        HashMap&lt;String, String&gt; numNameMapValue = me.getValue();
+        for (Map.Entry&lt;String, String&gt; nameMapEntry : numNameMapValue.entrySet()) {
+            String numKey = nameMapEntry.getKey();
+            String nameValue = nameMapEntry.getValue();
+            System.out.println(classNameKey + &quot;..&quot; + numKey + &quot;..&quot; + nameValue);
+        }
+    }
+}</code></pre><p>​<br>    }</p>
+<p>=======================第四节课开始=============================================</p>
+<p>###17斗地主的功能分析<br>   A:斗地主的功能分析<br>       a:具体规则：<br>               1. 组装54张扑克牌<br>            2. 将54张牌顺序打乱<br>               3. 三个玩家参与游戏，三人交替摸牌，每人17张牌，最后三张留作底牌。<br>               4. 查看三人各自手中的牌（按照牌的大小排序）、底牌<br>       b:分析:<br>          1.准备牌：<br>           完成数字与纸牌的映射关系：<br>           使用双列Map(HashMap)集合，完成一个数字与字符串纸牌的对应关系(相当于一个字典)。<br>          2.洗牌：<br>           通过数字完成洗牌发牌<br>          3.发牌：<br>           将每个人以及底牌设计为ArrayList<String>,将最后3张牌直接存放于底牌，剩余牌通过对3取模依次发牌。<br>           存放的过程中要求数字大小与斗地主规则的大小对应。<br>           将代表不同纸牌的数字分配给不同的玩家与底牌。<br>          4.看牌：<br>           通过Map集合找到对应字符展示。<br>           通过查询纸牌与数字的对应关系，由数字转成纸牌字符串再进行展示。</String></p>
+<p>###18斗地主的准备牌<br>   A:斗地主的准备牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王,索引是从0~54,对应大王,小王,…3(牌的顺序从大到小)<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>}</code></pre><p>###19斗地主的洗牌<br>    A:斗地主的洗牌<br>      /*<br>       *  实现模拟斗地主的功能<br>       *   1. 组合牌<br>       *   2. 洗牌<br>       *   3. 发牌<br>       *   4. 看牌<br>       */<br>      public class DouDiZhu {<br>          public static void main(String[] args) {<br>              //1. 组合牌<br>              //创建Map集合,键是编号,值是牌<br>              HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>              //创建List集合,存储编号<br>              ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>              //定义出13个点数的数组<br>              String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>              //定义4个花色数组<br>              String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>              //定义整数变量,作为键出现<br>              int index = 2;<br>              //遍历数组,花色+点数的组合,存储到Map集合<br>              for(String number : numbers){<br>                  for(String color : colors){<br>                      pooker.put(index, color+number);<br>                      pookerNumber.add(index);<br>                      index++;<br>                  }<br>              }<br>              //存储大王,和小王<br>              pooker.put(0, “大王”);<br>              pookerNumber.add(0);<br>              pooker.put(1, “小王”);<br>              pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>//洗牌,将牌的编号打乱
+Collections.shuffle(pookerNumber);</code></pre><p>​<br>          }</p>
+<pre><code>}</code></pre><p>###20斗地主的发牌<br>  A:斗地主的发牌<br>    /*<br>     *  实现模拟斗地主的功能<br>     *   1. 组合牌<br>     *   2. 洗牌<br>     *   3. 发牌<br>     *   4. 看牌<br>     */<br>    public class DouDiZhu {<br>        public static void main(String[] args) {<br>            //1. 组合牌<br>            //创建Map集合,键是编号,值是牌<br>            HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>            //创建List集合,存储编号<br>            ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>            //定义出13个点数的数组<br>            String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>            //定义4个花色数组<br>            String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>            //定义整数变量,作为键出现<br>            int index = 2;<br>            //遍历数组,花色+点数的组合,存储到Map集合<br>            for(String number : numbers){<br>                for(String color : colors){<br>                    pooker.put(index, color+number);<br>                    pookerNumber.add(index);<br>                    index++;<br>                }<br>            }<br>            //存储大王,和小王<br>            pooker.put(0, “大王”);<br>            pookerNumber.add(0);<br>            pooker.put(1, “小王”);<br>            pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>        //洗牌,将牌的编号打乱
+        Collections.shuffle(pookerNumber);
+
+        //发牌功能,将牌编号,发给玩家集合,底牌集合
+        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
+
+        //发牌采用的是集合索引%3
+        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
+            //先将底牌做好
+            if(i &lt; 3){
+                //存到底牌去
+                bottom.add( pookerNumber.get(i));
+               //对索引%3判断
+            }else if(i % 3 == 0){
+                //索引上的编号,发给玩家1
+                player1.add( pookerNumber.get(i) );
+            }else if( i % 3 == 1){
+                //索引上的编号,发给玩家2
+                player2.add( pookerNumber.get(i) );
+            }else if( i % 3 == 2){
+                //索引上的编号,发给玩家3
+                player3.add( pookerNumber.get(i) );
+            }
+        }
+
+    }
+
+}</code></pre><p>###21斗地主的看牌<br>  A:斗地主的看牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
+<pre><code>        //洗牌,将牌的编号打乱
+        Collections.shuffle(pookerNumber);
+
+        //发牌功能,将牌编号,发给玩家集合,底牌集合
+        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
+
+        //发牌采用的是集合索引%3
+        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
+            //先将底牌做好
+            if(i &lt; 3){
+                //存到底牌去
+                bottom.add( pookerNumber.get(i));
+               //对索引%3判断
+            }else if(i % 3 == 0){
+                //索引上的编号,发给玩家1
+                player1.add( pookerNumber.get(i) );
+            }else if( i % 3 == 1){
+                //索引上的编号,发给玩家2
+                player2.add( pookerNumber.get(i) );
+            }else if( i % 3 == 2){
+                //索引上的编号,发给玩家3
+                player3.add( pookerNumber.get(i) );
+            }
+        }
+        //对玩家手中的编号排序
+        Collections.sort(player1);
+        Collections.sort(player2);
+        Collections.sort(player3);
+        //看牌,将玩家手中的编号,到Map集合中查找,根据键找值
+        //定义方法实现
+        look(&quot;刘德华&quot;,player1,pooker);
+        look(&quot;张曼玉&quot;,player2,pooker);
+        look(&quot;林青霞&quot;,player3,pooker);
+        look(&quot;底牌&quot;,bottom,pooker);
+    }
+    public static void look(String name,ArrayList&lt;Integer&gt; player,HashMap&lt;Integer,String&gt; pooker){
+        //遍历ArrayList集合,获取元素,作为键,到集合Map中找值
+        System.out.print(name+&quot; &quot;);
+        for(Integer key : player){
+            String value = pooker.get(key);
+            System.out.print(value+&quot; &quot;);
+        }
+        System.out.println();
+    }
+}</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day19%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2761,888 +3362,6 @@ import导包代码书写的位置：在声明包package后，定义所有类clas
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day12%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day12%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记12</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:08:06" itemprop="dateModified" datetime="2020-12-23T23:08:06+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、构造方法<br>2、this关键字<br>3、super关键字<br>4、综合案例</p>
-<p>第一节课<br>###01(面向对象)构造方法引入.avi                03：33<br>###02(面向对象)构造方法作用.avi                05：56<br>###03(面向对象)构造方法的定义和运行特点.avi        09：21<br>###04(面向对象)默认添加的构造方法.avi            04：32<br>###05(面向对象)构造方法的调用赋值.avi            05：22<br>###06(面向对象)构造方法的内存.avi                 09：44</p>
-<p>第二节课<br>###07(面向对象)构造方法的重载.avi                 08：41<br>###08(面向对象)构造方法和一般方法区别.avi        02：31<br>###09(面向对象)this在构造方法之间的调用.avi     15：12<br>###10(面向对象)this在构造方法调用的内存图.avi    08：45<br>###11(面向对象)this简易应用.avi                  02：12</p>
-<p>第三节课<br>###12(面向对象)super关键字_1.avi                 03：02<br>###13(面向对象)super关键字_2.avi                 08：59<br>###14(面向对象)子类父类的内存图.avi             16：04<br>###15(面向对象)super关键字_3.avi                11：38</p>
-<p>第四节课<br>###16(面向对象)super关键字_4.avi                 08：17<br>###17(面向对象)创建子类对象过程的细节.avi       03：27<br>###18(面向对象)super的应用.avi                 13：02<br>###19(面向对象)完整员工案例分析.avi            05：50<br>###20(面向对象)完整员工案例代码实现.avi         10：46</p>
-<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01构造方法引入<br>    * A:构造方法的引入<br>            在开发中经常需要在创建对象的同时明确对象的属性值，比如员工入职公司就要明确他的姓名、年龄等属性信息。<br>            那么，创建对象就要明确属性值，那怎么解决呢？也就是在创建对象的时候就要做的事情，当使用new关键字创建对象时，怎么给对象的属性初始化值呢？<br>            这就要学习Java另外一门小技术，构造方法。<br>    * B: 那什么是构造方法呢？<br>             从字面上理解即为构建创造时用的方法，即就是对象创建时要执行的方法。既然是对象创建时要执行的方法，那么只要在new对象时，<br>            知道其执行的构造方法是什么，就可以在执行这个方法的时候给对象进行属性赋值。</p>
-<p>###02构造方法作用<br>    * A: 构造方法的作用:<br>            在new的同时给成员变量赋值,给对象属性进行初始化。<br>    * B: 举例:<br>            Perons p = new Person(“张三”,23); 在new 的时候给p对象的name属性和age属性进行赋值,使这个对象的属性有值。</p>
-<p>​<br>###03构造方法的定义和运行特点<br>    * A: 构造方法定义<br>            构造方法的格式：<br>            修饰符 构造方法名(参数列表)<br>            {<br>            }</p>
-<pre><code>* B: 构造方法的体现：
-        构造方法没有返回值类型。也不需要写返回值。因为它是为构建对象的，对象创建完，方法就执行结束。
-        构造方法名称必须和类型保持一致。
-        构造方法没有具体的返回值。
-        构造方法的代码体现：
-
-* C: 构造方法举例
-        class Person {
-            // Person的成员属性age和name
-            private int age;
-            private String name;
-
-            // Person的构造方法，拥有参数列表
-            Person(int a, String nm) {
-                // 接受到创建对象时传递进来的值，将值赋给成员属性
-                age = a;
-                name = nm;
-            }
-        }
-
-* D: 构造方法运行特点:
-        在new 对象的时候自动调用执行。</code></pre><p>###04默认添加的构造方法<br>    * A: 每一class类都必须有一个构造方法，构造方法不写也有。<br>         编译的时候，javac，系统会自动检查类中是否有构造方法，如果没有编译器就会自动添加一个构造方法<br>         比如Person类， 编译器添加一个无参构造 public Person(){}</p>
-<p>###05构造方法的调用赋值<br>    * A: 理解构造方法的格式和基本功能之后，现在就要研究构造方法是怎么执行的呢？在创建对象的时候是如何初始化的呢？<br>         构造方法是专门用来创建对象的，也就是在new对象时要调用构造方法。现在来看看如何调用构造方法。</p>
-<pre><code>* B: 案例
-        class Person {
-            // Person的成员属性age和name
-            private int age;
-            private String name;
-
-            // Person的构造方法，拥有参数列表
-            Person(int a, String nm) {
-                // 接受到创建对象时传递进来的值，将值赋给成员属性
-                age = a;
-                name = nm;
-            }
-
-            public void speak() {
-                System.out.println(&quot;name=&quot; + name + &quot;,age=&quot; + age);
-            }
-        }
-
-        class PersonDemo {
-            public static void main(String[] args) {
-                // 创建Person对象，并明确对象的年龄和姓名
-                Person p2 = new Person(23, &quot;张三&quot;);
-                p2.speak();
-            }
-        }
-
-    上述代码演示了创建对象时构造方法的调用。即在创建对象时，会调用与参数列表对应的构造方法</code></pre><p>###06构造方法的内存<br>        A:内存加载的过程<br>            有一个Person类, 创建Person 对象new Person()<br>            1、首先会将main方法压入栈中，执行main方法中的 new Person(23,”张三”);<br>            2、在堆内存中分配一片区域，用来存放创建的Person对象，这片内存区域会有属于自己的内存地址（0x88）。然后给成员变量进行默认初始化（name=null，age=0）。<br>            3、执行构造方法中的代码（age = a ; name = nm;）,将变量a对应的23赋值给age，将变量nm对应的”张三赋值给name，这段代码执行结束后，成员变量age和name的值已经改变。执行结束之后构造方法弹栈，Person对象创建完成。将Person对象的内存地址0x88赋值给p2。</p>
-<p>==============================第二节课开始====================================    </p>
-<p>###07构造方法的重载<br>    * A：当在描述事物时，要不要在类中写构造方法呢？这时要根据描述事物的特点来确定，当描述的事物在创建其对象时就要明确属性的值，这时就需要在定义类的时候书写带参数的构造方法。<br>    *    若创建对象时不需要明确具体的数据，这时可以不用书写构造方法（不书写也有默认的构造方法）。<br>            构造方法的细节：<br>            1、一个类中可以有多个构造方法，多个构造方法是以重载的形式存在的<br>            2、构造方法是可以被private修饰的，作用：其他程序无法创建该类的对象。<br>    * B: 举例<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>    // 私有无参数的构造方法，即外界不能通过new Person();语句创建本类对象
-    private Person() {
-    }
-
-    // 多个构造方法是以重载的形式存在
-    Person(int a) {
-        age = a;
-    }
-
-    Person(String nm, int a) {
-        name = nm;
-        age = a;
-    }
-}</code></pre><p>​        </p>
-<p>###08构造方法和一般方法区别<br>    * A: 目前为止，学习两种方法，分别为构造方法和一般方法，那么他们之间有什么异同呢？<br>        1.格式不同<br>         构造方法 : 修饰符  类名(参数类型 参数 …){<br>            初始化成员变量<br>        }<br>        一般方法: 需要有返回值类型<br>        2.作用不同<br>        构造方法一般用来给成员变量初始化;<br>        一般方法根据需求而定;<br>        3.调用方式不同<br>        构造方法创建对象时调用, 或者this() super() 语句调用<br>        普通方法需要对象调用或者静态方法直接调用静态方法.<br>        4.执行不同<br>        构造方法在对象创建时就执行了，而且只执行一次。<br>        一般方法是在对象创建后，需要使用时才被对象调用，并可以被多次调用。</p>
-<p>​<br>###09this在构造方法之间的调用<br>    * A: 在之前学习方法之间调用时，可以通过方法名进行调用。可是针对构造方法，无法通过构造方法名来相互调用。<br>        构造方法之间的调用，可以通过this关键字来完成。<br>        构造方法调用格式：<br>        this(参数列表);</p>
-<pre><code>* B:调用构造方法的案例
-    class Person {
-        // Person的成员属性
-        private int age;
-        private String name;
-
-        // 无参数的构造方法
-        Person() {
-        }
-
-        // 给姓名初始化的构造方法
-        Person(String nm) {
-            name = nm;
-        }
-
-        // 给姓名和年龄初始化的构造方法
-        Person(String nm, int a) {
-            // 由于已经存在给姓名进行初始化的构造方法 name = nm;因此只需要调用即可
-            // 调用其他构造方法，需要通过this关键字来调用
-            this(nm);
-            // 给年龄初始化
-            age = a;
-        }
-    }</code></pre><p>###10this在构造方法调用的内存图<br>    * A: 被加载的代码<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>    Person() {
-    }
-    Person(String nm) {
-        name = nm;
-    }
-    Person(String nm, int a) {
-        this(nm);
-        age = a;
-    }
-}
-
-class PersonDemo {
-    public static void main(String[] args) {
-        Person p = new Person(&quot;张三&quot;, 23);
-    }
-}</code></pre><p>​<br>    * B: 构造方法调用的原理图<br>    *   图略<br>        1、先执行main方法，main方法压栈，执行其中的new Person(“张三”,23);<br>        2、堆内存中开辟空间，并为其分配内存地址0x33，，紧接着成员变量默认初始化（name=null  age = 0）；<br>        3、拥有两个参数的构造方法（Person（String nm , int a））压栈，在这个构造方法中有一个隐式的this，因为构造方法是给对象初始化的，那个对象调用到这个构造方法，this就指向堆中的那个对象。<br>        4、由于Person（String nm , int a）构造方法中使用了this(nm);构造方法Person(String nm)就会压栈，并将“张三”传递给nm。在Person（String nm , int a）构造方法中同样也有隐式的this，this的值同样也为0x33，这时会执行其中name = nm，即把“张三”赋值给成员的name。当赋值结束后Person（String nm , int a）构造方法弹栈。<br>        5、程序继续执行构造方法（Person（String nm , int a）中的age = a；这时会将23赋值给成员属性age。赋值结束构造方法（Person（String nm , int a）弹栈。<br>        6、当构造方法（Person（String nm , int a）弹栈结束后，Person对象在内存中创建完成，并将0x33赋值给main方法中的p引用变量。<br>        注意：<br>        this到底代表什么呢？this代表的是对象，具体代表哪个对象呢？哪个对象调用了this所在的方法，this就代表哪个对象。<br>        调用其他构造方法的语句必须定义在构造方法的第一行，原因是初始化动作要最先执行。</p>
-<p>###11this简易应用<br>    * A: 当在方法中出现了局部变量和成员变量同名的时候，那么在方法中怎么区别局部变量成员变量呢？可以在成员变量名前面加上this.来区别成员变量和局部变量<br>    * B: 举例1<br>        class Person {<br>            private int age;<br>            private String name;</p>
-<pre><code>        // 给姓名和年龄初始化的构造方法
-        Person(String name, int age) {
-            // 当需要访问成员变量是，只需要在成员变量前面加上this.即可
-            this.name = name;
-            this.age = age;
-        }
-
-        public void speak() {
-            System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
-        }
-    }
-
-    class PersonDemo {
-        public static void main(String[] args) {
-            Person p = new Person(&quot;张三&quot;, 23);
-            p.speak();
-        }
-    }
-
-* C: 举例2
-    学习完了构造方法、this的用法之后，现在做个小小的练习。
-    需求：在Person类中定义功能，判断两个人是否是同龄人
-    class Person {
-        private int age;
-        private String name;
-
-        // 给姓名和年龄初始化的构造方法
-        Person(String name, int age) {
-            // 当需要访问成员变量是，只需要在成员变量前面加上this.即可
-            this.name = name;
-            this.age = age;
-        }
-
-        public void speak() {
-            System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
-        }
-
-        // 判断是否为同龄人
-        public boolean equalsAge(Person p) {
-            // 使用当前调用该equalsAge方法对象的age和传递进来p的age进行比较
-            // 由于无法确定具体是哪一个对象调用equalsAge方法，这里就可以使用this来代替
-            /*
-             * if(this.age == p.age) { return true; } return false;
-             */
-            return this.age = p.age;
-        }
-    }</code></pre><p>==============================第三节课开始====================================</p>
-<p>​<br>###12super关键字_1</p>
-<pre><code>* A: 子父类中构造方法的调用
-    在创建子类对象时，父类的构造方法会先执行，因为子类中所有构造方法的第一行有默认的隐式super();语句。
-* B: 格式：
-    调用本类中的构造方法
-    this(实参列表);
-    调用父类中的空参数构造方法
-    super();
-    调用父类中的有参数构造方法
-    super(实参列表);</code></pre><p>###13super关键字_2<br>    * A:子类构造方法,有一个默认添加的构造方法<br>        public class Student extends Person {<br>             public Student(){<br>                 super();<br>             }<br>        }<br>    * B :为什么子类对象创建都要访问父类中的构造方法？因为子类继承了父类的内容，所以创建对象时，必须要先看父类是如何对其内容进行初始化的，看如下程序<br>        public class Test {<br>            public static void main(String[] args) {<br>                new Zi();<br>            }</p>
-<pre><code>}
-class Fu{
-    int num ;
-    Fu(){
-        System.out.println(&quot;Fu构造方法&quot;+num);
-        num = 4;
-    }
-}
-class Zi extends Fu{
-    Zi(){
-         //super(); 调用父类空参数构造方法
-        System.out.println(&quot;Zi构造方法&quot;+num);
-    }
-}
-
-执行结果：</code></pre><p>　　     Fu构造方法0<br>　　     Zi构造方法4</p>
-<pre><code>通过结果发现，子类构造方法执行时中，调用了父类构造方法，这说明，子类构造方法中有一句super()。
-那么，子类中的构造方法为什么会有一句隐式的super()呢？
-原因：子类会继承父类中的内容，所以子类在初始化时，必须先到父类中去执行父类的初始化动作。这样，才可以使用父类中的内容。
-当父类中没有空参数构造方法时，子类的构造方法必须有显示的super语句，指定要访问的父类有参数构造方法。</code></pre><p>​<br>###14子类父类的内存图<br>        略:<br>        具体见 day12_source/子类父类的内存图.JPG    </p>
-<p>###15super关键字_3<br>    * A: 创建子类对象的时候会必须调用父类的构造方法。<br>       子类默认会调用父类的无参构造， 但如果父类没有无参构造，子类的构造方法继续调用父类的无参构造就会报错。<br>       因此子类构造方法的第一行需要调用父类的构造方法，既可以调用父类的无参构造，也可以调用父类的有参构造，这样语法上就不会报错。</p>
-<p>###16super关键字_4<br>    * A: 构造方法第一行,写this()还是super()<br>    *  this() 是调用本类的构造方法,super()是调用父类的构造方法, 且两条语句不能同时存在<br>    *  保证子类的所有构造方法调用到父类的构造方法即可</p>
-<pre><code>* B: 小结:
-* 无论如何,子类的所有构造方法,直接或间接必须调用到父类构造方法;
-* 子类的构造方法什么都不写,默认的构造方法第一行super()</code></pre><p>​<br>###17创建子类对象过程的细节<br>    * A 创建子类对象过程的细节<br>    * 如果子类的构造方法第一行写了this调用了本类其他构造方法，那么super调用父类的语句还有吗？<br>    * 这时是没有的，因为this()或者super(),只能定义在构造方法的第一行，因为初始化动作要先执行。<br>    * 父类构造方法中是否有隐式的super呢？<br>    * 也是有的。记住：只要是构造方法默认第一行都是super();<br>    * 父类的父类是谁呢？super调用的到底是谁的构造方法呢？<br>    * Java体系在设计，定义了一个所有对象的父类Object</p>
-<pre><code>* 注意：
-    类中的构造方法默认第一行都有隐式的super()语句，在访问父类中的空参数构造方法。所以父类的构造方法既可以给自己的对象初始化，也可以给自己的子类对象初始化。
-    如果默认的隐式super()语句在父类中没有对应的构造方法，那么必须在构造方法中通过this或者super的形式明确要调用的构造方法。</code></pre><p>==============================第四节课开始====================================</p>
-<p>###18super的应用<br>     * A: 练习：描述学生和工人这两个类，将他们的共性name和age抽取出来存放在父类中，并提供相应的get和set方法，同时需要在创建学生和工人对象就必须明确姓名和年龄<br>     * 案例:<br>        //定义Person类，将Student和Worker共性抽取出来<br>        class Person {<br>            private String name;<br>            private int age;<br>            public Person(String name, int age) {<br>                // super();<br>                this.name = name;<br>                this.age = age;<br>            }<br>            public String getName() {<br>                return name;<br>            }<br>            public void setName(String name) {<br>                this.name = name;<br>            }<br>            public int getAge() {<br>                return age;<br>            }<br>            public void setAge(int age) {<br>                this.age = age;<br>            }<br>        }<br>        class Student extends Person {<br>            // Student类的构造方法<br>            Student(String name, int age) {<br>                // 使用super关键字调用父类构造方法，进行相应的初始化动作<br>                super(name, age);<br>            }<br>            public void study() {// Studnet中特有的方法<br>                System.out.println(this.getName() + “同学在学习”);<br>            }<br>        }<br>        class Worker extends Person {<br>            Worker(String name, int age) {<br>                // 使用super关键字调用父类构造方法，进行相应的初始化动作<br>                super(name, age);<br>            }<br>            public void work() {// Worker 中特有的方法<br>                System.out.println(this.getName() + “工人在工作”);<br>            }<br>        }<br>        public class Test {<br>            public static void main(String[] args) {<br>                Student stu = new Student(“小明”,23);<br>        stu.study();</p>
-<pre><code>Worker w = new Worker(&quot;小李&quot;,45);
-w.work();
-    }
-}</code></pre><p>###19完整员工案例分析<br>     * A: 项目介绍<br>        某IT公司有多名员工，按照员工负责的工作不同，进行了部门的划分（研发部员工、维护部员工）。研发部根据所需研发的内容不同，又分为JavaEE工程师、Android工程师；维护部根据所需维护的内容不同，又分为网络维护工程师、硬件维护工程师。<br>        公司的每名员工都有他们自己的员工编号、姓名，并要做它们所负责的工作。<br>        工作内容<br>        JavaEE工程师：员工号为xxx的 xxx员工，正在研发淘宝网站<br>        Android工程师：员工号为xxx的 xxx员工，正在研发淘宝手机客户端软件<br>        网络维护工程师：员工号为xxx的 xxx员工，正在检查网络是否畅通<br>        硬件维护工程师：员工号为xxx的 xxx员工，正在修复打印机<br>        请根据描述，完成员工体系中所有类的定义，并指定类之间的继承关系。进行XX工程师类的对象创建，完成工作方法的调用。</p>
-<pre><code>* B: 案例分析
-    根据上述部门的描述，得出如下的员工体系图
-
-    根据员工信息的描述，确定每个员工都有员工编号、姓名、要进行工作。则，把这些共同的属性与功能抽取到父类中（员工类），关于工作的内容由具体的工程师来进行指定。
-    工作内容
-    JavaEE工程师：员工号为xxx的 xxx员工，正在研发淘宝网站
-    Android工程师：员工号为xxx的 xxx员工，正在研发淘宝手机客户端软件
-    网络维护工程师：员工号为xxx的 xxx员工，正在检查网络是否畅通
-    硬件维护工程师：员工号为xxx的 xxx员工，正在修复打印机
-    创建JavaEE工程师对象，完成工作方法的调用</code></pre><p>###20案例代码实现<br>     * A:定义员工类(抽象类)<br>        public abstract class Employee {<br>            private String id;// 员工编号<br>            private String name; // 员工姓名</p>
-<pre><code>    //空参数构造方法
-    public Employee() {
-        super();
-    }
-    //有参数构造方法
-    public Employee(String id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    //工作方法（抽象方法）
-    public abstract void work(); 
-}
-
-* B :    定义研发部员工类Developer 继承 员工类Employee
-public abstract class Developer extends Employee {
-    //空参数构造方法
-    public Developer() {
-        super();
-    }
-    //有参数构造方法
-    public Developer(String id, String name) {
-        super(id, name);
-    }
-}
-
-* C:    定义维护部员工类Maintainer 继承 员工类Employee
-public abstract class Maintainer extends Employee {
-    //空参数构造方法
-    public Maintainer() {
-        super();
-    }
-    //有参数构造方法
-    public Maintainer(String id, String name) {
-        super(id, name);
-    }
-}
-
-* D:    定义JavaEE工程师 继承 研发部员工类，重写工作方法
-public class JavaEE extends Developer {
-    //空参数构造方法
-    public JavaEE() {
-        super();
-    }
-    //有参数构造方法
-    public JavaEE(String id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public void work() {
-        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在研发淘宝网站&quot;);
-    }
-}
-
-* E:    定义Android工程师 继承 研发部员工类，重写工作方法
-public class Android extends Developer {
-    //空参数构造方法
-    public Android() {
-        super();
-    }
-    //有参数构造方法
-    public Android(String id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public void work() {
-        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在研发淘宝手机客户端软件&quot;);
-    }
-}
-
-* F:    定义Network网络维护工程师 继承 维护部员工类，重写工作方法
-public class Network extends Maintainer {
-    //空参数构造方法
-    public Network() {
-        super();
-    }
-    //有参数构造方法
-    public Network(String id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public void work() {
-        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在检查网络是否畅通&quot;);
-    }
-}
-
-* G:    定义Hardware硬件维护工程师 继承 维护部员工类，重写工作方法
-public class Hardware extends Maintainer {
-    //空参数构造方法
-    public Hardware() {
-        super();
-    }
-    //有参数构造方法
-    public Hardware(String id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public void work() {
-        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在修复打印机&quot;);
-    }
-}
-
-* H:    在测试类中，创建JavaEE工程师对象，完成工作方法的调用
-public class Test {
-    public static void main(String[] args) {
-        //创建JavaEE工程师员工对象，该员工的编号000015，员工的姓名 小明
-        JavaEE ee = new JavaEE(&quot;000015&quot;, &quot;小明&quot;);
-        //调用该员工的工作方法
-        ee.work();
-    }
-}</code></pre><p>###21总结<br>    * 把今天的知识点总结一遍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day11%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day11%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记11</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:07:51" itemprop="dateModified" datetime="2020-12-23T23:07:51+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、接口<br>2、多态</p>
-<p>第一节课<br>###01(面向对象)接口概述.avi                        (02:33)<br>###02(面向对象)接口抽象方法定义.avi                  (11:47)<br>###03(面向对象)接口的实现类.avi                    (07:44)<br>###04(面向对象)接口中的成员变量的特点.avi          (09:36)<br>###05(面向对象)接口中的成员方法的特点.avi          (03:59)<br>###06(面向对象)实现类还是一个抽象类.avi           (04:20)</p>
-<p>第二节课<br>###07(面向对象)类和接口的多实现.avi               (12:38)<br>###08(面向对象)类在继承类的同时实现多接口.avi      (04:07)<br>###09(面向对象)接口的多继承.avi                    (06:07)<br>###10(面向对象)接口思想.avi                        (08:40)<br>###11(面向对象)接口和抽象类的区别.avi             (08:38)</p>
-<p>第三节课</p>
-<p>###12(面向对象)多态的概述.avi                      (05:22)<br>###13(面向对象)多态调用的三种形式.avi              (09:53)<br>###14(面向对象)多态中成员方法的特点.avi             (07:42)<br>###15(面向对象)instanceof关键字.avi              (13:34)<br>###16(面向对象)多态的向上转型.avi                  (09:33)</p>
-<p>第四节课</p>
-<p>###17(面向对象)多态的向下转型.avi                 (06:46)<br>###18(面向对象)多态转型的案例.avi                 (10:00)<br>###19(面向对象)笔记本案例功能分析.avi           (04:58)<br>###20(面向对象)笔记本案例代码实现.avi           (15:35)</p>
-<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01接口的概念<br>    * A:接口的概念<br>        接口是功能的集合，同样可看做是一种数据类型，是比抽象类更为抽象的”类”。<br>        接口只描述所应该具备的方法，并没有具体实现，具体的实现由接口的实现类(相当于接口的子类)来完成。这样将功能的定义与实现分离，优化了程序设计。<br>        请记住：一切事物均有功能，即一切事物均有接口。</p>
-<p>​<br>###02接口的定义<br>    * A: 接口的定义<br>            与定义类的class不同，接口定义时需要使用interface关键字。<br>            定义接口所在的仍为.java文件，虽然声明时使用的为interface关键字的编译后仍然会产生.class文件。这点可以让我们将接口看做是一种只包含了功能声明的特殊类。</p>
-<p>​<br>    * B : 定义格式<br>            public interface 接口名 {<br>                抽象方法1;<br>                抽象方法2;<br>                抽象方法3;<br>            }<br>    * C: 定义步骤<br>            使用interface代替了原来的class，其他步骤与定义类相同：<br>            接口中的方法均为公共访问的抽象方法<br>            接口中无法定义普通的成员变量</p>
-<p>​<br>​<br>###03接口的实现类<br>    * A: 类与接口的关系<br>            类与接口的关系为实现关系，即类实现接口。实现的动作类似继承，只是关键字不同，实现使用implements。<br>            其他类(实现类)实现接口后，就相当于声明：”我应该具备这个接口中的功能”。实现类仍然需要重写方法以实现具体的功能。<br>    * B: 类实现接口的格式<br>            class 类 implements 接口 {<br>                重写接口中方法<br>            }<br>    * C:注意事项<br>             在类实现接口后，该类就会将接口中的抽象方法继承过来，此时该类需要重写该抽象方法，完成具体的逻辑。<br>            接口中定义功能，当需要具有该功能时，可以让类实现该接口，只声明了应该具备该方法，是功能的声明。<br>            在具体实现类中重写方法，实现功能，是方法的具体实现。</p>
-<p>###04接口中成员变量的特点<br>    * A:成员变量特点<br>         * a 接口中可以定义变量，但是变量必须有固定的修饰符修饰，public static final 所以接口中的变量也称之为常量，其值不能改变。后面我们会讲解static与final关键字</p>
-<pre><code>* B:案例
-        interface Demo { ///定义一个名称为Demo的接口。
-            public static final int NUM = 3;// NUM的值不能改变
-        }</code></pre><p>​<br>###05接口中成员方法的特点<br>    * A: 成员方法特点<br>        * a 接口中可以定义方法，方法也有固定的修饰符，public abstract<br>        * b 子类必须覆盖掉接口中所有的抽象方法后，子类才可以实例化。否则子类是一个抽象类。</p>
-<pre><code>* B: 案例
-        interface Demo { ///定义一个名称为Demo的接口。
-            public abstract void show1();
-            public abstract void show2();
-        }
-
-        //定义子类去覆盖接口中的方法。类与接口之间的关系是 实现。通过 关键字 implements
-        class DemoImpl implements Demo { //子类实现Demo接口。
-            //重写接口中的方法。
-            public void show1(){}
-            public void show2(){}
-        }</code></pre><p>###06实现类还是一个抽象类<br>    A: 接口的实现类<br>       一个类如果实现类接口,有两种操作方法:<br>       第一:实现类是非抽象类,就需要重写接口中所有的抽象方法.<br>       第二:实现类也声明为抽象类,那么实现类可以不重写接口中的抽象方法。</p>
-<p>​<br>==============================第二节课开始====================================    </p>
-<p>###07类和接口的多实现<br>    * A：接口的多实现<br>        了解了接口的特点后，那么想想为什么要定义接口，使用抽象类描述也没有问题，接口到底有啥用呢？<br>        接口最重要的体现：解决多继承的弊端。将多继承这种机制在java中通过多实现完成了。</p>
-<pre><code>* B 多实现的优点
-    * 怎么解决多继承的弊端呢？
-    * 弊端：多继承时，当多个父类中有相同功能时，子类调用会产生不确定性。
-    * 其实核心原因就是在于多继承父类中功能有主体，而导致调用运行时，不确定运行哪个主体内容。
-    * 为什么多实现能解决了呢？
-    * 因为接口中的功能都没有方法体，由子类来明确。
-
-* C :案例演示
-    interface Fu2{
-        void show2();
-    }
-    class Zi implements Fu1,Fu2 {    // 多实现。同时实现多个接口。
-        public void show1(){}
-        public void show2(){}
-    }</code></pre><p>###08类在继承类的同时实现多接口<br>    * A: 继承的同时实现接口<br>        * 接口和类之间可以通过实现产生关系，同时也学习了类与类之间可以通过继承产生关系。当一个类已经继承了一个父类，它又需要扩展额外的功能，这时接口就派上用场了。<br>        * 子类通过继承父类扩展功能，通过继承扩展的功能都是子类应该具备的基础功能。如果子类想要继续扩展其他类中的功能呢？这时通过实现接口来完成。<br>        * 接口的出现避免了单继承的局限性。父类中定义的事物的基本功能。接口中定义的事物的扩展功能。</p>
-<pre><code>* B: 代码演示
-    class Fu {
-        public void show(){}
-    }
-    interface Inter {
-        pulbic abstract void show1();
-    }
-    class Zi extends Fu implements Inter {
-        public void show1() {
-        }
-    }
-
-    接口的出现避免了单继承的局限性。父类中定义的事物的基本功能。接口中定义的事物的扩展功能。</code></pre><p>###09接口的多继承<br>    * A: 接口的多继承<br>        * 学习类的时候，知道类与类之间可以通过继承产生关系，接口和类之间可以通过实现产生关系，那么接口与接口之间会有什么关系。<br>        * 多个接口之间可以使用extends进行继承。</p>
-<pre><code>* B 代码演示
-     interface Fu1{
-        void show();
-    }
-    interface Fu2{
-        void show1();
-    }
-    interface Fu3{
-        void show2();
-    }
-    interface Zi extends Fu1,Fu2,Fu3{
-        void show3();
-    }
-
-    在开发中如果多个接口中存在相同方法，这时若有个类实现了这些接口，那么就要实现接口中的方法，由于接口中的方法是抽象方法，子类实现后也不会发生调用的不确定性。</code></pre><p>###10接口思想<br>    * A:接口的思想<br>        * 前面学习了接口的代码体现，现在来学习接口的思想，接下里从生活中的例子进行说明。<br>        * 举例：我们都知道电脑上留有很多个插口，而这些插口可以插入相应的设备，这些设备为什么能插在上面呢？<br>        * 主要原因是这些设备在生产的时候符合了这个插口的使用规则，否则将无法插入接口中，更无法使用。发现这个插口的出现让我们使用更多的设备。</p>
-<pre><code>* B: 接口的好处    
-    * 总结：接口在开发中的它好处
-    * 1、接口的出现扩展了功能。
-    * 2、接口其实就是暴漏出来的规则。
-    * 3、接口的出现降低了耦合性，即设备与设备之间实现了解耦。
-
-    * 接口的出现方便后期使用和维护，一方是在使用接口（如电脑），一方在实现接口（插在插口上的设备）。例如：笔记本使用这个规则（接口），电脑外围设备实现这个规则（接口）。</code></pre><p>###11接口和抽象类的区别<br>    * A: 明白了接口思想和接口的用法后，接口和抽象类的区别是什么呢？接口在生活体现也基本掌握，那在程序中接口是如何体现的呢？<br>        通过实例进行分析和代码演示抽象类和接口的用法。<br>    * B: 举例：<br>        *    犬：<br>                行为：<br>                吼叫；<br>                吃饭；<br>        * 缉毒犬：<br>                行为：<br>                吼叫；<br>                吃饭；<br>                缉毒；</p>
-<pre><code>* C:思考：
-    * 由于犬分为很多种类，他们吼叫和吃饭的方式不一样，在描述的时候不能具体化，也就是吼叫和吃饭的行为不能明确。
-    * 当描述行为时，行为的具体动作不能明确，这时，可以将这个行为写为抽象行为，那么这个类也就是抽象类。
-    * 可是当缉毒犬有其他额外功能时，而这个功能并不在这个事物的体系中。这时可以让缉毒犬具备犬科自身特点的同时也有其他额外功能，可以将这个额外功能定义接口中。
-
-* D: 代码演示
-    interface 缉毒{
-        public abstract void 缉毒();
-    }
-    //定义犬科的这个提醒的共性功能
-    abstract class 犬科{
-    public abstract void 吃饭();
-    public abstract void 吼叫();
-    }
-    // 缉毒犬属于犬科一种，让其继承犬科，获取的犬科的特性，
-    //由于缉毒犬具有缉毒功能，那么它只要实现缉毒接口即可，这样即保证缉毒犬具备犬科的特性，也拥有了缉毒的功能
-    class 缉毒犬 extends 犬科 implements 缉毒{
-
-        public void 缉毒() {
-        }
-        void 吃饭() {
-        }
-        void 吼叫() {
-        }
-    }
-    class 缉毒猪 implements 缉毒{
-        public void 缉毒() {
-        }
-    }
-
-* E: 接口和抽象类区别总结
-     相同点:
-        都位于继承的顶端,用于被其他类实现或继承;
-        都不能直接实例化对象;
-        都包含抽象方法,其子类都必须覆写这些抽象方法;
-    区别:
-        抽象类为部分方法提供实现,避免子类重复实现这些方法,提高代码重用性;接口只能包含抽象方法;
-        一个类只能继承一个直接父类(可能是抽象类),却可以实现多个接口;(接口弥补了Java的单继承)
-        抽象类是这个事物中应该具备的你内容, 继承体系是一种 is..a关系
-        接口是这个事物中的额外内容,继承体系是一种 like..a关系
-
-    二者的选用:
-        优先选用接口,尽量少用抽象类;
-        需要定义子类的行为,又要为子类提供共性功能时才选用抽象类;</code></pre><p>==============================第三节课开始====================================</p>
-<p>###12多态概述<br>    * A: 多态概述<br>        多态是继封装、继承之后，面向对象的第三大特性。<br>        现实事物经常会体现出多种形态，如学生，学生是人的一种，则一个具体的同学张三既是学生也是人，即出现两种形态。<br>        Java作为面向对象的语言，同样可以描述一个事物的多种形态。如Student类继承了Person类，一个Student的对象便既是Student，又是Person。<br>        Java中多态的代码体现在一个子类对象(实现类对象)既可以给这个子类(实现类对象)引用变量赋值，又可以给这个子类(实现类对象)的父类(接口)变量赋值。<br>        如Student类可以为Person类的子类。那么一个Student对象既可以赋值给一个Student类型的引用，也可以赋值给一个Person类型的引用。<br>        最终多态体现为父类引用变量可以指向子类对象。<br>        多态的前提是必须有子父类关系或者类实现接口关系，否则无法完成多态。<br>        在使用多态后的父类引用变量调用方法时，会调用子类重写后的方法。</p>
-<p>###13多态调用的三种格式<br>    * A:多态的定义格式：<br>        * 就是父类的引用变量指向子类对象<br>             父类类型  变量名 = new 子类类型();<br>             变量名.方法名();</p>
-<pre><code>* B: 普通类多态定义的格式
-        父类 变量名 = new 子类();
-        举例：    
-            class Fu {}
-            class Zi extends Fu {}
-            //类的多态使用
-            Fu f = new Zi();
-* C: 抽象类多态定义格式            
-        抽象类 变量名 = new 抽象类子类();
-        举例：    
-        abstract class Fu {
-                 public abstract void method();
-                 }
-        class Zi extends Fu {
-        public void method(){
-                      System.out.println(“重写父类抽象方法”);
-        }
-        }
-        //类的多态使用
-        Fu fu= new Zi();
-* D: 接口多态定义的格式
-        接口 变量名 = new 接口实现类();
-        如： interface Fu {
-                     public abstract void method();
-        }
-        class Zi implements Fu {
-                     public void method(){
-                      System.out.println(“重写接口抽象方法”);
-        }
-        }
-        //接口的多态使用
-        Fu fu = new Zi();
-* E: 注意事项
-        同一个父类的方法会被不同的子类重写。在调用方法时，调用的为各个子类重写后的方法。
-        如 Person p1 = new Student();
-           Person p2 = new Teacher();
-           p1.work(); //p1会调用Student类中重写的work方法
-           p2.work(); //p2会调用Teacher类中重写的work方法
-        当变量名指向不同的子类对象时，由于每个子类重写父类方法的内容不同，所以会调用不同的方法。</code></pre><p>###14多态成员方法的特点<br>    * A: 掌握了多态的基本使用后，那么多态出现后类的成员有啥变化呢？前面学习继承时，我们知道子父类之间成员变量有了自己的特定变化，<br>        * 那么当多态出现后，成员变量在使用上有没有变化呢？<br>        * 多态出现后会导致子父类中的成员变量有微弱的变化</p>
-<pre><code>* B: 代码演示
-    class Fu {
-        int num = 4;
-    }
-    class Zi extends Fu {
-        int num = 5;
-    }
-    class Demo {
-        public static void main(String[] args)     {
-            Fu f = new Zi();
-            System.out.println(f.num);
-            Zi z = new Zi();
-            System.out.println(z.num);
-        }
-    }
-
-* C: 多态成员变量
-    当子父类中出现同名的成员变量时，多态调用该变量时：
-    编译时期：参考的是引用型变量所属的类中是否有被调用的成员变量。没有，编译失败。
-    运行时期：也是调用引用型变量所属的类中的成员变量。
-    简单记：编译和运行都参考等号的左边。编译运行看左边。
-
-* D: 多态出现后会导致子父类中的成员方法有微弱的变化。看如下代码
-    class Fu {
-        int num = 4;
-        void show()    {
-            System.out.println(&quot;Fu show num&quot;);
-        }
-    }
-    class Zi extends Fu {
-        int num = 5;
-        void show()    {
-            System.out.println(&quot;Zi show num&quot;);
-        }
-    }
-    class Demo {
-        public static void main(String[] args)     {
-            Fu f = new Zi();
-            f.show();
-        }
-    }
-
-* E: 多态成员方法
-    编译时期：参考引用变量所属的类，如果没有类中没有调用的方法，编译失败。
-    运行时期：参考引用变量所指的对象所属的类，并运行对象所属类中的成员方法。
-    简而言之：编译看左边，运行看右边。</code></pre><p>###15instanceof关键字<br>    * A: 作用<br>         可以通过instanceof关键字来判断某个对象是否属于某种数据类型。如学生的对象属于学生类，学生的对象也属于人类</p>
-<pre><code>* 格式:
-    boolean  b  = 对象  instanceof  数据类型;
-
-* 举例:
-    Person p1 = new Student(); // 前提条件，学生类已经继承了人类
-    boolean flag = p1 instanceof Student; //flag结果为true
-    boolean flag2 = p2 instanceof Teacher; //flag结果为false</code></pre><p>###16多态-向上转型<br>    * A: 多态的转型分为向上转型与向下转型两种：</p>
-<pre><code>* B: 向上转型：当有子类对象赋值给一个父类引用时，便是向上转型，多态本身就是向上转型的过程。
-    使用格式：
-    父类类型  变量名 = new 子类类型();
-    如：Person p = new Student();</code></pre><p>​    </p>
-<p>==============================第四节课开始====================================</p>
-<p>###17多态-向下转型<br>    * A: 向下转型：一个已经向上转型的子类对象可以使用强制类型转换的格式，将父类引用转为子类引用，这个过程是向下转型。如果是直接创建父类对象，是无法向下转型的！<br>        使用格式：<br>        子类类型 变量名 = (子类类型) 父类类型的变量;<br>        如:Student stu = (Student) p;  //变量p 实际上指向Student对象</p>
-<p>###18多态的好处和弊端<br>    * A: 多态的好处和弊端<br>        * 当父类的引用指向子类对象时，就发生了向上转型，即把子类类型对象转成了父类类型。<br>          向上转型的好处是隐藏了子类类型，提高了代码的扩展性。<br>        * 但向上转型也有弊端，只能使用父类共性的内容，而无法使用子类特有功能，功能有限制。</p>
-<pre><code>* B: 看如下代码
-    //描述动物类，并抽取共性eat方法
-    abstract class Animal {
-        abstract void eat();
-    }
-
-    // 描述狗类，继承动物类，重写eat方法，增加lookHome方法
-    class Dog extends Animal {
-        void eat() {
-            System.out.println(&quot;啃骨头&quot;);
-        }
-
-        void lookHome() {
-            System.out.println(&quot;看家&quot;);
-        }
-    }
-
-    // 描述猫类，继承动物类，重写eat方法，增加catchMouse方法
-    class Cat extends Animal {
-        void eat() {
-            System.out.println(&quot;吃鱼&quot;);
-        }
-
-        void catchMouse() {
-            System.out.println(&quot;抓老鼠&quot;);
-        }
-    }
-
-    public class Test {
-        public static void main(String[] args) {
-            Animal a = new Dog(); //多态形式，创建一个狗对象
-            a.eat(); // 调用对象中的方法，会执行狗类中的eat方法
-            // a.lookHome();//使用Dog类特有的方法，需要向下转型，不能直接使用
-
-            // 为了使用狗类的lookHome方法，需要向下转型
-    // 向下转型过程中，可能会发生类型转换的错误，即ClassCastException异常
-            // 那么，在转之前需要做健壮性判断 
-            if( !a instanceof Dog){ // 判断当前对象是否是Dog类型
-                     System.out.println(&quot;类型不匹配，不能转换&quot;); 
-                     return; 
-            } 
-            Dog d = (Dog) a; //向下转型
-            d.lookHome();//调用狗类的lookHome方法
-        }
-    }
-
-
-* C 多态总结:
-    什么时候使用向上转型：
-        当不需要面对子类类型时，通过提高扩展性，或者使用父类的功能就能完成相应的操作，这时就可以使用向上转型。
-        如：Animal a = new Dog();
-            a.eat();
-    什么时候使用向下转型
-        当要使用子类特有功能时，就需要使用向下转型。
-            如：Dog d = (Dog) a; //向下转型
-                d.lookHome();//调用狗类的lookHome方法
-            向下转型的好处：可以使用子类特有功能。
-            弊端是：需要面对具体的子类对象；在向下转型时容易发生ClassCastException类型转换异常。在转换之前必须做类型判断。
-        如：if( !a instanceof Dog){…}</code></pre><p>###19多态举例<br>     * A: 毕老师和毕姥爷的故事<br>     * 案例:<br>      /*<br>        描述毕老师和毕姥爷，<br>        毕老师拥有讲课和看电影功能<br>        毕姥爷拥有讲课和钓鱼功能<br>      */<br>        class 毕姥爷 {<br>            void 讲课() {<br>                System.out.println(“政治”);<br>            }</p>
-<pre><code>    void 钓鱼() {
-        System.out.println(&quot;钓鱼&quot;);
-    }
-}
-
-// 毕老师继承了毕姥爷，就有拥有了毕姥爷的讲课和钓鱼的功能，
-// 但毕老师和毕姥爷的讲课内容不一样，因此毕老师要覆盖毕姥爷的讲课功能
-class 毕老师 extends 毕姥爷 {
-    void 讲课() {
-        System.out.println(&quot;Java&quot;);
-    }
-
-    void 看电影() {
-        System.out.println(&quot;看电影&quot;);
-    }
-}
-
-public class Test {
-    public static void main(String[] args) {
-        // 多态形式
-        毕姥爷 a = new 毕老师(); // 向上转型
-        a.讲课(); // 这里表象是毕姥爷，其实真正讲课的仍然是毕老师，因此调用的也是毕老师的讲课功能
-        a.钓鱼(); // 这里表象是毕姥爷，但对象其实是毕老师，而毕老师继承了毕姥爷，即毕老师也具有钓鱼功能
-
-        // 当要调用毕老师特有的看电影功能时，就必须进行类型转换
-        毕老师 b = (毕老师) a; // 向下转型
-        b.看电影();
-    }</code></pre><p>###20笔记本电脑案例<br>     * A:案例介绍<br>         * 定义USB接口（具备开启功能、关闭功能），笔记本要使用USB设备，即笔记本在生产时需要预留可以插入USB设备的USB接口，即就是笔记本具备使用USB设备的功能，<br>         * 但具体是什么USB设备，笔记本并不关心，只要符合USB规格的设备都可以。鼠标和键盘要想能在电脑上使用，那么鼠标和键盘也必须遵守USB规范，不然鼠标和键盘的生产出来无法使用<br>        * 进行描述笔记本类，实现笔记本使用USB鼠标、USB键盘<br>            USB接口，包含开启功能、关闭功能<br>            笔记本类，包含运行功能、关机功能、使用USB设备功能<br>            鼠标类，要符合USB接口<br>            键盘类，要符合USB接口</p>
-<pre><code>* B: 案例分析
-    * 阶段一：
-        使用笔记本，笔记本有运行功能，需要笔记本对象来运行这个功能
-    * 阶段二：
-        想使用一个鼠标，又有一个功能使用鼠标，并多了一个鼠标对象。
-    * 阶段三：
-        还想使用一个键盘 ，又要多一个功能和一个对象
-    * 问题：每多一个功能就需要在笔记本对象中定义一个方法，不爽，程序扩展性极差。
-        降低鼠标、键盘等外围设备和笔记本电脑的耦合性。</code></pre><p>###21笔记本电脑案例代码实现<br>     * A: 代码实现<br>        定义鼠标、键盘，笔记本三者之间应该遵守的规则<br>        interface USB {<br>            void open();// 开启功能</p>
-<pre><code>    void close();// 关闭功能
-}
-
-    鼠标实现USB规则
-class Mouse implements USB {
-    public void open() {
-        System.out.println(&quot;鼠标开启&quot;);
-    }
-
-    public void close() {
-        System.out.println(&quot;鼠标关闭&quot;);
-    }
-}
-
-    键盘实现USB规则
-class KeyBoard implements USB {
-    public void open() {
-        System.out.println(&quot;键盘开启&quot;);
-    }
-
-    public void close() {
-        System.out.println(&quot;键盘关闭&quot;);
-    }
-}
-
-    定义笔记本
-class NoteBook {
-    // 笔记本开启运行功能
-    public void run() {
-        System.out.println(&quot;笔记本运行&quot;);
-    }
-
-    // 笔记本使用usb设备，这时当笔记本对象调用这个功能时，必须给其传递一个符合USB规则的USB设备
-    public void useUSB(USB usb) {
-        // 判断是否有USB设备
-        if (usb != null) {
-            usb.open();
-            usb.close();
-        }
-    }
-
-    public void shutDown() {
-        System.out.println(&quot;笔记本关闭&quot;);
-    }
-}
-
-public class Test {
-    public static void main(String[] args) {
-        // 创建笔记本实体对象
-        NoteBook nb = new NoteBook();
-        // 笔记本开启
-        nb.run();
-
-        // 创建鼠标实体对象
-        Mouse m = new Mouse();
-        // 笔记本使用鼠标
-        nb.useUSB(m);
-
-        // 创建键盘实体对象
-        KeyBoard kb = new KeyBoard();
-        // 笔记本使用键盘
-        nb.useUSB(kb);
-
-        // 笔记本关闭
-        nb.shutDown();
-    }
-}</code></pre><p>###22总结<br>    * 把今天的知识点总结一遍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3712,20 +3431,20 @@ public class Test {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

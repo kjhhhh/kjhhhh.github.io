@@ -155,6 +155,218 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">C各类库函数的实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 15:25:19 / 修改时间：15:26:08" itemprop="dateCreated datePublished" datetime="2020-12-27T15:25:19+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里讨论C语言标准库中各类常用函数，以及它们的高危情况。</p>
+<p><strong>1、atoi 函数</strong></p>
+<p>这个函数是转换输入字符串转换为整型数。</p>
+<p>对于该函数的实现需要考虑以下几个方面：</p>
+<ol>
+<li>输入字符串为NULL；</li>
+<li>输入的字符包含前导的空格；</li>
+<li>输入开始是否包含符号‘+’、‘-’；</li>
+<li>输入的字符是否合法（对于十进制‘0’~‘9’为合法的输入）；</li>
+<li>计算出的数值为 long int，足够判断溢出；</li>
+<li>数据溢出的处理（上溢出时，返回最大正数；下溢出时，返回最大负数）；</li>
+</ol>
+<p>上面的实现比较棘手的就是数据溢出的处理：这里我们用计算出的数值与最大值（最小值的无符号型）/10 进行比较，小于自然不会溢出，由于负数的最大值是-2147483648，最大值是2147483647，个位数不是9，所以还需考虑等于的情况下，个位数的比较。</p>
+<p>将计算出的数值与最大值（最小值的无符号型）/10 比较而不是计算出数值<em>10 与最大值比较，是因为计算出的数值</em>10 有可能本身就溢出了。比如输入字符串为”314748364“，计算出的数值为314748364，然后其*10，必然会溢出出错，所以只能进行最大值 /10 操作。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_UINT ((unsigned)~0)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_INT  ((int)(MAX_UINT &gt;&gt; 1))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MIN_INT  ((int)~MAX_INT)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">atoi</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	assert(str != <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">long</span> <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">bool</span> minus = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (*str == <span class="string">' '</span>)<span class="comment">//跳过开头空格</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		++str;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*正负判断*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (*str == <span class="string">'+'</span> || *str == <span class="string">'-'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (*str == <span class="string">'-'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			minus = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		++str;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*只针对数字*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (*str &gt;= <span class="string">'0'</span> &amp;&amp; *str &lt;= <span class="string">'9'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		c = *str - <span class="string">'0'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">/*正数溢出判断，溢出则返回相应上限值*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!minus &amp;&amp; (res &gt; MAX_INT / <span class="number">10</span> || (res == MAX_INT / <span class="number">10</span> &amp;&amp; c &gt; MAX_INT % <span class="number">10</span>)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			res = MAX_INT;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">/*负数溢出判断，这里的比较转换为无符号，大于则溢出*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (minus &amp;&amp; (res &gt; (<span class="keyword">unsigned</span>)MIN_INT / <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			|| (res == (<span class="keyword">unsigned</span>)MIN_INT / <span class="number">10</span> &amp;&amp; c &gt; (<span class="keyword">unsigned</span>)MIN_INT % <span class="number">10</span>)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			res = MIN_INT;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		res = res * <span class="number">10</span> + c;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		++str;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> minus ? -res : res;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong><em>\</em>2、strcpy 函数和 memcpy 函数**</strong></p>
+<p>strcpy 函数可以复制以null 为退出字符的存储器区块到另一个存储器区块内，只用于字符串的复制，字符串在存储器内以连续的字节区块组成，strcpy 可以有效复制两个配置在存储器以指针回传的字符串（也就是字符指针或字符串指针）。</p>
+<p>函数原型如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">strcpy</span><span class="params">(<span class="keyword">char</span> * dst, <span class="keyword">const</span> <span class="keyword">char</span> * src)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*把src的内容复制到dst，然后目的字符串dst指针*/</span></span><br></pre></td></tr></table></figure>
+
+<p>先下面看看微软的写法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * __cdecl <span class="title">strcpy</span><span class="params">(<span class="keyword">char</span> * dst, <span class="keyword">const</span> <span class="keyword">char</span> * src)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">char</span> * cp = dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (*cp++ = *src++)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		;               <span class="comment">/* Copy src over dst */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>(dst);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这个写法为了提高性能，减去了那些安全检查，其余漏洞后面讨论。</p>
+<p>除去安全性检查，strcpy 还不允许 src 与 dst 两内存块有重叠。只要有重叠势必会写入修改src 只读区域，这是不允许的，另外有重叠区域，当dst 在高地址时，复制过来的可能就是dst 前面部分的字符了。鉴于上面分析，我们写出下面实现代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">strcpy</span><span class="params">(<span class="keyword">char</span> * dst, <span class="keyword">const</span> <span class="keyword">char</span> * src)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *ret = dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    assert((dst != <span class="literal">NULL</span>) &amp;&amp; (src != <span class="literal">NULL</span>));<span class="comment">//检查指针的有效性</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    count = <span class="built_in">strlen</span>(src);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    assert((src + count &lt; dst) || (dst + count &lt; src));<span class="comment">//检查内存是否存在重叠区域，此处非最优方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (*ret++ = *src++)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上面的程序最后返回 char* 类型，是为了使函数能够支持链式表达式，增加了函数的“附加值”。</p>
+<p>实际上上面对于地址重叠还有一个更好的解决方法，那就是判断地址是哪部分重叠，如果dst 地址位于 src 前面，按照正常的赋值操作是没问题的，如果dst地址位于src后面，那么则从src尾部开始复制，这样可以解决地址重叠问题。代码就不贴出来了，可自行画一个示意图，一目了然。</p>
+<p>另外值得注意的是：上面那个函数一样，这是strcpy 的硬伤，就是必须为目标字串分配足够的空间，如果目标字串的长度小于源字串的长度，那么在复制操作的时候会出现缓存溢出。在拷贝字符串的时候没有越界检查，这使得 strcpy 成为一个高危函数。</p>
+<p>从strcpy 函数的参数就可以看出，strcpy 只能复制字符串，也不需要指定复制长度（strncpy 需要指定长度）</p>
+<p>下面顺带看看memcpy 函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">memcpy</span><span class="params">(<span class="keyword">void</span> * dst, <span class="keyword">const</span> <span class="keyword">void</span> * src, <span class="keyword">size_t</span> count)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> *ret = dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    assert((dst != <span class="literal">NULL</span>) &amp;&amp; (src != <span class="literal">NULL</span>));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (count--)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        *(<span class="keyword">char</span>*)dst = *(<span class="keyword">char</span>*)src; <span class="comment">//强制转换为char*，因为char占一个字节</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        dst = (<span class="keyword">char</span> *)dst + <span class="number">1</span>;     <span class="comment">//这样，地址增加一个字节位移，可以全部复制</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        src = (<span class="keyword">char</span> *)src + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>memcpy 接受void* 类型的形参，这使得memcpy 函数可以复制任意内容。strcpy 拷贝是遇到‘\0’ 就停止，而memcpy 并不是遇到‘\0’ 就结束，而是一定拷贝 count 个字符。一般而言，在复制字符串时用strcpy，而需要复制其他类型数据时则一般用memcpy。</p>
+<p><strong>3、strcat 函数</strong></p>
+<p>函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">strcat</span><span class="params">(<span class="keyword">char</span> * dst, <span class="keyword">const</span> <span class="keyword">char</span> * src)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>功能是把 src 所指字符串添加到 dst 结尾处（覆盖dst 结尾处的’\0’）并添加’\0’，最终返回指向 dst 的指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">strcat</span><span class="params">(<span class="keyword">char</span> * dst, <span class="keyword">const</span> <span class="keyword">char</span> * src)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	assert(dst != <span class="literal">NULL</span> &amp;&amp; src != <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> count = <span class="built_in">strlen</span>(src);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	assert((src + count &lt; dst) || (dst + count &lt; src)); <span class="comment">/*检查是否重叠*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">char</span> * cp = dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (*cp)                 <span class="comment">/*先判断，再指针增加*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		cp++;                   <span class="comment">/* dst末位置 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (*cp++ = *src++);       <span class="comment">/* 拷贝 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>(dst);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>src 和 dst 所指的内存区域不可以重叠且 dst 必须保证有足够的空间来容纳 src 的字符串，否则会出错。C 语言标准库中strcat 函数同 strcpy 函数一样，没有保证dst 有足够的空间容纳操作后的字符串，也使得strcat 成为一个高危函数。</p>
+<p><strong>4、strcmp 函数</strong></p>
+<p>该函数用于比较两个字符串</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strcmp</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * src, <span class="keyword">const</span> <span class="keyword">char</span> * dst)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	assert((src != <span class="literal">NULL</span>) &amp;&amp; (dst != <span class="literal">NULL</span>));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*两个字符串自左向右逐个比较(ASCII值)，直到出现不同字符或dst遇'\0'为止*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*如果前面字符相同，dst的'\0'最后会参与比较*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!(ret = *(<span class="keyword">unsigned</span> <span class="keyword">char</span> *)src - *(<span class="keyword">unsigned</span> <span class="keyword">char</span> *)dst) &amp;&amp; *dst)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		++src, ++dst;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*不同返回值对应不同比较结果*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (ret &lt; <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		ret = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (ret &gt; <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		ret = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>(ret);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">C++指针与引用的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 15:23:56 / 修改时间：15:24:51" itemprop="dateCreated datePublished" datetime="2020-12-27T15:23:56+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先写出两者的3点区别，后面再具体分析：</p>
+<ol>
+<li>当引用被创建时，它必须被初始化，而指针则可以在任何时候被初始化</li>
+<li>一旦一个引用被初始化为指向一个对象，它就不能被改变为对另一个对象的引用，而指针可以在任何时候指向另一个对象</li>
+<li>不可能有NULL引用，必须确保引用是和一块合法的存储单元关联，而指针可以初始化为NULL</li>
+</ol>
+<p>从概念上讲，指针(pointers)从本质上讲就是存放变量地址的一个变量，在逻辑上是独立的，它可以被改变，包括其所指向的地址的改变和其指向的地址中所存放的数据的改变，这点后面再详细叙述。</p>
+<p>而引用(references)是一个别名，它在逻辑上不是独立的，它的存在具有依附性，所以引用必须在一开始就被初始化，而且其引用的对象在其整个生命周期中是不能被改变的，自始至终只能依附于同一个变量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s1</span><span class="params">(<span class="string">"sunburn"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s2</span><span class="params">(<span class="string">"saltwater"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> &amp;rs = s1;        <span class="comment">//引用，rs代表s1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> *ps = &amp;s1;       <span class="comment">//指针，ps指向s1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rs = s2;                <span class="comment">//rs仍然是代表s1，但是s1的值现在变成了"saltwater"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        <span class="comment">//rs一直依附于s1，rs的值就是s1的值</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*ps = <span class="string">"owl city"</span>;       <span class="comment">//修改ps指向的地址中所存放的数据，也就是s1变成了"owl city"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">						<span class="comment">//rs依附于s1，那么这里rs也会变成"owl city"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ps = &amp;s2;               <span class="comment">//修改ps所指向的地址，ps现在指向s2，s1没有变化</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面可以得知，指针可以被重新赋值，指向另一个对象，引用却总是代表它最初获得的那个对象。</p>
+<p>一般而言，当你需要不指向任何对象时，或是需要在不同时间指向不同对象时，你就应该采用指针，前一种情况你可以将指针设为NULL，后一种情况你可以改变指针所指对象（地址）。而当你确定总是会代表某个对象，而且一旦代表了该对象就不再改变，就应该选用引用。</p>
+<p>有一点最基本的，那就是没有所谓的空引用（NULL references），一个引用必须总是代表一个对象，所以如果你有一个变量，其目的是用来指向(代表)另一个对象，但是也可能它不指向任何对象，那么你就应该使用指针，如果这个变量必须总是代表一个对象，并且不允许这个变量为NULL，那么就应该选用引用。说白了，就是C++允许空指针，但不允许空引用。</p>
+<p>引用一定得代表某个对象，因此要求引用必须有初值，但是对指针则没有这样的要求</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s1</span><span class="params">(<span class="string">"sunburn"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s2</span><span class="params">(<span class="string">"saltwater"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> &amp;rs = s1;        <span class="comment">//初始化</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> &amp;rs;             <span class="comment">//未初始化，error</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> *ps;             <span class="comment">//未初始化的指针，有效，但是风险高，</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        <span class="comment">//实际上，在应用中是不允许的</span></span><br></pre></td></tr></table></figure>
+
+<p>没有所谓的空引用，这就意味着当使用引用传递形参参数时，则不需要测试其参数的有效性，相反如果使用指针，通常就得测试它是否为NULL。</p>
+<p>下面看看在C++中，指针和引用在函数参数传递中的区别：</p>
+<p>说到指针传递，以前在C中经常同值传递进行区别，其实指针传递本质上也是值传递的方式，只不过传递的是一个地址值，值传递过程中，被调函数的形参作为被调函数的局部变量处理，即在栈中开辟内存空间存放由主调函数放进来的实参的值，从而成为了实参的一个副本。值传递的特点是被调函数对形参的任何操作都是作为局部变量处理的，其值都存放在栈中，随着被调函数的结束而消亡，不会影响主调函数中实参变量的值，指针传递过程中的实参变量指的则是实参指针，指针传递的目的是通过被调函数去修改实参变量，那么被调函数内部的操作肯定是解指针操作，也就是透过传过来的指针的副本来操作其指向的变量（实参变量）。</p>
+<p>而在引用传递过程中，被调函数的形式参数自然也作为局部变量在栈中开辟了内存空间，但是这时存放的是由主调函数放进来的实参变量的地址，然后被调函数对形参的任何操作都被处理成间接寻址，通过栈中存放的地址访问主调函数中的实参变量。这个和前面的说到的指针传递就相同了，都是通过栈中的地址访问主调函数的实参变量，只不过引用传递则不需要指针的解引用操作，直接对形参的操作都会被内部解析为通过地址访问实参变量，从而去影响主调函数中的实参变量。但从这点来看，引用传递其实也是指针传递，只不过这一切实现都隐藏在内部，由编译器完成。</p>
+<p>我们对比看下指针传递和引用传递的反汇编代码：</p>
+<p><img src="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/20140826213733671" alt="img"></p>
+<p>上面这两个简单的被调函数都是实现相同的功能，代码的实现上存在本质区别，一个是指针传递一个是引用传递，但是内部的操作，从其反汇编代码来看（红色框框内），两者的汇编代码是一模一样的。但是从代码的实现上来看，引用传递显得更为高效和简洁，无需检查传入参数的有效性，并且不会带入指针这个易错量。</p>
+<p>注意的是上面说的一模一样是针对指针传递是以透过指针变量来操作实参变量的目的。当然，如果单一的操作指针变量，没有解引用操作，也就是只改变被调函数中的指针地址，那么它将影响不到主调函数中的相关变量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str1 = str2;    <span class="comment">//这里指针变量作为局部变量，不会影响到主调函数的实参变量</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，如果实际上应用指针传递形参的话，是不会这样去操作的。</p>
+<p>其实二者都是地址的概念。指针指向一块内存，它的内容是所指内存的地址，而引用则是某块内存的别名，既然是别名，那么在参数传递时，引用并不会产生对象的副本，对象无需复制，效率更高，以及在函数的返回值上，返回一个对象的引用有时也是必须的，尤其在某些运算符的重载上。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1421,542 +1633,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/C++%E6%96%87%E4%BB%B61/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/C++%E6%96%87%E4%BB%B61/" class="post-title-link" itemprop="url">C++文件1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-25 22:05:04 / 修改时间：22:06:46" itemprop="dateCreated datePublished" datetime="2020-12-25T22:05:04+08:00">2020-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>基于C的文件操作<br>　　在ANSI C中，对文件的操作分为两种方式，即流式文件操作和I/O文件操作，下面就分别介绍之。</p>
-<p>一、流式文件操作<br>这种方式的文件操作有一个重要的结构FILE，FILE在stdio.h中定义如下：</p>
-<p><img src="/2020/12/25/C++%E6%96%87%E4%BB%B61/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> level;　　　　　　　　　　　<span class="comment">/* fill/empty level of buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> flags; 　　　　　　 <span class="comment">/* File status flags */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">char</span> fd;　　　　　　　　　　　 <span class="comment">/* File descriptor */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> hold;　　　　  <span class="comment">/* Ungetc char if no buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> bsize;　　　　　　　　　　 <span class="comment">/* Buffer size */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *<span class="built_in">buffer</span>;　<span class="comment">/* Data transfer buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *curp;　　<span class="comment">/* Current active pointer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> istemp;　　　　　　<span class="comment">/* Temporary file indicator */</span> </span><br><span class="line"></span><br><span class="line">　　short token;　　　　　　　　  <span class="comment">/* Used for validity checking */</span> </span><br><span class="line"></span><br><span class="line">&#125; FILE;　　　　　　　　　　　　  <span class="comment">/* This is the FILE object */</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img-blog.csdnimg.cn/img_convert/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
-<p>　　FILE这个结构包含了文件操作的基本属性，对文件的操作都要通过这个结构的指针来进行，此种文件操作常用的函数见下表 函数 功能 </p>
-<p>　　fopen() 打开流<br>　　fclose() 关闭流<br>　　fputc() 写一个字符到流中<br>　　fgetc() 从流中读一个字符<br>　　fseek() 在流中定位到指定的字符<br>　　fputs() 写字符串到流<br>　　fgets() 从流中读一行或指定个字符<br>　　fprintf() 按格式输出到流<br>　　fscanf() 从流中按格式读取<br>　　feof() 到达文件尾时返回真值<br>　　ferror() 发生错误时返回其值<br>　　rewind() 复位文件定位器到文件开始处<br>　　remove() 删除文件<br>　　fread() 从流中读指定个数的字符<br>　　fwrite() 向流中写指定个数的字符<br>　　tmpfile() 生成一个临时文件流<br>　　tmpnam() 生成一个唯一的文件名</p>
-<p>下面就介绍一下这些函数</p>
-<p>1.fopen()<br>　　fopen的原型是：FILE *fopen(const char *filename,const char *mode)，fopen实现三个功能</p>
-<p>　　为使用而打开一个流<br>　　把一个文件和此流相连接<br>　　给此流返回一个FILR指针<br>　　参数filename指向要打开的文件名，mode表示打开状态的字符串，其取值如下表</p>
-<p>　　字符串 含义<br>　　“r” 以只读方式打开文件<br>　　“w” 以只写方式打开文件<br>　　“a” 以追加方式打开文件<br>　　“r+” 以读/写方式打开文件，如无文件出错<br>　　“w+” 以读/写方式打开文件，如无文件生成新文件</p>
-<p>　　一个文件可以以文本模式或二进制模式打开，这两种的区别是：在文本模式中回车被当成一个字符’/n’，而二进制模式认为它是两个字符0x0D,0x0A；如果在文件中读到0x1B，文本模式会认为这是文件结束符，也就是二进制模型不会对文件进行处理，而文本方式会按一定的方式对数据作相应的转换。</p>
-<p>　　系统默认的是以文本模式打开，可以修改全部变量_fmode的值来修改这个设置，例如_fmode=O_TEXT；就设置默认打开方式为文本模式；而_fmode=O_BINARY；则设置默认打开方式是二进制模式。</p>
-<p>　　我们也可以在模式字符串中指定打开的模式，如”rb”表示以二进制模式打开只读文件，”w+t”或”wt+”表示以文本模式打开读/写文件。</p>
-<p>　　此函数返回一个FILE指针，所以申明一个FILE指针后不用初始化，而是用fopen()来返回一个指针并与一个特定的文件相连，如果成败，返回NULL。</p>
-<p>　　例:</p>
-<p>　　FILE *fp;<br>　　if(fp=fopen(“123.456”,”wb”))<br>　　puts(“打开文件成功”);<br>　　else<br>　　puts(“打开文件成败”);</p>
-<p>2.fclose()<br>　　fclose()的功能就是关闭用fopen()打开的文件，其原型是：int fclose(FILE *fp);如果成功，返回0,失败返回EOF。</p>
-<p>　　在程序结束时一定要记得关闭打开的文件，不然可能会造成数据丢失的情况，我以前就经常犯这样的毛病。</p>
-<p>　　例：fclose(fp);</p>
-<p>3.fputc()<br>　　向流写一个字符，原型是int fputc(int c, FILE *stream); 成功返回这个字符,失败返回EOF。</p>
-<p>　　例：fputc(‘X’,fp);</p>
-<p>4.fgetc()<br>　　从流中读一个字符，原型是int fputc(FILE *stream); 成功返回这个字符,失败返回EOF。</p>
-<p>　　例：char ch1=fgetc(fp);</p>
-<p>\5. fseek()<br>　　此函数一般用于二进制模式打开的文件中，功能是定位到流中指定的位置，原型是int fseek(FILE *stream, long offset, int whence);如果成功返回0，参数offset是移动的字符数，whence是移动的基准，取值是</p>
-<p>　　符号常量 值 基准位置<br>　　SEEK_SET 0 文件开头<br>　　SEEK_CUR 1 当前读写的位置<br>　　SEEK_END 2 文件尾部</p>
-<p>　　例：fseek(fp,1234L,SEEK_CUR);//把读写位置从当前位置向后移动1234字节(L后缀表示长整数)</p>
-<p>　　fseek(fp,0L,2);//把读写位置移动到文件尾</p>
-<p>6.fputs()<br>　　写一个字符串到流中，原型int fputs(const char *s, FILE *stream);</p>
-<p>　　例：fputs(“I Love You”,fp);</p>
-<p>7.fgets()<br>　　从流中读一行或指定个字符，原型是char *fgets(char *s, int n, FILE *stream); 从流中读取n-1个字符，除非读完一行，参数s是来接收字符串，如果成功则返回s的指针，否则返回NULL。</p>
-<p>　　例：如果一个文件的当前位置的文本如下</p>
-<p>　　Love ,I Have</p>
-<p>　　But ……..</p>
-<p>　　如果用</p>
-<p>　　fgets(str1,4,file1);</p>
-<p>　　则执行后str1=”Lov”，读取了4-1=3个字符，而如果用</p>
-<p>　　fgets(str1,23,file1);</p>
-<p>　　则执行str=”Love ,I Have”，读取了一行(不包括行尾的’/n’)。</p>
-<p>8.fprintf()<br>　　按格式输入到流，其原型是int fprintf(FILE *stream, const char *format[, argument, …]);其用法和printf()相同，不过不是写到控制台，而是写到流罢了</p>
-<p>　　例：fprintf(fp,”%2d%s”,4,”Hahaha”);</p>
-<p>9.fscanf()<br>　　从流中按格式读取，其原型是int fscanf(FILE *stream, const char *format[, address, …]);其用法和scanf()相同，不过不是从控制台读取，而是从流读取罢了。</p>
-<p>　　例：fscanf(fp,”%d%d” ,&amp;x,&amp;y);</p>
-<p>10.feof()<br>　　检测是否已到文件尾，是返回真，否则返回0，其原型是int feof(FILE *stream);</p>
-<p>　　例：if(feof(fp))printf(“已到文件尾”);</p>
-<p>11.ferror()<br>　　原型是int ferror(FILE *stream);返回流最近的错误代码，可用clearerr()来清除它，clearerr()的原型是void clearerr(FILE *stream);</p>
-<p>　　例：printf(“%d”,ferror(fp));</p>
-<p>12.rewind()<br>　　把当前的读写位置回到文件开始，原型是void rewind(FILE *stream);其实本函数相当于fseek(fp,0L,SEEK_SET);</p>
-<p>　　例：rewind(fp);</p>
-<p>13.remove()<br>　　删除文件，原型是int remove(const char *filename); 参数就是要删除的文件名，成功返回0。</p>
-<p>　　例：remove(“c://io.sys”);</p>
-<p>14.fread()<br>　　从流中读指定个数的字符，原型是size_t fread(void <em>ptr, size_t size, size_t n, FILE *stream);参数ptr是保存读取的数据，void</em>的指针可用任何类型的指针来替换，如char*、int *等等来替换；size是每块的字节数；n是读取的块数，如果成功，返回实际读取的块数(不是字节数)，本函数一般用于二进制模式打开的文件中。</p>
-<p>　　例：</p>
-<p>　　char x[4230];<br>　　FILE <em>file1=fopen(“c://msdos.sys”,”r”);<br>　　fread(x,200,12 ,file1);//共读取200</em>12=2400个字节</p>
-<p>15.fwrite()<br>　　与fread对应，向流中写指定的数据，原型是size_t fwrite(const void <em>ptr, size_t size, size_t n, FILE *stream);参数ptr是要写入的数据指针，void</em>的指针可用任何类型的指针来替换，如char*、int *等等来替换；size是每块的字节数；n是要写的块数，如果成功，返回实际写入的块数(不是字节数)，本函数一般用于二进制模式打开的文件中。</p>
-<p>　　例：</p>
-<p>　　char x[]=”I Love You”;<br>　　fwire(x, 6,12,fp);//写入6*12=72字节</p>
-<p>　　将把”I Love”写到流fp中12次，共72字节</p>
-<p>16.tmpfile()<br>　　其原型是FILE *tmpfile(void); 生成一个临时文件，以”w+b”的模式打开，并返回这个临时流的指针，如果失败返回NULL。在程序结束时，这个文件会被自动删除。</p>
-<p>　　例：FILE *fp=tmpfile();</p>
-<p>17.tmpnam();<br>　　其原型为char *tmpnam(char *s); 生成一个唯一的文件名，其实tmpfile()就调用了此函数，参数s用来保存得到的文件名，并返回这个指针，如果失败，返回NULL。</p>
-<p>borland c++ bulder的文件操作总结２</p>
-<p>二、直接I/O文件操作<br>　　这是C提供的另一种文件操作，它是通过直接存/取文件来完成对文件的处理，而上篇所说流式文件操作是通过缓冲区来进行；流式文件操作是围绕一个FILE指针来进行，而此类文件操作是围绕一个文件的”句柄”来进行，什么是句柄呢？它是一个整数，是系统用来标识一个文件(在WINDOWS中，句柄的概念扩展到所有设备资源的标识)的唯一的记号。此类文件操作常用的函数如下表，这些函数及其所用的一些符号在io.h和fcntl.h中定义，在使用时要加入相应的头文件。</p>
-<p>　　函数 说明<br>　　open() 打开一个文件并返回它的句柄<br>　　close() 关闭一个句柄<br>　　lseek() 定位到文件的指定位置<br>　　read() 块读文件<br>　　write() 块写文件<br>　　eof() 测试文件是否结束<br>　　filelength() 取得文件长度<br>　　rename() 重命名文件<br>　　chsize() 改变文件长度</p>
-<p>下面就对这些函数一一说明：</p>
-<p>1.open()<br>　　打开一个文件并返回它的句柄，如果失败，将返回一个小于0的值，原型是int open(const char *path, int access [, unsigned mode]); 参数path是要打开的文件名，access是打开的模式，mode是可选项。表示文件的属性，主要用于UNIX系统中，在DOS/WINDOWS这个参数没有意义。其中文件的打开模式如下表。</p>
-<p>　　符号 含义 符号 含义 符号 含义<br>　　O_RDONLY 只读方式 O_WRONLY 只写方式 O_RDWR 读/写方式<br>　　O_NDELAY 用于UNIX系统 O_APPEND 追加方式 O_CREAT 如果文件不存在就创建<br>　　O_TRUNC 把文件长度截为0 O_EXCL 和O_CREAT连用，如果文件存在返回错误 O_BINARY 二进制方式<br>　　O_TEXT 文本方式</p>
-<p>　　对于多个要求，可以用”|”运算符来连接，如O_APPEND|O_TEXT表示以文本模式和追加方式打开文件。</p>
-<p>　　例：int handle=open(“c://msdos.sys”,O_BINARY|O_CREAT|O_WRITE)</p>
-<p>2.close()<br>　　关闭一个句柄，原型是int close(int handle);如果成功返回0</p>
-<p>　　例：close(handle)</p>
-<p>3.lseek()<br>　　定位到指定的位置，原型是：long lseek(int handle, long offset, int fromwhere);参数offset是移动的量，fromwhere是移动的基准位置，取值和前面讲的fseek()一样，SEEK_SET：文件首部；SEEK_CUR：文件当前位置；SEEK_END：文件尾。此函数返回执行后文件新的存取位置。</p>
-<p>　　例：</p>
-<p>　　lseek(handle,-1234L,SEEK_CUR);//把存取位置从当前位置向前移动1234个字节。<br>　　x=lseek(hnd1,0L,SEEK_END);//把存取位置移动到文件尾，x=文件尾的位置即文件长度</p>
-<p>4.read()<br>　　从文件读取一块，原型是int read(int handle, void *buf, unsigned len);参数buf保存读出的数据，len是读取的字节。函数返回实际读出的字节。</p>
-<p>　　例：char x[200];read(hnd1,x,200);</p>
-<p>5.write()<br>　　写一块数据到文件中，原型是int write(int handle, void *buf, unsigned len);参数的含义同read()，返回实际写入的字节。</p>
-<p>　　例：char x[]=”I Love You”;write(handle,x,strlen(x));</p>
-<p>6.eof()<br>　　类似feof()，测试文件是否结束，是返回1，否则返回0;原型是：int eof(int handle);</p>
-<p>　　例：while(!eof(handle1)){……};</p>
-<p>7.filelength()<br>　　返回文件长度，原型是long filelength(int handle);相当于lseek(handle,0L,SEEK_END)</p>
-<p>　　例：long x=filelength(handle);</p>
-<p>8.rename()<br>　　重命名文件，原型是int rename(const char *oldname, const char *newname); 参数oldname是旧文件名，newname是新文件名。成功返回0</p>
-<p>　　例：rename(“c://config.sys”,”c://config.w40”);</p>
-<p>9.chsize();<br>　　改变文件长度，原型是int chsize(int handle, long size);参数size表示文件新的长度，成功返回0，否则返回-1，如果指定的长度小于文件长度，则文件被截短；如果指定的长度大于文件长度，则在文件后面补’/0’。</p>
-<p>　　例：chsize(handle,0x12345);</p>
-<p>-——————————————————————————-</p>
-<p>　　如果熟悉汇编可能会发现这种方式和汇编语言的DOS功能调用句柄式文件操作很像，比如open()就像DOS服务的3CH号功能调用，其实这种操作还有两种类型的函数就是直接用DOS功能来完成的，如_open()，_dos_open()等等。有兴趣可自已查询BCB的帮助。</p>
-<p>　　同流式文件操作相同，这种也提供了Unicode字符操作的函数，如_wopen()等等，用于9X/NT下的宽字符编程，有兴趣可自已查询BCB的帮助。</p>
-<p>　　另外，此种操作还有lock(),unlock(),locking()等用于多用户操作的函数，但在BCB中用得并不多，我就不介绍了，但如果要用C来写CGI，这些就必要的常识了，如果你有这方面的要求，那就得自已好好看帮助了。</p>
-<p>　　到这里，我就把基于C的文件操作介绍完了，下一篇将介绍基于C++的文件操作，敬请期待。</p>
-<p>在C++中，有一个stream这个类，所有的I/O都以这个”流”类为基础的，包括我们要认识的文件I/O，stream这个类有两个重要的运算符：</p>
-<p>1、插入器(&lt;&lt;)<br>　　向流输出数据。比如说系统有一个默认的标准输出流(cout)，一般情况下就是指的显示器，所以，cout&lt;&lt;”Write Stdout”&lt;&lt;’/n’;就表示把字符串”Write Stdout”和换行字符(‘/n’)输出到标准输出流。</p>
-<p>2、析取器(&gt;&gt;)<br>　　从流中输入数据。比如说系统有一个默认的标准输入流(cin)，一般情况下就是指的键盘，所以，cin&gt;&gt;x;就表示从标准输入流中读取一个指定类型(即变量x的类型)的数据。</p>
-<p>在C++中，对文件的操作是通过stream的子类fstream(file stream)来实现的，所以，要用这种方式操作文件，就必须加入头文件fstream.h。下面就把此类的文件操作过程一一道来。</p>
-<p>一、打开文件<br>　　在fstream类中，有一个成员函数open()，就是用来打开文件的，其原型是：</p>
-<p>　　void open(const char* filename,int mode,int access);</p>
-<p>　　参数：</p>
-<p>　　filename：　　要打开的文件名<br>　　mode：　　　　要打开文件的方式<br>　　access：　　　打开文件的属性<br>　　打开文件的方式在类ios(是所有流式I/O类的基类)中定义，常用的值如下：</p>
-<p>　　ios::app：　　　以追加的方式打开文件<br>　　ios::ate：　　　文件打开后定位到文件尾，ios:app就包含有此属性<br>　　ios::binary： 　以二进制方式打开文件，缺省的方式是文本方式。两种方式的区别见前文<br>　　ios::in：　　　 文件以输入方式打开<br>　　ios::out：　　　文件以输出方式打开<br>　　ios::nocreate： 不建立文件，所以文件不存在时打开失败　<br>　　ios::noreplace：不覆盖文件，所以打开文件时如果文件存在失败<br>　　ios::trunc：　　如果文件存在，把文件长度设为0<br>　　可以用”或”把以上属性连接起来，如ios::out|ios::binary</p>
-<p>　　打开文件的属性取值是：</p>
-<p>　　0：普通文件，打开访问<br>　　1：只读文件<br>　　2：隐含文件<br>　　4：系统文件<br>　　可以用”或”或者”+”把以上属性连接起来 ，如3或1|2就是以只读和隐含属性打开文件。</p>
-<p>　　例如：以二进制输入方式打开文件c:/config.sys</p>
-<p>　　fstream file1;<br>　　file1.open(“c://config.sys”,ios::binary|ios::in,0);</p>
-<p>　　如果open函数只有文件名一个参数，则是以读/写普通文件打开，即：</p>
-<p>　　file1.open(“c://config.sys”);&lt;=&gt;file1.open(“c://config.sys”,ios::in|ios::out,0);</p>
-<p>　　另外，fstream还有和open()一样的构造函数，对于上例，在定义的时侯就可以打开文件了：</p>
-<p>　　fstream file1(“c://config.sys”);</p>
-<p>　　特别提出的是，fstream有两个子类：ifstream(input file stream)和ofstream(outpu file stream)，ifstream默认以输入方式打开文件，而ofstream默认以输出方式打开文件。</p>
-<p>　　ifstream file2(“c://pdos.def”);//以输入方式打开文件<br>　　ofstream file3(“c://x.123”);//以输出方式打开文件</p>
-<p>　　所以，在实际应用中，根据需要的不同，选择不同的类来定义：如果想以输入方式打开，就用ifstream来定义；如果想以输出方式打开，就用ofstream来定义；如果想以输入/输出方式来打开，就用fstream来定义。</p>
-<p>二、关闭文件<br>　　打开的文件使用完成后一定要关闭，fstream提供了成员函数close()来完成此操作，如：file1.close();就把file1相连的文件关闭。</p>
-<p>三、读写文件<br>　　读写文件分为文本文件和二进制文件的读取，对于文本文件的读取比较简单，用插入器和析取器就可以了；而对于二进制的读取就要复杂些，下要就详细的介绍这两种方式</p>
-<p>　　1、文本文件的读写<br>　　文本文件的读写很简单：用插入器(&lt;&lt;)向文件输出；用析取器(&gt;&gt;)从文件输入。假设file1是以输入方式打开，file2以输出打开。示例如下：</p>
-<p>　　file2&lt;&lt;”I Love You”;//向文件写入字符串”I Love You”<br>　　int i;<br>　　file1&gt;&gt;i;//从文件输入一个整数值。</p>
-<p>　　这种方式还有一种简单的格式化能力，比如可以指定输出为16进制等等，具体的格式有以下一些</p>
-<p>　　操纵符 功能 输入/输出<br>　　dec 格式化为十进制数值数据 输入和输出<br>　　endl 输出一个换行符并刷新此流 输出<br>　　ends 输出一个空字符 输出<br>　　hex 格式化为十六进制数值数据 输入和输出<br>　　oct 格式化为八进制数值数据 输入和输出<br>　　setpxecision(int p) 设置浮点数的精度位数 输出</p>
-<p>　　比如要把123当作十六进制输出：file1&lt;<br>　　2、二进制文件的读写<br>　　①put()<br>　　put()函数向流写入一个字符，其原型是ofstream &amp;put(char ch)，使用也比较简单，如file1.put(‘c’);就是向流写一个字符’c’。</p>
-<p>　　②get()<br>　　get()函数比较灵活，有3种常用的重载形式：</p>
-<p>　　一种就是和put()对应的形式：ifstream &amp;get(char &amp;ch);功能是从流中读取一个字符，结果保存在引用ch中，如果到文件尾，返回空字符。如file2.get(x);表示从文件中读取一个字符，并把读取的字符保存在x中。</p>
-<p>　　另一种重载形式的原型是： int get();这种形式是从流中返回一个字符，如果到达文件尾，返回EOF，如x=file2.get();和上例功能是一样的。</p>
-<p>　　还有一种形式的原型是：ifstream &amp;get(char *buf,int num,char delim=’/n’)；这种形式把字符读入由 buf 指向的数组，直到读入了 num 个字符或遇到了由 delim 指定的字符，如果没使用 delim 这个参数，将使用缺省值换行符’/n’。例如：</p>
-<p>　　file2.get(str1,127,’A’);//从文件中读取字符到字符串str1，当遇到字符’A’或读取了127个字符时终止。</p>
-<p>　　③读写数据块<br>　　要读写二进制数据块，使用成员函数read()和write()成员函数，它们原型如下：</p>
-<p>　　read(unsigned char *buf,int num);<br>　　write(const unsigned char *buf,int num);</p>
-<p>　　read()从文件中读取 num 个字符到 buf 指向的缓存中，如果在还未读入 num 个字符时就到了文件尾，可以用成员函数 int gcount();来取得实际读取的字符数；而 write() 从buf 指向的缓存写 num 个字符到文件中，值得注意的是缓存的类型是 unsigned char *，有时可能需要类型转换。</p>
-<p>　　例：</p>
-<p>　　unsigned char str1[]=”I Love You”;<br>　　int n[5];<br>　　ifstream in(“xxx.xxx”);<br>　　ofstream out(“yyy.yyy”);<br>　　out.write(str1,strlen(str1));//把字符串str1全部写到yyy.yyy中<br>　　in.read((unsigned char*)n,sizeof(n));//从xxx.xxx中读取指定个整数，注意类型转换<br>　　in.close();out.close();</p>
-<p>四、检测EOF<br>　　成员函数eof()用来检测是否到达文件尾，如果到达文件尾返回非0值，否则返回0。原型是int eof();</p>
-<p>　　例：　　if(in.eof())ShowMessage(“已经到达文件尾！”);</p>
-<p>五、文件定位<br>　　和C的文件操作方式不同的是，C++ I/O系统管理两个与一个文件相联系的指针。一个是读指针，它说明输入操作在文件中的位置；另一个是写指针，它下次写操作的位置。每次执行输入或输出时，相应的指针自动变化。所以，C++的文件定位分为读位置和写位置的定位，对应的成员函数是 seekg()和 seekp()，seekg()是设置读位置，seekp是设置写位置。它们最通用的形式如下：</p>
-<p>　　istream &amp;seekg(streamoff offset,seek_dir origin);<br>　　ostream &amp;seekp(streamoff offset,seek_dir origin);</p>
-<p>　　streamoff定义于 iostream.h 中，定义有偏移量 offset 所能取得的最大值，seek_dir 表示移动的基准位置，是一个有以下值的枚举：</p>
-<p>　　ios::beg：　　文件开头<br>　　ios::cur：　　文件当前位置<br>　　ios::end：　　文件结尾<br>　　这两个函数一般用于二进制文件，因为文本文件会因为系统对字符的解释而可能与预想的值不同。</p>
-<p>　　例：</p>
-<p>　　file1.seekg(1234,ios::cur);//把文件的读指针从当前位置向后移1234个字节<br>　　file2.seekp(1234,ios::beg);//把文件的写指针从文件开头向后移1234个字节</p>
-<p>-—————————————————————————————————————————————–</p>
-<p>在BCB中也提供了文件操作的函数，这些函数的功能和前面所介绍的大致相同，但这类函数和BCB关系紧密，能使用BCB中的AnsiString等数据类型，在BCB中用这种方式的文件操作是最方便的，下面我就把这种文件操作详细介绍。</p>
-<p>在BCB提供的这组文件操作函数中，可分为三种类型，就是：1、文件名函数，2、文件管理函数；3、文件I/O函数。</p>
-<p>1、文件名函数<br>　　文件名函数可以对文件的名称、所在子目录、驱动器和扩展名等进行操作。下表列出这些函数及其功能。</p>
-<p>　　函数 说明<br>　　ExpandFileName() 返回文件的全路径(含驱动器、路径)<br>　　ExtractFileExt() 从文件名中抽取扩展名<br>　　ExtractFileName() 从文件名中抽取不含路径的文件名<br>　　ExtractFilePath() 从文件名中抽取路径名<br>　　ExtractFileDir() 从文件名中抽取目录名<br>　　ExtractFileDrive() 从文件名中抽取驱动器名<br>　　ChangeFileExt() 改变文件的扩展名<br>　　ExpandUNCFileName() 返回含有网络驱动器的文件全路径<br>　　ExtractRelativePath() 从文件名中抽取相对路径信息<br>　　ExtractShortPathName() 把文件名转化为DOS的8·3格式<br>　　MatchesMask() 检查文件是否与指定的文件名格式匹配</p>
-<p>　　下面就把这些函数作一一介绍：</p>
-<p>　　⑴ExpandFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExpandFileName(const AnsiString FileName);</p>
-<p>　　功能：返回文件的全路径(含驱动器、路径)</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExpandFileName(Application-&gt;ExeName));//显示你的程序文件名，如C:/MyBCB/Sample1.EXE</p>
-<p>　　⑵ExtractFileExt()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileExt(const AnsiString FileName);</p>
-<p>　　功能：从文件名中抽取扩展名</p>
-<p>　　参数：FileName:要处理的文件名（全路径）</p>
-<p>　　例：ShowMessage(ExtractFileExt(Application-&gt;ExeName));//显示”.exe”</p>
-<p>　　⑶ExtractFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileName(const AnsiString FileName);</p>
-<p>　　功能：从文件名中抽取不含路径的文件名</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExtractFileExt(“c://Winnt//SOL.EXE”));//显示”SOL.EXE”</p>
-<p>　　⑷ExtractFilePath()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFilePath(const AnsiString FileName);</p>
-<p>　　功能：从文件名中抽取路径名</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExtractFilePath(“Winnt//SOL.EXE”));//显示”Winnt/“</p>
-<p>　　⑸ExtractFileDir()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileDir(const AnsiString FileName);</p>
-<p>　　功能：从文件名中抽取目录名(和上个函数不同，不包括最后的”/“)</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExtractFileDir(“Winnt//SOL.EXE”));//显示”Winnt”,注意和上个函数的区别</p>
-<p>　　⑹ExtractFileDrive()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileDrive(const AnsiString FileName);</p>
-<p>　　功能：从文件名中抽取驱动器名</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExtractFileDrive(“c://Winnt//SOL.EXE”));//显示”c:”</p>
-<p>　　⑺ChangeFileExt()<br>　　原型：extern PACKAGE System::AnsiString __fastcall ChangeFileExt(const System::AnsiString FileName, const System::AnsiString Extension);</p>
-<p>　　功能：更改文件名的扩展名，不是对真正的文件进行改名，只是对文件名这个字符串进行处理</p>
-<p>　　参数：FileName:要改名的文件名，Extension：新的扩展名</p>
-<p>　　例：ShowMessage(ChangeFileExt(“c://Winnt//SOL.EXE”,”.OOO”));//显示”c:/winnt/SOL.OOO”</p>
-<p>　　⑻ExpandUNCFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExpandUNCFileName(const AnsiString FileName);</p>
-<p>　　功能：返回含有网络驱动器的文件全路径，格式为：//机器名/共享名/文件名</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExpandUNCFileName(“F://Winnt//SOL.EXE”));/<em>如果F:是映射的网络驱动器//NT40/WINNT，则显示”//NT40/WINNT/SOL.EXE”</em>/</p>
-<p>　　⑼ExtractRelativePath()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractRelativePath(const AnsiString BaseName, const AnsiString DestName);</p>
-<p>　　功能：从文件名中抽取相对路径信息，如”../sss/ss.asd”这种形式</p>
-<p>　　参数：BaseName：基准文件名；DestName：目标文件名</p>
-<p>　　例：ShowMessage(ExtractRelativePath(“D://Source//c//1.123”,”D://Source//Asm//dz.asm”));/<em>显示”../asm/dz.asm”</em>/</p>
-<p>　　(10) ExtractShortPathName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractShortPathName(const AnsiString FileName);</p>
-<p>　　功能：把文件名转换为DOS的8、3格式</p>
-<p>　　参数：FileName:要处理的文件名</p>
-<p>　　例：ShowMessage(ExtractShortPathName(“E://Program Files//Dual Wheel Mouse//4dmain.exe”));/<em>显示”E:/Progra<del>1/dualwh</del>1/4dmain.exe”</em>/</p>
-<p>　　⑾MatchesMask()<br>　　原型：extern PACKAGE bool __fastcall MatchesMask(const AnsiString Filename, const AnsiString Mask);</p>
-<p>　　功能：检查文件是否与指定的文件名格式匹配</p>
-<p>　　参数：FileName:要处理的文件名；Mask:文件名格式，支持通配符</p>
-<p>　　例：ShowMessage(MatchesMask(“Lxf.exe”,”*.?x?));//显示”true”</p>
-<p>2、文件管理函数<br>　　这类函数包括设置和读取驱动器、子目录和文件的有关的各种操作，下表列出这类操作常用的函数及其功能。</p>
-<p>　　函数 功能<br>　　CreateDir() 创建新的子目录<br>　　DeleteFile() 删除文件<br>　　DirectoryExists() 判断目录是否存在<br>　　DiskFree() 获取磁盘剩余空间<br>　　DiskSize() 获取磁盘容量<br>　　FileExists() 判断文件是否存在<br>　　FileGetAttr() 获取文件属性<br>　　FileGetDate() 获取文件日期<br>　　GetCurrentDir() 获取当前目录<br>　　RemoveDir() 删除目录<br>　　SetCurrentDir() 设置当前目录</p>
-<p>　　下面就把这些函数作一一介绍：</p>
-<p>　　⑴CreateDir()<br>　　原型：extern PACKAGE bool __fastcall CreateDir(const System::AnsiString Dir);</p>
-<p>　　功能：建立子目录，如果成功返回true，否则返回false</p>
-<p>　　参数：Dir:要建立的子目录的名字</p>
-<p>　　例：Create(“ASM”);//在当前目录下建立一个名为ASM的子目录</p>
-<p>　　⑵DeleteFile()<br>　　原型：extern PACKAGE bool __fastcall DeleteFile(const System::AnsiString FileName);</p>
-<p>　　功能：删除文件，如果成功返回true，否则返回false</p>
-<p>　　参数：FileName:要删除的文件名</p>
-<p>　　例：if(OpenDialog1-&gt;Execute())DeleteFile(OpenDialog1-&gt;FileName);</p>
-<p>　　⑶DirectoryExists()<br>　　原型：extern PACKAGE bool __fastcall DirectoryExists(const System:: AnsiString Name);</p>
-<p>　　功能：检测目录是否存在，如果存在返回true，否则返回false</p>
-<p>　　参数：Name:要检测的目录名</p>
-<p>　　例：if(!DirectoryExists(“ASM”))CreateDir(“ASM”);//如果ASM这个目录不存在则创建之</p>
-<p>　　⑷DiskFree()<br>　　原型：extern PACKAGE __int64 __fastcall DiskFree(Byte Drive);</p>
-<p>　　功能：检测磁盘剩余空间，返回值以字节为单位，如果指定的磁盘无效，返回-1</p>
-<p>　　参数：Drive：磁盘的代号，0表示当前盘, 1=A,2=B,3=C 以此类推</p>
-<p>　　例：ShowMessage(DiskFree(0));//显示当前盘的剩余空间</p>
-<p>　　⑸DiskSize()<br>　　原型：extern PACKAGE __int64 __fastcall DiskSize(Byte Drive);</p>
-<p>　　功能：检测磁盘容量，返回值以字节为单位，如果指定的磁盘无效，返回-1</p>
-<p>　　参数：Drive：磁盘的代号，0表示当前盘, 1=A,2=B,3=C 以此类推</p>
-<p>　　例：ShowMessage(DiskFree(0));//显示当前盘的容量</p>
-<p>　　⑹FileExists()<br>　　原型：extern PACKAGE bool __fastcall FileExists(const AnsiString FileName);</p>
-<p>　　功能：检测文件是否存在，如果存在返回true，否则返回false</p>
-<p>　　参数：FileName:要检测的文件名</p>
-<p>　　例：if(FileExists(“AAA.ASM”))DeleteFile(“AAA.ASM”);</p>
-<p>　　⑺FileGetAttr()<br>　　原型：extern PACKAGE int __fastcall FileGetAttr(const AnsiString FileName);</p>
-<p>　　功能：取得文件属性，如果出错返回-1</p>
-<p>　　返回值如下表，如果返回$00000006表示是一个具有隐含和系统属性的文件(4+2)</p>
-<p>　　常量 值 含义<br>　　faReadOnly $00000001 只读文件<br>　　faHidden $00000002 隐含文件<br>　　faSysFile $00000004 系统文件<br>　　faVolumeID $00000008 卷标<br>　　faDirectory $00000010 目录<br>　　faArchive $00000020 归档文件</p>
-<p>　　例：if(FileGetAttr(“LLL.TXT”)&amp;0x2)ShowMessage(“这是一个有隐含属性的文件”);</p>
-<p>　　与此对应的有FileSetAttr() ，请自已查阅帮助系统</p>
-<p>　　⑻FileGetDate()<br>　　原型：extern PACKAGE int __fastcall FileGetDate(int Handle);</p>
-<p>　　功能：返回文件的建立时间到1970-1-1日0时的秒数</p>
-<p>　　参数：Handle:用FileOpen()打开的文件句柄。</p>
-<p>　　例：</p>
-<p>　　int i=FileOpen(“C://autoexec.bat”,fmOpenRead);<br>　　ShowMessage(FileGetDate(i));<br>　　FileClose(i);</p>
-<p>　　与此对应的有FileSetDate()，请自已查阅帮助系统</p>
-<p>　　⑼GetCurrentDir()<br>　　原型：extern PACKAGE AnsiString __fastcall GetCurrentDir();</p>
-<p>　　功能：取得当前的目录名</p>
-<p>　　例：ShowMessage(GetCurrentDir());</p>
-<p>　　⑽RemoveDir()<br>　　原型：extern PACKAGE bool __fastcall RemoveDir(const AnsiString Dir);</p>
-<p>　　功能：删除目录，如果成功返回true，否则返回false</p>
-<p>　　参数：Dir:要删除的目录名</p>
-<p>　　例：if(DiectoryExists(“ASM”))RemoveDir(“ASM”);</p>
-<p>　　⑾SetCurrentDir()<br>　　原型：extern PACKAGE bool __fastcall SetCurrentDir(const AnsiString Dir);</p>
-<p>　　功能：设置当前目录，如果成功返回true，否则返回false</p>
-<p>　　参数：Dir:要切换到的目录名</p>
-<p>　　例：SetCurrentDir(“C://WINDOWS”);</p>
-<p>3、文件I/O函数<br>　　这类函数完成对文件的读写相关的操作，这种类型的操作和C的基于I/O文件操作类似，下表列出这类操作常用的函数及其功能。</p>
-<p>　　FileOpen() 打开文件<br>　　FileClose() 关闭文件<br>　　FileRead() 读文件<br>　　FileSeek() 文件定位<br>　　FileWrite() 写文件<br>　　FileCreate() 创建文件</p>
-<p>　　下面就对这些函数作详细介绍。</p>
-<p>　　⑴FileOpen()<br>　　原型：extern PACKAGE int __fastcall FileOpen(const AnsiString FileName, int Mode);</p>
-<p>　　功能：打开文件，如果成功返回其句柄，否则返回-1</p>
-<p>　　参数：FileName:要打开的文件名；Mode：打开的方式，取值如下表，可用”或”(“|”)运算符连接。</p>
-<p>　　常量 值 说明<br>　　————————————————————-<br>　　fmOpenRead 0 以只读属性打开<br>　　fmOpenWrite 1 以只写属性打开<br>　　fmOpenReadWrite 2 以读/写属性打开<br>　　fmShareCompat 0 兼容FCB方式(汇编中有相应的DOS功能调用，感兴趣自已查阅相关资料)<br>　　fmShareExclusive 16 共享方式：以独占方式打开，在关闭以前，别人不能访问<br>　　fmShareDenyWrite 32 共享方式：拒绝写访问<br>　　fmShareDenyRead 48 共享方式：拒绝读访问<br>　　fmShareDenyNone 64 共享方式：无限制，允许读写<br>　　例：int i=FileOpen(“C://WINDOWS//Win.ini”,fmOpenReadWrite|fmShareExclusive);</p>
-<p>　　⑵FileClose()<br>　　原型：extern PACKAGE void __fastcall FileClose(int Handle);</p>
-<p>　　功能：关闭打开的句柄。</p>
-<p>　　参数：Handle:要关闭的句柄</p>
-<p>　　例：FileClose(i);</p>
-<p>　　⑶FileRead()<br>　　原型：extern PACKAGE int __fastcall FileRead(int Handle, void *Buffer, int Count);</p>
-<p>　　功能：读文件，返回实际读取的字节数，句柄必须首先由FileOpen或FileCreate创建。</p>
-<p>　　参数：Handle:要读取的句柄；Buffer:存放读取的数据的缓冲区；Count:想读取的字节数</p>
-<p>　　例：char str[400];FileRead(hnd1,str,400);</p>
-<p>　　⑷FileSeek()<br>　　原型：extern PACKAGE int __fastcall FileSeek(int Handle, int Offset, int Origin);</p>
-<p>　　功能：移动文件读取指针，成功返回文件指针的位置，失败返回-1</p>
-<p>　　参数：Handle:相关联的句柄；Offset:移动的量；Orgin:移动的基准，0=文件头，1=当前位置，2=文件尾。</p>
-<p>　　例：ShowMessage(FileSeek(hnd1,0,2));//取得文件的长度</p>
-<p>　　⑸FileWrite()<br>　　原型：extern PACKAGE int __fastcall FileWrite(int Handle, const void *Buffer, int Count);</p>
-<p>　　功能：写文件，返回实际写入的字节数，句柄必须首先由FileOpen或FileCreate创建。</p>
-<p>　　参数：Handle:要写入的句柄；Buffer:存放写入数据的缓冲区；Count:想写入的字节数</p>
-<p>　　例：char str[]=”I Love You”;FileWrite(hnd1,str,strlen(str));</p>
-<p>　　⑹FileCreate()<br>　　原型：extern PACKAGE int __fastcall FileCreate(const AnsiString FileName);</p>
-<p>　　功能：创建文件。成功返回其句柄，否则返回-1</p>
-<p>　　参数：FileName:要创建的文件名</p>
-<p>　　例：if(!FileExists(“KC.C”))hnd1=FileCreate(“KC.C”);</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">游戏框架搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:23:18" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="游戏框架搭建"><a href="#游戏框架搭建" class="headerlink" title="游戏框架搭建"></a>游戏框架搭建</h1><p><strong>目标</strong> —— 使用 <strong>面相对象</strong> 设计 <strong>飞机大战游戏类</strong></p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>明确主程序职责</li>
-<li>实现主程序类</li>
-<li>准备游戏精灵组</li>
-</ul>
-<h2 id="01-明确主程序职责"><a href="#01-明确主程序职责" class="headerlink" title="01. 明确主程序职责"></a>01. 明确主程序职责</h2><ul>
-<li>回顾 <strong>快速入门案例</strong>，一个游戏主程序的 <strong>职责</strong> 可以分为两个部分：<ul>
-<li>游戏初始化</li>
-<li>游戏循环</li>
-</ul>
-</li>
-<li>根据明确的职责，设计 <code>PlaneGame</code> 类如下：</li>
-</ul>
-<p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/009_%E6%B8%B8%E6%88%8F%E4%B8%BB%E7%A8%8B%E5%BA%8F.png" alt></p>
-<blockquote>
-<p><strong>提示</strong> 根据 <strong>职责</strong> 封装私有方法，可以避免某一个方法的代码写得太过冗长</p>
-<p>如果某一个方法编写的太长，既不好阅读，也不好维护！</p>
-</blockquote>
-<ul>
-<li><strong>游戏初始化</strong> ——  <code>__init__()</code> 会调用以下方法： </li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>职责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>__create_sprites(self)</code></td>
-<td>创建所有精灵和精灵组</td>
-</tr>
-</tbody></table>
-<ul>
-<li><strong>游戏循环</strong> —— <code>start_game()</code> 会调用以下方法：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>职责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>__event_handler(self)</code></td>
-<td>事件监听</td>
-</tr>
-<tr>
-<td><code>__check_collide(self)</code></td>
-<td>碰撞检测 —— 子弹销毁敌机、敌机撞毁英雄</td>
-</tr>
-<tr>
-<td><code>__update_sprites(self)</code></td>
-<td>精灵组更新和绘制</td>
-</tr>
-<tr>
-<td><code>__game_over()</code></td>
-<td>游戏结束</td>
-</tr>
-</tbody></table>
-<h2 id="02-实现飞机大战主游戏类"><a href="#02-实现飞机大战主游戏类" class="headerlink" title="02. 实现飞机大战主游戏类"></a>02. 实现飞机大战主游戏类</h2><h3 id="2-1-明确文件职责"><a href="#2-1-明确文件职责" class="headerlink" title="2.1 明确文件职责"></a>2.1 明确文件职责</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/011_%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E8%81%8C%E8%B4%A3.png" alt></p>
-<ul>
-<li><code>plane_main</code> <ol>
-<li>封装 <strong>主游戏类</strong></li>
-<li>创建 <strong>游戏对象</strong></li>
-<li><strong>启动游戏</strong></li>
-</ol>
-</li>
-<li><code>plane_sprites</code><ul>
-<li>封装游戏中 <strong>所有</strong> 需要使用的 <strong>精灵子类</strong></li>
-<li>提供游戏的 <strong>相关工具</strong></li>
-</ul>
-</li>
-</ul>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
-<li>新建 <code>plane_main.py</code> 文件，并且设置为可执行</li>
-<li>编写 <strong>基础代码</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"><span class="keyword">from</span> plane_sprites <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlaneGame</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""飞机大战主游戏"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"游戏初始化"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_game</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"开始游戏..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 创建游戏对象</span></span><br><span class="line">    game = PlaneGame()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始游戏</span></span><br><span class="line">    game.start_game()</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-游戏初始化部分"><a href="#2-3-游戏初始化部分" class="headerlink" title="2.3 游戏初始化部分"></a>2.3 游戏初始化部分</h3><ul>
-<li>完成 <code>__init__()</code> 代码如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">"游戏初始化"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 创建游戏的窗口</span></span><br><span class="line">    self.screen = pygame.display.set_mode((<span class="number">480</span>, <span class="number">700</span>))</span><br><span class="line">    <span class="comment"># 2. 创建游戏的时钟</span></span><br><span class="line">    self.clock = pygame.time.Clock()</span><br><span class="line">    <span class="comment"># 3. 调用私有方法，精灵和精灵组的创建</span></span><br><span class="line">    self.__create_sprites()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-常量-代替固定的数值"><a href="#使用-常量-代替固定的数值" class="headerlink" title="使用 常量 代替固定的数值"></a>使用 常量 代替固定的数值</h4><blockquote>
-<ul>
-<li>常量 —— 不变化的量</li>
-<li>变量 —— 可以变化的量</li>
-</ul>
-</blockquote>
-<p><strong>应用场景</strong></p>
-<ul>
-<li>在开发时，可能会需要使用 <strong>固定的数值</strong>，例如 <strong>屏幕的高度</strong> 是 <code>700</code></li>
-<li>这个时候，建议 <strong>不要</strong> 直接使用固定数值，而应该使用 <strong>常量</strong></li>
-<li>在开发时，为了保证代码的可维护性，尽量不要使用 <strong>魔法数字</strong> </li>
-</ul>
-<p><strong>常量的定义</strong></p>
-<ul>
-<li>定义 <strong>常量</strong> 和 定义 <strong>变量</strong> 的语法完全一样，都是使用 <strong>赋值语句</strong></li>
-<li><strong>常量</strong> 的 <strong>命名</strong> 应该 <strong>所有字母都使用大写</strong>，<strong>单词与单词之间使用下划线连接</strong></li>
-</ul>
-<p><strong>常量的好处</strong></p>
-<ul>
-<li>阅读代码时，通过 <strong>常量名</strong> <strong>见名之意</strong>，不需要猜测数字的含义</li>
-<li>如果需要 <strong>调整值</strong>，只需要 <strong>修改常量定义</strong> 就可以实现 <strong>统一修改</strong></li>
-</ul>
-<blockquote>
-<p>提示：Python 中并没有真正意义的常量，只是通过命名的约定 —— 所有字母都是大写的就是常量，开发时不要轻易的修改！</p>
-</blockquote>
-<p><strong>代码调整</strong></p>
-<ul>
-<li>在 <code>plane_sprites.py</code> 中增加常量定义</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏屏幕大小</span></span><br><span class="line">SCREEN_RECT = pygame.Rect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">480</span>, <span class="number">700</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 <code>plane_main.py</code> 中的窗口大小</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.screen = pygame.display.set_mode(SCREEN_RECT.size)</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-4-游戏循环部分"><a href="#2-4-游戏循环部分" class="headerlink" title="2.4 游戏循环部分"></a>2.4 游戏循环部分</h3><ul>
-<li>完成 <code>start_game()</code> 基础代码如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_game</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""开始游戏"""</span></span><br><span class="line">    </span><br><span class="line">    print(<span class="string">"开始游戏..."</span>)</span><br><span class="line">       </span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># 1. 设置刷新帧率</span></span><br><span class="line">        self.clock.tick(<span class="number">60</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 事件监听</span></span><br><span class="line">        self.__event_handler()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 碰撞检测</span></span><br><span class="line">        self.__check_collide()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 4. 更新精灵组</span></span><br><span class="line">        self.__update_sprites()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 5. 更新屏幕显示</span></span><br><span class="line">        pygame.display.update()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__event_handler</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""事件监听"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> event.type == pygame.QUIT:</span><br><span class="line">            PlaneGame.__game_over()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__check_collide</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""碰撞检测"""</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""更新精灵组"""</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__game_over</span><span class="params">()</span>:</span></span><br><span class="line">   <span class="string">"""游戏结束"""</span></span><br><span class="line"></span><br><span class="line">   print(<span class="string">"游戏结束"</span>)</span><br><span class="line">   pygame.quit()</span><br><span class="line">   exit()</span><br></pre></td></tr></table></figure>
-
-<h2 id="03-准备游戏精灵组"><a href="#03-准备游戏精灵组" class="headerlink" title="03. 准备游戏精灵组"></a>03. 准备游戏精灵组</h2><h3 id="3-1-确定精灵组"><a href="#3-1-确定精灵组" class="headerlink" title="3.1 确定精灵组"></a>3.1 确定精灵组</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/010_%E7%B2%BE%E7%81%B5%E7%BB%84%E7%A1%AE%E5%AE%9A.png" alt></p>
-<h3 id="3-2-代码实现"><a href="#3-2-代码实现" class="headerlink" title="3.2 代码实现"></a>3.2 代码实现</h3><ul>
-<li>创建精灵组方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""创建精灵组"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 背景组</span></span><br><span class="line">    self.back_group = pygame.sprite.Group()</span><br><span class="line">    <span class="comment"># 敌机组</span></span><br><span class="line">    self.enemy_group = pygame.sprite.Group()</span><br><span class="line">    <span class="comment"># 英雄组</span></span><br><span class="line">    self.hero_group = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>更新精灵组方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""更新精灵组"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> group <span class="keyword">in</span> [self.back_group, self.enemy_group, self.hero_group]:</span><br><span class="line">    </span><br><span class="line">        group.update()</span><br><span class="line">        group.draw(self.screen)</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2026,20 +1702,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

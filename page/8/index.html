@@ -155,6 +155,542 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/C++%E6%96%87%E4%BB%B61/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/25/C++%E6%96%87%E4%BB%B61/" class="post-title-link" itemprop="url">C++文件1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-25 22:05:04 / 修改时间：22:06:46" itemprop="dateCreated datePublished" datetime="2020-12-25T22:05:04+08:00">2020-12-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>基于C的文件操作<br>　　在ANSI C中，对文件的操作分为两种方式，即流式文件操作和I/O文件操作，下面就分别介绍之。</p>
+<p>一、流式文件操作<br>这种方式的文件操作有一个重要的结构FILE，FILE在stdio.h中定义如下：</p>
+<p><img src="/2020/12/25/C++%E6%96%87%E4%BB%B61/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> level;　　　　　　　　　　　<span class="comment">/* fill/empty level of buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> flags; 　　　　　　 <span class="comment">/* File status flags */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">char</span> fd;　　　　　　　　　　　 <span class="comment">/* File descriptor */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> hold;　　　　  <span class="comment">/* Ungetc char if no buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> bsize;　　　　　　　　　　 <span class="comment">/* Buffer size */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *<span class="built_in">buffer</span>;　<span class="comment">/* Data transfer buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *curp;　　<span class="comment">/* Current active pointer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> istemp;　　　　　　<span class="comment">/* Temporary file indicator */</span> </span><br><span class="line"></span><br><span class="line">　　short token;　　　　　　　　  <span class="comment">/* Used for validity checking */</span> </span><br><span class="line"></span><br><span class="line">&#125; FILE;　　　　　　　　　　　　  <span class="comment">/* This is the FILE object */</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<p>　　FILE这个结构包含了文件操作的基本属性，对文件的操作都要通过这个结构的指针来进行，此种文件操作常用的函数见下表 函数 功能 </p>
+<p>　　fopen() 打开流<br>　　fclose() 关闭流<br>　　fputc() 写一个字符到流中<br>　　fgetc() 从流中读一个字符<br>　　fseek() 在流中定位到指定的字符<br>　　fputs() 写字符串到流<br>　　fgets() 从流中读一行或指定个字符<br>　　fprintf() 按格式输出到流<br>　　fscanf() 从流中按格式读取<br>　　feof() 到达文件尾时返回真值<br>　　ferror() 发生错误时返回其值<br>　　rewind() 复位文件定位器到文件开始处<br>　　remove() 删除文件<br>　　fread() 从流中读指定个数的字符<br>　　fwrite() 向流中写指定个数的字符<br>　　tmpfile() 生成一个临时文件流<br>　　tmpnam() 生成一个唯一的文件名</p>
+<p>下面就介绍一下这些函数</p>
+<p>1.fopen()<br>　　fopen的原型是：FILE *fopen(const char *filename,const char *mode)，fopen实现三个功能</p>
+<p>　　为使用而打开一个流<br>　　把一个文件和此流相连接<br>　　给此流返回一个FILR指针<br>　　参数filename指向要打开的文件名，mode表示打开状态的字符串，其取值如下表</p>
+<p>　　字符串 含义<br>　　“r” 以只读方式打开文件<br>　　“w” 以只写方式打开文件<br>　　“a” 以追加方式打开文件<br>　　“r+” 以读/写方式打开文件，如无文件出错<br>　　“w+” 以读/写方式打开文件，如无文件生成新文件</p>
+<p>　　一个文件可以以文本模式或二进制模式打开，这两种的区别是：在文本模式中回车被当成一个字符’/n’，而二进制模式认为它是两个字符0x0D,0x0A；如果在文件中读到0x1B，文本模式会认为这是文件结束符，也就是二进制模型不会对文件进行处理，而文本方式会按一定的方式对数据作相应的转换。</p>
+<p>　　系统默认的是以文本模式打开，可以修改全部变量_fmode的值来修改这个设置，例如_fmode=O_TEXT；就设置默认打开方式为文本模式；而_fmode=O_BINARY；则设置默认打开方式是二进制模式。</p>
+<p>　　我们也可以在模式字符串中指定打开的模式，如”rb”表示以二进制模式打开只读文件，”w+t”或”wt+”表示以文本模式打开读/写文件。</p>
+<p>　　此函数返回一个FILE指针，所以申明一个FILE指针后不用初始化，而是用fopen()来返回一个指针并与一个特定的文件相连，如果成败，返回NULL。</p>
+<p>　　例:</p>
+<p>　　FILE *fp;<br>　　if(fp=fopen(“123.456”,”wb”))<br>　　puts(“打开文件成功”);<br>　　else<br>　　puts(“打开文件成败”);</p>
+<p>2.fclose()<br>　　fclose()的功能就是关闭用fopen()打开的文件，其原型是：int fclose(FILE *fp);如果成功，返回0,失败返回EOF。</p>
+<p>　　在程序结束时一定要记得关闭打开的文件，不然可能会造成数据丢失的情况，我以前就经常犯这样的毛病。</p>
+<p>　　例：fclose(fp);</p>
+<p>3.fputc()<br>　　向流写一个字符，原型是int fputc(int c, FILE *stream); 成功返回这个字符,失败返回EOF。</p>
+<p>　　例：fputc(‘X’,fp);</p>
+<p>4.fgetc()<br>　　从流中读一个字符，原型是int fputc(FILE *stream); 成功返回这个字符,失败返回EOF。</p>
+<p>　　例：char ch1=fgetc(fp);</p>
+<p>\5. fseek()<br>　　此函数一般用于二进制模式打开的文件中，功能是定位到流中指定的位置，原型是int fseek(FILE *stream, long offset, int whence);如果成功返回0，参数offset是移动的字符数，whence是移动的基准，取值是</p>
+<p>　　符号常量 值 基准位置<br>　　SEEK_SET 0 文件开头<br>　　SEEK_CUR 1 当前读写的位置<br>　　SEEK_END 2 文件尾部</p>
+<p>　　例：fseek(fp,1234L,SEEK_CUR);//把读写位置从当前位置向后移动1234字节(L后缀表示长整数)</p>
+<p>　　fseek(fp,0L,2);//把读写位置移动到文件尾</p>
+<p>6.fputs()<br>　　写一个字符串到流中，原型int fputs(const char *s, FILE *stream);</p>
+<p>　　例：fputs(“I Love You”,fp);</p>
+<p>7.fgets()<br>　　从流中读一行或指定个字符，原型是char *fgets(char *s, int n, FILE *stream); 从流中读取n-1个字符，除非读完一行，参数s是来接收字符串，如果成功则返回s的指针，否则返回NULL。</p>
+<p>　　例：如果一个文件的当前位置的文本如下</p>
+<p>　　Love ,I Have</p>
+<p>　　But ……..</p>
+<p>　　如果用</p>
+<p>　　fgets(str1,4,file1);</p>
+<p>　　则执行后str1=”Lov”，读取了4-1=3个字符，而如果用</p>
+<p>　　fgets(str1,23,file1);</p>
+<p>　　则执行str=”Love ,I Have”，读取了一行(不包括行尾的’/n’)。</p>
+<p>8.fprintf()<br>　　按格式输入到流，其原型是int fprintf(FILE *stream, const char *format[, argument, …]);其用法和printf()相同，不过不是写到控制台，而是写到流罢了</p>
+<p>　　例：fprintf(fp,”%2d%s”,4,”Hahaha”);</p>
+<p>9.fscanf()<br>　　从流中按格式读取，其原型是int fscanf(FILE *stream, const char *format[, address, …]);其用法和scanf()相同，不过不是从控制台读取，而是从流读取罢了。</p>
+<p>　　例：fscanf(fp,”%d%d” ,&amp;x,&amp;y);</p>
+<p>10.feof()<br>　　检测是否已到文件尾，是返回真，否则返回0，其原型是int feof(FILE *stream);</p>
+<p>　　例：if(feof(fp))printf(“已到文件尾”);</p>
+<p>11.ferror()<br>　　原型是int ferror(FILE *stream);返回流最近的错误代码，可用clearerr()来清除它，clearerr()的原型是void clearerr(FILE *stream);</p>
+<p>　　例：printf(“%d”,ferror(fp));</p>
+<p>12.rewind()<br>　　把当前的读写位置回到文件开始，原型是void rewind(FILE *stream);其实本函数相当于fseek(fp,0L,SEEK_SET);</p>
+<p>　　例：rewind(fp);</p>
+<p>13.remove()<br>　　删除文件，原型是int remove(const char *filename); 参数就是要删除的文件名，成功返回0。</p>
+<p>　　例：remove(“c://io.sys”);</p>
+<p>14.fread()<br>　　从流中读指定个数的字符，原型是size_t fread(void <em>ptr, size_t size, size_t n, FILE *stream);参数ptr是保存读取的数据，void</em>的指针可用任何类型的指针来替换，如char*、int *等等来替换；size是每块的字节数；n是读取的块数，如果成功，返回实际读取的块数(不是字节数)，本函数一般用于二进制模式打开的文件中。</p>
+<p>　　例：</p>
+<p>　　char x[4230];<br>　　FILE <em>file1=fopen(“c://msdos.sys”,”r”);<br>　　fread(x,200,12 ,file1);//共读取200</em>12=2400个字节</p>
+<p>15.fwrite()<br>　　与fread对应，向流中写指定的数据，原型是size_t fwrite(const void <em>ptr, size_t size, size_t n, FILE *stream);参数ptr是要写入的数据指针，void</em>的指针可用任何类型的指针来替换，如char*、int *等等来替换；size是每块的字节数；n是要写的块数，如果成功，返回实际写入的块数(不是字节数)，本函数一般用于二进制模式打开的文件中。</p>
+<p>　　例：</p>
+<p>　　char x[]=”I Love You”;<br>　　fwire(x, 6,12,fp);//写入6*12=72字节</p>
+<p>　　将把”I Love”写到流fp中12次，共72字节</p>
+<p>16.tmpfile()<br>　　其原型是FILE *tmpfile(void); 生成一个临时文件，以”w+b”的模式打开，并返回这个临时流的指针，如果失败返回NULL。在程序结束时，这个文件会被自动删除。</p>
+<p>　　例：FILE *fp=tmpfile();</p>
+<p>17.tmpnam();<br>　　其原型为char *tmpnam(char *s); 生成一个唯一的文件名，其实tmpfile()就调用了此函数，参数s用来保存得到的文件名，并返回这个指针，如果失败，返回NULL。</p>
+<p>borland c++ bulder的文件操作总结２</p>
+<p>二、直接I/O文件操作<br>　　这是C提供的另一种文件操作，它是通过直接存/取文件来完成对文件的处理，而上篇所说流式文件操作是通过缓冲区来进行；流式文件操作是围绕一个FILE指针来进行，而此类文件操作是围绕一个文件的”句柄”来进行，什么是句柄呢？它是一个整数，是系统用来标识一个文件(在WINDOWS中，句柄的概念扩展到所有设备资源的标识)的唯一的记号。此类文件操作常用的函数如下表，这些函数及其所用的一些符号在io.h和fcntl.h中定义，在使用时要加入相应的头文件。</p>
+<p>　　函数 说明<br>　　open() 打开一个文件并返回它的句柄<br>　　close() 关闭一个句柄<br>　　lseek() 定位到文件的指定位置<br>　　read() 块读文件<br>　　write() 块写文件<br>　　eof() 测试文件是否结束<br>　　filelength() 取得文件长度<br>　　rename() 重命名文件<br>　　chsize() 改变文件长度</p>
+<p>下面就对这些函数一一说明：</p>
+<p>1.open()<br>　　打开一个文件并返回它的句柄，如果失败，将返回一个小于0的值，原型是int open(const char *path, int access [, unsigned mode]); 参数path是要打开的文件名，access是打开的模式，mode是可选项。表示文件的属性，主要用于UNIX系统中，在DOS/WINDOWS这个参数没有意义。其中文件的打开模式如下表。</p>
+<p>　　符号 含义 符号 含义 符号 含义<br>　　O_RDONLY 只读方式 O_WRONLY 只写方式 O_RDWR 读/写方式<br>　　O_NDELAY 用于UNIX系统 O_APPEND 追加方式 O_CREAT 如果文件不存在就创建<br>　　O_TRUNC 把文件长度截为0 O_EXCL 和O_CREAT连用，如果文件存在返回错误 O_BINARY 二进制方式<br>　　O_TEXT 文本方式</p>
+<p>　　对于多个要求，可以用”|”运算符来连接，如O_APPEND|O_TEXT表示以文本模式和追加方式打开文件。</p>
+<p>　　例：int handle=open(“c://msdos.sys”,O_BINARY|O_CREAT|O_WRITE)</p>
+<p>2.close()<br>　　关闭一个句柄，原型是int close(int handle);如果成功返回0</p>
+<p>　　例：close(handle)</p>
+<p>3.lseek()<br>　　定位到指定的位置，原型是：long lseek(int handle, long offset, int fromwhere);参数offset是移动的量，fromwhere是移动的基准位置，取值和前面讲的fseek()一样，SEEK_SET：文件首部；SEEK_CUR：文件当前位置；SEEK_END：文件尾。此函数返回执行后文件新的存取位置。</p>
+<p>　　例：</p>
+<p>　　lseek(handle,-1234L,SEEK_CUR);//把存取位置从当前位置向前移动1234个字节。<br>　　x=lseek(hnd1,0L,SEEK_END);//把存取位置移动到文件尾，x=文件尾的位置即文件长度</p>
+<p>4.read()<br>　　从文件读取一块，原型是int read(int handle, void *buf, unsigned len);参数buf保存读出的数据，len是读取的字节。函数返回实际读出的字节。</p>
+<p>　　例：char x[200];read(hnd1,x,200);</p>
+<p>5.write()<br>　　写一块数据到文件中，原型是int write(int handle, void *buf, unsigned len);参数的含义同read()，返回实际写入的字节。</p>
+<p>　　例：char x[]=”I Love You”;write(handle,x,strlen(x));</p>
+<p>6.eof()<br>　　类似feof()，测试文件是否结束，是返回1，否则返回0;原型是：int eof(int handle);</p>
+<p>　　例：while(!eof(handle1)){……};</p>
+<p>7.filelength()<br>　　返回文件长度，原型是long filelength(int handle);相当于lseek(handle,0L,SEEK_END)</p>
+<p>　　例：long x=filelength(handle);</p>
+<p>8.rename()<br>　　重命名文件，原型是int rename(const char *oldname, const char *newname); 参数oldname是旧文件名，newname是新文件名。成功返回0</p>
+<p>　　例：rename(“c://config.sys”,”c://config.w40”);</p>
+<p>9.chsize();<br>　　改变文件长度，原型是int chsize(int handle, long size);参数size表示文件新的长度，成功返回0，否则返回-1，如果指定的长度小于文件长度，则文件被截短；如果指定的长度大于文件长度，则在文件后面补’/0’。</p>
+<p>　　例：chsize(handle,0x12345);</p>
+<p>-——————————————————————————-</p>
+<p>　　如果熟悉汇编可能会发现这种方式和汇编语言的DOS功能调用句柄式文件操作很像，比如open()就像DOS服务的3CH号功能调用，其实这种操作还有两种类型的函数就是直接用DOS功能来完成的，如_open()，_dos_open()等等。有兴趣可自已查询BCB的帮助。</p>
+<p>　　同流式文件操作相同，这种也提供了Unicode字符操作的函数，如_wopen()等等，用于9X/NT下的宽字符编程，有兴趣可自已查询BCB的帮助。</p>
+<p>　　另外，此种操作还有lock(),unlock(),locking()等用于多用户操作的函数，但在BCB中用得并不多，我就不介绍了，但如果要用C来写CGI，这些就必要的常识了，如果你有这方面的要求，那就得自已好好看帮助了。</p>
+<p>　　到这里，我就把基于C的文件操作介绍完了，下一篇将介绍基于C++的文件操作，敬请期待。</p>
+<p>在C++中，有一个stream这个类，所有的I/O都以这个”流”类为基础的，包括我们要认识的文件I/O，stream这个类有两个重要的运算符：</p>
+<p>1、插入器(&lt;&lt;)<br>　　向流输出数据。比如说系统有一个默认的标准输出流(cout)，一般情况下就是指的显示器，所以，cout&lt;&lt;”Write Stdout”&lt;&lt;’/n’;就表示把字符串”Write Stdout”和换行字符(‘/n’)输出到标准输出流。</p>
+<p>2、析取器(&gt;&gt;)<br>　　从流中输入数据。比如说系统有一个默认的标准输入流(cin)，一般情况下就是指的键盘，所以，cin&gt;&gt;x;就表示从标准输入流中读取一个指定类型(即变量x的类型)的数据。</p>
+<p>在C++中，对文件的操作是通过stream的子类fstream(file stream)来实现的，所以，要用这种方式操作文件，就必须加入头文件fstream.h。下面就把此类的文件操作过程一一道来。</p>
+<p>一、打开文件<br>　　在fstream类中，有一个成员函数open()，就是用来打开文件的，其原型是：</p>
+<p>　　void open(const char* filename,int mode,int access);</p>
+<p>　　参数：</p>
+<p>　　filename：　　要打开的文件名<br>　　mode：　　　　要打开文件的方式<br>　　access：　　　打开文件的属性<br>　　打开文件的方式在类ios(是所有流式I/O类的基类)中定义，常用的值如下：</p>
+<p>　　ios::app：　　　以追加的方式打开文件<br>　　ios::ate：　　　文件打开后定位到文件尾，ios:app就包含有此属性<br>　　ios::binary： 　以二进制方式打开文件，缺省的方式是文本方式。两种方式的区别见前文<br>　　ios::in：　　　 文件以输入方式打开<br>　　ios::out：　　　文件以输出方式打开<br>　　ios::nocreate： 不建立文件，所以文件不存在时打开失败　<br>　　ios::noreplace：不覆盖文件，所以打开文件时如果文件存在失败<br>　　ios::trunc：　　如果文件存在，把文件长度设为0<br>　　可以用”或”把以上属性连接起来，如ios::out|ios::binary</p>
+<p>　　打开文件的属性取值是：</p>
+<p>　　0：普通文件，打开访问<br>　　1：只读文件<br>　　2：隐含文件<br>　　4：系统文件<br>　　可以用”或”或者”+”把以上属性连接起来 ，如3或1|2就是以只读和隐含属性打开文件。</p>
+<p>　　例如：以二进制输入方式打开文件c:/config.sys</p>
+<p>　　fstream file1;<br>　　file1.open(“c://config.sys”,ios::binary|ios::in,0);</p>
+<p>　　如果open函数只有文件名一个参数，则是以读/写普通文件打开，即：</p>
+<p>　　file1.open(“c://config.sys”);&lt;=&gt;file1.open(“c://config.sys”,ios::in|ios::out,0);</p>
+<p>　　另外，fstream还有和open()一样的构造函数，对于上例，在定义的时侯就可以打开文件了：</p>
+<p>　　fstream file1(“c://config.sys”);</p>
+<p>　　特别提出的是，fstream有两个子类：ifstream(input file stream)和ofstream(outpu file stream)，ifstream默认以输入方式打开文件，而ofstream默认以输出方式打开文件。</p>
+<p>　　ifstream file2(“c://pdos.def”);//以输入方式打开文件<br>　　ofstream file3(“c://x.123”);//以输出方式打开文件</p>
+<p>　　所以，在实际应用中，根据需要的不同，选择不同的类来定义：如果想以输入方式打开，就用ifstream来定义；如果想以输出方式打开，就用ofstream来定义；如果想以输入/输出方式来打开，就用fstream来定义。</p>
+<p>二、关闭文件<br>　　打开的文件使用完成后一定要关闭，fstream提供了成员函数close()来完成此操作，如：file1.close();就把file1相连的文件关闭。</p>
+<p>三、读写文件<br>　　读写文件分为文本文件和二进制文件的读取，对于文本文件的读取比较简单，用插入器和析取器就可以了；而对于二进制的读取就要复杂些，下要就详细的介绍这两种方式</p>
+<p>　　1、文本文件的读写<br>　　文本文件的读写很简单：用插入器(&lt;&lt;)向文件输出；用析取器(&gt;&gt;)从文件输入。假设file1是以输入方式打开，file2以输出打开。示例如下：</p>
+<p>　　file2&lt;&lt;”I Love You”;//向文件写入字符串”I Love You”<br>　　int i;<br>　　file1&gt;&gt;i;//从文件输入一个整数值。</p>
+<p>　　这种方式还有一种简单的格式化能力，比如可以指定输出为16进制等等，具体的格式有以下一些</p>
+<p>　　操纵符 功能 输入/输出<br>　　dec 格式化为十进制数值数据 输入和输出<br>　　endl 输出一个换行符并刷新此流 输出<br>　　ends 输出一个空字符 输出<br>　　hex 格式化为十六进制数值数据 输入和输出<br>　　oct 格式化为八进制数值数据 输入和输出<br>　　setpxecision(int p) 设置浮点数的精度位数 输出</p>
+<p>　　比如要把123当作十六进制输出：file1&lt;<br>　　2、二进制文件的读写<br>　　①put()<br>　　put()函数向流写入一个字符，其原型是ofstream &amp;put(char ch)，使用也比较简单，如file1.put(‘c’);就是向流写一个字符’c’。</p>
+<p>　　②get()<br>　　get()函数比较灵活，有3种常用的重载形式：</p>
+<p>　　一种就是和put()对应的形式：ifstream &amp;get(char &amp;ch);功能是从流中读取一个字符，结果保存在引用ch中，如果到文件尾，返回空字符。如file2.get(x);表示从文件中读取一个字符，并把读取的字符保存在x中。</p>
+<p>　　另一种重载形式的原型是： int get();这种形式是从流中返回一个字符，如果到达文件尾，返回EOF，如x=file2.get();和上例功能是一样的。</p>
+<p>　　还有一种形式的原型是：ifstream &amp;get(char *buf,int num,char delim=’/n’)；这种形式把字符读入由 buf 指向的数组，直到读入了 num 个字符或遇到了由 delim 指定的字符，如果没使用 delim 这个参数，将使用缺省值换行符’/n’。例如：</p>
+<p>　　file2.get(str1,127,’A’);//从文件中读取字符到字符串str1，当遇到字符’A’或读取了127个字符时终止。</p>
+<p>　　③读写数据块<br>　　要读写二进制数据块，使用成员函数read()和write()成员函数，它们原型如下：</p>
+<p>　　read(unsigned char *buf,int num);<br>　　write(const unsigned char *buf,int num);</p>
+<p>　　read()从文件中读取 num 个字符到 buf 指向的缓存中，如果在还未读入 num 个字符时就到了文件尾，可以用成员函数 int gcount();来取得实际读取的字符数；而 write() 从buf 指向的缓存写 num 个字符到文件中，值得注意的是缓存的类型是 unsigned char *，有时可能需要类型转换。</p>
+<p>　　例：</p>
+<p>　　unsigned char str1[]=”I Love You”;<br>　　int n[5];<br>　　ifstream in(“xxx.xxx”);<br>　　ofstream out(“yyy.yyy”);<br>　　out.write(str1,strlen(str1));//把字符串str1全部写到yyy.yyy中<br>　　in.read((unsigned char*)n,sizeof(n));//从xxx.xxx中读取指定个整数，注意类型转换<br>　　in.close();out.close();</p>
+<p>四、检测EOF<br>　　成员函数eof()用来检测是否到达文件尾，如果到达文件尾返回非0值，否则返回0。原型是int eof();</p>
+<p>　　例：　　if(in.eof())ShowMessage(“已经到达文件尾！”);</p>
+<p>五、文件定位<br>　　和C的文件操作方式不同的是，C++ I/O系统管理两个与一个文件相联系的指针。一个是读指针，它说明输入操作在文件中的位置；另一个是写指针，它下次写操作的位置。每次执行输入或输出时，相应的指针自动变化。所以，C++的文件定位分为读位置和写位置的定位，对应的成员函数是 seekg()和 seekp()，seekg()是设置读位置，seekp是设置写位置。它们最通用的形式如下：</p>
+<p>　　istream &amp;seekg(streamoff offset,seek_dir origin);<br>　　ostream &amp;seekp(streamoff offset,seek_dir origin);</p>
+<p>　　streamoff定义于 iostream.h 中，定义有偏移量 offset 所能取得的最大值，seek_dir 表示移动的基准位置，是一个有以下值的枚举：</p>
+<p>　　ios::beg：　　文件开头<br>　　ios::cur：　　文件当前位置<br>　　ios::end：　　文件结尾<br>　　这两个函数一般用于二进制文件，因为文本文件会因为系统对字符的解释而可能与预想的值不同。</p>
+<p>　　例：</p>
+<p>　　file1.seekg(1234,ios::cur);//把文件的读指针从当前位置向后移1234个字节<br>　　file2.seekp(1234,ios::beg);//把文件的写指针从文件开头向后移1234个字节</p>
+<p>-—————————————————————————————————————————————–</p>
+<p>在BCB中也提供了文件操作的函数，这些函数的功能和前面所介绍的大致相同，但这类函数和BCB关系紧密，能使用BCB中的AnsiString等数据类型，在BCB中用这种方式的文件操作是最方便的，下面我就把这种文件操作详细介绍。</p>
+<p>在BCB提供的这组文件操作函数中，可分为三种类型，就是：1、文件名函数，2、文件管理函数；3、文件I/O函数。</p>
+<p>1、文件名函数<br>　　文件名函数可以对文件的名称、所在子目录、驱动器和扩展名等进行操作。下表列出这些函数及其功能。</p>
+<p>　　函数 说明<br>　　ExpandFileName() 返回文件的全路径(含驱动器、路径)<br>　　ExtractFileExt() 从文件名中抽取扩展名<br>　　ExtractFileName() 从文件名中抽取不含路径的文件名<br>　　ExtractFilePath() 从文件名中抽取路径名<br>　　ExtractFileDir() 从文件名中抽取目录名<br>　　ExtractFileDrive() 从文件名中抽取驱动器名<br>　　ChangeFileExt() 改变文件的扩展名<br>　　ExpandUNCFileName() 返回含有网络驱动器的文件全路径<br>　　ExtractRelativePath() 从文件名中抽取相对路径信息<br>　　ExtractShortPathName() 把文件名转化为DOS的8·3格式<br>　　MatchesMask() 检查文件是否与指定的文件名格式匹配</p>
+<p>　　下面就把这些函数作一一介绍：</p>
+<p>　　⑴ExpandFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExpandFileName(const AnsiString FileName);</p>
+<p>　　功能：返回文件的全路径(含驱动器、路径)</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExpandFileName(Application-&gt;ExeName));//显示你的程序文件名，如C:/MyBCB/Sample1.EXE</p>
+<p>　　⑵ExtractFileExt()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileExt(const AnsiString FileName);</p>
+<p>　　功能：从文件名中抽取扩展名</p>
+<p>　　参数：FileName:要处理的文件名（全路径）</p>
+<p>　　例：ShowMessage(ExtractFileExt(Application-&gt;ExeName));//显示”.exe”</p>
+<p>　　⑶ExtractFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileName(const AnsiString FileName);</p>
+<p>　　功能：从文件名中抽取不含路径的文件名</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExtractFileExt(“c://Winnt//SOL.EXE”));//显示”SOL.EXE”</p>
+<p>　　⑷ExtractFilePath()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFilePath(const AnsiString FileName);</p>
+<p>　　功能：从文件名中抽取路径名</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExtractFilePath(“Winnt//SOL.EXE”));//显示”Winnt/“</p>
+<p>　　⑸ExtractFileDir()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileDir(const AnsiString FileName);</p>
+<p>　　功能：从文件名中抽取目录名(和上个函数不同，不包括最后的”/“)</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExtractFileDir(“Winnt//SOL.EXE”));//显示”Winnt”,注意和上个函数的区别</p>
+<p>　　⑹ExtractFileDrive()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractFileDrive(const AnsiString FileName);</p>
+<p>　　功能：从文件名中抽取驱动器名</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExtractFileDrive(“c://Winnt//SOL.EXE”));//显示”c:”</p>
+<p>　　⑺ChangeFileExt()<br>　　原型：extern PACKAGE System::AnsiString __fastcall ChangeFileExt(const System::AnsiString FileName, const System::AnsiString Extension);</p>
+<p>　　功能：更改文件名的扩展名，不是对真正的文件进行改名，只是对文件名这个字符串进行处理</p>
+<p>　　参数：FileName:要改名的文件名，Extension：新的扩展名</p>
+<p>　　例：ShowMessage(ChangeFileExt(“c://Winnt//SOL.EXE”,”.OOO”));//显示”c:/winnt/SOL.OOO”</p>
+<p>　　⑻ExpandUNCFileName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExpandUNCFileName(const AnsiString FileName);</p>
+<p>　　功能：返回含有网络驱动器的文件全路径，格式为：//机器名/共享名/文件名</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExpandUNCFileName(“F://Winnt//SOL.EXE”));/<em>如果F:是映射的网络驱动器//NT40/WINNT，则显示”//NT40/WINNT/SOL.EXE”</em>/</p>
+<p>　　⑼ExtractRelativePath()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractRelativePath(const AnsiString BaseName, const AnsiString DestName);</p>
+<p>　　功能：从文件名中抽取相对路径信息，如”../sss/ss.asd”这种形式</p>
+<p>　　参数：BaseName：基准文件名；DestName：目标文件名</p>
+<p>　　例：ShowMessage(ExtractRelativePath(“D://Source//c//1.123”,”D://Source//Asm//dz.asm”));/<em>显示”../asm/dz.asm”</em>/</p>
+<p>　　(10) ExtractShortPathName()<br>　　原型：extern PACKAGE AnsiString __fastcall ExtractShortPathName(const AnsiString FileName);</p>
+<p>　　功能：把文件名转换为DOS的8、3格式</p>
+<p>　　参数：FileName:要处理的文件名</p>
+<p>　　例：ShowMessage(ExtractShortPathName(“E://Program Files//Dual Wheel Mouse//4dmain.exe”));/<em>显示”E:/Progra<del>1/dualwh</del>1/4dmain.exe”</em>/</p>
+<p>　　⑾MatchesMask()<br>　　原型：extern PACKAGE bool __fastcall MatchesMask(const AnsiString Filename, const AnsiString Mask);</p>
+<p>　　功能：检查文件是否与指定的文件名格式匹配</p>
+<p>　　参数：FileName:要处理的文件名；Mask:文件名格式，支持通配符</p>
+<p>　　例：ShowMessage(MatchesMask(“Lxf.exe”,”*.?x?));//显示”true”</p>
+<p>2、文件管理函数<br>　　这类函数包括设置和读取驱动器、子目录和文件的有关的各种操作，下表列出这类操作常用的函数及其功能。</p>
+<p>　　函数 功能<br>　　CreateDir() 创建新的子目录<br>　　DeleteFile() 删除文件<br>　　DirectoryExists() 判断目录是否存在<br>　　DiskFree() 获取磁盘剩余空间<br>　　DiskSize() 获取磁盘容量<br>　　FileExists() 判断文件是否存在<br>　　FileGetAttr() 获取文件属性<br>　　FileGetDate() 获取文件日期<br>　　GetCurrentDir() 获取当前目录<br>　　RemoveDir() 删除目录<br>　　SetCurrentDir() 设置当前目录</p>
+<p>　　下面就把这些函数作一一介绍：</p>
+<p>　　⑴CreateDir()<br>　　原型：extern PACKAGE bool __fastcall CreateDir(const System::AnsiString Dir);</p>
+<p>　　功能：建立子目录，如果成功返回true，否则返回false</p>
+<p>　　参数：Dir:要建立的子目录的名字</p>
+<p>　　例：Create(“ASM”);//在当前目录下建立一个名为ASM的子目录</p>
+<p>　　⑵DeleteFile()<br>　　原型：extern PACKAGE bool __fastcall DeleteFile(const System::AnsiString FileName);</p>
+<p>　　功能：删除文件，如果成功返回true，否则返回false</p>
+<p>　　参数：FileName:要删除的文件名</p>
+<p>　　例：if(OpenDialog1-&gt;Execute())DeleteFile(OpenDialog1-&gt;FileName);</p>
+<p>　　⑶DirectoryExists()<br>　　原型：extern PACKAGE bool __fastcall DirectoryExists(const System:: AnsiString Name);</p>
+<p>　　功能：检测目录是否存在，如果存在返回true，否则返回false</p>
+<p>　　参数：Name:要检测的目录名</p>
+<p>　　例：if(!DirectoryExists(“ASM”))CreateDir(“ASM”);//如果ASM这个目录不存在则创建之</p>
+<p>　　⑷DiskFree()<br>　　原型：extern PACKAGE __int64 __fastcall DiskFree(Byte Drive);</p>
+<p>　　功能：检测磁盘剩余空间，返回值以字节为单位，如果指定的磁盘无效，返回-1</p>
+<p>　　参数：Drive：磁盘的代号，0表示当前盘, 1=A,2=B,3=C 以此类推</p>
+<p>　　例：ShowMessage(DiskFree(0));//显示当前盘的剩余空间</p>
+<p>　　⑸DiskSize()<br>　　原型：extern PACKAGE __int64 __fastcall DiskSize(Byte Drive);</p>
+<p>　　功能：检测磁盘容量，返回值以字节为单位，如果指定的磁盘无效，返回-1</p>
+<p>　　参数：Drive：磁盘的代号，0表示当前盘, 1=A,2=B,3=C 以此类推</p>
+<p>　　例：ShowMessage(DiskFree(0));//显示当前盘的容量</p>
+<p>　　⑹FileExists()<br>　　原型：extern PACKAGE bool __fastcall FileExists(const AnsiString FileName);</p>
+<p>　　功能：检测文件是否存在，如果存在返回true，否则返回false</p>
+<p>　　参数：FileName:要检测的文件名</p>
+<p>　　例：if(FileExists(“AAA.ASM”))DeleteFile(“AAA.ASM”);</p>
+<p>　　⑺FileGetAttr()<br>　　原型：extern PACKAGE int __fastcall FileGetAttr(const AnsiString FileName);</p>
+<p>　　功能：取得文件属性，如果出错返回-1</p>
+<p>　　返回值如下表，如果返回$00000006表示是一个具有隐含和系统属性的文件(4+2)</p>
+<p>　　常量 值 含义<br>　　faReadOnly $00000001 只读文件<br>　　faHidden $00000002 隐含文件<br>　　faSysFile $00000004 系统文件<br>　　faVolumeID $00000008 卷标<br>　　faDirectory $00000010 目录<br>　　faArchive $00000020 归档文件</p>
+<p>　　例：if(FileGetAttr(“LLL.TXT”)&amp;0x2)ShowMessage(“这是一个有隐含属性的文件”);</p>
+<p>　　与此对应的有FileSetAttr() ，请自已查阅帮助系统</p>
+<p>　　⑻FileGetDate()<br>　　原型：extern PACKAGE int __fastcall FileGetDate(int Handle);</p>
+<p>　　功能：返回文件的建立时间到1970-1-1日0时的秒数</p>
+<p>　　参数：Handle:用FileOpen()打开的文件句柄。</p>
+<p>　　例：</p>
+<p>　　int i=FileOpen(“C://autoexec.bat”,fmOpenRead);<br>　　ShowMessage(FileGetDate(i));<br>　　FileClose(i);</p>
+<p>　　与此对应的有FileSetDate()，请自已查阅帮助系统</p>
+<p>　　⑼GetCurrentDir()<br>　　原型：extern PACKAGE AnsiString __fastcall GetCurrentDir();</p>
+<p>　　功能：取得当前的目录名</p>
+<p>　　例：ShowMessage(GetCurrentDir());</p>
+<p>　　⑽RemoveDir()<br>　　原型：extern PACKAGE bool __fastcall RemoveDir(const AnsiString Dir);</p>
+<p>　　功能：删除目录，如果成功返回true，否则返回false</p>
+<p>　　参数：Dir:要删除的目录名</p>
+<p>　　例：if(DiectoryExists(“ASM”))RemoveDir(“ASM”);</p>
+<p>　　⑾SetCurrentDir()<br>　　原型：extern PACKAGE bool __fastcall SetCurrentDir(const AnsiString Dir);</p>
+<p>　　功能：设置当前目录，如果成功返回true，否则返回false</p>
+<p>　　参数：Dir:要切换到的目录名</p>
+<p>　　例：SetCurrentDir(“C://WINDOWS”);</p>
+<p>3、文件I/O函数<br>　　这类函数完成对文件的读写相关的操作，这种类型的操作和C的基于I/O文件操作类似，下表列出这类操作常用的函数及其功能。</p>
+<p>　　FileOpen() 打开文件<br>　　FileClose() 关闭文件<br>　　FileRead() 读文件<br>　　FileSeek() 文件定位<br>　　FileWrite() 写文件<br>　　FileCreate() 创建文件</p>
+<p>　　下面就对这些函数作详细介绍。</p>
+<p>　　⑴FileOpen()<br>　　原型：extern PACKAGE int __fastcall FileOpen(const AnsiString FileName, int Mode);</p>
+<p>　　功能：打开文件，如果成功返回其句柄，否则返回-1</p>
+<p>　　参数：FileName:要打开的文件名；Mode：打开的方式，取值如下表，可用”或”(“|”)运算符连接。</p>
+<p>　　常量 值 说明<br>　　————————————————————-<br>　　fmOpenRead 0 以只读属性打开<br>　　fmOpenWrite 1 以只写属性打开<br>　　fmOpenReadWrite 2 以读/写属性打开<br>　　fmShareCompat 0 兼容FCB方式(汇编中有相应的DOS功能调用，感兴趣自已查阅相关资料)<br>　　fmShareExclusive 16 共享方式：以独占方式打开，在关闭以前，别人不能访问<br>　　fmShareDenyWrite 32 共享方式：拒绝写访问<br>　　fmShareDenyRead 48 共享方式：拒绝读访问<br>　　fmShareDenyNone 64 共享方式：无限制，允许读写<br>　　例：int i=FileOpen(“C://WINDOWS//Win.ini”,fmOpenReadWrite|fmShareExclusive);</p>
+<p>　　⑵FileClose()<br>　　原型：extern PACKAGE void __fastcall FileClose(int Handle);</p>
+<p>　　功能：关闭打开的句柄。</p>
+<p>　　参数：Handle:要关闭的句柄</p>
+<p>　　例：FileClose(i);</p>
+<p>　　⑶FileRead()<br>　　原型：extern PACKAGE int __fastcall FileRead(int Handle, void *Buffer, int Count);</p>
+<p>　　功能：读文件，返回实际读取的字节数，句柄必须首先由FileOpen或FileCreate创建。</p>
+<p>　　参数：Handle:要读取的句柄；Buffer:存放读取的数据的缓冲区；Count:想读取的字节数</p>
+<p>　　例：char str[400];FileRead(hnd1,str,400);</p>
+<p>　　⑷FileSeek()<br>　　原型：extern PACKAGE int __fastcall FileSeek(int Handle, int Offset, int Origin);</p>
+<p>　　功能：移动文件读取指针，成功返回文件指针的位置，失败返回-1</p>
+<p>　　参数：Handle:相关联的句柄；Offset:移动的量；Orgin:移动的基准，0=文件头，1=当前位置，2=文件尾。</p>
+<p>　　例：ShowMessage(FileSeek(hnd1,0,2));//取得文件的长度</p>
+<p>　　⑸FileWrite()<br>　　原型：extern PACKAGE int __fastcall FileWrite(int Handle, const void *Buffer, int Count);</p>
+<p>　　功能：写文件，返回实际写入的字节数，句柄必须首先由FileOpen或FileCreate创建。</p>
+<p>　　参数：Handle:要写入的句柄；Buffer:存放写入数据的缓冲区；Count:想写入的字节数</p>
+<p>　　例：char str[]=”I Love You”;FileWrite(hnd1,str,strlen(str));</p>
+<p>　　⑹FileCreate()<br>　　原型：extern PACKAGE int __fastcall FileCreate(const AnsiString FileName);</p>
+<p>　　功能：创建文件。成功返回其句柄，否则返回-1</p>
+<p>　　参数：FileName:要创建的文件名</p>
+<p>　　例：if(!FileExists(“KC.C”))hnd1=FileCreate(“KC.C”);</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">游戏框架搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:23:18" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="游戏框架搭建"><a href="#游戏框架搭建" class="headerlink" title="游戏框架搭建"></a>游戏框架搭建</h1><p><strong>目标</strong> —— 使用 <strong>面相对象</strong> 设计 <strong>飞机大战游戏类</strong></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>明确主程序职责</li>
+<li>实现主程序类</li>
+<li>准备游戏精灵组</li>
+</ul>
+<h2 id="01-明确主程序职责"><a href="#01-明确主程序职责" class="headerlink" title="01. 明确主程序职责"></a>01. 明确主程序职责</h2><ul>
+<li>回顾 <strong>快速入门案例</strong>，一个游戏主程序的 <strong>职责</strong> 可以分为两个部分：<ul>
+<li>游戏初始化</li>
+<li>游戏循环</li>
+</ul>
+</li>
+<li>根据明确的职责，设计 <code>PlaneGame</code> 类如下：</li>
+</ul>
+<p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/009_%E6%B8%B8%E6%88%8F%E4%B8%BB%E7%A8%8B%E5%BA%8F.png" alt></p>
+<blockquote>
+<p><strong>提示</strong> 根据 <strong>职责</strong> 封装私有方法，可以避免某一个方法的代码写得太过冗长</p>
+<p>如果某一个方法编写的太长，既不好阅读，也不好维护！</p>
+</blockquote>
+<ul>
+<li><strong>游戏初始化</strong> ——  <code>__init__()</code> 会调用以下方法： </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__create_sprites(self)</code></td>
+<td>创建所有精灵和精灵组</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>游戏循环</strong> —— <code>start_game()</code> 会调用以下方法：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__event_handler(self)</code></td>
+<td>事件监听</td>
+</tr>
+<tr>
+<td><code>__check_collide(self)</code></td>
+<td>碰撞检测 —— 子弹销毁敌机、敌机撞毁英雄</td>
+</tr>
+<tr>
+<td><code>__update_sprites(self)</code></td>
+<td>精灵组更新和绘制</td>
+</tr>
+<tr>
+<td><code>__game_over()</code></td>
+<td>游戏结束</td>
+</tr>
+</tbody></table>
+<h2 id="02-实现飞机大战主游戏类"><a href="#02-实现飞机大战主游戏类" class="headerlink" title="02. 实现飞机大战主游戏类"></a>02. 实现飞机大战主游戏类</h2><h3 id="2-1-明确文件职责"><a href="#2-1-明确文件职责" class="headerlink" title="2.1 明确文件职责"></a>2.1 明确文件职责</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/011_%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E8%81%8C%E8%B4%A3.png" alt></p>
+<ul>
+<li><code>plane_main</code> <ol>
+<li>封装 <strong>主游戏类</strong></li>
+<li>创建 <strong>游戏对象</strong></li>
+<li><strong>启动游戏</strong></li>
+</ol>
+</li>
+<li><code>plane_sprites</code><ul>
+<li>封装游戏中 <strong>所有</strong> 需要使用的 <strong>精灵子类</strong></li>
+<li>提供游戏的 <strong>相关工具</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
+<li>新建 <code>plane_main.py</code> 文件，并且设置为可执行</li>
+<li>编写 <strong>基础代码</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"><span class="keyword">from</span> plane_sprites <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlaneGame</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""飞机大战主游戏"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"游戏初始化"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_game</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"开始游戏..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 创建游戏对象</span></span><br><span class="line">    game = PlaneGame()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始游戏</span></span><br><span class="line">    game.start_game()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-游戏初始化部分"><a href="#2-3-游戏初始化部分" class="headerlink" title="2.3 游戏初始化部分"></a>2.3 游戏初始化部分</h3><ul>
+<li>完成 <code>__init__()</code> 代码如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">"游戏初始化"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 创建游戏的窗口</span></span><br><span class="line">    self.screen = pygame.display.set_mode((<span class="number">480</span>, <span class="number">700</span>))</span><br><span class="line">    <span class="comment"># 2. 创建游戏的时钟</span></span><br><span class="line">    self.clock = pygame.time.Clock()</span><br><span class="line">    <span class="comment"># 3. 调用私有方法，精灵和精灵组的创建</span></span><br><span class="line">    self.__create_sprites()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-常量-代替固定的数值"><a href="#使用-常量-代替固定的数值" class="headerlink" title="使用 常量 代替固定的数值"></a>使用 常量 代替固定的数值</h4><blockquote>
+<ul>
+<li>常量 —— 不变化的量</li>
+<li>变量 —— 可以变化的量</li>
+</ul>
+</blockquote>
+<p><strong>应用场景</strong></p>
+<ul>
+<li>在开发时，可能会需要使用 <strong>固定的数值</strong>，例如 <strong>屏幕的高度</strong> 是 <code>700</code></li>
+<li>这个时候，建议 <strong>不要</strong> 直接使用固定数值，而应该使用 <strong>常量</strong></li>
+<li>在开发时，为了保证代码的可维护性，尽量不要使用 <strong>魔法数字</strong> </li>
+</ul>
+<p><strong>常量的定义</strong></p>
+<ul>
+<li>定义 <strong>常量</strong> 和 定义 <strong>变量</strong> 的语法完全一样，都是使用 <strong>赋值语句</strong></li>
+<li><strong>常量</strong> 的 <strong>命名</strong> 应该 <strong>所有字母都使用大写</strong>，<strong>单词与单词之间使用下划线连接</strong></li>
+</ul>
+<p><strong>常量的好处</strong></p>
+<ul>
+<li>阅读代码时，通过 <strong>常量名</strong> <strong>见名之意</strong>，不需要猜测数字的含义</li>
+<li>如果需要 <strong>调整值</strong>，只需要 <strong>修改常量定义</strong> 就可以实现 <strong>统一修改</strong></li>
+</ul>
+<blockquote>
+<p>提示：Python 中并没有真正意义的常量，只是通过命名的约定 —— 所有字母都是大写的就是常量，开发时不要轻易的修改！</p>
+</blockquote>
+<p><strong>代码调整</strong></p>
+<ul>
+<li>在 <code>plane_sprites.py</code> 中增加常量定义</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏屏幕大小</span></span><br><span class="line">SCREEN_RECT = pygame.Rect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">480</span>, <span class="number">700</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>plane_main.py</code> 中的窗口大小</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.screen = pygame.display.set_mode(SCREEN_RECT.size)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-游戏循环部分"><a href="#2-4-游戏循环部分" class="headerlink" title="2.4 游戏循环部分"></a>2.4 游戏循环部分</h3><ul>
+<li>完成 <code>start_game()</code> 基础代码如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_game</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""开始游戏"""</span></span><br><span class="line">    </span><br><span class="line">    print(<span class="string">"开始游戏..."</span>)</span><br><span class="line">       </span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># 1. 设置刷新帧率</span></span><br><span class="line">        self.clock.tick(<span class="number">60</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 事件监听</span></span><br><span class="line">        self.__event_handler()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 碰撞检测</span></span><br><span class="line">        self.__check_collide()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 4. 更新精灵组</span></span><br><span class="line">        self.__update_sprites()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 5. 更新屏幕显示</span></span><br><span class="line">        pygame.display.update()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__event_handler</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""事件监听"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> event.type == pygame.QUIT:</span><br><span class="line">            PlaneGame.__game_over()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__check_collide</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""碰撞检测"""</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""更新精灵组"""</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__game_over</span><span class="params">()</span>:</span></span><br><span class="line">   <span class="string">"""游戏结束"""</span></span><br><span class="line"></span><br><span class="line">   print(<span class="string">"游戏结束"</span>)</span><br><span class="line">   pygame.quit()</span><br><span class="line">   exit()</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-准备游戏精灵组"><a href="#03-准备游戏精灵组" class="headerlink" title="03. 准备游戏精灵组"></a>03. 准备游戏精灵组</h2><h3 id="3-1-确定精灵组"><a href="#3-1-确定精灵组" class="headerlink" title="3.1 确定精灵组"></a>3.1 确定精灵组</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/010_%E7%B2%BE%E7%81%B5%E7%BB%84%E7%A1%AE%E5%AE%9A.png" alt></p>
+<h3 id="3-2-代码实现"><a href="#3-2-代码实现" class="headerlink" title="3.2 代码实现"></a>3.2 代码实现</h3><ul>
+<li>创建精灵组方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""创建精灵组"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 背景组</span></span><br><span class="line">    self.back_group = pygame.sprite.Group()</span><br><span class="line">    <span class="comment"># 敌机组</span></span><br><span class="line">    self.enemy_group = pygame.sprite.Group()</span><br><span class="line">    <span class="comment"># 英雄组</span></span><br><span class="line">    self.hero_group = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更新精灵组方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""更新精灵组"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> group <span class="keyword">in</span> [self.back_group, self.enemy_group, self.hero_group]:</span><br><span class="line">    </span><br><span class="line">        group.update()</span><br><span class="line">        group.draw(self.screen)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2665,632 +3201,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">文件</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 23:00:03" itemprop="dateModified" datetime="2020-12-24T23:00:03+08:00">2020-12-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>文件的概念</li>
-<li>文件的基本操作</li>
-<li>文件/文件夹的常用操作</li>
-<li>文本文件的编码方式</li>
-</ul>
-<h2 id="01-文件的概念"><a href="#01-文件的概念" class="headerlink" title="01. 文件的概念"></a>01. 文件的概念</h2><h3 id="1-1-文件的概念和作用"><a href="#1-1-文件的概念和作用" class="headerlink" title="1.1 文件的概念和作用"></a>1.1 文件的概念和作用</h3><ul>
-<li>计算机的 <strong>文件</strong>，就是存储在某种 <strong>长期储存设备</strong> 上的一段 <strong>数据</strong></li>
-<li>长期存储设备包括：硬盘、U 盘、移动硬盘、光盘…</li>
-</ul>
-<p><strong>文件的作用</strong></p>
-<p>将数据长期保存下来，在需要的时候使用</p>
-<table>
-<thead>
-<tr>
-<th align="center">CPU</th>
-<th align="center">内存</th>
-<th align="center">硬盘</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/CPU.jpg" alt></td>
-<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/%E5%86%85%E5%AD%98%E6%9D%A1.png" alt></td>
-<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/%E7%A1%AC%E7%9B%98.jpg" alt></td>
-</tr>
-</tbody></table>
-<h3 id="1-2-文件的存储方式"><a href="#1-2-文件的存储方式" class="headerlink" title="1.2 文件的存储方式"></a>1.2 文件的存储方式</h3><ul>
-<li>在计算机中，文件是以 <strong>二进制</strong> 的方式保存在磁盘上的</li>
-</ul>
-<h4 id="文本文件和二进制文件"><a href="#文本文件和二进制文件" class="headerlink" title="文本文件和二进制文件"></a>文本文件和二进制文件</h4><ul>
-<li><p>文本文件</p>
-<ul>
-<li>可以使用 <strong>文本编辑软件</strong> 查看</li>
-<li>本质上还是二进制文件</li>
-<li>例如：python 的源程序</li>
-</ul>
-</li>
-<li><p>二进制文件</p>
-<ul>
-<li>保存的内容 不是给人直接阅读的，而是 <strong>提供给其他软件使用的</strong></li>
-<li>例如：图片文件、音频文件、视频文件等等</li>
-<li>二进制文件不能使用 <strong>文本编辑软件</strong> 查看</li>
-</ul>
-</li>
-</ul>
-<h2 id="02-文件的基本操作"><a href="#02-文件的基本操作" class="headerlink" title="02. 文件的基本操作"></a>02. 文件的基本操作</h2><h3 id="2-1-操作文件的套路"><a href="#2-1-操作文件的套路" class="headerlink" title="2.1 操作文件的套路"></a>2.1 操作文件的套路</h3><p>在 <strong>计算机</strong> 中要操作文件的套路非常固定，一共包含<strong>三个步骤</strong>：</p>
-<ol>
-<li>打开文件</li>
-<li>读、写文件<ul>
-<li><strong>读</strong> 将文件内容读入内存</li>
-<li><strong>写</strong> 将内存内容写入文件</li>
-</ul>
-</li>
-<li>关闭文件</li>
-</ol>
-<h3 id="2-2-操作文件的函数-方法"><a href="#2-2-操作文件的函数-方法" class="headerlink" title="2.2 操作文件的函数/方法"></a>2.2 操作文件的函数/方法</h3><ul>
-<li>在 <code>Python</code> 中要操作文件需要记住 1 个函数和 3 个方法</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>函数/方法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>01</td>
-<td>open</td>
-<td>打开文件，并且返回文件操作对象</td>
-</tr>
-<tr>
-<td>02</td>
-<td>read</td>
-<td>将文件内容读取到内存</td>
-</tr>
-<tr>
-<td>03</td>
-<td>write</td>
-<td>将指定内容写入文件</td>
-</tr>
-<tr>
-<td>04</td>
-<td>close</td>
-<td>关闭文件</td>
-</tr>
-</tbody></table>
-<ul>
-<li><code>open</code> 函数负责打开文件，并且返回文件对象</li>
-<li><code>read</code>/<code>write</code>/<code>close</code> 三个方法都需要通过 <strong>文件对象</strong> 来调用</li>
-</ul>
-<h3 id="2-3-read-方法-——-读取文件"><a href="#2-3-read-方法-——-读取文件" class="headerlink" title="2.3 read 方法 —— 读取文件"></a>2.3 read 方法 —— 读取文件</h3><ul>
-<li><code>open</code> 函数的第一个参数是要打开的文件名（文件名区分大小写）<ul>
-<li>如果文件 <strong>存在</strong>，返回 <strong>文件操作对象</strong></li>
-<li>如果文件 <strong>不存在</strong>，会 <strong>抛出异常</strong></li>
-</ul>
-</li>
-<li><code>read</code> 方法可以一次性 <strong>读入</strong> 并 <strong>返回</strong> 文件的 <strong>所有内容</strong></li>
-<li><code>close</code> 方法负责 <strong>关闭文件</strong><ul>
-<li>如果 <strong>忘记关闭文件</strong>，<strong>会造成系统资源消耗，而且会影响到后续对文件的访问</strong></li>
-</ul>
-</li>
-<li><strong>注意</strong>：<code>read</code> 方法执行后，会把 <strong>文件指针</strong> 移动到 <strong>文件的末尾</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开 - 文件名需要注意大小写</span></span><br><span class="line">file = open(<span class="string">"README"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取</span></span><br><span class="line">text = file.read()</span><br><span class="line">print(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
-
-<p><strong>提示</strong></p>
-<ul>
-<li>在开发中，通常会先编写 <strong>打开</strong> 和 <strong>关闭</strong> 的代码，再编写中间针对文件的 <strong>读/写</strong> 操作！</li>
-</ul>
-<h4 id="文件指针（知道）"><a href="#文件指针（知道）" class="headerlink" title="文件指针（知道）"></a>文件指针（知道）</h4><ul>
-<li><strong>文件指针</strong> 标记 <strong>从哪个位置开始读取数据</strong></li>
-<li><strong>第一次打开</strong> 文件时，通常 <strong>文件指针会指向文件的开始位置</strong></li>
-<li>当执行了 <code>read</code> 方法后，<strong>文件指针</strong> 会移动到 <strong>读取内容的末尾</strong><ul>
-<li>默认情况下会移动到 <strong>文件末尾</strong></li>
-</ul>
-</li>
-</ul>
-<p><strong>思考</strong></p>
-<ul>
-<li>如果执行了一次 <code>read</code> 方法，读取了所有内容，那么再次调用 <code>read</code> 方法，还能够获得到内容吗？</li>
-</ul>
-<p><strong>答案</strong></p>
-<ul>
-<li>不能</li>
-<li>第一次读取之后，文件指针移动到了文件末尾，再次调用不会读取到任何的内容</li>
-</ul>
-<h3 id="2-4-打开文件的方式"><a href="#2-4-打开文件的方式" class="headerlink" title="2.4 打开文件的方式"></a>2.4 打开文件的方式</h3><ul>
-<li><code>open</code> 函数默认以 <strong>只读方式</strong> 打开文件，并且返回文件对象</li>
-</ul>
-<p>语法如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"文件名"</span>, <span class="string">"访问方式"</span>)</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th align="center">访问方式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">r</td>
-<td>以<strong>只读</strong>方式打开文件。文件的指针将会放在文件的开头，这是<strong>默认模式</strong>。如果文件不存在，抛出异常</td>
-</tr>
-<tr>
-<td align="center">w</td>
-<td>以<strong>只写</strong>方式打开文件。如果文件存在会被覆盖。如果文件不存在，创建新文件</td>
-</tr>
-<tr>
-<td align="center">a</td>
-<td>以<strong>追加</strong>方式打开文件。如果该文件已存在，文件指针将会放在文件的结尾。如果文件不存在，创建新文件进行写入</td>
-</tr>
-<tr>
-<td align="center">r+</td>
-<td>以<strong>读写</strong>方式打开文件。文件的指针将会放在文件的开头。如果文件不存在，抛出异常</td>
-</tr>
-<tr>
-<td align="center">w+</td>
-<td>以<strong>读写</strong>方式打开文件。如果文件存在会被覆盖。如果文件不存在，创建新文件</td>
-</tr>
-<tr>
-<td align="center">a+</td>
-<td>以<strong>读写</strong>方式打开文件。如果该文件已存在，文件指针将会放在文件的结尾。如果文件不存在，创建新文件进行写入</td>
-</tr>
-</tbody></table>
-<p><strong>提示</strong></p>
-<ul>
-<li>频繁的移动文件指针，<strong>会影响文件的读写效率</strong>，开发中更多的时候会以 <strong>只读</strong>、<strong>只写</strong> 的方式来操作文件</li>
-</ul>
-<p><strong>写入文件示例</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">f = open(<span class="string">"README"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line">f.write(<span class="string">"hello python！\n"</span>)</span><br><span class="line">f.write(<span class="string">"今天天气真好"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-5-按行读取文件内容"><a href="#2-5-按行读取文件内容" class="headerlink" title="2.5 按行读取文件内容"></a>2.5 按行读取文件内容</h3><ul>
-<li><code>read</code> 方法默认会把文件的 <strong>所有内容</strong> <strong>一次性读取到内存</strong></li>
-<li>如果文件太大，对内存的占用会非常严重</li>
-</ul>
-<h4 id="readline-方法"><a href="#readline-方法" class="headerlink" title="readline 方法"></a><code>readline</code> 方法</h4><ul>
-<li><code>readline</code> 方法可以一次读取一行内容</li>
-<li>方法执行后，会把 <strong>文件指针</strong> 移动到下一行，准备再次读取</li>
-</ul>
-<p><strong>读取大文件的正确姿势</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file = open(<span class="string">"README"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 读取一行内容</span></span><br><span class="line">    text = file.readline()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 判断是否读到内容</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> text:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每读取一行的末尾已经有了一个 `\n`</span></span><br><span class="line">    print(text, end=<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-6-文件读写案例-——-复制文件"><a href="#2-6-文件读写案例-——-复制文件" class="headerlink" title="2.6 文件读写案例 —— 复制文件"></a>2.6 文件读写案例 —— 复制文件</h3><p><strong>目标</strong></p>
-<p>用代码的方式，来实现文件复制过程</p>
-<p><img src="/2020/12/23/%E6%96%87%E4%BB%B6/025_%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6.png" alt></p>
-<h4 id="小文件复制"><a href="#小文件复制" class="headerlink" title="小文件复制"></a>小文件复制</h4><ul>
-<li>打开一个已有文件，读取完整内容，并写入到另外一个文件</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开文件</span></span><br><span class="line">file_read = open(<span class="string">"README"</span>)</span><br><span class="line">file_write = open(<span class="string">"README[复件]"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取并写入文件</span></span><br><span class="line">text = file_read.read()</span><br><span class="line">file_write.write(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭文件</span></span><br><span class="line">file_read.close()</span><br><span class="line">file_write.close()</span><br></pre></td></tr></table></figure>
-
-<h4 id="大文件复制"><a href="#大文件复制" class="headerlink" title="大文件复制"></a>大文件复制</h4><ul>
-<li>打开一个已有文件，逐行读取内容，并顺序写入到另外一个文件</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开文件</span></span><br><span class="line">file_read = open(<span class="string">"README"</span>)</span><br><span class="line">file_write = open(<span class="string">"README[复件]"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取并写入文件</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 每次读取一行</span></span><br><span class="line">    text = file_read.readline()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 判断是否读取到内容</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> text:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    file_write.write(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭文件</span></span><br><span class="line">file_read.close()</span><br><span class="line">file_write.close()</span><br></pre></td></tr></table></figure>
-
-<h2 id="03-文件-目录的常用管理操作"><a href="#03-文件-目录的常用管理操作" class="headerlink" title="03. 文件/目录的常用管理操作"></a>03. 文件/目录的常用管理操作</h2><ul>
-<li>在 <strong>终端</strong> / <strong>文件浏览器</strong>、 中可以执行常规的 <strong>文件</strong> / <strong>目录</strong> 管理操作，例如：<ul>
-<li>创建、重命名、删除、改变路径、查看目录内容、……</li>
-</ul>
-</li>
-<li>在 <code>Python</code> 中，如果希望通过程序实现上述功能，需要导入 <code>os</code> 模块</li>
-</ul>
-<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><table>
-<thead>
-<tr>
-<th>序号</th>
-<th>方法名</th>
-<th>说明</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>01</td>
-<td>rename</td>
-<td>重命名文件</td>
-<td><code>os.rename(源文件名, 目标文件名)</code></td>
-</tr>
-<tr>
-<td>02</td>
-<td>remove</td>
-<td>删除文件</td>
-<td><code>os.remove(文件名)</code></td>
-</tr>
-</tbody></table>
-<h3 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h3><table>
-<thead>
-<tr>
-<th>序号</th>
-<th>方法名</th>
-<th>说明</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>01</td>
-<td>listdir</td>
-<td>目录列表</td>
-<td><code>os.listdir(目录名)</code></td>
-</tr>
-<tr>
-<td>02</td>
-<td>mkdir</td>
-<td>创建目录</td>
-<td><code>os.mkdir(目录名)</code></td>
-</tr>
-<tr>
-<td>03</td>
-<td>rmdir</td>
-<td>删除目录</td>
-<td><code>os.rmdir(目录名)</code></td>
-</tr>
-<tr>
-<td>04</td>
-<td>getcwd</td>
-<td>获取当前目录</td>
-<td><code>os.getcwd()</code></td>
-</tr>
-<tr>
-<td>05</td>
-<td>chdir</td>
-<td>修改工作目录</td>
-<td><code>os.chdir(目标目录)</code></td>
-</tr>
-<tr>
-<td>06</td>
-<td>path.isdir</td>
-<td>判断是否是文件</td>
-<td><code>os.path.isdir(文件路径)</code></td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>提示：文件或者目录操作都支持 <strong>相对路径</strong> 和 <strong>绝对路径</strong></p>
-</blockquote>
-<h2 id="04-文本文件的编码格式（科普）"><a href="#04-文本文件的编码格式（科普）" class="headerlink" title="04. 文本文件的编码格式（科普）"></a>04. 文本文件的编码格式（科普）</h2><ul>
-<li>文本文件存储的内容是基于 <strong>字符编码</strong> 的文件，常见的编码有 <code>ASCII</code> 编码，<code>UNICODE</code> 编码等</li>
-</ul>
-<blockquote>
-<p>Python 2.x 默认使用 <code>ASCII</code> 编码格式<br>Python 3.x 默认使用 <code>UTF-8</code> 编码格式</p>
-</blockquote>
-<h3 id="4-1-ASCII-编码和-UNICODE-编码"><a href="#4-1-ASCII-编码和-UNICODE-编码" class="headerlink" title="4.1 ASCII 编码和 UNICODE 编码"></a>4.1 ASCII 编码和 UNICODE 编码</h3><h4 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a><code>ASCII</code> 编码</h4><ul>
-<li>计算机中只有 <code>256</code> 个 <code>ASCII</code> 字符</li>
-<li>一个 <code>ASCII</code> 在内存中占用 <strong>1 个字节</strong> 的空间<ul>
-<li><code>8</code> 个 <code>0/1</code> 的排列组合方式一共有 <code>256</code> 种，也就是 <code>2 ** 8</code></li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/12/23/%E6%96%87%E4%BB%B6/001_ASCII%E7%BC%96%E7%A0%81%E8%A1%A81.jpg" alt></p>
-<h4 id="UTF-8-编码格式"><a href="#UTF-8-编码格式" class="headerlink" title="UTF-8 编码格式"></a><code>UTF-8</code> 编码格式</h4><ul>
-<li>计算机中使用 <strong>1~6 个字节</strong> 来表示一个 <code>UTF-8</code> 字符，涵盖了 <strong>地球上几乎所有地区的文字</strong></li>
-<li>大多数汉字会使用 <strong>3 个字节</strong> 表示</li>
-<li><code>UTF-8</code> 是 <code>UNICODE</code> 编码的一种编码格式</li>
-</ul>
-<h3 id="4-2-Ptyhon-2-x-中如何使用中文"><a href="#4-2-Ptyhon-2-x-中如何使用中文" class="headerlink" title="4.2 Ptyhon 2.x 中如何使用中文"></a>4.2 Ptyhon 2.x 中如何使用中文</h3><blockquote>
-<p>Python 2.x 默认使用 <code>ASCII</code> 编码格式<br>Python 3.x 默认使用 <code>UTF-8</code> 编码格式</p>
-</blockquote>
-<ul>
-<li>在 Python 2.x 文件的 <strong>第一行</strong> 增加以下代码，解释器会以 <code>utf-8</code> 编码来处理 python 文件</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># *-* coding:utf8 *-*</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这方式是官方推荐使用的！</p>
-</blockquote>
-<ul>
-<li>也可以使用 </li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf8</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="unicode-字符串"><a href="#unicode-字符串" class="headerlink" title="unicode 字符串"></a>unicode 字符串</h4><ul>
-<li>在 <code>Python 2.x</code> 中，即使指定了文件使用 <code>UTF-8</code> 的编码格式，但是在遍历字符串时，仍然会 <strong>以字节为单位遍历</strong> 字符串</li>
-<li>要能够 <strong>正确的遍历字符串</strong>，在定义字符串时，需要 <strong>在字符串的引号前</strong>，增加一个小写字母 <code>u</code>，告诉解释器这是一个 <code>unicode</code> 字符串（使用 <code>UTF-8</code> 编码格式的字符串）</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># *-* coding:utf8 *-*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在字符串前，增加一个 `u` 表示这个字符串是一个 utf8 字符串</span></span><br><span class="line">hello_str = <span class="string">u"你好世界"</span></span><br><span class="line"></span><br><span class="line">print(hello_str)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> hello_str:</span><br><span class="line">    print(c)</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%A8%A1%E5%9D%97%E5%92%8C%E5%8C%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/%E6%A8%A1%E5%9D%97%E5%92%8C%E5%8C%85/" class="post-title-link" itemprop="url">模块和包</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 22:59:45" itemprop="dateModified" datetime="2020-12-24T22:59:45+08:00">2020-12-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="模块和包"><a href="#模块和包" class="headerlink" title="模块和包"></a>模块和包</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>模块</li>
-<li>包</li>
-<li>发布模块</li>
-</ul>
-<h2 id="01-模块"><a href="#01-模块" class="headerlink" title="01. 模块"></a>01. 模块</h2><h3 id="1-1-模块的概念"><a href="#1-1-模块的概念" class="headerlink" title="1.1 模块的概念"></a>1.1 模块的概念</h3><blockquote>
-<p><strong>模块是 Python 程序架构的一个核心概念</strong></p>
-</blockquote>
-<ul>
-<li>每一个以扩展名 <code>py</code> 结尾的 <code>Python</code> 源代码文件都是一个 <strong>模块</strong></li>
-<li><strong>模块名</strong> 同样也是一个 <strong>标识符</strong>，需要符合标识符的命名规则</li>
-<li>在模块中定义的 <strong>全局变量</strong> 、<strong>函数</strong>、<strong>类</strong> 都是提供给外界直接使用的 <strong>工具</strong></li>
-<li><strong>模块</strong> 就好比是 <strong>工具包</strong>，要想使用这个工具包中的工具，就需要先 <strong>导入</strong> 这个模块</li>
-</ul>
-<h3 id="1-2-模块的两种导入方式"><a href="#1-2-模块的两种导入方式" class="headerlink" title="1.2 模块的两种导入方式"></a>1.2 模块的两种导入方式</h3><h4 id="1）import-导入"><a href="#1）import-导入" class="headerlink" title="1）import 导入"></a>1）import 导入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span>, 模块名<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提示：在导入模块时，每个导入应该独占一行</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span></span><br><span class="line"><span class="keyword">import</span> 模块名<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>导入之后</strong><ul>
-<li>通过 <code>模块名.</code> 使用 <strong>模块提供的工具</strong> —— <strong>全局变量</strong>、<strong>函数</strong>、<strong>类</strong></li>
-</ul>
-</li>
-</ul>
-<h5 id="使用-as-指定模块的别名"><a href="#使用-as-指定模块的别名" class="headerlink" title="使用 as 指定模块的别名"></a>使用 <code>as</code> 指定模块的别名</h5><blockquote>
-<p><strong>如果模块的名字太长</strong>，可以使用 <code>as</code> 指定模块的名称，以方便在代码中的使用</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span> <span class="keyword">as</span> 模块别名</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：<strong>模块别名</strong> 应该符合 <strong>大驼峰命名法</strong></p>
-</blockquote>
-<h4 id="2）from…import-导入"><a href="#2）from…import-导入" class="headerlink" title="2）from…import 导入"></a>2）from…import 导入</h4><ul>
-<li>如果希望 <strong>从某一个模块</strong> 中，导入 <strong>部分</strong> 工具，就可以使用 <code>from ... import</code> 的方式</li>
-<li><code>import 模块名</code> 是 <strong>一次性</strong> 把模块中 <strong>所有工具全部导入</strong>，并且通过 <strong>模块名/别名</strong> 访问</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 模块 导入 某一个工具</span></span><br><span class="line"><span class="keyword">from</span> 模块名<span class="number">1</span> <span class="keyword">import</span> 工具名</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>导入之后<ul>
-<li><strong>不需要</strong> 通过 <code>模块名.</code></li>
-<li>可以直接使用 <strong>模块提供的工具</strong> —— <strong>全局变量</strong>、<strong>函数</strong>、<strong>类</strong></li>
-</ul>
-</li>
-</ul>
-<p><strong>注意</strong></p>
-<blockquote>
-<p>如果 <strong>两个模块</strong>，存在 <strong>同名的函数</strong>，那么 <strong>后导入模块的函数</strong>，会 <strong>覆盖掉先导入的函数</strong></p>
-</blockquote>
-<ul>
-<li>开发时 <code>import</code> 代码应该统一写在 <strong>代码的顶部</strong>，更容易及时发现冲突</li>
-<li>一旦发现冲突，可以使用 <code>as</code> 关键字 <strong>给其中一个工具起一个别名</strong></li>
-</ul>
-<h5 id="from…import-（知道）"><a href="#from…import-（知道）" class="headerlink" title="from…import *（知道）"></a>from…import *（知道）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 模块 导入 所有工具</span></span><br><span class="line"><span class="keyword">from</span> 模块名<span class="number">1</span> <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong></p>
-<blockquote>
-<p>这种方式不推荐使用，因为函数重名并没有任何的提示，出现问题不好排查</p>
-</blockquote>
-<h3 id="1-3-模块的搜索顺序-扩展"><a href="#1-3-模块的搜索顺序-扩展" class="headerlink" title="1.3 模块的搜索顺序[扩展]"></a>1.3 模块的搜索顺序[扩展]</h3><p><code>Python</code> 的解释器在 <strong>导入模块</strong> 时，会：</p>
-<ol>
-<li>搜索 <strong>当前目录</strong> 指定模块名的文件，<strong>如果有就直接导入</strong></li>
-<li>如果没有，再搜索 <strong>系统目录</strong> </li>
-</ol>
-<blockquote>
-<p>在开发时，给文件起名，不要和 <strong>系统的模块文件</strong> <strong>重名</strong></p>
-</blockquote>
-<p><code>Python</code> 中每一个模块都有一个内置属性 <code>__file__</code> 可以 <strong>查看模块</strong> 的 <strong>完整路径</strong></p>
-<p><strong>示例</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个 0～10 的数字</span></span><br><span class="line">rand = random.randint(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">print(rand)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：如果当前目录下，存在一个 <code>random.py</code> 的文件，程序就无法正常执行了！</p>
-</blockquote>
-<ul>
-<li>这个时候，<code>Python</code> 的解释器会 <strong>加载当前目录</strong> 下的 <code>random.py</code> 而不会加载 <strong>系统的</strong> <code>random</code> 模块</li>
-</ul>
-<h3 id="1-4-原则-——-每一个文件都应该是可以被导入的"><a href="#1-4-原则-——-每一个文件都应该是可以被导入的" class="headerlink" title="1.4 原则 —— 每一个文件都应该是可以被导入的"></a>1.4 原则 —— 每一个文件都应该是可以被导入的</h3><ul>
-<li>一个 <strong>独立的 <code>Python</code> 文件</strong> 就是一个 <strong>模块</strong></li>
-<li>在导入文件时，文件中 <strong>所有没有任何缩进的代码</strong> 都会被执行一遍！</li>
-</ul>
-<p><strong>实际开发场景</strong></p>
-<ul>
-<li>在实际开发中，每一个模块都是独立开发的，大多都有专人负责</li>
-<li><strong>开发人员</strong> 通常会在 <strong>模块下方</strong> <strong>增加一些测试代码</strong><ul>
-<li>仅在模块内使用，而被导入到其他文件中不需要执行</li>
-</ul>
-</li>
-</ul>
-<h4 id="name-属性"><a href="#name-属性" class="headerlink" title="__name__ 属性"></a><code>__name__</code> 属性</h4><blockquote>
-<ul>
-<li><code>__name__</code> 属性可以做到，测试模块的代码 <strong>只在测试情况下被运行</strong>，而在 <strong>被导入时不会被执行</strong>！</li>
-</ul>
-</blockquote>
-<ul>
-<li><code>__name__</code> 是 <code>Python</code> 的一个内置属性，记录着一个 <strong>字符串</strong></li>
-<li>如果 <strong>是被其他文件导入的</strong>，<code>__name__</code> 就是 <strong>模块名</strong></li>
-<li>如果 <strong>是当前执行的程序</strong> <code>__name__</code> 是 <strong><code>__main__</code></strong></li>
-</ul>
-<p><strong>在很多 <code>Python</code> 文件中都会看到以下格式的代码</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="comment"># 定义全局变量</span></span><br><span class="line"><span class="comment"># 定义类</span></span><br><span class="line"><span class="comment"># 定义函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在代码的最下方</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据 __name__ 判断是否执行下方代码</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-
-<h2 id="02-包（Package）"><a href="#02-包（Package）" class="headerlink" title="02. 包（Package）"></a>02. 包（Package）</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
-<li><strong>包</strong> 是一个 <strong>包含多个模块</strong> 的 <strong>特殊目录</strong></li>
-<li>目录下有一个 <strong>特殊的文件</strong> <code>__init__.py</code></li>
-<li>包名的 <strong>命名方式</strong> 和变量名一致，<strong>小写字母</strong> + <code>_</code></li>
-</ul>
-<p><strong>好处</strong></p>
-<ul>
-<li>使用 <code>import 包名</code> 可以一次性导入 <strong>包</strong> 中 <strong>所有的模块</strong></li>
-</ul>
-<h3 id="案例演练"><a href="#案例演练" class="headerlink" title="案例演练"></a>案例演练</h3><ol>
-<li>新建一个 <code>hm_message</code> 的 <strong>包</strong></li>
-<li>在目录下，新建两个文件 <code>send_message</code> 和 <code>receive_message</code></li>
-<li>在 <code>send_message</code> 文件中定义一个 <code>send</code> 函数</li>
-<li>在 <code>receive_message</code> 文件中定义一个 <code>receive</code> 函数</li>
-<li>在外部直接导入 <code>hm_message</code> 的包</li>
-</ol>
-<h3 id="init-py"><a href="#init-py" class="headerlink" title="__init__.py"></a><code>__init__.py</code></h3><ul>
-<li>要在外界使用 <strong>包</strong> 中的模块，需要在 <code>__init__.py</code> 中指定 <strong>对外界提供的模块列表</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 当前目录 导入 模块列表</span></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> send_message</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> receive_message</span><br></pre></td></tr></table></figure>
-
-<h2 id="03-发布模块（知道）"><a href="#03-发布模块（知道）" class="headerlink" title="03. 发布模块（知道）"></a>03. 发布模块（知道）</h2><ul>
-<li>如果希望自己开发的模块，<strong>分享</strong> 给其他人，可以按照以下步骤操作</li>
-</ul>
-<h3 id="3-1-制作发布压缩包步骤"><a href="#3-1-制作发布压缩包步骤" class="headerlink" title="3.1 制作发布压缩包步骤"></a>3.1 制作发布压缩包步骤</h3><h4 id="1-创建-setup-py"><a href="#1-创建-setup-py" class="headerlink" title="1) 创建 setup.py"></a>1) 创建 setup.py</h4><ul>
-<li><code>setup.py</code> 的文件</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</span><br><span class="line"></span><br><span class="line">setup(name=<span class="string">"hm_message"</span>,  <span class="comment"># 包名</span></span><br><span class="line">      version=<span class="string">"1.0"</span>,  <span class="comment"># 版本</span></span><br><span class="line">      description=<span class="string">"itheima's 发送和接收消息模块"</span>,  <span class="comment"># 描述信息</span></span><br><span class="line">      long_description=<span class="string">"完整的发送和接收消息模块"</span>,  <span class="comment"># 完整描述信息</span></span><br><span class="line">      author=<span class="string">"itheima"</span>,  <span class="comment"># 作者</span></span><br><span class="line">      author_email=<span class="string">"itheima@itheima.com"</span>,  <span class="comment"># 作者邮箱</span></span><br><span class="line">      url=<span class="string">"www.itheima.com"</span>,  <span class="comment"># 主页</span></span><br><span class="line">      py_modules=[<span class="string">"hm_message.send_message"</span>,</span><br><span class="line">                  <span class="string">"hm_message.receive_message"</span>])</span><br></pre></td></tr></table></figure>
-
-<p>有关字典参数的详细信息，可以参阅官方网站：</p>
-<p><a href="https://docs.python.org/2/distutils/apiref.html" target="_blank" rel="noopener">https://docs.python.org/2/distutils/apiref.html</a></p>
-<h4 id="2-构建模块"><a href="#2-构建模块" class="headerlink" title="2) 构建模块"></a>2) 构建模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 setup.py build</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-生成发布压缩包"><a href="#3-生成发布压缩包" class="headerlink" title="3) 生成发布压缩包"></a>3) 生成发布压缩包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 setup.py sdist</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：要制作哪个版本的模块，就使用哪个版本的解释器执行！</p>
-</blockquote>
-<h3 id="3-2-安装模块"><a href="#3-2-安装模块" class="headerlink" title="3.2 安装模块"></a>3.2 安装模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf hm_message-1.0.tar.gz </span><br><span class="line"></span><br><span class="line">$ sudo python3 setup.py install</span><br></pre></td></tr></table></figure>
-
-<p><strong>卸载模块</strong></p>
-<p>直接从安装目录下，把安装模块的 <strong>目录</strong> 删除就可以</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/local/lib/python3<span class="number">.5</span>/dist-packages/</span><br><span class="line">$ sudo rm -r hm_message*</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-3-pip-安装第三方模块"><a href="#3-3-pip-安装第三方模块" class="headerlink" title="3.3 pip 安装第三方模块"></a>3.3 <code>pip</code> 安装第三方模块</h3><ul>
-<li><strong>第三方模块</strong> 通常是指由 <strong>知名的第三方团队</strong> <strong>开发的</strong> 并且被 <strong>程序员广泛使用</strong> 的 <code>Python</code> 包 / 模块<ul>
-<li>例如 <code>pygame</code> 就是一套非常成熟的 <strong>游戏开发模块</strong></li>
-</ul>
-</li>
-<li><code>pip</code> 是一个现代的，通用的 <code>Python</code> 包管理工具</li>
-<li>提供了对 <code>Python</code> 包的查找、下载、安装、卸载等功能</li>
-</ul>
-<p>安装和卸载命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将模块安装到 Python 2.x 环境</span></span><br><span class="line">$ sudo pip install pygame</span><br><span class="line">$ sudo pip uninstall pygame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模块安装到 Python 3.x 环境</span></span><br><span class="line">$ sudo pip3 install pygame</span><br><span class="line">$ sudo pip3 uninstall pygame</span><br></pre></td></tr></table></figure>
-
-<h4 id="在-Mac-下安装-iPython"><a href="#在-Mac-下安装-iPython" class="headerlink" title="在 Mac 下安装 iPython"></a>在 <code>Mac</code> 下安装 <code>iPython</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip install ipython</span><br></pre></td></tr></table></figure>
-
-<h4 id="在-Linux-下安装-iPython"><a href="#在-Linux-下安装-iPython" class="headerlink" title="在 Linux 下安装 iPython"></a>在 <code>Linux</code> 下安装 <code>iPython</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install ipython</span><br><span class="line">$ sudo apt install ipython3</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3360,20 +3270,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

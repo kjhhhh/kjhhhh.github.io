@@ -155,6 +155,444 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day31%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day31%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记31</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:14:20" itemprop="dateModified" datetime="2020-12-23T23:14:20+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、管家婆项目</p>
+<p>###01项目训练目标<br>    * A: 项目训练目标<br>        * a: 项目目标<br>            * 综合运用前面所学习的知识点<br>            * 熟练View层、Service层、Dao层之间的方法相互调用操作、<br>            * 熟练dbutils操作数据库表完成增删改查<br>            * 了解公司项目开发的流程，充分的掌握项目需求分析、设计与功能的代码实现。提高同学们独立分析需求与功能实现的能力。            </p>
+<p>###02项目中的功能模块<br>    * A: 项目中的功能模块<br>        * a: 五大模块<br>            * 查询账务<br>            * 多条件组合查询账务<br>            * 添加账务<br>            * 编辑账务<br>            * 删除账务</p>
+<p>###03技术的选择和相关jar包<br>    * A: 技术的选择和相关jar包<br>        * a: apache的commons组件：<br>            * commons-dbutils-1.4.jar：封装并简化了JDBC；<br>            * commons-dbcp-1.4.jar：apache commons提供的数据库连接池组件，命名为DBCP；<br>        * b: commons.pool-1.3.jar：DBCP连接池依赖该jar包；<br>            * mysql-connector-java-5.1.28-bin.jar：MySQL的JDBC驱动包，用JDBC连接MySQL数据库必须使用该JAR包。</p>
+<p>###04项目中的工具类<br>    * A: 项目中的工具类<br>        * a: 工具类的介绍<br>            * 每个项目中都会有很多个工具类，不要求每个工具类对能独立写出来，但是要会使用工具类<br>            * JDBCUtils：用来创建数据库连接池对象</p>
+<p>###05数据表的设计<br>    * A: 数据表的设计<br>        * a: 数据表的设计(详见：day34_source/表关系.JPG)<br>            * 表与表之间是有关系的<br>            * 主表和从表的关系<br>            * 主表中的主键作为从表中的外键</p>
+<p>​<br>###06创建数据库数据表写入测试数据<br>    * A: 创建数据库数据表写入测试数据<br>        * a: 创建数据库数据表<br>            /*<br>              创建管家婆的数据库<br>              名字 gjp<br>            */<br>            CREATE DATABASE gjp;</p>
+<pre><code>    USE gjp;
+
+    /*
+      创建数据表,表名账务
+      字段,列
+      主键
+      分类名称  可变字符
+      金额  double
+      账户  可变字符 (支付,收入方法)
+      创建日期 date
+      账务描述 可变字符
+    */
+
+    CREATE TABLE gjp_zhangwu(
+       -- 主键
+       zwid INT PRIMARY KEY AUTO_INCREMENT,
+       -- 分类名称   
+       flname VARCHAR(200),
+       -- 金额
+       money DOUBLE,
+       -- 账户
+       zhanghu VARCHAR(100),
+       -- 创建日期
+       createtime DATE,
+       -- 账务描述
+       description  VARCHAR(1000)
+    );
+    SELECT * FROM gjp_zhangwu;
+* b: 写入数据
+    -- 写入测试的数据
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (1,&apos;吃饭支出&apos;,247,&apos;交通银行&apos;,&apos;2016-03-02&apos;,&apos;家庭聚餐&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (2,&apos;工资收入&apos;,12345,&apos;现金&apos;,&apos;2016-03-15&apos;,&apos;开工资了&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (3,&apos;服装支出&apos;,1998,&apos;现金&apos;,&apos;2016-04-02&apos;,&apos;买衣服&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (4,&apos;吃饭支出&apos;,325,&apos;现金&apos;,&apos;2016-06-18&apos;,&apos;朋友聚餐&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (5,&apos;股票收入&apos;,8000,&apos;工商银行&apos;,&apos;2016-10-28&apos;,&apos;股票大涨&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (6,&apos;股票收入&apos;,5000,&apos;工商银行&apos;,&apos;2016-10-28&apos;,&apos;股票又大涨&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (7,&apos;工资收入&apos;,5000,&apos;交通银行&apos;,&apos;2016-10-28&apos;,&apos;又开工资了&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (8,&apos;礼金支出&apos;,5000,&apos;现金&apos;,&apos;2016-10-28&apos;,&apos;朋友结婚&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (9,&apos;其他支出&apos;,1560,&apos;现金&apos;,&apos;2016-10-29&apos;,&apos;丢钱了&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (10,&apos;交通支出&apos;,2300,&apos;交通银行&apos;,&apos;2016-10-29&apos;,&apos;油价还在涨啊&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (11,&apos;吃饭支出&apos;,1000,&apos;工商银行&apos;,&apos;2016-10-29&apos;,&apos;又吃饭&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (12,&apos;工资收入&apos;,1000,&apos;现金&apos;,&apos;2016-10-30&apos;,&apos;开资&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (13,&apos;交通支出&apos;,2000,&apos;现金&apos;,&apos;2016-10-30&apos;,&apos;机票好贵&apos;);
+    INSERT  INTO gjp_zhangwu(zwid,flname,money,zhangHu,createtime,description) VALUES (14,&apos;工资收入&apos;,5000,&apos;现金&apos;,&apos;2016-10-30&apos;,&apos;又开资&apos;);</code></pre><p>###07项目中的分层设计<br>    * A: 项目中的分层设计<br>        * a: 各层功能介绍<br>            * view层作用: 视图层,即项目中的界面<br>            * controller层作用: 控制层, 获取界面上的数据,为界面设置数据; 将要实现的功能交给业务层处理<br>            * service层作用: 业务层, 功能的实现, 与controller控制层和数据访问层DAO交互, 将对数据库的操作交给DAO数据访问层来处理<br>            * dao层作用: 数据访问层, 用来操作数据库表的数据<br>            * db数据库: 这里指MySQL<br>            * domain 实体包: 存放JavaBean<br>            * tools工具包:存放项目中使用到的工具类<br>            * test 测试包: 存放项目功能测试的代码</p>
+<p>​<br>###08创建项目_分层_导入jar包<br>    * A: 创建项目_分层_导入jar包<br>        * a: 创建工程包<br>            * cn.itcast.gjp.app: 存放main方法类；<br>            * cn.itcast.gjp.domain: 存放JavaBean；<br>            * cn.itcast.gjp.view: 存放界面，及表现层类；<br>            * cn.itcast.gjp.service: 存放业务层类；<br>            * cn.itcast.gjp.dao: 存放数据访问层类;<br>            * cn.itcast.gjp.tools:存放工具类<br>        * b: 导入jar包<br>            * 在项目根路径下建立文件夹lib<br>            * 导入以下jar包<br>                * mysql-connector-java-5.1.37-bin.jar：数据库驱动<br>                * commons-dbutils-1.6.jar：提供QueryRunner类方便进行增删改查操作<br>                * commons-dbcp-1.4.jar：<br>                * commons-pool-1.5.6.jar：提供高效的数据库连接池技术<br>            * 拷贝以上jar包，选定拷贝的jar包/右键/Build Path/Add to Build Path</p>
+<p>###09创建domain包中的类<br>    * A: 创建domain包中的类<br>        * a: 案例代码<br>            public class ZhangWu {<br>                 private int  zwid;</p>
+<pre><code>     private String flname; 
+
+     private double  money; 
+
+     private String zhanghu;
+
+     private String createtime; 
+
+     private String description;
+     //注意生成空参构造、有参构造、set和get方法、toString方法等
+}</code></pre><p>###10创建JDBCUtils工具类<br>    * A：创建JDBCUtils工具类<br>        * a: 案例代码<br>            public class JDBCUtils{<br>                //创建BasicDataSource对象<br>                private static BasicDataSource datasource = new BasicDataSource();<br>                //静态代码块,实现必要参数设置<br>                static{<br>                    datasource.setDriverClassName(“com.mysql.jdbc.Driver”);<br>                    datasource.setUrl(“jdbc:mysql://localhost:3306/gjp”);<br>                    datasource.setUsername(“root”);<br>                    datasource.setPassword(“123”);<br>                    datasource.setMaxActive(10);<br>                    datasource.setMaxIdle(5);<br>                    datasource.setMinIdle(2);<br>                    datasource.setInitialSize(10);<br>                }<br>                public static DataSource getDataSource(){<br>                    return datasource;<br>                }<br>            }</p>
+<p>​<br>###11创建其他包中的类</p>
+<pre><code>* A: 创建其他包中的类
+    * a: cn.itcast.gjp.dao包中创建ZhangWuDao类
+        /*
+         *  实现对数据表 gjp_zhangwu 数据增删改查操作
+         *  dbuils工具类完成,类成员创建QueryRunner对象,指定数据源
+         */
+        public class ZhangWuDao {
+            private QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());
+        }
+    * b: cn.itcast.gjp.service包中创建ZhangWuService类
+        /*
+         *  业务层类
+         *  接收上一层,控制层controller的数据
+         *  经过计算,传递给dao层,操作数据库
+         *  调用dao层中的类,类成员位置,创建Dao类的对象
+         */
+        public class ZhangWuService {
+            private ZhangWuDao dao = new ZhangWuDao();
+
+        }
+    * c: cn.itcast.gjp.controller包中建立ZhangWuController类
+        /*
+         *  控制器层
+         *  接收视图层的数据,数据传递给service层
+         *  成员位置,创建service对象
+         */
+        public class ZhangWuController {
+            private ZhangWuService service = new ZhangWuService();                
+        }
+    * d: cn.itcast.gjp.view包中建立MainView类
+        /*
+         *  试图层,用户看到和操作的界面
+         *  数据传递给controller层实现
+         *  成员位置,创建controller对象
+         */
+        public class MainView {
+            private ZhangWuController controller = new ZhangWuController();
+
+        }
+    * e: cn.itcast.gjp.app包中建立MainApp类
+        /*
+         *  主程序类,作用,开启软件程序
+         */
+        public class MainApp {
+            public static void main(String[] args) {
+                new MainView().run();
+            }
+        }</code></pre><p>###12实现用户的界面菜单<br>    * A: 实现用户的界面菜单<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类中添加run方法<br>            /*<br>             *  实现界面效果<br>             *  接收用户的输入<br>             *  根据数据,调用不同的功能方法<br>             */<br>            public void run(){<br>                //创建Scanner类对象,反复键盘输入<br>                Scanner sc = new Scanner(System.in);<br>                while(true){<br>                    System.out.println(“—————管家婆家庭记账软件—————“);<br>                    System.out.println(“1.添加账务　2.编辑账务　3.删除账务　4.查询账务　5.退出系统”);<br>                    System.out.println(“请输入要操作的功能序号[1-5]:”);<br>                    //接收用户的菜单选择<br>                    int choose = sc.nextInt();<br>                    //对选择的菜单判断,调用不同的功能<br>                    switch(choose){<br>                    case 1:<br>                       // 选择添加账务,调用添加账务的方法<br>                        break;<br>                    case 2:<br>                        // 选择的编辑账务,调用编辑账务方法<br>                        break;<br>                    case 3:<br>                        // 选择的删除账务,调用删除账务方法<br>                        break;<br>                    case 4:<br>                        // 选择的是查询账务,调用查询方法<br>                        //selectZhangWu();<br>                        break;<br>                    case 5:<br>                        System.exit(0);<br>                        break;<br>                    }<br>                }<br>            }</p>
+<p>​            </p>
+<p>###13实现查询的界面菜单<br>    * A: 实现查询的界面菜单<br>        * a: 案例核心代码<br>            *  cn.itcast.gjp.view包中建立MainView类中添加selectZhangWu方法、selectAll方法、select方法<br>                /*<br>                 * 定义方法 selectZhangWu()<br>                 * 显示查询的方式 1 所有查询   2 条件查询<br>                 * 接收用户的选择<br>                 <em>/<br>                 public void selectZhangWu(){<br>                     System.out.println(“1. 查询所有    2. 条件查询”);<br>                     Scanner sc = new Scanner(System.in);<br>                     int selectChooser = sc.nextInt();<br>                     //判断根据用户的选择,调用不同的功能<br>                     switch(selectChooser){<br>                     case 1:<br>                         //选择的查询所有,调用查询所有的方法<br>                         selectAll();<br>                         break;<br>                     case 2:<br>                         //选的条件查询,调用带有查询条件的方法<br>                         select();<br>                         break;<br>                     }<br>                 }<br>                 /</em><br>                  * 定义方法,实现查询所有的账务数据<br>                  */<br>                 public void selectAll(){</p>
+<pre><code>}
+
+/*
+ * 定义方法,实现条件查询账务数据
+ * 提供用户的输入日期,开始日期结束日期
+ * 就2个日期,传递到controller层
+ * 调用controller的方法,传递2个日期参数
+ * 获取到controller查询的结果集,打印出来
+ */
+public void select(){
+
+}</code></pre><p>###14实现查询所有账务的控制,业务层的实现<br>    * A: 实现查询所有账务的控制,业务层的实现<br>        * a: 案例核心代码<br>            * a: cn.itcast.gjp.dao包中创建ZhangWuDao类<br>            /*<br>             *  实现对数据表 gjp_zhangwu 数据增删改查操作<br>             *  dbuils工具类完成,类成员创建QueryRunner对象,指定数据源<br>             <em>/<br>            public class ZhangWuDao {<br>                private QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());<br>                /</em><br>                 * 定义方法,查询数据库,获取所有的账务数据<br>                 * 方法,由业务层调用<br>                 * 结果集,将所有的账务数据,存储到Bean对象中,存储到集合中<br>                 <em>/<br>                public List<ZhangWu> selectAll(){<br>                    return null;<br>                }<br>            }<br>            * b: cn.itcast.gjp.service包中创建ZhangWuService类<br>                /</ZhangWu></em><br>                 *  业务层类<br>                 *  接收上一层,控制层controller的数据<br>                 *  经过计算,传递给dao层,操作数据库<br>                 *  调用dao层中的类,类成员位置,创建Dao类的对象<br>                 <em>/<br>                public class ZhangWuService {<br>                    private ZhangWuDao dao = new ZhangWuDao();<br>                    /</em><br>                     *  定义方法,实现查询所有的账务数据<br>                     *  此方法,由控制层调用, 去调用dao层的方法<br>                     *  返回存储ZhangWu对象的List集合<br>                     <em>/<br>                    public List<ZhangWu> selectAll(){<br>                        return dao.selectAll();<br>                    }<br>                }<br>            * c: cn.itcast.gjp.controller包中建立ZhangWuController类<br>                /</ZhangWu></em><br>                 *  控制器层<br>                 *  接收视图层的数据,数据传递给service层<br>                 *  成员位置,创建service对象<br>                 <em>/<br>                public class ZhangWuController {<br>                    private ZhangWuService service = new ZhangWuService();<br>                    /</em><br>                     * 控制层类定义方法,实现查询所有的账务数据<br>                     * 方法由试图层调用,方法调用service层<br>                     */<br>                    public List<ZhangWu> selectAll(){<br>                        return service.selectAll();<br>                    }<br>                }</ZhangWu></p>
+<p>###15实现查询所有账务的dao层的实现<br>    * A: 实现查询所有账务的dao层的实现<br>        * a: 案例核心代码<br>            * a: cn.itcast.gjp.dao包中创建ZhangWuDao类selectAll方法<br>            /*<br>             *  实现对数据表 gjp_zhangwu 数据增删改查操作<br>             *  dbuils工具类完成,类成员创建QueryRunner对象,指定数据源<br>             <em>/<br>            public class ZhangWuDao {<br>                private QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());<br>                /</em><br>                 * 定义方法,查询数据库,获取所有的账务数据<br>                 * 方法,由业务层调用<br>                 * 结果集,将所有的账务数据,存储到Bean对象中,存储到集合中<br>                 */<br>                public List<ZhangWu> selectAll(){<br>                    try{<br>                        //查询账务数据的SQL语句<br>                            String sql = “SELECT * FROM gjp_zhangwu”;<br>                            //调用qr对象的方法,query方法,结果集BeanListHandler<br>                            List<ZhangWu> list = qr.query(sql, new BeanListHandler&lt;&gt;(ZhangWu.class));<br>                            return list;<br>                        }catch(SQLException ex){<br>                            System.out.println(ex);<br>                            throw new RuntimeException(“查询所有账务失败”);<br>                        }<br>                }<br>            }</ZhangWu></ZhangWu></p>
+<p>​<br>###16实现查询所有账务的view层的实现<br>    * A: 实现查询所有账务的view层的实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类selectAll方法<br>            /*<br>              * 定义方法,实现查询所有的账务数据<br>              */<br>             public void selectAll(){<br>                 //调用控制层中的方法,查询所有的账务数据<br>                 List<ZhangWu> list = controller.selectAll();<br>                //输出表头<br>                 System.out.println(“ID\t\t类别\t\t账户\t\t金额\t\t时间\t\t说明”);<br>                 //遍历集合,结果输出控制台<br>                 for(ZhangWu zw : list){<br>                     System.out.println(zw.getZwid()+”\t\t”+zw.getFlname()+”\t\t”+zw.getZhanghu()+”\t\t”+<br>                     zw.getMoney()+”\t\t”+zw.getCreatetime()+”\t”+zw.getDescription());<br>                 }<br>             }</ZhangWu></p>
+<p>###17实现条件查询账务的菜单实现<br>    * A: 实现条件查询账务的菜单实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类select方法<br>              /*<br>              * 定义方法,实现条件查询账务数据<br>              * 提供用户的输入日期,开始日期结束日期<br>              * 就2个日期,传递到controller层<br>              * 调用controller的方法,传递2个日期参数<br>              * 获取到controller查询的结果集,打印出来<br>              */<br>             public void select(){<br>                 System.out.println(“选择条件查询,输入日期格式XXXX-XX-XX”);<br>                 Scanner sc = new Scanner(System.in);<br>                 System.out.print(“请输入开始日期:”);<br>                 String startDate = sc.nextLine();<br>                 System.out.print(“请输入结果日期:”);<br>                 String endDate = sc.nextLine();<br>                 //调用controller层的方法,传递日期,获取查询结果集</p>
+<pre><code>}</code></pre><p>###18实现条件查询账务的控制层,业务层实现<br>    * A: 实现条件查询账务的控制层,业务层实现<br>        * a: 案例核心代码<br>            * a: cn.itcast.gjp.dao包中创建ZhangWuDao类<br>                /*<br>                 *  实现对数据表 gjp_zhangwu 数据增删改查操作<br>                 *  dbuils工具类完成,类成员创建QueryRunner对象,指定数据源<br>                 <em>/<br>                public class ZhangWuDao {<br>                    private QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());<br>                    /</em><br>                     * 定义方法,查询数据库,带有条件去查询账务表<br>                     * 由业务层调用,查询结果集存储到Bean对象,存储到List集合<br>                     * 调用者传递2个日期字符串<br>                     <em>/<br>                    public List<ZhangWu> select(String startDate,String endDate){<br>                        return null;<br>                    }<br>                }<br>            * b: cn.itcast.gjp.service包中创建ZhangWuService类<br>                /</ZhangWu></em><br>                 *  业务层类<br>                 *  接收上一层,控制层controller的数据<br>                 *  经过计算,传递给dao层,操作数据库<br>                 *  调用dao层中的类,类成员位置,创建Dao类的对象<br>                 <em>/<br>                public class ZhangWuService {<br>                    private ZhangWuDao dao = new ZhangWuDao();<br>                    /</em><br>                     * 定义方法,实现条件查询账务<br>                     * 方法由控制层调用,传递2个日期字符串<br>                     * 调用dao层的方法,传递2个日期字符串<br>                     * 获取到查询结果集<br>                     <em>/<br>                    public List<ZhangWu> select(String startDate,String endDate){<br>                        return dao.select(startDate, endDate);<br>                    }<br>                }<br>            * c: cn.itcast.gjp.controller包中建立ZhangWuController类<br>                /</ZhangWu></em><br>                 *  控制器层<br>                 *  接收视图层的数据,数据传递给service层<br>                 *  成员位置,创建service对象<br>                 <em>/<br>                public class ZhangWuController {<br>                    private ZhangWuService service = new ZhangWuService();<br>                    /</em><br>                     * 定义方法,实现条件查询账务<br>                     * 方法由试图层调用,传递两个日期的字符串<br>                     * 调用service层的方法,传递两个日期字符串,获取结果集<br>                     * 结果集返回给试图<br>                     <em>/<br>                    public List<ZhangWu> select(String startDate,String endDate){<br>                        return service.select(startDate, endDate);<br>                    }<br>                }<br>###19实现条件查询账务的dao层实现<br>    * A: 实现条件查询账务的dao层实现<br>        * a: 案例核心代码<br>            * a: cn.itcast.gjp.dao包中创建ZhangWuDao类select方法<br>                /</ZhangWu></em><br>                 *  实现对数据表 gjp_zhangwu 数据增删改查操作<br>                 *  dbuils工具类完成,类成员创建QueryRunner对象,指定数据源<br>                 <em>/<br>                public class ZhangWuDao {<br>                    private QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());<br>                    /</em><br>                     * 定义方法,查询数据库,带有条件去查询账务表<br>                     * 由业务层调用,查询结果集存储到Bean对象,存储到List集合<br>                     * 调用者传递2个日期字符串<br>                     */<br>                    public List<ZhangWu> select(String startDate,String endDate){<br>                        try{<br>                            //拼写条件查询的SQL语句<br>                            String sql = “SELECT * FROM gjp_zhangwu WHERE createtime BETWEEN ? AND ?”;<br>                            //定义对象数组,存储?占位符<br>                            Object[] params = {startDate,endDate};<br>                            //调用qr对象的方法query查询数据表,获取结果集<br>                            return qr.query(sql, new BeanListHandler&lt;&gt;(ZhangWu.class),params);<br>                        }catch(SQLException ex){<br>                            System.out.println(ex);<br>                            throw new RuntimeException(“条件查询失败”);<br>                        }<br>                    }<br>                }</ZhangWu></p>
+<p>###20实现条件查询账务的view层实现<br>    * A: 实现条件查询账务的view层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类selectAll方法优化、抽取print方法、select方法<br>            /*<br>              * 定义方法,实现查询所有的账务数据<br>              */<br>             public void selectAll(){<br>                 //调用控制层中的方法,查询所有的账务数据<br>                 List<ZhangWu> list = controller.selectAll();<br>                 if(list.size()!=0)<br>                     print(list);<br>                 else<br>                     System.out.println(“没有查询到数据”);<br>             }</ZhangWu></p>
+<pre><code>/*
+ * 定义方法,实现条件查询账务数据
+ * 提供用户的输入日期,开始日期结束日期
+ * 就2个日期,传递到controller层
+ * 调用controller的方法,传递2个日期参数
+ * 获取到controller查询的结果集,打印出来
+ */
+public void select(){
+    System.out.println(&quot;选择条件查询,输入日期格式XXXX-XX-XX&quot;);
+    Scanner sc = new Scanner(System.in);
+    System.out.print(&quot;请输入开始日期:&quot;);
+    String startDate = sc.nextLine();
+    System.out.print(&quot;请输入结果日期:&quot;);
+    String endDate = sc.nextLine();
+    //调用controller层的方法,传递日期,获取查询结果集
+    List&lt;ZhangWu&gt; list = controller.select(startDate, endDate);
+    if(list.size()!=0)
+        print(list);
+    else
+        System.out.println(&quot;没有查询到数据&quot;);
+}
+
+//输出账务数据方法,接收List集合,遍历集合,输出表格
+private void print(List&lt;ZhangWu&gt; list) {
+       //输出表头
+        System.out.println(&quot;ID\t\t类别\t\t账户\t\t金额\t\t时间\t\t说明&quot;);
+        //遍历集合,结果输出控制台
+        for(ZhangWu zw : list){
+            System.out.println(zw.getZwid()+&quot;\t\t&quot;+zw.getFlname()+&quot;\t\t&quot;+zw.getZhanghu()+&quot;\t\t&quot;+
+            zw.getMoney()+&quot;\t\t&quot;+zw.getCreatetime()+&quot;\t&quot;+zw.getDescription());
+        }
+   }</code></pre><p>###21添加账务功能分析<br>    * A: 添加账务功能分析<br>        * a: 编写MainView类中addZhangWu方法<br>            * 键盘输入新添加的账务信息<br>            * 调用ZhangWuService类中addZhangWu方法，用来指定账务的添加<br>            * 添加完毕后，使用输出语句，提示“添加账务成功！”<br>        * b: 编写ZhangWuService类中addZhangWu方法<br>            * 调用ZhangWuDao类中addZhangWu方法，用来指定账务的添加<br>        * c: 编写ZhangWuDao类中addZhangWu方法<br>            * 通过QueryRunner对象，调用update方法更新数据库表gjp_zhangwu，完成指定账务添加到数据库表中</p>
+<p>​<br>###22添加账务功能菜单和输入功能实现<br>    * A: 添加账务功能菜单和输入功能实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类addZhangWu方法<br>            /*<br>             * 定义方法addZhangWu<br>             * 添加账务的方法，用户在界面中选择菜单1的时候调用、<br>             * 实现思想：<br>             *       接收键盘输入，5项输入，调用controller层方法<br>             */<br>            public void addZhangWu() {<br>                System.out.println(“选择的添加账务功能，请输入以下内容”);<br>                Scanner sc = new Scanner(System.in);<br>                System.out.println(“输入分类名称”);<br>                String flname = sc.next();<br>                System.out.println(“输入金额”);<br>                double money = sc.nextDouble();<br>                System.out.println(“输入账户”);<br>                String zhanghu = sc.next();<br>                System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                String createtime = sc.next();<br>                System.out.println(“输入具体描述”);<br>                String description = sc.next();<br>                //将接收到的数据，调用controller层的方法，传递参数，实现数据添加</p>
+<pre><code>}</code></pre><p>###23添加账务功能控制层,业务层实现<br>    * A: 添加账务功能控制层,业务层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.controller包中的ZhangWuController类addZhangWu方法<br>                /*<br>                 * 定义方法，实现账务添加功能<br>                 * 由视图层调用，传递参数(传递过来的参数不能是5个数据，传递的是一个ZhangWu类型的对象)<br>                 * 本方法调用service层的方法，传递ZhangWu对象，获取到添加后的结果集(添加成功影响的行数，int)<br>                 *<br>                 <em>/<br>                public void addZhangWu(ZhangWu zw) {<br>                    service.addZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.service包中的ZhangWuService类addZhangWu方法<br>                /</em><br>                 * 定义方法，实现添加账务<br>                 * 是由控制层调用，传递ZhangWu对象<br>                 <em>/<br>                public void addZhangWu(ZhangWu zw) {<br>                    dao.addZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类addZhangWu方法<br>                /</em><br>                 * 定义方法，实现添加账务功能<br>                 * 由业务层调用，传递ZhangWu对象<br>                 * 将ZhangWu对象中的数据，添加到数据库<br>                 */<br>                public void addZhangWu(ZhangWu zw) {</p>
+<pre><code>}</code></pre><p>###24添加账务功能dao层实现<br>    * A: 添加账务功能dao层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类的addZhangWu方法<br>                public void addZhangWu(ZhangWu zw) {<br>                    try{<br>                         //拼接添加数据的sql<br>                        String sql = “INSERT INTO gjp_zhangwu (flname,money,zhanghu,createtime,description) VALUES(?,?,?,?,?)”;<br>                        //创建对象数组，处处5个占位符的实际参数<br>                        //实际参数来源是传递过来的对象ZhangWu<br>                        Object[] params = {zw.getFlname(),zw.getMoney(),zw.getZhanghu(),zw.getCreatetime(),zw.getDescription()};<br>                        //调用qr对象中的方法update执行添加<br>                        qr.update(sql, params);<br>                    }catch(SQLException ex) {<br>                        System.out.println(ex);<br>                        throw new RuntimeException(“账务添加失败”);<br>                    }<br>                }</p>
+<p>###25添加账务功能view层实现<br>    * A: 添加账务功能view层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类addZhangWu方法<br>                public void addZhangWu() {<br>                    System.out.println(“选择的添加账务功能，请输入以下内容”);<br>                    Scanner sc = new Scanner(System.in);<br>                    System.out.println(“输入分类名称”);<br>                    String flname = sc.next();<br>                    System.out.println(“输入金额”);<br>                    double money = sc.nextDouble();<br>                    System.out.println(“输入账户”);<br>                    String zhanghu = sc.next();<br>                    System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                    String createtime = sc.next();<br>                    System.out.println(“输入具体描述”);<br>                    String description = sc.next();<br>                    //将接收到的数据，调用controller层的方法，传递参数，实现数据添加<br>                    //将用户输入的所有参数，封装成ZhangWu对象<br>                    ZhangWu zw = new ZhangWu(0, flname, money, zhanghu, createtime, description);<br>                    controller.addZhangWu(zw);<br>                    System.out.println(“恭喜添加账务成功”);<br>                }</p>
+<p>​<br>###26编辑账务功能分析<br>    * A: 编辑账务功能分析<br>        * a: 编写MainView类中editZhangWu方法<br>            * 键盘输入要编辑的账务信息ID号<br>            * 键盘输入要修改的账务信息内容<br>            * 调用ZhangWuService类中editZhangWu方法，用来将指定的账务信息进行更新<br>            * 更新完毕后，使用输出语句，提示 “编辑账务成功！”<br>        * b: 编写ZhangWuService类中editZhangWu方法<br>            * 调用ZhangWuDao类中editZhangWu方法，用来将指定的账务信息进行更新<br>        * c: 编写ZhangWuDao类中editZhangWu方法<br>            * 通过QueryRunner对象，调用update方法更新数据库表gjp_zhangwu，完成数据库表中指定账务更新操作</p>
+<p>###27编辑账务功能功能之前实现查询所有<br>    * A: 编辑账务功能功能之前实现查询所有<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                public void editZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是编辑功能，请输入数据”);</p>
+<p>​<br>                }</p>
+<p>###28编辑账务功能菜单实现<br>    * A: 编辑账务功能菜单实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                public void editZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是编辑功能，请输入数据”);<br>                    Scanner sc = new Scanner(System.in);<br>                    System.out.print(“请输入ID”);<br>                    int zwid = sc.nextInt();<br>                    System.out.println(“输入分类名称”);<br>                    String flname = sc.next();<br>                    System.out.println(“输入金额”);<br>                    double money = sc.nextDouble();<br>                    System.out.println(“输入账户”);<br>                    String zhanghu = sc.next();<br>                    System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                    String createtime = sc.next();<br>                    System.out.println(“输入具体描述”);<br>                    String description = sc.next();<br>                    //将用户输入的数据，封装到ZhangWu对象中<br>                    //用户输入的ID，必须封装到到对象中<br>                    ZhangWu zw = new ZhangWu(zwid, flname, money, zhanghu, createtime, description);<br>                    //调用controller层中的方法，实现编辑账务<br>                }            </p>
+<p>###29编辑账务功能控制层,业务层实现<br>    * A: 编辑账务功能控制层,业务层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.controller包中的ZhangWuController类editZhangWu方法<br>                /*<br>                 * 定义方法，实现编辑账务功能<br>                 * 由视图层调用，传递参数，也是ZhangWu对象<br>                 * 调用service层的方法，也是ZhangWu对象<br>                 <em>/<br>                public void editZhangWu(ZhangWu zw) {<br>                    service.editZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.service包中的ZhangWuService类editZhangWu方法<br>                /</em><br>                 * 定义方法，实现编辑账务<br>                 * 由控制层调用，传递ZhangWu对象<br>                 * 调用dao层的方法，传递ZhangWu对象<br>                 */<br>                public void editZhangWu(ZhangWu zw) {<br>                    dao.editZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类editZhangWu方法<br>                public void editZhangWu(ZhangWu zw) {<br>                    // TODO Auto-generated method stub</p>
+<pre><code>}</code></pre><p>###30编辑账务功能dao层实现<br>    * A：编辑账务功能dao层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类editZhangWu方法<br>                /*<br>                 * 定义方法，实现编辑功能<br>                 * 由业务层调用，传递ZhangWu对象<br>                 * 将对象中的数据，更新到数据表<br>                 */<br>                public void editZhangWu(ZhangWu zw) {<br>                    try {<br>                        //更新数据的SQL<br>                        String sql = “UPDATE zhangwu SET flname=?,money=?,zhanghu=?,createtime=?,description=? WHERE zwid=?”;<br>                        //定义对象数组，封装所有数据<br>                        Object[] params = {zw.getFlname(),zw.getMoney(),zw.getZhanghu(),zw.getCreatetime(),zw.getDescription(),zw.getZwid()};<br>                        //调用qr对象方法update执行更新<br>                        qr.update(sql, params);<br>                    } catch (SQLException ex) {<br>                        System.out.println(ex);<br>                        throw new RuntimeException(“编辑账务失败”);<br>                    }</p>
+<pre><code>}</code></pre><p>​<br>###31编辑账务功能view层实现<br>    * A: 编辑账务功能view层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                /*<br>                 * 定义方法，实现对账务的编辑功能<br>                 * 实现思想：<br>                 *     接收用户的输入的信息<br>                 *  封装成ZhangWu对象<br>                 *  调用控制层的方法，传递ZhangWu对象，实现编辑<br>                 *<br>                 */<br>                public void editZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是编辑功能，请输入数据”);<br>                    Scanner sc = new Scanner(System.in);<br>                    System.out.print(“请输入ID”);<br>                    int zwid = sc.nextInt();<br>                    System.out.println(“输入分类名称”);<br>                    String flname = sc.next();<br>                    System.out.println(“输入金额”);<br>                    double money = sc.nextDouble();<br>                    System.out.println(“输入账户”);<br>                    String zhanghu = sc.next();<br>                    System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                    String createtime = sc.next();<br>                    System.out.println(“输入具体描述”);<br>                    String description = sc.next();<br>                    //将用户输入的数据，封装到ZhangWu对象中<br>                    //用户输入的ID，必须封装到到对象中<br>                    ZhangWu zw = new ZhangWu(zwid, flname, money, zhanghu, createtime, description);<br>                    //调用controller层中的方法，实现编辑账务<br>                    controller.editZhangWu(zw);<br>                    System.out.println(“账务编辑成功”);<br>                }</p>
+<p>###32删除账务功能分析<br>    * A: 删除账务功能分析<br>        * a: 编写MainView类中deleteZhangWu方法<br>            * 键盘输入要删除的账务信息ID号<br>            * 调用ZhangWuService类中deleteZhangWu方法，用来将指定的账务信息删除<br>            * 删除完毕后，使用输出语句，提示 “删除账务成功！”<br>        * b: 编写ZhangWuService类中deleteZhangWu方法<br>            * 调用ZhangWuDao类中deleteZhangWu方法，用来将指定的账务信息删除<br>        * c: 编写ZhangWuDao类中deleteZhangWu方法<br>            * 通过QueryRunner对象，调用update方法更新数据库表gjp_zhangwu，完成数据库表中指定账务删除操作</p>
+<p>​            </p>
+<p>###33删除账务功能菜单实现<br>    * A: 删除账务功能菜单实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类deleteZhangWu方法<br>                /*<br>                 * 定义方法，实现账务删除<br>                 * 实现思想：<br>                 *     接收用户的输入，输入一个主键数据<br>                 *  调用控制层方法，传递一个主键<br>                 */<br>                public void deleteZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是删除功能，请输入序号即可”);<br>                    int zwid = new Scanner(System.in).nextInt();<br>                    //调用控制层方法，传递主键id即可<br>                }</p>
+<p>###34删除账务功能控制层,业务层实现<br>    * A: 删除账务功能控制层,业务层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.controller包中的ZhangWuController类deleteZhangWu方法<br>                /*<br>                 * 定义方法，实现删除功能<br>                 * 视图层调用，传递int类型主键<br>                 * 调用service层方法，传递int主键<br>                 <em>/<br>                public void deleteZhangWu(int zwid) {<br>                    service.deleteZhangWu(zwid);<br>                }<br>            * cn.itcast.gjp.service包中的ZhangWuService类deleteZhangWu方法<br>                /</em><br>                 * 定义方法，实现删除账务功能<br>                 * 由控制层调用，传递主键id<br>                 * 调用dao层方法，传递主键id<br>                 */<br>                public void deleteZhangWu(int zwid) {<br>                    dao.deleteZhangWu(zwid);<br>                }<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类deleteZhangWu方法<br>                public void deleteZhangWu(int zwid) {</p>
+<pre><code>}</code></pre><p>###35删除账务功能dao实现<br>    * A: 删除账务功能dao实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类deleteZhangWu方法<br>                /*<br>                 * 定义方法，实现删除业务<br>                 * 业务层调用，传递主键id<br>                 */<br>                public void deleteZhangWu(int zwid) {<br>                    try {<br>                        //拼写删除数据SQL<br>                        String sql = “DELETE FROM gjp_zhangwu WHERE zwid=?”;<br>                        qr.update(sql, zwid);<br>                    } catch (SQLException ex) {<br>                        System.out.println(ex);<br>                        throw new RuntimeException(“删除账务失败”);<br>                    }<br>                }</p>
+<p>​<br>###36删除账务功能view层实现<br>    * A: 删除账务功能view层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                /*<br>                 * 定义方法，实现账务删除<br>                 * 实现思想：<br>                 *     接收用户的输入，输入一个主键数据<br>                 *  调用控制层方法，传递一个主键<br>                 */<br>                public void deleteZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是删除功能，请输入序号即可”);<br>                    int zwid = new Scanner(System.in).nextInt();<br>                    //调用控制层方法，传递主键id即可<br>                    controller.deleteZhangWu(zwid);<br>                    System.out.println(“删除账务成功”);</p>
+<p>###37总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day30%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day30%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记30</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:14:03" itemprop="dateModified" datetime="2020-12-23T23:14:03+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、DBUtils<br>2、连接池                        </p>
+<p>###01DButils工具类的介绍个三个核心类<br>    * A: DButils工具类的介绍个三个核心类<br>        * a: 概述<br>            * DBUtils是java编程中的数据库操作实用工具，小巧简单实用。<br>            * DBUtils封装了对JDBC的操作，简化了JDBC操作，可以少写代码。<br>            * DBUtils就是JDBC的简化开发工具包。需要项目导入commons-dbutils-1.6.jar才能够正常使用DBUtils工具。<br>        * b: Dbutils三个核心功能介绍<br>            * QueryRunner中提供对sql语句操作的API.<br>                * update(Connection conn, String sql, Object… params) ，用来完成表数据的增加、删除、更新操作<br>                * query(Connection conn, String sql, ResultSetHandler<T> rsh, Object… params) ，用来完成表数据的查询操作<br>            * ResultSetHandler接口，用于定义select操作后，怎样封装结果集.<br>            * DbUtils类，它就是一个工具类,定义了关闭资源与事务处理的方法</T></p>
+<p>###02事务的简单介绍(此知识点简单了解，难度较大，就业班会详细 讲解)<br>    * A: 事务的简单介绍<br>        * a: 见day32/day32_source/事务.jgp</p>
+<p>###03QueryRunner类的update方法介绍<br>    * A：QueryRunner类的update方法介绍<br>        * a: 方法介绍<br>            * update(Connection conn, String sql, Object… params) ，用来完成表数据的增加、删除、更新操作<br>            *  使用QueryRunner类,实现对数据表的insert delete update<br>            *  调用QueryRunner类的方法 update (Connection con,String sql,Object…param)<br>                *  Object…param 可变参数,Object类型,SQL语句会出现?占位符<br>                *  数据库连接对象,自定义的工具类传递</p>
+<p>​<br>###04QueryRunner类实现insert添加数据<br>    * A: QueryRunner类实现insert添加数据<br>        * a: 案例代码<br>            public class QueryRunnerDemo {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args)throws SQLException {<br>                    insert();<br>                }<br>                /*<br>                 * 定义方法,使用QueryRunner类的方法update向数据表中,添加数据<br>                 */<br>                public static void insert()throws SQLException{<br>                    //创建QueryRunner类对象<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “INSERT INTO sort (sname,sprice,sdesc)VALUES(?,?,?)”;<br>                    //将三个?占位符的实际参数,写在数组中<br>                    Object[] params = {“体育用品”,289.32,”购买体育用品”};<br>                    //调用QueryRunner类的方法update执行SQL语句<br>                    int row = qr.update(con, sql, params);<br>                    System.out.println(row);<br>                    DbUtils.closeQuietly(con);<br>                }<br>            }</p>
+<p>###05QueryRunner类实现update修改数据<br>    * A: QueryRunner类实现update修改数据<br>        * a: 案例代码<br>            public class QueryRunnerDemo {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args)throws SQLException {<br>                    update();<br>                }<br>                /*<br>                 *  定义方法,使用QueryRunner类的方法update将数据表的数据修改<br>                 */<br>                public static void update()throws SQLException{<br>                    //创建QueryRunner类对象<br>                    QueryRunner qr = new QueryRunner();<br>                    //写修改数据的SQL语句<br>                    String sql = “UPDATE sort SET sname=?,sprice=?,sdesc=? WHERE sid=?”;<br>                    //定义Object数组,存储?中的参数<br>                    Object[] params = {“花卉”,100.88,”情人节玫瑰花”,4};<br>                    //调用QueryRunner方法update<br>                    int row = qr.update(con, sql, params);<br>                    System.out.println(row);<br>                    DbUtils.closeQuietly(con);<br>                }<br>            }</p>
+<p>​            </p>
+<p>###06QueryRunner类实现delete删除数据<br>    * A: QueryRunner类实现delete删除数据<br>        * a: 案例代码<br>            public class QueryRunnerDemo {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args)throws SQLException {<br>                    delete();<br>                }<br>                /*<br>                 *  定义方法,使用QueryRunner类的方法delete将数据表的数据删除<br>                 <em>/<br>                public static void delete()throws SQLException{<br>                    //创建QueryRunner类对象<br>                    QueryRunner qr = new QueryRunner();<br>                    //写删除的SQL语句<br>                    String sql = “DELETE FROM sort WHERE sid=?”;<br>                    //调用QueryRunner方法update<br>                    int row = qr.update(con, sql, 8);<br>                    System.out.println(row);<br>                    /</em><br>                     *  判断insert,update,delete执行是否成功<br>                     *  对返回值row判断<br>                     *  if(row&gt;0) 执行成功<br>                     */<br>                    DbUtils.closeQuietly(con);<br>                }<br>            }</p>
+<p>###07JavaBean类<br>    * A: JavaBean类<br>        * a: 概念<br>            * JavaBean就是一个类，在开发中常用封装数据。具有如下特性<br>                1.    需要实现接口：java.io.Serializable ，通常实现接口这步骤省略了，不会影响程序。<br>                2.    提供私有字段：private 类型 字段名;<br>                3.    提供getter/setter方法：<br>                4.    提供无参构造</p>
+<p>###08DBUtils工具类结果集处理的方式<br>    * A: DBUtils工具类结果集处理的方式<br>        * a: QueryRunner实现查询操作<br>            *    query(Connection conn, String sql, ResultSetHandler<T> rsh, Object… params) ，用来完成表数据的查询操作<br>        * b: ResultSetHandler结果集处理类<br>            * ArrayHandler    将结果集中的第一条记录封装到一个Object[]数组中，数组中的每一个元素就是这条记录中的每一个字段的值<br>            * ArrayListHandler    将结果集中的每一条记录都封装到一个Object[]数组中，将这些数组在封装到List集合中。<br>            * BeanHandler    将结果集中第一条记录封装到一个指定的javaBean中。<br>            * BeanListHandler    将结果集中每一条记录封装到指定的javaBean中，将这些javaBean在封装到List集合中<br>            * ColumnListHandler    将结果集中指定的列的字段值，封装到一个List集合中<br>            * ScalarHandler    它是用于单数据。例如select count(*) from 表操作。<br>            * MapHandler    将结果集第一行封装到Map集合中,Key 列名, Value 该列数据<br>            * MapListHandler    将结果集第一行封装到Map集合中,Key 列名, Value 该列数据,Map集合存储到List集合</T></p>
+<p>###09QueryRunner类的方法query<br>    * A: QueryRunner类的方法query<br>        * a: QueryRunner数据查询操作<br>            * 调用QueryRunner类方法query(Connection con,String sql,ResultSetHandler r, Object..params)<br>            *  ResultSetHandler r 结果集的处理方式,传递ResultSetHandler接口实现类<br>            *  Object..params SQL语句中的?占位符<br>            *  注意: query方法返回值,返回的是T 泛型, 具体返回值类型,跟随结果集处理方式变化<br>        * b: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>            }</p>
+<p>###10结果集处理ArrayHandler<br>    * A: 结果集处理ArrayHandler<br>        * 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    arrayHandler();<br>                }<br>                /*<br>                 *  结果集第一种处理方法, ArrayHandler<br>                 *  将结果集的第一行存储到对象数组中  Object[]<br>                 */<br>                public static void arrayHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT * FROM sort”;<br>                    //调用方法query执行查询,传递连接对象,SQL语句,结果集处理方式的实现类<br>                    //返回对象数组<br>                    Object[] result = qr.query(con, sql, new ArrayHandler());<br>                    for(Object obj : result){<br>                        System.out.print(obj);<br>                    }<br>                }<br>            }</p>
+<p>###11结果集处理ArrayListHandler<br>    * A: 结果集处理ArrayListHandler<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    arrayListHandler();<br>                }<br>                /*<br>                 *  结果集第二种处理方法,ArrayListHandler<br>                 *  将结果集的每一行,封装到对象数组中, 出现很多对象数组<br>                 *  对象数组存储到List集合<br>                 */<br>                public static void arrayListHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT * FROM sort”;<br>                    //调用query方法,结果集处理的参数上,传递实现类ArrayListHandler<br>                    //方法返回值 每行是一个对象数组,存储到List<br>                    List&lt;Object[]&gt; result=  qr.query(con, sql, new ArrayListHandler());</p>
+<pre><code>        //集合的遍历
+        for( Object[] objs  : result){
+            //遍历对象数组
+            for(Object obj : objs){
+                System.out.print(obj+&quot;  &quot;);
+            }
+            System.out.println();
+        }
+    }
+}</code></pre><p>​<br>###12结果集处理BeanHandler<br>    * A: 结果集处理BeanHandler<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    beanHandler();<br>                }<br>                /*<br>                 *  结果集第三种处理方法,BeanHandler<br>                 *  将结果集的第一行数据,封装成JavaBean对象<br>                 *  注意: 被封装成数据到JavaBean对象, Sort类必须有空参数构造<br>                 */<br>                public static void beanHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT * FROM sort “;<br>                    //调用方法,传递结果集实现类BeanHandler<br>                    //BeanHandler(Class<T> type)<br>                    Sort s = qr.query(con, sql, new BeanHandler<Sort>(Sort.class));<br>                    System.out.println(s);<br>                }<br>            }</Sort></T></p>
+<p>###13结果集处理BeanListHandler<br>    * A: 结果集处理BeanListHandler<br>        * a: 案例代码<br>        public class QueryRunnerDemo1 {<br>            private static Connection con = JDBCUtilsConfig.getConnection();<br>            public static void main(String[] args) throws SQLException{<br>                beanListHander();<br>            }<br>            /*<br>             *  结果集第四种处理方法, BeanListHandler<br>             *  结果集每一行数据,封装JavaBean对象<br>             *  多个JavaBean对象,存储到List集合<br>             */<br>            public static void beanListHander()throws SQLException{<br>                QueryRunner qr = new QueryRunner();<br>                String sql = “SELECT * FROM sort “;<br>                //调用方法query,传递结果集处理实现类BeanListHandler<br>                List<Sort> list = qr.query(con, sql, new BeanListHandler<Sort>(Sort.class));<br>                for(Sort s : list){<br>                    System.out.println(s);<br>                }<br>            }<br>        }</Sort></Sort></p>
+<p>​<br>###14结果集处理ColumnListHandler<br>    * A: 结果集处理ColumnListHandler<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    columnListHandler();<br>                }<br>                /*<br>                 *  结果集第五种处理方法,ColumnListHandler<br>                 *  结果集,指定列的数据,存储到List集合<br>                 *  List<Object> 每个列数据类型不同<br>                 */<br>                public static void columnListHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT * FROM sort “;<br>                    //调用方法 query,传递结果集实现类ColumnListHandler<br>                    //实现类构造方法中,使用字符串的列名<br>                    List<Object> list = qr.query(con, sql, new ColumnListHandler<Object>(“sname”));<br>                    for(Object obj : list){<br>                        System.out.println(obj);<br>                    }<br>                }<br>            }</Object></Object></Object></p>
+<p>​<br>###15结果集处理ScalarHandler<br>    * A: 结果集处理ScalarHandler<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    scalarHandler();<br>                }<br>                /*<br>                 *  结果集第六种处理方法,ScalarHandler<br>                 *  对于查询后,只有1个结果<br>                 <em>/<br>                public static void scalarHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT COUNT(</em>) FROM sort”;<br>                    //调用方法query,传递结果集处理实现类ScalarHandler<br>                    long count = qr.query(con, sql, new ScalarHandler<Long>());<br>                    System.out.println(count);<br>                }<br>            }</Long></p>
+<p>###16结果集处理MapHandler<br>    * A: 结果集处理MapHandler<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    mapHandler();<br>                }<br>                /*<br>                 *  结果集第七种处理方法,MapHandler<br>                 *  将结果集第一行数据,封装到Map集合中<br>                 *  Map&lt;键,值&gt; 键:列名  值:这列的数据<br>                 */<br>                public static void mapHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT  * FROM sort”;<br>                    //调用方法query,传递结果集实现类MapHandler<br>                    //返回值: Map集合,Map接口实现类, 泛型<br>                    Map&lt;String,Object&gt; map = qr.query(con, sql, new MapHandler());<br>                    //遍历Map集合<br>                    for(String key : map.keySet()){<br>                        System.out.println(key+”..”+map.get(key));<br>                    }<br>                }<br>            }</p>
+<p>###17结果集处理MapListHandler<br>    * A: 结果集处理MapListHandlerr<br>        * a: 案例代码<br>            public class QueryRunnerDemo1 {<br>                private static Connection con = JDBCUtilsConfig.getConnection();<br>                public static void main(String[] args) throws SQLException{<br>                    mapListHandler();<br>                }<br>                /*<br>                 *  结果集第八种处理方法,MapListHandler<br>                 *  将结果集每一行存储到Map集合,键:列名,值:数据<br>                 *  Map集合过多,存储到List集合<br>                 */<br>                public static void mapListHandler()throws SQLException{<br>                    QueryRunner qr = new QueryRunner();<br>                    String sql = “SELECT  * FROM sort”;<br>                    //调用方法query,传递结果集实现类MapListHandler<br>                    //返回值List集合, 存储的是Map集合<br>                    List&lt;Map&lt;String,Object&gt;&gt; list = qr.query(con, sql, new MapListHandler());<br>                    //遍历集合list<br>                    for( Map&lt;String,Object&gt; map : list ){<br>                        for(String key : map.keySet()){<br>                            System.out.print(key+”…”+map.get(key));<br>                        }<br>                        System.out.println();<br>                    }</p>
+<pre><code>    }
+}</code></pre><p>###18连接池介绍<br>    * A: 连接池介绍<br>        * a: 连接池介绍<br>            * 实际上就是存放连接的池子(容器)<br>            * 在开发中“获得连接”或“释放资源”是非常消耗系统资源的两个过程<br>            * 为了解决此类性能问题，通常情况我们采用连接池技术，来共享连接Connection。<br>            * 这样我们就不需要每次都创建连接、释放连接了，这些操作都交给了连接池            </p>
+<p>###19连接池概念规范和DataSource接口<br>    * A: 连接池概念规范和DataSource接口<br>        * a: 连接池概念规范<br>            * 用池来管理Connection，这样可以重复使用Connection。<br>            * 不用自己来创建Connection，而是通过池来获取Connection对象<br>            * 使用完Connection后，调用Connection的close()方法也不会真的关闭Connection，而是把Connection“归还”给池<br>            * 连接池技术可以完成Connection对象的再次利用<br>        * b: DataSource接口<br>            * Java为数据库连接池提供了公共的接口：javax.sql.DataSource<br>            * 各个厂商需要让自己的连接池实现这个接口。这样应用程序可以方便的切换不同厂商的连接池<br>            * 常见的连接池：DBCP、C3P0<br>###20DBCP连接池介绍<br>    * A: DBCP连接池介绍<br>        * a: DBCP连接池介绍<br>            * DBCP也是一个开源的连接池，是Apache Common成员之一，在企业开发中也比较常见，tomcat内置的连接池<br>        * tomcat服务器简单介绍    </p>
+<p>###21导入jar包<br>    * A: 导入jar包<br>        * a: jar包介绍<br>            * mysql-connector-java-5.1.37-bin.jar：数据库驱动<br>            * commons-dbutils-1.6.jar：提供QueryRunner类方便进行增删改查操作<br>            * commons-dbcp-1.4.jar：<br>            * commons-pool-1.5.6.jar：提供高效的数据库连接池技术<br>        * b: 导入jar包<br>            * 在项目根路径下建立文件夹lib<br>            * 拷贝以上jar包，选定拷贝的jar包/右键/Build Path/Add to Build Path</p>
+<p>###22BasicDataSource类的使用<br>    * A: BasicDataSource类的使用<br>        * a: 案例代码<br>            /*<br>             *  连接池jar包中,定义好一个类 BasicDataSource<br>             *  实现类数据源的规范接口 javax.sql.DataSource<br>             */<br>            public class DataSoruceDemo {<br>                public static void main(String[] args) {<br>                    //创建DataSource接口的实现类对象<br>                    //实现类, org.apache.commons.dbcp<br>                    BasicDataSource dataSource = new BasicDataSource();<br>                    //连接数据库的4个最基本信息,通过对象方法setXXX设置进来<br>                    dataSource.setDriverClassName(“com.mysql.jdbc.Driver”);<br>                    dataSource.setUrl(“jdbc:mysql://localhost:3306/mybase”);<br>                    dataSource.setUsername(“root”);<br>                    dataSource.setPassword(“123”);</p>
+<pre><code>        try{
+        //调用对象方法getConnection获取数据库的连接
+            Connection con = dataSource.getConnection();
+            System.out.println(con);
+        }catch(SQLException ex){
+//            System.out.println(ex);
+            ex.printStackTrace();
+            throw new RuntimeException(&quot;数据库连接失败&quot;);
+        }
+    }
+}</code></pre><p>​<br>###23BasicDataSource类的常见配置<br>    * A: BasicDataSource类的常见配置<br>        * a: 常见配置<br>            分类    属性            描述<br>            必须项<br>                    driverClassName    数据库驱动名称<br>                    url                数据库的地址<br>                    username        用户名<br>                    password        密码<br>            基本项（扩展）<br>                    maxActive        最大连接数量<br>                    minIdle            最小空闲连接<br>                    maxIdle         最大空闲连接<br>                    initialSize        初始化连接</p>
+<p>​<br>###24实现数据库连接池工具类<br>    * A: 实现数据库连接池工具类<br>        * a: 案例代码<br>            /*<br>             *  使用DBCP实现数据库的连接池<br>             *  连接池配置,自定义类,<br>             *  最基本四项完整<br>             *  对于数据库连接池其他配置,自定义<br>             */</p>
+<pre><code>import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
+public class JDBCUtils{
+    //创建出BasicDataSource类对象
+    private static BasicDataSource datasource = new BasicDataSource();
+
+    //静态代码块,对象BasicDataSource对象中的配置,自定义
+    static{
+        //数据库连接信息,必须的
+        datasource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);
+        datasource.setUrl(&quot;jdbc:mysql://localhost:3306/day33_user&quot;);
+        datasource.setUsername(&quot;root&quot;);
+        datasource.setPassword(&quot;123&quot;);
+        //对象连接池中的连接数量配置,可选的
+        datasource.setInitialSize(10);//初始化的连接数
+        datasource.setMaxActive(8);//最大连接数量
+        datasource.setMaxIdle(5);//最大空闲数
+        datasource.setMinIdle(1);//最小空闲
+    }</code></pre><p>​<br>                //定义静态方法,返回BasicDataSource类的对象<br>                public static DataSource getDataSource(){<br>                    return datasource;<br>                }<br>            }</p>
+<p>​<br>###25工具类的测试<br>    * A: 工具类的测试<br>        * a: 案例代码<br>            /*<br>             *  测试写好的工具类,<br>             *  提供的是一个DataSource接口的数据源<br>             *  QueryRunner类构造方法,接收DataSource接口的实现类<br>             *  后面,调用方法update,query,无需传递他们Connection连接对象<br>             */</p>
+<pre><code>import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.ArrayListHandler;
+
+import cn.itcast.jdbcutils.JDBCUtils;
+public class QueryRunnerDemo{
+    public static void main(String[] args) {
+        select();
+    }
+    //定义2个方法,实现数据表的添加,数据表查询
+    //QueryRunner类对象,写在类成员位置
+    private static QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource()); 
+
+    //数据表查询
+    public static void select(){
+        String sql = &quot;SELECT * FROM sort&quot;;
+        try{
+        List&lt;Object[]&gt; list = qr.query(sql, new ArrayListHandler());
+        for(Object[] objs : list){
+            for(Object obj : objs){
+                System.out.print(obj+&quot;\t&quot;);
+            }
+            System.out.println();
+        }
+        }catch(SQLException ex){
+            throw new RuntimeException(&quot;数据查询失败&quot;);
+        }
+    }
+
+    //数据表添加数据
+    public static void insert(){
+        String sql = &quot;INSERT INTO sort (sname,sprice,sdesc)VALUES(?,?,?)&quot;;
+        Object[] params = {&quot;水果&quot;,100.12,&quot;刚刚上市的核桃&quot;};
+        try{
+            int row = qr.update(sql, params);
+            System.out.println(row);
+        }catch(SQLException ex){
+            throw new RuntimeException(&quot;数据添加失败&quot;);
+        }
+    }
+
+}</code></pre><p>###26总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day29%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3051,607 +3489,6 @@ public class FileDemo1 {
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day21%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day21%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记21</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:11:42" itemprop="dateModified" datetime="2020-12-23T23:11:42+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、异常概述和继承体系<br>2、异常原因以及处理方式<br>3、运行时期异常<br>4、方法重写的异常处理<br>5、Throwable类常见方法<br>6、自定义异常</p>
-<p>第一节课 异常的继续体系和异常处理(46:21)<br>###01异常的概述.avi(01:43)<br>###02异常的继续体系和错误的区别.avi(07:56)<br>###03异常对象的产生原因和处理方式.avi(13:25)<br>###04方法内部抛出对象throw关键字.avi(13:38)<br>###05方法声明异常关键字throws.avi(09:37)</p>
-<p>第二节课 异常处理方式讲解(42:37)<br>###06(异常)try…catch异常处理.avi(19:50)<br>###07(异常)多catch处理.avi(02:46)<br>###08(异常)多catch处理细节.avi(10:44)<br>###09(异常)finally代码块.avi(04:21)<br>###10(异常)调用抛出异常方法try和throws处理方式.avi(04:54)</p>
-<p>第三节课 运行时期异常和方法重写的异常处理(39:45)<br>###11(异常)运行时期异常的特点.avi(11:00)<br>###12(异常)运行异常的案例.avi(08:53)<br>###13(异常)方法重写时候异常的处理.avi(11:6)<br>###14(异常)Throwable类方法.avi(08:45)</p>
-<p>第四节课 自定义异常与总结(13:32)<br>###15(异常)自定义异常.avi(13:32)</p>
-<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01异常的概述<br>    * A: 异常的概述<br>        * a:什么是异常<br>            * Java代码在运行时期发生的问题就是异常。<br>        * b:异常类<br>            * 在Java中，把异常信息封装成了一个类。<br>            * 当出现了问题时，就会创建异常类对象并抛出异常相关的信息（如异常出现的位置、原因等）。<br>        * c：我们见过的异常：数组角标越界异常ArrayIndexOutOfBoundsException,空指针异常NullPointerException</p>
-<p>###02异常的继续体系和错误的区别<br>    * A: 异常的继承体系<br>        Throwable: 它是所有错误与异常的超类（祖宗类）<br>            |- Error 错误<br>            |- Exception 编译期异常,进行编译JAVA程序时出现的问题<br>                |- RuntimeException 运行期异常, JAVA程序运行过程中出现的问题<br>    * B：异常与错误的区别<br>        * a：异常<br>            * 指程序在编译、运行期间发生了某种异常(XxxException)，我们可以对异常进行具体的处理。<br>            * 若不处理异常，程序将会结束运行。<br>            * 案例演示：<br>                public static void main(String[] args) {<br>                    int[] arr = new int[3];<br>                    System.out.println(arr[0]);<br>                    System.out.println(arr[3]);<br>                    // 该句运行时发生了数组索引越界异常ArrayIndexOutOfBoundsException，<br>                    // 由于没有处理异常，导致程序无法继续执行，程序结束。<br>                    System.out.println(“over”); // 由于上面代码发生了异常，此句代码不会执行<br>                }</p>
-<pre><code>* b：错误
-    * 指程序在运行期间发生了某种错误(XxxError)，Error错误通常没有具体的处理方式，程序将会结束运行。
-    * Error错误的发生往往都是系统级别的问题，都是jvm所在系统发生的，并反馈给jvm的。
-    * 我们无法针对处理，只能修正代码。
-    * 案例演示：
-        public static void main(String[] args) {
-            int[] arr = new int[1024*1024*100];
-            //该句运行时发生了内存溢出错误OutOfMemoryError，开辟了过大的数组空间，
-            //导致JVM在分配数组空间时超出了JVM内存空间，直接发生错误。
-        }</code></pre><p>###03异常对象的产生原因和处理方式<br>    * A: 异常对象的产生原因<br>        * 案例代码：<br>            * 工具类<br>            class ArrayTools{<br>                //对给定的数组通过给定的角标获取元素。<br>                public static int getElement(int[] arr,int index)    {<br>                    int element = arr[index];<br>                    return element;<br>                }<br>            }<br>            * 测试类<br>            class ExceptionDemo2 {<br>                public static void main(String[] args)     {<br>                    int[] arr = {34,12,67};<br>                    int num = ArrayTools.getElement(arr,4)<br>                    System.out.println(“num=”+num);<br>                    System.out.println(“over”);<br>                }<br>            }<br>        * 原因分析：<br>            * a: 由于没找到4索引，导致运行时发生了异常。这个异常JVM认识：ArrayIndexOutOfBoundsException。<br>                这个异常Java本身有描述：异常的名称、异常的内容、异常的产生位置。<br>                java将这些信息直接封装到异常对象中。new ArrayIndexOutOfBoundsException(4);<br>            * b：throw new ArrayIndexOutOfBoundsException(4);产生异常对象。JVM将产生的异常抛给调用者main()方法。<br>            * c：main()方法接收到了数组索引越界异常对象。<br>                由于main()方法并没有进行处理异常，main()方法就会继续把异常抛给调用者JVM。<br>                当JVM收到异常后，将异常对象中的名称、异常内容、位置都显示在就控制台上。同时让程序立刻终止。<br>    * B：异常的处理方式<br>        * a：JVM的默认处理方式<br>            * 把异常的名称,原因,位置等信息输出在控制台，同时会结束程序。<br>            * 一旦有异常发生，其后来的代码不能继续执行。<br>        * b：解决程序中异常的手动方式<br>            * a)：编写处理代码 try…catch…finally<br>            * b)：抛出 throws</p>
-<p>###04方法内部抛出对象throw关键字<br>    在java中，提供了一个throw关键字，它用来抛出一个指定的异常对象。<br>    * A: 什么时候使用throw关键字？<br>        * 当调用方法使用接受到的参数时，首先需要先对参数数据进行合法的判断，<br>          数据若不合法，就应该告诉调用者，传递合法的数据进来。<br>          这时需要使用抛出异常的方式来告诉调用者。<br>    * B: 使用throw关键字具体操作<br>        * a: 创建一个异常对象。封装一些提示信息(信息可以自己编写)。<br>        * b: 通过关键字throw将这个异常对象告知给调用者。throw 异常对象；<br>        throw 用在方法内，用来抛出一个异常对象，将这个异常对象传递到调用者处，并结束当前方法的执行。<br>    * C: throw关键字使用格式<br>        * throw new 异常类名(参数);<br>        * 例如：<br>            throw new NullPointerException(“要访问的arr数组不存在”);<br>            throw new ArrayIndexOutOfBoundsException(“该索引在数组中不存在，已超出范围”);<br>    * D：案例演示<br>        * throw的使用</p>
-<p>###05方法声明异常关键字throws<br>    * A: 声明<br>        * 将问题标识出来，报告给调用者。如果方法内通过throw抛出了编译时异常，而没有捕获处理（稍后讲解该方式），那么必须通过throws进行声明，让调用者去处理。<br>    * B: 声明异常格式<br>        * 修饰符 返回值类型 方法名(参数) throws 异常类名1,异常类名2… {   }<br>    * C：注意事项：<br>        * throws用于进行异常类的声明，若该方法可能有多种异常情况产生，那么在throws后面可以写多个异常类，用逗号隔开。<br>    * D：代码演示：<br>        * 多个异常的处理</p>
-<p>​<br>​<br>==============================第二节课开始====================================        </p>
-<p>​                </p>
-<p>###06try…catch异常处理<br>    * A: 捕获<br>        * Java中对异常有针对性的语句进行捕获，可以对出现的异常进行指定方式的处理<br>    * B: 捕获异常格式<br>        try {<br>            //需要被检测的语句。<br>        }<br>        catch(异常类 变量) { //参数。<br>            //异常的处理语句。<br>        }<br>        finally {<br>            //一定会被执行的语句。<br>        }<br>    * C: 格式说明<br>        * a: try<br>            * 该代码块中编写可能产生异常的代码。<br>        * b: catch<br>            * 用来进行某种异常的捕获，实现对捕获到的异常进行处理。<br>        * c: finally：<br>            * 有一些特定的代码无论异常是否发生，都需要执行。<br>            * 另外，因为异常会引发程序跳转，导致有些语句执行不到。<br>            * 而finally就是解决这个问题的，在finally代码块中存放的代码都是一定会被执行的。<br>        * d：try…catch…处理掉异常后，程序可以继续执行<br>    * D：案例演示<br>        * 捕获异常格式</p>
-<p>###07多catch处理<br>    * A：一个try 多个catch组合<br>        * 对代码进行异常检测，并对检测的异常传递给catch处理。对每种异常信息进行不同的捕获处理。<br>    * B：多catch处理的格式<br>        void show(){ //不用throws<br>            try{<br>                throw new Exception();//产生异常，直接捕获处理<br>            }catch(XxxException e){<br>                //处理方式<br>            }catch(YyyException e){<br>                //处理方式<br>            }catch(ZzzException e){<br>                //处理方式<br>            }<br>        }<br>        注意事项：在捕获异常处理中，变量也是有作用域的，如可以定义多个catch中异常变量名为e。</p>
-<p>###08多catch处理细节<br>    * A：细节：多个catch小括号中，写的是异常类的类名，有没有顺序的概念？<br>        * 有顺序关系。<br>    * B：平级异常：<br>        * 抛出的异常类之间,没有继承关系,没有顺序<br>            NullPointerException extends RuntimeException<br>            NoSuchElementException extends RuntimeException<br>            ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException extends RuntimeException<br>    * C：上下级关系的异常<br>        * 越高级的父类,越写在下面<br>            NullPointerException extends RuntimeException extends Exception</p>
-<p>###09finally代码块<br>    * A: finally的特点<br>        * 被finally控制的语句体一定会执行<br>    * B：finally的作用<br>        * finally,无论程序是否有异常出现,程序必须执行释放资源在<br>          如：IO流操作和数据库操作中会见到</p>
-<p>###10调用抛出异常方法try和throws处理方式<br>    * A: 在实际开发中使用哪种异常处理方式呢？<br>        * 能自己处理的尽量自己处理。(建议用try…catch)</p>
-<p>​<br>==============================第三节课开始====================================<br>​<br>###11运行时期异常的特点<br>    * A: 运行时期异常的概述:<br>        * RuntimeException和他的所有子类异常,都属于运行时期异常。<br>            NullPointerException,ArrayIndexOutOfBoundsException等都属于运行时期异常.<br>    * B：运行时期异常的特点<br>        * a：方法中抛出运行时期异常,方法定义中无需throws声明,调用者也无需处理此异常。<br>        * b：运行时期异常一旦发生,需要程序人员修改源代码。<br>        设计原因:<br>            运行异常,不能发生,但是如果发生了,程序人员停止程序修改源代码<br>            运行异常: 一旦发生,不要处理,请你修改源代码,运行异常一旦发生,后面的代码没有执行的意义</p>
-<p>###12运行异常的案例<br>    * A: 计算圆的面积案例<br>        定义方法,计算圆形的面积<br>        传递参数0,或者负数,计算的时候没有问题<br>        但是,违反了真实情况<br>        参数小于=0, 停止程序,不要在计算了<br>    * B：数组索引越界案例<br>        使用数组中不存在的索引<br>        public class RuntimeExceptionDemo {<br>            public static void main(String[] args) {<br>                    double d = getArea(1);<br>                    System.out.println(d);<br>            }</p>
-<pre><code>    /*
-     *  定义方法,计算圆形的面积
-     *  传递参数0,或者负数,计算的时候没有问题
-     *  但是,违反了真实情况
-     *  参数小于=0, 停止程序,不要在计算了
-     */
-    public static double getArea(double r){
-        if(r &lt;= 0)
-            throw new RuntimeException(&quot;圆形不存在&quot;);
-        return r*r*Math.PI;
-    }
-
-    public static void function(){
-        int[] arr = {1,2,3};
-        //对数组的5索引进行判断,如果5索引大于100,请将5索引上的数据/2,否则除以3
-        //索引根本就没有
-        if(arr[5] &gt; 100){
-            arr[5] = arr[5]/2;
-        }else{
-            arr[5] = arr[5]/3;
-        }
-}</code></pre><p>###13方法重写时候异常的处理<br>    * A：方法重写时候异常的处理<br>        * a：子类覆盖父类方法时，如果父类的方法声明异常，子类只能声明父类异常或者该异常的子类，或者不声明。<br>            例如：<br>            class Fu {<br>                public void method () throws RuntimeException {<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method() throws RuntimeException { }  //抛出父类一样的异常<br>                //public void method() throws NullPointerException{ } //抛出父类子异常<br>            }<br>        * b：当父类方法声明多个异常时，子类覆盖时只能声明多个异常的子集。<br>            例如：<br>            class Fu {<br>                public void method () throws NullPointerException, ClassCastException{<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method()throws NullPointerException, ClassCastException { }<br>                public void method() throws NullPointerException{ } //抛出父类异常中的一部分<br>                public void method() throws ClassCastException { } //抛出父类异常中的一部分<br>            }<br>        * c：当被覆盖的方法没有异常声明时，子类覆盖时无法声明异常的。<br>            例如：<br>            class Fu {<br>                public void method (){<br>                }<br>            }<br>            class Zi extends Fu {<br>                public void method() throws Exception { }//错误的方式<br>            }<br>    * B：问题：父类中会存在下列这种情况，接口也有这种情况。<br>                接口中没有声明异常，而实现的子类覆盖方法时发生了异常，怎么办？<br>         回答：无法进行throws声明，只能catch的捕获。<br>                万一问题处理不了呢？catch中继续throw抛出，但是只能将异常转换成RuntimeException子类抛出。</p>
-<p>###14Throwable类方法<br>    * A: 常见方法<br>        * a：getMessage()方法<br>            返回该异常的详细信息字符串，即异常提示信息<br>        * b：toString()方法<br>            返回该异常的名称与详细信息字符串<br>        * c：printStackTrace()方法<br>            在控制台输出该异常的名称与详细信息字符串、异常出现的代码位置<br>    * B：案例演示<br>        异常的常用方法代码演示<br>            try {<br>                Person p= null;<br>                if (p==null) {<br>                    throw new NullPointerException(“出现空指针异常了，请检查对象是否为null”);<br>                }<br>            } catch (NullPointerException e) {<br>                String message = e.getMesage();<br>                System.out.println(message ); </p>
-<pre><code>    String result = e.toString();
-    System.out.println(result);    
-
-    e.printStackTrace(); 
-}</code></pre><p>​<br>​<br>======================第四节课开始=========</p>
-<p>###15自定义异常<br>    * A: 自定义异常的定义<br>        * a：通过阅读源码，发现规律：<br>            每个异常中都调用了父类的构造方法，把异常描述信息传递给了父类，让父类帮我们进行异常信息的封装。<br>        * b：格式：<br>            Class 异常名 extends Exception{ //或继承RuntimeException<br>                public 异常名(){<br>                }<br>                public 异常名(String s){<br>                    super(s);<br>                }<br>            }    </p>
-<pre><code>    * c：自定义异常继承Exception演示
-    * d：自定义异常继承RuntimeException演示
-* B：自定义异常的练习
-    在Person类的有参数构造方法中，进行年龄范围的判断，
-    若年龄为负数或大于200岁，则抛出NoAgeException异常，异常提示信息“年龄数值非法”。
-    要求：在测试类中，调用有参数构造方法，完成Person对象创建，并进行异常的处理。
-
-* C：关于构造方法抛出异常总结
-    构造函数到底抛出这个NoAgeException是继承Exception呢？还是继承RuntimeException呢？
-    * a：继承Exception，必须要throws声明，一声明就告知调用者进行捕获，一旦问题处理了调用者的程序会继续执行。
-    * b：继承RuntimeExcpetion,不需要throws声明的，这时调用是不需要编写捕获代码的，因为调用根本就不知道有问题。
-        一旦发生NoAgeException，调用者程序会停掉，并有jvm将信息显示到屏幕，让调用者看到问题，修正代码。</code></pre><p>​<br>###16总结</p>
-<ul>
-<li>把今天的知识点总结一遍。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day20%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day20%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记20</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:11:25" itemprop="dateModified" datetime="2020-12-23T23:11:25+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、Map接口<br>2、模拟斗地主洗牌发牌</p>
-<p>=======================第一节课开始=============================================</p>
-<p>###01Map集合概述<br>  A:Map集合概述:<br>    我们通过查看Map接口描述,发现Map接口下的集合与Collection接口下的集合，它们存储数据的形式不同<br>        a:Collection中的集合，元素是孤立存在的（理解为单身），向集合中存储元素采用一个个元素的方式存储。<br>    <br>        b:Map中的集合，元素是成对存在的(理解为夫妻)。每个元素由键与值两部分组成，通过键可以找对所对应的值。<br>    <br>        Collection中的集合称为单列集合，Map中的集合称为双列集合。<br>        需要注意的是，Map中的集合不能包含重复的键，值可以重复；每个键只能对应一个值。<br>    Map<br>     |–HashMap<br>     |–LinkedHashMap</p>
-<p>###02Map接口中的常用方法<br>  A:Map接口中的常用方法<br>       /*<br>        *  Map接口中的常用方法<br>        *    使用Map接口的实现类 HashMap<br>        <em>/<br>       public class MapDemo {<br>           public static void main(String[] args) {<br>               function_2();<br>           }<br>           /</em><br>            *  移除集合中的键值对,返回被移除之前的值<br>            *  V remove(K)<br>            */<br>           public static void function_2(){<br>               Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>               map.put(1, “a”);<br>               map.put(2, “b”);<br>               map.put(3, “c”);<br>               System.out.println(map);</p>
-<pre><code>        String value = map.remove(33);
-        System.out.println(value);
-        System.out.println(map);
-    }
-
-    /*
-     * 通过键对象,获取值对象
-     * V get(K)
-     * 如果集合中没有这个键,返回null
-     */
-    public static void function_1(){
-        //创建集合对象,作为键的对象整数,值的对象存储字符串
-        Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();
-        map.put(1, &quot;a&quot;);
-        map.put(2, &quot;b&quot;);
-        map.put(3, &quot;c&quot;);
-        System.out.println(map);
-
-        String value = map.get(4);
-        System.out.println(value);
-    }
-
-    /*
-     *  将键值对存储到集合中
-     *  V put(K,V) K 作为键的对象, V作为值的对象
-     *  存储的是重复的键,将原有的值,覆盖
-     *  返回值一般情况下返回null,
-     *  存储重复键的时候,返回被覆盖之前的值
-     */
-    public static void function(){
-        //创建集合对象,HashMap,存储对象,键是字符串,值是整数
-        Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();
-        map.put(&quot;a&quot;, 1);
-
-        map.put(&quot;b&quot;, 2);
-
-        map.put(&quot;c&quot;, 3);
-
-        System.out.println(map);
-    }
-}</code></pre><p>###03Map集合遍历方式keySet方法<br>  A:Map集合遍历方式keySet方法<br>     1.获取Map集合中所有的键，由于键是唯一的，所以返回一个Set集合存储所有的键<br>     2.遍历键的Set集合，得到每一个键<br>     3.根据键利用get(key)去Map找所对应的值<br>     /*<br>      *  Map集合的遍历<br>      *    利用键获取值<br>      *    Map接口中定义方法keySet<br>      *    所有的键,存储到Set集合<br>      <em>/<br>     public class MapDemo1 {<br>         public static void main(String[] args) {<br>             /</em><br>              *  1. 调用map集合的方法keySet,所有的键存储到Set集合中<br>              *  2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)<br>              *  3. 调用map集合方法get,通过键获取到值<br>              */<br>             Map&lt;String,Integer&gt; map = new HashMap&lt;String,Integer&gt;();<br>             map.put(“a”, 11);<br>             map.put(“b”, 12);<br>             map.put(“c”, 13);<br>             map.put(“d”, 14);</p>
-<pre><code>        //1. 调用map集合的方法keySet,所有的键存储到Set集合中
-        Set&lt;String&gt; set = map.keySet();
-        //2. 遍历Set集合,获取出Set集合中的所有元素 (Map中的键)
-        Iterator&lt;String&gt; it = set.iterator();
-        while(it.hasNext()){
-            //it.next返回是Set集合元素,也就是Map中的键
-            //3. 调用map集合方法get,通过键获取到值
-            String key = it.next();
-            Integer value = map.get(key);
-            System.out.println(key+&quot;....&quot;+value);
-        }
-
-        System.out.println(&quot;=======================&quot;);
-
-
-        for(String key : map.keySet()){
-            Integer value = map.get(key);
-            System.out.println(key+&quot;....&quot;+value);
-        }
-    }
-}</code></pre><p>###04Map集合Entry对象<br>   A:Map集合Entry对象<br>     interface Map{<br>         interface Entry{//Entry是Map的一个内部接口<br>                        //由Map的子类的内部类实现</p>
-<pre><code>    }
-}
-class HashMap{
-    static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {//Entry对象指的就是该类的对象
-       final K key;
-             V value;
-    }
-}
-在Map类设计时，提供了一个嵌套接口：Entry。
-Entry将键值对的对应关系封装成了对象。
-即键值对对象，这样我们在遍历Map集合时，就可以从每一个键值对（Entry）对象中获取对应的键与对应的值。
-  a:Entry是Map接口中提供的一个静态内部嵌套接口。
-  b:相关方法
-     getKey()方法：获取Entry对象中的键
-  getValue()方法：获取Entry对象中的值
-  entrySet()方法：用于返回Map集合中所有的键值对(Entry)对象，以Set集合形式返回。</code></pre><p>###05Map集合遍历方式entrySet方法<br>   A:Map集合遍历方式entrySet方法<br>    *<br>     *  Map集合获取方式<br>     *  entrySet方法,键值对映射关系(结婚证)获取<br>     *  实现步骤:<br>     *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>     *        Set&lt;Entry &lt;K,V&gt; &gt;<br>     *    2. 迭代Set集合<br>     *    3. 获取出的Set集合的元素,是映射关系对象<br>     *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>     *<br>     *    创建内部类对象 外部类.内部类 = new<br>     */<br>    public class MapDemo2 {<br>        public static void main(String[] args) {<br>            Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>            map.put(1, “abc”);<br>            map.put(2, “bcd”);<br>            map.put(3, “cde”);<br>            //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>            Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>            //2. 迭代Set集合<br>            Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>            while(it.hasNext()){<br>                //  3. 获取出的Set集合的元素,是映射关系对象<br>                // it.next 获取的是什么对象,也是Map.Entry对象<br>                Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                Integer key = entry.getKey();<br>                String value = entry.getValue();<br>                System.out.println(key+”….”+value);<br>            }</p>
-<pre><code>    }
-}</code></pre><p>=======================第二节课开始============================================<br>###06Map集合遍历方式增强for循环<br>   A:Map集合遍历方式增强for循环<br>     A:Map集合遍历方式entrySet方法<br>      *<br>       *  Map集合获取方式<br>       *  entrySet方法,键值对映射关系(结婚证)获取<br>       *  实现步骤:<br>       *    1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>       *        Set&lt;Entry &lt;K,V&gt; &gt;<br>       *    2. 迭代Set集合<br>       *    3. 获取出的Set集合的元素,是映射关系对象<br>       *    4. 通过映射关系对象方法 getKet, getValue获取键值对<br>       *<br>       *    创建内部类对象 外部类.内部类 = new<br>       */<br>      public class MapDemo2 {<br>          public static void main(String[] args) {<br>              Map&lt;Integer,String&gt; map = new HashMap&lt;Integer, String&gt;();<br>              map.put(1, “abc”);<br>              map.put(2, “bcd”);<br>              map.put(3, “cde”);<br>              //1. 调用map集合方法entrySet()将集合中的映射关系对象,存储到Set集合<br>              Set&lt;Map.Entry &lt;Integer,String&gt; &gt;  set = map.entrySet();<br>              //2. 迭代Set集合<br>              Iterator&lt;Map.Entry &lt;Integer,String&gt; &gt; it = set.iterator();<br>              while(it.hasNext()){<br>                  //  3. 获取出的Set集合的元素,是映射关系对象<br>                  // it.next 获取的是什么对象,也是Map.Entry对象<br>                  Map.Entry&lt;Integer, String&gt; entry = it.next();<br>                  //4. 通过映射关系对象方法 getKet, getValue获取键值对<br>                  Integer key = entry.getKey();<br>                  String value = entry.getValue();<br>                  System.out.println(key+”….”+value);<br>              }</p>
-<pre><code>        System.out.println(&quot;=========================&quot;);
-        for(Map.Entry&lt;Integer, String&gt; entry : map.entrySet()){
-            System.out.println(entry.getKey()+&quot;...&quot;+entry.getValue());
-        }
-    }
-}
-
-注意：Map集合不能直接使用迭代器或者foreach进行遍历。但是转成Set之后就可以使用了。</code></pre><p>###07HashMap集合存储和遍历<br>  A:HashMap集合存储和遍历<br>     /*<br>      *  使用HashMap集合,存储自定义的对象<br>      *  自定义对象,作为键,出现,作为值出现<br>      <em>/<br>     public class HashMapDemo {<br>         public static void main(String[] args) {<br>             function_1();<br>         }<br>         /</em><br>          * HashMap 存储自定义对象Person,作为键出现<br>          * 键的对象,是Person类型,值是字符串<br>          * 保证键的唯一性,存储到键的对象,重写hashCode equals<br>          */<br>         public static void function_1(){<br>             HashMap&lt;Person, String&gt; map = new HashMap&lt;Person, String&gt;();<br>             map.put(new Person(“a”,20), “里约热内卢”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“b”,18), “索马里”);<br>             map.put(new Person(“c”,19), “百慕大”);<br>             for(Person key : map.keySet()){<br>                 String value = map.get(key);<br>                 System.out.println(key+”…”+value);<br>             }<br>             System.out.println(“===================”);<br>             for(Map.Entry&lt;Person, String&gt; entry : map.entrySet()){<br>                 System.out.println(entry.getKey()+”…”+entry.getValue());<br>             }<br>         }</p>
-<pre><code>    /*
-     * HashMap 存储自定义的对象Person,作为值出现
-     * 键的对象,是字符串,可以保证唯一性
-     */
-    public static void function(){
-        HashMap&lt;String, Person&gt; map = new HashMap&lt;String, Person&gt;();
-        map.put(&quot;beijing&quot;, new Person(&quot;a&quot;,20));
-        map.put(&quot;tianjin&quot;, new Person(&quot;b&quot;,18));
-        map.put(&quot;shanghai&quot;, new Person(&quot;c&quot;,19));
-        for(String key : map.keySet()){
-            Person value = map.get(key);
-            System.out.println(key+&quot;...&quot;+value);
-        }
-        System.out.println(&quot;=================&quot;);
-        for(Map.Entry&lt;String, Person&gt; entry : map.entrySet()){
-            String key = entry.getKey();
-            Person value = entry.getValue();
-            System.out.println(key+&quot;...&quot;+value);
-        }
-    }
-}</code></pre><p>###08LinkedHashMap的特点<br>   *A:LinkedHashMap的特点</p>
-<pre><code>/*
- *  LinkedHashMap继承HashMap
- *  保证迭代的顺序
- */
-public class LinkedHashMapDemo {
-    public static void main(String[] args) {
-        LinkedHashMap&lt;String, String&gt; link = new LinkedHashMap&lt;String, String&gt;();
-        link.put(&quot;1&quot;, &quot;a&quot;);
-        link.put(&quot;13&quot;, &quot;a&quot;);
-        link.put(&quot;15&quot;, &quot;a&quot;);
-        link.put(&quot;17&quot;, &quot;a&quot;);
-        System.out.println(link);
-    }
-}</code></pre><p>###09Hashtable的特点<br>   <em>A:Hashtable的特点<br>       /</em><br>        *  Map接口实现类 Hashtable<br>        *  底层数据结果哈希表,特点和HashMap是一样的<br>        *  Hashtable 线程安全集合,运行速度慢<br>        *  HashMap 线程不安全的集合,运行速度快<br>        *<br>        *  Hashtable命运和Vector是一样的,从JDK1.2开始,被更先进的HashMap取代<br>        *<br>        *  HashMap 允许存储null值,null键<br>        *  Hashtable 不允许存储null值,null键<br>        *<br>        *  Hashtable他的孩子,子类 Properties 依然活跃在开发舞台<br>        */<br>       public class HashtableDemo {<br>           public static void main(String[] args) {<br>               Map&lt;String,String&gt; map = new Hashtable&lt;String,String&gt;();<br>               map.put(null, null);<br>               System.out.println(map);<br>           }<br>       }</p>
-<p>###10静态导入<br>   <em>A:静态导入:如果本类中有和静态导入的同名方法会优先使用本类的<br>               如果还想使用静态导入的,依然需要类名来调用<br>       /</em><br>        * JDK1.5新特性,静态导入<br>        * 减少开发的代码量<br>        * 标准的写法,导入包的时候才能使用<br>        *<br>        * import static java.lang.System.out;最末尾,必须是一个静态成员<br>        */<br>       import static java.lang.System.out;<br>       import static java.util.Arrays.sort;</p>
-<pre><code>public class StaticImportDemo {
-    public static void main(String[] args) {
-        out.println(&quot;hello&quot;);
-
-        int[] arr = {1,4,2};
-        sort(arr);
-    }
-}</code></pre><p>###11方法的可变参数<br>   <em>A:方法的可变参数<br>     /</em><br>      *  JDK1.5新的特性,方法的可变参数<br>      *  前提: 方法参数数据类型确定,参数的个数任意<br>      *  可变参数语法: 数据类型…变量名<br>      *  可变参数,本质就是一个数组<br>      */<br>     public class VarArgumentsDemo {<br>         public static void main(String[] args) {<br>             //调用一个带有可变参数的方法,传递参数,可以任意<br>         //    getSum();<br>             int sum = getSum(5,34,3,56,7,8,0);<br>             System.out.println(sum);</p>
-<pre><code>    }
-
-    /*
-     * 定义方法,计算10个整数和
-     * 方法的可变参数实现
-     */
-    public static int getSum(int...a){
-        int sum = 0 ;
-        for(int i : a){
-            sum = sum + i;
-        }
-        return sum;
-    }
-
-    /*
-     * 定义方法,计算3个整数和
-     */
-    /*public static int getSum(int a,int b ,int c){
-        return a+b+c;
-    }*/
-
-    /*
-     * 定义方法,计算2个整数和
-     */
-    /*public static int getSum(int a,int b){
-        return a+b;
-    }*/
-}</code></pre><p>###12可变参数的注意事项<br>   <em>A:可变参数的注意事项<br>       /</em><br>        * 可变参数的注意事项<br>        * 1. 一个方法中,可变参数只能有一个<br>        * 2. 可变参数,必须写在参数列表的最后一位<br>        */<br>        public static void function(Object…o){</p>
-<pre><code>}</code></pre><p>=======================第三节课开始=============================================<br>###13Collections工具类<br>   A:Collections工具类<br>      /*<br>       *  集合操作的工具类<br>       *    Collections<br>       <em>/<br>      public class CollectionsDemo {<br>          public static void main(String[] args) {<br>              function_2();<br>          }<br>          /</em><br>           * Collections.shuffle方法<br>           * 对List集合中的元素,进行随机排列<br>           */<br>          public static void function_2(){<br>              List<Integer> list = new ArrayList<Integer>();<br>              list.add(1);<br>              list.add(5);<br>              list.add(9);<br>              list.add(11);<br>              list.add(8);<br>              list.add(10);<br>              list.add(15);<br>              list.add(20);<br>              System.out.println(list);</Integer></Integer></p>
-<pre><code>        //调用工具类方法shuffle对集合随机排列
-        Collections.shuffle(list);
-        System.out.println(list);
-    }
-
-    /*
-     * Collections.binarySearch静态方法
-     * 对List集合进行二分搜索,方法参数,传递List集合,传递被查找的元素
-     */
-    public static void function_1(){
-        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-        list.add(1);
-        list.add(5);
-        list.add(8);
-        list.add(10);
-        list.add(15);
-        list.add(20);
-        //调用工具类静态方法binarySearch
-        int index = Collections.binarySearch(list, 16);
-        System.out.println(index);
-    }
-
-    /*
-     *  Collections.sort静态方法
-     *  对于List集合,进行升序排列
-     */
-    public static void function(){
-        //创建List集合
-        List&lt;String&gt; list = new ArrayList&lt;String&gt;();
-        list.add(&quot;ewrew&quot;);
-        list.add(&quot;qwesd&quot;);
-        list.add(&quot;Qwesd&quot;);
-        list.add(&quot;bv&quot;);
-        list.add(&quot;wer&quot;);
-        System.out.println(list);
-        //调用集合工具类的方法sort
-        Collections.sort(list);
-        System.out.println(list);
-    }
-}</code></pre><p>###14集合的嵌套<br>   A:集合的嵌套<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
-<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
-    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
-    //定义传智播客集合容器,键是班级名字,值是两个班级容器
-    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
-            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
-    czbk.put(&quot;基础班&quot;, javase);
-    czbk.put(&quot;就业班&quot;, javaee);
-
-     keySet(czbk);
-
-}</code></pre><p>###15集合的嵌套keySet遍历<br>   A:集合的嵌套keySet遍历<br>       /*<br>        *  Map集合的嵌套,Map中存储的还是Map集合<br>        *  要求:<br>        *    传智播客<br>        *      Java基础班<br>        *        001  张三<br>        *        002  李四<br>        *<br>        *      Java就业班<br>        *        001  王五<br>        *        002  赵六<br>        *  对以上数据进行对象的存储<br>        *   001 张三  键值对<br>        *   Java基础班: 存储学号和姓名的键值对<br>        *   Java就业班:<br>        *   传智播客: 存储的是班级<br>        *<br>        *   基础班Map   &lt;学号,姓名&gt;<br>        *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>        */<br>       public class MapMapDemo {<br>           public static void main(String[] args) {<br>               //定义基础班集合<br>               HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>               //定义就业班集合<br>               HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>               //向班级集合中,存储学生信息<br>               javase.put(“001”, “张三”);<br>               javase.put(“002”, “李四”);</p>
-<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
-    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
-    //定义传智播客集合容器,键是班级名字,值是两个班级容器
-    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
-            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
-    czbk.put(&quot;基础班&quot;, javase);
-    czbk.put(&quot;就业班&quot;, javaee);
-
-     keySet(czbk);
-
-}</code></pre><p>​<br>​<br>           public static void keySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){<br>               //调用czbk集合方法keySet将键存储到Set集合<br>               Set<String> classNameSet = czbk.keySet();<br>               //迭代Set集合<br>               Iterator<String> classNameIt = classNameSet.iterator();<br>               while(classNameIt.hasNext()){<br>                   //classNameIt.next获取出来的是Set集合元素,czbk集合的键<br>                   String classNameKey = classNameIt.next();<br>                   //czbk集合的方法get获取值,值是一个HashMap集合<br>                   HashMap&lt;String,String&gt; classMap = czbk.get(classNameKey);<br>                   //调用classMap集合方法keySet,键存储到Set集合<br>                   Set<String> studentNum = classMap.keySet();<br>                   Iterator<String> studentIt = studentNum.iterator();</String></String></String></String></p>
-<pre><code>            while(studentIt.hasNext()){
-                //studentIt.next获取出来的是classMap的键,学号
-                String numKey = studentIt.next();
-                //调用classMap集合中的get方法获取值
-                String nameValue = classMap.get(numKey);
-                System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
-            }
-        }
-
-        System.out.println(&quot;==================================&quot;);
-        for(String className: czbk.keySet()){
-           HashMap&lt;String, String&gt; hashMap = czbk.get(className);    
-           for(String numKey : hashMap.keySet()){
-               String nameValue = hashMap.get(numKey);
-               System.out.println(className+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
-           }
-        }
-    }
-
-} </code></pre><p>###16集合的嵌套entrySet遍历<br>    A:集合的嵌套entrySet遍历<br>    /*<br>     *  Map集合的嵌套,Map中存储的还是Map集合<br>     *  要求:<br>     *    传智播客<br>     *      Java基础班<br>     *        001  张三<br>     *        002  李四<br>     *<br>     *      Java就业班<br>     *        001  王五<br>     *        002  赵六<br>     *  对以上数据进行对象的存储<br>     *   001 张三  键值对<br>     *   Java基础班: 存储学号和姓名的键值对<br>     *   Java就业班:<br>     *   传智播客: 存储的是班级<br>     *<br>     *   基础班Map   &lt;学号,姓名&gt;<br>     *   传智播客Map  &lt;班级名字, 基础班Map&gt;<br>     */<br>    public class MapMapDemo {<br>        public static void main(String[] args) {<br>            //定义基础班集合<br>            HashMap&lt;String, String&gt; javase = new HashMap&lt;String, String&gt;();<br>            //定义就业班集合<br>            HashMap&lt;String, String&gt; javaee = new HashMap&lt;String, String&gt;();<br>            //向班级集合中,存储学生信息<br>            javase.put(“001”, “张三”);<br>            javase.put(“002”, “李四”);</p>
-<pre><code>    javaee.put(&quot;001&quot;, &quot;王五&quot;);
-    javaee.put(&quot;002&quot;, &quot;赵六&quot;);
-    //定义传智播客集合容器,键是班级名字,值是两个班级容器
-    HashMap&lt;String, HashMap&lt;String,String&gt;&gt; czbk =
-            new HashMap&lt;String, HashMap&lt;String,String&gt;&gt;();
-    czbk.put(&quot;基础班&quot;, javase);
-    czbk.put(&quot;就业班&quot;, javaee);
-
-    entrySet(czbk);
-}
-
-public static void entrySet(HashMap&lt;String,HashMap&lt;String,String&gt;&gt; czbk){
-    //调用czbk集合方法entrySet方法,将czbk集合的键值对关系对象,存储到Set集合
-    Set&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; 
-                             classNameSet = czbk.entrySet();
-    //迭代器迭代Set集合
-    Iterator&lt;Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt;&gt; classNameIt = classNameSet.iterator();
-    while(classNameIt.hasNext()){
-        //classNameIt.next方法,取出的是czbk集合的键值对关系对象
-        Map.Entry&lt;String, HashMap&lt;String,String&gt;&gt; classNameEntry =  classNameIt.next();
-        //classNameEntry方法 getKey,getValue
-        String classNameKey = classNameEntry.getKey();
-        //获取值,值是一个Map集合
-        HashMap&lt;String,String&gt; classMap = classNameEntry.getValue();
-        //调用班级集合classMap方法entrySet,键值对关系对象存储Set集合
-        Set&lt;Map.Entry&lt;String, String&gt;&gt; studentSet = classMap.entrySet();
-        //迭代Set集合
-        Iterator&lt;Map.Entry&lt;String, String&gt;&gt; studentIt = studentSet.iterator();
-        while(studentIt.hasNext()){
-            //studentIt方法next获取出的是班级集合的键值对关系对象
-            Map.Entry&lt;String, String&gt; studentEntry = studentIt.next();
-            //studentEntry方法 getKey getValue
-            String numKey = studentEntry.getKey();
-            String nameValue = studentEntry.getValue();
-            System.out.println(classNameKey+&quot;..&quot;+numKey+&quot;..&quot;+nameValue);
-        }
-    }
-     System.out.println(&quot;==================================&quot;);
-
-    for (Map.Entry&lt;String, HashMap&lt;String, String&gt;&gt; me : czbk.entrySet()) {
-        String classNameKey = me.getKey();
-        HashMap&lt;String, String&gt; numNameMapValue = me.getValue();
-        for (Map.Entry&lt;String, String&gt; nameMapEntry : numNameMapValue.entrySet()) {
-            String numKey = nameMapEntry.getKey();
-            String nameValue = nameMapEntry.getValue();
-            System.out.println(classNameKey + &quot;..&quot; + numKey + &quot;..&quot; + nameValue);
-        }
-    }
-}</code></pre><p>​<br>    }</p>
-<p>=======================第四节课开始=============================================</p>
-<p>###17斗地主的功能分析<br>   A:斗地主的功能分析<br>       a:具体规则：<br>               1. 组装54张扑克牌<br>            2. 将54张牌顺序打乱<br>               3. 三个玩家参与游戏，三人交替摸牌，每人17张牌，最后三张留作底牌。<br>               4. 查看三人各自手中的牌（按照牌的大小排序）、底牌<br>       b:分析:<br>          1.准备牌：<br>           完成数字与纸牌的映射关系：<br>           使用双列Map(HashMap)集合，完成一个数字与字符串纸牌的对应关系(相当于一个字典)。<br>          2.洗牌：<br>           通过数字完成洗牌发牌<br>          3.发牌：<br>           将每个人以及底牌设计为ArrayList<String>,将最后3张牌直接存放于底牌，剩余牌通过对3取模依次发牌。<br>           存放的过程中要求数字大小与斗地主规则的大小对应。<br>           将代表不同纸牌的数字分配给不同的玩家与底牌。<br>          4.看牌：<br>           通过Map集合找到对应字符展示。<br>           通过查询纸牌与数字的对应关系，由数字转成纸牌字符串再进行展示。</String></p>
-<p>###18斗地主的准备牌<br>   A:斗地主的准备牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王,索引是从0~54,对应大王,小王,…3(牌的顺序从大到小)<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
-<pre><code>}</code></pre><p>###19斗地主的洗牌<br>    A:斗地主的洗牌<br>      /*<br>       *  实现模拟斗地主的功能<br>       *   1. 组合牌<br>       *   2. 洗牌<br>       *   3. 发牌<br>       *   4. 看牌<br>       */<br>      public class DouDiZhu {<br>          public static void main(String[] args) {<br>              //1. 组合牌<br>              //创建Map集合,键是编号,值是牌<br>              HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>              //创建List集合,存储编号<br>              ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>              //定义出13个点数的数组<br>              String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>              //定义4个花色数组<br>              String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>              //定义整数变量,作为键出现<br>              int index = 2;<br>              //遍历数组,花色+点数的组合,存储到Map集合<br>              for(String number : numbers){<br>                  for(String color : colors){<br>                      pooker.put(index, color+number);<br>                      pookerNumber.add(index);<br>                      index++;<br>                  }<br>              }<br>              //存储大王,和小王<br>              pooker.put(0, “大王”);<br>              pookerNumber.add(0);<br>              pooker.put(1, “小王”);<br>              pookerNumber.add(1);</Integer></Integer></p>
-<pre><code>//洗牌,将牌的编号打乱
-Collections.shuffle(pookerNumber);</code></pre><p>​<br>          }</p>
-<pre><code>}</code></pre><p>###20斗地主的发牌<br>  A:斗地主的发牌<br>    /*<br>     *  实现模拟斗地主的功能<br>     *   1. 组合牌<br>     *   2. 洗牌<br>     *   3. 发牌<br>     *   4. 看牌<br>     */<br>    public class DouDiZhu {<br>        public static void main(String[] args) {<br>            //1. 组合牌<br>            //创建Map集合,键是编号,值是牌<br>            HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>            //创建List集合,存储编号<br>            ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>            //定义出13个点数的数组<br>            String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>            //定义4个花色数组<br>            String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>            //定义整数变量,作为键出现<br>            int index = 2;<br>            //遍历数组,花色+点数的组合,存储到Map集合<br>            for(String number : numbers){<br>                for(String color : colors){<br>                    pooker.put(index, color+number);<br>                    pookerNumber.add(index);<br>                    index++;<br>                }<br>            }<br>            //存储大王,和小王<br>            pooker.put(0, “大王”);<br>            pookerNumber.add(0);<br>            pooker.put(1, “小王”);<br>            pookerNumber.add(1);</Integer></Integer></p>
-<pre><code>        //洗牌,将牌的编号打乱
-        Collections.shuffle(pookerNumber);
-
-        //发牌功能,将牌编号,发给玩家集合,底牌集合
-        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
-
-        //发牌采用的是集合索引%3
-        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
-            //先将底牌做好
-            if(i &lt; 3){
-                //存到底牌去
-                bottom.add( pookerNumber.get(i));
-               //对索引%3判断
-            }else if(i % 3 == 0){
-                //索引上的编号,发给玩家1
-                player1.add( pookerNumber.get(i) );
-            }else if( i % 3 == 1){
-                //索引上的编号,发给玩家2
-                player2.add( pookerNumber.get(i) );
-            }else if( i % 3 == 2){
-                //索引上的编号,发给玩家3
-                player3.add( pookerNumber.get(i) );
-            }
-        }
-
-    }
-
-}</code></pre><p>###21斗地主的看牌<br>  A:斗地主的看牌<br>     /*<br>      *  实现模拟斗地主的功能<br>      *   1. 组合牌<br>      *   2. 洗牌<br>      *   3. 发牌<br>      *   4. 看牌<br>      */<br>     public class DouDiZhu {<br>         public static void main(String[] args) {<br>             //1. 组合牌<br>             //创建Map集合,键是编号,值是牌<br>             HashMap&lt;Integer,String&gt; pooker = new HashMap&lt;Integer, String&gt;();<br>             //创建List集合,存储编号<br>             ArrayList<Integer> pookerNumber = new ArrayList<Integer>();<br>             //定义出13个点数的数组<br>             String[] numbers = {“2”,”A”,”K”,”Q”,”J”,”10”,”9”,”8”,”7”,”6”,”5”,”4”,”3”};<br>             //定义4个花色数组<br>             String[] colors = {“♠”,”♥”,”♣”,”♦”};<br>             //定义整数变量,作为键出现<br>             int index = 2;<br>             //遍历数组,花色+点数的组合,存储到Map集合<br>             for(String number : numbers){<br>                 for(String color : colors){<br>                     pooker.put(index, color+number);<br>                     pookerNumber.add(index);<br>                     index++;<br>                 }<br>             }<br>             //存储大王,和小王<br>             pooker.put(0, “大王”);<br>             pookerNumber.add(0);<br>             pooker.put(1, “小王”);<br>             pookerNumber.add(1);</Integer></Integer></p>
-<pre><code>        //洗牌,将牌的编号打乱
-        Collections.shuffle(pookerNumber);
-
-        //发牌功能,将牌编号,发给玩家集合,底牌集合
-        ArrayList&lt;Integer&gt; player1 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; player2 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; player3 = new ArrayList&lt;Integer&gt;();
-        ArrayList&lt;Integer&gt; bottom = new ArrayList&lt;Integer&gt;();
-
-        //发牌采用的是集合索引%3
-        for(int i = 0 ; i &lt; pookerNumber.size() ; i++){
-            //先将底牌做好
-            if(i &lt; 3){
-                //存到底牌去
-                bottom.add( pookerNumber.get(i));
-               //对索引%3判断
-            }else if(i % 3 == 0){
-                //索引上的编号,发给玩家1
-                player1.add( pookerNumber.get(i) );
-            }else if( i % 3 == 1){
-                //索引上的编号,发给玩家2
-                player2.add( pookerNumber.get(i) );
-            }else if( i % 3 == 2){
-                //索引上的编号,发给玩家3
-                player3.add( pookerNumber.get(i) );
-            }
-        }
-        //对玩家手中的编号排序
-        Collections.sort(player1);
-        Collections.sort(player2);
-        Collections.sort(player3);
-        //看牌,将玩家手中的编号,到Map集合中查找,根据键找值
-        //定义方法实现
-        look(&quot;刘德华&quot;,player1,pooker);
-        look(&quot;张曼玉&quot;,player2,pooker);
-        look(&quot;林青霞&quot;,player3,pooker);
-        look(&quot;底牌&quot;,bottom,pooker);
-    }
-    public static void look(String name,ArrayList&lt;Integer&gt; player,HashMap&lt;Integer,String&gt; pooker){
-        //遍历ArrayList集合,获取元素,作为键,到集合Map中找值
-        System.out.print(name+&quot; &quot;);
-        for(Integer key : player){
-            String value = pooker.get(key);
-            System.out.print(value+&quot; &quot;);
-        }
-        System.out.println();
-    }
-}</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3721,20 +3558,20 @@ Collections.shuffle(pookerNumber);</code></pre><p>​<br>          }</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

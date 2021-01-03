@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、填空题1） 计数进位制转换  高进制转低进制：除k取余法低进制转高进制：乘k取整法   2） 符号数的编码表示  正数原，反，补一样负数反码为原发除符号取反，补码为反码在最低位加1最高位0表示正，1表示负 校验法： （1） 奇偶校验码：可以验证传输过程是否产生了错误 1） 奇校验：为二进制添加一位校验码，使1的数量为奇数2） 偶校验：为二进制添加一位校验码，使1的数量为偶数 （2） 海明码：传">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字逻辑习题汇总1">
+<meta property="og:url" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、填空题1） 计数进位制转换  高进制转低进制：除k取余法低进制转高进制：乘k取整法   2） 符号数的编码表示  正数原，反，补一样负数反码为原发除符号取反，补码为反码在最低位加1最高位0表示正，1表示负 校验法： （1） 奇偶校验码：可以验证传输过程是否产生了错误 1） 奇校验：为二进制添加一位校验码，使1的数量为奇数2） 偶校验：为二进制添加一位校验码，使1的数量为偶数 （2） 海明码：传">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165508289.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112359223.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105152605757.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153318050.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112557455.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153510432.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153600370.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153625626.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153643134.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153654712.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153705525.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153719452.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162642215.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162656600.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162715243.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154057026.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154114396.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154206272.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154227651.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154314172.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154403178.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155520963.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154637610.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155539695.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154716326.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155550776.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154743858.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155606673.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155630200.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165901034.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114170734446.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165908611.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170125645.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165918092.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170140428.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165928137.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170202484.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165938178.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170218574.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165946254.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170231039.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165959377.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170243330.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114150538747.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170255315.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170306846.jfif">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170018284.png">
+<meta property="og:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105171850125.jfif">
+<meta property="article:published_time" content="2021-01-03T02:59:08.500Z">
+<meta property="article:modified_time" content="2021-01-03T02:59:56.483Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="数字逻辑基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165508289.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数字逻辑习题汇总1 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数字逻辑习题汇总1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-03 10:59:08 / 修改时间：10:59:56" itemprop="dateCreated datePublished" datetime="2021-01-03T10:59:08+08:00">2021-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1、填空题<br><strong>1） 计数进位制转换</strong></p>
+<blockquote>
+<p><em>高进制转低进制：除k取余法</em><br><em>低进制转高进制：乘k取整法</em></p>
+</blockquote>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165508289.png" alt="img"></p>
+<p><strong>2） 符号数的编码表示</strong></p>
+<blockquote>
+<p><em>正数原，反，补一样</em><br><em>负数反码为原发除符号取反，补码为反码在最低位加1</em><br><em>最高位0表示正，1表示负</em><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112359223.png" alt="img"></p>
+<p>校验法： （1） 奇偶校验码：可以验证传输过程是否产生了错误 1） 奇校验：为二进制添加一位校验码，使1的数量为奇数<br>2） 偶校验：为二进制添加一位校验码，使1的数量为偶数 （2） 海明码：传输过程中错一位概率大，通过海明码可以验证是哪位错了<br>在2的k次方位数上放校验码，例如传输三位的时候，在第一位和第二位放校验码，第三位存信息，利用第一位和第二位和第三位进行偶校验，若产生两位验证位为00，则正确，01是第1位错了，10是第二位错了，11是三位都错了，拓展海明码位数就能增加信息位位数，增强实用性<br>二进制按顺序排列第k位校验位管理对应二进制第k位为1的信息位</p>
+</blockquote>
+<p>2.可靠性编码设计：设计一种含3位校验位的海明码方案，1）信息位与校验位的排列关系与交叉校验的编组表，2）校验位及校验和的生成函数。</p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105152605757.jfif" alt="img"></p>
+<p>3.可靠性编码设计：设计一种含7位信息位的奇校验编码方案，1）说明检错的原理，2）写出校验位及校验和的生成函数。</p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153318050.jfif" alt="img"></p>
+<p>4.可靠性编码设计：设计一种含7位信息位的偶校验编码方案，1）说明检错的原理，2）写出校验位及校验和的生成函数。</p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112557455.jfif" alt="img"><br>5.用公式法化简函数并表示为与或式。</p>
+<blockquote>
+<p>与或式：先与后或<br>或与式：先或后与<br>与非式：只有与非，无或</p>
+</blockquote>
+<p>常用公式：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153510432.jfif" alt="img"></p>
+<p>5-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153600370.jfif" alt="5-1"><br>5-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153625626.jfif" alt="5-2"><br>5-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153643134.jfif" alt="5-3"><br>5-4<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153654712.jfif" alt="5-4"><br>5-5<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153705525.jfif" alt="5-5"><br>5-6<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153719452.jfif" alt="5-6"></p>
+<p>6.利用卡诺图法化简逻辑函数</p>
+<blockquote>
+<p>最小项用m表示，最大项用M，d或D表示任意值 卡诺图中1表示最小项中的A，则表示最大项中的~A（A非）</p>
+</blockquote>
+<p>1）表示为最简与或式<br>2）写出对应的最大项表达式，化简并表示为最简或与式<br>6-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162642215.jfif" alt="6-1"><br>6-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162656600.jfif" alt="6-2"><br>6-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162715243.jfif" alt="6-3"></p>
+<p>7.逻辑函数变换</p>
+<blockquote>
+<p>转与非方法：加两个非号不影响值，打开里面的非号</p>
+</blockquote>
+<p>7-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154057026.jfif" alt="7-1"><br>7-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154114396.jfif" alt="7-2"></p>
+<blockquote>
+<p>转或非方法：（1）加法分配律转化为或与式，再加双非号，打开内部非号 （2）转发为与非式后利用最大项最小项特点化为或与式，再加两个非号，打开内部非号</p>
+</blockquote>
+<p>7-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154206272.jfif" alt="7-3"><br>7-4<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154227651.jfif" alt="7-4"></p>
+<blockquote>
+<p>验证传化成的最大项与最小项答案可通过卡诺图，需注意最小项中A表示1，<del>A表示0，最大项中A表示0，</del>A表示1<br>转化为最小项方法：补项</p>
+</blockquote>
+<p>7-5<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154314172.jfif" alt="7-5"></p>
+<blockquote>
+<p>转化为最大项方法：加法分配率加补项<br>7-6</p>
+</blockquote>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154403178.jfif" alt="7-6"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155520963.png" alt="8"><br><strong>二进制全加器设计</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154637610.jfif" alt="8"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155539695.png" alt="9"><br><strong>二进制全减器设计</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154716326.jfif" alt="9"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155550776.png" alt="10"><br><strong>设计一种2-4译码器，并拓展为3-8译码器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154743858.jfif" alt="10"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155606673.png" alt="11"><br><strong>设计一种2-4译码器，并拓展为4-16译码器</strong></p>
+<p>第一问用10题图中（1）（2）（3）可解<br>第二问<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155630200.jfif" alt="11"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165901034.png" alt="12"></p>
+<p><strong>利用3-8译码器实现逻辑函数</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114170734446.jfif" alt="12"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165908611.png" alt="13"><br><strong>利用3-8译码器实现逻辑函数</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170125645.jfif" alt="13"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165918092.png" alt="14"><br><strong>利用一种4-16译码器实现逻辑函数</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170140428.jfif" alt="14"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165928137.png" alt="15"><br><strong>利用一种2-4译码器实现4选1的多路选择器，并扩展为8选1的多路选择器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170202484.jfif" alt="15"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165938178.png" alt="16"><br><strong>利用一种4选1的多路选择器实现逻辑函数</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170218574.jfif" alt="16"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165946254.png" alt="17"><br><strong>利用一种2-4译码器实现4路的多路分配器,并扩展为8路分配器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170231039.jfif" alt="17"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165959377.png" alt="18"><br><strong>利用D型触发器设计同步检测器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170243330.jfif" alt="18"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114150538747.png" alt="19"><br><strong>利用D型触发器设计一个2位的二进制同步可逆计数器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170255315.jfif" alt="19-1"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170306846.jfif" alt="19-2"></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170018284.png" alt="20"><br><strong>多功能同步移位寄存器</strong></p>
+<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105171850125.jfif" alt="20"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数字逻辑基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/" rel="prev" title="数字逻辑复习汇总1">
+      <i class="fa fa-chevron-left"></i> 数字逻辑复习汇总1
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

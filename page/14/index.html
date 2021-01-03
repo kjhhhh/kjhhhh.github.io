@@ -155,6 +155,888 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day12%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day12%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记12</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:08:06" itemprop="dateModified" datetime="2020-12-23T23:08:06+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、构造方法<br>2、this关键字<br>3、super关键字<br>4、综合案例</p>
+<p>第一节课<br>###01(面向对象)构造方法引入.avi                03：33<br>###02(面向对象)构造方法作用.avi                05：56<br>###03(面向对象)构造方法的定义和运行特点.avi        09：21<br>###04(面向对象)默认添加的构造方法.avi            04：32<br>###05(面向对象)构造方法的调用赋值.avi            05：22<br>###06(面向对象)构造方法的内存.avi                 09：44</p>
+<p>第二节课<br>###07(面向对象)构造方法的重载.avi                 08：41<br>###08(面向对象)构造方法和一般方法区别.avi        02：31<br>###09(面向对象)this在构造方法之间的调用.avi     15：12<br>###10(面向对象)this在构造方法调用的内存图.avi    08：45<br>###11(面向对象)this简易应用.avi                  02：12</p>
+<p>第三节课<br>###12(面向对象)super关键字_1.avi                 03：02<br>###13(面向对象)super关键字_2.avi                 08：59<br>###14(面向对象)子类父类的内存图.avi             16：04<br>###15(面向对象)super关键字_3.avi                11：38</p>
+<p>第四节课<br>###16(面向对象)super关键字_4.avi                 08：17<br>###17(面向对象)创建子类对象过程的细节.avi       03：27<br>###18(面向对象)super的应用.avi                 13：02<br>###19(面向对象)完整员工案例分析.avi            05：50<br>###20(面向对象)完整员工案例代码实现.avi         10：46</p>
+<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01构造方法引入<br>    * A:构造方法的引入<br>            在开发中经常需要在创建对象的同时明确对象的属性值，比如员工入职公司就要明确他的姓名、年龄等属性信息。<br>            那么，创建对象就要明确属性值，那怎么解决呢？也就是在创建对象的时候就要做的事情，当使用new关键字创建对象时，怎么给对象的属性初始化值呢？<br>            这就要学习Java另外一门小技术，构造方法。<br>    * B: 那什么是构造方法呢？<br>             从字面上理解即为构建创造时用的方法，即就是对象创建时要执行的方法。既然是对象创建时要执行的方法，那么只要在new对象时，<br>            知道其执行的构造方法是什么，就可以在执行这个方法的时候给对象进行属性赋值。</p>
+<p>###02构造方法作用<br>    * A: 构造方法的作用:<br>            在new的同时给成员变量赋值,给对象属性进行初始化。<br>    * B: 举例:<br>            Perons p = new Person(“张三”,23); 在new 的时候给p对象的name属性和age属性进行赋值,使这个对象的属性有值。</p>
+<p>​<br>###03构造方法的定义和运行特点<br>    * A: 构造方法定义<br>            构造方法的格式：<br>            修饰符 构造方法名(参数列表)<br>            {<br>            }</p>
+<pre><code>* B: 构造方法的体现：
+        构造方法没有返回值类型。也不需要写返回值。因为它是为构建对象的，对象创建完，方法就执行结束。
+        构造方法名称必须和类型保持一致。
+        构造方法没有具体的返回值。
+        构造方法的代码体现：
+
+* C: 构造方法举例
+        class Person {
+            // Person的成员属性age和name
+            private int age;
+            private String name;
+
+            // Person的构造方法，拥有参数列表
+            Person(int a, String nm) {
+                // 接受到创建对象时传递进来的值，将值赋给成员属性
+                age = a;
+                name = nm;
+            }
+        }
+
+* D: 构造方法运行特点:
+        在new 对象的时候自动调用执行。</code></pre><p>###04默认添加的构造方法<br>    * A: 每一class类都必须有一个构造方法，构造方法不写也有。<br>         编译的时候，javac，系统会自动检查类中是否有构造方法，如果没有编译器就会自动添加一个构造方法<br>         比如Person类， 编译器添加一个无参构造 public Person(){}</p>
+<p>###05构造方法的调用赋值<br>    * A: 理解构造方法的格式和基本功能之后，现在就要研究构造方法是怎么执行的呢？在创建对象的时候是如何初始化的呢？<br>         构造方法是专门用来创建对象的，也就是在new对象时要调用构造方法。现在来看看如何调用构造方法。</p>
+<pre><code>* B: 案例
+        class Person {
+            // Person的成员属性age和name
+            private int age;
+            private String name;
+
+            // Person的构造方法，拥有参数列表
+            Person(int a, String nm) {
+                // 接受到创建对象时传递进来的值，将值赋给成员属性
+                age = a;
+                name = nm;
+            }
+
+            public void speak() {
+                System.out.println(&quot;name=&quot; + name + &quot;,age=&quot; + age);
+            }
+        }
+
+        class PersonDemo {
+            public static void main(String[] args) {
+                // 创建Person对象，并明确对象的年龄和姓名
+                Person p2 = new Person(23, &quot;张三&quot;);
+                p2.speak();
+            }
+        }
+
+    上述代码演示了创建对象时构造方法的调用。即在创建对象时，会调用与参数列表对应的构造方法</code></pre><p>###06构造方法的内存<br>        A:内存加载的过程<br>            有一个Person类, 创建Person 对象new Person()<br>            1、首先会将main方法压入栈中，执行main方法中的 new Person(23,”张三”);<br>            2、在堆内存中分配一片区域，用来存放创建的Person对象，这片内存区域会有属于自己的内存地址（0x88）。然后给成员变量进行默认初始化（name=null，age=0）。<br>            3、执行构造方法中的代码（age = a ; name = nm;）,将变量a对应的23赋值给age，将变量nm对应的”张三赋值给name，这段代码执行结束后，成员变量age和name的值已经改变。执行结束之后构造方法弹栈，Person对象创建完成。将Person对象的内存地址0x88赋值给p2。</p>
+<p>==============================第二节课开始====================================    </p>
+<p>###07构造方法的重载<br>    * A：当在描述事物时，要不要在类中写构造方法呢？这时要根据描述事物的特点来确定，当描述的事物在创建其对象时就要明确属性的值，这时就需要在定义类的时候书写带参数的构造方法。<br>    *    若创建对象时不需要明确具体的数据，这时可以不用书写构造方法（不书写也有默认的构造方法）。<br>            构造方法的细节：<br>            1、一个类中可以有多个构造方法，多个构造方法是以重载的形式存在的<br>            2、构造方法是可以被private修饰的，作用：其他程序无法创建该类的对象。<br>    * B: 举例<br>        class Person {<br>            private int age;<br>            private String name;</p>
+<pre><code>    // 私有无参数的构造方法，即外界不能通过new Person();语句创建本类对象
+    private Person() {
+    }
+
+    // 多个构造方法是以重载的形式存在
+    Person(int a) {
+        age = a;
+    }
+
+    Person(String nm, int a) {
+        name = nm;
+        age = a;
+    }
+}</code></pre><p>​        </p>
+<p>###08构造方法和一般方法区别<br>    * A: 目前为止，学习两种方法，分别为构造方法和一般方法，那么他们之间有什么异同呢？<br>        1.格式不同<br>         构造方法 : 修饰符  类名(参数类型 参数 …){<br>            初始化成员变量<br>        }<br>        一般方法: 需要有返回值类型<br>        2.作用不同<br>        构造方法一般用来给成员变量初始化;<br>        一般方法根据需求而定;<br>        3.调用方式不同<br>        构造方法创建对象时调用, 或者this() super() 语句调用<br>        普通方法需要对象调用或者静态方法直接调用静态方法.<br>        4.执行不同<br>        构造方法在对象创建时就执行了，而且只执行一次。<br>        一般方法是在对象创建后，需要使用时才被对象调用，并可以被多次调用。</p>
+<p>​<br>###09this在构造方法之间的调用<br>    * A: 在之前学习方法之间调用时，可以通过方法名进行调用。可是针对构造方法，无法通过构造方法名来相互调用。<br>        构造方法之间的调用，可以通过this关键字来完成。<br>        构造方法调用格式：<br>        this(参数列表);</p>
+<pre><code>* B:调用构造方法的案例
+    class Person {
+        // Person的成员属性
+        private int age;
+        private String name;
+
+        // 无参数的构造方法
+        Person() {
+        }
+
+        // 给姓名初始化的构造方法
+        Person(String nm) {
+            name = nm;
+        }
+
+        // 给姓名和年龄初始化的构造方法
+        Person(String nm, int a) {
+            // 由于已经存在给姓名进行初始化的构造方法 name = nm;因此只需要调用即可
+            // 调用其他构造方法，需要通过this关键字来调用
+            this(nm);
+            // 给年龄初始化
+            age = a;
+        }
+    }</code></pre><p>###10this在构造方法调用的内存图<br>    * A: 被加载的代码<br>        class Person {<br>            private int age;<br>            private String name;</p>
+<pre><code>    Person() {
+    }
+    Person(String nm) {
+        name = nm;
+    }
+    Person(String nm, int a) {
+        this(nm);
+        age = a;
+    }
+}
+
+class PersonDemo {
+    public static void main(String[] args) {
+        Person p = new Person(&quot;张三&quot;, 23);
+    }
+}</code></pre><p>​<br>    * B: 构造方法调用的原理图<br>    *   图略<br>        1、先执行main方法，main方法压栈，执行其中的new Person(“张三”,23);<br>        2、堆内存中开辟空间，并为其分配内存地址0x33，，紧接着成员变量默认初始化（name=null  age = 0）；<br>        3、拥有两个参数的构造方法（Person（String nm , int a））压栈，在这个构造方法中有一个隐式的this，因为构造方法是给对象初始化的，那个对象调用到这个构造方法，this就指向堆中的那个对象。<br>        4、由于Person（String nm , int a）构造方法中使用了this(nm);构造方法Person(String nm)就会压栈，并将“张三”传递给nm。在Person（String nm , int a）构造方法中同样也有隐式的this，this的值同样也为0x33，这时会执行其中name = nm，即把“张三”赋值给成员的name。当赋值结束后Person（String nm , int a）构造方法弹栈。<br>        5、程序继续执行构造方法（Person（String nm , int a）中的age = a；这时会将23赋值给成员属性age。赋值结束构造方法（Person（String nm , int a）弹栈。<br>        6、当构造方法（Person（String nm , int a）弹栈结束后，Person对象在内存中创建完成，并将0x33赋值给main方法中的p引用变量。<br>        注意：<br>        this到底代表什么呢？this代表的是对象，具体代表哪个对象呢？哪个对象调用了this所在的方法，this就代表哪个对象。<br>        调用其他构造方法的语句必须定义在构造方法的第一行，原因是初始化动作要最先执行。</p>
+<p>###11this简易应用<br>    * A: 当在方法中出现了局部变量和成员变量同名的时候，那么在方法中怎么区别局部变量成员变量呢？可以在成员变量名前面加上this.来区别成员变量和局部变量<br>    * B: 举例1<br>        class Person {<br>            private int age;<br>            private String name;</p>
+<pre><code>        // 给姓名和年龄初始化的构造方法
+        Person(String name, int age) {
+            // 当需要访问成员变量是，只需要在成员变量前面加上this.即可
+            this.name = name;
+            this.age = age;
+        }
+
+        public void speak() {
+            System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
+        }
+    }
+
+    class PersonDemo {
+        public static void main(String[] args) {
+            Person p = new Person(&quot;张三&quot;, 23);
+            p.speak();
+        }
+    }
+
+* C: 举例2
+    学习完了构造方法、this的用法之后，现在做个小小的练习。
+    需求：在Person类中定义功能，判断两个人是否是同龄人
+    class Person {
+        private int age;
+        private String name;
+
+        // 给姓名和年龄初始化的构造方法
+        Person(String name, int age) {
+            // 当需要访问成员变量是，只需要在成员变量前面加上this.即可
+            this.name = name;
+            this.age = age;
+        }
+
+        public void speak() {
+            System.out.println(&quot;name=&quot; + this.name + &quot;,age=&quot; + this.age);
+        }
+
+        // 判断是否为同龄人
+        public boolean equalsAge(Person p) {
+            // 使用当前调用该equalsAge方法对象的age和传递进来p的age进行比较
+            // 由于无法确定具体是哪一个对象调用equalsAge方法，这里就可以使用this来代替
+            /*
+             * if(this.age == p.age) { return true; } return false;
+             */
+            return this.age = p.age;
+        }
+    }</code></pre><p>==============================第三节课开始====================================</p>
+<p>​<br>###12super关键字_1</p>
+<pre><code>* A: 子父类中构造方法的调用
+    在创建子类对象时，父类的构造方法会先执行，因为子类中所有构造方法的第一行有默认的隐式super();语句。
+* B: 格式：
+    调用本类中的构造方法
+    this(实参列表);
+    调用父类中的空参数构造方法
+    super();
+    调用父类中的有参数构造方法
+    super(实参列表);</code></pre><p>###13super关键字_2<br>    * A:子类构造方法,有一个默认添加的构造方法<br>        public class Student extends Person {<br>             public Student(){<br>                 super();<br>             }<br>        }<br>    * B :为什么子类对象创建都要访问父类中的构造方法？因为子类继承了父类的内容，所以创建对象时，必须要先看父类是如何对其内容进行初始化的，看如下程序<br>        public class Test {<br>            public static void main(String[] args) {<br>                new Zi();<br>            }</p>
+<pre><code>}
+class Fu{
+    int num ;
+    Fu(){
+        System.out.println(&quot;Fu构造方法&quot;+num);
+        num = 4;
+    }
+}
+class Zi extends Fu{
+    Zi(){
+         //super(); 调用父类空参数构造方法
+        System.out.println(&quot;Zi构造方法&quot;+num);
+    }
+}
+
+执行结果：</code></pre><p>　　     Fu构造方法0<br>　　     Zi构造方法4</p>
+<pre><code>通过结果发现，子类构造方法执行时中，调用了父类构造方法，这说明，子类构造方法中有一句super()。
+那么，子类中的构造方法为什么会有一句隐式的super()呢？
+原因：子类会继承父类中的内容，所以子类在初始化时，必须先到父类中去执行父类的初始化动作。这样，才可以使用父类中的内容。
+当父类中没有空参数构造方法时，子类的构造方法必须有显示的super语句，指定要访问的父类有参数构造方法。</code></pre><p>​<br>###14子类父类的内存图<br>        略:<br>        具体见 day12_source/子类父类的内存图.JPG    </p>
+<p>###15super关键字_3<br>    * A: 创建子类对象的时候会必须调用父类的构造方法。<br>       子类默认会调用父类的无参构造， 但如果父类没有无参构造，子类的构造方法继续调用父类的无参构造就会报错。<br>       因此子类构造方法的第一行需要调用父类的构造方法，既可以调用父类的无参构造，也可以调用父类的有参构造，这样语法上就不会报错。</p>
+<p>###16super关键字_4<br>    * A: 构造方法第一行,写this()还是super()<br>    *  this() 是调用本类的构造方法,super()是调用父类的构造方法, 且两条语句不能同时存在<br>    *  保证子类的所有构造方法调用到父类的构造方法即可</p>
+<pre><code>* B: 小结:
+* 无论如何,子类的所有构造方法,直接或间接必须调用到父类构造方法;
+* 子类的构造方法什么都不写,默认的构造方法第一行super()</code></pre><p>​<br>###17创建子类对象过程的细节<br>    * A 创建子类对象过程的细节<br>    * 如果子类的构造方法第一行写了this调用了本类其他构造方法，那么super调用父类的语句还有吗？<br>    * 这时是没有的，因为this()或者super(),只能定义在构造方法的第一行，因为初始化动作要先执行。<br>    * 父类构造方法中是否有隐式的super呢？<br>    * 也是有的。记住：只要是构造方法默认第一行都是super();<br>    * 父类的父类是谁呢？super调用的到底是谁的构造方法呢？<br>    * Java体系在设计，定义了一个所有对象的父类Object</p>
+<pre><code>* 注意：
+    类中的构造方法默认第一行都有隐式的super()语句，在访问父类中的空参数构造方法。所以父类的构造方法既可以给自己的对象初始化，也可以给自己的子类对象初始化。
+    如果默认的隐式super()语句在父类中没有对应的构造方法，那么必须在构造方法中通过this或者super的形式明确要调用的构造方法。</code></pre><p>==============================第四节课开始====================================</p>
+<p>###18super的应用<br>     * A: 练习：描述学生和工人这两个类，将他们的共性name和age抽取出来存放在父类中，并提供相应的get和set方法，同时需要在创建学生和工人对象就必须明确姓名和年龄<br>     * 案例:<br>        //定义Person类，将Student和Worker共性抽取出来<br>        class Person {<br>            private String name;<br>            private int age;<br>            public Person(String name, int age) {<br>                // super();<br>                this.name = name;<br>                this.age = age;<br>            }<br>            public String getName() {<br>                return name;<br>            }<br>            public void setName(String name) {<br>                this.name = name;<br>            }<br>            public int getAge() {<br>                return age;<br>            }<br>            public void setAge(int age) {<br>                this.age = age;<br>            }<br>        }<br>        class Student extends Person {<br>            // Student类的构造方法<br>            Student(String name, int age) {<br>                // 使用super关键字调用父类构造方法，进行相应的初始化动作<br>                super(name, age);<br>            }<br>            public void study() {// Studnet中特有的方法<br>                System.out.println(this.getName() + “同学在学习”);<br>            }<br>        }<br>        class Worker extends Person {<br>            Worker(String name, int age) {<br>                // 使用super关键字调用父类构造方法，进行相应的初始化动作<br>                super(name, age);<br>            }<br>            public void work() {// Worker 中特有的方法<br>                System.out.println(this.getName() + “工人在工作”);<br>            }<br>        }<br>        public class Test {<br>            public static void main(String[] args) {<br>                Student stu = new Student(“小明”,23);<br>        stu.study();</p>
+<pre><code>Worker w = new Worker(&quot;小李&quot;,45);
+w.work();
+    }
+}</code></pre><p>###19完整员工案例分析<br>     * A: 项目介绍<br>        某IT公司有多名员工，按照员工负责的工作不同，进行了部门的划分（研发部员工、维护部员工）。研发部根据所需研发的内容不同，又分为JavaEE工程师、Android工程师；维护部根据所需维护的内容不同，又分为网络维护工程师、硬件维护工程师。<br>        公司的每名员工都有他们自己的员工编号、姓名，并要做它们所负责的工作。<br>        工作内容<br>        JavaEE工程师：员工号为xxx的 xxx员工，正在研发淘宝网站<br>        Android工程师：员工号为xxx的 xxx员工，正在研发淘宝手机客户端软件<br>        网络维护工程师：员工号为xxx的 xxx员工，正在检查网络是否畅通<br>        硬件维护工程师：员工号为xxx的 xxx员工，正在修复打印机<br>        请根据描述，完成员工体系中所有类的定义，并指定类之间的继承关系。进行XX工程师类的对象创建，完成工作方法的调用。</p>
+<pre><code>* B: 案例分析
+    根据上述部门的描述，得出如下的员工体系图
+
+    根据员工信息的描述，确定每个员工都有员工编号、姓名、要进行工作。则，把这些共同的属性与功能抽取到父类中（员工类），关于工作的内容由具体的工程师来进行指定。
+    工作内容
+    JavaEE工程师：员工号为xxx的 xxx员工，正在研发淘宝网站
+    Android工程师：员工号为xxx的 xxx员工，正在研发淘宝手机客户端软件
+    网络维护工程师：员工号为xxx的 xxx员工，正在检查网络是否畅通
+    硬件维护工程师：员工号为xxx的 xxx员工，正在修复打印机
+    创建JavaEE工程师对象，完成工作方法的调用</code></pre><p>###20案例代码实现<br>     * A:定义员工类(抽象类)<br>        public abstract class Employee {<br>            private String id;// 员工编号<br>            private String name; // 员工姓名</p>
+<pre><code>    //空参数构造方法
+    public Employee() {
+        super();
+    }
+    //有参数构造方法
+    public Employee(String id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    //工作方法（抽象方法）
+    public abstract void work(); 
+}
+
+* B :    定义研发部员工类Developer 继承 员工类Employee
+public abstract class Developer extends Employee {
+    //空参数构造方法
+    public Developer() {
+        super();
+    }
+    //有参数构造方法
+    public Developer(String id, String name) {
+        super(id, name);
+    }
+}
+
+* C:    定义维护部员工类Maintainer 继承 员工类Employee
+public abstract class Maintainer extends Employee {
+    //空参数构造方法
+    public Maintainer() {
+        super();
+    }
+    //有参数构造方法
+    public Maintainer(String id, String name) {
+        super(id, name);
+    }
+}
+
+* D:    定义JavaEE工程师 继承 研发部员工类，重写工作方法
+public class JavaEE extends Developer {
+    //空参数构造方法
+    public JavaEE() {
+        super();
+    }
+    //有参数构造方法
+    public JavaEE(String id, String name) {
+        super(id, name);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在研发淘宝网站&quot;);
+    }
+}
+
+* E:    定义Android工程师 继承 研发部员工类，重写工作方法
+public class Android extends Developer {
+    //空参数构造方法
+    public Android() {
+        super();
+    }
+    //有参数构造方法
+    public Android(String id, String name) {
+        super(id, name);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在研发淘宝手机客户端软件&quot;);
+    }
+}
+
+* F:    定义Network网络维护工程师 继承 维护部员工类，重写工作方法
+public class Network extends Maintainer {
+    //空参数构造方法
+    public Network() {
+        super();
+    }
+    //有参数构造方法
+    public Network(String id, String name) {
+        super(id, name);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在检查网络是否畅通&quot;);
+    }
+}
+
+* G:    定义Hardware硬件维护工程师 继承 维护部员工类，重写工作方法
+public class Hardware extends Maintainer {
+    //空参数构造方法
+    public Hardware() {
+        super();
+    }
+    //有参数构造方法
+    public Hardware(String id, String name) {
+        super(id, name);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(&quot;员工号为 &quot; + getId() + &quot; 的 &quot; + getName() + &quot; 员工，正在修复打印机&quot;);
+    }
+}
+
+* H:    在测试类中，创建JavaEE工程师对象，完成工作方法的调用
+public class Test {
+    public static void main(String[] args) {
+        //创建JavaEE工程师员工对象，该员工的编号000015，员工的姓名 小明
+        JavaEE ee = new JavaEE(&quot;000015&quot;, &quot;小明&quot;);
+        //调用该员工的工作方法
+        ee.work();
+    }
+}</code></pre><p>###21总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day11%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day11%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记11</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:07:51" itemprop="dateModified" datetime="2020-12-23T23:07:51+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、接口<br>2、多态</p>
+<p>第一节课<br>###01(面向对象)接口概述.avi                        (02:33)<br>###02(面向对象)接口抽象方法定义.avi                  (11:47)<br>###03(面向对象)接口的实现类.avi                    (07:44)<br>###04(面向对象)接口中的成员变量的特点.avi          (09:36)<br>###05(面向对象)接口中的成员方法的特点.avi          (03:59)<br>###06(面向对象)实现类还是一个抽象类.avi           (04:20)</p>
+<p>第二节课<br>###07(面向对象)类和接口的多实现.avi               (12:38)<br>###08(面向对象)类在继承类的同时实现多接口.avi      (04:07)<br>###09(面向对象)接口的多继承.avi                    (06:07)<br>###10(面向对象)接口思想.avi                        (08:40)<br>###11(面向对象)接口和抽象类的区别.avi             (08:38)</p>
+<p>第三节课</p>
+<p>###12(面向对象)多态的概述.avi                      (05:22)<br>###13(面向对象)多态调用的三种形式.avi              (09:53)<br>###14(面向对象)多态中成员方法的特点.avi             (07:42)<br>###15(面向对象)instanceof关键字.avi              (13:34)<br>###16(面向对象)多态的向上转型.avi                  (09:33)</p>
+<p>第四节课</p>
+<p>###17(面向对象)多态的向下转型.avi                 (06:46)<br>###18(面向对象)多态转型的案例.avi                 (10:00)<br>###19(面向对象)笔记本案例功能分析.avi           (04:58)<br>###20(面向对象)笔记本案例代码实现.avi           (15:35)</p>
+<p>============上面的内容,方便我们只做ppt,word教案以及书写下面的简要的笔记=================</p>
+<p>=======================第一节课开始=============================================</p>
+<p>###01接口的概念<br>    * A:接口的概念<br>        接口是功能的集合，同样可看做是一种数据类型，是比抽象类更为抽象的”类”。<br>        接口只描述所应该具备的方法，并没有具体实现，具体的实现由接口的实现类(相当于接口的子类)来完成。这样将功能的定义与实现分离，优化了程序设计。<br>        请记住：一切事物均有功能，即一切事物均有接口。</p>
+<p>​<br>###02接口的定义<br>    * A: 接口的定义<br>            与定义类的class不同，接口定义时需要使用interface关键字。<br>            定义接口所在的仍为.java文件，虽然声明时使用的为interface关键字的编译后仍然会产生.class文件。这点可以让我们将接口看做是一种只包含了功能声明的特殊类。</p>
+<p>​<br>    * B : 定义格式<br>            public interface 接口名 {<br>                抽象方法1;<br>                抽象方法2;<br>                抽象方法3;<br>            }<br>    * C: 定义步骤<br>            使用interface代替了原来的class，其他步骤与定义类相同：<br>            接口中的方法均为公共访问的抽象方法<br>            接口中无法定义普通的成员变量</p>
+<p>​<br>​<br>###03接口的实现类<br>    * A: 类与接口的关系<br>            类与接口的关系为实现关系，即类实现接口。实现的动作类似继承，只是关键字不同，实现使用implements。<br>            其他类(实现类)实现接口后，就相当于声明：”我应该具备这个接口中的功能”。实现类仍然需要重写方法以实现具体的功能。<br>    * B: 类实现接口的格式<br>            class 类 implements 接口 {<br>                重写接口中方法<br>            }<br>    * C:注意事项<br>             在类实现接口后，该类就会将接口中的抽象方法继承过来，此时该类需要重写该抽象方法，完成具体的逻辑。<br>            接口中定义功能，当需要具有该功能时，可以让类实现该接口，只声明了应该具备该方法，是功能的声明。<br>            在具体实现类中重写方法，实现功能，是方法的具体实现。</p>
+<p>###04接口中成员变量的特点<br>    * A:成员变量特点<br>         * a 接口中可以定义变量，但是变量必须有固定的修饰符修饰，public static final 所以接口中的变量也称之为常量，其值不能改变。后面我们会讲解static与final关键字</p>
+<pre><code>* B:案例
+        interface Demo { ///定义一个名称为Demo的接口。
+            public static final int NUM = 3;// NUM的值不能改变
+        }</code></pre><p>​<br>###05接口中成员方法的特点<br>    * A: 成员方法特点<br>        * a 接口中可以定义方法，方法也有固定的修饰符，public abstract<br>        * b 子类必须覆盖掉接口中所有的抽象方法后，子类才可以实例化。否则子类是一个抽象类。</p>
+<pre><code>* B: 案例
+        interface Demo { ///定义一个名称为Demo的接口。
+            public abstract void show1();
+            public abstract void show2();
+        }
+
+        //定义子类去覆盖接口中的方法。类与接口之间的关系是 实现。通过 关键字 implements
+        class DemoImpl implements Demo { //子类实现Demo接口。
+            //重写接口中的方法。
+            public void show1(){}
+            public void show2(){}
+        }</code></pre><p>###06实现类还是一个抽象类<br>    A: 接口的实现类<br>       一个类如果实现类接口,有两种操作方法:<br>       第一:实现类是非抽象类,就需要重写接口中所有的抽象方法.<br>       第二:实现类也声明为抽象类,那么实现类可以不重写接口中的抽象方法。</p>
+<p>​<br>==============================第二节课开始====================================    </p>
+<p>###07类和接口的多实现<br>    * A：接口的多实现<br>        了解了接口的特点后，那么想想为什么要定义接口，使用抽象类描述也没有问题，接口到底有啥用呢？<br>        接口最重要的体现：解决多继承的弊端。将多继承这种机制在java中通过多实现完成了。</p>
+<pre><code>* B 多实现的优点
+    * 怎么解决多继承的弊端呢？
+    * 弊端：多继承时，当多个父类中有相同功能时，子类调用会产生不确定性。
+    * 其实核心原因就是在于多继承父类中功能有主体，而导致调用运行时，不确定运行哪个主体内容。
+    * 为什么多实现能解决了呢？
+    * 因为接口中的功能都没有方法体，由子类来明确。
+
+* C :案例演示
+    interface Fu2{
+        void show2();
+    }
+    class Zi implements Fu1,Fu2 {    // 多实现。同时实现多个接口。
+        public void show1(){}
+        public void show2(){}
+    }</code></pre><p>###08类在继承类的同时实现多接口<br>    * A: 继承的同时实现接口<br>        * 接口和类之间可以通过实现产生关系，同时也学习了类与类之间可以通过继承产生关系。当一个类已经继承了一个父类，它又需要扩展额外的功能，这时接口就派上用场了。<br>        * 子类通过继承父类扩展功能，通过继承扩展的功能都是子类应该具备的基础功能。如果子类想要继续扩展其他类中的功能呢？这时通过实现接口来完成。<br>        * 接口的出现避免了单继承的局限性。父类中定义的事物的基本功能。接口中定义的事物的扩展功能。</p>
+<pre><code>* B: 代码演示
+    class Fu {
+        public void show(){}
+    }
+    interface Inter {
+        pulbic abstract void show1();
+    }
+    class Zi extends Fu implements Inter {
+        public void show1() {
+        }
+    }
+
+    接口的出现避免了单继承的局限性。父类中定义的事物的基本功能。接口中定义的事物的扩展功能。</code></pre><p>###09接口的多继承<br>    * A: 接口的多继承<br>        * 学习类的时候，知道类与类之间可以通过继承产生关系，接口和类之间可以通过实现产生关系，那么接口与接口之间会有什么关系。<br>        * 多个接口之间可以使用extends进行继承。</p>
+<pre><code>* B 代码演示
+     interface Fu1{
+        void show();
+    }
+    interface Fu2{
+        void show1();
+    }
+    interface Fu3{
+        void show2();
+    }
+    interface Zi extends Fu1,Fu2,Fu3{
+        void show3();
+    }
+
+    在开发中如果多个接口中存在相同方法，这时若有个类实现了这些接口，那么就要实现接口中的方法，由于接口中的方法是抽象方法，子类实现后也不会发生调用的不确定性。</code></pre><p>###10接口思想<br>    * A:接口的思想<br>        * 前面学习了接口的代码体现，现在来学习接口的思想，接下里从生活中的例子进行说明。<br>        * 举例：我们都知道电脑上留有很多个插口，而这些插口可以插入相应的设备，这些设备为什么能插在上面呢？<br>        * 主要原因是这些设备在生产的时候符合了这个插口的使用规则，否则将无法插入接口中，更无法使用。发现这个插口的出现让我们使用更多的设备。</p>
+<pre><code>* B: 接口的好处    
+    * 总结：接口在开发中的它好处
+    * 1、接口的出现扩展了功能。
+    * 2、接口其实就是暴漏出来的规则。
+    * 3、接口的出现降低了耦合性，即设备与设备之间实现了解耦。
+
+    * 接口的出现方便后期使用和维护，一方是在使用接口（如电脑），一方在实现接口（插在插口上的设备）。例如：笔记本使用这个规则（接口），电脑外围设备实现这个规则（接口）。</code></pre><p>###11接口和抽象类的区别<br>    * A: 明白了接口思想和接口的用法后，接口和抽象类的区别是什么呢？接口在生活体现也基本掌握，那在程序中接口是如何体现的呢？<br>        通过实例进行分析和代码演示抽象类和接口的用法。<br>    * B: 举例：<br>        *    犬：<br>                行为：<br>                吼叫；<br>                吃饭；<br>        * 缉毒犬：<br>                行为：<br>                吼叫；<br>                吃饭；<br>                缉毒；</p>
+<pre><code>* C:思考：
+    * 由于犬分为很多种类，他们吼叫和吃饭的方式不一样，在描述的时候不能具体化，也就是吼叫和吃饭的行为不能明确。
+    * 当描述行为时，行为的具体动作不能明确，这时，可以将这个行为写为抽象行为，那么这个类也就是抽象类。
+    * 可是当缉毒犬有其他额外功能时，而这个功能并不在这个事物的体系中。这时可以让缉毒犬具备犬科自身特点的同时也有其他额外功能，可以将这个额外功能定义接口中。
+
+* D: 代码演示
+    interface 缉毒{
+        public abstract void 缉毒();
+    }
+    //定义犬科的这个提醒的共性功能
+    abstract class 犬科{
+    public abstract void 吃饭();
+    public abstract void 吼叫();
+    }
+    // 缉毒犬属于犬科一种，让其继承犬科，获取的犬科的特性，
+    //由于缉毒犬具有缉毒功能，那么它只要实现缉毒接口即可，这样即保证缉毒犬具备犬科的特性，也拥有了缉毒的功能
+    class 缉毒犬 extends 犬科 implements 缉毒{
+
+        public void 缉毒() {
+        }
+        void 吃饭() {
+        }
+        void 吼叫() {
+        }
+    }
+    class 缉毒猪 implements 缉毒{
+        public void 缉毒() {
+        }
+    }
+
+* E: 接口和抽象类区别总结
+     相同点:
+        都位于继承的顶端,用于被其他类实现或继承;
+        都不能直接实例化对象;
+        都包含抽象方法,其子类都必须覆写这些抽象方法;
+    区别:
+        抽象类为部分方法提供实现,避免子类重复实现这些方法,提高代码重用性;接口只能包含抽象方法;
+        一个类只能继承一个直接父类(可能是抽象类),却可以实现多个接口;(接口弥补了Java的单继承)
+        抽象类是这个事物中应该具备的你内容, 继承体系是一种 is..a关系
+        接口是这个事物中的额外内容,继承体系是一种 like..a关系
+
+    二者的选用:
+        优先选用接口,尽量少用抽象类;
+        需要定义子类的行为,又要为子类提供共性功能时才选用抽象类;</code></pre><p>==============================第三节课开始====================================</p>
+<p>###12多态概述<br>    * A: 多态概述<br>        多态是继封装、继承之后，面向对象的第三大特性。<br>        现实事物经常会体现出多种形态，如学生，学生是人的一种，则一个具体的同学张三既是学生也是人，即出现两种形态。<br>        Java作为面向对象的语言，同样可以描述一个事物的多种形态。如Student类继承了Person类，一个Student的对象便既是Student，又是Person。<br>        Java中多态的代码体现在一个子类对象(实现类对象)既可以给这个子类(实现类对象)引用变量赋值，又可以给这个子类(实现类对象)的父类(接口)变量赋值。<br>        如Student类可以为Person类的子类。那么一个Student对象既可以赋值给一个Student类型的引用，也可以赋值给一个Person类型的引用。<br>        最终多态体现为父类引用变量可以指向子类对象。<br>        多态的前提是必须有子父类关系或者类实现接口关系，否则无法完成多态。<br>        在使用多态后的父类引用变量调用方法时，会调用子类重写后的方法。</p>
+<p>###13多态调用的三种格式<br>    * A:多态的定义格式：<br>        * 就是父类的引用变量指向子类对象<br>             父类类型  变量名 = new 子类类型();<br>             变量名.方法名();</p>
+<pre><code>* B: 普通类多态定义的格式
+        父类 变量名 = new 子类();
+        举例：    
+            class Fu {}
+            class Zi extends Fu {}
+            //类的多态使用
+            Fu f = new Zi();
+* C: 抽象类多态定义格式            
+        抽象类 变量名 = new 抽象类子类();
+        举例：    
+        abstract class Fu {
+                 public abstract void method();
+                 }
+        class Zi extends Fu {
+        public void method(){
+                      System.out.println(“重写父类抽象方法”);
+        }
+        }
+        //类的多态使用
+        Fu fu= new Zi();
+* D: 接口多态定义的格式
+        接口 变量名 = new 接口实现类();
+        如： interface Fu {
+                     public abstract void method();
+        }
+        class Zi implements Fu {
+                     public void method(){
+                      System.out.println(“重写接口抽象方法”);
+        }
+        }
+        //接口的多态使用
+        Fu fu = new Zi();
+* E: 注意事项
+        同一个父类的方法会被不同的子类重写。在调用方法时，调用的为各个子类重写后的方法。
+        如 Person p1 = new Student();
+           Person p2 = new Teacher();
+           p1.work(); //p1会调用Student类中重写的work方法
+           p2.work(); //p2会调用Teacher类中重写的work方法
+        当变量名指向不同的子类对象时，由于每个子类重写父类方法的内容不同，所以会调用不同的方法。</code></pre><p>###14多态成员方法的特点<br>    * A: 掌握了多态的基本使用后，那么多态出现后类的成员有啥变化呢？前面学习继承时，我们知道子父类之间成员变量有了自己的特定变化，<br>        * 那么当多态出现后，成员变量在使用上有没有变化呢？<br>        * 多态出现后会导致子父类中的成员变量有微弱的变化</p>
+<pre><code>* B: 代码演示
+    class Fu {
+        int num = 4;
+    }
+    class Zi extends Fu {
+        int num = 5;
+    }
+    class Demo {
+        public static void main(String[] args)     {
+            Fu f = new Zi();
+            System.out.println(f.num);
+            Zi z = new Zi();
+            System.out.println(z.num);
+        }
+    }
+
+* C: 多态成员变量
+    当子父类中出现同名的成员变量时，多态调用该变量时：
+    编译时期：参考的是引用型变量所属的类中是否有被调用的成员变量。没有，编译失败。
+    运行时期：也是调用引用型变量所属的类中的成员变量。
+    简单记：编译和运行都参考等号的左边。编译运行看左边。
+
+* D: 多态出现后会导致子父类中的成员方法有微弱的变化。看如下代码
+    class Fu {
+        int num = 4;
+        void show()    {
+            System.out.println(&quot;Fu show num&quot;);
+        }
+    }
+    class Zi extends Fu {
+        int num = 5;
+        void show()    {
+            System.out.println(&quot;Zi show num&quot;);
+        }
+    }
+    class Demo {
+        public static void main(String[] args)     {
+            Fu f = new Zi();
+            f.show();
+        }
+    }
+
+* E: 多态成员方法
+    编译时期：参考引用变量所属的类，如果没有类中没有调用的方法，编译失败。
+    运行时期：参考引用变量所指的对象所属的类，并运行对象所属类中的成员方法。
+    简而言之：编译看左边，运行看右边。</code></pre><p>###15instanceof关键字<br>    * A: 作用<br>         可以通过instanceof关键字来判断某个对象是否属于某种数据类型。如学生的对象属于学生类，学生的对象也属于人类</p>
+<pre><code>* 格式:
+    boolean  b  = 对象  instanceof  数据类型;
+
+* 举例:
+    Person p1 = new Student(); // 前提条件，学生类已经继承了人类
+    boolean flag = p1 instanceof Student; //flag结果为true
+    boolean flag2 = p2 instanceof Teacher; //flag结果为false</code></pre><p>###16多态-向上转型<br>    * A: 多态的转型分为向上转型与向下转型两种：</p>
+<pre><code>* B: 向上转型：当有子类对象赋值给一个父类引用时，便是向上转型，多态本身就是向上转型的过程。
+    使用格式：
+    父类类型  变量名 = new 子类类型();
+    如：Person p = new Student();</code></pre><p>​    </p>
+<p>==============================第四节课开始====================================</p>
+<p>###17多态-向下转型<br>    * A: 向下转型：一个已经向上转型的子类对象可以使用强制类型转换的格式，将父类引用转为子类引用，这个过程是向下转型。如果是直接创建父类对象，是无法向下转型的！<br>        使用格式：<br>        子类类型 变量名 = (子类类型) 父类类型的变量;<br>        如:Student stu = (Student) p;  //变量p 实际上指向Student对象</p>
+<p>###18多态的好处和弊端<br>    * A: 多态的好处和弊端<br>        * 当父类的引用指向子类对象时，就发生了向上转型，即把子类类型对象转成了父类类型。<br>          向上转型的好处是隐藏了子类类型，提高了代码的扩展性。<br>        * 但向上转型也有弊端，只能使用父类共性的内容，而无法使用子类特有功能，功能有限制。</p>
+<pre><code>* B: 看如下代码
+    //描述动物类，并抽取共性eat方法
+    abstract class Animal {
+        abstract void eat();
+    }
+
+    // 描述狗类，继承动物类，重写eat方法，增加lookHome方法
+    class Dog extends Animal {
+        void eat() {
+            System.out.println(&quot;啃骨头&quot;);
+        }
+
+        void lookHome() {
+            System.out.println(&quot;看家&quot;);
+        }
+    }
+
+    // 描述猫类，继承动物类，重写eat方法，增加catchMouse方法
+    class Cat extends Animal {
+        void eat() {
+            System.out.println(&quot;吃鱼&quot;);
+        }
+
+        void catchMouse() {
+            System.out.println(&quot;抓老鼠&quot;);
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Animal a = new Dog(); //多态形式，创建一个狗对象
+            a.eat(); // 调用对象中的方法，会执行狗类中的eat方法
+            // a.lookHome();//使用Dog类特有的方法，需要向下转型，不能直接使用
+
+            // 为了使用狗类的lookHome方法，需要向下转型
+    // 向下转型过程中，可能会发生类型转换的错误，即ClassCastException异常
+            // 那么，在转之前需要做健壮性判断 
+            if( !a instanceof Dog){ // 判断当前对象是否是Dog类型
+                     System.out.println(&quot;类型不匹配，不能转换&quot;); 
+                     return; 
+            } 
+            Dog d = (Dog) a; //向下转型
+            d.lookHome();//调用狗类的lookHome方法
+        }
+    }
+
+
+* C 多态总结:
+    什么时候使用向上转型：
+        当不需要面对子类类型时，通过提高扩展性，或者使用父类的功能就能完成相应的操作，这时就可以使用向上转型。
+        如：Animal a = new Dog();
+            a.eat();
+    什么时候使用向下转型
+        当要使用子类特有功能时，就需要使用向下转型。
+            如：Dog d = (Dog) a; //向下转型
+                d.lookHome();//调用狗类的lookHome方法
+            向下转型的好处：可以使用子类特有功能。
+            弊端是：需要面对具体的子类对象；在向下转型时容易发生ClassCastException类型转换异常。在转换之前必须做类型判断。
+        如：if( !a instanceof Dog){…}</code></pre><p>###19多态举例<br>     * A: 毕老师和毕姥爷的故事<br>     * 案例:<br>      /*<br>        描述毕老师和毕姥爷，<br>        毕老师拥有讲课和看电影功能<br>        毕姥爷拥有讲课和钓鱼功能<br>      */<br>        class 毕姥爷 {<br>            void 讲课() {<br>                System.out.println(“政治”);<br>            }</p>
+<pre><code>    void 钓鱼() {
+        System.out.println(&quot;钓鱼&quot;);
+    }
+}
+
+// 毕老师继承了毕姥爷，就有拥有了毕姥爷的讲课和钓鱼的功能，
+// 但毕老师和毕姥爷的讲课内容不一样，因此毕老师要覆盖毕姥爷的讲课功能
+class 毕老师 extends 毕姥爷 {
+    void 讲课() {
+        System.out.println(&quot;Java&quot;);
+    }
+
+    void 看电影() {
+        System.out.println(&quot;看电影&quot;);
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        // 多态形式
+        毕姥爷 a = new 毕老师(); // 向上转型
+        a.讲课(); // 这里表象是毕姥爷，其实真正讲课的仍然是毕老师，因此调用的也是毕老师的讲课功能
+        a.钓鱼(); // 这里表象是毕姥爷，但对象其实是毕老师，而毕老师继承了毕姥爷，即毕老师也具有钓鱼功能
+
+        // 当要调用毕老师特有的看电影功能时，就必须进行类型转换
+        毕老师 b = (毕老师) a; // 向下转型
+        b.看电影();
+    }</code></pre><p>###20笔记本电脑案例<br>     * A:案例介绍<br>         * 定义USB接口（具备开启功能、关闭功能），笔记本要使用USB设备，即笔记本在生产时需要预留可以插入USB设备的USB接口，即就是笔记本具备使用USB设备的功能，<br>         * 但具体是什么USB设备，笔记本并不关心，只要符合USB规格的设备都可以。鼠标和键盘要想能在电脑上使用，那么鼠标和键盘也必须遵守USB规范，不然鼠标和键盘的生产出来无法使用<br>        * 进行描述笔记本类，实现笔记本使用USB鼠标、USB键盘<br>            USB接口，包含开启功能、关闭功能<br>            笔记本类，包含运行功能、关机功能、使用USB设备功能<br>            鼠标类，要符合USB接口<br>            键盘类，要符合USB接口</p>
+<pre><code>* B: 案例分析
+    * 阶段一：
+        使用笔记本，笔记本有运行功能，需要笔记本对象来运行这个功能
+    * 阶段二：
+        想使用一个鼠标，又有一个功能使用鼠标，并多了一个鼠标对象。
+    * 阶段三：
+        还想使用一个键盘 ，又要多一个功能和一个对象
+    * 问题：每多一个功能就需要在笔记本对象中定义一个方法，不爽，程序扩展性极差。
+        降低鼠标、键盘等外围设备和笔记本电脑的耦合性。</code></pre><p>###21笔记本电脑案例代码实现<br>     * A: 代码实现<br>        定义鼠标、键盘，笔记本三者之间应该遵守的规则<br>        interface USB {<br>            void open();// 开启功能</p>
+<pre><code>    void close();// 关闭功能
+}
+
+    鼠标实现USB规则
+class Mouse implements USB {
+    public void open() {
+        System.out.println(&quot;鼠标开启&quot;);
+    }
+
+    public void close() {
+        System.out.println(&quot;鼠标关闭&quot;);
+    }
+}
+
+    键盘实现USB规则
+class KeyBoard implements USB {
+    public void open() {
+        System.out.println(&quot;键盘开启&quot;);
+    }
+
+    public void close() {
+        System.out.println(&quot;键盘关闭&quot;);
+    }
+}
+
+    定义笔记本
+class NoteBook {
+    // 笔记本开启运行功能
+    public void run() {
+        System.out.println(&quot;笔记本运行&quot;);
+    }
+
+    // 笔记本使用usb设备，这时当笔记本对象调用这个功能时，必须给其传递一个符合USB规则的USB设备
+    public void useUSB(USB usb) {
+        // 判断是否有USB设备
+        if (usb != null) {
+            usb.open();
+            usb.close();
+        }
+    }
+
+    public void shutDown() {
+        System.out.println(&quot;笔记本关闭&quot;);
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        // 创建笔记本实体对象
+        NoteBook nb = new NoteBook();
+        // 笔记本开启
+        nb.run();
+
+        // 创建鼠标实体对象
+        Mouse m = new Mouse();
+        // 笔记本使用鼠标
+        nb.useUSB(m);
+
+        // 创建键盘实体对象
+        KeyBoard kb = new KeyBoard();
+        // 笔记本使用键盘
+        nb.useUSB(kb);
+
+        // 笔记本关闭
+        nb.shutDown();
+    }
+}</code></pre><p>###22总结<br>    * 把今天的知识点总结一遍。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day10%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3372,394 +4254,6 @@ public class GuessNumber{
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day02%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day02%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 22:59:40" itemprop="dateModified" datetime="2020-12-23T22:59:40+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、变量<br>2、运算符</p>
-<p>###01变量概述<br>    * A: 什么是变量?<br>        * a: 变量是一个内存中的小盒子（小容器），容器是什么？生活中也有很多容器，例如水杯是容器，用来装载水；你家里的大衣柜是容器，用来装载衣裤；饭盒是容器，用来装载饭菜。那么变量是装载什么的呢？答案是数据！结论：变量是内存中装载数据的小盒子，你只能用它来存数据和取数据。</p>
-<p>###02计算机存储单元<br>    * A: 计算机中储存和运算的最小单位是?<br>        * a: 一个字节,也就是一个byte.<br>            * win+r–cmd–回车<br>        * b: 常用储存单位<br>            *1B（字节） = 8bit<br>            *1KB = 1024B<br>            *1MB = 1024KB<br>            *1GB = 1024MB<br>            *1TB = 1024GB<br>            *1PB = 1024TB</p>
-<p>​<br>​<br>###03Java中数据类型四类八种<br>    * A: 数据类型四类八种<br>        *四类    八种    字节数    数据表示范围<br>        *整型    byte    1    -128～127<br>            short    2    -32768～32767<br>            int    4    -2147483648～2147483648<br>            long    8    -263～263-1<br>        *浮点型    float    4    -3.403E38～3.403E38<br>            double    8    -1.798E308～1.798E308<br>        *字符型    char    2    表示一个字符，如(‘a’，’A’，’0’，’家’)<br>        *布尔型    boolean    1    只有两个值true与false</p>
-<p>###04常量和数据类型<br>    * A:常量的定义<br>        * a: 整形常量默认是int类型<br>        * b: 小数常量默认是double类型<br>        * c: 定义长整形数据如果值超过int取值范围后面要+”L”<br>        * d: 定义float类型的数据后面要+”f” 否则默认是double</p>
-<p>###05变量创建的三要素<br>    * A: 定义变量的语法格式：<br>        数据类型  变量名  =  变量值;<br>        * int         a    =  100;<br>        * B:代码:<br>        public class Variable {<br>            public static void main(String[] args) {<br>                int a = 10;<br>                double b = 3.14;<br>                char c = ‘z’;<br>                String s = “i love java”;</p>
-<pre><code>        a = 20;
-        System.out.println(a);
-    }
-}</code></pre><p>​                </p>
-<p>###06定义所有的基本数据类型变量<br>    * A: 案例演示<br>        * a: 八种基本类型数据的创建</p>
-<p>###07定义字符串变量<br>    * A：案例演示<br>        * 创建字符串数据类型变量<br>        * String 是引用数据类型<br>###08变量定义使用注意事项<br>    * A：变量使用的注意事项<br>        * a: 变量定义后可以不赋值，使用时再赋值。不赋值不能使用。<br>            public static void main(String[] args) {<br>            int x;<br>            x = 20; //为x赋值20<br>            System.out.println(x);//读取x变量中的值，再打印<br>            }<br><br>        * c:    变量使用时有作用域的限制。<br>            public static void main(String[] args) {<br>            int x = 20;<br>            {<br>                int y = 20;<br>            }<br>            System.out.println(x);//读取x变量中的值，再打印<br>            System.out.println(y);//读取y变量中的值失败，失败原因，找不到y变量，因为超出了y变量作用范围，所以不能使用y变量<br>            }</p>
-<pre><code>    </code></pre><p>    </p>
-<p>###09数据类型转换_自动转换<br>    * A:     自动类型转换<br>        * a:表示范围小的数据类型转换成范围大的数据类型，这种方式称为自动类型转换<br>            自动类型转换格式：<br>            范围大的数据类型 变量 = 范围小的数据类型值；<br>            如：<br>                    double d = 1000;<br>                或<br>                    int i = 100;<br>                    double d2 = i;</p>
-<p>​<br>###10数据类型转换_强制转换<br>    * A: 强制类型转换<br>        *a: 表示范围大的数据类型转换成范围小的数据类型，这种方式称为强制类型转换<br>        *b: 强制类型转换格式：<br>        范围小的数据类型  变量 = (范围小的数据类型) 范围大的数据类型值;<br>        如：<br>        int  i = (int)6.718;   //i的值为6<br>        或<br>        double  d = 3.14;<br>        int  i2 = (int)d;     //i2的值为3</p>
-<p>###11算数运算符_1<br>    * A: 常见操作<br>        运算符    运算规则    范例        结果<br>        +    正号        +3        3<br>        +    加        2+3        5<br>        +    连接字符串    “中”+“国”    “中国”<br>        -    负号        int a=3;-a    -3<br>        -    减        3-1        2<br>        *    乘        2<em>3        6<br>        /    除        5/2        2<br>        %    取模        5/2        1<br>        ++    自增        int a=1;a++/++a    2<br>        –    自减        int b=3;a–/–a    2<br>    * B: 注意事项<br>        *a:加法运算符在连接字符串时要注意，只有直接与字符串相加才会转成字符串。<br>        *b:除法“/”当两边为整数时，取整数部分，舍余数。当其中一边为浮点型时，按正常规则相除。<br>        *c:“%”为整除取余符号，小数取余没有意义。结果符号与被取余符号相同。<br>        *d:整数做被除数，0不能做除数，否则报错。<br>        *e:小数做被除数，整除0结果为Infinity，对0取模结果为NaN<br>    * C:代码演示<br>    public class OperatorDemo1 {<br>        public static void main(String[] args) {<br>        /</em><br>         * 常量使用算数运算符<br>         */<br>        System.out.println(10+20);</p>
-<pre><code>    /*
-     * 变量使用算数运算符
-     */
-    int x = 10;
-    int y = 20;
-    //&quot;+&quot;作为加法运算使用
-    int z = x + y; 
-    //&quot;+&quot;作为连接字符串使用
-    System.out.println(&quot;x=&quot;+x);
-    System.out.println(&quot;y=&quot;+y);
-    System.out.println(&quot;z=&quot;+z);
-}</code></pre><p>}<br>###12算数运算符_2<br>    * A:算数运算符++、–的使用<br>        * a: ++运算符，会在原有值的基础上自增1<br>        * b: –运算符，会在原有值的基础上自减1。<br>    * B:++  – 位置的使用<br>        * a:++,–运算符后置时，先使用变量a原有值参与运算操作，运算操作完成后，变量a的值自增1或者自减1；<br>        * b:++，–运算符前置时，先将变量a的值自增1或者自减1，然后使用更新后的新值参与运算操作。<br>###13赋值运算符<br>    * A: 赋值运算符的使用<br>        运算符    运算规则    范例        结果<br>        =    赋值        int a=2        2<br>        +=    加后赋值    int a=2，a+=2    4<br>        -=    减后赋值    int a=2，a-=2    0<br>        <em>=    乘后赋值    int a=2，a</em>=2    4<br>        /=    整除后赋值    int a=2，a/=2    1<br>        %=    取模后赋值    int a=2，a%=2    0</p>
-<pre><code>* B：案例演示
-
-     * 赋值运算符
-     * +=, -=, *=, /=, %= ： 
-     * 上面的运算符作用：将等号左右两边计算，会将结果自动强转成等号左边的数据类型,再赋值给等号左边的
-     * 注意：赋值运算符左边必须是变量
-
-    public class OperatorDemo2 {
-        public static void main(String[] args) {
-            byte x = 10;
-            x += 20;// 相当于 x = (byte)(x+20);
-            System.out.println(x);
-        }
-    }</code></pre><p>###14比较运算符<br>    * A:比较运算符的使用<br>        运算符    运算规则    范例    结果<br>        ==    相等于        4==3    False<br>        !=    不等于        4!=3    True<br>        &lt;    小于        4&lt;3    False<br>        &gt;    大于        4&gt;3    True<br>        &lt;=    小于等于    4&lt;=3    False<br>        &gt;=    大于等于    4&gt;=3    True</p>
-<p>​<br>###15逻辑运算符<br>    * A: 逻辑运算符的使用<br>        运算符    运算规则    范例        结果<br>        &amp;    与        false&amp;true    False<br>        |    或        false|true    True<br>        ^    异或        true^flase    True<br>        !    非        !true        Flase<br>        &amp;&amp;    短路与        false&amp;&amp;true    False<br>        ||    短路或        false||true    True</p>
-<pre><code>规律小结:
-    短路与&amp;&amp;:参与运算的两边数据，有false，则运算结果为false；
-    短路或||:参与运算的两边数据，有true，则运算结果为true；
-    逻辑非! : 参与运算的数据，原先是true则变成false，原先是false则变成true。</code></pre><p>​    </p>
-<p>###16三元运算符<br>    * A: 格式:<br>        (条件表达式)？表达式1：表达式2；</p>
-<pre><code>* B: 代码案例
-    方式一：
-    System.out.println( 3&gt;2 ? “正确” : “错误” ); 
-    // 三元运算符运算后的结果为true，运算结果为表达式1的值“正确”，然后将结果“正确”，在控制台输出打印
-
-    方式二：
-    int a = 3;
-    int b = 4;
-    String result = (a==b) ? “相等” : “不相等”;  
-    //三元运算符运算后的结果为false，运算结果为表达式2的值“不相等”，然后将结果赋值给了变量result
-
-    方式三：
-    int n = (3&gt;2 &amp;&amp; 4&gt;6) ? 100 : 200;
-    //三元运算符运算后的结果为false，运算结果为表达式2的值200,然后将结果200赋值给了变量n</code></pre><p>​<br>​<br>###17运算符优先级<br>    优先级    描述        运算符<br>    1    括号        ()、[]<br>    2    正负号        +、-<br>    3    自增自减，非    ++、–、!<br>    4    乘除，取余    <em>、/、%<br>    5    加减        +、-<br>    6    移位运算    &lt;&lt;、&gt;&gt;、&gt;&gt;&gt;<br>    7    大小关系    &gt;、&gt;=、&lt;、&lt;=<br>    8    相等关系    ==、!=<br>    9    按位与        &amp;<br>    10    按位异或    ^<br>    11    按位或        |<br>    12    逻辑与        &amp;&amp;<br>    13    逻辑或        ||<br>    14    条件运算    ?:<br>    15    赋值运算    =、+=、-=、</em>=、/=、%=<br>    16    位赋值运算    &amp;=、|=、&lt;&lt;=、&gt;&gt;=、&gt;&gt;&gt;=</p>
-<p>###18    商场库存清单案例<br>    A: 案例分析.<br>        * a:观察清单后，可将清单分解为三个部分（清单顶部、清单中部、清单底部）<br>        * b:清单顶部为固定的数据，直接打印即可<br>        * c:清单中部为商品，为变化的数据，需要记录商品信息后，打印<br>            经过观察，我们确定一项商品应该有如下几个属性：<br>            品牌型号: 即商品名称，String型<br>            尺寸：物品大小，double型<br>            价格：物品单价，double型<br>            配置：这一项为每种商品的配置信息，String型<br>            库存数：这一项为每种商品的库存个数，int型</p>
-<pre><code>    * d:清单底部包含了统计操作，需经过计算后，打印
-        我们发现两个单独的可变化量
-        总库存数：所有商品总个数，int型
-        库存商品总金额：所有商品金额，double型
-
-B: 案例代码实现
-    //步骤一:  创建Demo01库存清单.java文件，编写main主方法
-    public class Demo01库存清单 {
-        public static void main(String[] args) {
-        }
-    }
-    //步骤二:  记录每种库存商品信息
-    //苹果笔记本电脑
-    String macBrand = &quot;MacBookAir&quot;;
-    double macSize = 13.3;
-    double macPrice = 6988.88;
-    int macCount = 5;
-
-    //联想Thinkpad笔记本电脑
-    String thinkpadBrand = &quot;ThinkpadT450&quot;;
-    double thinkpadSize = 14.0;
-    double thinkpadPrice = 5999.99;
-    int thinkpadCount = 10;
-
-    //华硕ASUS笔记本电脑
-    String ASUSBrand = &quot;ASUS-FL5800&quot;;
-    double ASUSSize = 15.6;
-    double ASUSPrice = 4999.50;
-    int ASUSCount = 18;
-
-    //步骤三: 统计库存总个数、库存总金额
-    int totalCount = macCount + thinkpadCount + ASUSCount;
-    double totalMoney = (macCount * macPrice) + (thinkpadCount * thinkpadPrice) + (ASUSCount * ASUSPrice);
-
-    //步骤四: 列表顶部
-    System.out.println(&quot;------------------------------商城库存清单-----------------------------&quot;);
-    System.out.println(&quot;品牌型号    尺寸    价格    库存数&quot;);
-
-    步骤四:打印库存清单中部信息
-    //列表中部
-    System.out.println(macBrand+&quot;    &quot;+macSize+&quot;    &quot;+macPrice+&quot;    &quot;+macCount);
-    System.out.println(thinkpadBrand+&quot;    &quot;+thinkpadSize+&quot;    &quot;+thinkpadPrice+&quot;    &quot;+thinkpadCount);
-    System.out.println(ASUSBrand+&quot;    &quot;+ASUSSize+&quot;    &quot;+ASUSPrice+&quot;    &quot;ASUSCount);
-    打印库存清单底部信息
-    //列表底部
-    System.out.println(&quot;-----------------------------------------------------------------------&quot;);
-    System.out.println(&quot;总库存数：&quot;+totalCount); 
-    System.out.println(&quot;库存商品总金额：&quot;+totalMoney);</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/" class="post-title-link" itemprop="url">C++复习(初识STL)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 16:49:29" itemprop="dateCreated datePublished" datetime="2020-12-22T16:49:29+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 16:24:43" itemprop="dateModified" datetime="2020-12-27T16:24:43+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1、STL简介"><a href="#1、STL简介" class="headerlink" title="1、STL简介"></a>1、STL简介</h2><p>STL简称标准模板库，它是所有C++编译器和操作系统平台都支持的一种库。</p>
-<p>STL的内容从广义上分为三个部分：容器、迭代器、算法。</p>
-<p>STL的一个基本理念就是将数据和操作分离，数据又容器类别加以管理，操作则由算法管理，迭代器则用于连接两者(类似指针)。STL的结构如下：</p>
-<p><img src="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/qq_pic_merged_1609041808915.jpg" alt></p>
-<p>在C++标准中，STL被组织在13个头文件中:<algorithm>、<deque>、<functional> <iterator> <vector> <list> <map> <memory> <numric> <queue> <set> <stack> <utility>。</utility></stack></set></queue></numric></memory></map></list></vector></iterator></functional></deque></algorithm></p>
-<h3 id="1-1、容器"><a href="#1-1、容器" class="headerlink" title="1.1、容器"></a>1.1、容器</h3><p>容器类集合在C++中就是标准模板库(STL)。</p>
-<p>容器的定义为：在数据存储上，有一种对象类型，它可以装入<strong>其它对象</strong>或<strong>指向**</strong>其它<strong>对象的</strong>指针<strong>，这种对象类型就叫做容器。简单地说，</strong>容器就是保存其它对象的对象**。并且容器类里面还有一系列成员函数用来处理其它对象的方法。</p>
-<p>另外容器是可以自由扩展的，即可以自行申请或者释放空间，并且用最优的算法来执行命令。</p>
-<p>以下是STL中的主要容器:</p>
-<p>template<typename t></typename></p>
-<p>vector<T> 是一种<strong>向量，也可以说成是可以自由扩展的数组。</strong></T></p>
-<p>list<T> 是一种<strong>双向链表</strong>容器。</T></p>
-<p>queue<T> 是一种<strong>队列</strong>容器。</T></p>
-<p>stack<T> 是一种栈容器。</T></p>
-<p>priority<T> 是一种<strong>按值排序的队列</strong>容器。</T></p>
-<p>set<T> 是一种<strong>集合</strong>容器，集合里面是相同的数据类，但不允许有重复元素。</T></p>
-<p>multiset<T> 是一种<strong>允许出现重复元素</strong>的集合容器。</T></p>
-<p>map&lt;key,value&gt; 隐射，是一种关联数组容器，即<strong>键值对</strong>元素。</p>
-<p>multimap&lt;key,value&gt; 是一种允许出现重复key值得关联数组容器。</p>
-<p>其中以上容器可分为两大类：序列式容器和关联式容器。</p>
-<p><strong>序列式容器:vector、list、deque</strong></p>
-<p><strong>关联式容器:set、map、multiset、multipap</strong></p>
-<h3 id="1-2、迭代器"><a href="#1-2、迭代器" class="headerlink" title="1.2、迭代器"></a>1.2、迭代器</h3><p>迭代器是STL中最基本的一部分，它用于将容器与算法联系起来，起着粘合剂的作用，几乎所有STL提供的算法都是通过迭代器存取元素来实现的，<strong>类似于指针，但是比指针功能多，只有当参数类型是C++基本数据类型时，迭代器就是指针。</strong></p>
-<p>STL中定义了5中类型的迭代器：</p>
-<p>输入迭代器：用于读取数据</p>
-<p>输出迭代器：用于写入数据</p>
-<p>前向迭代器：既可以输入也可以输出，并且可以对一个值进行多次读写</p>
-<p>双向迭代器：既可以用来读也可以用来写，比前向迭代器多一个后向元素操作功能</p>
-<p>随机访问迭代器：可以随机访问容器中的数据，在双向迭代器上增加了功能，功能最强大。</p>
-<p>每一种容器都支持某一种类型的迭代器。</p>
-<h3 id="1-3、算法"><a href="#1-3、算法" class="headerlink" title="1.3、算法"></a>1.3、算法</h3><p>STL提供了大概70个实现算法的<strong>模板函数</strong>，即适用于不同容器进行操作。</p>
-<h2 id="2、序列式容器"><a href="#2、序列式容器" class="headerlink" title="2、序列式容器"></a>2、序列式容器</h2><h3 id="2-1、序列式容器概述。"><a href="#2-1、序列式容器概述。" class="headerlink" title="2.1、序列式容器概述。"></a>2.1、序列式容器概述。</h3><p>序列式容器也叫做顺序性容器，<strong>各元素之间有顺序的线性表</strong>，是一种<strong>线性结构</strong>的有序群集。</p>
-<p>容器中的元素都是可排序的(有顺序的)，但未必是已经有序的。序列式容器最重要的特点就是可以在首端删除元素，在尾端添加元素，而双向序列容器(deque)，允许在两端添加和删除元素。</p>
-<p>序列式容器一般有两种存储方式:连续存储(vector、deque)和链式存储(list)。</p>
-<p>序列中每个元素都有固定的位置，除非用删除或者插入的操作改变这个位置，这个位置和元素本身无关，和操作的<strong>逻辑顺序有关。</strong></p>
-<h4 id="2-1-1、vector向量的实现以及访问特点"><a href="#2-1-1、vector向量的实现以及访问特点" class="headerlink" title="2.1.1、vector向量的实现以及访问特点"></a>2.1.1、vector向量的实现以及访问特点</h4><p><strong>vector向量容器一种支持高效的随机访问和高效向尾部插入新元素的容器。向量容器一般实现为一个动态分配的数组</strong>，向量中的元素连续地存放在这个数组中，因此对向量容器进行随机访问，具有和动态访问数组类似的效率。</p>
-<p>向量容器具有自动扩展容器的功能，即每次插入一个新元素都是“分配新空间-复制元素-释放原空间”，这样<strong>效率会低，但是实际分配的空间则会大于所需要的空间。</strong></p>
-<p>另外<strong>当要删除元素时，多出的闲置空间并不会被释放</strong>，因为再插入新元素时可能会重新占用这些空间，即有两个概念：向量容器的容量(capacity)为空间所能存储的最多元素的大小，向量容器的大小(size)为容器实际存储元素的个数。</p>
-<p>向量容器中插入新元素时，插入位置之后的元素都要被顺序地往后移动，并且插入位置越靠前，执行插入所需的时间就越多，但<strong>在向量尾部插入元素的效率就比较高</strong>，<strong>因此在总体上向量容器的插入操作效率并不高。</strong></p>
-<p><strong>在向向量容器中插入元素时，如果插入操作引起了向量容器的扩展，那么执行插入之前的所获得的一切迭代器、指针、引用都会失效，因为空间被重新分配了，元素的内存地址发生了变化。</strong></p>
-<p>如果插入操作没有引起向量容器的扩展，那么只有处于插入位置之后的迭代器、指针、引用失效，因为只有插入位置后面的元素被移动了。</p>
-<p>向量容器中删除元素时与插入相类似，即被删除元素越靠前，所需时间就越多，<strong>但是删除操作不会引起容器容量的改变</strong>，因此被删除元素之前的迭代器、指针、引用都能够继续使用，被删除元素之后的</p>
-<p>则会失效。</p>
-<h4 id="2-1-2、deque双端队列的实现以及访问特点"><a href="#2-1-2、deque双端队列的实现以及访问特点" class="headerlink" title="2.1.2、deque双端队列的实现以及访问特点"></a>2.1.2、deque双端队列的实现以及访问特点</h4><p>deque与vector不同，它是双端开口的，是一种支持向两端插入数据并支持随机访问的容器。双端队列中的数据被表示为一个分段数组，容器中的元素分段存放在一个个大小固定的数组中，此外容器还需要维护一个存放这些数组首地址的索引数组。如图所示</p>
-<p>分段数组的大小是固定的，并且它们的首地址被连续地存储在索引数组中，因此可以对双端队列进行随机访问。</p>
-<p><img src="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/qq_pic_merged_1609041824548.jpg" alt></p>
-<p>注意：<strong>deque容器在首尾进行添加、删除效率都很高</strong>，而在中间就不高，并且在首尾删除时只会让被删除元素的迭代器、指针、引用失效，不会影响其它元素，并且在删除元素之后，不使用的内存区块会被释放掉，这点与vector不一样。而在中间删除时则会使所有的迭代器、指针、引用失效。</p>
-<p>deque容器的插入效率比较低，因为每插入一个数据，就需要将插入点到另外一段之间的所有元素向容器的另外一端移动，并且插入位置越靠近中间，所需时间越多，这样插入也会使所有的迭代器、指针、引用失效。</p>
-<h4 id="2-1-3、list列表的实现及访问特点"><a href="#2-1-3、list列表的实现及访问特点" class="headerlink" title="2.1.3、list列表的实现及访问特点"></a>2.1.3、list列表的实现及访问特点</h4><p><strong>列表是一种不能随机访问，但可以高效地在任意位置插入和删除元素的容器，列表容器一般实现为链表，并且是双向链表。</strong>如图所示：</p>
-<p><img src="/2020/12/22/C++%E5%A4%8D%E4%B9%A0(%E5%88%9D%E8%AF%86STL)/qq_pic_merged_1609043291908.jpg" alt></p>
-<p>在列表中插入新的元素 只需要为新元素新建立一个新链表节点，并修改前后两个结点的指针，而不需要移动任何已有元素，因此效率很高，并且不会使任何已有的迭代器、指针、引用失效。</p>
-<p>在列表中删除元素时，需要释放掉被删除元素所占用的空间，然后修改前后两个结点的指针，也不需要移动任何元素，因此效率很高，并且执行删除操作时，只会使指向被删除元素的迭代器、指针、引用失效。</p>
-<p>即：</p>
-<p><strong>需要进行大量的随机访问操作时，使用vector</strong></p>
-<p><strong>需要进行大量的随机插入或者删除操作时，使用list</strong></p>
-<h3 id="2-2、vector类模板"><a href="#2-2、vector类模板" class="headerlink" title="2.2、vector类模板"></a>2.2、vector类模板</h3><p>vector是STL中一种自定义数据类型，包含在头文件<vector>中，定义如下：</vector></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">allocator</span>&lt;T&gt;&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span>;</span></span><br></pre></td></tr></table></figure>
-
-<p>vetor是将元素放置于一个动态数组当中加以管理的容器，是最简单的序列式容器。</p>
-<h4 id="2-2-1、创建vecor对象"><a href="#2-2-1、创建vecor对象" class="headerlink" title="2.2.1、创建vecor对象"></a>2.2.1、创建vecor对象</h4><p>vector类模板中定义了不同的重载构造函数，因此vector对象的创建与初始化也有不同的方式，</p>
-<p>1、指定容器大小</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;元素类型&gt; 对象名(容器大小)</span><br></pre></td></tr></table></figure>
-
-<p>&lt;&gt;中的类型是容器中元素的类型，例如<int>就表示此容器中存储的是int类型的数据。</int></p>
-<p><strong>注意：vector对象在定义后所有元素都会被初始化，如果是基本数据类型，啧啧都会被初始化为0，如果是其它数据类型容器，则由类的默认构造函数初始化。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;<span class="comment">//创建一个容量大小为10的int类型容器v1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">5</span>)</span></span>;<span class="comment">//创建一个容量为5的string类型容器v2</span></span><br></pre></td></tr></table></figure>
-
-<p>这种情况下，指定了容器大小，但是没有指定初始值，标准库就好自动创建一个初始值赋值给数组中的所有元素，这个初始值由元素类型而定。</p>
-<p>2、指定初始值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;元素类型&gt; 对象名(容器大小,元素初始值);</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>,<span class="number">1</span>)</span></span>;<span class="comment">//10个元素的初始值都为1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">3</span>,<span class="string">"aa"</span>)</span></span>;<span class="comment">//3个元素的初始值都为“aa"</span></span><br></pre></td></tr></table></figure>
-
-<p>3、列表初始化(C++11新标准)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">1</span>,<span class="number">2</span>&#125;;<span class="comment">//v1有两个元素1，2</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v2=&#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>&#125;;<span class="comment">//v2有3个元素，分别为字符串a b c</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：列表初始化有两种方式，带”=“符号和不带”=“符号都可以。</p>
-<p>4、初始化状态为空</p>
-<p>vector对象可以初始化状态为空，即既没有指定容器大小，也没有指定初始值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;<span class="comment">//创建一个空的int型对象</span></span><br></pre></td></tr></table></figure>
-
-<p>5、用vector对象来初始化另外一个容器对象</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>,<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(v1)</span></span>;<span class="comment">//用v1来初始化v2</span></span><br><span class="line">Vector&lt;<span class="keyword">int</span>&gt; v3=v2;<span class="comment">//用v2数组给v3数组赋值</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：用一个vector对象来初始化另外一个容器对象时，两个vector对象的元素类型必须相同，因为它调用的是vector的复制构造函数。</strong></p>
-<p>复制构造函数会创建一个临时对象来为容器复制，这样为造成效率低下，我们可以用emplace_back()函数代替，它可以直接给对象赋值。</p>
-<p>访问vector对象可以用随机迭代器，也就是下标的形式来访问。</p>
-<p><strong>注意：空的vector容器不可以使用下标直接赋值，例如vector<int> v; v[2]=2;是错误语句，因为此时v是空的，不包含任何元素，所有没有相对应的下标来给元素赋值。</int></strong></p>
-<h4 id="2-2-2、emplace-back-函数"><a href="#2-2-2、emplace-back-函数" class="headerlink" title="2.2.2、emplace_back()函数"></a><strong>2.2.2、emplace_back()函数</strong></h4><p>c++开发中我们会经常用到插入操作对stl的各种容器进行操作，比如vector,map,set等。在引入右值引用，转移构造函数，转移复制运算符之前，通常使用push_back()向容器中加入一个右值元素(临时对象)时，首先会调用构造函数构造这个临时对象，然后需要调用拷贝构造函数将这个临时对象放入容器中。原来的临时变量释放。这样造成的问题就是临时变量申请资源的浪费。<br>引入了右值引用，转移构造函数后，push_back()右值时就会调用构造函数和转移构造函数,如果可以在插入的时候直接构造，就只需要构造一次即可。这就是c++11 新加的emplace_back。</p>
-<p>emplace_back函数原型：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span>... <span class="title">Args</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">emplace_back</span> (<span class="title">Args</span>&amp;&amp;... <span class="title">args</span>);</span></span><br></pre></td></tr></table></figure>
-
-<p>在容器尾部添加一个元素，这个元素原地构造，不需要触发拷贝构造和转移构造。而且调用形式更加简洁，直接根据参数初始化临时对象的成员。<br>一个很有用的例子:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;  </span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">President</span>  </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;  </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> country;  </span><br><span class="line">    <span class="keyword">int</span> year;  </span><br><span class="line"> </span><br><span class="line">    President(<span class="built_in">std</span>::<span class="built_in">string</span> p_name, <span class="built_in">std</span>::<span class="built_in">string</span> p_country, <span class="keyword">int</span> p_year)  </span><br><span class="line">        : name(<span class="built_in">std</span>::<span class="built_in">move</span>(p_name)), country(<span class="built_in">std</span>::<span class="built_in">move</span>(p_country)), year(p_year)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I am being constructed.\n"</span>;  </span><br><span class="line">    &#125;</span><br><span class="line">    President(<span class="keyword">const</span> President&amp; other)</span><br><span class="line">        : name(<span class="built_in">std</span>::<span class="built_in">move</span>(other.name)), country(<span class="built_in">std</span>::<span class="built_in">move</span>(other.country)), year(other.year)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I am being copy constructed.\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    President(President&amp;&amp; other)  </span><br><span class="line">        : name(<span class="built_in">std</span>::<span class="built_in">move</span>(other.name)), country(<span class="built_in">std</span>::<span class="built_in">move</span>(other.country)), year(other.year)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I am being moved.\n"</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    President&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> President&amp; other);  </span><br><span class="line">&#125;;  </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;President&gt; elections;  </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"emplace_back:\n"</span>;  </span><br><span class="line">    elections.emplace_back(<span class="string">"Nelson Mandela"</span>, <span class="string">"South Africa"</span>, <span class="number">1994</span>); <span class="comment">//没有类的创建  </span></span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;President&gt; reElections;  </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\npush_back:\n"</span>;  </span><br><span class="line">    reElections.push_back(President(<span class="string">"Franklin Delano Roosevelt"</span>, <span class="string">"the USA"</span>, <span class="number">1936</span>));  </span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nContents:\n"</span>;  </span><br><span class="line">    <span class="keyword">for</span> (President <span class="keyword">const</span>&amp; president: elections) &#123;  </span><br><span class="line">       <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; president.name &lt;&lt; <span class="string">" was elected president of "</span>  </span><br><span class="line">            &lt;&lt; president.country &lt;&lt; <span class="string">" in "</span> &lt;&lt; president.year &lt;&lt; <span class="string">".\n"</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span> (President <span class="keyword">const</span>&amp; president: reElections) &#123;  </span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; president.name &lt;&lt; <span class="string">" was re-elected president of "</span>  </span><br><span class="line">            &lt;&lt; president.country &lt;&lt; <span class="string">" in "</span> &lt;&lt; president.year &lt;&lt; <span class="string">".\n"</span>;  </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">emplace_back:</span><br><span class="line">I am being constructed.</span><br><span class="line"> </span><br><span class="line">push_back:</span><br><span class="line">I am being constructed.</span><br><span class="line">I am being moved.</span><br><span class="line"> </span><br><span class="line">Contents:</span><br><span class="line">Nelson Mandela was elected president of South Africa in <span class="number">1994.</span></span><br></pre></td></tr></table></figure>
-
-<p> <strong>新版本的原型展示： void push_back(const value_type&amp; x); void push_back(value_type&amp;&amp; x); &lt;typename… Args&gt; reference emplace_back(Args&amp;&amp;… args); 两者区别：push_back传入一个事先存在的元素对象，调用的是拷贝或移动构造来生成这个新压入的元素对象：construct(<em>des, class_name&amp;|&amp;&amp; x)） emplace_back：多个事先存在的对象，调用示义：construct(</em>des, other_type &amp;x|&amp;&amp;x, type_name &amp;|&amp;&amp;,…) emplace_back传参不定，编译器需要在调用时才生成具体的实现，push_back只是emplace_back的两个偏移化版本！ push_back只能用类中的拷贝或移动构造，而emplace_back还可以是类中的其他多参数的构造函数，这是优点也是缺点（代码翻倍）&amp;&amp;在普通函数中作为参数时，是万能引用，并不是右值引用，在函数体中会使用forward完美转发，调用时是复制或移动和你传的值有关，你传左值它就用左值版本，传右值就用右值版本，心里要有数。如果一个类没有上诉的拷贝或移动构造，则不能用于STL容器中，如果没有相应参数类型的构造实现，emplace_back编译不过，找不到它需要的对应构造函数.. move和copy构造唯一区别：move时，指针属性只是简单的拷贝指针，而copy中，指针属性被拷贝的同时，它所指的具体内容也还需要深度copy下去…我们在实现类的两个构造时特别要注意这一点，move中要将旧对象的指针属性置nullptr，这意味着相应的对象不再适合使用了（它必须是临时对象的原因！转移后，内部的指针属性失效！） move和copy的性能对比：正如上说，move只是指针优化，如果类本身没有指针属性，则它不需要move，我们也不必强制move不可，copy和move在内置类型和简单类型（指无指针属性、即构造时不需要new）没区别</strong></p>
-<h4 id="2-2-3、获取容器的容量和大小"><a href="#2-2-3、获取容器的容量和大小" class="headerlink" title="2.2.3、获取容器的容量和大小"></a>2.2.3、获取容器的容量和大小</h4><p>vector提供了两个函数capacity()和size()来分别获取容器的容量和大小。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.capacity();</span><br><span class="line">v.<span class="built_in">size</span>();</span><br></pre></td></tr></table></figure>
-
-<p>其中v为创建的向量对象。</p>
-<h4 id="2-2-4、预留容器容量reserve"><a href="#2-2-4、预留容器容量reserve" class="headerlink" title="2.2.4、预留容器容量reserve()"></a>2.2.4、预留容器容量reserve()</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v.reserve(<span class="keyword">int</span> elem);</span><br></pre></td></tr></table></figure>
-
-<p>elem为要预留容器的容量最小容量。</p>
-<h4 id="2-2-5、赋值函数assign"><a href="#2-2-5、赋值函数assign" class="headerlink" title="2.2.5、赋值函数assign()"></a>2.2.5、赋值函数assign()</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.assign(n,elem);<span class="comment">//将n个elem元素赋值给容器</span></span><br><span class="line">v.assign(<span class="built_in">begin</span>,<span class="built_in">end</span>);<span class="comment">//将[begin,end)迭代器所指区间赋值给容器</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：第二种赋值方式是左闭右开的形式。</strong></p>
-<h4 id="2-2-6、访问容器的元素-、at"><a href="#2-2-6、访问容器的元素-、at" class="headerlink" title="2.2.6、访问容器的元素[]、at()"></a>2.2.6、访问容器的元素[]、at()</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v[<span class="keyword">int</span> idx];</span><br><span class="line">v.at(<span class="keyword">int</span> idx);<span class="comment">//返回索引指向的数据，与[]用法相同</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-7、从尾部插入和删除元素push-back、pop-back"><a href="#2-2-7、从尾部插入和删除元素push-back、pop-back" class="headerlink" title="2.2.7、从尾部插入和删除元素push_back、pop_back"></a>2.2.7、从尾部插入和删除元素push_back、pop_back</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.push_back(type elem&amp; t);</span><br><span class="line">v.pop_back();</span><br></pre></td></tr></table></figure>
-
-<p>push_back()函数是向vector容器末尾添加元素，即先创建一个空的vector对象，再调用push_back()函数向其中添加元素，而pop_bakc()用于弹出vector容器末尾的一个元素。</p>
-<p><strong>注意：由于vector是可自由扩展容器大小的容器，因此很容易因为没有初始化容量而导致浪费大部分时间用于自动申请空间上，因此最好先定义一个大小足够的空vector对象，再在运行时向其中添加元素。</strong></p>
-<h4 id="2-2-8、获取头部和尾部元素"><a href="#2-2-8、获取头部和尾部元素" class="headerlink" title="2.2.8、获取头部和尾部元素"></a>2.2.8、获取头部和尾部元素</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.front();</span><br><span class="line">v.back();</span><br></pre></td></tr></table></figure>
-
-<p><strong>它们分别返回容器的头尾元素的引用。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.<span class="built_in">begin</span>();</span><br><span class="line">v.<span class="built_in">end</span>();</span><br></pre></td></tr></table></figure>
-
-<p><strong>begin和end则返回头尾元素的迭代器(相当于指针),并且begin返回第一个元素的迭代器，end返回最后一个元素的下一个位置的迭代器。</strong></p>
-<h4 id="2-2-9、插入和删除元素"><a href="#2-2-9、插入和删除元素" class="headerlink" title="2.2.9、插入和删除元素"></a>2.2.9、插入和删除元素</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v.insert(pos,elem);<span class="comment">//在pos位置上插入元素elem，返回新数据的位置</span></span><br><span class="line">v.insert(pos,n,elem);<span class="comment">//在pos位置上插入n个elem元素，无返回值</span></span><br><span class="line">v.insert(pos,<span class="built_in">begin</span>,<span class="built_in">end</span>);<span class="comment">//在pos位置上插入[begin,end)区间的数据，无返回值</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v.erase(pos);<span class="comment">//移除pos位置上的元素，返回下一个数据的位置</span></span><br><span class="line">v.erase(<span class="built_in">begin</span>,<span class="built_in">end</span>);<span class="comment">//移除[begin,end)区间的数据，返回下一个严肃的位置</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：insert和erase函数中的位置只能是由begin()或者end()返回的迭代器来指示，而不能用纯粹的数字来作为参数。</strong></p>
-<h4 id="2-2-10、翻转函数reverse-begin-end"><a href="#2-2-10、翻转函数reverse-begin-end" class="headerlink" title="2.2.10、翻转函数reverse(begin,end)"></a>2.2.10、翻转函数reverse(begin,end)</h4><h4 id="2-2-11、判空函数empty"><a href="#2-2-11、判空函数empty" class="headerlink" title="2.2.11、判空函数empty()"></a>2.2.11、判空函数empty()</h4><h4 id="2-2-12、重新设置容器大小函数resize"><a href="#2-2-12、重新设置容器大小函数resize" class="headerlink" title="2.2.12、重新设置容器大小函数resize()"></a>2.2.12、重新设置容器大小函数resize()</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">V.resize(n);</span><br><span class="line">v.resize(n,elem);</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：当容器原来大小小于要设置的大小n时，会扩容，相反则会销毁多余部分。</strong></p>
-<p>例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*vector容器示例</span></span><br><span class="line"><span class="comment">	vector&lt;int&gt; v;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	v.empty(); // 判断容器v是否是空。v.empty() == 1表示v为空</span></span><br><span class="line"><span class="comment">	v.push_back(10); // 添加元素10到v</span></span><br><span class="line"><span class="comment">	v.pop_back(); //  从v中取出元素，容器中的该元素就删除了</span></span><br><span class="line"><span class="comment">	v.size(); // 获取容器的大小</span></span><br><span class="line"><span class="comment">	sort(v.begin(), v.end());  // 对v中元素排序，sort函数参见sort的用法</span></span><br><span class="line"><span class="comment">	// sort(v.begin(), v.end(), cmp); // 需要定义cmp函数。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; myv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it;</span><br><span class="line">	<span class="keyword">for</span> (it = myv.<span class="built_in">begin</span>(); it != myv.<span class="built_in">end</span>(); it++) <span class="comment">//通过迭代器访问容器值 </span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assignfun1</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v)</span> <span class="comment">//给容器赋值，参数需要用引用或指针</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arr[] = &#123; <span class="number">21</span>, <span class="number">4</span>, <span class="number">55</span>, <span class="number">22</span>, <span class="number">46</span>, <span class="number">79</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">78</span>, <span class="number">34</span>, <span class="number">100</span> &#125;;</span><br><span class="line">	v.assign(arr, arr + <span class="keyword">sizeof</span>(arr) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">//用数组给v容器赋值</span></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assignfun2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v)</span> <span class="comment">//给容器赋值，参数需要用引用或指针 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		v.push_back(i); <span class="comment">//</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Multi</span>  //类模板,用于<span class="title">for_each</span>函数中 </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	T value;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Multi(<span class="keyword">const</span> T&amp; v) :value(v) &#123;&#125;  <span class="comment">//构造函数</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T&amp; elem)</span> <span class="keyword">const</span> </span>&#123; elem *= value; &#125; <span class="comment">//重载()运算符</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">VectorFun</span><span class="params">()</span><span class="comment">//vector容器的使用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i, k;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator itv;</span><br><span class="line"></span><br><span class="line">	assignfun1(v);</span><br><span class="line">	<span class="comment">//assignfun2(v);</span></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; v[i] &lt;&lt; <span class="string">" "</span>; <span class="comment">// 可以用下标来访问这个容器，跟数组类似 </span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"使用迭代器来输出数据：\n"</span>;</span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"翻转数据："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	reverse(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>()); <span class="comment">// reverse函数功能：翻转字符串 ，翻转数组， 用于STL的翻转。</span></span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//排序</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"排序："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	sort(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>());<span class="comment">//调用sort()算法将容器中元素从小到大排列 //less&lt;int&gt;(),其他：equal_to, not_equal_to,less_equal,greater_equal</span></span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	sort(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), greater&lt;<span class="keyword">int</span>&gt;());<span class="comment">//调用sort()算法将容器中元素从大到小排列 //greater&lt;int&gt;()</span></span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//查找</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"input num="</span>;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; k;</span><br><span class="line">	itv = <span class="built_in">find</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), k);</span><br><span class="line">	<span class="comment">//find()算法用于在[begin, last)区间查找value元素是否存在。</span></span><br><span class="line">	<span class="comment">//如果存在，就返回指向这个元素的迭代器，如果不存在，就返回end。</span></span><br><span class="line">	<span class="keyword">if</span> (itv != v.<span class="built_in">end</span>())</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"find ok="</span> &lt;&lt; *itv &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"No find.\n"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//for_ each()函数</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"对每个元素乘以5，结果为：\n"</span>;</span><br><span class="line">	for_each(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), Multi&lt;<span class="keyword">int</span>&gt;(<span class="number">5</span>));</span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//累加</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"累加："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"累加和="</span> &lt;&lt; accumulate(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), <span class="number">0</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="comment">//需要头文件 //#include &lt;numeric&gt; </span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printlist</span><span class="params">(<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; myl)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it;</span><br><span class="line">	<span class="keyword">for</span> (it = myl.<span class="built_in">begin</span>(); it != myl.<span class="built_in">end</span>(); it++) <span class="comment">//通过迭代器访问容器值 </span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ListFun</span><span class="params">()</span> <span class="comment">//list容器的操作 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; mylist;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> arr[] = &#123; <span class="number">21</span>, <span class="number">4</span>, <span class="number">55</span>, <span class="number">22</span>, <span class="number">46</span>, <span class="number">79</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">78</span>, <span class="number">34</span>, <span class="number">100</span> &#125;;</span><br><span class="line">	mylist.assign(arr, arr + <span class="keyword">sizeof</span>(arr) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">//用数组给v容器赋值</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nList容器：\n"</span>;</span><br><span class="line">	printlist(mylist);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//排序，list容器本身有sort函数</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"从小到大排序：\n"</span>;</span><br><span class="line">	mylist.sort();<span class="comment">//升序 </span></span><br><span class="line">	printlist(mylist);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"从大到小排序：\n"</span>;</span><br><span class="line">	mylist.sort(greater&lt;<span class="keyword">int</span>&gt;());<span class="comment">//降序 </span></span><br><span class="line">	printlist(mylist);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//vector容器的使用 </span></span><br><span class="line">	VectorFun();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//list容器的使用 </span></span><br><span class="line">	ListFun();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//容器中存储结构体数据（对象数据）的操作方法</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="comment">//#include &lt;string&gt;</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> num;</span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">char</span> sex;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assignfun1</span><span class="params">(<span class="built_in">vector</span>&lt;student&gt;&amp; v)</span> <span class="comment">//给容器赋值，参数需要用引用或指针</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	student arr[] = &#123; &#123;<span class="number">1001</span>,<span class="string">"name1"</span>,<span class="string">'F'</span>,<span class="number">90</span>&#125;,&#123;<span class="number">1002</span>,<span class="string">"name2"</span>,<span class="string">'M'</span>,<span class="number">95</span>&#125;,&#123;<span class="number">1003</span>,<span class="string">"name3"</span>,<span class="string">'M'</span>,<span class="number">91</span>&#125; &#125;;</span><br><span class="line">	v.assign(arr, arr + <span class="keyword">sizeof</span>(arr) / <span class="keyword">sizeof</span>(student)); <span class="comment">//用数组给v容器赋值</span></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assignfun2</span><span class="params">(<span class="built_in">vector</span>&lt;student&gt;&amp; v)</span> <span class="comment">//给容器赋值，参数需要用引用或指针 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	student s1, s2;</span><br><span class="line">	s1.num = <span class="number">2001</span>;</span><br><span class="line">	s1.name = <span class="string">"name21"</span>;</span><br><span class="line">	s1.sex = <span class="string">'F'</span>;</span><br><span class="line">	s1.score = <span class="number">92</span>;</span><br><span class="line"></span><br><span class="line">	s2.num = <span class="number">2002</span>;</span><br><span class="line">	s2.name = <span class="string">"name22"</span>;</span><br><span class="line">	s2.sex = <span class="string">'M'</span>;</span><br><span class="line">	s2.score = <span class="number">96</span>;</span><br><span class="line"></span><br><span class="line">	v.push_back(s1);</span><br><span class="line">	v.push_back(s2);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="built_in">vector</span>&lt;student&gt; myv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;student&gt;::iterator it;</span><br><span class="line">	<span class="keyword">for</span> (it = myv.<span class="built_in">begin</span>(); it != myv.<span class="built_in">end</span>(); it++) <span class="comment">//通过迭代器访问容器值 </span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; it-&gt;num &lt;&lt; <span class="string">" "</span> &lt;&lt; it-&gt;name &lt;&lt; <span class="string">" "</span> &lt;&lt; it-&gt;sex &lt;&lt; <span class="string">" "</span> &lt;&lt; it-&gt;score &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmpnum</span><span class="params">(student a, student b)</span> <span class="comment">//按num由大到小 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (a.num &gt; b.num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmpscore</span><span class="params">(student a, student b)</span> <span class="comment">//按score由小到大 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (a.score &lt; b.score);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">findnum</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	findnum(<span class="keyword">int</span> num) :cmp_num(num) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span><span class="params">(student s)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> cmp_num == s.num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> cmp_num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">findname</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	findname(<span class="built_in">string</span> cmp_string) :cmp_name(cmp_string) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span><span class="params">(student s)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> cmp_name == s.name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> cmp_name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">findprint</span><span class="params">(<span class="built_in">vector</span>&lt;student&gt;::iterator itv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"find ok="</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; itv-&gt;num &lt;&lt; <span class="string">" "</span> &lt;&lt; itv-&gt;name &lt;&lt; <span class="string">" "</span> &lt;&lt; itv-&gt;sex &lt;&lt; <span class="string">" "</span> &lt;&lt; itv-&gt;score &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i, k;</span><br><span class="line">	<span class="built_in">string</span> namestr;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">vector</span>&lt;student&gt; v;</span><br><span class="line">	<span class="built_in">vector</span>&lt;student&gt;::iterator itv;</span><br><span class="line"></span><br><span class="line">	assignfun1(v);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"使用迭代器来输出数据：\n"</span>;</span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;v.<span class="built_in">size</span>(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; v[i].num &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].name &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].sex &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].score &lt;&lt; <span class="string">"\n"</span>; <span class="comment">// 可以用下标来访问这个容器，跟数组类似 </span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	assignfun2(v);</span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"翻转数据："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	reverse(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>()); <span class="comment">// reverse函数功能：翻转字符串 ，翻转数组， 用于STL的翻转。</span></span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//排序</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"排序："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	sort(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), cmpnum); <span class="comment">//cmpnum是比较函数 </span></span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	sort(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), cmpscore);</span><br><span class="line">	<span class="built_in">print</span>(v);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//查找</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"input num="</span>;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; k;</span><br><span class="line">	itv = find_if(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), findnum(k));</span><br><span class="line">	<span class="comment">//find()算法用于在[begin, last)区间查找value元素是否存在。</span></span><br><span class="line">	<span class="comment">//如果存在，就返回指向这个元素的迭代器，如果不存在，就返回end。</span></span><br><span class="line">	<span class="keyword">if</span> (itv != v.<span class="built_in">end</span>())</span><br><span class="line">		findprint(itv);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"No find.\n"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"input name="</span>;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; namestr;</span><br><span class="line">	itv = find_if(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), findname(namestr));</span><br><span class="line">	<span class="keyword">if</span> (itv != v.<span class="built_in">end</span>())</span><br><span class="line">		findprint(itv);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"No find.\n"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3829,20 +4323,20 @@ B: 案例代码实现
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

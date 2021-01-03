@@ -155,6 +155,632 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/23/%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">文件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-24 23:00:03" itemprop="dateModified" datetime="2020-12-24T23:00:03+08:00">2020-12-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>文件的概念</li>
+<li>文件的基本操作</li>
+<li>文件/文件夹的常用操作</li>
+<li>文本文件的编码方式</li>
+</ul>
+<h2 id="01-文件的概念"><a href="#01-文件的概念" class="headerlink" title="01. 文件的概念"></a>01. 文件的概念</h2><h3 id="1-1-文件的概念和作用"><a href="#1-1-文件的概念和作用" class="headerlink" title="1.1 文件的概念和作用"></a>1.1 文件的概念和作用</h3><ul>
+<li>计算机的 <strong>文件</strong>，就是存储在某种 <strong>长期储存设备</strong> 上的一段 <strong>数据</strong></li>
+<li>长期存储设备包括：硬盘、U 盘、移动硬盘、光盘…</li>
+</ul>
+<p><strong>文件的作用</strong></p>
+<p>将数据长期保存下来，在需要的时候使用</p>
+<table>
+<thead>
+<tr>
+<th align="center">CPU</th>
+<th align="center">内存</th>
+<th align="center">硬盘</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/CPU.jpg" alt></td>
+<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/%E5%86%85%E5%AD%98%E6%9D%A1.png" alt></td>
+<td align="center"><img src="/2020/12/23/%E6%96%87%E4%BB%B6/%E7%A1%AC%E7%9B%98.jpg" alt></td>
+</tr>
+</tbody></table>
+<h3 id="1-2-文件的存储方式"><a href="#1-2-文件的存储方式" class="headerlink" title="1.2 文件的存储方式"></a>1.2 文件的存储方式</h3><ul>
+<li>在计算机中，文件是以 <strong>二进制</strong> 的方式保存在磁盘上的</li>
+</ul>
+<h4 id="文本文件和二进制文件"><a href="#文本文件和二进制文件" class="headerlink" title="文本文件和二进制文件"></a>文本文件和二进制文件</h4><ul>
+<li><p>文本文件</p>
+<ul>
+<li>可以使用 <strong>文本编辑软件</strong> 查看</li>
+<li>本质上还是二进制文件</li>
+<li>例如：python 的源程序</li>
+</ul>
+</li>
+<li><p>二进制文件</p>
+<ul>
+<li>保存的内容 不是给人直接阅读的，而是 <strong>提供给其他软件使用的</strong></li>
+<li>例如：图片文件、音频文件、视频文件等等</li>
+<li>二进制文件不能使用 <strong>文本编辑软件</strong> 查看</li>
+</ul>
+</li>
+</ul>
+<h2 id="02-文件的基本操作"><a href="#02-文件的基本操作" class="headerlink" title="02. 文件的基本操作"></a>02. 文件的基本操作</h2><h3 id="2-1-操作文件的套路"><a href="#2-1-操作文件的套路" class="headerlink" title="2.1 操作文件的套路"></a>2.1 操作文件的套路</h3><p>在 <strong>计算机</strong> 中要操作文件的套路非常固定，一共包含<strong>三个步骤</strong>：</p>
+<ol>
+<li>打开文件</li>
+<li>读、写文件<ul>
+<li><strong>读</strong> 将文件内容读入内存</li>
+<li><strong>写</strong> 将内存内容写入文件</li>
+</ul>
+</li>
+<li>关闭文件</li>
+</ol>
+<h3 id="2-2-操作文件的函数-方法"><a href="#2-2-操作文件的函数-方法" class="headerlink" title="2.2 操作文件的函数/方法"></a>2.2 操作文件的函数/方法</h3><ul>
+<li>在 <code>Python</code> 中要操作文件需要记住 1 个函数和 3 个方法</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>函数/方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>01</td>
+<td>open</td>
+<td>打开文件，并且返回文件操作对象</td>
+</tr>
+<tr>
+<td>02</td>
+<td>read</td>
+<td>将文件内容读取到内存</td>
+</tr>
+<tr>
+<td>03</td>
+<td>write</td>
+<td>将指定内容写入文件</td>
+</tr>
+<tr>
+<td>04</td>
+<td>close</td>
+<td>关闭文件</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>open</code> 函数负责打开文件，并且返回文件对象</li>
+<li><code>read</code>/<code>write</code>/<code>close</code> 三个方法都需要通过 <strong>文件对象</strong> 来调用</li>
+</ul>
+<h3 id="2-3-read-方法-——-读取文件"><a href="#2-3-read-方法-——-读取文件" class="headerlink" title="2.3 read 方法 —— 读取文件"></a>2.3 read 方法 —— 读取文件</h3><ul>
+<li><code>open</code> 函数的第一个参数是要打开的文件名（文件名区分大小写）<ul>
+<li>如果文件 <strong>存在</strong>，返回 <strong>文件操作对象</strong></li>
+<li>如果文件 <strong>不存在</strong>，会 <strong>抛出异常</strong></li>
+</ul>
+</li>
+<li><code>read</code> 方法可以一次性 <strong>读入</strong> 并 <strong>返回</strong> 文件的 <strong>所有内容</strong></li>
+<li><code>close</code> 方法负责 <strong>关闭文件</strong><ul>
+<li>如果 <strong>忘记关闭文件</strong>，<strong>会造成系统资源消耗，而且会影响到后续对文件的访问</strong></li>
+</ul>
+</li>
+<li><strong>注意</strong>：<code>read</code> 方法执行后，会把 <strong>文件指针</strong> 移动到 <strong>文件的末尾</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开 - 文件名需要注意大小写</span></span><br><span class="line">file = open(<span class="string">"README"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取</span></span><br><span class="line">text = file.read()</span><br><span class="line">print(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示</strong></p>
+<ul>
+<li>在开发中，通常会先编写 <strong>打开</strong> 和 <strong>关闭</strong> 的代码，再编写中间针对文件的 <strong>读/写</strong> 操作！</li>
+</ul>
+<h4 id="文件指针（知道）"><a href="#文件指针（知道）" class="headerlink" title="文件指针（知道）"></a>文件指针（知道）</h4><ul>
+<li><strong>文件指针</strong> 标记 <strong>从哪个位置开始读取数据</strong></li>
+<li><strong>第一次打开</strong> 文件时，通常 <strong>文件指针会指向文件的开始位置</strong></li>
+<li>当执行了 <code>read</code> 方法后，<strong>文件指针</strong> 会移动到 <strong>读取内容的末尾</strong><ul>
+<li>默认情况下会移动到 <strong>文件末尾</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>思考</strong></p>
+<ul>
+<li>如果执行了一次 <code>read</code> 方法，读取了所有内容，那么再次调用 <code>read</code> 方法，还能够获得到内容吗？</li>
+</ul>
+<p><strong>答案</strong></p>
+<ul>
+<li>不能</li>
+<li>第一次读取之后，文件指针移动到了文件末尾，再次调用不会读取到任何的内容</li>
+</ul>
+<h3 id="2-4-打开文件的方式"><a href="#2-4-打开文件的方式" class="headerlink" title="2.4 打开文件的方式"></a>2.4 打开文件的方式</h3><ul>
+<li><code>open</code> 函数默认以 <strong>只读方式</strong> 打开文件，并且返回文件对象</li>
+</ul>
+<p>语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"文件名"</span>, <span class="string">"访问方式"</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">访问方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">r</td>
+<td>以<strong>只读</strong>方式打开文件。文件的指针将会放在文件的开头，这是<strong>默认模式</strong>。如果文件不存在，抛出异常</td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td>以<strong>只写</strong>方式打开文件。如果文件存在会被覆盖。如果文件不存在，创建新文件</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td>以<strong>追加</strong>方式打开文件。如果该文件已存在，文件指针将会放在文件的结尾。如果文件不存在，创建新文件进行写入</td>
+</tr>
+<tr>
+<td align="center">r+</td>
+<td>以<strong>读写</strong>方式打开文件。文件的指针将会放在文件的开头。如果文件不存在，抛出异常</td>
+</tr>
+<tr>
+<td align="center">w+</td>
+<td>以<strong>读写</strong>方式打开文件。如果文件存在会被覆盖。如果文件不存在，创建新文件</td>
+</tr>
+<tr>
+<td align="center">a+</td>
+<td>以<strong>读写</strong>方式打开文件。如果该文件已存在，文件指针将会放在文件的结尾。如果文件不存在，创建新文件进行写入</td>
+</tr>
+</tbody></table>
+<p><strong>提示</strong></p>
+<ul>
+<li>频繁的移动文件指针，<strong>会影响文件的读写效率</strong>，开发中更多的时候会以 <strong>只读</strong>、<strong>只写</strong> 的方式来操作文件</li>
+</ul>
+<p><strong>写入文件示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">f = open(<span class="string">"README"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line">f.write(<span class="string">"hello python！\n"</span>)</span><br><span class="line">f.write(<span class="string">"今天天气真好"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-按行读取文件内容"><a href="#2-5-按行读取文件内容" class="headerlink" title="2.5 按行读取文件内容"></a>2.5 按行读取文件内容</h3><ul>
+<li><code>read</code> 方法默认会把文件的 <strong>所有内容</strong> <strong>一次性读取到内存</strong></li>
+<li>如果文件太大，对内存的占用会非常严重</li>
+</ul>
+<h4 id="readline-方法"><a href="#readline-方法" class="headerlink" title="readline 方法"></a><code>readline</code> 方法</h4><ul>
+<li><code>readline</code> 方法可以一次读取一行内容</li>
+<li>方法执行后，会把 <strong>文件指针</strong> 移动到下一行，准备再次读取</li>
+</ul>
+<p><strong>读取大文件的正确姿势</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file = open(<span class="string">"README"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 读取一行内容</span></span><br><span class="line">    text = file.readline()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 判断是否读到内容</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> text:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每读取一行的末尾已经有了一个 `\n`</span></span><br><span class="line">    print(text, end=<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-文件读写案例-——-复制文件"><a href="#2-6-文件读写案例-——-复制文件" class="headerlink" title="2.6 文件读写案例 —— 复制文件"></a>2.6 文件读写案例 —— 复制文件</h3><p><strong>目标</strong></p>
+<p>用代码的方式，来实现文件复制过程</p>
+<p><img src="/2020/12/23/%E6%96%87%E4%BB%B6/025_%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6.png" alt></p>
+<h4 id="小文件复制"><a href="#小文件复制" class="headerlink" title="小文件复制"></a>小文件复制</h4><ul>
+<li>打开一个已有文件，读取完整内容，并写入到另外一个文件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开文件</span></span><br><span class="line">file_read = open(<span class="string">"README"</span>)</span><br><span class="line">file_write = open(<span class="string">"README[复件]"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取并写入文件</span></span><br><span class="line">text = file_read.read()</span><br><span class="line">file_write.write(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭文件</span></span><br><span class="line">file_read.close()</span><br><span class="line">file_write.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="大文件复制"><a href="#大文件复制" class="headerlink" title="大文件复制"></a>大文件复制</h4><ul>
+<li>打开一个已有文件，逐行读取内容，并顺序写入到另外一个文件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 打开文件</span></span><br><span class="line">file_read = open(<span class="string">"README"</span>)</span><br><span class="line">file_write = open(<span class="string">"README[复件]"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 读取并写入文件</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 每次读取一行</span></span><br><span class="line">    text = file_read.readline()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 判断是否读取到内容</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> text:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    file_write.write(text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 关闭文件</span></span><br><span class="line">file_read.close()</span><br><span class="line">file_write.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-文件-目录的常用管理操作"><a href="#03-文件-目录的常用管理操作" class="headerlink" title="03. 文件/目录的常用管理操作"></a>03. 文件/目录的常用管理操作</h2><ul>
+<li>在 <strong>终端</strong> / <strong>文件浏览器</strong>、 中可以执行常规的 <strong>文件</strong> / <strong>目录</strong> 管理操作，例如：<ul>
+<li>创建、重命名、删除、改变路径、查看目录内容、……</li>
+</ul>
+</li>
+<li>在 <code>Python</code> 中，如果希望通过程序实现上述功能，需要导入 <code>os</code> 模块</li>
+</ul>
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法名</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>01</td>
+<td>rename</td>
+<td>重命名文件</td>
+<td><code>os.rename(源文件名, 目标文件名)</code></td>
+</tr>
+<tr>
+<td>02</td>
+<td>remove</td>
+<td>删除文件</td>
+<td><code>os.remove(文件名)</code></td>
+</tr>
+</tbody></table>
+<h3 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法名</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>01</td>
+<td>listdir</td>
+<td>目录列表</td>
+<td><code>os.listdir(目录名)</code></td>
+</tr>
+<tr>
+<td>02</td>
+<td>mkdir</td>
+<td>创建目录</td>
+<td><code>os.mkdir(目录名)</code></td>
+</tr>
+<tr>
+<td>03</td>
+<td>rmdir</td>
+<td>删除目录</td>
+<td><code>os.rmdir(目录名)</code></td>
+</tr>
+<tr>
+<td>04</td>
+<td>getcwd</td>
+<td>获取当前目录</td>
+<td><code>os.getcwd()</code></td>
+</tr>
+<tr>
+<td>05</td>
+<td>chdir</td>
+<td>修改工作目录</td>
+<td><code>os.chdir(目标目录)</code></td>
+</tr>
+<tr>
+<td>06</td>
+<td>path.isdir</td>
+<td>判断是否是文件</td>
+<td><code>os.path.isdir(文件路径)</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>提示：文件或者目录操作都支持 <strong>相对路径</strong> 和 <strong>绝对路径</strong></p>
+</blockquote>
+<h2 id="04-文本文件的编码格式（科普）"><a href="#04-文本文件的编码格式（科普）" class="headerlink" title="04. 文本文件的编码格式（科普）"></a>04. 文本文件的编码格式（科普）</h2><ul>
+<li>文本文件存储的内容是基于 <strong>字符编码</strong> 的文件，常见的编码有 <code>ASCII</code> 编码，<code>UNICODE</code> 编码等</li>
+</ul>
+<blockquote>
+<p>Python 2.x 默认使用 <code>ASCII</code> 编码格式<br>Python 3.x 默认使用 <code>UTF-8</code> 编码格式</p>
+</blockquote>
+<h3 id="4-1-ASCII-编码和-UNICODE-编码"><a href="#4-1-ASCII-编码和-UNICODE-编码" class="headerlink" title="4.1 ASCII 编码和 UNICODE 编码"></a>4.1 ASCII 编码和 UNICODE 编码</h3><h4 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a><code>ASCII</code> 编码</h4><ul>
+<li>计算机中只有 <code>256</code> 个 <code>ASCII</code> 字符</li>
+<li>一个 <code>ASCII</code> 在内存中占用 <strong>1 个字节</strong> 的空间<ul>
+<li><code>8</code> 个 <code>0/1</code> 的排列组合方式一共有 <code>256</code> 种，也就是 <code>2 ** 8</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/12/23/%E6%96%87%E4%BB%B6/001_ASCII%E7%BC%96%E7%A0%81%E8%A1%A81.jpg" alt></p>
+<h4 id="UTF-8-编码格式"><a href="#UTF-8-编码格式" class="headerlink" title="UTF-8 编码格式"></a><code>UTF-8</code> 编码格式</h4><ul>
+<li>计算机中使用 <strong>1~6 个字节</strong> 来表示一个 <code>UTF-8</code> 字符，涵盖了 <strong>地球上几乎所有地区的文字</strong></li>
+<li>大多数汉字会使用 <strong>3 个字节</strong> 表示</li>
+<li><code>UTF-8</code> 是 <code>UNICODE</code> 编码的一种编码格式</li>
+</ul>
+<h3 id="4-2-Ptyhon-2-x-中如何使用中文"><a href="#4-2-Ptyhon-2-x-中如何使用中文" class="headerlink" title="4.2 Ptyhon 2.x 中如何使用中文"></a>4.2 Ptyhon 2.x 中如何使用中文</h3><blockquote>
+<p>Python 2.x 默认使用 <code>ASCII</code> 编码格式<br>Python 3.x 默认使用 <code>UTF-8</code> 编码格式</p>
+</blockquote>
+<ul>
+<li>在 Python 2.x 文件的 <strong>第一行</strong> 增加以下代码，解释器会以 <code>utf-8</code> 编码来处理 python 文件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># *-* coding:utf8 *-*</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这方式是官方推荐使用的！</p>
+</blockquote>
+<ul>
+<li>也可以使用 </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="unicode-字符串"><a href="#unicode-字符串" class="headerlink" title="unicode 字符串"></a>unicode 字符串</h4><ul>
+<li>在 <code>Python 2.x</code> 中，即使指定了文件使用 <code>UTF-8</code> 的编码格式，但是在遍历字符串时，仍然会 <strong>以字节为单位遍历</strong> 字符串</li>
+<li>要能够 <strong>正确的遍历字符串</strong>，在定义字符串时，需要 <strong>在字符串的引号前</strong>，增加一个小写字母 <code>u</code>，告诉解释器这是一个 <code>unicode</code> 字符串（使用 <code>UTF-8</code> 编码格式的字符串）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># *-* coding:utf8 *-*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在字符串前，增加一个 `u` 表示这个字符串是一个 utf8 字符串</span></span><br><span class="line">hello_str = <span class="string">u"你好世界"</span></span><br><span class="line"></span><br><span class="line">print(hello_str)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> hello_str:</span><br><span class="line">    print(c)</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E6%A8%A1%E5%9D%97%E5%92%8C%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/23/%E6%A8%A1%E5%9D%97%E5%92%8C%E5%8C%85/" class="post-title-link" itemprop="url">模块和包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 18:45:08" itemprop="dateCreated datePublished" datetime="2020-12-23T18:45:08+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-24 22:59:45" itemprop="dateModified" datetime="2020-12-24T22:59:45+08:00">2020-12-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="模块和包"><a href="#模块和包" class="headerlink" title="模块和包"></a>模块和包</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>模块</li>
+<li>包</li>
+<li>发布模块</li>
+</ul>
+<h2 id="01-模块"><a href="#01-模块" class="headerlink" title="01. 模块"></a>01. 模块</h2><h3 id="1-1-模块的概念"><a href="#1-1-模块的概念" class="headerlink" title="1.1 模块的概念"></a>1.1 模块的概念</h3><blockquote>
+<p><strong>模块是 Python 程序架构的一个核心概念</strong></p>
+</blockquote>
+<ul>
+<li>每一个以扩展名 <code>py</code> 结尾的 <code>Python</code> 源代码文件都是一个 <strong>模块</strong></li>
+<li><strong>模块名</strong> 同样也是一个 <strong>标识符</strong>，需要符合标识符的命名规则</li>
+<li>在模块中定义的 <strong>全局变量</strong> 、<strong>函数</strong>、<strong>类</strong> 都是提供给外界直接使用的 <strong>工具</strong></li>
+<li><strong>模块</strong> 就好比是 <strong>工具包</strong>，要想使用这个工具包中的工具，就需要先 <strong>导入</strong> 这个模块</li>
+</ul>
+<h3 id="1-2-模块的两种导入方式"><a href="#1-2-模块的两种导入方式" class="headerlink" title="1.2 模块的两种导入方式"></a>1.2 模块的两种导入方式</h3><h4 id="1）import-导入"><a href="#1）import-导入" class="headerlink" title="1）import 导入"></a>1）import 导入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span>, 模块名<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提示：在导入模块时，每个导入应该独占一行</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span></span><br><span class="line"><span class="keyword">import</span> 模块名<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>导入之后</strong><ul>
+<li>通过 <code>模块名.</code> 使用 <strong>模块提供的工具</strong> —— <strong>全局变量</strong>、<strong>函数</strong>、<strong>类</strong></li>
+</ul>
+</li>
+</ul>
+<h5 id="使用-as-指定模块的别名"><a href="#使用-as-指定模块的别名" class="headerlink" title="使用 as 指定模块的别名"></a>使用 <code>as</code> 指定模块的别名</h5><blockquote>
+<p><strong>如果模块的名字太长</strong>，可以使用 <code>as</code> 指定模块的名称，以方便在代码中的使用</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span> <span class="keyword">as</span> 模块别名</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：<strong>模块别名</strong> 应该符合 <strong>大驼峰命名法</strong></p>
+</blockquote>
+<h4 id="2）from…import-导入"><a href="#2）from…import-导入" class="headerlink" title="2）from…import 导入"></a>2）from…import 导入</h4><ul>
+<li>如果希望 <strong>从某一个模块</strong> 中，导入 <strong>部分</strong> 工具，就可以使用 <code>from ... import</code> 的方式</li>
+<li><code>import 模块名</code> 是 <strong>一次性</strong> 把模块中 <strong>所有工具全部导入</strong>，并且通过 <strong>模块名/别名</strong> 访问</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 模块 导入 某一个工具</span></span><br><span class="line"><span class="keyword">from</span> 模块名<span class="number">1</span> <span class="keyword">import</span> 工具名</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>导入之后<ul>
+<li><strong>不需要</strong> 通过 <code>模块名.</code></li>
+<li>可以直接使用 <strong>模块提供的工具</strong> —— <strong>全局变量</strong>、<strong>函数</strong>、<strong>类</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>如果 <strong>两个模块</strong>，存在 <strong>同名的函数</strong>，那么 <strong>后导入模块的函数</strong>，会 <strong>覆盖掉先导入的函数</strong></p>
+</blockquote>
+<ul>
+<li>开发时 <code>import</code> 代码应该统一写在 <strong>代码的顶部</strong>，更容易及时发现冲突</li>
+<li>一旦发现冲突，可以使用 <code>as</code> 关键字 <strong>给其中一个工具起一个别名</strong></li>
+</ul>
+<h5 id="from…import-（知道）"><a href="#from…import-（知道）" class="headerlink" title="from…import *（知道）"></a>from…import *（知道）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 模块 导入 所有工具</span></span><br><span class="line"><span class="keyword">from</span> 模块名<span class="number">1</span> <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<blockquote>
+<p>这种方式不推荐使用，因为函数重名并没有任何的提示，出现问题不好排查</p>
+</blockquote>
+<h3 id="1-3-模块的搜索顺序-扩展"><a href="#1-3-模块的搜索顺序-扩展" class="headerlink" title="1.3 模块的搜索顺序[扩展]"></a>1.3 模块的搜索顺序[扩展]</h3><p><code>Python</code> 的解释器在 <strong>导入模块</strong> 时，会：</p>
+<ol>
+<li>搜索 <strong>当前目录</strong> 指定模块名的文件，<strong>如果有就直接导入</strong></li>
+<li>如果没有，再搜索 <strong>系统目录</strong> </li>
+</ol>
+<blockquote>
+<p>在开发时，给文件起名，不要和 <strong>系统的模块文件</strong> <strong>重名</strong></p>
+</blockquote>
+<p><code>Python</code> 中每一个模块都有一个内置属性 <code>__file__</code> 可以 <strong>查看模块</strong> 的 <strong>完整路径</strong></p>
+<p><strong>示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个 0～10 的数字</span></span><br><span class="line">rand = random.randint(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">print(rand)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果当前目录下，存在一个 <code>random.py</code> 的文件，程序就无法正常执行了！</p>
+</blockquote>
+<ul>
+<li>这个时候，<code>Python</code> 的解释器会 <strong>加载当前目录</strong> 下的 <code>random.py</code> 而不会加载 <strong>系统的</strong> <code>random</code> 模块</li>
+</ul>
+<h3 id="1-4-原则-——-每一个文件都应该是可以被导入的"><a href="#1-4-原则-——-每一个文件都应该是可以被导入的" class="headerlink" title="1.4 原则 —— 每一个文件都应该是可以被导入的"></a>1.4 原则 —— 每一个文件都应该是可以被导入的</h3><ul>
+<li>一个 <strong>独立的 <code>Python</code> 文件</strong> 就是一个 <strong>模块</strong></li>
+<li>在导入文件时，文件中 <strong>所有没有任何缩进的代码</strong> 都会被执行一遍！</li>
+</ul>
+<p><strong>实际开发场景</strong></p>
+<ul>
+<li>在实际开发中，每一个模块都是独立开发的，大多都有专人负责</li>
+<li><strong>开发人员</strong> 通常会在 <strong>模块下方</strong> <strong>增加一些测试代码</strong><ul>
+<li>仅在模块内使用，而被导入到其他文件中不需要执行</li>
+</ul>
+</li>
+</ul>
+<h4 id="name-属性"><a href="#name-属性" class="headerlink" title="__name__ 属性"></a><code>__name__</code> 属性</h4><blockquote>
+<ul>
+<li><code>__name__</code> 属性可以做到，测试模块的代码 <strong>只在测试情况下被运行</strong>，而在 <strong>被导入时不会被执行</strong>！</li>
+</ul>
+</blockquote>
+<ul>
+<li><code>__name__</code> 是 <code>Python</code> 的一个内置属性，记录着一个 <strong>字符串</strong></li>
+<li>如果 <strong>是被其他文件导入的</strong>，<code>__name__</code> 就是 <strong>模块名</strong></li>
+<li>如果 <strong>是当前执行的程序</strong> <code>__name__</code> 是 <strong><code>__main__</code></strong></li>
+</ul>
+<p><strong>在很多 <code>Python</code> 文件中都会看到以下格式的代码</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="comment"># 定义全局变量</span></span><br><span class="line"><span class="comment"># 定义类</span></span><br><span class="line"><span class="comment"># 定义函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在代码的最下方</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据 __name__ 判断是否执行下方代码</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-包（Package）"><a href="#02-包（Package）" class="headerlink" title="02. 包（Package）"></a>02. 包（Package）</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li><strong>包</strong> 是一个 <strong>包含多个模块</strong> 的 <strong>特殊目录</strong></li>
+<li>目录下有一个 <strong>特殊的文件</strong> <code>__init__.py</code></li>
+<li>包名的 <strong>命名方式</strong> 和变量名一致，<strong>小写字母</strong> + <code>_</code></li>
+</ul>
+<p><strong>好处</strong></p>
+<ul>
+<li>使用 <code>import 包名</code> 可以一次性导入 <strong>包</strong> 中 <strong>所有的模块</strong></li>
+</ul>
+<h3 id="案例演练"><a href="#案例演练" class="headerlink" title="案例演练"></a>案例演练</h3><ol>
+<li>新建一个 <code>hm_message</code> 的 <strong>包</strong></li>
+<li>在目录下，新建两个文件 <code>send_message</code> 和 <code>receive_message</code></li>
+<li>在 <code>send_message</code> 文件中定义一个 <code>send</code> 函数</li>
+<li>在 <code>receive_message</code> 文件中定义一个 <code>receive</code> 函数</li>
+<li>在外部直接导入 <code>hm_message</code> 的包</li>
+</ol>
+<h3 id="init-py"><a href="#init-py" class="headerlink" title="__init__.py"></a><code>__init__.py</code></h3><ul>
+<li>要在外界使用 <strong>包</strong> 中的模块，需要在 <code>__init__.py</code> 中指定 <strong>对外界提供的模块列表</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 当前目录 导入 模块列表</span></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> send_message</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> receive_message</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-发布模块（知道）"><a href="#03-发布模块（知道）" class="headerlink" title="03. 发布模块（知道）"></a>03. 发布模块（知道）</h2><ul>
+<li>如果希望自己开发的模块，<strong>分享</strong> 给其他人，可以按照以下步骤操作</li>
+</ul>
+<h3 id="3-1-制作发布压缩包步骤"><a href="#3-1-制作发布压缩包步骤" class="headerlink" title="3.1 制作发布压缩包步骤"></a>3.1 制作发布压缩包步骤</h3><h4 id="1-创建-setup-py"><a href="#1-创建-setup-py" class="headerlink" title="1) 创建 setup.py"></a>1) 创建 setup.py</h4><ul>
+<li><code>setup.py</code> 的文件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</span><br><span class="line"></span><br><span class="line">setup(name=<span class="string">"hm_message"</span>,  <span class="comment"># 包名</span></span><br><span class="line">      version=<span class="string">"1.0"</span>,  <span class="comment"># 版本</span></span><br><span class="line">      description=<span class="string">"itheima's 发送和接收消息模块"</span>,  <span class="comment"># 描述信息</span></span><br><span class="line">      long_description=<span class="string">"完整的发送和接收消息模块"</span>,  <span class="comment"># 完整描述信息</span></span><br><span class="line">      author=<span class="string">"itheima"</span>,  <span class="comment"># 作者</span></span><br><span class="line">      author_email=<span class="string">"itheima@itheima.com"</span>,  <span class="comment"># 作者邮箱</span></span><br><span class="line">      url=<span class="string">"www.itheima.com"</span>,  <span class="comment"># 主页</span></span><br><span class="line">      py_modules=[<span class="string">"hm_message.send_message"</span>,</span><br><span class="line">                  <span class="string">"hm_message.receive_message"</span>])</span><br></pre></td></tr></table></figure>
+
+<p>有关字典参数的详细信息，可以参阅官方网站：</p>
+<p><a href="https://docs.python.org/2/distutils/apiref.html" target="_blank" rel="noopener">https://docs.python.org/2/distutils/apiref.html</a></p>
+<h4 id="2-构建模块"><a href="#2-构建模块" class="headerlink" title="2) 构建模块"></a>2) 构建模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 setup.py build</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-生成发布压缩包"><a href="#3-生成发布压缩包" class="headerlink" title="3) 生成发布压缩包"></a>3) 生成发布压缩包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 setup.py sdist</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：要制作哪个版本的模块，就使用哪个版本的解释器执行！</p>
+</blockquote>
+<h3 id="3-2-安装模块"><a href="#3-2-安装模块" class="headerlink" title="3.2 安装模块"></a>3.2 安装模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf hm_message-1.0.tar.gz </span><br><span class="line"></span><br><span class="line">$ sudo python3 setup.py install</span><br></pre></td></tr></table></figure>
+
+<p><strong>卸载模块</strong></p>
+<p>直接从安装目录下，把安装模块的 <strong>目录</strong> 删除就可以</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/local/lib/python3<span class="number">.5</span>/dist-packages/</span><br><span class="line">$ sudo rm -r hm_message*</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-pip-安装第三方模块"><a href="#3-3-pip-安装第三方模块" class="headerlink" title="3.3 pip 安装第三方模块"></a>3.3 <code>pip</code> 安装第三方模块</h3><ul>
+<li><strong>第三方模块</strong> 通常是指由 <strong>知名的第三方团队</strong> <strong>开发的</strong> 并且被 <strong>程序员广泛使用</strong> 的 <code>Python</code> 包 / 模块<ul>
+<li>例如 <code>pygame</code> 就是一套非常成熟的 <strong>游戏开发模块</strong></li>
+</ul>
+</li>
+<li><code>pip</code> 是一个现代的，通用的 <code>Python</code> 包管理工具</li>
+<li>提供了对 <code>Python</code> 包的查找、下载、安装、卸载等功能</li>
+</ul>
+<p>安装和卸载命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将模块安装到 Python 2.x 环境</span></span><br><span class="line">$ sudo pip install pygame</span><br><span class="line">$ sudo pip uninstall pygame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模块安装到 Python 3.x 环境</span></span><br><span class="line">$ sudo pip3 install pygame</span><br><span class="line">$ sudo pip3 uninstall pygame</span><br></pre></td></tr></table></figure>
+
+<h4 id="在-Mac-下安装-iPython"><a href="#在-Mac-下安装-iPython" class="headerlink" title="在 Mac 下安装 iPython"></a>在 <code>Mac</code> 下安装 <code>iPython</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip install ipython</span><br></pre></td></tr></table></figure>
+
+<h4 id="在-Linux-下安装-iPython"><a href="#在-Linux-下安装-iPython" class="headerlink" title="在 Linux 下安装 iPython"></a>在 <code>Linux</code> 下安装 <code>iPython</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install ipython</span><br><span class="line">$ sudo apt install ipython3</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/eval%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1431,454 +2057,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">面相对象基础语法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-23 18:24:40 / 修改时间：23:28:21" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="面相对象基础语法"><a href="#面相对象基础语法" class="headerlink" title="面相对象基础语法"></a>面相对象基础语法</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li><code>dir</code> 内置函数</li>
-<li>定义简单的类（只包含方法）</li>
-<li>方法中的 <code>self</code> 参数</li>
-<li>初始化方法</li>
-<li>内置方法和属性</li>
-</ul>
-<h2 id="01-dir-内置函数（知道）"><a href="#01-dir-内置函数（知道）" class="headerlink" title="01. dir 内置函数（知道）"></a>01. <code>dir</code> 内置函数（知道）</h2><ul>
-<li>在 <code>Python</code> 中 <strong>对象几乎是无所不在的</strong>，我们之前学习的 <strong>变量</strong>、<strong>数据</strong>、<strong>函数</strong> 都是对象</li>
-</ul>
-<p>在 <code>Python</code> 中可以使用以下两个方法验证：</p>
-<ol>
-<li>在 <strong>标识符</strong> / <strong>数据</strong> 后输入一个 <code>.</code>，然后按下 <code>TAB</code> 键，<code>iPython</code> 会提示该对象能够调用的 <strong>方法列表</strong></li>
-<li>使用内置函数 <code>dir</code> 传入 <strong>标识符</strong> / <strong>数据</strong>，可以查看对象内的 <strong>所有属性及方法</strong></li>
-</ol>
-<p><strong>提示</strong> <code>__方法名__</code> 格式的方法是 <code>Python</code> 提供的 <strong>内置方法 / 属性</strong>，稍后会给大家介绍一些常用的 内置方法 / 属性</p>
-<table>
-<thead>
-<tr>
-<th align="center">序号</th>
-<th align="center">方法名</th>
-<th align="center">类型</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">01</td>
-<td align="center"><code>__new__</code></td>
-<td align="center">方法</td>
-<td><strong>创建对象</strong>时，会被 <strong>自动</strong> 调用</td>
-</tr>
-<tr>
-<td align="center">02</td>
-<td align="center"><code>__init__</code></td>
-<td align="center">方法</td>
-<td><strong>对象被初始化</strong>时，会被 <strong>自动</strong> 调用</td>
-</tr>
-<tr>
-<td align="center">03</td>
-<td align="center"><code>__del__</code></td>
-<td align="center">方法</td>
-<td><strong>对象被从内存中销毁</strong>前，会被 <strong>自动</strong> 调用</td>
-</tr>
-<tr>
-<td align="center">04</td>
-<td align="center"><code>__str__</code></td>
-<td align="center">方法</td>
-<td>返回<strong>对象的描述信息</strong>，<code>print</code> 函数输出使用</td>
-</tr>
-</tbody></table>
-<p><strong>提示</strong> 利用好 <code>dir()</code> 函数，在学习时很多内容就不需要死记硬背了</p>
-<h2 id="02-定义简单的类（只包含方法）"><a href="#02-定义简单的类（只包含方法）" class="headerlink" title="02. 定义简单的类（只包含方法）"></a>02. 定义简单的类（只包含方法）</h2><blockquote>
-<p><strong>面向对象</strong> 是 <strong>更大</strong> 的 <strong>封装</strong>，在 <strong>一个类中 封装 多个方法</strong>，这样 <strong>通过这个类创建出来的对象，就可以直接调用这些方法了</strong>！</p>
-</blockquote>
-<h3 id="2-1-定义只包含方法的类"><a href="#2-1-定义只包含方法的类" class="headerlink" title="2.1 定义只包含方法的类"></a>2.1 定义只包含方法的类</h3><ul>
-<li>在 <code>Python</code> 中要定义一个只包含方法的类，语法格式如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 类名:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 方法1<span class="params">(self, 参数列表)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> 方法2<span class="params">(self, 参数列表)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>方法</strong> 的定义格式和之前学习过的<strong>函数</strong> 几乎一样</li>
-<li>区别在于第一个参数必须是 <code>self</code>，大家暂时先记住，稍后介绍 <code>self</code></li>
-</ul>
-<blockquote>
-<p>注意：<strong>类名</strong> 的 命名规则 要符合 <strong>大驼峰命名法</strong></p>
-</blockquote>
-<h3 id="2-2-创建对象"><a href="#2-2-创建对象" class="headerlink" title="2.2 创建对象"></a>2.2 创建对象</h3><ul>
-<li>当一个类定义完成之后，要使用这个类来创建对象，语法格式如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象变量 = 类名()</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-第一个面向对象程序"><a href="#2-3-第一个面向对象程序" class="headerlink" title="2.3 第一个面向对象程序"></a>2.3 第一个面向对象程序</h3><p><strong>需求</strong></p>
-<ul>
-<li><strong>小猫</strong> 爱 <strong>吃</strong> 鱼，<strong>小猫</strong> 要 <strong>喝</strong> 水</li>
-</ul>
-<p><strong>分析</strong></p>
-<ol>
-<li>定义一个猫类 <code>Cat</code></li>
-<li>定义两个方法 <code>eat</code> 和 <code>drink</code></li>
-<li>按照需求 —— 不需要定义属性</li>
-</ol>
-<p><img src="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/004_Cat%E7%B1%BB1.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line">    <span class="string">"""这是一个猫类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"小猫爱吃鱼"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">drink</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"小猫在喝水"</span>)</span><br><span class="line"></span><br><span class="line">tom = Cat()</span><br><span class="line">tom.drink()</span><br><span class="line">tom.eat()</span><br></pre></td></tr></table></figure>
-
-<h4 id="引用概念的强调"><a href="#引用概念的强调" class="headerlink" title="引用概念的强调"></a>引用概念的强调</h4><blockquote>
-<p>在面向对象开发中，<strong>引用</strong>的概念是同样适用的！</p>
-</blockquote>
-<ul>
-<li>在 <code>Python</code> 中使用类 <strong>创建对象之后</strong>，<code>tom</code> 变量中 仍然记录的是 <strong>对象在内存中的地址</strong></li>
-<li>也就是 <code>tom</code> 变量 <strong>引用</strong> 了 <strong>新建的猫对象</strong></li>
-<li>使用 <code>print</code> 输出 <strong>对象变量</strong>，默认情况下，是能够输出这个变量 <strong>引用的对象</strong> 是 <strong>由哪一个类创建的对象</strong>，以及 <strong>在内存中的地址</strong>（<strong>十六进制表示</strong>）</li>
-</ul>
-<blockquote>
-<p>提示：在计算机中，通常使用 <strong>十六进制</strong> 表示 <strong>内存地址</strong></p>
-<ul>
-<li><strong>十进制</strong> 和 <strong>十六进制</strong> 都是用来表达数字的，只是表示的方式不一样</li>
-<li><strong>十进制</strong> 和 <strong>十六进制</strong> 的数字之间可以来回转换</li>
-</ul>
-</blockquote>
-<ul>
-<li><code>%d</code> 可以以 <strong>10 进制</strong> 输出数字</li>
-<li><code>%x</code> 可以以 <strong>16 进制</strong> 输出数字</li>
-</ul>
-<h4 id="案例进阶-——-使用-Cat-类再创建一个对象"><a href="#案例进阶-——-使用-Cat-类再创建一个对象" class="headerlink" title="案例进阶 —— 使用 Cat 类再创建一个对象"></a>案例进阶 —— 使用 Cat 类再创建一个对象</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lazy_cat = Cat()</span><br><span class="line">lazy_cat.eat()</span><br><span class="line">lazy_cat.drink()</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提问：<code>tom</code> 和 <code>lazy_cat</code> 是同一个对象吗？</p>
-</blockquote>
-<h2 id="03-方法中的-self-参数"><a href="#03-方法中的-self-参数" class="headerlink" title="03. 方法中的 self 参数"></a>03. 方法中的 <code>self</code> 参数</h2><h3 id="3-1-案例改造-——-给对象增加属性"><a href="#3-1-案例改造-——-给对象增加属性" class="headerlink" title="3.1 案例改造 —— 给对象增加属性"></a>3.1 案例改造 —— 给对象增加属性</h3><ul>
-<li>在 <code>Python</code> 中，要 <strong>给对象设置属性</strong>，非常的容易，<strong>但是不推荐使用</strong><ul>
-<li>因为：对象属性的封装应该封装在类的内部</li>
-</ul>
-</li>
-<li>只需要在 <strong>类的外部的代码</strong> 中直接通过 <code>.</code> 设置一个属性即可</li>
-</ul>
-<blockquote>
-<p>注意：这种方式虽然简单，但是不推荐使用！</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tom.name = <span class="string">"Tom"</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">lazy_cat.name = <span class="string">"大懒猫"</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2-使用-self-在方法内部输出每一只猫的名字"><a href="#3-2-使用-self-在方法内部输出每一只猫的名字" class="headerlink" title="3.2 使用 self 在方法内部输出每一只猫的名字"></a>3.2 使用 <code>self</code> 在方法内部输出每一只猫的名字</h3><blockquote>
-<p>由 <strong>哪一个对象</strong> 调用的方法，方法内的 <code>self</code> 就是 <strong>哪一个对象的引用</strong></p>
-</blockquote>
-<ul>
-<li>在类封装的方法内部，<code>self</code> 就表示 <strong>当前调用方法的对象自己</strong></li>
-<li><strong>调用方法时</strong>，程序员不需要传递 <code>self</code> 参数</li>
-<li><strong>在方法内部</strong><ul>
-<li>可以通过 <code>self.</code> <strong>访问对象的属性</strong></li>
-<li>也可以通过 <code>self.</code> <strong>调用其他的对象方法</strong></li>
-</ul>
-</li>
-<li>改造代码如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"%s 爱吃鱼"</span> % self.name)</span><br><span class="line"></span><br><span class="line">tom = Cat()</span><br><span class="line">tom.name = <span class="string">"Tom"</span></span><br><span class="line">tom.eat()</span><br><span class="line"></span><br><span class="line">lazy_cat = Cat()</span><br><span class="line">lazy_cat.name = <span class="string">"大懒猫"</span></span><br><span class="line">lazy_cat.eat()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/005_%E6%96%B9%E6%B3%95%E4%B8%AD%E7%9A%84self.png" alt></p>
-<ul>
-<li>在 <strong>类的外部</strong>，通过 <code>变量名.</code> 访问对象的 <strong>属性和方法</strong></li>
-<li>在 <strong>类封装的方法中</strong>，通过 <code>self.</code> 访问对象的 <strong>属性和方法</strong></li>
-</ul>
-<h2 id="04-初始化方法"><a href="#04-初始化方法" class="headerlink" title="04. 初始化方法"></a>04. 初始化方法</h2><h3 id="4-1-之前代码存在的问题-——-在类的外部给对象增加属性"><a href="#4-1-之前代码存在的问题-——-在类的外部给对象增加属性" class="headerlink" title="4.1 之前代码存在的问题 —— 在类的外部给对象增加属性"></a>4.1 之前代码存在的问题 —— 在类的外部给对象增加属性</h3><ul>
-<li>将案例代码进行调整，<strong>先调用方法 再设置属性</strong>，观察一下执行效果</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tom = Cat()</span><br><span class="line">tom.drink()</span><br><span class="line">tom.eat()</span><br><span class="line">tom.name = <span class="string">"Tom"</span></span><br><span class="line">print(tom)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>程序执行报错如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: &#39;Cat&#39; object has no attribute &#39;name&#39;</span><br><span class="line">属性错误：&#39;Cat&#39; 对象没有 &#39;name&#39; 属性</span><br></pre></td></tr></table></figure>
-
-<p><strong>提示</strong></p>
-<ul>
-<li>在日常开发中，不推荐在 <strong>类的外部</strong> 给对象增加属性<ul>
-<li>如果<strong>在运行时，没有找到属性，程序会报错</strong></li>
-</ul>
-</li>
-<li>对象应该包含有哪些属性，应该 <strong>封装在类的内部</strong></li>
-</ul>
-<h3 id="4-2-初始化方法"><a href="#4-2-初始化方法" class="headerlink" title="4.2 初始化方法"></a>4.2 初始化方法</h3><ul>
-<li>当使用 <code>类名()</code> 创建对象时，会 <strong>自动</strong> 执行以下操作：<ol>
-<li>为对象在内存中 <strong>分配空间</strong> —— 创建对象</li>
-<li>为对象的属性 <strong>设置初始值</strong> —— 初始化方法(<code>init</code>)</li>
-</ol>
-</li>
-<li>这个 <strong>初始化方法</strong> 就是 <code>__init__</code> 方法，<code>__init__</code> 是对象的<strong>内置方法</strong></li>
-</ul>
-<blockquote>
-<p><code>__init__</code> 方法是 <strong>专门</strong> 用来定义一个类 <strong>具有哪些属性的方法</strong>！</p>
-</blockquote>
-<p>在 <code>Cat</code> 中增加 <code>__init__</code> 方法，验证该方法在创建对象时会被自动调用</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line">    <span class="string">"""这是一个猫类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"初始化方法"</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-在初始化方法内部定义属性"><a href="#4-3-在初始化方法内部定义属性" class="headerlink" title="4.3 在初始化方法内部定义属性"></a>4.3 在初始化方法内部定义属性</h3><ul>
-<li>在 <code>__init__</code> 方法内部使用 <code>self.属性名 = 属性的初始值</code> 就可以 <strong>定义属性</strong></li>
-<li>定义属性之后，再使用 <code>Cat</code> 类创建的对象，都会拥有该属性</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"这是一个初始化方法"</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 定义用 Cat 类创建的猫对象都有一个 name 的属性</span></span><br><span class="line">        self.name = <span class="string">"Tom"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"%s 爱吃鱼"</span> % self.name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用类名()创建对象的时候，会自动调用初始化方法 __init__</span></span><br><span class="line">tom = Cat()</span><br><span class="line"></span><br><span class="line">tom.eat()</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-4-改造初始化方法-——-初始化的同时设置初始值"><a href="#4-4-改造初始化方法-——-初始化的同时设置初始值" class="headerlink" title="4.4 改造初始化方法 —— 初始化的同时设置初始值"></a>4.4 改造初始化方法 —— 初始化的同时设置初始值</h3><ul>
-<li>在开发中，如果希望在 <strong>创建对象的同时，就设置对象的属性</strong>，可以对 <code>__init__</code> 方法进行 <strong>改造</strong><ol>
-<li>把希望设置的属性值，定义成 <code>__init__</code> 方法的参数</li>
-<li>在方法内部使用 <code>self.属性 = 形参</code> 接收外部传递的参数</li>
-<li>在创建对象时，使用 <code>类名(属性1, 属性2...)</code> 调用</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        print(<span class="string">"初始化方法 %s"</span> % name)</span><br><span class="line">        self.name = name</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">tom = Cat(<span class="string">"Tom"</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">lazy_cat = Cat(<span class="string">"大懒猫"</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<h2 id="05-内置方法和属性"><a href="#05-内置方法和属性" class="headerlink" title="05. 内置方法和属性"></a>05. 内置方法和属性</h2><table>
-<thead>
-<tr>
-<th align="center">序号</th>
-<th align="center">方法名</th>
-<th align="center">类型</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">01</td>
-<td align="center"><code>__del__</code></td>
-<td align="center">方法</td>
-<td><strong>对象被从内存中销毁</strong>前，会被 <strong>自动</strong> 调用</td>
-</tr>
-<tr>
-<td align="center">02</td>
-<td align="center"><code>__str__</code></td>
-<td align="center">方法</td>
-<td>返回<strong>对象的描述信息</strong>，<code>print</code> 函数输出使用</td>
-</tr>
-</tbody></table>
-<h3 id="5-1-del-方法（知道）"><a href="#5-1-del-方法（知道）" class="headerlink" title="5.1 __del__ 方法（知道）"></a>5.1 <code>__del__</code> 方法（知道）</h3><ul>
-<li><p>在 <code>Python</code> 中</p>
-<ul>
-<li>当使用 <code>类名()</code> 创建对象时，为对象 <strong>分配完空间</strong>后，<strong>自动</strong> 调用 <code>__init__</code> 方法</li>
-<li>当一个 <strong>对象被从内存中销毁</strong> 前，会 <strong>自动</strong> 调用 <code>__del__</code> 方法</li>
-</ul>
-</li>
-<li><p><strong>应用场景</strong></p>
-<ul>
-<li><code>__init__</code> 改造初始化方法，可以让创建对象更加灵活</li>
-<li><code>__del__</code> 如果希望在对象被销毁前，再做一些事情，可以考虑一下 <code>__del__</code> 方法</li>
-</ul>
-</li>
-<li><p><strong>生命周期</strong></p>
-<ul>
-<li>一个对象从调用 <code>类名()</code> 创建，生命周期开始</li>
-<li>一个对象的 <code>__del__</code> 方法一旦被调用，生命周期结束</li>
-<li>在对象的生命周期内，可以访问对象属性，或者让对象调用方法</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, new_name)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = new_name</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 来了"</span> % self.name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 去了"</span> % self.name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># tom 是一个全局变量</span></span><br><span class="line">tom = Cat(<span class="string">"Tom"</span>)</span><br><span class="line">print(tom.name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># del 关键字可以删除一个对象</span></span><br><span class="line"><span class="keyword">del</span> tom</span><br><span class="line"></span><br><span class="line">print(<span class="string">"-"</span> * <span class="number">50</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-2-str-方法"><a href="#5-2-str-方法" class="headerlink" title="5.2 __str__ 方法"></a>5.2 <code>__str__</code> 方法</h3><ul>
-<li>在 <code>Python</code> 中，使用 <code>print</code> 输出 <strong>对象变量</strong>，默认情况下，会输出这个变量 <strong>引用的对象</strong> 是 <strong>由哪一个类创建的对象</strong>，以及 <strong>在内存中的地址</strong>（<strong>十六进制表示</strong>）</li>
-<li>如果在开发中，希望使用 <code>print</code> 输出 <strong>对象变量</strong> 时，能够打印 <strong>自定义的内容</strong>，就可以利用 <code>__str__</code> 这个内置方法了</li>
-</ul>
-<blockquote>
-<p>注意：<code>__str__</code> 方法必须返回一个字符串</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, new_name)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = new_name</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 来了"</span> % self.name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"%s 去了"</span> % self.name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"我是小猫：%s"</span> % self.name</span><br><span class="line"></span><br><span class="line">tom = Cat(<span class="string">"Tom"</span>)</span><br><span class="line">print(tom)</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">类和对象</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-23 18:24:40 / 修改时间：23:27:54" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>类和对象的概念</li>
-<li>类和对象的关系</li>
-<li>类的设计</li>
-</ul>
-<h2 id="01-类和对象的概念"><a href="#01-类和对象的概念" class="headerlink" title="01. 类和对象的概念"></a>01. 类和对象的概念</h2><p><strong>类</strong> 和 <strong>对象</strong> 是 <strong>面向对象编程的 两个 核心概念</strong></p>
-<h3 id="1-1-类"><a href="#1-1-类" class="headerlink" title="1.1 类"></a>1.1 类</h3><ul>
-<li><strong>类</strong> 是对一群具有 <strong>相同 特征</strong> 或者 <strong>行为</strong> 的事物的一个统称，是抽象的，<strong>不能直接使用</strong><ul>
-<li><strong>特征</strong> 被称为 <strong>属性</strong></li>
-<li><strong>行为</strong> 被称为 <strong>方法</strong></li>
-</ul>
-</li>
-<li><strong>类</strong> 就相当于制造飞机时的<strong>图纸</strong>，是一个 <strong>模板</strong>，是 <strong>负责创建对象的</strong></li>
-</ul>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_%E9%A3%9E%E6%9C%BA%E8%AE%BE%E8%AE%A1%E5%9B%BE%E7%BA%B8.png" alt></p>
-<h3 id="1-2-对象"><a href="#1-2-对象" class="headerlink" title="1.2 对象"></a>1.2 对象</h3><ul>
-<li><strong>对象</strong> 是 <strong>由类创建出来的一个具体存在</strong>，可以直接使用</li>
-<li>由 <strong>哪一个类</strong> 创建出来的 <strong>对象</strong>，就拥有在 <strong>哪一个类</strong> 中定义的：<ul>
-<li>属性</li>
-<li>方法</li>
-</ul>
-</li>
-<li><strong>对象</strong> 就相当于用 <strong>图纸</strong> <strong>制造</strong> 的飞机</li>
-</ul>
-<blockquote>
-<p>在程序开发中，应该 <strong>先有类，再有对象</strong></p>
-</blockquote>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_%E9%A3%9E%E6%9C%BA%E5%AF%B9%E8%B1%A1.png" alt></p>
-<h2 id="02-类和对象的关系"><a href="#02-类和对象的关系" class="headerlink" title="02. 类和对象的关系"></a>02. 类和对象的关系</h2><ul>
-<li><strong>类是模板</strong>，<strong>对象</strong> 是根据 <strong>类</strong> 这个模板创建出来的，应该 <strong>先有类，再有对象</strong></li>
-<li><strong>类</strong> 只有一个，而 <strong>对象</strong> 可以有很多个<ul>
-<li><strong>不同的对象</strong> 之间 <strong>属性</strong> 可能会各不相同</li>
-</ul>
-</li>
-<li><strong>类</strong> 中定义了什么 <strong>属性和方法</strong>，<strong>对象</strong> 中就有什么属性和方法，<strong>不可能多，也不可能少</strong></li>
-</ul>
-<h2 id="03-类的设计"><a href="#03-类的设计" class="headerlink" title="03. 类的设计"></a>03. 类的设计</h2><p>在使用面相对象开发前，应该首先分析需求，确定一下，程序中需要包含哪些类！</p>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/001_%E6%A4%8D%E7%89%A9%E5%A4%A7%E6%88%98%E5%83%B5%E5%B0%B8%E7%B1%BB%E5%9B%BE.png" alt></p>
-<p>在程序开发中，要设计一个类，通常需要满足一下三个要素：</p>
-<ol>
-<li><strong>类名</strong> 这类事物的名字，<strong>满足大驼峰命名法</strong></li>
-<li><strong>属性</strong> 这类事物具有什么样的特征</li>
-<li><strong>方法</strong> 这类事物具有什么样的行为</li>
-</ol>
-<h3 id="大驼峰命名法"><a href="#大驼峰命名法" class="headerlink" title="大驼峰命名法"></a>大驼峰命名法</h3><p><code>CapWords</code></p>
-<ol>
-<li>每一个单词的首字母大写</li>
-<li>单词与单词之间没有下划线</li>
-</ol>
-<h3 id="3-1-类名的确定"><a href="#3-1-类名的确定" class="headerlink" title="3.1 类名的确定"></a>3.1 类名的确定</h3><p><strong>名词提炼法</strong> 分析 <strong>整个业务流程</strong>，出现的 <strong>名词</strong>，通常就是找到的类</p>
-<h3 id="3-2-属性和方法的确定"><a href="#3-2-属性和方法的确定" class="headerlink" title="3.2 属性和方法的确定"></a>3.2 属性和方法的确定</h3><ul>
-<li>对 <strong>对象的特征描述</strong>，通常可以定义成 <strong>属性</strong></li>
-<li><strong>对象具有的行为</strong>（动词），通常可以定义成 <strong>方法</strong></li>
-</ul>
-<blockquote>
-<p>提示：需求中没有涉及的属性或者方法在设计类时，不需要考虑</p>
-</blockquote>
-<h3 id="练习-1"><a href="#练习-1" class="headerlink" title="练习 1"></a>练习 1</h3><p><strong>需求</strong></p>
-<ul>
-<li><strong>小明</strong> 今年 <strong>18 岁</strong>，<strong>身高 1.75</strong>，每天早上 <strong>跑</strong> 完步，会去 <strong>吃</strong> 东西</li>
-<li><strong>小美</strong> 今年 <strong>17 岁</strong>，<strong>身高 1.65</strong>，小美不跑步，小美喜欢 <strong>吃</strong> 东西 </li>
-</ul>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/15006069346510/002_Person%E7%B1%BB.png" alt="002_Person类-w134"></p>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/002_Person%E7%B1%BB.png" alt></p>
-<h3 id="练习-2"><a href="#练习-2" class="headerlink" title="练习 2"></a>练习 2</h3><p><strong>需求</strong></p>
-<ul>
-<li>一只 <strong>黄颜色</strong> 的 <strong>狗狗</strong> 叫 <strong>大黄</strong></li>
-<li>看见生人 <strong>汪汪叫</strong></li>
-<li>看见家人 <strong>摇尾巴</strong></li>
-</ul>
-<p><img src="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/003_Dog%E7%B1%BB.png" alt></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1948,20 +2126,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
