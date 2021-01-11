@@ -155,6 +155,192 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day16%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/22/day16%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记16</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-23 23:10:01" itemprop="dateModified" datetime="2020-12-23T23:10:01+08:00">2020-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今日内容介绍<br>1、正则表达式的定义及使用<br>2、Date类的用法<br>3、Calendar类的用法</p>
+<p>==========================================第一阶段========================================</p>
+<p>###01正则表达式的概念和作用<br>    * A: 正则表达式的概念和作用<br>        * a: 正则表达式的概述<br>            * 正则表达式也是一个字符串，用来定义匹配规则，在Pattern类中有简单的规则定义。<br>              可以结合字符串类的方法使用。<br>            * 简单记：正则表达式是具有特殊含义的字符串。<br>        * b: 正则表达式的作用<br>        * 比如注册邮箱,邮箱有用户名和密码,一般会对其限制长度,这个限制长度的事情就是正则表达式做的</p>
+<p>​<br>###02正则表达式语法规则<br>    * A: 正则表达式语法规则<br>        * a: 字符<br>            * x  代表的是字符x<br>            * \ 代表的是反斜线字符’&#39;<br>            * \t 代表的是制表符<br>            * \n 代表的是换行符<br>            * \r 代表的是回车符<br>        * b: 字符类<br>            * [abc]    a、b 或 c（简单类）<br>            * [^abc]   任何字符，除了 a、b 或 c（否定）<br>            * [a-zA-Z] a到 z 或 A到 Z，两头的字母包括在内（范围）<br>            * [0-9]    0到9的字符都包括<br>            * [a-zA-Z_0-9] 代表的字母或者数字或者下划线(即单词字符)<br>        * c: 预定义字符类<br>            * . 任何字符。<br>            * \d 数字：[0-9]<br>            * \w 单词字符：[a-zA-Z_0-9]如”com.itheima.tests”/finish<br>        * d: 边界匹配器<br>            * ^  代表的是行的开头<br>            * $  代表的是行的结尾<br>            * \b 代表的是单词边界<br>        * e: 数量词<br>            * X?     X，一次或一次也没有<br>            * X*     X，零次或多次<br>            * X+     X，一次或多次<br>            * X{n}   X，恰好 n 次<br>            * X{n,}  X，至少 n 次<br>            * X{n,m} X，至少 n 次，但是不超过 m 次</p>
+<p>###03正则表达式练习和相关的String类方法<br>    * A: 正则表达式练习和相关的String类方法<br>        * a: boolean matches(String 正则的规则)<br>            * “abc”.matches(“[a]”)<br>            * 匹配成功返回true<br>        * b: String[] split(String 正则的规则)<br>            * “abc”.split(“a”)<br>            * 使用规则将字符串进行切割<br>        * c: String replaceAll( String 正则规则,String 字符串)<br>            * “abc0123”.repalceAll(“[\d]”,”#”)<br>            * 按照正则的规则,替换字符串</p>
+<p>​<br>###04正则表达式匹配练习<br>    * A: 正则表达式匹配练习<br>        * a: 案例代码<br>            public class RegexDemo {<br>                public static void main(String[] args) {<br>                    checkTel();<br>                }</p>
+<p>​<br>                /*<br>                 *  检查手机号码是否合法<br>                 *  1开头 可以是34578  0-9 位数固定11位<br>                 */<br>                public static void checkTel(){<br>                    String telNumber = “1335128005”;<br>                    //String类的方法matches<br>                    boolean b = telNumber.matches(“1[34857][\d]{9}”);<br>                    System.out.println(b);<br>                }</p>
+<pre><code>    /*
+     *  检查QQ号码是否合法
+     *  0不能开头,全数字, 位数5,10位
+     *  123456 
+     *  \\d  \\D匹配不是数字
+     */
+    public static void checkQQ(){
+        String QQ = &quot;123456&quot;;
+        //检查QQ号码和规则是否匹配,String类的方法matches
+        boolean b = QQ.matches(&quot;[1-9][\\d]{4,9}&quot;);
+        System.out.println(b);
+    }
+}</code></pre><p>###05正则表达式切割练习<br>    * A: 正则表达式切割练习<br>        * a: 案例代码<br>            public class RegexDemo1 {<br>                public static void main(String[] args) {<br>                    split_1();<br>                    split_2();<br>                    split_3();</p>
+<pre><code>    }
+
+    /*
+     * String类方法split对字符串进行切割
+     * 192.168.105.27 按照 点切割字符串
+     */
+    public static void split_3(){
+        String ip = &quot;192.168.105.27&quot;;
+        String[] strArr = ip.split(&quot;\\.&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+
+    /*
+     * String类方法split对字符串进行切割
+     * 18 22 40 65 按照空格切割字符串
+     */
+    public static void split_2(){
+        String str = &quot;18    22     40          65&quot;;
+        String[] strArr = str.split(&quot; +&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+
+    /*
+     *  String类方法split对字符串进行切割
+     *  12-25-36-98  按照-对字符串进行切割
+     */
+    public static void split_1(){
+        String str = &quot;12-25-36-98&quot;;
+        //按照-对字符串进行切割,String类方法split
+        String[] strArr = str.split(&quot;-&quot;);
+        System.out.println(&quot;数组的长度&quot;+strArr.length);
+        for(int i = 0 ; i &lt; strArr.length ; i++){
+            System.out.println(strArr[i]);
+        }
+    }
+}        </code></pre><p>​<br>###06正则表达式替换练习<br>    * A: 正则表达式替换练习<br>        * a: 案例代码<br>            public class RegexDemo1 {<br>                public static void main(String[] args) {<br>                    replaceAll_1();<br>                }</p>
+<pre><code>    /*
+     * &quot;Hello12345World6789012&quot;将所有数字替换掉
+     * String类方法replaceAll(正则规则,替换后的新字符串)
+     */
+    public static void replaceAll_1(){
+        String str = &quot;Hello12345World6789012&quot;;
+        str = str.replaceAll(&quot;[\\d]+&quot;, &quot;#&quot;);
+        System.out.println(str);
+    }
+}</code></pre><p>###07正则表达式邮箱地址验证<br>    * A: 正则表达式邮箱地址验证<br>        * a: 案例代码<br>            public class RegexDemo2 {<br>                public static void main(String[] args) {<br>                    checkMail();<br>                }<br>                /*<br>                 *  检查邮件地址是否合法<br>                 *  规则:<br>                 *   <a href="mailto:1234567@qq.com">1234567@qq.com</a><br>                 *   <a href="mailto:mym_ail@sina.com">mym_ail@sina.com</a><br>                 *   <a href="mailto:nimail@163.com">nimail@163.com</a><br>                 *   <a href="mailto:wodemail@yahoo.com.cn">wodemail@yahoo.com.cn</a><br>                 *<br>                 *   @: 前  数字字母_ 个数不能少于1个<br>                 *   @: 后  数字字母     个数不能少于1个<br>                 *   .: 后面 字母<br>                 *<br>                 */<br>                public static void checkMail(){<br>                    String email =”<a href="mailto:abc123@sina.com">abc123@sina.com</a>“;<br>                    boolean b = email.matches(“[a-zA-Z0-9_]+@[0-9a-z]+(\.[a-z]+)+”);<br>                    System.out.println(b);<br>                }<br>            }</p>
+<p>###08毫秒值概念<br>    * A: 毫秒值概念<br>        * a: 时间和日期类<br>            * java.util.Date<br>        * b: 毫秒概念<br>            * 1000毫秒=1秒<br>        * c: 毫秒的0点<br>             * System.currentTimeMillis() 返回值long类型参数<br>             * 获取当前日期的毫秒值   3742769374405<br>             * 时间原点; 公元1970年1月1日,午夜0:00:00 英国格林威治  毫秒值就是0<br>             * 时间2088年8月8日<br>             * 时间和日期的计算，必须依赖毫秒值</p>
+<p>###09Date类的构造方法<br>    * A: Date类的构造方法<br>        * a: 空参构造<br>            * public Date()<br>        * b: 带参构造<br>            * public Date(long times)</p>
+<p>​<br>==============================第二阶段====================================        </p>
+<p>​<br>###10Date类的get和set方法<br>    * A：Date类的get和set方法<br>        * public long getTime()<br>            * 将当前的日期对象，转为对应的毫秒值<br>        * public void setTime(long times);<br>            * 根据给定的毫秒值，生成对应的日期对象</p>
+<p>###11日期格式化SimpleDateFormat<br>    * A: 日期格式化SimpleDateFormat<br>        * a: 对日期进行格式化(自定义)<br>            * 对日期格式化的类 java.text.DateFormat 抽象类, 普通方法,也有抽象的方法<br>            * 实际使用是子类 java.text.SimpleDateFormat 可以使用父类普通方法,重写了抽象方法<br>        * b: 对日期进行格式化的步骤<br>            * 1: 创建SimpleDateFormat对象<br>                * 在类构造方法中,写入字符串的日期格式 (自己定义)<br>            * 2: SimpleDateFormat调用方法format对日期进行格式化<br>                * public String format(Date date) 传递日期对象,返回字符串<br>                * 日期模式:<br>                 * yyyy    年份<br>                 * MM      月份<br>                * dd      月中的天数<br>                * HH       0-23小时<br>                * mm      小时中的分钟<br>                 * ss      秒<br>                 * yyyy年MM月dd日 HH点mm分钟ss秒  汉字修改,: -  字母表示的每个字段不可以随便写</p>
+<p>​<br>###12字符串转成日期对象<br>    * A: 字符串转成日期对象<br>        * a: 使用步骤<br>            * 1: 创建SimpleDateFormat的对象<br>                * 构造方法中,指定日期模式<br>            * 2: 子类对象,调用方法 parse 传递String,返回Date<br>                * 注意: 时间和日期的模式yyyy-MM-dd, 必须和字符串中的时间日期匹配</p>
+<p>###13Calendar类_1<br>    * A: Calendar类_1<br>        * a: 日历类(抽象类)<br>            * java.util.Calendar<br>        * b: 创建对象<br>            * Calendar类写了静态方法 getInstance() 直接返回了子类的对象<br>            * 不需要直接new子类的对象,通过静态方法直接获取</p>
+<p>###14Calendar类_2<br>    * A: Calendar类_2<br>        * a: 成员方法<br>            * getTime() 把日历对象,转成Date日期对象<br>            * get(日历字段) 获取指定日历字段的值<br>        * b: 代码演示<br>            Calendar c = Calendar.getInstance();<br>            // 获取年份<br>            int year = c.get(Calendar.YEAR);<br>            // 获取月份<br>            int month = c.get(Calendar.MONTH) + 1;<br>            // 获取天数<br>            int day = c.get(Calendar.DAY_OF_MONTH);<br>            System.out.println(year + “年” + month + “月” + day + “日”);</p>
+<p>​<br>###15Calendar类_3<br>    * A: Calendar类_3<br>        * a: 成员方法<br>            * set(int field,int value)  设置指定的时间<br>        * b: 代码演示<br>            /*<br>             * Calendar类的set方法 设置日历 set(int field,int value) field 设置的是哪个日历字段 value<br>             * 设置后的具体数值<br>             *<br>             * set(int year,int month,int day) 传递3个整数的年,月,日<br>             */<br>            public static void function_1() {<br>                Calendar c = Calendar.getInstance();<br>                // 设置,月份,设置到10月分<br>                // c.set(Calendar.MONTH, 9);</p>
+<pre><code>    // 设置年,月,日
+    c.set(2099, 4, 1);
+
+    // 获取年份
+    int year = c.get(Calendar.YEAR);
+    // 获取月份
+    int month = c.get(Calendar.MONTH) + 1;
+    // 获取天数
+    int day = c.get(Calendar.DAY_OF_MONTH);
+    System.out.println(year + &quot;年&quot; + month + &quot;月&quot; + day + &quot;日&quot;);
+}</code></pre><p>###16Calendar类_4<br>    * A: Calendar类_4<br>        * a: 成员方法<br>            * add(int field, int value) 进行整数的偏移<br>            * int get(int field) 获取指定字段的值<br>        * b: 案例演示<br>            /*<br>             * Calendar类方法add 日历的偏移量,<br>             * 可以指定一个日历中的字段,<br>             * 进行整数的偏移 add(int field, int value)<br>             */<br>            public static void function_2() {<br>                Calendar c = Calendar.getInstance();<br>                // 让日历中的天数,向后偏移280天<br>                c.add(Calendar.DAY_OF_MONTH, -280);<br>                // 获取年份<br>                int year = c.get(Calendar.YEAR);<br>                // 获取月份<br>                int month = c.get(Calendar.MONTH) + 1;<br>                // 获取天数<br>                int day = c.get(Calendar.DAY_OF_MONTH);<br>                System.out.println(year + “年” + month + “月” + day + “日”);<br>            }</p>
+<p>###17日期练习_活了多少天<br>    * A: 日期练习_活了多少天<br>        * a: 案例代码<br>            /*<br>             *  计算活了多少天<br>             *   生日  今天的日期<br>             *   两个日期变成毫秒值,减法<br>             */<br>            public static void function() throws Exception {<br>                System.out.println(“请输入出生日期 格式 YYYY-MM-dd”);<br>                //获取出生日期,键盘输入<br>                String birthdayString = new Scanner(System.in).next();<br>                //将字符串日期,转成Date对象<br>                //创建SimpleDateFormat对象,写日期模式<br>                SimpleDateFormat sdf = new SimpleDateFormat(“yyyy-MM-dd”);<br>                //调用方法parse,字符串转成日期对象<br>                Date birthdayDate = sdf.parse(birthdayString);</p>
+<pre><code>    //获取今天的日期对象
+    Date todayDate = new Date();
+
+    //将两个日期转成毫秒值,Date类的方法getTime
+    long birthdaySecond = birthdayDate.getTime();
+    long todaySecond = todayDate.getTime();
+    long secone = todaySecond-birthdaySecond;
+
+    if(secone &lt; 0){
+        System.out.println(&quot;还没出生呢&quot;);
+    }
+    else{
+    System.out.println(secone/1000/60/60/24);
+    }
+
+}</code></pre><p>###18日期练习_闰年计算<br>    * A: 日期练习_闰年计算<br>        * a: 案例代码<br>            /*<br>             *  闰年计算<br>             *  2000 3000<br>             *  高级的算法: 日历设置到指定年份的3月1日,add向前偏移1天,获取天数,29闰年<br>             */<br>            public static void function_1(){<br>                Calendar c = Calendar.getInstance();<br>                //将日历,设置到指定年的3月1日<br>                c.set(2088, 2, 1);<br>                //日历add方法,向前偏移1天<br>                c.add(Calendar.DAY_OF_MONTH, -1);<br>                //get方法获取天数<br>                int day = c.get(Calendar.DAY_OF_MONTH);<br>                System.out.println(day);<br>            }</p>
+<p>###19总结</p>
+<ul>
+<li>把今天的知识点总结一遍。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day15%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4159,526 +4345,6 @@ public class ArrayMethodTest_3{
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day06%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/22/day06%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记6</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:01:38" itemprop="dateModified" datetime="2020-12-23T23:01:38+08:00">2020-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今日内容介绍<br>1、自定义类型的定义及使用<br>2、自定义类的内存图<br>3、ArrayList集合的基本功能<br>4、随机点名器案例及库存案例代码优化</p>
-<p>###01引用数据类型_类<br>    * A: 数据类型<br>        * a: java中的数据类型分为：基本类型和引用类型<br>    * B: 引用类型的分类<br>        * a: Java为我们提供好的类，比如说：Scanner,Random等。<br>        * b: 我们自己创建的类，按照类的定义标准，可以在类中包含多个方法与属性，来供我们使用。 </p>
-<p>​<br>###02自定义类的概述<br>    * A: 自定义类的概述<br>        * java代码映射成现实事物的过程就是定义类的过程。<br>        * 举例：<br>            我们就拿一部手机进行分析，它能用来做什么呢？它可以打电话，上网，聊微信等，这些就是手机所提供的功能，也就是方法；手机也有它的特征，如颜色、尺寸大小、品牌型号等，这些就是手机的特征，也就是属性<br>        * 目前，我们只关注类中的属性，类中的方法在面向对象部分再进行学习。</p>
-<p>​<br>###03自定义类的格式<br>    * A: 自定义类的格式<br>        * a: 使用类的形式,对现实中的事物进行描述。<br>        * b: 事物由方法和属性两部分组成。<br>            * 方法: 这个事物具备的功能。<br>            * 属性: 这个事物具备的特征。<br>        * c: 格式<br>            public class 类名{<br>                属性定义<br>                  修饰符 数据类型 变量名 = 值</p>
-<pre><code>    方法定义
-      修饰符 返回值类型  方法名(参数列表){
-
-      }
-}</code></pre><p>###04自定义的手机类<br>    * A: 自定义的手机类<br>        * a: 案例代码<br>            public class Phone{<br>                /*<br>                    定义手机的属性<br>                */<br>                String color ;<br>                String brand ;<br>                double size ;<br>            }</p>
-<p>###05测试手机类<br>    * A: 调用方法执行流程<br>        * a: 实现引用类型的步骤<br>            * 1: 导入包 , 类都是在同一个文件夹,不需要导入包<br>            * 2: 创建引用类型的变量<br>            * 3: 变量.类型中的功能<br>        * b: 案例代码<br>            public class TestPhone{<br>                public static void main(String[] args){<br>                    // 2: 创建引用类型的变量<br>                    Phone p = new Phone();<br>                    //System.out.println(p);  //输出内存的地址</p>
-<pre><code>         //3: 变量.类型中的功能
-        //变量 p.的方式,调用类中的属性
-        //属性就是变量 , 赋值和获取值
-        p.color = &quot;土豪金&quot;;
-        p.brand = &quot;爱立信&quot;;
-        p.size = 5.0;
-
-        //获取属性值
-        System.out.println(p.color+&quot;  &quot;+p.brand+&quot;  &quot;+p.size);
-    }
-}</code></pre><p>###06自定义类的内存图_1<br>    * A: 自定义类的内存图_1<br>        * a: 参见\day06\day06(面向对象\day06_source\对象内存图.JPG</p>
-<p>###07自定义类的内存图_2<br>    * A: 自定义类的内存图_1<br>        * a: 参见\day06\day06(面向对象\day06_source\对象内存图.JPG</p>
-<p>###08两个引用类型变量内存图<br>    * A: 自定义类的内存图_1<br>        * a: 参见\day06\day06(面向对象\day06_source\两个引用变量内存图.JPG</p>
-<p>###09自定义类的练习<br>    * A: 实体类的代码<br>        /*<br>            电饭锅，包含属性（品牌、容量大小、颜色等）<br>            定义类,描述事物,电饭锅<br>              属性: 品牌,大小 ,颜色</p>
-<pre><code>        定义类,类名字,电饭锅
-        类的范围,定义三个属性
-    */
-    public class DianFanGuo{
-        //定义三个属性
-        String brand ;
-        double size ;
-        String color ;
-    }
-
-    /*
-       汽车，包含属性（品牌、排量、类型等）
-       定义类,类名 Car
-         属性 品牌 排量 类型
-     */
-    public class Car{
-        //定义汽车三个属性
-        String brand ;
-        double paiLiang ;
-        String type;
-    }
-
-     /*
-       学生，包含属性（姓名，年龄，性别等）
-       定义类,类名Student
-         三个属性: 姓名,年龄,性别 (char)
-    */
-    public class Student{
-        String name;
-        int age ;
-        char sex ;
-    }
-
-* B: 测试类的代码
-    /*
-       定义的测试类
-       同时测试,电饭锅,汽车,学生
-    */
-    public class Test{
-        public static void main(String[] args){
-            //创建电饭锅引用类型
-            DianFanGuo dfg = new DianFanGuo();
-
-            dfg.brand = &quot;特斯拉&quot;;
-            dfg.color = &quot;红色&quot;;
-            dfg.size = 30;
-
-            System.out.println(dfg.brand+&quot;  &quot;+dfg.color+&quot;  &quot;+dfg.size);
-
-            //创建汽车引用类型
-            Car c = new Car();
-            c.brand = &quot;巨力&quot;;
-            c.type = &quot;拖拉机&quot;;
-            c.paiLiang = 0.5;
-
-            System.out.println(c.brand+&quot;  &quot;+c.type+&quot;  &quot;+c.paiLiang);
-
-            //创建学生引用类型
-            Student stu = new Student();
-            stu.name = &quot;张三&quot;;
-            stu.age = 20;
-            stu.sex = &apos;男&apos;;
-            System.out.println(stu.name+&quot;  &quot;+stu.age+&quot;  &quot;+stu.sex);
-
-        }
-    }</code></pre><p>​<br>###10ArrayList创建变量的步骤<br>    * A: ArrayList创建变量的步骤<br>        * a: 导入包 java.util包中<br>        * b: 创建引用类型的变量<br>            数据类型&lt; 集合存储的数据类型&gt;  变量名 = new 数据类型&lt;集合存储的数据类型&gt;();<br>               集合存储的数据类型: 要将数据存储到集合的容器中<br>               创建集合引用变量的时候,必须要指定好,存储的类型是什么<br>        * c: 变量名.方法<br>            注意: 集合存储的数据,8个基本类型对应8个引用类型<br>             存储引用类型,不存储基本类型</p>
-<p>###11ArrayList创建变量举例<br>    * A: ArrayList创建变量的示例代码<br>        import java.util.ArrayList;<br>        public class ArrayListDemo{<br>            public static void main(String[] args){<br>                //创建集合容器,指定存储的数据类型<br>                //存储字符串<br>                ArrayList<String> array = new ArrayList<String>();</String></String></p>
-<pre><code>        //创建集合容器,存储整数
-        ArrayList&lt;Integer&gt; array2 = new ArrayList&lt;Integer&gt;();
-
-        //创建集合容器,存储手机类型
-        ArrayList&lt;Phone&gt; array3 = new ArrayList&lt;Phone&gt;();
-    }
-}</code></pre><p>###12ArrayList的常见方法<br>    * A: ArrayList的常见方法<br>        * a: add(参数) 向集合中添加元素<br>        * b: get(int index) 取出集合中的元素,get方法的参数,写入索引<br>        * c: size() 返回集合的长度, 集合存储元素的个数<br>    * B: 案例代码<br>        import java.util.ArrayList;<br>        public class ArrayListDemo_1{<br>            public static void main(String[] args){<br>                //定义集合,存储字符串元素<br>                ArrayList<String> array = new ArrayList<String>();<br>                //调用集合方法add存储元素<br>                array.add(“abc”);<br>                array.add(“itcast”);<br>                array.add(“love”);<br>                array.add(“java”);<br>                //输出集合的长度,调用集合方法size, size方法的返回值类型 int<br>                int size = array.size();<br>                System.out.println(size);</String></String></p>
-<pre><code>//获取出集合中的一个元素,获取1索引的元素
-//集合的方法get, 获取元素后结果数据类型
-String s = array.get(1);
-System.out.println(s);</code></pre><p>​<br>                System.out.println(array.get(0));<br>                System.out.println(array.get(1));<br>                System.out.println(array.get(2));<br>                System.out.println(array.get(3));<br>            }<br>        }</p>
-<p>###13ArrayList集合的遍历<br>    * A: 案例代码<br>        /*<br>           集合的遍历<br>           实现思想也是索引思想<br>           集合的索引从0开始,到 size()-1<br>           方法get(int index)<br>        */<br>        import java.util.ArrayList;<br>        public class ArrayListDemo_2{<br>            public static void main(String[] args){<br>                ArrayList<Integer> array = new ArrayList<Integer>();<br>                array.add(121);<br>                array.add(125);<br>                array.add(123);<br>                array.add(120);<br>                array.add(128);</Integer></Integer></p>
-<pre><code>        //对集合进行遍历
-        //使用方法 size+get组合进行遍历
-        for(int i = 0 ; i &lt; array.size(); i++){
-            System.out.println( array.get(i) );
-        }
-    }
-}</code></pre><p>###14ArrayList补充方法<br>    * A: ArrayList补充方法<br>        * a: add(int 索引,存储的元素)     将元素添加到指定的索引上<br>        * b: set(int 索引,修改后的元素)     将指定索引的元素,进行修改<br>        * c: remove(int 索引)             删除指定索引上的元素<br>        * d: clear()                     清空集合中的所有元素<br>    * B: 案例代码<br>        import java.util.ArrayList;<br>        public class ArrayListDemo_3{<br>            public static void main(String[] args){</p>
-<pre><code>        ArrayList&lt;Integer&gt; array = new ArrayList&lt;Integer&gt;();
-        array.add(1);
-        array.add(2);
-        array.add(3);
-        array.add(4);
-
-        //在索引2上,添加元素7
-        array.add(2,7);
-
-        //将0索引上的元素,修改成10
-        array.set(0,10);
-
-        //将4索引上的元素,删除
-        array.remove(4);
-
-        array.clear();
-
-        //使用方法 size+get组合进行遍历
-        for(int i = 0 ; i &lt; array.size(); i++){
-            System.out.println( array.get(i) );
-        }
-    }
-}</code></pre><p>###15随机点名器案例分析<br>    * A: 随机点名器案例分析<br>        全班同学中随机的找出一名同学，打印这名同学的个人信息。<br>        我们对本案例进行分析，得出如下分析结果：<br>            1.存储全班同学信息（姓名、年龄）<br>                将容器换成集合，集合中存的是Student类型<br>            2.打印全班同学每一个人的信息（姓名、年龄）<br>                 遍历集合<br>            3.在班级总人数范围内，随机产生一个随机数，查找该随机数所对应的同学信息（姓名、年龄）<br>            随机点名器明确地分为了三个功能。如果将多个独立功能的代码写到一起，则代码相对冗长，我们可以针对不同的功能可以将其封装到一个方法中，将完整独立的功能分离出来。<br>            而在存储同学姓名时，如果对每一个同学都定义一个变量进行姓名存储，则会出现过多孤立的变量，很难一次性将全部数据持有。此时，我们采用ArrayList集合来解决多个学生信息的存储问题</p>
-<p>###16随机点名器代码实现<br>    * A: 随机点名器案例代码<br>        /*<br>           随机点名器,集合改进 (学生的姓名和年龄)<br>           现实中有学生这个事物,使用定义类的形式,描述学生事物<br>           属性: 姓名,年龄</p>
-<pre><code>   姓名存储了数组, 将容器换成是集合
-   String[] s = {&quot;&quot;,&quot;&quot;};
-   集合中,存储的是学生的姓名吗?  应该存储Student类型
-
-   存储学生:
-      学生类型,存储到集合中
-   总览: 遍历集合
-   随机: 随机数,作为索引,到集合中找到元素
-   三个功能,共享的数据,集合容器,
-   定义三个方法,必须参数传递集合
-*/
-import java.util.ArrayList;
-import java.util.Random;
-public class CallName{
-    public static void main(String[] args){
-        //定义集合,存储的是StudentName类型变量
-        ArrayList &lt;StudentName&gt; array = new ArrayList&lt;StudentName&gt;();
-        //调用添加方法
-        add (array);
-        //调用遍历集合
-        printArrayList(array);
-
-        randomStudentName(array);
-    }
-    /*
-      随机数,当作集合的索引,到集合中找到元素
-    */
-    public static void randomStudentName(ArrayList&lt;StudentName&gt; array ){
-        Random r = new Random();
-        int number = r.nextInt( array.size());
-        //随机数,索引,到集合中get
-        StudentName s = array.get(number);
-        System.out.println( s.name +&quot;  &quot;+s.age);
-    }
-
-    /*
-        总览学生的信息,遍历集合
-    */
-    public static void printArrayList(ArrayList&lt;StudentName&gt; array){
-        for(int i = 0 ; i &lt; array.size();i++){
-            //存储集合的时候, 集合.add(sn1)  sn1 是StudentName类型变量
-            //获取的时候,集合.get方法,获取出来的是什么, 还是StudentName类型变量
-            StudentName s = array.get(i);
-            System.out.println(s.name+&quot;  &quot;+s.age);
-        }
-    }
-
-    /*
-       定义方法,实现存储学生的姓名和年龄
-       创建StudentName类型变量,存储到集合中
-    */
-    public static void add (ArrayList&lt;StudentName&gt; array){
-        //创建StudentName类型变量
-        StudentName sn1 = new StudentName();
-        StudentName sn2 = new StudentName();
-        StudentName sn3 = new StudentName();
-        StudentName sn4 = new StudentName();
-        StudentName sn5 = new StudentName();
-
-        sn1.name = &quot;张三1&quot;;
-        sn1.age = 201;
-
-        sn2.name = &quot;张三2&quot;;
-        sn2.age = 202;
-
-        sn3.name = &quot;张三3&quot;;
-        sn3.age = 203;
-
-        sn4.name = &quot;张三4&quot;;
-        sn4.age = 204;
-
-        sn5.name = &quot;张三5&quot;;
-        sn5.age = 205;
-
-        //将StudentName变量,存储到集合中
-        array.add(sn1);
-        array.add(sn2);
-        array.add(sn3);
-        array.add(sn4);
-        array.add(sn5);
-    }
-}</code></pre><p>###17库存案例分析加入集合<br>    * A: 库存案例分析加入集合<br>        * a: 参见\day06\day06(面向对象\day06_source\对象内存图.JPG</p>
-<p>###18库存案例添加商品信息<br>    * A: 案例代码<br>        /*<br>           定义,.描述商品的类<br>           商品 4个属性<br>             商品名字  大小     价格    库存<br>              String    double   double  int</p>
-<pre><code>    定义类,类名Goods
-    这个类型的变量,存储到集合中
-*/
-public class Goods{
-    //定义商品名字
-    String brand ;
-    //大小属性
-    double size ;
-    // 价格属性
-    double price ;
-    //库存属性
-    int count ;
-}
-
-/*
-    实现库存管理案例:
-      1.存储商品信息
-        存储商品类型变量
-        将商品类型的变量,存储到集合中
-*/
-//import java.util.ArrayList;
-import java.util.*;
-public class Shopp{
-    public static void main(String[] args){
-        //创建ArrayList集合,存储Goods类型
-        ArrayList&lt;Goods&gt; array = new ArrayList&lt;Goods&gt;();
-        //调用添加商品信息的方法
-        addGoods(array);
-    }
-
-    /*
-       定义方法,将商品的信息存储到集合中
-       集合是所有方法的共享数据,参数传递
-    */
-    public static void addGoods (ArrayList&lt;Goods&gt; array){
-        //创建商品类型变量 Goods类型的变量
-        Goods g1 = new Goods();
-        Goods g2 = new Goods();
-        g1.brand = &quot;MacBook&quot;;
-        g1.size = 13.3;
-        g1.price = 9999.99;
-        g1.count = 3;
-
-        g2.brand = &quot;Thinkpad&quot;;
-        g2.size = 15.6;
-        g2.price = 7999.99;
-        g2.count = 1;
-
-        //Goods类型的变量,存储到集合中
-        array.add(g1);
-        array.add(g2);
-    }
-}</code></pre><p>###19库存案例查看库存清单<br>    * A: 案例代码<br>        /*<br>            实现库存管理案例:<br>              1.存储商品信息<br>                存储商品类型变量<br>                将商品类型的变量,存储到集合中</p>
-<pre><code>      2.查看库存清单
-        将集合进行遍历, 获取出集合中存储的Goods类型变量
-        输出每一个Goods类型的属性
-        计算求和: 总库存,总金额
-*/
-//import java.util.ArrayList;
-import java.util.*;
-public class Shopp{
-    public static void main(String[] args){
-        //创建ArrayList集合,存储Goods类型
-        ArrayList&lt;Goods&gt; array = new ArrayList&lt;Goods&gt;();
-        //调用添加商品信息的方法
-        addGoods(array);
-    }
-
-    /*
-       定义方法,查看库存清单,遍历集合
-    */
-    public static void printStore(ArrayList&lt;Goods&gt; array){
-        //输出表头
-        System.out.println(&quot;----------商场库存清单----------&quot;);
-        System.out.println(&quot;品牌型号     尺寸    价格    库存数&quot;);
-        //定义变量,保存总库存数,和总金额
-        int totalCount = 0 ;
-        double totalMoney = 0;
-        //遍历集合
-        for(int i = 0 ; i &lt; array.size(); i++){
-            //get(索引)获取出集合中的元素,存储的是Goods类,获取的也是Goods类型
-            //使用Goods类型变量,接受get方法结果
-            Goods g = array.get(i);
-            System.out.println(g.brand+&quot;   &quot;+g.size+&quot;    &quot;+g.price+&quot;    &quot;+g.count);
-            totalCount = totalCount+g.count;
-            totalMoney = totalMoney + g.count*g.price;
-        }
-        System.out.println(&quot;总库存数: &quot;+totalCount);
-        System.out.println(&quot;商品库存总金额: &quot;+totalMoney);
-    }
-
-    /*
-       定义方法,将商品的信息存储到集合中
-       集合是所有方法的共享数据,参数传递
-    */
-    public static void addGoods (ArrayList&lt;Goods&gt; array){
-        //创建商品类型变量 Goods类型的变量
-        Goods g1 = new Goods();
-        Goods g2 = new Goods();
-        g1.brand = &quot;MacBook&quot;;
-        g1.size = 13.3;
-        g1.price = 9999.99;
-        g1.count = 3;
-
-        g2.brand = &quot;Thinkpad&quot;;
-        g2.size = 15.6;
-        g2.price = 7999.99;
-        g2.count = 1;
-
-        //Goods类型的变量,存储到集合中
-        array.add(g1);
-        array.add(g2);
-    }
-}</code></pre><p>###20库存案例修改库存清单及测试代码的实现<br>    * A: 案例代码<br>        /*<br>            实现库存管理案例:<br>              1.存储商品信息<br>                存储商品类型变量<br>                将商品类型的变量,存储到集合中</p>
-<pre><code>      2.查看库存清单
-        将集合进行遍历, 获取出集合中存储的Goods类型变量
-        输出每一个Goods类型的属性
-        计算求和: 总库存,总金额
-
-     3.修改商品的库存
-        集合遍历 ,获取出集合中存储的Goods类型变量
-        变量调用Goods类的属性count,值进行修改 (键盘输入)
-*/
-//import java.util.ArrayList;
-import java.util.*;
-public class Shopp{
-    public static void main(String[] args){
-        //创建ArrayList集合,存储Goods类型
-        ArrayList&lt;Goods&gt; array = new ArrayList&lt;Goods&gt;();
-        //调用添加商品信息的方法
-        addGoods(array);
-        //进入死循环中
-        while(true){
-            //调用选择功能的方法,获取到用户输入的功能序号
-            int number = chooseFunction();
-            //对序号判断,如果=1 进入查看库存功能  = 2 进入修改库存功能  =3 结束
-            switch(number){
-                case 1:
-                //进入查看库存,调用查看库存的方法,传递存储商品信息的集合
-                printStore(array);
-                break;
-
-                case 2:
-                //进入修改库存功能,调用修改库存的方法,传递集合
-                update(array);
-                break;
-
-                case 3:
-                return ;
-
-                default:
-                 System.out.println(&quot;无此功能&quot;);
-                 break;
-            }
-        }
-    }
-    /*
-      方法定义,修改库存
-      键盘的输入,将Goods中的属性值,修改
-    */
-    public static void update(ArrayList&lt;Goods&gt; array){
-        Scanner sc = new Scanner(System.in);
-        //遍历集合,获取集合中的每个元素
-        for(int i = 0 ;  i &lt; array.size(); i++){
-            //集合方法get获取的是集合的元素,元素类型Goods
-            Goods g = array.get(i);
-            System.out.println(&quot;请输入&quot;+g.brand+&quot;的库存数&quot;);
-            //Goods属性,count进行修改
-            g.count = sc.nextInt();
-        }
-    }
-    /*
-       定义方法,实现选择菜单,用户根据功能选择菜单
-    */
-    public static int chooseFunction(){
-        System.out.println(&quot;-------------库存管理------------&quot;);
-        System.out.println(&quot;1.查看库存清单&quot;);
-        System.out.println(&quot;2.修改商品库存数量&quot;);
-        System.out.println(&quot;3.退出&quot;);
-        System.out.println(&quot;请输入要执行的操作序号：&quot;);
-        Scanner sc = new Scanner(System.in);
-        int number = sc.nextInt();
-        return number;
-    }
-
-    /*
-       定义方法,查看库存清单,遍历集合
-    */
-    public static void printStore(ArrayList&lt;Goods&gt; array){
-        //输出表头
-        System.out.println(&quot;----------商场库存清单----------&quot;);
-        System.out.println(&quot;品牌型号     尺寸    价格    库存数&quot;);
-        //定义变量,保存总库存数,和总金额
-        int totalCount = 0 ;
-        double totalMoney = 0;
-        //遍历集合
-        for(int i = 0 ; i &lt; array.size(); i++){
-            //get(索引)获取出集合中的元素,存储的是Goods类,获取的也是Goods类型
-            //使用Goods类型变量,接受get方法结果
-            Goods g = array.get(i);
-            System.out.println(g.brand+&quot;   &quot;+g.size+&quot;    &quot;+g.price+&quot;    &quot;+g.count);
-            totalCount = totalCount+g.count;
-            totalMoney = totalMoney + g.count*g.price;
-        }
-        System.out.println(&quot;总库存数: &quot;+totalCount);
-        System.out.println(&quot;商品库存总金额: &quot;+totalMoney);
-    }
-
-    /*
-       定义方法,将商品的信息存储到集合中
-       集合是所有方法的共享数据,参数传递
-    */
-    public static void addGoods (ArrayList&lt;Goods&gt; array){
-        //创建商品类型变量 Goods类型的变量
-        Goods g1 = new Goods();
-        Goods g2 = new Goods();
-        g1.brand = &quot;MacBook&quot;;
-        g1.size = 13.3;
-        g1.price = 9999.99;
-        g1.count = 3;
-
-        g2.brand = &quot;Thinkpad&quot;;
-        g2.size = 15.6;
-        g2.price = 7999.99;
-        g2.count = 1;
-
-        //Goods类型的变量,存储到集合中
-        array.add(g1);
-        array.add(g2);
-    }
-}</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -4748,20 +4414,20 @@ public class Shopp{
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
