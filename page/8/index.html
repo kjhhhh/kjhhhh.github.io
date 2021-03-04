@@ -155,6 +155,238 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">C++拷贝构造函数与赋值函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:18:11" itemprop="dateCreated datePublished" datetime="2020-12-27T15:18:11+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-02 20:31:26" itemprop="dateModified" datetime="2021-03-02T20:31:26+08:00">2021-03-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里我们用类String 来介绍这两个函数：</p>
+<p>拷贝构造函数是一种特殊构造函数，具有单个形参，该形参（常用const修饰）是对该类类型的引用。当定义一个新对象并用一个同类型的对象对它进行初始化时，将显式使用拷贝构造函数。为啥形参必须是对该类型的引用呢？试想一下，假如形参是该类的一个实例，由于是传值参数，我们把形参复制到实参会调用拷贝构造函数，如果允许拷贝构造函数传值，就会在拷贝构造函数内调用拷贝构造函数，从而形成无休止的递归调用导致栈溢出。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，无返回值</span></span><br></pre></td></tr></table></figure>
+
+<p>赋值函数，也是赋值操作符重载，因为赋值必须作为类成员，那么它的第一个操作数隐式绑定到 this 指针，也就是 this 绑定到指向左操作数的指针。因此，赋值操作符接受单个形参，且该形参是同一类类型的对象。右操作数一般作为const 引用传递。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>&amp;	<span class="keyword">operator</span>=(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，返回对同一类类型(左操作数)的引用</span></span><br></pre></td></tr></table></figure>
+
+
+<p>拷贝构造函数和赋值函数并非每个对象都会使用，另外如果不主动编写的话，编译器将以“位拷贝”的方式自动生成缺省的函数。在类的设计当中，“位拷贝”是应当防止的。倘若类中含有指针变量，那么这两个缺省的函数就会发生错误。这就涉及到深复制和浅复制的问题了。</p>
+<p>拷贝有两种：深拷贝，浅拷贝<br>当出现类的等号赋值时，会调用拷贝函数，在未定义显示拷贝构造函数的情况下，系统会调用默认的拷贝函数——即浅拷贝，它能够完成成员的一一复制。当数据成员中没有指针时，浅拷贝是可行的。<br>但当数据成员中有指针时，如果采用简单的浅拷贝，则<strong>两类中的两个指针将指向同一个地址</strong>，当对象快结束时，会调用两次析构函数，而导致指针悬挂现象。所以，这时，必须采用深拷贝。<br>深拷贝与浅拷贝的区别就在于<strong><em>\</em>深拷贝会在堆内存中另外申请空间来储存数据**</strong>，从而也就解决了指针悬挂的问题。指向不同的内存空间，但内容是一样的<br>简而言之，<strong><em>\</em>当数据成员中有指针时，必须要用深拷贝**</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> * c;</span><br><span class="line">&#125;a, b;</span><br><span class="line"><span class="comment">//浅复制不会重新分配内存</span></span><br><span class="line"><span class="comment">//将a 赋给 b，缺省赋值函数的“位拷贝”意味着执行</span></span><br><span class="line">a.c = b.c;</span><br><span class="line"><span class="comment">//从这行代码可以看出</span></span><br><span class="line"><span class="comment">//b.c 原有的内存没有释放</span></span><br><span class="line"><span class="comment">//a.c 和 b.c 指向同一块内存，任何一方的变动都会影响到另一方</span></span><br><span class="line"><span class="comment">//对象析构的时候，c 被释放了两次（a.c == b.c 指针一样）</span></span><br><span class="line"><span class="comment">//深复制需要自己处理里面的指针</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> *c;</span><br><span class="line">	A&amp; <span class="keyword">operator</span> =(<span class="keyword">const</span> A &amp;b)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//隐含 this 指针</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == &amp;b)</span><br><span class="line">			<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">		<span class="keyword">delete</span> c;<span class="comment">//释放原有内存资源</span></span><br><span class="line">		<span class="comment">//分配新的内存资源</span></span><br><span class="line">		<span class="keyword">int</span> length = <span class="built_in">strlen</span>(b.c);</span><br><span class="line">		c = <span class="keyword">new</span> <span class="keyword">char</span>[length + <span class="number">1</span>];</span><br><span class="line">		<span class="built_in">strcpy</span>(c, b.c);</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;a, b;</span><br><span class="line"><span class="comment">//这个是深复制，它有自定义的复制函数，赋值时，对指针动态分配了内存</span></span><br></pre></td></tr></table></figure>
+
+<p>这里再总结一下深复制和浅复制的具体区别：</p>
+<ol>
+<li>当拷贝对象状态中包含其他对象的引用时，如果需要复制的是引用对象指向的内容，而不是引用内存地址，则是深复制，否则是浅复制。</li>
+<li>浅复制就是成员数据之间的赋值，当值拷贝时，两个对象就有共同的资源。而深拷贝是先将资源复制一份，是对象拥有不同的资源（内存区域），但资源内容（内存里面的数据）是相同的。</li>
+<li>与浅复制不同，深复制在处理引用时，如果改变新对象内容将不会影响到原对象内容</li>
+<li>与深复制不同，浅复制资源后释放资源时可能会产生资源归属不清楚的情况（含指针时，释放一方的资源，其实另一方的资源也随之释放了），从而导致程序运行出错</li>
+</ol>
+<p>深复制和浅复制还有个区别就是执行的时候，浅复制是直接复制内存地址的，而深复制需要重新开辟同样大小的内存区域，然后复制整个资源。</p>
+<p>好，有了前面的铺垫，下面开始讲讲拷贝构造函数和赋值函数，其实前面第一部分也已经介绍了许多</p>
+<p>这里以string 类为例来进行说明</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	String(<span class="keyword">const</span> <span class="keyword">char</span> *str = <span class="literal">NULL</span>);</span><br><span class="line">	String(<span class="keyword">const</span> String &amp;rhs);</span><br><span class="line">	String&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> String &amp;rhs);</span><br><span class="line">	~String(<span class="keyword">void</span>)&#123;</span><br><span class="line">		<span class="keyword">delete</span>[] m_data;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">char</span> *m_data;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//构造函数</span></span><br><span class="line">String::String(<span class="keyword">const</span> <span class="keyword">char</span>* str)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == str)</span><br><span class="line">	&#123;</span><br><span class="line">		m_data = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1</span>];</span><br><span class="line">		*m_data = <span class="string">'\0'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		m_data = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="built_in">strlen</span>(str) + <span class="number">1</span>];</span><br><span class="line">		<span class="built_in">strcpy</span>(m_data, str);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//拷贝构造函数，无需检验参数的有效性</span></span><br><span class="line">String::String(<span class="keyword">const</span> String &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">	m_data = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="built_in">strlen</span>(rhs.m_data) + <span class="number">1</span>];</span><br><span class="line">	<span class="built_in">strcpy</span>(m_data, rhs.m_data);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//赋值函数</span></span><br><span class="line">String&amp; String::<span class="keyword">operator</span>=(<span class="keyword">const</span> String &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span> == &amp;rhs)</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	<span class="keyword">delete</span>[] m_data; m_data = <span class="literal">NULL</span>;</span><br><span class="line">	m_data = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="built_in">strlen</span>(rhs.m_data) + <span class="number">1</span>];</span><br><span class="line">	<span class="built_in">strcpy</span>(m_data, rhs.m_data);</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类String 拷贝构造函数与普通构造函数的区别是：在函数入口处无需与 NULL 进行比较，这是因为“引用”不可能是NULL，而“指针”可以为NULL。（这是引用与指针的一个重要区别）。然后需要注意的就是深复制了。</p>
+<p>相比而言，对于类String 的赋值函数则要复杂的多：</p>
+<p>1、首先需要执行检查自赋值</p>
+<p>这是防止自复制以及间接复制，如 b = a; c = b; a = c;之类，如果不进行自检的话，那么后面的 delete 将会进行自杀操作，后面随之的拷贝操作也会出错，所以这是关键的一步。还需要注意的是，自检是检查地址，而不是内容，内存地址是唯一的。必须是 if(this == &amp;rhs)</p>
+<p>2、释放原有的内存资源</p>
+<p>必须要用 delete 释放掉原有的内存资源，如果此时不释放，该变量指向的内存地址将不再是原有内存地址，也就无法进行内存释放，造成内存泄露。</p>
+<p>3、分配新的内存资源，并复制资源</p>
+<p>这样变量指向的内存地址变了，但是里面的资源是一样的</p>
+<p>4、返回本对象的引用</p>
+<p>这样的目的是为了实现像 a = b = c; 这样的链式表达，注意返回的是 *this 。</p>
+<p>但仔细一想，上面的程序没有考虑到异常安全性，我们在分配内存之前用delete 释放了原有实例的内存，如果后面new 出现内存不足抛出异常，那么之前delete 的 m_data 将是一个空指针，这样很容易引起程序崩溃，所以我们可以调换下顺序，即先 new 一个实例内存，成功后再用 delete 释放原有内存空间，最后用 m_data 赋值为new后的指针。</p>
+<p>接下来说说拷贝构造函数和赋值函数之间的区别。</p>
+<p>拷贝构造函数和赋值函数非常容易混淆，常导致错写、错用。拷贝构造函数是在对象被创建是调用的，而赋值函数只能在已经存在了的对象调用。看下面代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">String <span class="title">a</span><span class="params">(<span class="string">"hello"</span>)</span></span>;</span><br><span class="line">	<span class="function">String <span class="title">b</span><span class="params">(<span class="string">"world"</span>)</span></span>;</span><br><span class="line">	String c = a;<span class="comment">//这里c对象被创建调用的是拷贝构造函数</span></span><br><span class="line">             <span class="comment">//一般是写成 c(a);这里是与后面比较</span></span><br><span class="line">	c = b;<span class="comment">//前面c对象已经创建，所以这里是赋值函数</span></span><br></pre></td></tr></table></figure>
+
+<p>上面说明出现“=”的地方未必调用的都是赋值函数（算术符重载函数），也有可能拷贝构造函数，那么什么时候是调用拷贝构造函数，什么时候是调用赋值函数你？ 判断的标准其实很简单：如果临时变量是第一次出现，那么调用的只能是拷贝构造函数，反之如果变量已经存在，那么调用的就是赋值函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/" class="post-title-link" itemprop="url">C++类的静态成员和C语言中的static</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:16:30" itemprop="dateCreated datePublished" datetime="2020-12-27T15:16:30+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-02 21:46:25" itemprop="dateModified" datetime="2021-03-02T21:46:25+08:00">2021-03-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一、C++类的静态成员</p>
+<p>学过C++的都知道，静态成员是属于整个类而不是某个对象的，静态成员变量在内存中只存储一份共所有对象共用，在所有对象中都可以共享它。</p>
+<p>静态成员的定义或声明需要加个关键字 static。因为属于整个类，所以可以通过 &lt;类名&gt;::&lt;静态成员名&gt;来使用。</p>
+<p>比较容易混淆和出错的地方在于类的静态成员变量和静态成员函数的使用，这两者都属于静态成员。</p>
+<p>需要注意的是：静态成员属于整个类，在类对象实例化前，静态成员就已经分配空间了，而非静态成员无需初始化，必须在类实例化对象后才有内存空间，所以就有了个先后顺序：静态成员先于非静态成员存在。</p>
+<p>下面我们来看看如下几个情况： </p>
+<p>1、通过类名调用静态成员函数和非静态成员函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base::fun1();</span><br><span class="line">	Base::fun2();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译错误：“Base::fun1”: 非静态成员函数的非法调用<br>结论1：不能通过类名来调用类的非静态成员函数。<br>原因：类没有实例化对象，非静态成员函数不存在</p>
+<p>2、通过类的对象静态成员函数和非静态成员函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base obj;</span><br><span class="line">	obj.fun1();</span><br><span class="line">	obj.fun2();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译通过<br>结论2：可以通过类的对象调用静态成员函数和非静态成员函数<br>原因：类实例化对象，非静态成员函数已分配内存，静态成员函数为类各对象共享</p>
+<p>3、在类的静态成员函数中使用类的非静态成员</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base obj;</span><br><span class="line">	obj.fun2();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译出错：对非静态成员“Base::x”的非法引用<br>结论3：类的静态成员函数不能使用类的非静态成员<br>原因：在编译阶段，静态成员函数已分配内存，但非静态成员并没有分配内存，就好比提前使用一个不存在的东西</p>
+<p>4、在类的非静态成员函数中使用类的静态成员</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		fun2();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base obj;</span><br><span class="line">	obj.fun1();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译通过<br>结论4：类的非静态成员函数可以调用静态成员，反之则不能<br>理由同前</p>
+<p>5、使用类的静态成员变量</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//int Base::x = 0;</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; Base::x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>链接出错：无法解析的外部符号 “private: static int Base::x” (?x@Base@@0HA)<br>结论5：类的静态成员变量必须初始化，并且静态成员变量的初始化必须在类外初始化，且不能带static关键字<br>原因：静态成员变量属于类作用域，不属于类对象，程序一运行就分配内存并初始化，生命周期和程序一致，在类的构造函数内初始化显然是不合理的。另外在类外初始化时，还必须指定类型，否则编译器不知道该为变量分配多大内存。</p>
+<p><strong>但是，静态成员也并非不能再类中初始化。对于静态常量成员是可以在类中初始化的。</strong></p>
+<p>总结：<br>1.静态成员存在于内存，非静态成员需要实例化才会分配内存<br>2.非静态成员的生存期取决于该类的生存期，而静态成员则不存在生存期的概念<br>3.类的静态成员函数不能调用非静态成员，存在的先后顺序，反之可以<br>4.类的静态成员变量必须初始化，且必须在类外初始化（静态常量成员除外），不能带static关键字，必须带类型。</p>
+<p>二、C语言中的static</p>
+<p>下面介绍在C语言中，static的作用：</p>
+<p>1、隐藏</p>
+<p>当同时编译多个文件时，所有未加static前缀的全局变量和函数都具有全局可见性。比如，同时编译两个源文件，一个是a.c，另一个是main.c</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.c</span></span><br><span class="line"><span class="keyword">char</span> a = <span class="string">'A'</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">msg</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//main.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">extern</span> <span class="keyword">char</span> a;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%c"</span>, a);</span><br><span class="line">	(<span class="keyword">void</span>)msg();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//output:A Hello</span></span><br></pre></td></tr></table></figure>
+
+<p>由于a.c 中的所有成员（变量和函数）都未加static，所有都具有全局可见性，其他的源文件也能访问。如果加了static，那么其余源文件就不能访问了，利用这一特性，可以在不同的文件中定义同名函数和同名变量，而不必担心命名冲突。</p>
+<p>2、static还能保持变量内容的持久</p>
+<p>对于函数而言，static的作用仅限于隐藏，对于变量，static还有两个作用，其一就是保持变量内容的持久。存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化，事实上，全局变量和静态变量都存储在静态存储区。与全局变量不同的是，static可以控制变量的可见范围。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">10</span>;<span class="comment">//事实上此赋值语句从来没执行过,调试一进入函数，count=10</span></span><br><span class="line">	<span class="keyword">return</span> count--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>3、static第三个作用则是默认初始化为0，事实上存储在静态存储区的变量都具有这样的特性，所有全局变量也能初始化为0. </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1877,215 +2109,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/" class="post-title-link" itemprop="url">项目实战 —— 飞机大战</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:48" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="项目实战-——-飞机大战"><a href="#项目实战-——-飞机大战" class="headerlink" title="项目实战 —— 飞机大战"></a>项目实战 —— 飞机大战</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>强化 <strong>面向对象</strong> 程序设计</li>
-<li>体验使用 <code>pygame</code> 模块进行 <strong>游戏开发</strong></li>
-</ul>
-<h2 id="实战步骤"><a href="#实战步骤" class="headerlink" title="实战步骤"></a>实战步骤</h2><ol>
-<li><code>pygame</code> 快速体验</li>
-<li><strong>飞机大战</strong> 实战</li>
-</ol>
-<h2 id="确认模块-——-pygame"><a href="#确认模块-——-pygame" class="headerlink" title="确认模块 —— pygame"></a>确认模块 —— pygame</h2><ul>
-<li><code>pygame</code> 就是一个 Python 模块，专为电子游戏设计</li>
-<li>官方网站：<a href="https://www.pygame.org/" target="_blank" rel="noopener">https://www.pygame.org/</a><ul>
-<li><strong>提示</strong>：要学习第三方模块，通常最好的参考资料就在官方网站</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>网站栏目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GettingStarted</code></td>
-<td>在各平台安装模块的说明</td>
-</tr>
-<tr>
-<td><code>Docs</code></td>
-<td><code>pygame</code> 模块所有 <strong>类</strong> 和 <strong>子类</strong> 的参考手册</td>
-</tr>
-</tbody></table>
-<h3 id="安装-pygame"><a href="#安装-pygame" class="headerlink" title="安装 pygame"></a>安装 pygame</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip3 install pygame</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m pygame.examples.aliens</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">碰撞检测</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:38" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>了解碰撞检测方法</li>
-<li>碰撞实现</li>
-</ul>
-<h2 id="01-了解碰撞检测方法"><a href="#01-了解碰撞检测方法" class="headerlink" title="01. 了解碰撞检测方法"></a>01. 了解碰撞检测方法</h2><ul>
-<li><code>pygame</code> 提供了 <strong>两个非常方便</strong> 的方法可以实现碰撞检测：</li>
-</ul>
-<h3 id="pygame-sprite-groupcollide"><a href="#pygame-sprite-groupcollide" class="headerlink" title="pygame.sprite.groupcollide()"></a>pygame.sprite.groupcollide()</h3><ul>
-<li><strong>两个精灵组</strong> 中 <strong>所有的精灵</strong> 的碰撞检测</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupcollide(group1, group2, dokill1, dokill2, collided = None) -&gt; Sprite_dict</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="pygame-sprite-spritecollide"><a href="#pygame-sprite-spritecollide" class="headerlink" title="pygame.sprite.spritecollide()"></a>pygame.sprite.spritecollide()</h3><ul>
-<li>判断 <strong>某个精灵</strong> 和 <strong>指定精灵组</strong> 中的精灵的碰撞</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spritecollide(sprite, group, dokill, collided = None) -&gt; Sprite_list</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>指定精灵组</strong> 中 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-<li>返回 <strong>精灵组</strong> 中跟 <strong>精灵</strong> 发生碰撞的 <strong>精灵列表</strong></li>
-</ul>
-<h2 id="02-碰撞实现"><a href="#02-碰撞实现" class="headerlink" title="02. 碰撞实现"></a>02. 碰撞实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__check_collide</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 子弹摧毁敌机</span></span><br><span class="line">    pygame.sprite.groupcollide(self.hero.bullets, self.enemy_group, <span class="literal">True</span>, <span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 敌机撞毁英雄</span></span><br><span class="line">    enemies = pygame.sprite.spritecollide(self.hero, self.enemy_group, <span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 判断列表时候有内容</span></span><br><span class="line">    <span class="keyword">if</span> len(enemies) &gt; <span class="number">0</span>:</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># 让英雄牺牲</span></span><br><span class="line">        self.hero.kill()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 结束游戏</span></span><br><span class="line">        PlaneGame.__game_over()</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2151,20 +2178,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-count">181</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
