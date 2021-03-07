@@ -20,14 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构二叉堆（堆）">
+  <meta name="description" content="二叉堆（也叫堆）是一个部分排序的二叉树，其排序规则体现在它的堆序性质上：最大堆和最小堆，最大堆就是其对于任一节点，每个节点的键值都大于等于它的孩子节点，所以根节点键值最大。最小堆则相反。 堆是一棵完全二叉树，具备完全二叉树的性质，可以用一个数组表示而不需要指针，在起始位置为 0 的数组中任一位置 i 上的元素，其左儿子在位置 2*1+1 上，右儿子在左儿子的后面邻近位置上，它的父节点则在位置 (i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构的二叉堆(堆)">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BA%8C%E5%8F%89%E5%A0%86%EF%BC%88%E5%A0%86%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="二叉堆（也叫堆）是一个部分排序的二叉树，其排序规则体现在它的堆序性质上：最大堆和最小堆，最大堆就是其对于任一节点，每个节点的键值都大于等于它的孩子节点，所以根节点键值最大。最小堆则相反。 堆是一棵完全二叉树，具备完全二叉树的性质，可以用一个数组表示而不需要指针，在起始位置为 0 的数组中任一位置 i 上的元素，其左儿子在位置 2*1+1 上，右儿子在左儿子的后面邻近位置上，它的父节点则在位置 (i">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:44:23.805Z">
-<meta property="article:modified_time" content="2020-12-29T13:44:23.805Z">
+<meta property="article:modified_time" content="2021-03-07T02:43:59.169Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BA%8C%E5%8F%89%E5%A0%86%EF%BC%88%E5%A0%86%EF%BC%89/">
@@ -43,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构二叉堆（堆） | Hexo</title>
+  <title>数据结构的二叉堆(堆) | Hexo</title>
   
 
 
@@ -171,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据结构二叉堆（堆）
+          数据结构的二叉堆(堆)
         </h1>
 
         <div class="post-meta">
@@ -182,6 +185,22 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2020-12-29 21:44:23" itemprop="dateCreated datePublished" datetime="2020-12-29T21:44:23+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 10:43:59" itemprop="dateModified" datetime="2021-03-07T10:43:59+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
             </span>
 
           
@@ -195,7 +214,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>二叉堆（也叫堆）是一个部分排序的二叉树，其排序规则体现在它的堆序性质上：最大堆和最小堆，最大堆就是其对于任一节点，每个节点的键值都大于等于它的孩子节点，所以根节点键值最大。最小堆则相反。</p>
+<p>堆是一棵完全二叉树，具备完全二叉树的性质，可以用一个数组表示而不需要指针，在起始位置为 0 的数组中任一位置 i 上的元素，其左儿子在位置 2*1+1 上，右儿子在左儿子的后面邻近位置上，它的父节点则在位置 (i-1)/2。因此，一个堆数据结构将由一个数组（不管键值是什么类型）、一个代表最大容量的整数以及当前的堆大小组成。</p>
+<p>下面用C++ 来实现堆，并补充基于堆这一数据结构上的堆排序，不同于前面介绍的堆排序</p>
+<ol>
+<li>堆的类结构</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class Elem&gt;</span><br><span class="line">class BinaryHeap</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	BinaryHeap(int MaxSize &#x3D; 50);</span><br><span class="line">	BinaryHeap(const BinaryHeap&lt;Elem&gt; &amp;rhs);</span><br><span class="line">	BinaryHeap(Elem *Array, int ElemNum, int MaxSize);</span><br><span class="line">	~BinaryHeap(void);</span><br><span class="line"></span><br><span class="line">	Elem *Sort(void);              &#x2F;&#x2F;堆排序</span><br><span class="line">	bool Add(const Elem &amp;Item);    &#x2F;&#x2F;添加元素</span><br><span class="line">	Elem Remove(void);             &#x2F;&#x2F;移除（堆顶）元素</span><br><span class="line">	 </span><br><span class="line">	inline int GetSize(void);      &#x2F;&#x2F;获取当前堆大小</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">	Elem *Data;                    </span><br><span class="line">	int CurrentNum;</span><br><span class="line">	const int MAX_SIZE;</span><br><span class="line"></span><br><span class="line">	void HeapifyUp(int Node);            &#x2F;&#x2F;向上调整堆  </span><br><span class="line">	void HeapifyDown(int Node);          &#x2F;&#x2F;向下调整堆</span><br><span class="line">	 </span><br><span class="line">	inline int ParentOf(int Node);       &#x2F;&#x2F;得到节点的父节点位置</span><br><span class="line">	inline int LeftChildOf(int Node);    &#x2F;&#x2F;得到节点的左儿子位置</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>构造函数，拷贝构造函数，析构函数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;constructor function</span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">BinaryHeap&lt;Elem&gt;::BinaryHeap(int MaxSize) :MAX_SIZE(MaxSize)</span><br><span class="line">&#123;</span><br><span class="line">	Data &#x3D; new Elem[MAX_SIZE];</span><br><span class="line">	CurrentNum &#x3D; 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;copy constructor function</span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">BinaryHeap&lt;Elem&gt;::BinaryHeap(const BinaryHeap&lt;Elem&gt; &amp;rhs) :MAX_SIZE(rhs.MAX_SIZE), CurrentNum(rhs.CurrentNum)</span><br><span class="line">&#123;</span><br><span class="line">	Data &#x3D; new Elem[MAX_SIZE];</span><br><span class="line">	strcpy(Data, rhs.Data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;array constructor</span><br><span class="line">&#x2F;&#x2F;将数组元素构建成最大堆</span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">BinaryHeap&lt;Elem&gt;::BinaryHeap(Elem *Array, int ElemNum, int MaxSize) :MAX_SIZE(MaxSize)</span><br><span class="line">&#123;</span><br><span class="line">	Data &#x3D; new Elem[MAX_SIZE];</span><br><span class="line">	CurrentNum &#x3D; ElemNum;</span><br><span class="line"></span><br><span class="line">	for (int i &#x3D; 0; i &lt; ElemNum; ++i)</span><br><span class="line">		Data[i] &#x3D; Array[i];</span><br><span class="line">	 </span><br><span class="line">	for (int i &#x3D; ParentOf(CurrentNum - 1); i &gt;&#x3D; 0; --i)   &#x2F;&#x2F;单步向前，数组从后往前，树从上到下调整</span><br><span class="line">		HeapifyDown(i);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">BinaryHeap&lt;Elem&gt;::~BinaryHeap(void)</span><br><span class="line">&#123;</span><br><span class="line">	if (Data)</span><br><span class="line">		delete[] Data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li>最大堆调整（最小堆只需修改比较即可）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class Elem&gt;</span><br><span class="line">int BinaryHeap&lt;Elem&gt;::ParentOf(int Node)</span><br><span class="line">&#123;</span><br><span class="line">	&#x2F;&#x2F;assert(Node &gt; 0);</span><br><span class="line">	return (Node - 1) &#x2F; 2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">int BinaryHeap&lt;Elem&gt;::LeftChildOf(int Node)</span><br><span class="line">&#123;</span><br><span class="line">	return (Node * 2) + 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;最大堆调整：从Node位置向上调整（数组向前，Node后不管）</span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">void BinaryHeap&lt;Elem&gt;::HeapifyUp(int Node)</span><br><span class="line">&#123;</span><br><span class="line">	int Current &#x3D; Node;</span><br><span class="line">	int Parent &#x3D; ParentOf(Node);</span><br><span class="line">	Elem Item &#x3D; Data[Current];</span><br><span class="line"></span><br><span class="line">	while (Current &gt; 0)</span><br><span class="line">	&#123;</span><br><span class="line">		if (Item &gt; Data[Parent])</span><br><span class="line">		&#123;</span><br><span class="line">			Data[Current] &#x3D; Data[Parent];</span><br><span class="line">			Current &#x3D; Parent;</span><br><span class="line">			Parent &#x3D; ParentOf(Current);</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">			break;</span><br><span class="line">	&#125;</span><br><span class="line">	Data[Current] &#x3D; Item;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>//最大堆调整：从Node位置向下调整（数组向后，Node前不管）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class Elem&gt;</span><br><span class="line">void BinaryHeap&lt;Elem&gt;::HeapifyDown(int Node)</span><br><span class="line">&#123;</span><br><span class="line">	int Current &#x3D; Node;</span><br><span class="line">	int Child &#x3D; LeftChildOf(Node);</span><br><span class="line">	Elem Item &#x3D; Data[Current];</span><br><span class="line"></span><br><span class="line">	while (Child &lt; CurrentNum)</span><br><span class="line">	&#123;</span><br><span class="line">		if (Child &lt; (CurrentNum - 1))</span><br><span class="line">		&#123;</span><br><span class="line">			if (Data[Child] &lt; Data[Child + 1])</span><br><span class="line">				++Child;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		if (Item &lt; Data[Child])</span><br><span class="line">		&#123;</span><br><span class="line">			Data[Current] &#x3D; Data[Child];</span><br><span class="line">			Current &#x3D; Child;</span><br><span class="line">			Child &#x3D; LeftChildOf(Current);</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">			break;</span><br><span class="line">	&#125;</span><br><span class="line">	Data[Current] &#x3D; Item;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处给出最大堆向上调整 HeapifyUp 演示：Node = ParentOf(CurrentNum - 1)； </p>
+<p>此处给出最大堆向上调整 HeapifyUp 演示：Node = ParentOf(CurrentNum - 1)； </p>
+<p>那什么时候向上调整，什么时候向下调整呢？很明显构建二叉堆的时候必须向上迭代（递归）调整，另外添加元素也必须向上调整；而移除堆顶元素（排序）后，则需要从上向下调整。也就是说当原数组不是二叉堆或是往后面添加元素打乱稳定时，需要从下往上调整；移除元素后，虽然数组不是二叉堆形式了，但是有一子树是不需移动的，只需调整另外一边子树。通俗点就是抽走前面的需要向下调整，后面添加需要向前调整。</p>
+<ol start="4">
+<li>添加、移除元素</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class Elem&gt;</span><br><span class="line">bool BinaryHeap&lt;Elem&gt;::Add(const Elem &amp;Item)</span><br><span class="line">&#123;</span><br><span class="line">	if (CurrentNum &gt;&#x3D; MAX_SIZE)</span><br><span class="line">		return false;</span><br><span class="line"></span><br><span class="line">	Data[CurrentNum] &#x3D; Item;</span><br><span class="line">	HeapifyUp(CurrentNum++);</span><br><span class="line">	return true;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">Elem BinaryHeap&lt;Elem&gt;::Remove(void)</span><br><span class="line">&#123;</span><br><span class="line">	assert(CurrentNum &gt; 0);</span><br><span class="line"></span><br><span class="line">	Elem Temp &#x3D; Data[0];</span><br><span class="line">	Data[0] &#x3D; Data[--CurrentNum];  &#x2F;&#x2F;此处是用数组最后一个填补</span><br><span class="line">	HeapifyDown(0);                &#x2F;&#x2F;从上往下调整</span><br><span class="line">	return Temp;</span><br><span class="line">	 </span><br><span class="line">	&#x2F;&#x2F;或选择键值大的儿子填补空位，重复该步骤直到最后一个元素填补了空位 	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ol start="5">
+<li><p>堆排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">5. template &lt;class Elem&gt;</span><br><span class="line">   inline int BinaryHeap&lt;Elem&gt;::GetSize(void)</span><br><span class="line">   &#123;</span><br><span class="line">   return CurrentNum;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">template &lt;class Elem&gt;</span><br><span class="line">Elem* BinaryHeap&lt;Elem&gt;::Sort(void)</span><br><span class="line">&#123;</span><br><span class="line">	Elem *NewArray &#x3D; new Elem[CurrentNum];</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;升序</span><br><span class="line">	for (int ElemNum &#x3D; CurrentNum - 1; ElemNum &gt;&#x3D; 0; --ElemNum)</span><br><span class="line">		NewArray[ElemNum] &#x3D; Remove();</span><br><span class="line">	 </span><br><span class="line">	&#x2F;*降序</span><br><span class="line">	int ElemNum &#x3D; CurrentNum;</span><br><span class="line">	for (int i &#x3D; 0; i &lt; ElemNum; ++i)</span><br><span class="line">		NewArray[i] &#x3D; Remove();</span><br><span class="line">	*&#x2F;</span><br><span class="line">	 </span><br><span class="line">	return NewArray;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+
     </div>
 
     
@@ -203,6 +261,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据结构基础学习</a>
+          </div>
 
         
 
@@ -214,8 +275,8 @@
       <i class="fa fa-chevron-left"></i> 数据结构的二叉查找树之非递归遍历
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%5BAVL%E6%A0%91%5D(%E4%B8%80)%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5/" rel="next" title="数据结构平衡二叉树[AVL树](一)——插入">
-      数据结构平衡二叉树[AVL树](一)——插入 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%5BAVL%E6%A0%91%5D(%E4%B8%80)%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5/" rel="next" title="数据结构平衡二叉树(AVL树)的插入">
+      数据结构平衡二叉树(AVL树)的插入 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

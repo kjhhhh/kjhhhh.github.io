@@ -20,14 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="1、选择排序 实现思想：首先在未排序序列中找到最小（大）元素，存放在排序序列的起始位置，然后再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾，以此类推，直到所有元素均排序完毕。通俗的讲就是从无序区（不同于插入排序，这里的无序区包含所有元素）选一个最小（大）的元素直接放在有序区的最后，即选择一个最小的元素依次放在前面，即选择最小（大）元素就有个逐一比较和交换的过程。 实现步骤：">
+<meta property="og:type" content="article">
 <meta property="og:title" content="数据结构选择排序、堆排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、选择排序 实现思想：首先在未排序序列中找到最小（大）元素，存放在排序序列的起始位置，然后再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾，以此类推，直到所有元素均排序完毕。通俗的讲就是从无序区（不同于插入排序，这里的无序区包含所有元素）选一个最小（大）的元素直接放在有序区的最后，即选择一个最小的元素依次放在前面，即选择最小（大）元素就有个逐一比较和交换的过程。 实现步骤：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:52:57.916Z">
-<meta property="article:modified_time" content="2020-12-29T13:52:57.916Z">
+<meta property="article:modified_time" content="2021-03-07T03:04:04.947Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F/">
@@ -183,6 +186,22 @@
 
               <time title="创建时间：2020-12-29 21:52:57" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:57+08:00">2020-12-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 11:04:04" itemprop="dateModified" datetime="2021-03-07T11:04:04+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
 
           
 
@@ -195,7 +214,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>1、选择排序</p>
+<p>实现思想：首先在未排序序列中找到最小（大）元素，存放在排序序列的起始位置，然后再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾，以此类推，直到所有元素均排序完毕。通俗的讲就是从无序区（不同于插入排序，这里的无序区包含所有元素）选一个最小（大）的元素直接放在有序区的最后，即选择一个最小的元素依次放在前面，即选择最小（大）元素就有个逐一比较和交换的过程。</p>
+<p>实现步骤：</p>
+<p>设数组为a[0…n-1]</p>
+<ol>
+<li><p>初始时，数组全为无序区，为a[0…n-1]。令i = 0；</p>
+</li>
+<li><p>在无序区a[i…n-1] 中选取一个最小的元素，将其与 a[i] 交换，交换之后a[0…i+1] 就形成了有序区，无序区为a[i+1…n-1]；</p>
+</li>
+<li><p>i++，并重复第 2 步直到 i==n-1，排序完成。</p>
+</li>
+</ol>
+<p>上面的第 2 步是将数据进行交换，但每次只交换一次数据，选取最小元素，是保存最小的元素的索引值，然后交换无序区第一个元素与该索引指定的元素（无序区的最小值）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">void swap(int &amp;a, int &amp;b)</span><br><span class="line">&#123;</span><br><span class="line">	if (a !&#x3D; b)</span><br><span class="line">	&#123;</span><br><span class="line">		a ^&#x3D; b;</span><br><span class="line">		b ^&#x3D; a;</span><br><span class="line">		a ^&#x3D; b;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void SelectSort(int Array[], int length)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j;</span><br><span class="line">	int Minindex;</span><br><span class="line"></span><br><span class="line">	for (i &#x3D; 0; i &lt; length - 1; ++i)    &#x2F;&#x2F;最后留下的元素自然是最大的</span><br><span class="line">	&#123;</span><br><span class="line">		Minindex &#x3D; i;</span><br><span class="line">		for (j &#x3D; i + 1; j &lt; length; ++j)</span><br><span class="line">		&#123;</span><br><span class="line">			if (Array[j] &lt; Array[Minindex])</span><br><span class="line">				Minindex &#x3D; j;         &#x2F;&#x2F;更新最小值的索引</span><br><span class="line">		&#125;</span><br><span class="line">		swap(Array[i], Array[Minindex]);   &#x2F;&#x2F;将最小值与无序区的第一个元素交换</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面程序可知，选择排序的时间复杂度为O(N^2)，空间复杂度为O(1)。选择排序是交换无序区的第一个元素和最小元素，如果当前元素是最小值，而当前这个小的元素的前面出现一个与无序区第一个元素相等的元素，那么交换之后，这相等的原本在前面的第一个元素就到了与之相等的那个元素的后面，举个例子：5 8 5 2 9，第一遍选择之后第一个元素5会和2交换，那么原序列中2个5的相对前后顺序就被破坏了，所以选择排序是不稳定排序算法。</p>
+<p>变相的选择排序（含选择排序思想）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void SelectSort(int Array[], int length)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i &#x3D; 0; i &lt; length - 1; ++i)</span><br><span class="line">		for (int j &#x3D; i + 1; j &lt; length; ++j)     &#x2F;&#x2F;单次之后最小数据在最前面</span><br><span class="line">		&#123;</span><br><span class="line">			if (Array[i] &gt; Array[j])</span><br><span class="line">				swap(Array[i], Array[j]);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>2、堆排序</p>
+<p>堆排序是利用堆这种数据结构设计的一种排序算法，这里的堆是一个近似完全二叉树的结构，并同时满足堆序性质：在一个堆中，对于每一个节点 X，X 的父节点的关键字要大于等于（或小于等于）该节点的关键字，根节点除外。小于等于称之为最小堆，大于等于称之为最大堆。对于最大堆，其根节点关键字最大。</p>
+<p>另外，完全二叉树很有规律，可以用一个数组表示而不需要指针，在起始位置为 0 的数组中任一位置 i 上的元素，其左儿子在位置 2<em>i+1 上，右儿子在位置 2</em>i+2 上，它的父节点则在位置 (i-1)/2 上。<br>堆排序的设计思想（升序）：1）先将数组转换为最大堆（特殊的完全二叉树）；2）提取根节点，与数组的最后一个元素交换，这样数组的最后一个元素就是最大值；3）然后再将除去最后一个元素的数组调整成最大堆；4）重复2,3步，直至数组无法组成最大堆，排序完毕。<br>所以堆排序的关键点落到了构建堆和调整堆上面了。这里的构建堆并不是额外构建堆这个数据结构，而是将数组中的元素进行交换，使之对应索引满足上面提及的规律，即在起始位置为 0 的数组中任一位置 i 上的元素，其左儿子在位置 2<em>i+1 上，右儿子在位置 2</em>i+2 上，它的父节点则在位置 (i-1)/2 上，满足其父节点大于等于其孩子节点。左右孩子节点并无要求只需小于其父节点即可。</p>
+<ol>
+<li>构建最大堆<br>如下图，节点前面表示编号，后面表示数值，假定输入数组为 Array[] = {6, 5, 3, 1, 7, 2}。数组拟合成最大堆形式，从底部向上，每次是比较交换具有 “血缘关系” 的父子节点，将这三（两）个节点中的最大值与父节点交换。在构建堆得过程中，我们是从完全二叉树的最下层最右边的非终端节点开始构建。首先找到数组尾部元素的父节点对应位置（这样保证每次定位的节点都有孩子节点），然后用该父节点与其孩子节点作比较交换，然后数组元素前移，数组所对应的完全二叉树中的元素位置也发生了变化，则再次比较交换该节点与其孩子节点，如此循环，直至前移到数组的首位置。</li>
+</ol>
+<ol start="2">
+<li>调整最大堆<br>调整堆就是在交换数组首元素和无序区的末尾元素后，将无序区重新调整为最大堆，直至无序区消失，排序完成。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">#define PARENT(x) ((x-1) &gt;&gt; 1)</span><br><span class="line"></span><br><span class="line">#define LEFT(x)   ((x &lt;&lt; 1) + 1)</span><br><span class="line"></span><br><span class="line">#define RIGHT(x)  ((x &lt;&lt; 1) + 2)</span><br><span class="line"></span><br><span class="line">void swap(int &amp;a, int &amp;b)</span><br><span class="line">&#123;</span><br><span class="line">	if (a !&#x3D; b)</span><br><span class="line">	&#123;</span><br><span class="line">		a ^&#x3D; b;</span><br><span class="line">		b ^&#x3D; a;</span><br><span class="line">		a ^&#x3D; b;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;调整最大堆</span><br><span class="line">void MaxHeapify(int Array[], int Index, int HeapSize)</span><br><span class="line">&#123;</span><br><span class="line">	int L &#x3D; LEFT(Index);   &#x2F;&#x2F;Index为父节点索引</span><br><span class="line">	int R &#x3D; RIGHT(Index);</span><br><span class="line">	int Largest;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;选择三（两个）个元素（“血缘关系”）的最大值</span><br><span class="line">	if (L &lt;&#x3D; HeapSize &amp;&amp; Array[L] &gt; Array[Index])</span><br><span class="line">		Largest &#x3D; L;</span><br><span class="line">	else</span><br><span class="line">		Largest &#x3D; Index;</span><br><span class="line">	 </span><br><span class="line">	if (R &lt;&#x3D; HeapSize &amp;&amp; Array[R] &gt; Array[Largest])</span><br><span class="line">		Largest &#x3D; R;</span><br><span class="line">	 </span><br><span class="line">	if (Largest !&#x3D; Index)</span><br><span class="line">	&#123;</span><br><span class="line">		swap(Array[Largest], Array[Index]);  &#x2F;&#x2F;最大值与父节点位置交换</span><br><span class="line">		MaxHeapify(Array, Largest, HeapSize);  </span><br><span class="line">		&#x2F;*这里的MaxHeapify()递归是用于最大堆的调整，从上至下调整，且只需调整一棵子树</span><br><span class="line">		构建最大堆是从数组尾端往前，并不需要递归，实际上构建时也不会出现递归调用*&#x2F;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;构建最大堆</span><br><span class="line">void BuildHeapify(int Array[], int HeapSize)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i &#x3D; PARENT(HeapSize); i &gt;&#x3D; 0; --i)</span><br><span class="line">		MaxHeapify(Array, i, HeapSize);       &#x2F;&#x2F;必须单步向前</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HeapSort(int Array[], int length)</span><br><span class="line">&#123;</span><br><span class="line">	int HeapSize &#x3D; length - 1;</span><br><span class="line"></span><br><span class="line">	BuildHeapify(Array, HeapSize);</span><br><span class="line">	 </span><br><span class="line">	for (int i &#x3D; HeapSize; i &gt;&#x3D; 0; --i)</span><br><span class="line">	&#123;</span><br><span class="line">		swap(Array[0], Array[i]);</span><br><span class="line">		--HeapSize;</span><br><span class="line">		MaxHeapify(Array, 0, HeapSize);  </span><br><span class="line">		&#x2F;&#x2F;删除根节点后，，有一棵子树满足最大堆，有一棵不满足，只需调整一棵子树</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构建堆时，对于每个父节点即非终端节点来说，最多进行两次比较和互换操作，因此整个构建堆的时间复杂度为O(N)；正式排序时，第 i 次取堆顶元素然后重建堆需要用O(logi) 时间（二叉树的深度），需要取 N-1 次堆顶元素，因此，取元素再重建堆的时间复杂度为O(NlogN)。所以总体来说堆排序的时间复杂度为O(NlogN)。值得注意的是，堆排序对原始输入序列的排序状态并不敏感，因此其各个时间复杂度均为O(NlogN)</p>
+<p>在空间复杂度上，只有一个用来交换的暂存单元，因此空间复杂度为O(1)。另外可以得知堆排序的元素比较交换是跳跃式进行的，因此堆排序是一种不稳定的排序算法。</p>
+<p>上面实现的是最大堆，另外也可是修改一下使之成为最小堆，只需要在调整的时候，改为将父节点与孩子节点比较后的最小值与父节点互换，然后再调整下一层（必须保证父节点均小于等于孩子节点），之后递减数组索引再次重复上述过程。与最大堆一样，调整的时候需要从上往下逐层调整。 </p>
+
     </div>
 
     
@@ -203,6 +256,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据结构基础学习</a>
+          </div>
 
         
 

@@ -20,14 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构平衡二叉树[AVL树](二)——删除">
+  <meta name="description" content="平衡二叉树是一棵带有平衡条件的二叉查找树，其删除操作是在二叉查找树的基础上添加平衡调整算法。 二叉查找树的删除操作参见博文：二叉查找树的删除（第七点） 先看一下示意图（） &#x2F;二叉查找树的性质让我们可以很方便的查找最小最大键值&#x2F; 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构平衡二叉树(AVL树)的删除">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91[AVL%E6%A0%91](%E4%BA%8C)%E2%80%94%E2%80%94%E5%88%A0%E9%99%A4/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="平衡二叉树是一棵带有平衡条件的二叉查找树，其删除操作是在二叉查找树的基础上添加平衡调整算法。 二叉查找树的删除操作参见博文：二叉查找树的删除（第七点） 先看一下示意图（） &#x2F;二叉查找树的性质让我们可以很方便的查找最小最大键值&#x2F; 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:44:57.051Z">
-<meta property="article:modified_time" content="2020-12-29T13:44:57.051Z">
+<meta property="article:modified_time" content="2021-03-07T02:54:35.595Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91[AVL%E6%A0%91](%E4%BA%8C)%E2%80%94%E2%80%94%E5%88%A0%E9%99%A4/">
@@ -43,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构平衡二叉树[AVL树](二)——删除 | Hexo</title>
+  <title>数据结构平衡二叉树(AVL树)的删除 | Hexo</title>
   
 
 
@@ -171,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据结构平衡二叉树[AVL树](二)——删除
+          数据结构平衡二叉树(AVL树)的删除
         </h1>
 
         <div class="post-meta">
@@ -182,6 +185,22 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2020-12-29 21:44:57" itemprop="dateCreated datePublished" datetime="2020-12-29T21:44:57+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 10:54:35" itemprop="dateModified" datetime="2021-03-07T10:54:35+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
             </span>
 
           
@@ -195,7 +214,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>平衡二叉树是一棵带有平衡条件的二叉查找树，其删除操作是在二叉查找树的基础上添加平衡调整算法。</p>
+<p>二叉查找树的删除操作参见博文：二叉查找树的删除（第七点）</p>
+<p>先看一下示意图（）</p>
+<p>/<em>二叉查找树的性质让我们可以很方便的查找最小最大键值</em>/</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*查找最小键值节点：直接递归遍历左子树叶子节点*&#x2F;</span><br><span class="line">AvlNode* AvlTree::findMin(AvlNode *node)</span><br><span class="line">&#123;</span><br><span class="line">	if (NULL &#x3D;&#x3D; node)</span><br><span class="line">		return NULL;</span><br><span class="line"></span><br><span class="line">	else if (NULL &#x3D;&#x3D; node-&gt;leftchild)</span><br><span class="line">		return node;</span><br><span class="line">	 </span><br><span class="line">	else</span><br><span class="line">		return findMin(node-&gt;leftchild);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*非递归实现查找最大键值节点*&#x2F;</span><br><span class="line">AvlNode* AvlTree::findMax(AvlNode *node)</span><br><span class="line">&#123;</span><br><span class="line">	if (node !&#x3D; NULL)</span><br><span class="line">	&#123;</span><br><span class="line">		while (node-&gt;rightchild)</span><br><span class="line">			node &#x3D; node-&gt;rightchild;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return node;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void AvlTree::Delete(int val)</span><br><span class="line">&#123;</span><br><span class="line">	if(NULL &#x3D;&#x3D; Root)</span><br><span class="line">		return;</span><br><span class="line">	else</span><br><span class="line">		Delete(Root, val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;节点的删除就是不断的交换数据，更改删除节点，最后定位到叶子节点</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">void AvlTree::Delete(AvlNode *&amp;node, int val)</span><br><span class="line">&#123;</span><br><span class="line">	AvlNode *tempnode &#x3D; NULL;</span><br><span class="line">	if(NULL &#x3D;&#x3D; node)</span><br><span class="line">		return;</span><br><span class="line"></span><br><span class="line">	else if(val &lt; node-&gt;data)</span><br><span class="line">		Delete(node-&gt;leftchild, val);</span><br><span class="line">	else if(val &gt; node-&gt;data)</span><br><span class="line">		Delete(node-&gt;rightchild, val);</span><br><span class="line">	 </span><br><span class="line">	&#x2F;&#x2F;find the val</span><br><span class="line">	else if(node-&gt;leftchild &amp;&amp; node-&gt;rightchild)</span><br><span class="line">	&#123;</span><br><span class="line">		tempnode &#x3D; findMin(node-&gt;rightchild);</span><br><span class="line">		node-&gt;data &#x3D; tempnode-&gt;data;</span><br><span class="line">		Delete(node-&gt;rightchild, node-&gt;data);   &#x2F;&#x2F;理解！待删除节点键值变换</span><br><span class="line">	&#125;                                           &#x2F;&#x2F;此后要删除的键值节点不是val</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		if(node-&gt;leftchild &amp;&amp; (NULL &#x3D;&#x3D; node-&gt;rightchild))</span><br><span class="line">		&#123;</span><br><span class="line">			tempnode &#x3D; findMax(node-&gt;leftchild);</span><br><span class="line">			node-&gt;data &#x3D; tempnode-&gt;data;</span><br><span class="line">			Delete(node-&gt;leftchild, node-&gt;data);</span><br><span class="line">		&#125;</span><br><span class="line">		else if (node-&gt;rightchild &amp;&amp; (NULL &#x3D;&#x3D; node-&gt;leftchild))</span><br><span class="line">		&#123;</span><br><span class="line">			tempnode &#x3D; findMin(node-&gt;rightchild);</span><br><span class="line">			node-&gt;data &#x3D; tempnode-&gt;data;</span><br><span class="line">			Delete(node-&gt;rightchild, node-&gt;data);</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			delete(node);</span><br><span class="line">			node &#x3D; NULL;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	if (node)   &#x2F;&#x2F;必须添加这个条件，利用递归的力量，调整平衡</span><br><span class="line">	&#123;  </span><br><span class="line">		&#x2F;&#x2F;平衡判断</span><br><span class="line">		if (2 &#x3D;&#x3D; Height(node-&gt;leftchild) - Height(node-&gt;rightchild))</span><br><span class="line">		&#123;</span><br><span class="line">			&#x2F;&#x2F;情况判断</span><br><span class="line">			if (Height(node-&gt;leftchild-&gt;leftchild) &gt;&#x3D; Height(node-&gt;leftchild-&gt;rightchild))</span><br><span class="line">				RotationLeftOnce(node);</span><br><span class="line">			else</span><br><span class="line">			&#123;</span><br><span class="line">				RotationRightOnce(node-&gt;leftchild);</span><br><span class="line">				RotationLeftOnce(node);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		if (2 &#x3D;&#x3D; Height(node-&gt;rightchild) - Height(node-&gt;leftchild))</span><br><span class="line">		&#123;</span><br><span class="line">			if (Height(node-&gt;rightchild-&gt;rightchild) &gt;&#x3D; Height(node-&gt;rightchild-&gt;leftchild))</span><br><span class="line">				RotationRightOnce(node);</span><br><span class="line">			else</span><br><span class="line">			&#123;</span><br><span class="line">				RotationLeftOnce(node-&gt;rightchild);</span><br><span class="line">				RotationRightOnce(node);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的删除操作具体参见：二叉查找树的删除，另外平衡二叉树的查找，遍历与二叉查找树一样。</p>
+<p>上面的删除操作具体参见：二叉查找树的删除，另外平衡二叉树的查找，遍历与二叉查找树一样。</p>
+<p>二、清空二叉树（析构函数）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void AvlTree::MakeEmpty(AvlNode *&amp;node)</span><br><span class="line">&#123;</span><br><span class="line">	if (node)</span><br><span class="line">	&#123;</span><br><span class="line">		MakeEmpty(node-&gt;leftchild);</span><br><span class="line">		MakeEmpty(node-&gt;rightchild);</span><br><span class="line">		delete node;</span><br><span class="line">	&#125;</span><br><span class="line">	node &#x3D; NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>三、平衡二叉树时间复杂度分析<br>平衡二叉树在二叉查找树的基础上添加了旋转算法，但是旋转操作仅仅改变少数指针的指向，耗费常数时间，平衡二叉树加入了平衡机制，所以其深度为logN，查找、插入和删除在平均和最坏情况下都是O(logN)。对比二叉查找树，时间上稳定了很多。</p>
+
     </div>
 
     
@@ -203,6 +235,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据结构基础学习</a>
+          </div>
 
         
 
@@ -210,8 +245,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%5BAVL%E6%A0%91%5D(%E4%B8%80)%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5/" rel="prev" title="数据结构平衡二叉树[AVL树](一)——插入">
-      <i class="fa fa-chevron-left"></i> 数据结构平衡二叉树[AVL树](一)——插入
+    <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%5BAVL%E6%A0%91%5D(%E4%B8%80)%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5/" rel="prev" title="数据结构平衡二叉树(AVL树)的插入">
+      <i class="fa fa-chevron-left"></i> 数据结构平衡二叉树(AVL树)的插入
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%93%88%E5%B8%8C%E8%A1%A8/" rel="next" title="数据结构哈希表">

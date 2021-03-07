@@ -20,14 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="桶排序假设待排序的一组数统一的分布在一个范围中，然后设定对应数据数量的桶，待排序的一组数，分别对应算式处理归入这些子桶，并将桶中的数据进行排序，最后将各个桶中的数据有序的合并起来。 通俗的说，就是通过某个公式将待排序的一组数分为几个子范围，然后归入到对应的子桶，这样必然会有不一样的数据经过算式处理后对应同一个桶，我们可通过简单比较将对应同一个桶的不同数据排序，最后各个数据处理完后，有的桶为空，有的">
+<meta property="og:type" content="article">
 <meta property="og:title" content="数据结构桶排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="桶排序假设待排序的一组数统一的分布在一个范围中，然后设定对应数据数量的桶，待排序的一组数，分别对应算式处理归入这些子桶，并将桶中的数据进行排序，最后将各个桶中的数据有序的合并起来。 通俗的说，就是通过某个公式将待排序的一组数分为几个子范围，然后归入到对应的子桶，这样必然会有不一样的数据经过算式处理后对应同一个桶，我们可通过简单比较将对应同一个桶的不同数据排序，最后各个数据处理完后，有的桶为空，有的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:53:44.540Z">
-<meta property="article:modified_time" content="2020-12-29T13:53:44.540Z">
+<meta property="article:modified_time" content="2021-03-07T03:08:02.185Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/">
@@ -183,6 +186,22 @@
 
               <time title="创建时间：2020-12-29 21:53:44" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:44+08:00">2020-12-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 11:08:02" itemprop="dateModified" datetime="2021-03-07T11:08:02+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
 
           
 
@@ -195,7 +214,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>桶排序假设待排序的一组数统一的分布在一个范围中，然后设定对应数据数量的桶，待排序的一组数，分别对应算式处理归入这些子桶，并将桶中的数据进行排序，最后将各个桶中的数据有序的合并起来。</p>
+<p>通俗的说，就是通过某个公式将待排序的一组数分为几个子范围，然后归入到对应的子桶，这样必然会有不一样的数据经过算式处理后对应同一个桶，我们可通过简单比较将对应同一个桶的不同数据排序，最后各个数据处理完后，有的桶为空，有的桶有多个数据（已排序好），这样我们就可以逐个的遍历桶，然后将数据依次放入原数组中，这样就完成了排序。</p>
+<p>​                                             </p>
+<p>上面模型和哈希表的分离链接法很相似。这里不同数据对应同一个桶的插入是通过链表来存储的。</p>
+<p>这里给出一个演示：Bucket Sort Visualization</p>
+<p>根据上面算法模型和演示，给出代码：上面的图示模型和演示链表是带有表头的，这样是为了方便执行删除操作，但是我们这里仅作为排序，无需删除操作，所以链表是不带有表头的，这样既简化了问题又节省了空间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">typedef struct Node</span><br><span class="line">&#123;</span><br><span class="line">    int data;</span><br><span class="line">    struct Node *next;</span><br><span class="line">&#125;node;</span><br><span class="line"></span><br><span class="line">void AddtoBucket(node *&amp;pNode, int value)</span><br><span class="line">&#123;</span><br><span class="line">    node *pHead &#x3D; NULL;</span><br><span class="line">    int tempValue;</span><br><span class="line"></span><br><span class="line">    node *pNew &#x3D; new node;</span><br><span class="line">    pNew-&gt;data &#x3D; value;</span><br><span class="line">    pNew-&gt;next &#x3D; NULL;</span><br><span class="line">     </span><br><span class="line">    if (NULL &#x3D;&#x3D; pNode)</span><br><span class="line">    &#123;</span><br><span class="line">        pNode &#x3D; pNew;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        pHead &#x3D; pNode;</span><br><span class="line">        while ((pNode-&gt;data &lt;&#x3D; value) &amp;&amp; (pNode-&gt;next !&#x3D; NULL))</span><br><span class="line">            pNode &#x3D; pNode-&gt;next;</span><br><span class="line">     </span><br><span class="line">        if (pNode-&gt;data &lt;&#x3D; value)</span><br><span class="line">        &#123;</span><br><span class="line">            pNode-&gt;next &#x3D; pNew;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123; </span><br><span class="line">            &#x2F;&#x2F;插入链表，这里采用的是修改值的方法，即插入指定节点的前面，无需获得该节点的前一节点  </span><br><span class="line">            &#x2F;&#x2F;只需修改该节点的值使其等于待插入节点值，然后该节点指向新建节点，新建节点的键值则设为前面节点的键值  </span><br><span class="line">            tempValue &#x3D; pNode-&gt;data;</span><br><span class="line">            pNode-&gt;data &#x3D; pNew-&gt;data;</span><br><span class="line">            pNew-&gt;data &#x3D; tempValue;</span><br><span class="line">            &#x2F;&#x2F;修改指针</span><br><span class="line">            pNew-&gt;next &#x3D; pNode-&gt;next;</span><br><span class="line">            pNode-&gt;next &#x3D; pNew;</span><br><span class="line">        &#125;</span><br><span class="line">        pNode &#x3D; pHead;  &#x2F;&#x2F;修正头节点指针</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void BucketSort(int Arr[], int length, int MaxNum)</span><br><span class="line">&#123;</span><br><span class="line">    node **list &#x3D; new node*[length];   &#x2F;&#x2F;分配指针数组空间</span><br><span class="line">    for (int i &#x3D; 0; i &lt; length; ++i)</span><br><span class="line">        list[i] &#x3D; NULL;</span><br><span class="line"></span><br><span class="line">    int index;</span><br><span class="line">     </span><br><span class="line">    for (int i &#x3D; 0; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        index &#x3D; (Arr[i] * length) &#x2F; (MaxNum + 1);  &#x2F;&#x2F;映射函数，可自定义</span><br><span class="line">        AddtoBucket(list[index], Arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;将桶中的数据放入原来的串行中</span><br><span class="line">    for (int i &#x3D; 0, j &#x3D; 0; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        while(list[i] !&#x3D; NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            Arr[j++] &#x3D; list[i]-&gt;data;</span><br><span class="line">            list[i] &#x3D; list[i]-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;销毁分配的空间，code 略</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面插入链表采用的是修改值的方式，不是修改指针的方式，对比修改指针的方式，插入链表节点可以不需要找到前节点。</p>
+<p>测试程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#define LENGTH 500</span><br><span class="line"></span><br><span class="line">#define MAXNUM 1000</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int Arr[LENGTH];</span><br><span class="line">	for (int i &#x3D; 0; i &lt; LENGTH; ++i)</span><br><span class="line">		Arr[i] &#x3D; rand() % MAXNUM;</span><br><span class="line"></span><br><span class="line">	BucketSort(Arr, LENGTH, MAXNUM);</span><br><span class="line">	 </span><br><span class="line">	for (int i &#x3D; 0; i &lt; LENGTH; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; Arr[i] &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>桶排序利用函数的映射关系，这个函数的映射关系就相当于快排中的划分，将大量数据分割成基本有序的数据块（桶），然后只需要对桶中少量的数据进行比较排序即可，在放入桶中的时候进行比较排序插入。<br>复杂度分析：</p>
+<p>对 N 个关键字进行桶排序的时间复杂度可分为两部分：</p>
+<ol>
+<li><p>循环计算每个关键字的映射函数，复杂度为 O(N)；</p>
+</li>
+<li><p>插入的时候进行比较，其时间复杂度取决于待插入桶中的数据量，这个复杂度为 ∑O(Ni*logNi) 。其中Ni 为第i个桶的数据量。</p>
+</li>
+</ol>
+<p>当每个桶中只有一个数据时，桶排序达到最好效率，其时间复杂度为O(N)。</p>
+<p>桶排序的平均时间复杂度为线性的 O(N+C)，其中C=N*(logN-logM)。如果相对于同样的N，桶数量M越大，其效率越高，最好的时间复杂度达到O(N)。 当然桶排序的空间复杂度 为O(N+M)，桶排序的空间代价基本上是所有排序算法中耗空间最大的一种算法。此外，桶排序是稳定的，这个应该很容易看出来。</p>
+
     </div>
 
     
@@ -203,6 +244,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据结构基础学习</a>
+          </div>
 
         
 

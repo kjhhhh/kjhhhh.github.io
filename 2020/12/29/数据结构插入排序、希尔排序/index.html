@@ -20,14 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="1、直接插入排序 基本思想：每次将一个待排序的数据，按其大小插入到前面已经排好序的子序列中的适当位置，直到全部数据插入完成为止。换言之，就是将无序区（第一个元素默认有序）的第一个元素（也就是输入数组的第二个元素）通过与有序区的数据进行比较，然后直接插入到有序区的适当位置，形成更大的有序区，这样有序区扩大了一个元素，无序区缩小了一个元素。以此循环遍历，最终，整个数组就构成了有序区，排序也就完成了。上">
+<meta property="og:type" content="article">
 <meta property="og:title" content="数据结构插入排序、希尔排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、直接插入排序 基本思想：每次将一个待排序的数据，按其大小插入到前面已经排好序的子序列中的适当位置，直到全部数据插入完成为止。换言之，就是将无序区（第一个元素默认有序）的第一个元素（也就是输入数组的第二个元素）通过与有序区的数据进行比较，然后直接插入到有序区的适当位置，形成更大的有序区，这样有序区扩大了一个元素，无序区缩小了一个元素。以此循环遍历，最终，整个数组就构成了有序区，排序也就完成了。上">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:52:42.333Z">
-<meta property="article:modified_time" content="2020-12-29T13:52:42.333Z">
+<meta property="article:modified_time" content="2021-03-07T03:00:35.818Z">
 <meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
@@ -183,6 +186,22 @@
 
               <time title="创建时间：2020-12-29 21:52:42" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:42+08:00">2020-12-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 11:00:35" itemprop="dateModified" datetime="2021-03-07T11:00:35+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
 
           
 
@@ -195,7 +214,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>1、直接插入排序</p>
+<p>基本思想：每次将一个待排序的数据，按其大小插入到前面已经排好序的子序列中的适当位置，直到全部数据插入完成为止。换言之，就是将无序区（第一个元素默认有序）的第一个元素（也就是输入数组的第二个元素）通过与有序区的数据进行比较，然后直接插入到有序区的适当位置，形成更大的有序区，这样有序区扩大了一个元素，无序区缩小了一个元素。以此循环遍历，最终，整个数组就构成了有序区，排序也就完成了。上面的插入并不是交换，而是将该数据前面大于的数据依次后移，然后插入合适位置，构成新的有序区。</p>
+<p>设数组为a[0…n-1]。</p>
+<ol>
+<li><p>初始时，a[0] 自成1个有序区，无序区为a[1…n-1]。令i = 1；</p>
+</li>
+<li><p>将a[i]与前面的有序区进行比较，由后往前依次比较，将大于a[i]的数据依次后移，直至遇到小于a[i] 的数据，就把a[i]插入到该数据的后面，或者直至把有序区比较完毕，a[i]最小，就把a[i]插到最前面，构成新的有序区；其实质就是以无序区的第一个元素依次向前比较。</p>
+</li>
+<li><p>i++，循环2,3，直至i = n-1。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">  有序区</span><br><span class="line">    |                 </span><br><span class="line">    6 5 3 1 7 2  -&gt; 5 6 3 1 7 2  -&gt; 3 5 6 1 7 2  -&gt; 1 3 5 6 7 2 -&gt; 1 3 5 6 7 2  -&gt; 1 2 3 5 6 7</span><br><span class="line">      |                 |                 |                 |                |</span><br><span class="line">    无序区            无序区             无序区             无序区           无序区</span><br><span class="line">*&#x2F;</span><br><span class="line">void InsertSort(int Array[], int length)</span><br><span class="line">&#123;</span><br><span class="line">    int i, j;</span><br><span class="line">    int temp;</span><br><span class="line"></span><br><span class="line">    for (i &#x3D; 1; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j &#x3D; i - 1;</span><br><span class="line">        temp &#x3D; Array[i];          &#x2F;&#x2F;待插入数据，即无序区的第一个元素</span><br><span class="line">     </span><br><span class="line">        while ((j &gt;&#x3D; 0) &amp;&amp; (temp &lt; Array[j]))  &#x2F;&#x2F;跳出循环的两个条件</span><br><span class="line">        &#123;</span><br><span class="line">            Array[j + 1] &#x3D; Array[j];    &#x2F;&#x2F;数据后移</span><br><span class="line">            --j;</span><br><span class="line">        &#125;</span><br><span class="line">        Array[j + 1] &#x3D; temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由上面程序可知，直接插入排序的时间复杂度为O(n^2)，空间复杂度为O(1)，是一种稳定的排序算法。一般不用在数据大于 1000 的场合下使用插入排序。<br>2、希尔排序</p>
+<p>希尔排序也是一种排序算法，是针对上面的直接插入排序对基本已经排好序的数据操作时，可以达到线性排序的效率，以及每次只能移动一位数据的特点，而提出的改进的方法。</p>
+<p>其改进思想为：先将整个待排元素序列分割成若干个子序列（由相隔某个“增量”的元素组成）分别进行直接插入排序，然后依次缩减“增量”再进行插入排序，直到只比较相邻元素的最后一趟排序为止。</p>
+<p>需要注意的是，上面分割成若干个子序列之后，并不是插入排序这单个子序列里面的元素，而是将每个子序列的对应第一个元素进行插入排序，对应第二个，第三个。。。然后逐步缩小步长，缩小步长就意味着子序列的合并，最后成一个序列(步长为1)，然后进行直接插入排序，因为此时的数据基本已经排好序，所以再进行直接插入排序可以获得较好的效率。</p>
+<p>根据上面思想可以很快的实现希尔排序算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void ShellSort(int Array [], int length)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j, gap;</span><br><span class="line">	int temp;</span><br><span class="line"></span><br><span class="line">	for (gap &#x3D; length &#x2F; 2; gap &gt; 0; gap &#x2F;&#x3D; 2)</span><br><span class="line">		for (i &#x3D; 0; i &lt; gap; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			&#x2F;&#x2F;下面为直接插入排序，排序的是数组里间隔gap的元素</span><br><span class="line">			for (j &#x3D; i + gap; j &lt; length; j +&#x3D; gap)</span><br><span class="line">			&#123;</span><br><span class="line">				int k &#x3D; j - gap;</span><br><span class="line">				temp &#x3D; Array[j];</span><br><span class="line">				while (k&gt;&#x3D;0 &amp;&amp; Array[k] &gt; temp)</span><br><span class="line">				&#123;</span><br><span class="line">					Array[k + gap] &#x3D; Array[k];</span><br><span class="line">					k -&#x3D; gap;</span><br><span class="line">				&#125;</span><br><span class="line">				Array[k + gap] &#x3D; temp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">下面简单的演示这一算法过程（为排版，输入数组数据比较小）</span><br><span class="line">&#x2F;* </span><br><span class="line">        3, 2, 4, 7, 6, 5, 1</span><br><span class="line">gap&#x3D;n&#x2F;2       3, 2, 4 </span><br><span class="line">&#x3D;3            7, 6, 5</span><br><span class="line">              1</span><br><span class="line">每列排序       1, 2, 4</span><br><span class="line">              3, 6, 5</span><br><span class="line">              7</span><br><span class="line">gap&#x3D;gap&#x2F;2     1</span><br><span class="line">&#x3D;1            2</span><br><span class="line">              4</span><br><span class="line">              3</span><br><span class="line">              6</span><br><span class="line">              5</span><br><span class="line">              7</span><br><span class="line">直接插入排序得结果</span><br><span class="line">*&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>由上面可知，希尔算法的设计思想大致可这么理解：将数组元素放在一个表中然后对每列进行插入排序，（表的列数等于步长，对每列进行插入排序时，并不是简单的将索引加1，而是将索引加步长），然后逐步缩减步长，列数减少，每列的元素增多，再对每列进行插入排序，直至步长为1，相当于只有一列元素，就是进行直接插入排序了。</p>
+<p>由上面可知，希尔算法的设计思想大致可这么理解：将数组元素放在一个表中然后对每列进行插入排序，（表的列数等于步长，对每列进行插入排序时，并不是简单的将索引加1，而是将索引加步长），然后逐步缩减步长，列数减少，每列的元素增多，再对每列进行插入排序，直至步长为1，相当于只有一列元素，就是进行直接插入排序了。</p>
+<p>总的说来就是，希尔排序通过将数据分成不同的组，先对每一组进行排序，然后再对所有的元素进行一次插入排序，以减少数据交换和移动的次数。分组的合理性会对算法产生重要的影响。</p>
+<p>根据上面简单的算法演示，步长的选择是希尔排序中的重要部分，一开始算法一定的步长进行排序，然后缩减步长，只要最终的步长为1（此时就是直接插入排序），就一定能完成排序。所以上面的gap=length/2，gap=gap/2也好，gap=length/3，gap=gap/3或者其余也好，最终gap都会等于1进行直接插入排序。</p>
+<p>当然，步长不一定按上面的简单的运算形式进行缩减，也可选择特定的步长串行，已知的最好的步长串行（右往左缩减）为（1,5,19,41,109,……），该串行的项来自 9<em>4^i - 9</em>2^i+1 和 4^i - 3*2^i + 1 这个算式，就是随着 i 的递减得出步长；另一个在大数组中表现优异的步长串行是（斐波那契数列除去 0和1 将剩余的数以黄金分区比的两倍的幂进行运算得到的数列）：1, 9, 34, 182, 836, 4025, 19001, 90358, 428481, 2034035, 9651787, 45806244, 217378076, 1031612713, …</p>
+<p>所以对于希尔排序，步长就根据实际需要来进行选择了，其时间复杂度跟步长有关。一次插入排序是稳定的，不会改变相同元素的相对顺序，但在不同的插入排序过程中，相同的元素可能位于不同的组在各自的插入排序中移动，最后其稳定性就会被打乱，所以希尔排序是不稳定的。它适合于数据量在 5000 以下并且速度并不是特别重要的场合，对于数据量较小的数列重复排序是非常好的，另外编程的简单特点使得它成为对适度地大量的输入数据经常选用的算法。</p>
+
     </div>
 
     
@@ -203,6 +252,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据结构基础学习</a>
+          </div>
 
         
 
