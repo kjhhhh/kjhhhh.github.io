@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Web前端概述 说明：本文使用的部分插图来自Jon Duckett*先生的HTML and CSS: Design and Build Websites*一书，这是一本非常棒的前端入门书，有兴趣的读者可以在亚马逊或者其他网站上找到该书的购买链接。  HTML简史 1991年10月：一个非正式CERN（欧洲核子研究中心）文件首次公开18个HTML标签，这个文件的作者是物理学家蒂姆·伯纳斯-李，因此他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web前端概述">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/Web%E5%89%8D%E7%AB%AF%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Web前端概述 说明：本文使用的部分插图来自Jon Duckett*先生的HTML and CSS: Design and Build Websites*一书，这是一本非常棒的前端入门书，有兴趣的读者可以在亚马逊或者其他网站上找到该书的购买链接。  HTML简史 1991年10月：一个非正式CERN（欧洲核子研究中心）文件首次公开18个HTML标签，这个文件的作者是物理学家蒂姆·伯纳斯-李，因此他">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E9%80%89%E6%8B%A9%E5%99%A8%E8%AF%AD%E6%B3%95.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B8%B8%E7%94%A8%E9%80%89%E6%8B%A9%E5%99%A8.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B0%BA%E5%AF%B8%E5%8D%95%E4%BD%8D.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E8%A1%AC%E7%BA%BF%E5%AD%97%E4%BD%93+%E9%9D%9E%E8%A1%AC%E7%BA%BF%E5%AD%97%E4%BD%93+%E7%AD%89%E5%AE%BD%E5%AD%97%E4%BD%93.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%AD%97%E4%BD%93%E6%A0%B7%E5%BC%8F.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B0%BA%E5%AF%B8%E5%8D%95%E4%BD%8D.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%BB%8F%E5%85%B8%E5%B8%83%E5%B1%80-2.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/bootstrap-layoutit.png">
+<meta property="article:published_time" content="2021-03-07T14:12:24.459Z">
+<meta property="article:modified_time" content="2021-03-07T14:13:20.408Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="Web基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/Web%E5%89%8D%E7%AB%AF%E6%A6%82%E8%BF%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Web前端概述 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/Web%E5%89%8D%E7%AB%AF%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web前端概述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 22:12:24 / 修改时间：22:13:20" itemprop="dateCreated datePublished" datetime="2021-03-07T22:12:24+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Web前端概述"><a href="#Web前端概述" class="headerlink" title="Web前端概述"></a>Web前端概述</h2><blockquote>
+<p><strong>说明</strong>：本文使用的部分插图来自<em>Jon Duckett*先生的</em><a href="https://www.amazon.cn/dp/1118008189/ref=sr_1_5?__mk_zh_CN=亚马逊网站&keywords=html+%26+css&qid=1554609325&s=gateway&sr=8-5" target="_blank" rel="noopener">HTML and CSS: Design and Build Websites</a>*一书，这是一本非常棒的前端入门书，有兴趣的读者可以在亚马逊或者其他网站上找到该书的购买链接。</p>
+</blockquote>
+<h3 id="HTML简史"><a href="#HTML简史" class="headerlink" title="HTML简史"></a>HTML简史</h3><ol>
+<li>1991年10月：一个非正式CERN（<a href="https://zh.wikipedia.org/wiki/歐洲核子研究組織" target="_blank" rel="noopener">欧洲核子研究中心</a>）文件首次公开18个HTML标签，这个文件的作者是物理学家<a href="https://zh.wikipedia.org/wiki/蒂姆·伯纳斯-李" target="_blank" rel="noopener">蒂姆·伯纳斯-李</a>，因此他是<a href="https://zh.wikipedia.org/wiki/万维网" target="_blank" rel="noopener">万维网</a>的发明者，也是<a href="https://zh.wikipedia.org/wiki/万维网联盟" target="_blank" rel="noopener">万维网联盟</a>的主席。</li>
+<li>1995年11月：HTML 2.0标准发布（RFC 1866）。</li>
+<li>1997年1月：HTML 3.2作为<a href="https://zh.wikipedia.org/wiki/W3C" target="_blank" rel="noopener">W3C</a>推荐标准发布。</li>
+<li>1997年12月：HTML 4.0作为W3C推荐标准发布。</li>
+<li>1999年12月：HTML4.01作为W3C推荐标准发布。</li>
+<li>2008年1月：HTML5由W3C作为工作草案发布。</li>
+<li>2011年5月：W3C将HTML5推进至“最终征求”（Last Call）阶段。</li>
+<li>2012年12月：W3C指定HTML5作为“候选推荐”阶段。</li>
+<li>2014年10月：HTML5作为稳定W3C推荐标准发布，这意味着HTML5的标准化已经完成。</li>
+</ol>
+<h4 id="HTML5新特性"><a href="#HTML5新特性" class="headerlink" title="HTML5新特性"></a>HTML5新特性</h4><ol>
+<li>引入原生多媒体支持（audio和video标签）</li>
+<li>引入可编程内容（canvas标签）</li>
+<li>引入语义Web（article、aside、details、figure、footer、header、nav、section、summary等标签）</li>
+<li>引入新的表单控件（日历、邮箱、搜索、滑条等）</li>
+<li>引入对离线存储更好的支持（localStorage和sessionStorage）</li>
+<li>引入对定位、拖放、WebSocket、后台任务等的支持</li>
+</ol>
+<h3 id="使用标签承载内容"><a href="#使用标签承载内容" class="headerlink" title="使用标签承载内容"></a>使用标签承载内容</h3><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><ul>
+<li>html<ul>
+<li>head<ul>
+<li>title</li>
+<li>meta</li>
+</ul>
+</li>
+<li>body</li>
+</ul>
+</li>
+</ul>
+<h4 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h4><ul>
+<li>标题（heading）和段落（paragraph）<ul>
+<li>h1 ~ h6</li>
+<li>p</li>
+</ul>
+</li>
+<li>上标（superscript）和下标（subscript）<ul>
+<li>sup</li>
+<li>sub</li>
+</ul>
+</li>
+<li>空白（白色空间折叠）</li>
+<li>折行（break）和水平标尺（horizontal ruler）<ul>
+<li>br</li>
+<li>hr</li>
+</ul>
+</li>
+<li>语义化标签<ul>
+<li>加粗和强调 - strong</li>
+<li>引用 - blockquote</li>
+<li>缩写词和首字母缩写词 - abbr / acronym</li>
+<li>引文 - cite</li>
+<li>所有者联系信息 - address</li>
+<li>内容的修改 - ins / del</li>
+</ul>
+</li>
+</ul>
+<h4 id="列表（list）"><a href="#列表（list）" class="headerlink" title="列表（list）"></a>列表（list）</h4><ul>
+<li>有序列表（ordered list）- ol / li</li>
+<li>无序列表（unordered list）- ul / li</li>
+<li>定义列表（definition list）- dl / dt / dd</li>
+</ul>
+<h4 id="链接（anchor）"><a href="#链接（anchor）" class="headerlink" title="链接（anchor）"></a>链接（anchor）</h4><ul>
+<li>页面链接</li>
+<li>锚链接</li>
+<li>功能链接</li>
+</ul>
+<h4 id="图像（image）"><a href="#图像（image）" class="headerlink" title="图像（image）"></a>图像（image）</h4><ul>
+<li><p>图像存储位置</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/相对路径.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84.png" alt="img"></a></p>
+</li>
+<li><p>图像及其宽高</p>
+</li>
+<li><p>选择正确的图像格式</p>
+<ul>
+<li>JPEG</li>
+<li>GIF</li>
+<li>PNG</li>
+</ul>
+</li>
+<li><p>矢量图</p>
+</li>
+<li><p>语义化标签 - figure / figcaption</p>
+</li>
+</ul>
+<h4 id="表格（table）"><a href="#表格（table）" class="headerlink" title="表格（table）"></a>表格（table）</h4><ul>
+<li>基本的表格结构 - table / tr / td / th</li>
+<li>表格的标题 - caption</li>
+<li>跨行和跨列 - rowspan属性 / colspan属性</li>
+<li>长表格 - thead / tbody / tfoot</li>
+</ul>
+<h4 id="表单（form）"><a href="#表单（form）" class="headerlink" title="表单（form）"></a>表单（form）</h4><ul>
+<li>重要属性 - action / method / enctype</li>
+<li>表单控件（input）- type属性<ul>
+<li>文本框 - text / 密码框 - password / 数字框 - number</li>
+<li>邮箱 - email / 电话 - tel / 日期 - date / 滑条 - range / URL - url / 搜索 - search</li>
+<li>单选按钮 - radio / 复选按钮 - checkbox</li>
+<li>文件上传 - file / 隐藏域 - hidden</li>
+<li>提交按钮 - submit / 图像按钮 - image / 重置按钮 - reset</li>
+</ul>
+</li>
+<li>下拉列表 - select / option</li>
+<li>文本域（多行文本）- textarea</li>
+<li>组合表单元素 - fieldset / legend</li>
+</ul>
+<h4 id="音视频（audio-video）"><a href="#音视频（audio-video）" class="headerlink" title="音视频（audio / video）"></a>音视频（audio / video）</h4><ul>
+<li>视频格式和播放器</li>
+<li>视频托管服务</li>
+<li>添加视频的准备工作</li>
+<li>video标签和属性 - autoplay / controls / loop / muted / preload / src</li>
+<li>audio标签和属性 - autoplay / controls / loop / muted / preload / src / width / height / poster</li>
+</ul>
+<h4 id="窗口（frame）"><a href="#窗口（frame）" class="headerlink" title="窗口（frame）"></a>窗口（frame）</h4><ul>
+<li>框架集（过时，不建议使用） - frameset / frame</li>
+<li>内嵌窗口 - iframe</li>
+</ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
+<li><p>文档类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD HTML 4.01&#x2F;&#x2F;EN&quot; &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;TR&#x2F;html4&#x2F;strict.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD HTML 4.01 Transitional&#x2F;&#x2F;EN&quot; &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;TR&#x2F;html4&#x2F;loose.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 这是一段注释，注释不能够嵌套 --&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>属性</p>
+<ul>
+<li>id：唯一标识</li>
+<li>class：元素所属的类，用于区分不同的元素</li>
+<li>title：元素的额外信息（鼠标悬浮时会显示工具提示文本）</li>
+<li>tabindex：Tab键切换顺序</li>
+<li>contenteditable：元素是否可编辑</li>
+<li>draggable：元素是否可拖拽</li>
+</ul>
+</li>
+<li><p>块级元素 / 行级元素</p>
+</li>
+<li><p>字符实体（实体替换符）</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/字符实体.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93.png" alt="img"></a></p>
+</li>
+</ul>
+<h3 id="使用CSS渲染页面"><a href="#使用CSS渲染页面" class="headerlink" title="使用CSS渲染页面"></a>使用CSS渲染页面</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p>CSS的作用</p>
+</li>
+<li><p>CSS的工作原理</p>
+</li>
+<li><p>规则、属性和值</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/选择器语法.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E9%80%89%E6%8B%A9%E5%99%A8%E8%AF%AD%E6%B3%95.png" alt="img"></a></p>
+</li>
+<li><p>常用选择器</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/常用选择器.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B8%B8%E7%94%A8%E9%80%89%E6%8B%A9%E5%99%A8.png" alt="img"></a></p>
+</li>
+</ul>
+<h4 id="颜色（color）"><a href="#颜色（color）" class="headerlink" title="颜色（color）"></a>颜色（color）</h4><ul>
+<li>如何指定颜色</li>
+<li>颜色术语和颜色对比</li>
+<li>背景色</li>
+</ul>
+<h4 id="文本（text-font）"><a href="#文本（text-font）" class="headerlink" title="文本（text / font）"></a>文本（text / font）</h4><ul>
+<li><p>文本的大小和字型(font-size / font-family)</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/尺寸单位.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B0%BA%E5%AF%B8%E5%8D%95%E4%BD%8D.png" alt="img"></a></p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/衬线字体+非衬线字体+等宽字体.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E8%A1%AC%E7%BA%BF%E5%AD%97%E4%BD%93+%E9%9D%9E%E8%A1%AC%E7%BA%BF%E5%AD%97%E4%BD%93+%E7%AD%89%E5%AE%BD%E5%AD%97%E4%BD%93.png" alt="img"></a></p>
+</li>
+<li><p>粗细、样式、拉伸和装饰(font-weight / font-style / font-stretch / text-decoration)</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/字体样式.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%AD%97%E4%BD%93%E6%A0%B7%E5%BC%8F.png" alt="img"></a></p>
+</li>
+<li><p>行间距(line-height)、字母间距(letter-spacing)和单词间距(word-spacing)</p>
+</li>
+<li><p>对齐(text-align)方式和缩进(text-ident)</p>
+</li>
+<li><p>链接样式（:link / :visited / :active / :hover）</p>
+</li>
+<li><p>CSS3新属性</p>
+<ul>
+<li>阴影效果 - text-shadow</li>
+<li>首字母和首行文本(:first-letter / :first-line)</li>
+<li>响应用户</li>
+</ul>
+</li>
+</ul>
+<h4 id="盒子（box-model）"><a href="#盒子（box-model）" class="headerlink" title="盒子（box model）"></a>盒子（box model）</h4><ul>
+<li><p>盒子大小的控制（width / height）</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/尺寸单位.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E5%B0%BA%E5%AF%B8%E5%8D%95%E4%BD%8D.png" alt="img"></a></p>
+</li>
+<li><p>盒子的边框、外边距和内边距（border / margin / padding）</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/盒子模型.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B.png" alt="img"></a></p>
+</li>
+<li><p>盒子的显示和隐藏（display / visibility）</p>
+</li>
+<li><p>CSS3新属性</p>
+<ul>
+<li>边框图像（border-image）</li>
+<li>投影（border-shadow）</li>
+<li>圆角（border-radius）</li>
+</ul>
+</li>
+</ul>
+<h4 id="列表、表格和表单"><a href="#列表、表格和表单" class="headerlink" title="列表、表格和表单"></a>列表、表格和表单</h4><ul>
+<li>列表的项目符号（list-style）</li>
+<li>表格的边框和背景（border-collapse）</li>
+<li>表单控件的外观</li>
+<li>表单控件的对齐</li>
+<li>浏览器的开发者工具</li>
+</ul>
+<h4 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h4><ul>
+<li>控制图像的大小（display: inline-block）</li>
+<li>对齐图像</li>
+<li>背景图像（background / background-image / background-repeat / background-position）</li>
+</ul>
+<h4 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h4><ul>
+<li><p>控制元素的位置（position / z-index）</p>
+<ul>
+<li>普通流</li>
+<li>相对定位</li>
+<li>绝对定位</li>
+<li>固定定位</li>
+<li>浮动元素（float / clear）</li>
+</ul>
+</li>
+<li><p>网站布局</p>
+<ul>
+<li><p>HTML5布局</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/经典布局-2.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/%E7%BB%8F%E5%85%B8%E5%B8%83%E5%B1%80-2.png" alt="img"></a></p>
+</li>
+</ul>
+</li>
+<li><p>适配屏幕尺寸</p>
+<ul>
+<li>固定宽度布局</li>
+<li>流体布局</li>
+<li>布局网格</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用JavaScript控制行为"><a href="#使用JavaScript控制行为" class="headerlink" title="使用JavaScript控制行为"></a>使用JavaScript控制行为</h3><h4 id="JavaScript基本语法"><a href="#JavaScript基本语法" class="headerlink" title="JavaScript基本语法"></a>JavaScript基本语法</h4><ul>
+<li>语句和注释</li>
+<li>变量和数据类型<ul>
+<li>声明和赋值</li>
+<li>简单数据类型和复杂数据类型</li>
+<li>变量的命名规则</li>
+</ul>
+</li>
+<li>表达式和运算符<ul>
+<li>赋值运算符</li>
+<li>算术运算符</li>
+<li>比较运算符</li>
+<li>逻辑运算符</li>
+</ul>
+</li>
+<li>分支结构<ul>
+<li><code>if...else...</code></li>
+<li><code>switch...cas...default...</code></li>
+</ul>
+</li>
+<li>循环结构<ul>
+<li><code>for</code>循环</li>
+<li><code>while</code>循环</li>
+<li><code>do...while</code>循环</li>
+</ul>
+</li>
+<li>数组<ul>
+<li>创建数组</li>
+<li>操作数组中的元素</li>
+</ul>
+</li>
+<li>函数<ul>
+<li>声明函数</li>
+<li>调用函数</li>
+<li>参数和返回值</li>
+<li>匿名函数</li>
+<li>立即调用函数</li>
+</ul>
+</li>
+</ul>
+<h4 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h4><ul>
+<li>对象的概念</li>
+<li>创建对象的字面量语法</li>
+<li>访问成员运算符</li>
+<li>创建对象的构造函数语法<ul>
+<li><code>this</code>关键字</li>
+</ul>
+</li>
+<li>添加和删除属性<ul>
+<li><code>delete</code>关键字</li>
+</ul>
+</li>
+<li>标准对象<ul>
+<li><code>Number</code> / <code>String</code> / <code>Boolean</code> / <code>Symbol</code> / <code>Array</code> / <code>Function</code></li>
+<li><code>Date</code> / <code>Error</code> / <code>Math</code> / <code>RegExp</code> / <code>Object</code> / <code>Map</code> / <code>Set</code></li>
+<li><code>JSON</code> / <code>Promise</code> / <code>Generator</code> / <code>Reflect</code> / <code>Proxy</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="BOM"><a href="#BOM" class="headerlink" title="BOM"></a>BOM</h4><ul>
+<li><p><code>window</code>对象的属性和方法</p>
+</li>
+<li><pre><code>history
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  对象</span><br><span class="line"></span><br><span class="line">  - &#96;forward()&#96; &#x2F; &#96;back()&#96; &#x2F; &#96;go()&#96;</span><br><span class="line"></span><br><span class="line">- &#96;location&#96;对象</span><br><span class="line"></span><br><span class="line">- &#96;navigator&#96;对象</span><br><span class="line"></span><br><span class="line">- &#96;screen&#96;对象</span><br><span class="line"></span><br><span class="line">#### DOM</span><br><span class="line"></span><br><span class="line">- DOM树</span><br><span class="line">- 访问元素</span><br><span class="line">  - &#96;getElementById()&#96; &#x2F; &#96;querySelector()&#96;</span><br><span class="line">  - &#96;getElementsByClassName()&#96; &#x2F; &#96;getElementsByTagName()&#96; &#x2F; &#96;querySelectorAll()&#96;</span><br><span class="line">  - &#96;parentNode&#96; &#x2F; &#96;previousSibling&#96; &#x2F; &#96;nextSibling&#96; &#x2F; &#96;children&#96; &#x2F; &#96;firstChild&#96; &#x2F; &#96;lastChild&#96;</span><br><span class="line">- 操作元素</span><br><span class="line">  - &#96;nodeValue&#96;</span><br><span class="line">  - &#96;innerHTML&#96; &#x2F; &#96;textContent&#96; &#x2F; &#96;createElement()&#96; &#x2F; &#96;createTextNode()&#96; &#x2F; &#96;appendChild()&#96; &#x2F; &#96;insertBefore()&#96; &#x2F; &#96;removeChild()&#96;</span><br><span class="line">  - &#96;className&#96; &#x2F; &#96;id&#96; &#x2F; &#96;hasAttribute()&#96; &#x2F; &#96;getAttribute()&#96; &#x2F; &#96;setAttribute()&#96; &#x2F; &#96;removeAttribute()&#96;</span><br><span class="line">- 事件处理</span><br><span class="line">  - 事件类型</span><br><span class="line">    - UI事件：&#96;load&#96; &#x2F; &#96;unload&#96; &#x2F; &#96;error&#96; &#x2F; &#96;resize&#96; &#x2F; &#96;scroll&#96;</span><br><span class="line">    - 键盘事件：&#96;keydown&#96; &#x2F; &#96;keyup&#96; &#x2F; &#96;keypress&#96;</span><br><span class="line">    - 鼠标事件：&#96;click&#96; &#x2F; &#96;dbclick&#96; &#x2F; &#96;mousedown&#96; &#x2F; &#96;mouseup&#96; &#x2F; &#96;mousemove&#96; &#x2F; &#96;mouseover&#96; &#x2F; &#96;mouseout&#96;</span><br><span class="line">    - 焦点事件：&#96;focus&#96; &#x2F; &#96;blur&#96;</span><br><span class="line">    - 表单事件：&#96;input&#96; &#x2F; &#96;change&#96; &#x2F; &#96;submit&#96; &#x2F; &#96;reset&#96; &#x2F; &#96;cut&#96; &#x2F; &#96;copy&#96; &#x2F; &#96;paste&#96; &#x2F; &#96;select&#96;</span><br><span class="line">  - 事件绑定</span><br><span class="line">    - HTML事件处理程序（不推荐使用，因为要做到标签与代码分离）</span><br><span class="line">    - 传统的DOM事件处理程序（只能附加一个回调函数）</span><br><span class="line">    - 事件监听器（旧的浏览器中不被支持）</span><br><span class="line">  - 事件流：事件捕获 &#x2F; 事件冒泡</span><br><span class="line">  - 事件对象（低版本IE中的window.event）</span><br><span class="line">    - &#96;target&#96;（有些浏览器使用srcElement）</span><br><span class="line">    - &#96;type&#96;</span><br><span class="line">    - &#96;cancelable&#96;</span><br><span class="line">    - &#96;preventDefault()&#96;</span><br><span class="line">    - &#96;stopPropagation()&#96;（低版本IE中的cancelBubble）</span><br><span class="line">  - 鼠标事件 - 事件发生的位置</span><br><span class="line">    - 屏幕位置：&#96;screenX&#96;和&#96;screenY&#96;</span><br><span class="line">    - 页面位置：&#96;pageX&#96;和&#96;pageY&#96;</span><br><span class="line">    - 客户端位置：&#96;clientX&#96;和&#96;clientY&#96;</span><br><span class="line">  - 键盘事件 - 哪个键被按下了</span><br><span class="line">    - &#96;keyCode&#96;属性（有些浏览器使用&#96;which&#96;）</span><br><span class="line">    - &#96;String.fromCharCode(event.keyCode)&#96;</span><br><span class="line">  - HTML5事件</span><br><span class="line">    - &#96;DOMContentLoaded&#96;</span><br><span class="line">    - &#96;hashchange&#96;</span><br><span class="line">    - &#96;beforeunload&#96;</span><br><span class="line"></span><br><span class="line">#### JavaScript API</span><br><span class="line"></span><br><span class="line">- 客户端存储 - &#96;localStorage&#96;和&#96;sessionStorage&#96;</span><br></pre></td></tr></table></figure>
+localStorage.colorSetting = &apos;#a4509b&apos;;
+localStorage[&apos;colorSetting&apos;] = &apos;#a4509b&apos;;
+localStorage.setItem(&apos;colorSetting&apos;, &apos;#a4509b&apos;);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 获取位置信息 - &#96;geolocation&#96;</span><br></pre></td></tr></table></figure>
+navigator.geolocation.getCurrentPosition(function(pos) {           
+    console.log(pos.coords.latitude)
+    console.log(pos.coords.longitude)
+})
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 从服务器获取数据 - Fetch API</span><br><span class="line"></span><br><span class="line">- 绘制图形 - &#96;&lt;canvas&gt;&#96;的API</span><br><span class="line"></span><br><span class="line">- 音视频 - &#96;&lt;audio&gt;&#96;和&#96;&lt;video&gt;&#96;的API</span><br><span class="line"></span><br><span class="line">### 使用jQuery</span><br><span class="line"></span><br><span class="line">#### jQuery概述</span><br><span class="line"></span><br><span class="line">1. Write Less Do More（用更少的代码来完成更多的工作）</span><br><span class="line">2. 使用CSS选择器来查找元素（更简单更方便）</span><br><span class="line">3. 使用jQuery方法来操作元素（解决浏览器兼容性问题、应用于所有元素并施加多个方法）</span><br><span class="line"></span><br><span class="line">#### 引入jQuery</span><br><span class="line"></span><br><span class="line">- 下载jQuery的开发版和压缩版</span><br><span class="line">- 从CDN加载jQuery</span><br></pre></td></tr></table></figure>
+&lt;script src=&quot;https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.jQuery || 
+      document.write(&apos;&lt;script src=&quot;js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;&apos;)
+&lt;/script&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 查找元素</span><br><span class="line"></span><br><span class="line">- 选择器</span><br><span class="line">  - \* &#x2F; element &#x2F; #id &#x2F; .class &#x2F; selector1, selector2</span><br><span class="line">  - ancestor descendant &#x2F; parent&gt;child &#x2F; previous+next &#x2F; previous~siblings</span><br><span class="line">- 筛选器</span><br><span class="line">  - 基本筛选器：:not(selector) &#x2F; :first &#x2F; :last &#x2F; :even &#x2F; :odd &#x2F; :eq(index) &#x2F; :gt(index) &#x2F; :lt(index) &#x2F; :animated &#x2F; :focus</span><br><span class="line">  - 内容筛选器：:contains(&#39;…&#39;) &#x2F; :empty &#x2F; :parent &#x2F; :has(selector)</span><br><span class="line">  - 可见性筛选器：:hidden &#x2F; :visible</span><br><span class="line">  - 子节点筛选器：:nth-child(expr) &#x2F; :first-child &#x2F; :last-child &#x2F; :only-child</span><br><span class="line">  - 属性筛选器：[attribute] &#x2F; [attribute&#x3D;&#39;value&#39;] &#x2F; [attribute!&#x3D;&#39;value&#39;] &#x2F; [attribute^&#x3D;&#39;value&#39;] &#x2F; [attribute$&#x3D;&#39;value&#39;] &#x2F; [attribute|&#x3D;&#39;value&#39;] &#x2F; [attribute~&#x3D;&#39;value&#39;]</span><br><span class="line">- 表单：:input &#x2F; :text &#x2F; :password &#x2F; :radio &#x2F; :checkbox &#x2F; :submit &#x2F; :image &#x2F; :reset &#x2F; :button &#x2F; :file &#x2F; :selected &#x2F; :enabled &#x2F; :disabled &#x2F; :checked</span><br><span class="line"></span><br><span class="line">#### 执行操作</span><br><span class="line"></span><br><span class="line">- 内容操作</span><br><span class="line">  - 获取&#x2F;修改内容：&#96;html()&#96; &#x2F; &#96;text()&#96; &#x2F; &#96;replaceWith()&#96; &#x2F; &#96;remove()&#96;</span><br><span class="line">  - 获取&#x2F;设置元素：&#96;before()&#96; &#x2F; &#96;after()&#96; &#x2F; &#96;prepend()&#96; &#x2F; &#96;append()&#96; &#x2F; &#96;remove()&#96; &#x2F; &#96;clone()&#96; &#x2F; &#96;unwrap()&#96; &#x2F; &#96;detach()&#96; &#x2F; &#96;empty()&#96; &#x2F; &#96;add()&#96;</span><br><span class="line">  - 获取&#x2F;修改属性：&#96;attr()&#96; &#x2F; &#96;removeAttr()&#96; &#x2F; &#96;addClass()&#96; &#x2F; &#96;removeClass()&#96; &#x2F; &#96;css()&#96;</span><br><span class="line">  - 获取&#x2F;设置表单值：&#96;val()&#96;</span><br><span class="line">- 查找操作</span><br><span class="line">  - 查找方法：&#96;find()&#96; &#x2F; &#96;parent()&#96; &#x2F; &#96;children()&#96; &#x2F; &#96;siblings()&#96; &#x2F; &#96;next()&#96; &#x2F; &#96;nextAll()&#96; &#x2F; &#96;prev()&#96; &#x2F; &#96;prevAll()&#96;</span><br><span class="line">  - 筛选器：&#96;filter()&#96; &#x2F; &#96;not()&#96; &#x2F; &#96;has()&#96; &#x2F; &#96;is()&#96; &#x2F; &#96;contains()&#96;</span><br><span class="line">  - 索引编号：&#96;eq()&#96;</span><br><span class="line">- 尺寸和位置</span><br><span class="line">  - 尺寸相关：&#96;height()&#96; &#x2F; &#96;width()&#96; &#x2F; &#96;innerHeight()&#96; &#x2F; &#96;innerWidth()&#96; &#x2F; &#96;outerWidth()&#96; &#x2F; &#96;outerHeight()&#96;</span><br><span class="line">  - 位置相关：&#96;offset()&#96; &#x2F; &#96;position()&#96; &#x2F; &#96;scrollLeft()&#96; &#x2F; &#96;scrollTop()&#96;</span><br><span class="line">- 特效和动画</span><br><span class="line">  - 基本动画：&#96;show()&#96; &#x2F; &#96;hide()&#96; &#x2F; &#96;toggle()&#96;</span><br><span class="line">  - 消失出现：&#96;fadeIn()&#96; &#x2F; &#96;fadeOut()&#96; &#x2F; &#96;fadeTo()&#96; &#x2F; &#96;fadeToggle()&#96;</span><br><span class="line">  - 滑动效果：&#96;slideDown()&#96; &#x2F; &#96;slideUp()&#96; &#x2F; &#96;slideToggle()&#96;</span><br><span class="line">  - 自定义：&#96;delay()&#96; &#x2F; &#96;stop()&#96; &#x2F; &#96;animate()&#96;</span><br><span class="line">- 事件</span><br><span class="line">  - 文档加载：&#96;ready()&#96; &#x2F; &#96;load()&#96;</span><br><span class="line">  - 用户交互：&#96;on()&#96; &#x2F; &#96;off()&#96;</span><br><span class="line"></span><br><span class="line">#### 链式操作</span><br><span class="line"></span><br><span class="line">#### 检测页面是否可用</span><br></pre></td></tr></table></figure>
+&lt;script&gt;
+  $(document).ready(function() {
+
+  });
+&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+
+  });
+&lt;/script&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### jQuery插件</span><br><span class="line"></span><br><span class="line">- jQuery Validation</span><br><span class="line">- jQuery Treeview</span><br><span class="line">- jQuery Autocomplete</span><br><span class="line">- jQuery UI</span><br><span class="line"></span><br><span class="line">#### 避免和其他库的冲突</span><br><span class="line"></span><br><span class="line">先引入其他库再引入jQuery的情况。</span><br></pre></td></tr></table></figure>
+&lt;script src=&quot;other.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  jQuery.noConflict();
+  jQuery(function() {
+      jQuery(&apos;div&apos;).hide();
+  });
+&lt;/script&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">先引入jQuery再引入其他库的情况。</span><br></pre></td></tr></table></figure>
+&lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;other.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  jQuery(function() {
+      jQuery(&apos;div&apos;).hide();
+  });
+&lt;/script&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 使用Ajax</span><br><span class="line"></span><br><span class="line">Ajax是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。</span><br><span class="line"></span><br><span class="line">- 原生的Ajax</span><br><span class="line">- 基于jQuery的Ajax</span><br><span class="line">  - 加载内容</span><br><span class="line">  - 提交表单</span><br><span class="line"></span><br><span class="line">### 前端框架</span><br><span class="line"></span><br><span class="line">#### 渐进式框架 - [Vue.js](https:&#x2F;&#x2F;cn.vuejs.org&#x2F;)</span><br><span class="line"></span><br><span class="line">前后端分离开发（前端渲染）必选框架。</span><br><span class="line"></span><br><span class="line">##### 快速上手</span><br><span class="line"></span><br><span class="line">1. 引入Vue的JavaScript文件，我们仍然推荐从CDN服务器加载它。</span><br></pre></td></tr></table></figure>
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 数据绑定（声明式渲染 ）。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h1&gt;{{ product }}库存信息&lt;/h1&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             product: &apos;iPhone X&apos;
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 条件与循环。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h1&gt;库存信息&lt;/h1&gt;
+     &lt;hr&gt;
+     &lt;ul&gt;
+         &lt;li v-for=&quot;product in products&quot;&gt;
+             {{ product.name }} - {{ product.quantity }}
+             &lt;span v-if=&quot;product.quantity === 0&quot;&gt;
+                 已经售罄
+             &lt;/span&gt;
+         &lt;/li&gt;
+     &lt;/ul&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             products: [
+                 {&quot;id&quot;: 1, &quot;name&quot;: &quot;iPhone X&quot;, &quot;quantity&quot;: 20},
+                 {&quot;id&quot;: 2, &quot;name&quot;: &quot;华为 Mate20&quot;, &quot;quantity&quot;: 0},
+                 {&quot;id&quot;: 3, &quot;name&quot;: &quot;小米 Mix3&quot;, &quot;quantity&quot;: 50}
+             ]
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 计算属性。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h1&gt;库存信息&lt;/h1&gt;
+     &lt;hr&gt;
+     &lt;ul&gt;
+         &lt;li v-for=&quot;product in products&quot;&gt;
+             {{ product.name }} - {{ product.quantity }}
+             &lt;span v-if=&quot;product.quantity === 0&quot;&gt;
+                 已经售罄
+             &lt;/span&gt;
+         &lt;/li&gt;
+     &lt;/ul&gt;
+     &lt;h2&gt;库存总量：{{ totalQuantity }}台&lt;/h2&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             products: [
+                 {&quot;id&quot;: 1, &quot;name&quot;: &quot;iPhone X&quot;, &quot;quantity&quot;: 20},
+                 {&quot;id&quot;: 2, &quot;name&quot;: &quot;华为 Mate20&quot;, &quot;quantity&quot;: 0},
+                 {&quot;id&quot;: 3, &quot;name&quot;: &quot;小米 Mix3&quot;, &quot;quantity&quot;: 50}
+             ]
+         },
+         computed: {
+             totalQuantity() {
+                 return this.products.reduce((sum, product) =&gt; {
+                     return sum + product.quantity
+                 }, 0);
+             }
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 处理事件。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h1&gt;库存信息&lt;/h1&gt;
+     &lt;hr&gt;
+     &lt;ul&gt;
+         &lt;li v-for=&quot;product in products&quot;&gt;
+             {{ product.name }} - {{ product.quantity }}
+             &lt;span v-if=&quot;product.quantity === 0&quot;&gt;
+                 已经售罄
+             &lt;/span&gt;
+             &lt;button @click=&quot;product.quantity += 1&quot;&gt;
+                 增加库存
+             &lt;/button&gt;
+         &lt;/li&gt;
+     &lt;/ul&gt;
+     &lt;h2&gt;库存总量：{{ totalQuantity }}台&lt;/h2&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             products: [
+                 {&quot;id&quot;: 1, &quot;name&quot;: &quot;iPhone X&quot;, &quot;quantity&quot;: 20},
+                 {&quot;id&quot;: 2, &quot;name&quot;: &quot;华为 Mate20&quot;, &quot;quantity&quot;: 0},
+                 {&quot;id&quot;: 3, &quot;name&quot;: &quot;小米 Mix3&quot;, &quot;quantity&quot;: 50}
+             ]
+         },
+         computed: {
+             totalQuantity() {
+                 return this.products.reduce((sum, product) =&gt; {
+                     return sum + product.quantity
+                 }, 0);
+             }
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6. 用户输入。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h1&gt;库存信息&lt;/h1&gt;
+     &lt;hr&gt;
+     &lt;ul&gt;
+         &lt;li v-for=&quot;product in products&quot;&gt;
+             {{ product.name }} - 
+             &lt;input type=&quot;number&quot; v-model.number=&quot;product.quantity&quot; min=&quot;0&quot;&gt;
+             &lt;span v-if=&quot;product.quantity === 0&quot;&gt;
+                 已经售罄
+             &lt;/span&gt;
+             &lt;button @click=&quot;product.quantity += 1&quot;&gt;
+                 增加库存
+             &lt;/button&gt;
+         &lt;/li&gt;
+     &lt;/ul&gt;
+     &lt;h2&gt;库存总量：{{ totalQuantity }}台&lt;/h2&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             products: [
+                 {&quot;id&quot;: 1, &quot;name&quot;: &quot;iPhone X&quot;, &quot;quantity&quot;: 20},
+                 {&quot;id&quot;: 2, &quot;name&quot;: &quot;华为 Mate20&quot;, &quot;quantity&quot;: 0},
+                 {&quot;id&quot;: 3, &quot;name&quot;: &quot;小米 Mix3&quot;, &quot;quantity&quot;: 50}
+             ]
+         },
+         computed: {
+             totalQuantity() {
+                 return this.products.reduce((sum, product) =&gt; {
+                     return sum + product.quantity
+                 }, 0);
+             }
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7. 通过网络加载JSON数据。</span><br></pre></td></tr></table></figure>
+ &lt;div id=&quot;app&quot;&gt;
+     &lt;h2&gt;库存信息&lt;/h2&gt;
+     &lt;ul&gt;
+         &lt;li v-for=&quot;product in products&quot;&gt;
+             {{ product.name }} - {{ product.quantity }}
+             &lt;span v-if=&quot;product.quantity === 0&quot;&gt;
+                 已经售罄
+             &lt;/span&gt;
+         &lt;/li&gt;
+     &lt;/ul&gt;
+ &lt;/div&gt;
+
+ &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+     const app = new Vue({
+         el: &apos;#app&apos;,
+         data: {
+             products: []
+         }，
+         created() {
+             fetch(&apos;https://jackfrued.top/api/products&apos;)
+                 .then(response =&gt; response.json())
+                 .then(json =&gt; {
+                     this.products = json
+                 });
+         }
+     });
+ &lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 使用脚手架 - vue-cli</span><br><span class="line"></span><br><span class="line">Vue为商业项目开发提供了非常便捷的脚手架工具vue-cli，通过工具可以省去手工配置开发环境、测试环境和运行环境的步骤，让开发者只需要关注要解决的问题。</span><br><span class="line"></span><br><span class="line">1. 安装脚手架。</span><br><span class="line">2. 创建项目。</span><br><span class="line">3. 安装依赖包。</span><br><span class="line">4. 运行项目。</span><br><span class="line"></span><br><span class="line">#### UI框架 - [Element](http:&#x2F;&#x2F;element-cn.eleme.io&#x2F;#&#x2F;zh-CN)</span><br><span class="line"></span><br><span class="line">基于Vue 2.0的桌面端组件库，用于构造用户界面，支持响应式布局。</span><br><span class="line"></span><br><span class="line">1. 引入Element的CSS和JavaScript文件。</span><br></pre></td></tr></table></figure>
+ &lt;!-- 引入样式 --&gt;
+ &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/element-ui/lib/theme-chalk/index.css&quot;&gt;
+ &lt;!-- 引入组件库 --&gt;
+ &lt;script src=&quot;https://unpkg.com/element-ui/lib/index.js&quot;&gt;&lt;/script&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 一个简单的例子。</span><br></pre></td></tr></table></figure>
+ &lt;!DOCTYPE html&gt;
+ &lt;html&gt;
+     &lt;head&gt;
+         &lt;meta charset=&quot;UTF-8&quot;&gt;
+         &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/element-ui/lib/theme-chalk/index.css&quot;&gt;
+     &lt;/head&gt;
+     &lt;body&gt;
+         &lt;div id=&quot;app&quot;&gt;
+             &lt;el-button @click=&quot;visible = true&quot;&gt;点我&lt;/el-button&gt;
+             &lt;el-dialog :visible.sync=&quot;visible&quot; title=&quot;Hello world&quot;&gt;
+                 &lt;p&gt;开始使用Element吧&lt;/p&gt;
+             &lt;/el-dialog&gt;
+             &lt;/div&gt;
+     &lt;/body&gt;
+     &lt;script src=&quot;https://unpkg.com/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+     &lt;script src=&quot;https://unpkg.com/element-ui/lib/index.js&quot;&gt;&lt;/script&gt;
+     &lt;script&gt;
+         new Vue({
+             el: &apos;#app&apos;,
+             data: {
+                 visible: false,
+             }
+         })
+     &lt;/script&gt;
+ &lt;/html&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 使用组件。</span><br></pre></td></tr></table></figure>
+ &lt;!DOCTYPE html&gt;
+ &lt;html&gt;
+     &lt;head&gt;
+         &lt;meta charset=&quot;UTF-8&quot;&gt;
+         &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/element-ui/lib/theme-chalk/index.css&quot;&gt;
+     &lt;/head&gt;
+     &lt;body&gt;
+         &lt;div id=&quot;app&quot;&gt;
+             &lt;el-table :data=&quot;tableData&quot; stripe style=&quot;width: 100%&quot;&gt;
+                 &lt;el-table-column prop=&quot;date&quot; label=&quot;日期&quot; width=&quot;180&quot;&gt;
+                 &lt;/el-table-column&gt;
+                 &lt;el-table-column prop=&quot;name&quot; label=&quot;姓名&quot; width=&quot;180&quot;&gt;
+                 &lt;/el-table-column&gt;
+                 &lt;el-table-column prop=&quot;address&quot; label=&quot;地址&quot;&gt;
+                 &lt;/el-table-column&gt;
+             &lt;/el-table&gt;
+         &lt;/div&gt;
+     &lt;/body&gt;
+     &lt;script src=&quot;https://unpkg.com/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+     &lt;script src=&quot;https://unpkg.com/element-ui/lib/index.js&quot;&gt;&lt;/script&gt;
+     &lt;script&gt;
+         new Vue({
+             el: &apos;#app&apos;,
+             data: {
+                 tableData:  [
+                     {
+                         date: &apos;2016-05-02&apos;,
+                         name: &apos;王一霸&apos;,
+                         address: &apos;上海市普陀区金沙江路 1518 弄&apos;
+                     }, 
+                     {
+                         date: &apos;2016-05-04&apos;,
+                         name: &apos;刘二狗&apos;,
+                         address: &apos;上海市普陀区金沙江路 1517 弄&apos;
+                     }, 
+                     {
+                         date: &apos;2016-05-01&apos;,
+                         name: &apos;杨三萌&apos;,
+                         address: &apos;上海市普陀区金沙江路 1519 弄&apos;
+                     }, 
+                     {
+                         date: &apos;2016-05-03&apos;,
+                         name: &apos;陈四吹&apos;,
+                         address: &apos;上海市普陀区金沙江路 1516 弄&apos;
+                     }
+                 ]
+             }
+         })
+     &lt;/script&gt;
+ &lt;/html&gt;
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 报表框架 - [ECharts](https:&#x2F;&#x2F;echarts.baidu.com&#x2F;)</span><br><span class="line"></span><br><span class="line">百度出品的开源可视化库，常用于生成各种类型的报表。</span><br><span class="line"></span><br><span class="line">[![img](https:&#x2F;&#x2F;github.com&#x2F;jackfrued&#x2F;Python-100-Days&#x2F;raw&#x2F;master&#x2F;Day21-30&#x2F;res&#x2F;baidu_echarts.png)](https:&#x2F;&#x2F;github.com&#x2F;jackfrued&#x2F;Python-100-Days&#x2F;blob&#x2F;master&#x2F;Day21-30&#x2F;res&#x2F;baidu_echarts.png)</span><br><span class="line"></span><br><span class="line">#### 基于弹性盒子的CSS框架 - [Bulma](https:&#x2F;&#x2F;bulma.io&#x2F;)</span><br><span class="line"></span><br><span class="line">Bulma是一个基于Flexbox的现代化的CSS框架，其初衷就是移动优先（Mobile First），模块化设计，可以轻松用来实现各种简单或者复杂的内容布局，即使不懂CSS的开发者也能够使用它定制出漂亮的页面。</span><br></pre></td></tr></table></figure>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Bulma&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.bootcss.com/bulma/0.7.4/css/bulma.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+      div { margin-top: 10px; }
+      .column { color: #fff; background-color: #063; margin: 10px 10px; text-align: center; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;columns&quot;&gt;
+      &lt;div class=&quot;column&quot;&gt;1&lt;/div&gt;
+      &lt;div class=&quot;column&quot;&gt;2&lt;/div&gt;
+      &lt;div class=&quot;column&quot;&gt;3&lt;/div&gt;
+      &lt;div class=&quot;column&quot;&gt;4&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+      &lt;a class=&quot;button is-primary&quot;&gt;Primary&lt;/a&gt;
+      &lt;a class=&quot;button is-link&quot;&gt;Link&lt;/a&gt;
+      &lt;a class=&quot;button is-info&quot;&gt;Info&lt;/a&gt;
+      &lt;a class=&quot;button is-success&quot;&gt;Success&lt;/a&gt;
+      &lt;a class=&quot;button is-warning&quot;&gt;Warning&lt;/a&gt;
+      &lt;a class=&quot;button is-danger&quot;&gt;Danger&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+      &lt;progress class=&quot;progress is-danger is-medium&quot; max=&quot;100&quot;&gt;60%&lt;/progress&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+      &lt;table class=&quot;table is-hoverable&quot;&gt;
+          &lt;tr&gt;
+              &lt;th&gt;One&lt;/th&gt;
+              &lt;th&gt;Two&lt;/th&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td&gt;Three&lt;/td&gt;
+              &lt;td&gt;Four&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td&gt;Five&lt;/td&gt;
+              &lt;td&gt;Six&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td&gt;Seven&lt;/td&gt;
+              &lt;td&gt;Eight&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td&gt;Nine&lt;/td&gt;
+              &lt;td&gt;Ten&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td&gt;Eleven&lt;/td&gt;
+              &lt;td&gt;Twelve&lt;/td&gt;
+          &lt;/tr&gt;
+      &lt;/table&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></li>
+</ul>
+<h4 id="响应式布局框架-Bootstrap"><a href="#响应式布局框架-Bootstrap" class="headerlink" title="响应式布局框架 - Bootstrap"></a>响应式布局框架 - <a href="http://www.bootcss.com/" target="_blank" rel="noopener">Bootstrap</a></h4><p>用于快速开发Web应用程序的前端框架，支持响应式布局。</p>
+<ol>
+<li><p>特点</p>
+<ul>
+<li>支持主流的浏览器和移动设备</li>
+<li>容易上手</li>
+<li>响应式设计</li>
+</ul>
+</li>
+<li><p>内容</p>
+<ul>
+<li>网格系统</li>
+<li>封装的CSS</li>
+<li>现成的组件</li>
+<li>JavaScript插件</li>
+</ul>
+</li>
+<li><p>可视化</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day21-30/res/bootstrap-layoutit.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day21-30/res/bootstrap-layoutit.png" alt="img"></a></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># Web基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E8%BF%9B%E9%98%B6/" rel="prev" title="python语言进阶">
+      <i class="fa fa-chevron-left"></i> python语言进阶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/" rel="next" title="Linux 基础命令总结">
+      Linux 基础命令总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web前端概述"><span class="nav-number">1.</span> <span class="nav-text">Web前端概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML简史"><span class="nav-number">1.1.</span> <span class="nav-text">HTML简史</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML5新特性"><span class="nav-number">1.1.1.</span> <span class="nav-text">HTML5新特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用标签承载内容"><span class="nav-number">1.2.</span> <span class="nav-text">使用标签承载内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结构"><span class="nav-number">1.2.1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本"><span class="nav-number">1.2.2.</span> <span class="nav-text">文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表（list）"><span class="nav-number">1.2.3.</span> <span class="nav-text">列表（list）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接（anchor）"><span class="nav-number">1.2.4.</span> <span class="nav-text">链接（anchor）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图像（image）"><span class="nav-number">1.2.5.</span> <span class="nav-text">图像（image）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表格（table）"><span class="nav-number">1.2.6.</span> <span class="nav-text">表格（table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表单（form）"><span class="nav-number">1.2.7.</span> <span class="nav-text">表单（form）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#音视频（audio-video）"><span class="nav-number">1.2.8.</span> <span class="nav-text">音视频（audio &#x2F; video）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#窗口（frame）"><span class="nav-number">1.2.9.</span> <span class="nav-text">窗口（frame）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他"><span class="nav-number">1.2.10.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用CSS渲染页面"><span class="nav-number">1.3.</span> <span class="nav-text">使用CSS渲染页面</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#颜色（color）"><span class="nav-number">1.3.2.</span> <span class="nav-text">颜色（color）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本（text-font）"><span class="nav-number">1.3.3.</span> <span class="nav-text">文本（text &#x2F; font）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#盒子（box-model）"><span class="nav-number">1.3.4.</span> <span class="nav-text">盒子（box model）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表、表格和表单"><span class="nav-number">1.3.5.</span> <span class="nav-text">列表、表格和表单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图像"><span class="nav-number">1.3.6.</span> <span class="nav-text">图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布局"><span class="nav-number">1.3.7.</span> <span class="nav-text">布局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用JavaScript控制行为"><span class="nav-number">1.4.</span> <span class="nav-text">使用JavaScript控制行为</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript基本语法"><span class="nav-number">1.4.1.</span> <span class="nav-text">JavaScript基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#面向对象"><span class="nav-number">1.4.2.</span> <span class="nav-text">面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BOM"><span class="nav-number">1.4.3.</span> <span class="nav-text">BOM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应式布局框架-Bootstrap"><span class="nav-number">1.4.4.</span> <span class="nav-text">响应式布局框架 - Bootstrap</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

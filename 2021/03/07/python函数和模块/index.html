@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="函数和模块的使用在讲解本章节的内容之前，我们先来研究一道数学题，请说出下面的方程有多少组正整数解。  事实上，上面的问题等同于将8个苹果分成四组每组至少一个苹果有多少种方案。想到这一点问题的答案就呼之欲出了。  可以用Python的程序来计算出这个值，代码如下所示。 123456789101112131415161718&quot;&quot;&quot;输入M和N计算C(M,N)Version:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python函数和模块的使用">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/python%E5%87%BD%E6%95%B0%E5%92%8C%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="函数和模块的使用在讲解本章节的内容之前，我们先来研究一道数学题，请说出下面的方程有多少组正整数解。  事实上，上面的问题等同于将8个苹果分成四组每组至少一个苹果有多少种方案。想到这一点问题的答案就呼之欲出了。  可以用Python的程序来计算出这个值，代码如下所示。 123456789101112131415161718&quot;&quot;&quot;输入M和N计算C(M,N)Version:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_3.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_4.png">
+<meta property="article:published_time" content="2021-03-07T13:58:05.090Z">
+<meta property="article:modified_time" content="2021-03-07T13:58:49.715Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="python基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_3.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/python%E5%87%BD%E6%95%B0%E5%92%8C%E6%A8%A1%E5%9D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python函数和模块的使用 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%87%BD%E6%95%B0%E5%92%8C%E6%A8%A1%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python函数和模块的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:58:05 / 修改时间：21:58:49" itemprop="dateCreated datePublished" datetime="2021-03-07T21:58:05+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="函数和模块的使用"><a href="#函数和模块的使用" class="headerlink" title="函数和模块的使用"></a>函数和模块的使用</h2><p>在讲解本章节的内容之前，我们先来研究一道数学题，请说出下面的方程有多少组正整数解。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/formula_3.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_3.png" alt="$$x_1 + x_2 + x_3 + x_4 = 8$$"></a></p>
+<p>事实上，上面的问题等同于将8个苹果分成四组每组至少一个苹果有多少种方案。想到这一点问题的答案就呼之欲出了。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/formula_4.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_4.png" alt="$$C_M^N =\frac{M!}{N!(M-N)!}, \text{(M=7, N=3)} $$"></a></p>
+<p>可以用Python的程序来计算出这个值，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;&quot;</span><br><span class="line">输入M和N计算C(M,N)</span><br><span class="line"></span><br><span class="line">Version: 0.1</span><br><span class="line">Author: 骆昊</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">m &#x3D; int(input(&#39;m &#x3D; &#39;))</span><br><span class="line">n &#x3D; int(input(&#39;n &#x3D; &#39;))</span><br><span class="line">fm &#x3D; 1</span><br><span class="line">for num in range(1, m + 1):</span><br><span class="line">    fm *&#x3D; num</span><br><span class="line">fn &#x3D; 1</span><br><span class="line">for num in range(1, n + 1):</span><br><span class="line">    fn *&#x3D; num</span><br><span class="line">fm_n &#x3D; 1</span><br><span class="line">for num in range(1, m - n + 1):</span><br><span class="line">    fm_n *&#x3D; num</span><br><span class="line">print(fm &#x2F;&#x2F; fn &#x2F;&#x2F; fm_n)</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数的作用"><a href="#函数的作用" class="headerlink" title="函数的作用"></a>函数的作用</h3><p>不知道大家是否注意到，在上面的代码中，我们做了3次求阶乘，这样的代码实际上就是重复代码。编程大师<em>Martin Fowler</em>先生曾经说过：“<strong>代码有很多种坏味道，重复是最坏的一种！</strong>”，要写出高质量的代码首先要解决的就是重复代码的问题。对于上面的代码来说，我们可以将计算阶乘的功能封装到一个称之为“函数”的功能模块中，在需要计算阶乘的地方，我们只需要“调用”这个“函数”就可以了。</p>
+<h3 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h3><p>在Python中可以使用<code>def</code>关键字来定义函数，和变量一样每个函数也有一个响亮的名字，而且命名规则跟变量的命名规则是一致的。在函数名后面的圆括号中可以放置传递给函数的参数，这一点和数学上的函数非常相似，程序中函数的参数就相当于是数学上说的函数的自变量，而函数执行完成后我们可以通过<code>return</code>关键字来返回一个值，这相当于数学上说的函数的因变量。</p>
+<p>在了解了如何定义函数后，我们可以对上面的代码进行重构，所谓重构就是在不影响代码执行结果的前提下对代码的结构进行调整，重构之后的代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;&quot;</span><br><span class="line">输入M和N计算C(M,N)</span><br><span class="line"></span><br><span class="line">Version: 0.1</span><br><span class="line">Author: 骆昊</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def fac(num):</span><br><span class="line">    &quot;&quot;&quot;求阶乘&quot;&quot;&quot;</span><br><span class="line">    result &#x3D; 1</span><br><span class="line">    for n in range(1, num + 1):</span><br><span class="line">        result *&#x3D; n</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">m &#x3D; int(input(&#39;m &#x3D; &#39;))</span><br><span class="line">n &#x3D; int(input(&#39;n &#x3D; &#39;))</span><br><span class="line"># 当需要计算阶乘的时候不用再写循环求阶乘而是直接调用已经定义好的函数</span><br><span class="line">print(fac(m) &#x2F;&#x2F; fac(n) &#x2F;&#x2F; fac(m - n))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明：</strong> Python的<code>math</code>模块中其实已经有一个名为<code>factorial</code>函数实现了阶乘运算，事实上求阶乘并不用自己定义函数。下面的例子中，我们讲的函数在Python标准库已经实现过了，我们这里是为了讲解函数的定义和使用才把它们又实现了一遍，<strong>实际开发中并不建议做这种低级的重复劳动</strong>。</p>
+</blockquote>
+<h3 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h3><p>函数是绝大多数编程语言中都支持的一个代码的”构建块”，但是Python中的函数与其他语言中的函数还是有很多不太相同的地方，其中一个显著的区别就是Python对函数参数的处理。在Python中，函数的参数可以有默认值，也支持使用可变参数，所以Python并不需要像其他语言一样支持<a href="https://zh.wikipedia.org/wiki/函数重载" target="_blank" rel="noopener">函数的重载</a>，因为我们在定义一个函数的时候可以让它有多种不同的使用方式，下面是两个小例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">from random import randint</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def roll_dice(n&#x3D;2):</span><br><span class="line">    &quot;&quot;&quot;摇色子&quot;&quot;&quot;</span><br><span class="line">    total &#x3D; 0</span><br><span class="line">    for _ in range(n):</span><br><span class="line">        total +&#x3D; randint(1, 6)</span><br><span class="line">    return total</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def add(a&#x3D;0, b&#x3D;0, c&#x3D;0):</span><br><span class="line">    &quot;&quot;&quot;三个数相加&quot;&quot;&quot;</span><br><span class="line">    return a + b + c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 如果没有指定参数那么使用默认值摇两颗色子</span><br><span class="line">print(roll_dice())</span><br><span class="line"># 摇三颗色子</span><br><span class="line">print(roll_dice(3))</span><br><span class="line">print(add())</span><br><span class="line">print(add(1))</span><br><span class="line">print(add(1, 2))</span><br><span class="line">print(add(1, 2, 3))</span><br><span class="line"># 传递参数时可以不按照设定的顺序进行传递</span><br><span class="line">print(add(c&#x3D;50, a&#x3D;100, b&#x3D;200))</span><br></pre></td></tr></table></figure>
+
+<p>我们给上面两个函数的参数都设定了默认值，这也就意味着如果在调用函数的时候如果没有传入对应参数的值时将使用该参数的默认值，所以在上面的代码中我们可以用各种不同的方式去调用<code>add</code>函数，这跟其他很多语言中函数重载的效果是一致的。</p>
+<p>其实上面的<code>add</code>函数还有更好的实现方案，因为我们可能会对0个或多个参数进行加法运算，而具体有多少个参数是由调用者来决定，我们作为函数的设计者对这一点是一无所知的，因此在不确定参数个数的时候，我们可以使用可变参数，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 在参数名前面的*表示args是一个可变参数</span><br><span class="line">def add(*args):</span><br><span class="line">    total &#x3D; 0</span><br><span class="line">    for val in args:</span><br><span class="line">        total +&#x3D; val</span><br><span class="line">    return total</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 在调用add函数时可以传入0个或多个参数</span><br><span class="line">print(add())</span><br><span class="line">print(add(1))</span><br><span class="line">print(add(1, 2))</span><br><span class="line">print(add(1, 2, 3))</span><br><span class="line">print(add(1, 3, 5, 7, 9))</span><br></pre></td></tr></table></figure>
+
+<h3 id="用模块管理函数"><a href="#用模块管理函数" class="headerlink" title="用模块管理函数"></a>用模块管理函数</h3><p>对于任何一种编程语言来说，给变量、函数这样的标识符起名字都是一个让人头疼的问题，因为我们会遇到命名冲突这种尴尬的情况。最简单的场景就是在同一个.py文件中定义了两个同名函数，由于Python没有函数重载的概念，那么后面的定义会覆盖之前的定义，也就意味着两个函数同名函数实际上只有一个是存在的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def foo():</span><br><span class="line">    print(&#39;hello, world!&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def foo():</span><br><span class="line">    print(&#39;goodbye, world!&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 下面的代码会输出什么呢？</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>当然上面的这种情况我们很容易就能避免，但是如果项目是由多人协作进行团队开发的时候，团队中可能有多个程序员都定义了名为<code>foo</code>的函数，那么怎么解决这种命名冲突呢？答案其实很简单，Python中每个文件就代表了一个模块（module），我们在不同的模块中可以有同名的函数，在使用函数的时候我们通过<code>import</code>关键字导入指定的模块就可以区分到底要使用的是哪个模块中的<code>foo</code>函数，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">module1.py</span><br><span class="line">def foo():</span><br><span class="line">    print(&#39;hello, world!&#39;)</span><br><span class="line">module2.py</span><br><span class="line">def foo():</span><br><span class="line">    print(&#39;goodbye, world!&#39;)</span><br><span class="line">test.py</span><br><span class="line">from module1 import foo</span><br><span class="line"></span><br><span class="line"># 输出hello, world!</span><br><span class="line">foo()</span><br><span class="line"></span><br><span class="line">from module2 import foo</span><br><span class="line"></span><br><span class="line"># 输出goodbye, world!</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>也可以按照如下所示的方式来区分到底要使用哪一个<code>foo</code>函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test.py</span><br><span class="line">import module1 as m1</span><br><span class="line">import module2 as m2</span><br><span class="line"></span><br><span class="line">m1.foo()</span><br><span class="line">m2.foo()</span><br></pre></td></tr></table></figure>
+
+<p>但是如果将代码写成了下面的样子，那么程序中调用的是最后导入的那个<code>foo</code>，因为后导入的foo覆盖了之前导入的<code>foo</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">test.py</span><br><span class="line">from module1 import foo</span><br><span class="line">from module2 import foo</span><br><span class="line"></span><br><span class="line"># 输出goodbye, world!</span><br><span class="line">foo()</span><br><span class="line">test.py</span><br><span class="line">from module2 import foo</span><br><span class="line">from module1 import foo</span><br><span class="line"></span><br><span class="line"># 输出hello, world!</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是，如果我们导入的模块除了定义函数之外还中有可以执行代码，那么Python解释器在导入这个模块时就会执行这些代码，事实上我们可能并不希望如此，因此如果我们在模块中编写了执行代码，最好是将这些执行代码放入如下所示的条件中，这样的话除非直接运行该模块，if条件下的这些代码是不会执行的，因为只有直接执行的模块的名字才是”<strong>main</strong>“。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">module3.py</span><br><span class="line">def foo():</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def bar():</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># __name__是Python中一个隐含的变量它代表了模块的名字</span><br><span class="line"># 只有被Python解释器直接执行的模块的名字才是__main__</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    print(&#39;call foo()&#39;)</span><br><span class="line">    foo()</span><br><span class="line">    print(&#39;call bar()&#39;)</span><br><span class="line">    bar()</span><br><span class="line">test.py</span><br><span class="line">import module3</span><br><span class="line"></span><br><span class="line"># 导入module3时 不会执行模块中if条件成立时的代码 因为模块的名字是module3而不是__main__</span><br></pre></td></tr></table></figure>
+
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="练习1：实现计算求最大公约数和最小公倍数的函数。"><a href="#练习1：实现计算求最大公约数和最小公倍数的函数。" class="headerlink" title="练习1：实现计算求最大公约数和最小公倍数的函数。"></a>练习1：实现计算求最大公约数和最小公倍数的函数。</h4><p>参考答案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def gcd(x, y):</span><br><span class="line">    &quot;&quot;&quot;求最大公约数&quot;&quot;&quot;</span><br><span class="line">    (x, y) &#x3D; (y, x) if x &gt; y else (x, y)</span><br><span class="line">    for factor in range(x, 0, -1):</span><br><span class="line">        if x % factor &#x3D;&#x3D; 0 and y % factor &#x3D;&#x3D; 0:</span><br><span class="line">            return factor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def lcm(x, y):</span><br><span class="line">    &quot;&quot;&quot;求最小公倍数&quot;&quot;&quot;</span><br><span class="line">    return x * y &#x2F;&#x2F; gcd(x, y)</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习2：实现判断一个数是不是回文数的函数。"><a href="#练习2：实现判断一个数是不是回文数的函数。" class="headerlink" title="练习2：实现判断一个数是不是回文数的函数。"></a>练习2：实现判断一个数是不是回文数的函数。</h4><p>参考答案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def is_palindrome(num):</span><br><span class="line">    &quot;&quot;&quot;判断一个数是不是回文数&quot;&quot;&quot;</span><br><span class="line">    temp &#x3D; num</span><br><span class="line">    total &#x3D; 0</span><br><span class="line">    while temp &gt; 0:</span><br><span class="line">        total &#x3D; total * 10 + temp % 10</span><br><span class="line">        temp &#x2F;&#x2F;&#x3D; 10</span><br><span class="line">    return total &#x3D;&#x3D; num</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习3：实现判断一个数是不是素数的函数。"><a href="#练习3：实现判断一个数是不是素数的函数。" class="headerlink" title="练习3：实现判断一个数是不是素数的函数。"></a>练习3：实现判断一个数是不是素数的函数。</h4><p>参考答案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def is_prime(num):</span><br><span class="line">    &quot;&quot;&quot;判断一个数是不是素数&quot;&quot;&quot;</span><br><span class="line">    for factor in range(2, int(num ** 0.5) + 1):</span><br><span class="line">        if num % factor &#x3D;&#x3D; 0:</span><br><span class="line">            return False</span><br><span class="line">    return True if num !&#x3D; 1 else False</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习4：写一个程序判断输入的正整数是不是回文素数。"><a href="#练习4：写一个程序判断输入的正整数是不是回文素数。" class="headerlink" title="练习4：写一个程序判断输入的正整数是不是回文素数。"></a>练习4：写一个程序判断输入的正整数是不是回文素数。</h4><p>参考答案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    num &#x3D; int(input(&#39;请输入正整数: &#39;))</span><br><span class="line">    if is_palindrome(num) and is_prime(num):</span><br><span class="line">        print(&#39;%d是回文素数&#39; % num)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：通过上面的程序可以看出，当我们<strong>将代码中重复出现的和相对独立的功能抽取成函数</strong>后，我们可以<strong>组合使用这些函数</strong>来解决更为复杂的问题，这也是我们为什么要定义和使用函数的一个非常重要的原因。</p>
+</blockquote>
+<h3 id="变量的作用域"><a href="#变量的作用域" class="headerlink" title="变量的作用域"></a>变量的作用域</h3><p>最后，我们来讨论一下Python中有关变量作用域的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def foo():</span><br><span class="line">    b &#x3D; &#39;hello&#39;</span><br><span class="line"></span><br><span class="line">    # Python中可以在函数内部再定义函数</span><br><span class="line">    def bar():</span><br><span class="line">        c &#x3D; True</span><br><span class="line">        print(a)</span><br><span class="line">        print(b)</span><br><span class="line">        print(c)</span><br><span class="line"></span><br><span class="line">    bar()</span><br><span class="line">    # print(c)  # NameError: name &#39;c&#39; is not defined</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    a &#x3D; 100</span><br><span class="line">    # print(b)  # NameError: name &#39;b&#39; is not defined</span><br><span class="line">    foo()</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码能够顺利的执行并且打印出100、hello和True，但我们注意到了，在<code>bar</code>函数的内部并没有定义<code>a</code>和<code>b</code>两个变量，那么<code>a</code>和<code>b</code>是从哪里来的。我们在上面代码的<code>if</code>分支中定义了一个变量<code>a</code>，这是一个全局变量（global variable），属于全局作用域，因为它没有定义在任何一个函数中。在上面的<code>foo</code>函数中我们定义了变量<code>b</code>，这是一个定义在函数中的局部变量（local variable），属于局部作用域，在<code>foo</code>函数的外部并不能访问到它；但对于<code>foo</code>函数内部的<code>bar</code>函数来说，变量<code>b</code>属于嵌套作用域，在<code>bar</code>函数中我们是可以访问到它的。<code>bar</code>函数中的变量<code>c</code>属于局部作用域，在<code>bar</code>函数之外是无法访问的。事实上，Python查找一个变量时会按照“局部作用域”、“嵌套作用域”、“全局作用域”和“内置作用域”的顺序进行搜索，前三者我们在上面的代码中已经看到了，所谓的“内置作用域”就是Python内置的那些标识符，我们之前用过的<code>input</code>、<code>print</code>、<code>int</code>等都属于内置作用域。</p>
+<p>再看看下面这段代码，我们希望通过函数调用修改全局变量<code>a</code>的值，但实际上下面的代码是做不到的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def foo():</span><br><span class="line">    a &#x3D; 200</span><br><span class="line">    print(a)  # 200</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    a &#x3D; 100</span><br><span class="line">    foo()</span><br><span class="line">    print(a)  # 100</span><br></pre></td></tr></table></figure>
+
+<p>在调用<code>foo</code>函数后，我们发现<code>a</code>的值仍然是100，这是因为当我们在函数<code>foo</code>中写<code>a = 200</code>的时候，是重新定义了一个名字为<code>a</code>的局部变量，它跟全局作用域的<code>a</code>并不是同一个变量，因为局部作用域中有了自己的变量<code>a</code>，因此<code>foo</code>函数不再搜索全局作用域中的<code>a</code>。如果我们希望在<code>foo</code>函数中修改全局作用域中的<code>a</code>，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def foo():</span><br><span class="line">    global a</span><br><span class="line">    a &#x3D; 200</span><br><span class="line">    print(a)  # 200</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    a &#x3D; 100</span><br><span class="line">    foo()</span><br><span class="line">    print(a)  # 200</span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用<code>global</code>关键字来指示<code>foo</code>函数中的变量<code>a</code>来自于全局作用域，如果全局作用域中没有<code>a</code>，那么下面一行的代码就会定义变量<code>a</code>并将其置于全局作用域。同理，如果我们希望函数内部的函数能够修改嵌套作用域中的变量，可以使用<code>nonlocal</code>关键字来指示变量来自于嵌套作用域，请大家自行试验。</p>
+<p>在实际开发中，我们应该尽量减少对全局变量的使用，因为全局变量的作用域和影响过于广泛，可能会发生意料之外的修改和使用，除此之外全局变量比局部变量拥有更长的生命周期，可能导致对象占用的内存长时间无法被<a href="https://zh.wikipedia.org/wiki/垃圾回收_(計算機科學)" target="_blank" rel="noopener">垃圾回收</a>。事实上，减少对全局变量的使用，也是降低代码之间耦合度的一个重要举措，同时也是对<a href="https://zh.wikipedia.org/zh-hans/得墨忒耳定律" target="_blank" rel="noopener">迪米特法则</a>的践行。减少全局变量的使用就意味着我们应该尽量让变量的作用域在函数的内部，但是如果我们希望将一个局部变量的生命周期延长，使其在定义它的函数调用结束后依然可以使用它的值，这时候就需要使用<a href="https://zh.wikipedia.org/wiki/闭包_(计算机科学)" target="_blank" rel="noopener">闭包</a>，这个我们在后续的内容中进行讲解。</p>
+<blockquote>
+<p><strong>说明：</strong> 很多人经常会将“闭包”和<a href="https://zh.wikipedia.org/wiki/匿名函数" target="_blank" rel="noopener">“匿名函数”</a>混为一谈，但实际上它们并不是一回事，如果想了解这个概念，可以看看<a href="https://zh.wikipedia.org/wiki/" target="_blank" rel="noopener">维基百科</a>的解释或者<a href="https://www.zhihu.com/" target="_blank" rel="noopener">知乎</a>上对这个概念的讨论。</p>
+</blockquote>
+<p>说了那么多，其实结论很简单，从现在开始我们可以将Python代码按照下面的格式进行书写，这一点点的改进其实就是在我们理解了函数和作用域的基础上跨出的巨大的一步。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def main():</span><br><span class="line">    # Todo: Add your code here</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># python基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E6%9E%84%E9%80%A0%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91/" rel="prev" title="python构造程序逻辑">
+      <i class="fa fa-chevron-left"></i> python构造程序逻辑
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="next" title="python字符串和常用数据结构">
+      python字符串和常用数据结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数和模块的使用"><span class="nav-number">1.</span> <span class="nav-text">函数和模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的作用"><span class="nav-number">1.1.</span> <span class="nav-text">函数的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义函数"><span class="nav-number">1.2.</span> <span class="nav-text">定义函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的参数"><span class="nav-number">1.3.</span> <span class="nav-text">函数的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用模块管理函数"><span class="nav-number">1.4.</span> <span class="nav-text">用模块管理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习"><span class="nav-number">1.5.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习1：实现计算求最大公约数和最小公倍数的函数。"><span class="nav-number">1.5.1.</span> <span class="nav-text">练习1：实现计算求最大公约数和最小公倍数的函数。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习2：实现判断一个数是不是回文数的函数。"><span class="nav-number">1.5.2.</span> <span class="nav-text">练习2：实现判断一个数是不是回文数的函数。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习3：实现判断一个数是不是素数的函数。"><span class="nav-number">1.5.3.</span> <span class="nav-text">练习3：实现判断一个数是不是素数的函数。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习4：写一个程序判断输入的正整数是不是回文素数。"><span class="nav-number">1.5.4.</span> <span class="nav-text">练习4：写一个程序判断输入的正整数是不是回文素数。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量的作用域"><span class="nav-number">1.6.</span> <span class="nav-text">变量的作用域</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

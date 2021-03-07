@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0.思维导图 1.数据库系统结构（1）两种角度从数据库管理系统角度看，数据库系统通常采用三级模式结构，是数据库系统内部的系统结构 从数据库最终用户角度看（数据库系统外部的体系结构） ，数据库系统的结构分为:单用户结构主从式结构分布式结构客户／服务器浏览器／应用服务器／数据库服务器多层结构等 （2）数据库系统模式的概念来自张教授的解疑：模式是数据库结构的描述、关系模式是表的结构的描述; “型” 和“">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统结构和组成">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="0.思维导图 1.数据库系统结构（1）两种角度从数据库管理系统角度看，数据库系统通常采用三级模式结构，是数据库系统内部的系统结构 从数据库最终用户角度看（数据库系统外部的体系结构） ，数据库系统的结构分为:单用户结构主从式结构分布式结构客户／服务器浏览器／应用服务器／数据库服务器多层结构等 （2）数据库系统模式的概念来自张教授的解疑：模式是数据库结构的描述、关系模式是表的结构的描述; “型” 和“">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-07T04:21:40.305Z">
+<meta property="article:modified_time" content="2021-03-07T04:22:40.674Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据库基本学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据库系统结构和组成 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库系统结构和组成
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 12:21:40 / 修改时间：12:22:40" itemprop="dateCreated datePublished" datetime="2021-03-07T12:21:40+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>0.思维导图</p>
+<p>1.数据库系统结构<br>（1）两种角度<br>从数据库管理系统角度看，数据库系统通常采用三级模式结构，是数据库系统内部的系统结构</p>
+<p>从数据库最终用户角度看（数据库系统外部的体系结构） ，数据库系统的结构分为:<br>单用户结构<br>主从式结构<br>分布式结构<br>客户／服务器<br>浏览器／应用服务器／数据库服务器多层结构等</p>
+<p>（2）数据库系统模式的概念<br>来自张教授的解疑：模式是数据库结构的描述、关系模式是表的结构的描述;</p>
+<p>“型” 和“值” 的概念</p>
+<p>型(Type)<br>对某一类数据的结构和属性的说明<br>值(Value)<br>是型的一个具体赋值<br>例如<br>学生记录型：<br>（学号，姓名，性别，系别，年龄，籍贯）<br>一个记录值：<br>（900201，李明，男，计算机，22，江苏）</p>
+<p>模式（Schema）</p>
+<p>数据库逻辑结构和特征的描述<br>是型的描述<br>反映的是数据的结构及其联系<br>模式是相对稳定的<br>实例（Instance）</p>
+<p>模式的一个具体值<br>反映数据库某一时刻的状态<br>同一个模式可以有很多实例<br>实例随数据库中的数据的更新而变动<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表</p>
+<p>例如：在学生选课数据库模式中，包含学生记录、课程记录和学生选课记录</p>
+<p>2003年的一个学生数据库实例，包含：<br>2003年学校中所有学生的记录<br>学校开设的所有课程的记录<br>所有学生选课的记录<br>2002年度学生数据库模式对应的实例与2003年度学生数据库模式对应的实例是不同的<br>（3）数据库系统的三级模式结构</p>
+<p>① 模式（Schema）<br>模式（也称逻辑模式）</p>
+<p>数据库中全体数据的逻辑结构和特征的描述<br>所有用户的公共数据视图，综合了所有用户的需求<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表</p>
+<p>模式的地位：是数据库系统模式结构的中间层</p>
+<p>与数据的物理存储细节和硬件环境无关<br>与具体的应用程序、开发工具及高级程序设计语言无关<br>模式的定义:</p>
+<p>数据的逻辑结构（数据项的名字、类型、取值范围等）<br>数据之间的联系<br>数据有关的安全性、完整性要求<br>② 外模式（External Schema）<br>外模式（也称子模式或用户模式）</p>
+<p>数据库用户（包括应用程序员和最终用户）使用的局部数据的逻辑结构和特征的描述<br>数据库用户的数据视图，是与某一应用有关的数据的逻辑表示，可以看成把数据库的部分数据，运用在不同的应用程序上，在UI界面上显示<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表<br>外模式的地位：介于模式与应用之间</p>
+<p>模式与外模式的关系：一对多<br>外模式通常是模式的子集;<br>一个数据库可以有多个外模式。反映了不同的用户的应用需求、看待数据的方式、对数据保密的要求;<br>对模式中同一数据，在外模式中的结构、类型、长度、保密级别等都可以不同;<br>外模式与应用的关系：一对多<br>同一外模式也可以为某一用户的多个应用系统所使用;<br>但一个应用程序只能使用一个外模式;可以看成把数据库的部分数据，运用在不同的应用程序上，在UI界面上显示<br>外模式的用途</p>
+<p>保证数据库安全性的一个有力措施；<br>每个用户只能看见和访问所对应的外模式中的数据；<br>③ 内模式（Internal Schema）<br>内模式（也称存储模式）</p>
+<p>是数据物理结构和存储方式的描述<br>是数据在数据库内部的表示方式:<br>记录的存储方式（顺序存储，按照B树结构存储，<br>按hash方法存储）<br>索引的组织方式<br>数据是否压缩存储<br>数据是否加密<br>数据存储记录结构的规定<br>一个数据库只有一个内模式<br>·例如学生记录，如果按堆存储，则插入一条新记录总是放在学生记录存储的最后.</p>
+<p>如果按·学号升序存储，则插入一条记录就要找到它应在的位置插入，如图1.29（b）所示<br>如果按照学生年龄聚簇存放，假如新插入的S3是16岁，则应插入的位置如图1.29（c）所示</p>
+<p>④ 数据库模式、外模式、内模式总结</p>
+<p>数据库模式</p>
+<p>即全局逻辑结构是数据库的中心与关键<br>独立于数据库的其他层次<br>设计数据库模式结构时应首先确定数据库的逻辑模式<br>数据库的外模式</p>
+<p>面向具体的应用程序<br>定义在逻辑模式之上<br>独立于存储模式和存储设备<br>当应用需求发生较大变化，相应外模式不能满足其视图要求时，该外模式就得做相应改动<br>设计外模式时应充分考虑到应用的扩充性<br>数据库的内模式</p>
+<p>依赖于它的全局逻辑结构<br>独立于具体的存储设备<br>将全局逻辑结构中所定义的数据结构及其联系按照一定的物理存储策略进行组织，以达到较好的时间与空间效率<br>（4）数据库的二级映像功能与数据独立性<br>·三级模式是对数据的三个抽象级别</p>
+<p>二级映象在DBMS内部实现这三个抽象层次的联系和转换</p>
+<p>外模式／模式映像<br>模式／内模式映像</p>
+<p>① 外模式／模式映象<br>模式：描述的是数据的全局逻辑结构<br>外模式：描述的是数据的局部逻辑结构<br>同一个模式可以有任意多个外模式<br>每一个外模式，数据库系统都有一个外模式／模式映象，定义外模式与模式之间的对应关系,看成数据库的数据与API调用的部分数据之间的关系(I think)<br>映象定义通常包含在各自外模式的描述中<br>保证数据的逻辑独立性</p>
+<p>当模式改变时，数据库管理员修改有关的外模式／模式映象，使外模式保持不变<br>应用程序是依据数据的外模式编写的，从而应用程序不必修改，保证了数据与程序的逻辑独立性，简称数据的逻辑独立性。<br>② 模式／内模式映象<br>模式／内模式映象定义了数据全局逻辑结构与存储结构之间的对应关系。</p>
+<p>  例如，说明逻辑记录和字段在内部是如何表示的<br>1<br>数据库中模式／内模式映象是唯一的<br>该映象定义通常包含在模式描述中<br>保证数据的物理独立性</p>
+<p>当数据库的存储结构改变了（例如选用了另一种存储结构），数据库管理员修改模式／内模式映象，使模式保持不变.<br>应用程序不受影响。保证了数据与程序的物理独立性，简称数据的物理独立性。<br>特定的应用程序</p>
+<p>在外模式描述的数据结构上编制的<br>依赖于特定的外模式<br>与数据库的模式和存储结构独立<br>不同的应用程序有时可以共用同一个外模式<br>数据库的二级映像</p>
+<p>保证了数据库外模式的稳定性<br>从底层保证了应用程序的稳定性，除非应用需求本身发生变化，否则应用程序一般不需要修改<br>数据与程序之间的独立性，使得数据的定义和描述可以从应用程序中分离出去</p>
+<p>数据的存取由DBMS管理</p>
+<p>用户不必考虑存取路径等细节<br>简化了应用程序的编制<br>大大减少了应用程序的维护和修改<br>2.数据库的组成<br>数据库<br>数据库管理系统（及其开发工具）<br>应用系统<br>数据库管理员<br>硬件平台及数据库<br>软件<br>人员<br>（1）硬件平台及数据库<br>数据库系统对硬件资源的要求</p>
+<p>(1) 足够大的内存</p>
+<p>操作系统<br>DBMS的核心模块<br>数据缓冲区<br>应用程序<br>(2) 足够大的外存</p>
+<p>磁盘或磁盘阵列<br>数据库<br>光盘、磁带<br>数据备份<br>(3) 较高的通道能力，提高数据传送率</p>
+<p>（2） 软件<br>DBMS<br>支持DBMS运行的操作系统<br>与数据库接口的高级语言及其编译系统<br>以DBMS为核心的应用开发工具<br>为特定应用环境开发的数据库应用系统<br>（3）人 员<br>数据库管理员<br>系统分析员和数据库设计人员<br>应用程序员<br>用户<br>不同的人员涉及不同的数据抽象级别，具有不同的数据视图，如下图所示</p>
+<p>① 数据库管理员(DBA)<br>具体职责：<br>1.决定数据库中的信息内容和结构<br>2.决定数据库的存储结构和存取策略<br>3.定义数据的安全性要求和完整性约束条件<br>4.监控数据库的使用和运行</p>
+<p>周期性转储数据库<br>数据文件<br>日志文件<br>系统故障恢复<br>介质故障恢复<br>监视审计文件<br>5.数据库的改进和重组</p>
+<p>性能监控和调优<br>定期对数据库进行重组织，以提高系统的性能<br>需求增加和改变时，数据库须需要重构造<br>② 系统分析员<br>具体职责：</p>
+<p>负责应用系统的需求分析和规范说明<br>与用户及DBA协商，确定系统的硬软件配置<br>参与数据库系统的概要设计<br>③ 数据库设计人员<br>具体职责：</p>
+<p>参加用户需求调查和系统分析<br>确定数据库中的数据<br>设计数据库各级模式<br>④ 应用程序员<br>具体职责：</p>
+<p>设计和编写应用系统的程序模块<br>进行调试和安装<br>⑤ 用户<br>用户是指最终用户（End User）。<br>最终用户通过应用系统的用户接口使用数据库。<br>1.偶然用户</p>
+<p>不经常访问数据库，但每次访问数据库时往往需要不同的数据库信息<br>企业或组织机构的高中级管理人员<br>2.简单用户</p>
+<p>主要工作是查询和更新数据库<br>银行的职员、机票预定人员、旅馆总台服务员<br>3.复杂用户</p>
+<p>工程师、科学家、经济学家、科技工作者等<br>直接使用数据库语言访问数据库，甚至能够基于数据库管理系统的API编制自己的应用程序</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据库基本学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" rel="prev" title="数据库数据模型">
+      <i class="fa fa-chevron-left"></i> 数据库数据模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="next" title="数据库系统的关系数据结构">
+      数据库系统的关系数据结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

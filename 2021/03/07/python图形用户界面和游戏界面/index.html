@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="图形用户界面和游戏开发基于tkinter模块的GUIGUI是图形用户界面的缩写，图形化的用户界面对使用过计算机的人来说应该都不陌生，在此也无需进行赘述。Python默认的GUI开发模块是tkinter（在Python 3以前的版本中名为Tkinter），从这个名字就可以看出它是基于Tk的，Tk是一个工具包，最初是为Tcl设计的，后来被移植到很多其他的脚本语言中，它提供了跨平台的GUI控件。当然Tk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python图像用户界面和游戏开发">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="图形用户界面和游戏开发基于tkinter模块的GUIGUI是图形用户界面的缩写，图形化的用户界面对使用过计算机的人来说应该都不陌生，在此也无需进行赘述。Python默认的GUI开发模块是tkinter（在Python 3以前的版本中名为Tkinter），从这个名字就可以看出它是基于Tk的，Tk是一个工具包，最初是为Tcl设计的，后来被移植到很多其他的脚本语言中，它提供了跨平台的GUI控件。当然Tk">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-07T14:02:07.114Z">
+<meta property="article:modified_time" content="2021-03-07T14:02:38.958Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="python基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python图像用户界面和游戏开发 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python图像用户界面和游戏开发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 22:02:07 / 修改时间：22:02:38" itemprop="dateCreated datePublished" datetime="2021-03-07T22:02:07+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="图形用户界面和游戏开发"><a href="#图形用户界面和游戏开发" class="headerlink" title="图形用户界面和游戏开发"></a>图形用户界面和游戏开发</h2><h3 id="基于tkinter模块的GUI"><a href="#基于tkinter模块的GUI" class="headerlink" title="基于tkinter模块的GUI"></a>基于tkinter模块的GUI</h3><p>GUI是图形用户界面的缩写，图形化的用户界面对使用过计算机的人来说应该都不陌生，在此也无需进行赘述。Python默认的GUI开发模块是tkinter（在Python 3以前的版本中名为Tkinter），从这个名字就可以看出它是基于Tk的，Tk是一个工具包，最初是为Tcl设计的，后来被移植到很多其他的脚本语言中，它提供了跨平台的GUI控件。当然Tk并不是最新和最好的选择，也没有功能特别强大的GUI控件，事实上，开发GUI应用并不是Python最擅长的工作，如果真的需要使用Python开发GUI应用，wxPython、PyQt、PyGTK等模块都是不错的选择。</p>
+<p>基本上使用tkinter来开发GUI应用需要以下5个步骤：</p>
+<ol>
+<li>导入tkinter模块中我们需要的东西。</li>
+<li>创建一个顶层窗口对象并用它来承载整个GUI应用。</li>
+<li>在顶层窗口对象上添加GUI组件。</li>
+<li>通过代码将这些GUI组件的功能组织起来。</li>
+<li>进入主事件循环(main loop)。</li>
+</ol>
+<p>下面的代码演示了如何使用tkinter做一个简单的GUI应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import tkinter</span><br><span class="line">import tkinter.messagebox</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    flag &#x3D; True</span><br><span class="line"></span><br><span class="line">    # 修改标签上的文字</span><br><span class="line">    def change_label_text():</span><br><span class="line">        nonlocal flag</span><br><span class="line">        flag &#x3D; not flag</span><br><span class="line">        color, msg &#x3D; (&#39;red&#39;, &#39;Hello, world!&#39;)\</span><br><span class="line">            if flag else (&#39;blue&#39;, &#39;Goodbye, world!&#39;)</span><br><span class="line">        label.config(text&#x3D;msg, fg&#x3D;color)</span><br><span class="line"></span><br><span class="line">    # 确认退出</span><br><span class="line">    def confirm_to_quit():</span><br><span class="line">        if tkinter.messagebox.askokcancel(&#39;温馨提示&#39;, &#39;确定要退出吗?&#39;):</span><br><span class="line">            top.quit()</span><br><span class="line"></span><br><span class="line">    # 创建顶层窗口</span><br><span class="line">    top &#x3D; tkinter.Tk()</span><br><span class="line">    # 设置窗口大小</span><br><span class="line">    top.geometry(&#39;240x160&#39;)</span><br><span class="line">    # 设置窗口标题</span><br><span class="line">    top.title(&#39;小游戏&#39;)</span><br><span class="line">    # 创建标签对象并添加到顶层窗口</span><br><span class="line">    label &#x3D; tkinter.Label(top, text&#x3D;&#39;Hello, world!&#39;, font&#x3D;&#39;Arial -32&#39;, fg&#x3D;&#39;red&#39;)</span><br><span class="line">    label.pack(expand&#x3D;1)</span><br><span class="line">    # 创建一个装按钮的容器</span><br><span class="line">    panel &#x3D; tkinter.Frame(top)</span><br><span class="line">    # 创建按钮对象 指定添加到哪个容器中 通过command参数绑定事件回调函数</span><br><span class="line">    button1 &#x3D; tkinter.Button(panel, text&#x3D;&#39;修改&#39;, command&#x3D;change_label_text)</span><br><span class="line">    button1.pack(side&#x3D;&#39;left&#39;)</span><br><span class="line">    button2 &#x3D; tkinter.Button(panel, text&#x3D;&#39;退出&#39;, command&#x3D;confirm_to_quit)</span><br><span class="line">    button2.pack(side&#x3D;&#39;right&#39;)</span><br><span class="line">    panel.pack(side&#x3D;&#39;bottom&#39;)</span><br><span class="line">    # 开启主事件循环</span><br><span class="line">    tkinter.mainloop()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是，GUI应用通常是事件驱动式的，之所以要进入主事件循环就是要监听鼠标、键盘等各种事件的发生并执行对应的代码对事件进行处理，因为事件会持续的发生，所以需要这样的一个循环一直运行着等待下一个事件的发生。另一方面，Tk为控件的摆放提供了三种布局管理器，通过布局管理器可以对控件进行定位，这三种布局管理器分别是：Placer（开发者提供控件的大小和摆放位置）、Packer（自动将控件填充到合适的位置）和Grid（基于网格坐标来摆放控件），此处不进行赘述。</p>
+<h3 id="使用Pygame进行游戏开发"><a href="#使用Pygame进行游戏开发" class="headerlink" title="使用Pygame进行游戏开发"></a>使用Pygame进行游戏开发</h3><p>Pygame是一个开源的Python模块，专门用于多媒体应用（如电子游戏）的开发，其中包含对图像、声音、视频、事件、碰撞等的支持。Pygame建立在<a href="https://zh.wikipedia.org/wiki/SDL" target="_blank" rel="noopener">SDL</a>的基础上，SDL是一套跨平台的多媒体开发库，用C语言实现，被广泛的应用于游戏、模拟器、播放器等的开发。而Pygame让游戏开发者不再被底层语言束缚，可以更多的关注游戏的功能和逻辑。</p>
+<p>下面我们来完成一个简单的小游戏，游戏的名字叫“大球吃小球”，当然完成这个游戏并不是重点，学会使用Pygame也不是重点，最重要的我们要在这个过程中体会如何使用前面讲解的面向对象程序设计，学会用这种编程思想去解决现实中的问题。</p>
+<h4 id="制作游戏窗口"><a href="#制作游戏窗口" class="headerlink" title="制作游戏窗口"></a>制作游戏窗口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 初始化导入的pygame中的模块</span><br><span class="line">    pygame.init()</span><br><span class="line">    # 初始化用于显示的窗口并设置窗口尺寸</span><br><span class="line">    screen &#x3D; pygame.display.set_mode((800, 600))</span><br><span class="line">    # 设置当前窗口的标题</span><br><span class="line">    pygame.display.set_caption(&#39;大球吃小球&#39;)</span><br><span class="line">    running &#x3D; True</span><br><span class="line">    # 开启一个事件循环处理发生的事件</span><br><span class="line">    while running:</span><br><span class="line">        # 从消息队列中获取事件并对事件进行处理</span><br><span class="line">        for event in pygame.event.get():</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.QUIT:</span><br><span class="line">                running &#x3D; False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="在窗口中绘图"><a href="#在窗口中绘图" class="headerlink" title="在窗口中绘图"></a>在窗口中绘图</h4><p>可以通过pygame中draw模块的函数在窗口上绘图，可以绘制的图形包括：线条、矩形、多边形、圆、椭圆、圆弧等。需要说明的是，屏幕坐标系是将屏幕左上角设置为坐标原点<code>(0, 0)</code>，向右是x轴的正向，向下是y轴的正向，在表示位置或者设置尺寸的时候，我们默认的单位都是<a href="https://zh.wikipedia.org/wiki/像素" target="_blank" rel="noopener">像素</a>。所谓像素就是屏幕上的一个点，你可以用浏览图片的软件试着将一张图片放大若干倍，就可以看到这些点。pygame中表示颜色用的是色光<a href="https://zh.wikipedia.org/wiki/原色" target="_blank" rel="noopener">三原色</a>表示法，即通过一个元组或列表来指定颜色的RGB值，每个值都在0~255之间，因为是每种原色都用一个8位（bit）的值来表示，三种颜色相当于一共由24位构成，这也就是常说的“24位颜色表示法”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 初始化导入的pygame中的模块</span><br><span class="line">    pygame.init()</span><br><span class="line">    # 初始化用于显示的窗口并设置窗口尺寸</span><br><span class="line">    screen &#x3D; pygame.display.set_mode((800, 600))</span><br><span class="line">    # 设置当前窗口的标题</span><br><span class="line">    pygame.display.set_caption(&#39;大球吃小球&#39;)</span><br><span class="line">    # 设置窗口的背景色(颜色是由红绿蓝三原色构成的元组)</span><br><span class="line">    screen.fill((242, 242, 242))</span><br><span class="line">    # 绘制一个圆(参数分别是: 屏幕, 颜色, 圆心位置, 半径, 0表示填充圆)</span><br><span class="line">    pygame.draw.circle(screen, (255, 0, 0,), (100, 100), 30, 0)</span><br><span class="line">    # 刷新当前窗口(渲染窗口将绘制的图像呈现出来)</span><br><span class="line">    pygame.display.flip()</span><br><span class="line">    running &#x3D; True</span><br><span class="line">    # 开启一个事件循环处理发生的事件</span><br><span class="line">    while running:</span><br><span class="line">        # 从消息队列中获取事件并对事件进行处理</span><br><span class="line">        for event in pygame.event.get():</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.QUIT:</span><br><span class="line">                running &#x3D; False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="加载图像"><a href="#加载图像" class="headerlink" title="加载图像"></a>加载图像</h4><p>如果需要直接加载图像到窗口上，可以使用pygame中image模块的函数来加载图像，再通过之前获得的窗口对象的<code>blit</code>方法渲染图像，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 初始化导入的pygame中的模块</span><br><span class="line">    pygame.init()</span><br><span class="line">    # 初始化用于显示的窗口并设置窗口尺寸</span><br><span class="line">    screen &#x3D; pygame.display.set_mode((800, 600))</span><br><span class="line">    # 设置当前窗口的标题</span><br><span class="line">    pygame.display.set_caption(&#39;大球吃小球&#39;)</span><br><span class="line">    # 设置窗口的背景色(颜色是由红绿蓝三原色构成的元组)</span><br><span class="line">    screen.fill((255, 255, 255))</span><br><span class="line">    # 通过指定的文件名加载图像</span><br><span class="line">    ball_image &#x3D; pygame.image.load(&#39;.&#x2F;res&#x2F;ball.png&#39;)</span><br><span class="line">    # 在窗口上渲染图像</span><br><span class="line">    screen.blit(ball_image, (50, 50))</span><br><span class="line">    # 刷新当前窗口(渲染窗口将绘制的图像呈现出来)</span><br><span class="line">    pygame.display.flip()</span><br><span class="line">    running &#x3D; True</span><br><span class="line">    # 开启一个事件循环处理发生的事件</span><br><span class="line">    while running:</span><br><span class="line">        # 从消息队列中获取事件并对事件进行处理</span><br><span class="line">        for event in pygame.event.get():</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.QUIT:</span><br><span class="line">                running &#x3D; False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现动画效果"><a href="#实现动画效果" class="headerlink" title="实现动画效果"></a>实现动画效果</h4><p>说到<a href="https://zh.wikipedia.org/wiki/动画" target="_blank" rel="noopener">动画</a>这个词大家都不会陌生，事实上要实现动画效果，本身的原理也非常简单，就是将不连续的图片连续的播放，只要每秒钟达到了一定的帧数，那么就可以做出比较流畅的动画效果。如果要让上面代码中的小球动起来，可以将小球的位置用变量来表示，并在循环中修改小球的位置再刷新整个窗口即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 初始化导入的pygame中的模块</span><br><span class="line">    pygame.init()</span><br><span class="line">    # 初始化用于显示的窗口并设置窗口尺寸</span><br><span class="line">    screen &#x3D; pygame.display.set_mode((800, 600))</span><br><span class="line">    # 设置当前窗口的标题</span><br><span class="line">    pygame.display.set_caption(&#39;大球吃小球&#39;)</span><br><span class="line">    # 定义变量来表示小球在屏幕上的位置</span><br><span class="line">    x, y &#x3D; 50, 50</span><br><span class="line">    running &#x3D; True</span><br><span class="line">    # 开启一个事件循环处理发生的事件</span><br><span class="line">    while running:</span><br><span class="line">        # 从消息队列中获取事件并对事件进行处理</span><br><span class="line">        for event in pygame.event.get():</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.QUIT:</span><br><span class="line">                running &#x3D; False</span><br><span class="line">        screen.fill((255, 255, 255))</span><br><span class="line">        pygame.draw.circle(screen, (255, 0, 0,), (x, y), 30, 0)</span><br><span class="line">        pygame.display.flip()</span><br><span class="line">        # 每隔50毫秒就改变小球的位置再刷新窗口</span><br><span class="line">        pygame.time.delay(50)</span><br><span class="line">        x, y &#x3D; x + 5, y + 5</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h4><p>通常一个游戏中会有很多对象出现，而这些对象之间的“碰撞”在所难免，比如炮弹击中了飞机、箱子撞到了地面等。碰撞检测在绝大多数的游戏中都是一个必须得处理的至关重要的问题，pygame的sprite（动画精灵）模块就提供了对碰撞检测的支持，这里我们暂时不介绍sprite模块提供的功能，因为要检测两个小球有没有碰撞其实非常简单，只需要检查球心的距离有没有小于两个球的半径之和。为了制造出更多的小球，我们可以通过对鼠标事件的处理，在点击鼠标的位置创建颜色、大小和移动速度都随机的小球，当然要做到这一点，我们可以把之前学习到的面向对象的知识应用起来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">from enum import Enum, unique</span><br><span class="line">from math import sqrt</span><br><span class="line">from random import randint</span><br><span class="line"></span><br><span class="line">import pygame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@unique</span><br><span class="line">class Color(Enum):</span><br><span class="line">    &quot;&quot;&quot;颜色&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    RED &#x3D; (255, 0, 0)</span><br><span class="line">    GREEN &#x3D; (0, 255, 0)</span><br><span class="line">    BLUE &#x3D; (0, 0, 255)</span><br><span class="line">    BLACK &#x3D; (0, 0, 0)</span><br><span class="line">    WHITE &#x3D; (255, 255, 255)</span><br><span class="line">    GRAY &#x3D; (242, 242, 242)</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def random_color():</span><br><span class="line">        &quot;&quot;&quot;获得随机颜色&quot;&quot;&quot;</span><br><span class="line">        r &#x3D; randint(0, 255)</span><br><span class="line">        g &#x3D; randint(0, 255)</span><br><span class="line">        b &#x3D; randint(0, 255)</span><br><span class="line">        return (r, g, b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Ball(object):</span><br><span class="line">    &quot;&quot;&quot;球&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, x, y, radius, sx, sy, color&#x3D;Color.RED):</span><br><span class="line">        &quot;&quot;&quot;初始化方法&quot;&quot;&quot;</span><br><span class="line">        self.x &#x3D; x</span><br><span class="line">        self.y &#x3D; y</span><br><span class="line">        self.radius &#x3D; radius</span><br><span class="line">        self.sx &#x3D; sx</span><br><span class="line">        self.sy &#x3D; sy</span><br><span class="line">        self.color &#x3D; color</span><br><span class="line">        self.alive &#x3D; True</span><br><span class="line"></span><br><span class="line">    def move(self, screen):</span><br><span class="line">        &quot;&quot;&quot;移动&quot;&quot;&quot;</span><br><span class="line">        self.x +&#x3D; self.sx</span><br><span class="line">        self.y +&#x3D; self.sy</span><br><span class="line">        if self.x - self.radius &lt;&#x3D; 0 or \</span><br><span class="line">                self.x + self.radius &gt;&#x3D; screen.get_width():</span><br><span class="line">            self.sx &#x3D; -self.sx</span><br><span class="line">        if self.y - self.radius &lt;&#x3D; 0 or \</span><br><span class="line">                self.y + self.radius &gt;&#x3D; screen.get_height():</span><br><span class="line">            self.sy &#x3D; -self.sy</span><br><span class="line"></span><br><span class="line">    def eat(self, other):</span><br><span class="line">        &quot;&quot;&quot;吃其他球&quot;&quot;&quot;</span><br><span class="line">        if self.alive and other.alive and self !&#x3D; other:</span><br><span class="line">            dx, dy &#x3D; self.x - other.x, self.y - other.y</span><br><span class="line">            distance &#x3D; sqrt(dx ** 2 + dy ** 2)</span><br><span class="line">            if distance &lt; self.radius + other.radius \</span><br><span class="line">                    and self.radius &gt; other.radius:</span><br><span class="line">                other.alive &#x3D; False</span><br><span class="line">                self.radius &#x3D; self.radius + int(other.radius * 0.146)</span><br><span class="line"></span><br><span class="line">    def draw(self, screen):</span><br><span class="line">        &quot;&quot;&quot;在窗口上绘制球&quot;&quot;&quot;</span><br><span class="line">        pygame.draw.circle(screen, self.color,</span><br><span class="line">                           (self.x, self.y), self.radius, 0)</span><br></pre></td></tr></table></figure>
+
+<h4 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h4><p>可以在事件循环中对鼠标事件进行处理，通过事件对象的<code>type</code>属性可以判定事件类型，再通过<code>pos</code>属性就可以获得鼠标点击的位置。如果要处理键盘事件也是在这个地方，做法与处理鼠标事件类似。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">def main():</span><br><span class="line">    # 定义用来装所有球的容器</span><br><span class="line">    balls &#x3D; []</span><br><span class="line">    # 初始化导入的pygame中的模块</span><br><span class="line">    pygame.init()</span><br><span class="line">    # 初始化用于显示的窗口并设置窗口尺寸</span><br><span class="line">    screen &#x3D; pygame.display.set_mode((800, 600))</span><br><span class="line">    # 设置当前窗口的标题</span><br><span class="line">    pygame.display.set_caption(&#39;大球吃小球&#39;)</span><br><span class="line">    running &#x3D; True</span><br><span class="line">    # 开启一个事件循环处理发生的事件</span><br><span class="line">    while running:</span><br><span class="line">        # 从消息队列中获取事件并对事件进行处理</span><br><span class="line">        for event in pygame.event.get():</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.QUIT:</span><br><span class="line">                running &#x3D; False</span><br><span class="line">            # 处理鼠标事件的代码</span><br><span class="line">            if event.type &#x3D;&#x3D; pygame.MOUSEBUTTONDOWN and event.button &#x3D;&#x3D; 1:</span><br><span class="line">                # 获得点击鼠标的位置</span><br><span class="line">                x, y &#x3D; event.pos</span><br><span class="line">                radius &#x3D; randint(10, 100)</span><br><span class="line">                sx, sy &#x3D; randint(-10, 10), randint(-10, 10)</span><br><span class="line">                color &#x3D; Color.random_color()</span><br><span class="line">                # 在点击鼠标的位置创建一个球(大小、速度和颜色随机)</span><br><span class="line">                ball &#x3D; Ball(x, y, radius, sx, sy, color)</span><br><span class="line">                # 将球添加到列表容器中</span><br><span class="line">                balls.append(ball)</span><br><span class="line">        screen.fill((255, 255, 255))</span><br><span class="line">        # 取出容器中的球 如果没被吃掉就绘制 被吃掉了就移除</span><br><span class="line">        for ball in balls:</span><br><span class="line">            if ball.alive:</span><br><span class="line">                ball.draw(screen)</span><br><span class="line">            else:</span><br><span class="line">                balls.remove(ball)</span><br><span class="line">        pygame.display.flip()</span><br><span class="line">        # 每隔50毫秒就改变球的位置再刷新窗口</span><br><span class="line">        pygame.time.delay(50)</span><br><span class="line">        for ball in balls:</span><br><span class="line">            ball.move(screen)</span><br><span class="line">            # 检查球有没有吃到其他的球</span><br><span class="line">            for other in balls:</span><br><span class="line">                ball.eat(other)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>上面的两段代码合在一起，我们就完成了“大球吃小球”的游戏（如下图所示），准确的说它算不上一个游戏，但是做一个小游戏的基本知识我们已经通过这个例子告诉大家了，有了这些知识已经可以开始你的小游戏开发之旅了。其实上面的代码中还有很多值得改进的地方，比如刷新窗口以及让球移动起来的代码并不应该放在事件循环中，等学习了多线程的知识后，用一个后台线程来处理这些事可能是更好的选择。如果希望获得更好的用户体验，我们还可以在游戏中加入背景音乐以及在球与球发生碰撞时播放音效，利用pygame的mixer和music模块，我们可以很容易的做到这一点，大家可以自行了解这方面的知识。事实上，想了解更多的关于pygame的知识，最好的教程是<a href="https://www.pygame.org/news" target="_blank" rel="noopener">pygame的官方网站</a>，如果英语没毛病就可以赶紧去看看啦。 如果想开发<a href="https://zh.wikipedia.org/wiki/3D游戏" target="_blank" rel="noopener">3D游戏</a>，pygame就显得力不从心了，对3D游戏开发如果有兴趣的读者不妨看看<a href="https://www.panda3d.org/" target="_blank" rel="noopener">Panda3D</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># python基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" rel="prev" title="python面向对象进阶">
+      <i class="fa fa-chevron-left"></i> python面向对象进阶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" rel="next" title="python文件和异常">
+      python文件和异常 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#图形用户界面和游戏开发"><span class="nav-number">1.</span> <span class="nav-text">图形用户界面和游戏开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于tkinter模块的GUI"><span class="nav-number">1.1.</span> <span class="nav-text">基于tkinter模块的GUI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Pygame进行游戏开发"><span class="nav-number">1.2.</span> <span class="nav-text">使用Pygame进行游戏开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#制作游戏窗口"><span class="nav-number">1.2.1.</span> <span class="nav-text">制作游戏窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在窗口中绘图"><span class="nav-number">1.2.2.</span> <span class="nav-text">在窗口中绘图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载图像"><span class="nav-number">1.2.3.</span> <span class="nav-text">加载图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现动画效果"><span class="nav-number">1.2.4.</span> <span class="nav-text">实现动画效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞检测"><span class="nav-number">1.2.5.</span> <span class="nav-text">碰撞检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件处理"><span class="nav-number">1.2.6.</span> <span class="nav-text">事件处理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

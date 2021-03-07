@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="面向对象进阶在前面的章节我们已经了解了面向对象的入门知识，知道了如何定义类，如何创建对象以及如何给对象发消息。为了能够更好的使用面向对象编程思想进行程序开发，我们还需要对Python中的面向对象编程进行更为深入的了解。 @property装饰器之前我们讨论过Python中属性和方法访问权限的问题，虽然我们不建议将属性设置为私有的，但是如果直接将属性暴露给外界也是有问题的，比如我们没有办法检查赋给属">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python面向对象进阶">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="面向对象进阶在前面的章节我们已经了解了面向对象的入门知识，知道了如何定义类，如何创建对象以及如何给对象发消息。为了能够更好的使用面向对象编程思想进行程序开发，我们还需要对Python中的面向对象编程进行更为深入的了解。 @property装饰器之前我们讨论过Python中属性和方法访问权限的问题，虽然我们不建议将属性设置为私有的，但是如果直接将属性暴露给外界也是有问题的，比如我们没有办法检查赋给属">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/uml-components.png">
+<meta property="og:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/uml-example.png">
+<meta property="article:published_time" content="2021-03-07T14:01:20.688Z">
+<meta property="article:modified_time" content="2021-03-07T14:01:51.162Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="python基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/uml-components.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python面向对象进阶 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python面向对象进阶
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 22:01:20 / 修改时间：22:01:51" itemprop="dateCreated datePublished" datetime="2021-03-07T22:01:20+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="面向对象进阶"><a href="#面向对象进阶" class="headerlink" title="面向对象进阶"></a>面向对象进阶</h2><p>在前面的章节我们已经了解了面向对象的入门知识，知道了如何定义类，如何创建对象以及如何给对象发消息。为了能够更好的使用面向对象编程思想进行程序开发，我们还需要对Python中的面向对象编程进行更为深入的了解。</p>
+<h3 id="property装饰器"><a href="#property装饰器" class="headerlink" title="@property装饰器"></a>@property装饰器</h3><p>之前我们讨论过Python中属性和方法访问权限的问题，虽然我们不建议将属性设置为私有的，但是如果直接将属性暴露给外界也是有问题的，比如我们没有办法检查赋给属性的值是否有效。我们之前的建议是将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外界直接访问，那么如果想访问属性可以通过属性的getter（访问器）和setter（修改器）方法进行对应的操作。如果要做到这点，就可以考虑使用@property包装器来包装getter和setter方法，使得对属性的访问既安全又方便，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class Person(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, age):</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    # 访问器 - getter方法</span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    # 访问器 - getter方法</span><br><span class="line">    @property</span><br><span class="line">    def age(self):</span><br><span class="line">        return self._age</span><br><span class="line"></span><br><span class="line">    # 修改器 - setter方法</span><br><span class="line">    @age.setter</span><br><span class="line">    def age(self, age):</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    def play(self):</span><br><span class="line">        if self._age &lt;&#x3D; 16:</span><br><span class="line">            print(&#39;%s正在玩飞行棋.&#39; % self._name)</span><br><span class="line">        else:</span><br><span class="line">            print(&#39;%s正在玩斗地主.&#39; % self._name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    person &#x3D; Person(&#39;王大锤&#39;, 12)</span><br><span class="line">    person.play()</span><br><span class="line">    person.age &#x3D; 22</span><br><span class="line">    person.play()</span><br><span class="line">    # person.name &#x3D; &#39;白元芳&#39;  # AttributeError: can&#39;t set attribute</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h3 id="slots魔法"><a href="#slots魔法" class="headerlink" title="slots魔法"></a><strong>slots</strong>魔法</h3><p>我们讲到这里，不知道大家是否已经意识到，Python是一门<a href="https://zh.wikipedia.org/wiki/动态语言" target="_blank" rel="noopener">动态语言</a>。通常，动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<strong>slots</strong>变量来进行限定。需要注意的是<strong>slots</strong>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Person(object):</span><br><span class="line"></span><br><span class="line">    # 限定Person对象只能绑定_name, _age和_gender属性</span><br><span class="line">    __slots__ &#x3D; (&#39;_name&#39;, &#39;_age&#39;, &#39;_gender&#39;)</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, age):</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def age(self):</span><br><span class="line">        return self._age</span><br><span class="line"></span><br><span class="line">    @age.setter</span><br><span class="line">    def age(self, age):</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    def play(self):</span><br><span class="line">        if self._age &lt;&#x3D; 16:</span><br><span class="line">            print(&#39;%s正在玩飞行棋.&#39; % self._name)</span><br><span class="line">        else:</span><br><span class="line">            print(&#39;%s正在玩斗地主.&#39; % self._name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    person &#x3D; Person(&#39;王大锤&#39;, 22)</span><br><span class="line">    person.play()</span><br><span class="line">    person._gender &#x3D; &#39;男&#39;</span><br><span class="line">    # AttributeError: &#39;Person&#39; object has no attribute &#39;_is_gay&#39;</span><br><span class="line">    # person._is_gay &#x3D; True</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法和类方法"><a href="#静态方法和类方法" class="headerlink" title="静态方法和类方法"></a>静态方法和类方法</h3><p>之前，我们在类中定义的方法都是对象方法，也就是说这些方法都是发送给对象的消息。实际上，我们写在类中的方法并不需要都是对象方法，例如我们定义一个“三角形”类，通过传入三条边长来构造三角形，并提供计算周长和面积的方法，但是传入的三条边长未必能构造出三角形对象，因此我们可以先写一个方法来验证三条边长是否可以构成三角形，这个方法很显然就不是对象方法，因为在调用这个方法时三角形对象尚未创建出来（因为都不知道三条边能不能构成三角形），所以这个方法是属于三角形类而并不属于三角形对象的。我们可以使用静态方法来解决这类问题，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">from math import sqrt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Triangle(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, a, b, c):</span><br><span class="line">        self._a &#x3D; a</span><br><span class="line">        self._b &#x3D; b</span><br><span class="line">        self._c &#x3D; c</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def is_valid(a, b, c):</span><br><span class="line">        return a + b &gt; c and b + c &gt; a and a + c &gt; b</span><br><span class="line"></span><br><span class="line">    def perimeter(self):</span><br><span class="line">        return self._a + self._b + self._c</span><br><span class="line"></span><br><span class="line">    def area(self):</span><br><span class="line">        half &#x3D; self.perimeter() &#x2F; 2</span><br><span class="line">        return sqrt(half * (half - self._a) *</span><br><span class="line">                    (half - self._b) * (half - self._c))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    a, b, c &#x3D; 3, 4, 5</span><br><span class="line">    # 静态方法和类方法都是通过给类发消息来调用的</span><br><span class="line">    if Triangle.is_valid(a, b, c):</span><br><span class="line">        t &#x3D; Triangle(a, b, c)</span><br><span class="line">        print(t.perimeter())</span><br><span class="line">        # 也可以通过给类发消息来调用对象方法但是要传入接收消息的对象作为参数</span><br><span class="line">        # print(Triangle.perimeter(t))</span><br><span class="line">        print(t.area())</span><br><span class="line">        # print(Triangle.area(t))</span><br><span class="line">    else:</span><br><span class="line">        print(&#39;无法构成三角形.&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>和静态方法比较类似，Python还可以在类中定义类方法，类方法的第一个参数约定名为cls，它代表的是当前类相关的信息的对象（类本身也是一个对象，有的地方也称之为类的元数据对象），通过这个参数我们可以获取和类相关的信息并且可以创建出类的对象，代码如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from time import time, localtime, sleep</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Clock(object):</span><br><span class="line">    &quot;&quot;&quot;数字时钟&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, hour&#x3D;0, minute&#x3D;0, second&#x3D;0):</span><br><span class="line">        self._hour &#x3D; hour</span><br><span class="line">        self._minute &#x3D; minute</span><br><span class="line">        self._second &#x3D; second</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def now(cls):</span><br><span class="line">        ctime &#x3D; localtime(time())</span><br><span class="line">        return cls(ctime.tm_hour, ctime.tm_min, ctime.tm_sec)</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        &quot;&quot;&quot;走字&quot;&quot;&quot;</span><br><span class="line">        self._second +&#x3D; 1</span><br><span class="line">        if self._second &#x3D;&#x3D; 60:</span><br><span class="line">            self._second &#x3D; 0</span><br><span class="line">            self._minute +&#x3D; 1</span><br><span class="line">            if self._minute &#x3D;&#x3D; 60:</span><br><span class="line">                self._minute &#x3D; 0</span><br><span class="line">                self._hour +&#x3D; 1</span><br><span class="line">                if self._hour &#x3D;&#x3D; 24:</span><br><span class="line">                    self._hour &#x3D; 0</span><br><span class="line"></span><br><span class="line">    def show(self):</span><br><span class="line">        &quot;&quot;&quot;显示时间&quot;&quot;&quot;</span><br><span class="line">        return &#39;%02d:%02d:%02d&#39; % \</span><br><span class="line">               (self._hour, self._minute, self._second)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 通过类方法创建对象并获取系统时间</span><br><span class="line">    clock &#x3D; Clock.now()</span><br><span class="line">    while True:</span><br><span class="line">        print(clock.show())</span><br><span class="line">        sleep(1)</span><br><span class="line">        clock.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h3 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h3><p>简单的说，类和类之间的关系有三种：is-a、has-a和use-a关系。</p>
+<ul>
+<li>is-a关系也叫继承或泛化，比如学生和人的关系、手机和电子产品的关系都属于继承关系。</li>
+<li>has-a关系通常称之为关联，比如部门和员工的关系，汽车和引擎的关系都属于关联关系；关联关系如果是整体和部分的关联，那么我们称之为聚合关系；如果整体进一步负责了部分的生命周期（整体和部分是不可分割的，同时同在也同时消亡），那么这种就是最强的关联关系，我们称之为合成关系。</li>
+<li>use-a关系通常称之为依赖，比如司机有一个驾驶的行为（方法），其中（的参数）使用到了汽车，那么司机和汽车的关系就是依赖关系。</li>
+</ul>
+<p>我们可以使用一种叫做<a href="https://zh.wikipedia.org/wiki/统一建模语言" target="_blank" rel="noopener">UML</a>（统一建模语言）的东西来进行面向对象建模，其中一项重要的工作就是把类和类之间的关系用标准化的图形符号描述出来。关于UML我们在这里不做详细的介绍，有兴趣的读者可以自行阅读<a href="https://e.jd.com/30392949.html" target="_blank" rel="noopener">《UML面向对象设计基础》</a>一书。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/uml-components.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/uml-components.png" alt="img"></a></p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/uml-example.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/uml-example.png" alt="img"></a></p>
+<p>利用类之间的这些关系，我们可以在已有类的基础上来完成某些操作，也可以在已有类的基础上创建新的类，这些都是实现代码复用的重要手段。复用现有的代码不仅可以减少开发的工作量，也有利于代码的管理和维护，这是我们在日常工作中都会使用到的技术手段。</p>
+<h3 id="继承和多态"><a href="#继承和多态" class="headerlink" title="继承和多态"></a>继承和多态</h3><p>刚才我们提到了，可以在已有类的基础上创建新类，这其中的一种做法就是让一个类从另一个类那里将属性和方法直接继承下来，从而减少重复代码的编写。提供继承信息的我们称之为父类，也叫超类或基类；得到继承信息的我们称之为子类，也叫派生类或衍生类。子类除了继承父类提供的属性和方法，还可以定义自己特有的属性和方法，所以子类比父类拥有的更多的能力，在实际开发中，我们经常会用子类对象去替换掉一个父类对象，这是面向对象编程中一个常见的行为，对应的原则称之为<a href="https://zh.wikipedia.org/wiki/里氏替换原则" target="_blank" rel="noopener">里氏替换原则</a>。下面我们先看一个继承的例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">class Person(object):</span><br><span class="line">    &quot;&quot;&quot;人&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, age):</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def age(self):</span><br><span class="line">        return self._age</span><br><span class="line"></span><br><span class="line">    @age.setter</span><br><span class="line">    def age(self, age):</span><br><span class="line">        self._age &#x3D; age</span><br><span class="line"></span><br><span class="line">    def play(self):</span><br><span class="line">        print(&#39;%s正在愉快的玩耍.&#39; % self._name)</span><br><span class="line"></span><br><span class="line">    def watch_av(self):</span><br><span class="line">        if self._age &gt;&#x3D; 18:</span><br><span class="line">            print(&#39;%s正在观看爱情动作片.&#39; % self._name)</span><br><span class="line">        else:</span><br><span class="line">            print(&#39;%s只能观看《熊出没》.&#39; % self._name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Student(Person):</span><br><span class="line">    &quot;&quot;&quot;学生&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, age, grade):</span><br><span class="line">        super().__init__(name, age)</span><br><span class="line">        self._grade &#x3D; grade</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def grade(self):</span><br><span class="line">        return self._grade</span><br><span class="line"></span><br><span class="line">    @grade.setter</span><br><span class="line">    def grade(self, grade):</span><br><span class="line">        self._grade &#x3D; grade</span><br><span class="line"></span><br><span class="line">    def study(self, course):</span><br><span class="line">        print(&#39;%s的%s正在学习%s.&#39; % (self._grade, self._name, course))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Teacher(Person):</span><br><span class="line">    &quot;&quot;&quot;老师&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, age, title):</span><br><span class="line">        super().__init__(name, age)</span><br><span class="line">        self._title &#x3D; title</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def title(self):</span><br><span class="line">        return self._title</span><br><span class="line"></span><br><span class="line">    @title.setter</span><br><span class="line">    def title(self, title):</span><br><span class="line">        self._title &#x3D; title</span><br><span class="line"></span><br><span class="line">    def teach(self, course):</span><br><span class="line">        print(&#39;%s%s正在讲%s.&#39; % (self._name, self._title, course))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    stu &#x3D; Student(&#39;王大锤&#39;, 15, &#39;初三&#39;)</span><br><span class="line">    stu.study(&#39;数学&#39;)</span><br><span class="line">    stu.watch_av()</span><br><span class="line">    t &#x3D; Teacher(&#39;骆昊&#39;, 38, &#39;砖家&#39;)</span><br><span class="line">    t.teach(&#39;Python程序设计&#39;)</span><br><span class="line">    t.watch_av()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>子类在继承了父类的方法后，可以对父类已有的方法给出新的实现版本，这个动作称之为方法重写（override）。通过方法重写我们可以让父类的同一个行为在子类中拥有不同的实现版本，当我们调用这个经过子类重写的方法时，不同的子类对象会表现出不同的行为，这个就是多态（poly-morphism）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">from abc import ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Pet(object, metaclass&#x3D;ABCMeta):</span><br><span class="line">    &quot;&quot;&quot;宠物&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, nickname):</span><br><span class="line">        self._nickname &#x3D; nickname</span><br><span class="line"></span><br><span class="line">    @abstractmethod</span><br><span class="line">    def make_voice(self):</span><br><span class="line">        &quot;&quot;&quot;发出声音&quot;&quot;&quot;</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Dog(Pet):</span><br><span class="line">    &quot;&quot;&quot;狗&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def make_voice(self):</span><br><span class="line">        print(&#39;%s: 汪汪汪...&#39; % self._nickname)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Cat(Pet):</span><br><span class="line">    &quot;&quot;&quot;猫&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def make_voice(self):</span><br><span class="line">        print(&#39;%s: 喵...喵...&#39; % self._nickname)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    pets &#x3D; [Dog(&#39;旺财&#39;), Cat(&#39;凯蒂&#39;), Dog(&#39;大黄&#39;)]</span><br><span class="line">    for pet in pets:</span><br><span class="line">        pet.make_voice()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，我们将<code>Pet</code>类处理成了一个抽象类，所谓抽象类就是不能够创建对象的类，这种类的存在就是专门为了让其他类去继承它。Python从语法层面并没有像Java或C#那样提供对抽象类的支持，但是我们可以通过<code>abc</code>模块的<code>ABCMeta</code>元类和<code>abstractmethod</code>包装器来达到抽象类的效果，如果一个类中存在抽象方法那么这个类就不能够实例化（创建对象）。上面的代码中，<code>Dog</code>和<code>Cat</code>两个子类分别对<code>Pet</code>类中的<code>make_voice</code>抽象方法进行了重写并给出了不同的实现版本，当我们在<code>main</code>函数中调用该方法时，这个方法就表现出了多态行为（同样的方法做了不同的事情）。</p>
+<h3 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h3><h4 id="案例1：奥特曼打小怪兽。"><a href="#案例1：奥特曼打小怪兽。" class="headerlink" title="案例1：奥特曼打小怪兽。"></a>案例1：奥特曼打小怪兽。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line">from abc import ABCMeta, abstractmethod</span><br><span class="line">from random import randint, randrange</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Fighter(object, metaclass&#x3D;ABCMeta):</span><br><span class="line">    &quot;&quot;&quot;战斗者&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    # 通过__slots__魔法限定对象可以绑定的成员变量</span><br><span class="line">    __slots__ &#x3D; (&#39;_name&#39;, &#39;_hp&#39;)</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, hp):</span><br><span class="line">        &quot;&quot;&quot;初始化方法</span><br><span class="line"></span><br><span class="line">        :param name: 名字</span><br><span class="line">        :param hp: 生命值</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line">        self._hp &#x3D; hp</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def hp(self):</span><br><span class="line">        return self._hp</span><br><span class="line"></span><br><span class="line">    @hp.setter</span><br><span class="line">    def hp(self, hp):</span><br><span class="line">        self._hp &#x3D; hp if hp &gt;&#x3D; 0 else 0</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def alive(self):</span><br><span class="line">        return self._hp &gt; 0</span><br><span class="line"></span><br><span class="line">    @abstractmethod</span><br><span class="line">    def attack(self, other):</span><br><span class="line">        &quot;&quot;&quot;攻击</span><br><span class="line"></span><br><span class="line">        :param other: 被攻击的对象</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Ultraman(Fighter):</span><br><span class="line">    &quot;&quot;&quot;奥特曼&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    __slots__ &#x3D; (&#39;_name&#39;, &#39;_hp&#39;, &#39;_mp&#39;)</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, hp, mp):</span><br><span class="line">        &quot;&quot;&quot;初始化方法</span><br><span class="line"></span><br><span class="line">        :param name: 名字</span><br><span class="line">        :param hp: 生命值</span><br><span class="line">        :param mp: 魔法值</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        super().__init__(name, hp)</span><br><span class="line">        self._mp &#x3D; mp</span><br><span class="line"></span><br><span class="line">    def attack(self, other):</span><br><span class="line">        other.hp -&#x3D; randint(15, 25)</span><br><span class="line"></span><br><span class="line">    def huge_attack(self, other):</span><br><span class="line">        &quot;&quot;&quot;究极必杀技(打掉对方至少50点或四分之三的血)</span><br><span class="line"></span><br><span class="line">        :param other: 被攻击的对象</span><br><span class="line"></span><br><span class="line">        :return: 使用成功返回True否则返回False</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if self._mp &gt;&#x3D; 50:</span><br><span class="line">            self._mp -&#x3D; 50</span><br><span class="line">            injury &#x3D; other.hp * 3 &#x2F;&#x2F; 4</span><br><span class="line">            injury &#x3D; injury if injury &gt;&#x3D; 50 else 50</span><br><span class="line">            other.hp -&#x3D; injury</span><br><span class="line">            return True</span><br><span class="line">        else:</span><br><span class="line">            self.attack(other)</span><br><span class="line">            return False</span><br><span class="line"></span><br><span class="line">    def magic_attack(self, others):</span><br><span class="line">        &quot;&quot;&quot;魔法攻击</span><br><span class="line"></span><br><span class="line">        :param others: 被攻击的群体</span><br><span class="line"></span><br><span class="line">        :return: 使用魔法成功返回True否则返回False</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if self._mp &gt;&#x3D; 20:</span><br><span class="line">            self._mp -&#x3D; 20</span><br><span class="line">            for temp in others:</span><br><span class="line">                if temp.alive:</span><br><span class="line">                    temp.hp -&#x3D; randint(10, 15)</span><br><span class="line">            return True</span><br><span class="line">        else:</span><br><span class="line">            return False</span><br><span class="line"></span><br><span class="line">    def resume(self):</span><br><span class="line">        &quot;&quot;&quot;恢复魔法值&quot;&quot;&quot;</span><br><span class="line">        incr_point &#x3D; randint(1, 10)</span><br><span class="line">        self._mp +&#x3D; incr_point</span><br><span class="line">        return incr_point</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &#39;~~~%s奥特曼~~~\n&#39; % self._name + \</span><br><span class="line">            &#39;生命值: %d\n&#39; % self._hp + \</span><br><span class="line">            &#39;魔法值: %d\n&#39; % self._mp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Monster(Fighter):</span><br><span class="line">    &quot;&quot;&quot;小怪兽&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    __slots__ &#x3D; (&#39;_name&#39;, &#39;_hp&#39;)</span><br><span class="line"></span><br><span class="line">    def attack(self, other):</span><br><span class="line">        other.hp -&#x3D; randint(10, 20)</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &#39;~~~%s小怪兽~~~\n&#39; % self._name + \</span><br><span class="line">            &#39;生命值: %d\n&#39; % self._hp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def is_any_alive(monsters):</span><br><span class="line">    &quot;&quot;&quot;判断有没有小怪兽是活着的&quot;&quot;&quot;</span><br><span class="line">    for monster in monsters:</span><br><span class="line">        if monster.alive &gt; 0:</span><br><span class="line">            return True</span><br><span class="line">    return False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def select_alive_one(monsters):</span><br><span class="line">    &quot;&quot;&quot;选中一只活着的小怪兽&quot;&quot;&quot;</span><br><span class="line">    monsters_len &#x3D; len(monsters)</span><br><span class="line">    while True:</span><br><span class="line">        index &#x3D; randrange(monsters_len)</span><br><span class="line">        monster &#x3D; monsters[index]</span><br><span class="line">        if monster.alive &gt; 0:</span><br><span class="line">            return monster</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def display_info(ultraman, monsters):</span><br><span class="line">    &quot;&quot;&quot;显示奥特曼和小怪兽的信息&quot;&quot;&quot;</span><br><span class="line">    print(ultraman)</span><br><span class="line">    for monster in monsters:</span><br><span class="line">        print(monster, end&#x3D;&#39;&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    u &#x3D; Ultraman(&#39;骆昊&#39;, 1000, 120)</span><br><span class="line">    m1 &#x3D; Monster(&#39;狄仁杰&#39;, 250)</span><br><span class="line">    m2 &#x3D; Monster(&#39;白元芳&#39;, 500)</span><br><span class="line">    m3 &#x3D; Monster(&#39;王大锤&#39;, 750)</span><br><span class="line">    ms &#x3D; [m1, m2, m3]</span><br><span class="line">    fight_round &#x3D; 1</span><br><span class="line">    while u.alive and is_any_alive(ms):</span><br><span class="line">        print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第%02d回合&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39; % fight_round)</span><br><span class="line">        m &#x3D; select_alive_one(ms)  # 选中一只小怪兽</span><br><span class="line">        skill &#x3D; randint(1, 10)   # 通过随机数选择使用哪种技能</span><br><span class="line">        if skill &lt;&#x3D; 6:  # 60%的概率使用普通攻击</span><br><span class="line">            print(&#39;%s使用普通攻击打了%s.&#39; % (u.name, m.name))</span><br><span class="line">            u.attack(m)</span><br><span class="line">            print(&#39;%s的魔法值恢复了%d点.&#39; % (u.name, u.resume()))</span><br><span class="line">        elif skill &lt;&#x3D; 9:  # 30%的概率使用魔法攻击(可能因魔法值不足而失败)</span><br><span class="line">            if u.magic_attack(ms):</span><br><span class="line">                print(&#39;%s使用了魔法攻击.&#39; % u.name)</span><br><span class="line">            else:</span><br><span class="line">                print(&#39;%s使用魔法失败.&#39; % u.name)</span><br><span class="line">        else:  # 10%的概率使用究极必杀技(如果魔法值不足则使用普通攻击)</span><br><span class="line">            if u.huge_attack(m):</span><br><span class="line">                print(&#39;%s使用究极必杀技虐了%s.&#39; % (u.name, m.name))</span><br><span class="line">            else:</span><br><span class="line">                print(&#39;%s使用普通攻击打了%s.&#39; % (u.name, m.name))</span><br><span class="line">                print(&#39;%s的魔法值恢复了%d点.&#39; % (u.name, u.resume()))</span><br><span class="line">        if m.alive &gt; 0:  # 如果选中的小怪兽没有死就回击奥特曼</span><br><span class="line">            print(&#39;%s回击了%s.&#39; % (m.name, u.name))</span><br><span class="line">            m.attack(u)</span><br><span class="line">        display_info(u, ms)  # 每个回合结束后显示奥特曼和小怪兽的信息</span><br><span class="line">        fight_round +&#x3D; 1</span><br><span class="line">    print(&#39;\n&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;战斗结束!&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\n&#39;)</span><br><span class="line">    if u.alive &gt; 0:</span><br><span class="line">        print(&#39;%s奥特曼胜利!&#39; % u.name)</span><br><span class="line">    else:</span><br><span class="line">        print(&#39;小怪兽胜利!&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="案例2：扑克游戏。"><a href="#案例2：扑克游戏。" class="headerlink" title="案例2：扑克游戏。"></a>案例2：扑克游戏。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Card(object):</span><br><span class="line">    &quot;&quot;&quot;一张牌&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, suite, face):</span><br><span class="line">        self._suite &#x3D; suite</span><br><span class="line">        self._face &#x3D; face</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def face(self):</span><br><span class="line">        return self._face</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def suite(self):</span><br><span class="line">        return self._suite</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        if self._face &#x3D;&#x3D; 1:</span><br><span class="line">            face_str &#x3D; &#39;A&#39;</span><br><span class="line">        elif self._face &#x3D;&#x3D; 11:</span><br><span class="line">            face_str &#x3D; &#39;J&#39;</span><br><span class="line">        elif self._face &#x3D;&#x3D; 12:</span><br><span class="line">            face_str &#x3D; &#39;Q&#39;</span><br><span class="line">        elif self._face &#x3D;&#x3D; 13:</span><br><span class="line">            face_str &#x3D; &#39;K&#39;</span><br><span class="line">        else:</span><br><span class="line">            face_str &#x3D; str(self._face)</span><br><span class="line">        return &#39;%s%s&#39; % (self._suite, face_str)</span><br><span class="line">    </span><br><span class="line">    def __repr__(self):</span><br><span class="line">        return self.__str__()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Poker(object):</span><br><span class="line">    &quot;&quot;&quot;一副牌&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        self._cards &#x3D; [Card(suite, face) </span><br><span class="line">                       for suite in &#39;♠♥♣♦&#39;</span><br><span class="line">                       for face in range(1, 14)]</span><br><span class="line">        self._current &#x3D; 0</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def cards(self):</span><br><span class="line">        return self._cards</span><br><span class="line"></span><br><span class="line">    def shuffle(self):</span><br><span class="line">        &quot;&quot;&quot;洗牌(随机乱序)&quot;&quot;&quot;</span><br><span class="line">        self._current &#x3D; 0</span><br><span class="line">        random.shuffle(self._cards)</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def next(self):</span><br><span class="line">        &quot;&quot;&quot;发牌&quot;&quot;&quot;</span><br><span class="line">        card &#x3D; self._cards[self._current]</span><br><span class="line">        self._current +&#x3D; 1</span><br><span class="line">        return card</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def has_next(self):</span><br><span class="line">        &quot;&quot;&quot;还有没有牌&quot;&quot;&quot;</span><br><span class="line">        return self._current &lt; len(self._cards)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Player(object):</span><br><span class="line">    &quot;&quot;&quot;玩家&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line">        self._cards_on_hand &#x3D; []</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def cards_on_hand(self):</span><br><span class="line">        return self._cards_on_hand</span><br><span class="line"></span><br><span class="line">    def get(self, card):</span><br><span class="line">        &quot;&quot;&quot;摸牌&quot;&quot;&quot;</span><br><span class="line">        self._cards_on_hand.append(card)</span><br><span class="line"></span><br><span class="line">    def arrange(self, card_key):</span><br><span class="line">        &quot;&quot;&quot;玩家整理手上的牌&quot;&quot;&quot;</span><br><span class="line">        self._cards_on_hand.sort(key&#x3D;card_key)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 排序规则-先根据花色再根据点数排序</span><br><span class="line">def get_key(card):</span><br><span class="line">    return (card.suite, card.face)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    p &#x3D; Poker()</span><br><span class="line">    p.shuffle()</span><br><span class="line">    players &#x3D; [Player(&#39;东邪&#39;), Player(&#39;西毒&#39;), Player(&#39;南帝&#39;), Player(&#39;北丐&#39;)]</span><br><span class="line">    for _ in range(13):</span><br><span class="line">        for player in players:</span><br><span class="line">            player.get(p.next)</span><br><span class="line">    for player in players:</span><br><span class="line">        print(player.name + &#39;:&#39;, end&#x3D;&#39; &#39;)</span><br><span class="line">        player.arrange(get_key)</span><br><span class="line">        print(player.cards_on_hand)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明：</strong> 大家可以自己尝试在上面代码的基础上写一个简单的扑克游戏，例如21点(Black Jack)，游戏的规则可以自己在网上找一找。</p>
+</blockquote>
+<h4 id="案例3：工资结算系统。"><a href="#案例3：工资结算系统。" class="headerlink" title="案例3：工资结算系统。"></a>案例3：工资结算系统。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;&quot;</span><br><span class="line">某公司有三种类型的员工 分别是部门经理、程序员和销售员</span><br><span class="line">需要设计一个工资结算系统 根据提供的员工信息来计算月薪</span><br><span class="line">部门经理的月薪是每月固定15000元</span><br><span class="line">程序员的月薪按本月工作时间计算 每小时150元</span><br><span class="line">销售员的月薪是1200元的底薪加上销售额5%的提成</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">from abc import ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Employee(object, metaclass&#x3D;ABCMeta):</span><br><span class="line">    &quot;&quot;&quot;员工&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        初始化方法</span><br><span class="line"></span><br><span class="line">        :param name: 姓名</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self._name &#x3D; name</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def name(self):</span><br><span class="line">        return self._name</span><br><span class="line"></span><br><span class="line">    @abstractmethod</span><br><span class="line">    def get_salary(self):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        获得月薪</span><br><span class="line"></span><br><span class="line">        :return: 月薪</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Manager(Employee):</span><br><span class="line">    &quot;&quot;&quot;部门经理&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def get_salary(self):</span><br><span class="line">        return 15000.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Programmer(Employee):</span><br><span class="line">    &quot;&quot;&quot;程序员&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, working_hour&#x3D;0):</span><br><span class="line">        super().__init__(name)</span><br><span class="line">        self._working_hour &#x3D; working_hour</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def working_hour(self):</span><br><span class="line">        return self._working_hour</span><br><span class="line"></span><br><span class="line">    @working_hour.setter</span><br><span class="line">    def working_hour(self, working_hour):</span><br><span class="line">        self._working_hour &#x3D; working_hour if working_hour &gt; 0 else 0</span><br><span class="line"></span><br><span class="line">    def get_salary(self):</span><br><span class="line">        return 150.0 * self._working_hour</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Salesman(Employee):</span><br><span class="line">    &quot;&quot;&quot;销售员&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, name, sales&#x3D;0):</span><br><span class="line">        super().__init__(name)</span><br><span class="line">        self._sales &#x3D; sales</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def sales(self):</span><br><span class="line">        return self._sales</span><br><span class="line"></span><br><span class="line">    @sales.setter</span><br><span class="line">    def sales(self, sales):</span><br><span class="line">        self._sales &#x3D; sales if sales &gt; 0 else 0</span><br><span class="line"></span><br><span class="line">    def get_salary(self):</span><br><span class="line">        return 1200.0 + self._sales * 0.05</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    emps &#x3D; [</span><br><span class="line">        Manager(&#39;刘备&#39;), Programmer(&#39;诸葛亮&#39;),</span><br><span class="line">        Manager(&#39;曹操&#39;), Salesman(&#39;荀彧&#39;),</span><br><span class="line">        Salesman(&#39;吕布&#39;), Programmer(&#39;张辽&#39;),</span><br><span class="line">        Programmer(&#39;赵云&#39;)</span><br><span class="line">    ]</span><br><span class="line">    for emp in emps:</span><br><span class="line">        if isinstance(emp, Programmer):</span><br><span class="line">            emp.working_hour &#x3D; int(input(&#39;请输入%s本月工作时间: &#39; % emp.name))</span><br><span class="line">        elif isinstance(emp, Salesman):</span><br><span class="line">            emp.sales &#x3D; float(input(&#39;请输入%s本月销售额: &#39; % emp.name))</span><br><span class="line">        # 同样是接收get_salary这个消息但是不同的员工表现出了不同的行为(多态)</span><br><span class="line">        print(&#39;%s本月工资为: ￥%s元&#39; %</span><br><span class="line">              (emp.name, emp.get_salary()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># python基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="prev" title="python面向对象编程基础">
+      <i class="fa fa-chevron-left"></i> python面向对象编程基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/" rel="next" title="python图像用户界面和游戏开发">
+      python图像用户界面和游戏开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象进阶"><span class="nav-number">1.</span> <span class="nav-text">面向对象进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#property装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">@property装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slots魔法"><span class="nav-number">1.2.</span> <span class="nav-text">slots魔法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态方法和类方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态方法和类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类之间的关系"><span class="nav-number">1.4.</span> <span class="nav-text">类之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承和多态"><span class="nav-number">1.5.</span> <span class="nav-text">继承和多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综合案例"><span class="nav-number">1.6.</span> <span class="nav-text">综合案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#案例1：奥特曼打小怪兽。"><span class="nav-number">1.6.1.</span> <span class="nav-text">案例1：奥特曼打小怪兽。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例2：扑克游戏。"><span class="nav-number">1.6.2.</span> <span class="nav-text">案例2：扑克游戏。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例3：工资结算系统。"><span class="nav-number">1.6.3.</span> <span class="nav-text">案例3：工资结算系统。</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0.思维导图 1.数据模型的概念在数据库中用数据模型这个工具来抽象、表示和处理现实世界中的数据和信息。通俗地讲数据模型就是现实世界的模拟。数据模型应满足三方面要求： 能比较真实地模拟现实世界容易为人所理解便于在计算机上实现2.两大类数据模型数据模型分为两类（分属两个不同的层次） (1) 概念模型 也称信息模型，它是按用户的观点来对数据和信息建模，用于数据库设计。(2) 逻辑模型和物理模型逻辑模型主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库数据模型">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="0.思维导图 1.数据模型的概念在数据库中用数据模型这个工具来抽象、表示和处理现实世界中的数据和信息。通俗地讲数据模型就是现实世界的模拟。数据模型应满足三方面要求： 能比较真实地模拟现实世界容易为人所理解便于在计算机上实现2.两大类数据模型数据模型分为两类（分属两个不同的层次） (1) 概念模型 也称信息模型，它是按用户的观点来对数据和信息建模，用于数据库设计。(2) 逻辑模型和物理模型逻辑模型主">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-07T04:20:04.533Z">
+<meta property="article:modified_time" content="2021-03-07T04:21:22.192Z">
+<meta property="article:author" content="KJH">
+<meta property="article:tag" content="数据库基本学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据库数据模型 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KJH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库数据模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 12:20:04 / 修改时间：12:21:22" itemprop="dateCreated datePublished" datetime="2021-03-07T12:20:04+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>0.思维导图</p>
+<p>1.数据模型的概念<br>在数据库中用数据模型这个工具来抽象、表示和处理现实世界中的数据和信息。<br>通俗地讲数据模型就是现实世界的模拟。<br>数据模型应满足三方面要求：</p>
+<p>能比较真实地模拟现实世界<br>容易为人所理解<br>便于在计算机上实现<br>2.两大类数据模型<br>数据模型分为两类（分属两个不同的层次）</p>
+<p>(1) 概念模型 也称信息模型，它是按用户的观点来对数据和信息建模，用于数据库设计。<br>(2) 逻辑模型和物理模型<br>逻辑模型主要包括网状模型、层次模型、关系模型、面向对象模型等，按计算机系统的观点对数据建模，用于DBMS实现。<br>物理模型是对数据最底层的抽象，描述数据在系统内部的表示方式和存取方法，在磁盘或磁带上的存储方式和存取方法。<br>客观对象的抽象过程—两步抽象<br>现实世界中的客观对象抽象为概念模型；<br>把概念模型转换为某一DBMS支持的数据模型。</p>
+<p>3.数据模型的组成要素<br>(1)数据结构<br>数据结构是所研究的对象类型的集合。这些对象是数据库的组成成分，数据结构指对象和对象间联系的表达和实现，是对系统静态特征的描述，包括两个方面：<br>（1）数据本身：类型、内容、性质。例如关系模型中的域、属性、关系等。<br>（2）数据之间的联系：数据之间是如何相互关联的，例如关系模型中的主码、外码联系等。</p>
+<p>(2)数据操作<br>数据操作</p>
+<p>对数据库中各种对象(型)的实例(值)允许执行的操作，及有关的操作规则<br>数据操作的类型</p>
+<p>查询<br>更新(包括插入、删除、修改)<br>(3)数据的完整性约束条件<br>数据的完整性约束条件是一组完整性规则的集合，规定数据库状态及状态变化所应满足的条件，以保证数据的正确性、有效性和相容性。<br>完整性规则：给定的数据模型中数据及其联系所具有的制约和储存规则</p>
+<p>4.概念模型<br>(1)用途与基本要求<br>概念模型的用途:</p>
+<p>概念模型用于信息世界的建模<br>是现实世界到机器世界的一个中间层次<br>是数据库设计的有力工具<br>数据库设计人员和用户之间进行交流的语言<br>对概念模型的基本要求:</p>
+<p>较强的语义表达能力<br>能够方便、直接地表达应用中的各种语义知识<br>简单、清晰、易于用户理解<br>(2) 信息世界中的基本概念<br>(1) 实体（Entity）<br>客观存在并可相互区别的事物称为实体。<br>可以是具体的人、事、物或抽象的概念。<br>(2) 属性（Attribute）<br>实体所具有的某一特性称为属性。<br>一个实体可以由若干个属性来刻画。<br>(3) 码（Key）<br>唯一标识实体的属性集称为码。<br>(4) 域（Domain）<br>属性的取值范围称为该属性的域。<br>(5) 实体型（Entity Type）<br>用实体名及其属性名集合来抽象和刻画同类实体称为实体型<br>(6) 实体集（Entity Set）<br>同一类型实体的集合称为实体集<br>(7) 联系（Relationship）<br>现实世界中事物内部以及事物之间的联系在信息世界中反映为实体内部的联系和实体之间的联系。<br>实体内部的联系通常是指组成实体的各属性之间的联系<br>实体之间的联系通常是指不同实体集之间的联系<br>(3)两个实体型之间的联系</p>
+<p>① 一对一联系（1:1）<br>实例</p>
+<p>一个班级只有一个正班长<br>一个班长只在一个班中任职</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中至多有一个（也可以没有）实体与之联系，反之亦然。则称实体集A与实体集B具有一对一联系，记为1:1</p>
+<p>② 一对多联系（1:n）<br>实例</p>
+<p>一个班级中有若干名学生，<br>每个学生只在一个班级中学习</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中有n个实体（n≥0）与之联系，反之，对于实体集B中的每一个实体，实体集A中至多只有一个实体与之联系，则称实体集A与实体集B有一对多联系，记为1:n<br>③ 多对多联系（m:n）<br>实例</p>
+<p>课程与学生之间的联系：<br>一门课程同时有若干个学生选修<br>一个学生可以同时选修多门课程</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中有n个实体（n≥0）与之联系，反之，对于实体集B中的每一个实体，实体集A中也有m个实体（m≥0）与之联系，则称实体集A与实体B具有多对多联系，记为m:n<br>(4)两个以上实体型之间的联系<br>① 一对多联系（1:m||1:n）<br>若实体集E1，E2，…，En存在联系，对于实体集Ej（j=1，2，…，i-1i+1，…，n）中的给定实体，最多只和Ei中的一个实体相联系，则我们说Ei与E1E2，…，Ei-1，Ei+1，…，En之间的联系是一对多的。<br>实例</p>
+<p>课程、教师与参考书三个实体型<br>一门课程可以有若干个教师讲授，<br>使用若干本参考书，<br>每一个教师只讲授一门课程，<br>每一本参考书只供一门课程使用</p>
+<p>② 一对一联系（1:1:1）<br>实例</p>
+<p>一个独生子女只有一个父亲，一个母亲<br>一个父亲也只有一个独生子女<br>一个母亲也只有一个独生子女</p>
+<p>③ 多对多联系（m:n:p）<br>实例<br>供应商、项目、零件三个实体型<br>一个供应商可以供给多个项目多种零件<br>每个项目可以使用多个供应商供应的零件<br>每种零件可由不同供应商供给</p>
+<p>(5)单个实体型内的联系<br>① 一对多联系（1:n）<br>实例<br>职工实体型内部具有领导与被领导的联系<br>某一职工（干部）“领导”若干名职工<br>一个职工仅被另外一个职工直接领导<br>这是一对多的联系</p>
+<p>② 一对一联系（1:1）<br>身份证可以唯一确认一个人的身份，人与身份证有确认和被确认的关系<br>一个身份证唯一确定一个人<br>一个人也唯一确认一个身份证</p>
+<p>③ 多对多联系 （m:n）<br>饮料和厂商之间有制造和被制造的关系<br>多个饮料可以被多个厂商制造<br>多个厂商可以制造出多种饮料</p>
+<p>(6)概念模型的一种表示方法<br>① 实体－联系方法(E-R方法)<br>E-R图也称实体-联系图(Entity Relationship Diagram)，提供了表示实体类型、属性和联系的方法，用E-R图来描述现实世界的概念模型<br>E-R方法也称为E-R模型<br>② 实体型<br>用矩形表示，矩形框内写明实体名。</p>
+<p>③ 属性<br>用椭圆形表示，并用无向边将其与相应的实体连接起来</p>
+<p>④ 联系<br>联系本身：<br>用菱形表示，菱形框内写明联系名，并用无向边分别与有关实体连接起来，同时在无向边旁标上联系的类型（1:1、1:n或m:n）</p>
+<p>⑤ 联系的表示方法</p>
+<p>⑥ 联系的表示方法示例</p>
+<p>⑦ 联系的属性<br>联系本身也是一种实体型，也可以有属性。如果一个联系具有属性，则这些属性也要用无向边与该联系连接起来</p>
+<p>⑧ 一个实例<br>用E-R图表示某个工厂物资管理的概念模型</p>
+<p>实体<br>仓库： 仓库号、面积、电话号码<br>零件 ：零件号、名称、规格、单价、描述<br>供应商：供应商号、姓名、地址、电话号码、帐号<br>项目：项目号、预算、开工日期<br>职工：职工号、姓名、年龄、职称<br>实体之间的联系如下：</p>
+<p>(1)一个仓库可以存放多种零件，一种零件可以存放在多个仓库中。仓库和零件具有多对多的联系。用库存量来表示某种零件在某个仓库中的数量。<br>(2)一个仓库有多个职工当仓库保管员，一个职工只能在一个仓库工作，仓库和职工之间是一对多的联系。职工实体型中具有一对多的联系<br>(3)职工之间具有领导-被领导关系。即仓库主任领导若干保管员。<br>(4)供应商、项目和零件三者之间具有多对多的联系</p>
+<p>5.非关系模型<br>（1）层次模型(Hierarchical Model)<br>层次模型是数据库系统中最早出现的数据模型<br>层次数据库系统的典型代表是IBM公司的IMS（Information Management System）数据库管理系统<br>层次模型用树形结构来表示各类实体以及实体间的联系<br>① 数据结构<br>满足下面两个条件的基本层次联系的集合为层次模型</p>
+<p>有且只有一个结点没有双亲结点，这个结点称为根结点<br>根以外的其它结点有且只有一个双亲结点<br>层次模型中的几个术语<br>根结点，双亲结点，兄弟结点，叶结点</p>
+<p>② 特点<br>结点的双亲是唯一的<br>只能直接处理一对多的实体联系<br>每个记录类型可以定义一个排序字段，也称为·码字段<br>任何记录值只有按其路径查看时，才能显出它的全部意义<br>没有一个子女记录值能够脱离双亲记录值而独立存在</p>
+<p>③ 多对多联系在层次模型中的表示<br>方法：</p>
+<p>将多对多联系分解成一对多联系<br>分解方法：</p>
+<p>冗余结点法<br>虚拟结点法<br>④ 数据操纵与完整性约束<br>层次模型的数据操纵：</p>
+<p>查询<br>插入<br>删除<br>更新<br>层次模型的完整性约束条件：</p>
+<p>无相应的双亲结点值就不能插入子女结点值<br>如果删除双亲结点值，则相应的子女结点值也被同时删除<br>更新操作时，应更新所有相应记录，以保证数据的一致性<br>⑤ 存储结构<br>邻接法：<br>按照层次树前序遍历（T-L-R）的顺序把所有记录值依次邻接存放，即通过物理空间的位置相邻来实现层次顺序。又可分为：子女－兄弟链接法和层次序列链接法。</p>
+<p>❶ 子女-兄弟链接法<br>每个记录设两类指针，分别指向最左边的子女（每个记录型对应一个）和最近的兄弟</p>
+<p>❷ 层次序列链接法<br>按树的前序穿越顺序链接各记录值</p>
+<p>⑥ 优缺点<br>优点：<br>层次模型的数据结构比较简单清晰<br>查询效率高，性能优于关系模型，不低于网状模型<br>层次数据模型提供了良好的完整性支持<br>缺点：<br>多对多联系表示不自然<br>对插入和删除操作的限制多，应用程序的编写比较复杂<br>查询子女结点必须通过双亲结点<br>由于结构严密，层次命令趋于程序化<br>（2）网状模型(Network Model)<br>网状数据库系统采用网状模型作为数据的组织方式</p>
+<p>典型代表是DBTG系统：<br>亦称CODASYL系统<br>70年代由DBTG提出的一个系统方案<br>奠定了数据库系统的基本概念、方法和技术<br>实际系统:<br>Cullinet Software Inc.公司的 IDMS<br>Univac公司的 DMS1100<br>Honeywell公司的IDS/2<br>HP公司的IMAGE<br>① 数据结构<br>网状模型:<br>满足下面两个条件的基本层次联系的集合：</p>
+<p>允许一个以上的结点无双亲；<br>一个结点可以有多于一个的双亲。<br>表示方法(与层次数据模型相同):<br>实体型：用记录类型描述<br>每个结点表示一个记录类型（实体）<br>属性：用字段描述<br>每个记录类型可包含若干个字段<br>联系：用结点之间的连线表示记录类型（实体）之<br>间的一对多的父子联系</p>
+<p>网状模型与层次模型的区别:</p>
+<p>网状模型允许多个结点没有双亲结点<br>网状模型允许结点有多个双亲结点<br>网状模型允许两个结点之间有多种联系（复合联系）<br>网状模型可以更直接地去描述现实世界<br>层次模型实际上是网状模型的一个特例<br>网状模型中子女结点与双亲结点的联系可以不唯一<br>要为每个联系命名，并指出与该联系有关的双亲记录和子女记录</p>
+<p>多对多联系在网状模型中的表示:<br>方法：将多对多联系直接分解成一对多联系</p>
+<p>例如：一个学生可以选修若干门课程，·某一课程可以被多个学生选修，学生与课程之间是多对多联系 ·</p>
+<p>引进一个学生选课的联结记录，由3个数据项组成<br>学号<br>课程号<br>成绩<br>表示某个学生选修某一门课程及其成绩</p>
+<p>② 网状数据模型的操纵与完整性约束（续）<br>网状数据库系统（如DBTG）对数据操纵加 了一些限制，提供了一定的完整性约束</p>
+<p>码：唯一标识记录的数据项的集合<br>一个联系中双亲记录与子女记录之间是一对多联系<br>支持双亲记录和子女记录之间某些约束条件<br>③ 存储结构<br>关键：</p>
+<p>实现记录之间的联系<br>常用方法：</p>
+<p>单向链接<br>双向链接<br>环状链接<br>向首链接</p>
+<p>④ 优缺点<br>优点<br>能够更为直接地描述现实世界，如一个结点可以有多个双亲；<br>具有良好的性能，存取效率较高；</p>
+<p>缺点<br>结构比较复杂，而且随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握；<br>DDL、DML语言复杂，用户不容易使用；</p>
+<p>6.关系模型<br>关系数据库系统采用关系模型作为数据的组织方式<br>1970年美国IBM公司San Jose研究室的研究员E.F.Codd首次提出了数据库系统的关系模型<br>计算机厂商新推出的数据库管理系统几乎都支持关系模型</p>
+<p>（1）数据结构<br>在用户观点下，关系模型中数据的逻辑结构是一张二维表，它由行和列组成。<br>几个名词解释：</p>
+<p>关系（Relation）<br>一个关系对应通常说的一张表</p>
+<p>元组（Tuple）<br>表中的一行即为一个元组</p>
+<p>属性（Attribute）<br>表中的一列即为一个属性，给每一个属性起一个名称即属性名</p>
+<p>主码（Key）<br>表中的某个属性组，它可以唯一确定一个元组。</p>
+<p>域（Domain）<br>属性的取值范围。</p>
+<p>分量<br>元组中的一个属性值。</p>
+<p>关系模式<br>对关系的描述<br>关系名（属性1，属性2，…，属性n）<br>学生（学号，姓名，年龄，性别，系，年级）</p>
+<p>举几个例子：</p>
+<p>例1<br>学生、系、系与学生之间的·一对多联系：<br>学生（学号，姓名，年龄，性别，系号，年级）<br>系 (系号，系名，办公地点)</p>
+<p>例2<br>系、系主任、系与系主任间的一对一联系</p>
+<p>例3<br>学生、课程、学生与课程之间的多对多联系：<br>学生（学号，姓名，年龄，性别，系号，年级）<br>课程（课程号，课程名，学分）<br>选修（学号，课程号，成绩）</p>
+<p>规范化：</p>
+<p>关系必须是规范化的，满足一定的规范条件<br>最基本的规范条件：关系的每一个分量必须是一个不可分的数据项, 不允许表中还有表<br>图1.27中工资和扣除是可分的数据项 ,不符合关系模型要求</p>
+<p>（2）关系数据模型的操纵与完整性约束<br>数据操作是集合操作，操作对象和操作结果都是关系<br>查询<br>插入<br>删除<br>更新</p>
+<p>数据操作是集合操作，操作对象和操作结果都是关系，即若干元组的集合存取路径对用户隐蔽，用户只要指出“干什么”，不必详细说明“怎么干”</p>
+<p>关系的完整性约束条件<br>实体完整性<br>参照完整性<br>用户定义的完整性</p>
+<p>（3）存储结构<br>实体及实体间的联系都用表来表示<br>表以文件形式存储<br>有的DBMS一个表对应一个操作系统文件；<br>有的DBMS自己设计文件结构；<br>（4）优缺点<br>优点<br>建立在严格的数学概念的基础上;<br>概念单一:<br>实体和各类联系都用关系来表示;<br>对数据的检索结果也是关系;<br>关系模型的存取路径对用户透明;<br>具有更高的数据独立性，更好的安全保密性<br>简化了程序员的工作和数据库开发建立的工作;<br>缺点<br>存取路径对用户透明导致查询效率往往不如非关系数据模型;<br>为提高性能，必须对用户的查询请求进行优化,增加了开发DBMS的难度;<br>7.面向对象数据模型<br>将语义数据模型和面向对象程序设计方法结合起来，用面向对象观点来描述现实世界实体(对象)的逻辑组织、对象间限制、联系等的模型。</p>
+<p>一系列面向对象核心概念构成了面向对象数据模型( Object Oriented Data Model, 00模型)的基础，主要包括以下一些概念:</p>
+<p>(1)现实世界中的任何事物都被建模为对象。每个对象具有一个唯一的对象标识<br>(OID)。<br>(2)对象是其状态和行为的封装，其中状态是对象属性值的集合，行为是变更对象状<br>态的方法集合。<br>(3)具有相同属性和方法的对象的全体构成了类，类中的对象称为类的实例。<br>(4)类的属性的定义域也可以是类，从而构成了类的复合。类具有继承性，一个类可以继承另一个类的属性与方法，被继承类和继承类也称为超类和子类。类与类之间的复合与继承关系形成了一个有向无环图，称为类层次。<br>(5)对象是被封装起来的，它的状态和行为在对象外部不可见，从外部只能通过对象显式定义的消息传递对对象进行操作。<br>面向对象数据库(OODB)的研究始于20世纪80年代，有许多面向对象数据库产品相继问世，较著名的有Object Store、02、ONTOS等。</p>
+<p>与传统数据库一样，面向对象数据库系统对数据的操纵包括数据查询、增加、删除、修改等，也具有并发控制、故障恢复、存储管理等完整的功能。不仅能支持传统数据库应用，也能支持非传统领域的应用，包括CAD/CAM、OA、CIMS、GIS以及图形、图像等多媒体领域、工程领域和数据集成等领域。</p>
+<p>尽管如此，由于面向对象数据库操作语言过于复杂，没有得到广大用户，特别是开发人员的认可，加上面向对象数据库企图完全替代关系数据库管理系统的思路，增加了企业系统升级的负担，客户不接受，·面向对象数据库产品终究没有在市场上获得成功。</p>
+<p>8.对象关系模型<br>对象关系数据库系统(Object Relational DataBase System, ORDBS) 是关系数据库与面向对象数据库的结合。<br>它保持了关系数据库系统的非过程化数据存取方式和数据独立性，继承了关系数据库系统已有的技术，支持原有的数据管理，又能支持00模型和对象管理。各数据库厂商都在原来的产品基础上进行了扩展。<br>1999 年发布的SQL标准(也称为SQL99)，增加了SQL/Object Language Binding, 提供了面向对象的功能标准。SQL99对ORDBS标准的制定滞后于实际系统的实现。所以各个ORDBS产品在支持对象模型方面虽然思想一致，但是所采用的术语、语言语法、扩展的功能都不尽相同。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E5%AD%A6%E4%B9%A0/" rel="tag"># 数据库基本学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" rel="prev" title="数据库系统概述">
+      <i class="fa fa-chevron-left"></i> 数据库系统概述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/" rel="next" title="数据库系统结构和组成">
+      数据库系统结构和组成 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KJH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KJH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
