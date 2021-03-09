@@ -24,12 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构的线性堆栈">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BA%BF%E6%80%A7%E5%A0%86%E6%A0%88/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="KJHの博客">
 <meta property="og:description" content="栈也是一种很重要的数据结构，具备“先进后出”的特点。程序中的函数调用以及递归都涉及栈这一数据结构，熟悉栈有利于我们更好地理解函数的调用过程(主要是形参，局部变量以及函数的返回值)和递归算法的实现过程 1、栈的数据节点 12345678910111213141516171819202122232425262728293031typedef struct _Stack&amp;#123;	int *pData">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:43:06.773Z">
 <meta property="article:modified_time" content="2021-03-04T15:02:20.156Z">
-<meta property="article:author" content="KJH">
+<meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构的线性堆栈 | Hexo</title>
+  <title>数据结构的线性堆栈 | KJHの博客</title>
   
 
 
@@ -97,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">KJHの博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
   </div>
 
   <div class="site-nav-right">
@@ -165,12 +166,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="KJHの博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -216,27 +217,27 @@
       
         <p>栈也是一种很重要的数据结构，具备“先进后出”的特点。程序中的函数调用以及递归都涉及栈这一数据结构，熟悉栈有利于我们更好地理解函数的调用过程(主要是形参，局部变量以及函数的返回值)和递归算法的实现过程</p>
 <p>1、栈的数据节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">typedef struct _Stack</span><br><span class="line">&#123;</span><br><span class="line">	int *pData;   &#x2F;&#x2F;数据域指针</span><br><span class="line">	int size;     &#x2F;&#x2F;栈容量</span><br><span class="line">	int top;      &#x2F;&#x2F;栈顶</span><br><span class="line">&#125;Stack;</span><br><span class="line">2、创建指定容量的栈</span><br><span class="line">Stack* createStack(int MaxElements)</span><br><span class="line">&#123;</span><br><span class="line">	Stack *pStack &#x3D; NULL;</span><br><span class="line">	if (0 &#x3D;&#x3D; MaxElements)</span><br><span class="line">		return NULL;</span><br><span class="line"></span><br><span class="line">	pStack &#x3D; (Stack *)malloc(sizeof(Stack));   &#x2F;&#x2F;开辟栈节点空间</span><br><span class="line">	assert(NULL !&#x3D; pStack);</span><br><span class="line">	memset(pStack, 0, sizeof(Stack));</span><br><span class="line">	 </span><br><span class="line">	pStack-&gt;pData &#x3D; (int *)malloc(sizeof(int)* MaxElements);   &#x2F;&#x2F;开辟数据空间</span><br><span class="line">	if (NULL &#x3D;&#x3D; pStack-&gt;pData)</span><br><span class="line">	&#123;</span><br><span class="line">		free(pStack);</span><br><span class="line">		pStack &#x3D; NULL;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	memset(pStack-&gt;pData, 0, sizeof(int)* MaxElements);</span><br><span class="line">	pStack-&gt;size &#x3D; MaxElements;</span><br><span class="line">	pStack-&gt;top &#x3D; -1;    &#x2F;&#x2F;这里按照数组形式，初始值为-1</span><br><span class="line">	                         &#x2F;&#x2F;也设置为栈顶“指针”时刻指向栈顶元素</span><br><span class="line">	return pStack;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">Stack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> *pData;   <span class="comment">//数据域指针</span></span><br><span class="line">	<span class="keyword">int</span> <span class="built_in">size</span>;     <span class="comment">//栈容量</span></span><br><span class="line">	<span class="keyword">int</span> top;      <span class="comment">//栈顶</span></span><br><span class="line">&#125;Stack;</span><br><span class="line"><span class="number">2</span>、创建指定容量的栈</span><br><span class="line"><span class="function">Stack* <span class="title">createStack</span><span class="params">(<span class="keyword">int</span> MaxElements)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Stack *pStack = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="number">0</span> == MaxElements)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	pStack = (Stack *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Stack));   <span class="comment">//开辟栈节点空间</span></span><br><span class="line">	assert(<span class="literal">NULL</span> != pStack);</span><br><span class="line">	<span class="built_in">memset</span>(pStack, <span class="number">0</span>, <span class="keyword">sizeof</span>(Stack));</span><br><span class="line">	 </span><br><span class="line">	pStack-&gt;pData = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)* MaxElements);   <span class="comment">//开辟数据空间</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == pStack-&gt;pData)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">free</span>(pStack);</span><br><span class="line">		pStack = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="built_in">memset</span>(pStack-&gt;pData, <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">int</span>)* MaxElements);</span><br><span class="line">	pStack-&gt;<span class="built_in">size</span> = MaxElements;</span><br><span class="line">	pStack-&gt;top = <span class="number">-1</span>;    <span class="comment">//这里按照数组形式，初始值为-1</span></span><br><span class="line">	                         <span class="comment">//也设置为栈顶“指针”时刻指向栈顶元素</span></span><br><span class="line">	<span class="keyword">return</span> pStack;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>3、判断栈满，栈空</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bool isFull(Stack *pStack)</span><br><span class="line">&#123;</span><br><span class="line">	return (pStack-&gt;size &#x3D;&#x3D; (pStack-&gt;top + 1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool isEmpty(Stack *pStack)</span><br><span class="line">&#123;</span><br><span class="line">	return (-1 &#x3D;&#x3D; pStack-&gt;top);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isFull</span><span class="params">(Stack *pStack)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (pStack-&gt;<span class="built_in">size</span> == (pStack-&gt;top + <span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isEmpty</span><span class="params">(Stack *pStack)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="number">-1</span> == pStack-&gt;top);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>4、压栈操作<br>异常情况;</p>
 <p>1) 栈不存在</p>
 <p>2) 栈已满</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bool push(Stack *pStack, int value)</span><br><span class="line">&#123;</span><br><span class="line">	if (NULL &#x3D;&#x3D; pStack)</span><br><span class="line">		return false;</span><br><span class="line"></span><br><span class="line">	if (isFull(pStack))</span><br><span class="line">		return false;</span><br><span class="line">	 </span><br><span class="line">	pStack-&gt;pData[++pStack-&gt;top] &#x3D; value;</span><br><span class="line">	return true;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">push</span>(<span class="params">Stack *pStack, <span class="keyword">int</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (NULL == pStack)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (isFull(pStack))</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	 </span><br><span class="line">	pStack-&gt;pData[++pStack-&gt;top] = <span class="keyword">value</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>5、出栈操作<br>异常情况：</p>
 <p>1) 栈不存在</p>
 <p>2) 栈为空</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bool pop(Stack *pStack, int *value)</span><br><span class="line">&#123;</span><br><span class="line">	if (NULL &#x3D;&#x3D; pStack)</span><br><span class="line">		return false;</span><br><span class="line"></span><br><span class="line">	if (isEmpty(pStack))</span><br><span class="line">		return false;</span><br><span class="line">	 </span><br><span class="line">	*value &#x3D; pStack-&gt;pData[pStack-&gt;top--];</span><br><span class="line">	return true;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> pop(Stack *pStack, <span class="type">int</span> *<span class="keyword">value</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">NULL</span> == pStack)</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (isEmpty(pStack))</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	 </span><br><span class="line">	*<span class="keyword">value</span> = pStack-&gt;pData[pStack-&gt;top<span class="comment">--];</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>6、释放栈空间<br>类似于C++中的基类，继承类析构，先释放数据空间，再释放栈节点空间。</p>
 <p>这里也可传递一级指针，同样可以释放栈空间内存，但是不能把栈指针设置为NULL，打印数据时也就不能进行判断</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">bool freeStack(Stack **ppStack)</span><br><span class="line">&#123;</span><br><span class="line">	if (NULL &#x3D;&#x3D; *ppStack)</span><br><span class="line">		return false;</span><br><span class="line"></span><br><span class="line">	if (NULL &#x3D;&#x3D; (*ppStack)-&gt;pData)</span><br><span class="line">	&#123;</span><br><span class="line">		free(*ppStack);</span><br><span class="line">		*ppStack &#x3D; NULL;</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	free((*ppStack)-&gt;pData);</span><br><span class="line">	free(*ppStack);</span><br><span class="line">	*ppStack &#x3D; NULL;   &#x2F;&#x2F;设置，便于后面判断</span><br><span class="line">	                   &#x2F;&#x2F;所以设置二级指针传递</span><br><span class="line">	return true;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">freeStack</span><span class="params">(Stack **ppStack)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == *ppStack)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == (*ppStack)-&gt;pData)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">free</span>(*ppStack);</span><br><span class="line">		*ppStack = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="built_in">free</span>((*ppStack)-&gt;pData);</span><br><span class="line">	<span class="built_in">free</span>(*ppStack);</span><br><span class="line">	*ppStack = <span class="literal">NULL</span>;   <span class="comment">//设置，便于后面判断</span></span><br><span class="line">	                   <span class="comment">//所以设置二级指针传递</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>7、打印栈数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void printStack(Stack *pStack)</span><br><span class="line">&#123;</span><br><span class="line">	if (pStack)</span><br><span class="line">	&#123;</span><br><span class="line">		int num &#x3D; pStack-&gt;top;</span><br><span class="line"></span><br><span class="line">		while (-1 !&#x3D; num)</span><br><span class="line">			printf(&quot;%d\n&quot;, pStack-&gt;pData[num--]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> printStack(Stack *pStack)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (pStack)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> <span class="built_in">num</span> = pStack-&gt;top;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> (<span class="number">-1</span> != <span class="built_in">num</span>)</span><br><span class="line">			printf(<span class="string">"%d\n"</span>, pStack-&gt;pData[<span class="built_in">num</span>--]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这里创建的栈数据结构实质就是开辟一个指定容量的数组空间，然后设置栈顶位置时刻指向栈顶元素</p>
 
@@ -327,8 +328,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">KJH</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -379,7 +380,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">KJH</span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
@@ -394,9 +395,6 @@
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 
-<span id="busuanzi_container_site_uv">
-  本站总访问量<span id="busuanzi_value_site_uv"></span>次
-</span>
         
 
 
@@ -450,3 +448,5 @@
 
 </body>
 </html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

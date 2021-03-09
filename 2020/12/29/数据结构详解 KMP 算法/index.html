@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。 简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。 12345678910&#x2F;">
+  <meta name="description" content="KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。 简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。 12345678910&#x2F;*假定字符">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构详解KMP算法">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。 简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。 12345678910&#x2F;">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。 简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。 12345678910&#x2F;*假定字符">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:54:19.367Z">
 <meta property="article:modified_time" content="2021-03-07T03:12:24.729Z">
-<meta property="article:author" content="KJH">
+<meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构详解KMP算法 | Hexo</title>
+  <title>数据结构详解KMP算法 | KJHの博客</title>
   
 
 
@@ -97,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">KJHの博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
   </div>
 
   <div class="site-nav-right">
@@ -165,12 +166,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="KJHの博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -216,7 +217,7 @@
       
         <p>KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。</p>
 <p>简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">假定字符串在数组中：char S[n]，</span><br><span class="line">模式串在另一数组中：char T[m]</span><br><span class="line">*&#x2F;</span><br><span class="line">for (int i &#x3D; 0; S[i] !&#x3D; &#39;\0&#39;; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j &#x3D; 0; S[i + j] !&#x3D; &#39;\0&#39; &amp;&amp; T[j] !&#x3D; &#39;\0&#39; &amp;&amp; S[i + j] &#x3D;&#x3D; T[j]; ++j);</span><br><span class="line">	if (&#39;\0&#39; &#x3D;&#x3D; T[j])</span><br><span class="line">		&#x2F;&#x2F;found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">假定字符串在数组中：char S[n]，</span></span><br><span class="line"><span class="comment">模式串在另一数组中：char T[m]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">for (int i = <span class="number">0</span>; <span class="symbol">S</span>[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j = <span class="number">0</span>; <span class="symbol">S</span>[i + j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">T</span>[j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">S</span>[i + j] == <span class="symbol">T</span>[j]; ++j);</span><br><span class="line">	if (<span class="string">'\0'</span> == <span class="symbol">T</span>[j])</span><br><span class="line">		//found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况 </p>
@@ -253,11 +254,11 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
         next[i + 1] = index;              //失配时更新next[i+1]
     }
 }</code></pre><p>可针对上面进行优化（KMP论文）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	next[0] &#x3D; -1;</span><br><span class="line">​	for (int i &#x3D; 0; pattern[i] !&#x3D; &#39;\0&#39;; ++i)</span><br><span class="line">​	&#123;</span><br><span class="line">​		next[i + 1] &#x3D; next[i] + 1;</span><br><span class="line"></span><br><span class="line">​	while (next[i + 1] &gt; 0 &amp;&amp; pattern[i] !&#x3D; pattern[next[i + 1] - 1] &#x2F;*patter[next[i]]*&#x2F;)</span><br><span class="line">​		next[i + 1] &#x3D; next[next[i + 1] - 1]&#x2F;*next[next[i]]*&#x2F; + 1;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">​	<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; pattern[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">​	&#123;</span><br><span class="line">​		next[i + <span class="number">1</span>] = next[i] + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​	<span class="keyword">while</span> (next[i + <span class="number">1</span>] &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[next[i + <span class="number">1</span>] - <span class="number">1</span>] <span class="comment">/*patter[next[i]]*/</span>)</span><br><span class="line">​		next[i + <span class="number">1</span>] = next[next[i + <span class="number">1</span>] - <span class="number">1</span>]<span class="comment">/*next[next[i]]*/</span> + <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>得到 next 数组，子串与母串匹配时，next 数组中的数值意义表示：</p>
 <p>next[i] = -1，表示母串 S[m] 已经和 T[0] 比较过了且不相等，下一轮比较 S[m+1] 和 T[0]<br>next[i] = 0，表示比较过程中产生了不相等，下一轮比较 S[m+1] 和 T[0]<br>next[i] = j &gt; 0，表示 S[m] 的前 j 个字符与 T 中的开始 j 个字符相等，下一轮比较 S[m] 和 T[j]<br>下面根据上面分析，给出 KMP 算法完整程序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">int kmp_search(const char *target, const char *pattern)</span><br><span class="line">&#123;</span><br><span class="line">	const int target_len &#x3D; strlen(target);</span><br><span class="line">	const int pattern_len &#x3D; strlen(pattern);</span><br><span class="line">	int *next &#x3D; new int[pattern_len];</span><br><span class="line"></span><br><span class="line">	&#x2F;*Get next array*&#x2F;</span><br><span class="line">	next[0] &#x3D; -1;</span><br><span class="line">	for (int i &#x3D; 0; pattern[i] !&#x3D; &#39;\0&#39;; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		next[i + 1] &#x3D; next[i] + 1;</span><br><span class="line">	 </span><br><span class="line">		while (next[i + 1] &gt; 0 &amp;&amp; pattern[i] !&#x3D; pattern[next[i + 1] - 1])</span><br><span class="line">			next[i + 1] &#x3D; next[next[i + 1] - 1] + 1;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	&#x2F;*search*&#x2F;</span><br><span class="line">	int target_index &#x3D; 0;</span><br><span class="line">	int pattern_index &#x3D; 0;</span><br><span class="line">	 </span><br><span class="line">	while (target_index &lt; target_len &amp;&amp; pattern_index &lt; pattern_len)</span><br><span class="line">	&#123;</span><br><span class="line">		if (pattern[pattern_index] &#x3D;&#x3D; target[target_index])  &#x2F;&#x2F;匹配</span><br><span class="line">		&#123;</span><br><span class="line">			++pattern_index;</span><br><span class="line">			++target_index;</span><br><span class="line">		&#125;</span><br><span class="line">		else  &#x2F;*失配时*&#x2F;</span><br><span class="line">		&#123;</span><br><span class="line">			pattern_index &#x3D; next[pattern_index];   &#x2F;&#x2F;更新模式子串待匹配位置</span><br><span class="line">			if (-1 &#x3D;&#x3D; pattern_index)  &#x2F;&#x2F;-1表示target[target_index]和pattern[0]已经比较过了</span><br><span class="line">			&#123;                         &#x2F;&#x2F;只有next[0] &#x3D;&#x3D; -1</span><br><span class="line">				pattern_index &#x3D; 0;    &#x2F;&#x2F;下一轮直接比较pattern[0]和target[target+1]</span><br><span class="line">				++target_index;       </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	&#x2F;*return position*&#x2F;</span><br><span class="line">	if (pattern_index &#x3D;&#x3D; pattern_len)</span><br><span class="line">		return target_index - pattern_index;</span><br><span class="line">	else</span><br><span class="line">		return -1;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> kmp_search(<span class="keyword">const</span> char *target, <span class="keyword">const</span> char *pattern)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">int</span> target_len = strlen(target);</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">int</span> pattern_len = strlen(pattern);</span><br><span class="line">	<span class="built_in">int</span> *next = new <span class="built_in">int</span>[pattern_len];</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*Get next array*/</span></span><br><span class="line">	next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; pattern[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		next[i + <span class="number">1</span>] = next[i] + <span class="number">1</span>;</span><br><span class="line">	 </span><br><span class="line">		<span class="keyword">while</span> (next[i + <span class="number">1</span>] &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[next[i + <span class="number">1</span>] - <span class="number">1</span>])</span><br><span class="line">			next[i + <span class="number">1</span>] = next[next[i + <span class="number">1</span>] - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">/*search*/</span></span><br><span class="line">	<span class="built_in">int</span> target_index = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">int</span> pattern_index = <span class="number">0</span>;</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">while</span> (target_index &lt; target_len &amp;&amp; pattern_index &lt; pattern_len)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pattern[pattern_index] == target[target_index])  <span class="comment">//匹配</span></span><br><span class="line">		&#123;</span><br><span class="line">			++pattern_index;</span><br><span class="line">			++target_index;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>  <span class="comment">/*失配时*/</span></span><br><span class="line">		&#123;</span><br><span class="line">			pattern_index = next[pattern_index];   <span class="comment">//更新模式子串待匹配位置</span></span><br><span class="line">			<span class="keyword">if</span> (<span class="number">-1</span> == pattern_index)  <span class="comment">//-1表示target[target_index]和pattern[0]已经比较过了</span></span><br><span class="line">			&#123;                         <span class="comment">//只有next[0] == -1</span></span><br><span class="line">				pattern_index = <span class="number">0</span>;    <span class="comment">//下一轮直接比较pattern[0]和target[target+1]</span></span><br><span class="line">				++target_index;       </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">/*return position*/</span></span><br><span class="line">	<span class="keyword">if</span> (pattern_index == pattern_len)</span><br><span class="line">		<span class="keyword">return</span> target_index - pattern_index;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度分析：<br>从上面程序可以看出，KMP 的时间复杂度主要由两部分组成，一个是 next 数组的计算，一个是子串与母串的比较。前一个的时间复杂度为O(m)，后一个的时间复杂度为O(n)，所以KMP 算法总的时间复杂度为O(n+m)。</p>
 
@@ -348,8 +349,8 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">KJH</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -400,7 +401,7 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">KJH</span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
@@ -415,9 +416,6 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 
-<span id="busuanzi_container_site_uv">
-  本站总访问量<span id="busuanzi_value_site_uv"></span>次
-</span>
         
 
 
@@ -471,3 +469,5 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
 
 </body>
 </html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

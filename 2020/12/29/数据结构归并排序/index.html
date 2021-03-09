@@ -24,12 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构归并排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="KJHの博客">
 <meta property="og:description" content="归并排序是建立在归并操作上的一种有效的排序算法，将两个（或两个以上）有序表合并成一个新的有序表。采用分治法，分而治之：分就是将待排序序列分为若干个有序的子序列，每个子序列是有序；合就是把有序的子序列合并为整体有序序列。 这个算法的基本操作是合并两个已排序的表，因为这两个表是已排序的，所以若将输出放到第三个表中时，则该算法可以通过对输入数据一趟排序来完成。将两个有序表合并成一个有序表，成为2-路归并">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:53:14.010Z">
 <meta property="article:modified_time" content="2021-03-07T03:05:58.954Z">
-<meta property="article:author" content="KJH">
+<meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构归并排序 | Hexo</title>
+  <title>数据结构归并排序 | KJHの博客</title>
   
 
 
@@ -97,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">KJHの博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
   </div>
 
   <div class="site-nav-right">
@@ -165,12 +166,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="KJHの博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -220,7 +221,7 @@
 <p>需要说明的是，上面的分割是意识形态的，和前面介绍的堆排序类似，并不是实际的分割，分割过程中，元素在序列中的位置不变，我们仍可以通过数组索引定位元素。</p>
 <p>从上面的图解很容易得知，“2-路分割”和 2-路合并，首先需要将整体无序序列进行递归“2-路分割”，直至分割达到有序状态即子序列仅一个元素（这也是递归的终止条件），然后就是合并，将子序列从小到大放入额外暂存单元中，全部归并完毕，这个暂存单元中的元素就是有序的。</p>
 <p>/*2-路合并，这里的unsorted[]为输入数组，sorted[]为暂存单元<br>first表示子序列起始位置，其值为子序列在整体序列中的位置值<br>last表示子序列的结束位置（最后一个元素的后面那个位置，同STL）<br>第一路：[first, mid)  第二路：[mid, last)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">*&#x2F;</span><br><span class="line">void Merge(int unsorted[], int first, int mid, int last, int sorted[])</span><br><span class="line">&#123;</span><br><span class="line">	int i &#x3D; first, j &#x3D; mid;</span><br><span class="line">	int k &#x3D; 0;</span><br><span class="line"></span><br><span class="line">	while (i &lt; mid &amp;&amp; j &lt; last)</span><br><span class="line">	&#123;</span><br><span class="line">		if (unsorted[i] &lt; unsorted[j])</span><br><span class="line">			sorted[k++] &#x3D; unsorted[i++];</span><br><span class="line">		else</span><br><span class="line">			sorted[k++] &#x3D; unsorted[j++];</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	while (i &lt; mid)</span><br><span class="line">		sorted[k++] &#x3D; unsorted[i++];</span><br><span class="line">	 </span><br><span class="line">	while (j &lt; last)</span><br><span class="line">		sorted[k++] &#x3D; unsorted[j++];</span><br><span class="line">	 </span><br><span class="line">	&#x2F;*2-路合并的结果，与后面一路是无序的(这两路不在同一序列中)，</span><br><span class="line">	需要将前面合并的结果导入输入序列中，再次进行2-路合并,first表征相对位置*&#x2F;</span><br><span class="line">	for (int v &#x3D; 0; v &lt; k; ++v)</span><br><span class="line">		unsorted[v + first] &#x3D; sorted[v];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*分割及归并排序*&#x2F;</span><br><span class="line">void MergeSort(int unsorted[], int first, int last, int sorted[])</span><br><span class="line">&#123;</span><br><span class="line">	if (first + 1 &lt; last)</span><br><span class="line">	&#123;</span><br><span class="line">		int mid &#x3D; first + ((last - first) &gt;&gt; 1); &#x2F;&#x2F;mid&#x3D;(left+right)&gt;&gt;1;当left和right比较大时，有溢出的危险</span><br><span class="line">		MergeSort(unsorted, first, mid, sorted);</span><br><span class="line">		MergeSort(unsorted, mid, last, sorted);</span><br><span class="line">		Merge(unsorted, first, mid, last, sorted);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">*/</span><br><span class="line">void <span class="constructor">Merge(<span class="params">int</span> <span class="params">unsorted</span>[], <span class="params">int</span> <span class="params">first</span>, <span class="params">int</span> <span class="params">mid</span>, <span class="params">int</span> <span class="params">last</span>, <span class="params">int</span> <span class="params">sorted</span>[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">int</span> i = first, j = mid;</span><br><span class="line">	<span class="built_in">int</span> k = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i &lt; mid<span class="operator"> &amp;&amp; </span>j &lt; last)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (unsorted<span class="literal">[<span class="identifier">i</span>]</span> &lt; unsorted<span class="literal">[<span class="identifier">j</span>]</span>)</span><br><span class="line">			sorted<span class="literal">[<span class="identifier">k</span><span class="operator">++</span>]</span> = unsorted<span class="literal">[<span class="identifier">i</span><span class="operator">++</span>]</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			sorted<span class="literal">[<span class="identifier">k</span><span class="operator">++</span>]</span> = unsorted<span class="literal">[<span class="identifier">j</span><span class="operator">++</span>]</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">while</span> (i &lt; mid)</span><br><span class="line">		sorted<span class="literal">[<span class="identifier">k</span><span class="operator">++</span>]</span> = unsorted<span class="literal">[<span class="identifier">i</span><span class="operator">++</span>]</span>;</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">while</span> (j &lt; last)</span><br><span class="line">		sorted<span class="literal">[<span class="identifier">k</span><span class="operator">++</span>]</span> = unsorted<span class="literal">[<span class="identifier">j</span><span class="operator">++</span>]</span>;</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">/*2-路合并的结果，与后面一路是无序的(这两路不在同一序列中)，</span></span><br><span class="line"><span class="comment">	需要将前面合并的结果导入输入序列中，再次进行2-路合并,first表征相对位置*/</span></span><br><span class="line">	for (<span class="built_in">int</span> v = <span class="number">0</span>; v &lt; k; ++v)</span><br><span class="line">		unsorted<span class="literal">[<span class="identifier">v</span> + <span class="identifier">first</span>]</span> = sorted<span class="literal">[<span class="identifier">v</span>]</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*分割及归并排序*/</span></span><br><span class="line">void <span class="constructor">MergeSort(<span class="params">int</span> <span class="params">unsorted</span>[], <span class="params">int</span> <span class="params">first</span>, <span class="params">int</span> <span class="params">last</span>, <span class="params">int</span> <span class="params">sorted</span>[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (first + <span class="number">1</span> &lt; last)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> mid = first + ((last - first) &gt;&gt; <span class="number">1</span>); <span class="comment">//mid=(left+right)&gt;&gt;1;当left和right比较大时，有溢出的危险</span></span><br><span class="line">		<span class="constructor">MergeSort(<span class="params">unsorted</span>, <span class="params">first</span>, <span class="params">mid</span>, <span class="params">sorted</span>)</span>;</span><br><span class="line">		<span class="constructor">MergeSort(<span class="params">unsorted</span>, <span class="params">mid</span>, <span class="params">last</span>, <span class="params">sorted</span>)</span>;</span><br><span class="line">		<span class="constructor">Merge(<span class="params">unsorted</span>, <span class="params">first</span>, <span class="params">mid</span>, <span class="params">last</span>, <span class="params">sorted</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>归并排序中的递归算法可用下图说明</p>
 <p>归并排序中的递归算法可用下图说明</p>
@@ -319,8 +320,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">KJH</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -371,7 +372,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">KJH</span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
@@ -386,9 +387,6 @@
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 
-<span id="busuanzi_container_site_uv">
-  本站总访问量<span id="busuanzi_value_site_uv"></span>次
-</span>
         
 
 
@@ -442,3 +440,5 @@
 
 </body>
 </html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -24,12 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构插入排序、希尔排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="KJHの博客">
 <meta property="og:description" content="1、直接插入排序 基本思想：每次将一个待排序的数据，按其大小插入到前面已经排好序的子序列中的适当位置，直到全部数据插入完成为止。换言之，就是将无序区（第一个元素默认有序）的第一个元素（也就是输入数组的第二个元素）通过与有序区的数据进行比较，然后直接插入到有序区的适当位置，形成更大的有序区，这样有序区扩大了一个元素，无序区缩小了一个元素。以此循环遍历，最终，整个数组就构成了有序区，排序也就完成了。上">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:52:42.333Z">
 <meta property="article:modified_time" content="2021-03-07T03:00:35.818Z">
-<meta property="article:author" content="KJH">
+<meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构插入排序、希尔排序 | Hexo</title>
+  <title>数据结构插入排序、希尔排序 | KJHの博客</title>
   
 
 
@@ -97,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">KJHの博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
   </div>
 
   <div class="site-nav-right">
@@ -165,12 +166,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="KJHの博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -225,18 +226,18 @@
 <li><p>i++，循环2,3，直至i = n-1。</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">  有序区</span><br><span class="line">    |                 </span><br><span class="line">    6 5 3 1 7 2  -&gt; 5 6 3 1 7 2  -&gt; 3 5 6 1 7 2  -&gt; 1 3 5 6 7 2 -&gt; 1 3 5 6 7 2  -&gt; 1 2 3 5 6 7</span><br><span class="line">      |                 |                 |                 |                |</span><br><span class="line">    无序区            无序区             无序区             无序区           无序区</span><br><span class="line">*&#x2F;</span><br><span class="line">void InsertSort(int Array[], int length)</span><br><span class="line">&#123;</span><br><span class="line">    int i, j;</span><br><span class="line">    int temp;</span><br><span class="line"></span><br><span class="line">    for (i &#x3D; 1; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j &#x3D; i - 1;</span><br><span class="line">        temp &#x3D; Array[i];          &#x2F;&#x2F;待插入数据，即无序区的第一个元素</span><br><span class="line">     </span><br><span class="line">        while ((j &gt;&#x3D; 0) &amp;&amp; (temp &lt; Array[j]))  &#x2F;&#x2F;跳出循环的两个条件</span><br><span class="line">        &#123;</span><br><span class="line">            Array[j + 1] &#x3D; Array[j];    &#x2F;&#x2F;数据后移</span><br><span class="line">            --j;</span><br><span class="line">        &#125;</span><br><span class="line">        Array[j + 1] &#x3D; temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  有序区</span></span><br><span class="line"><span class="comment">    |                 </span></span><br><span class="line"><span class="comment">    6 5 3 1 7 2  -&gt; 5 6 3 1 7 2  -&gt; 3 5 6 1 7 2  -&gt; 1 3 5 6 7 2 -&gt; 1 3 5 6 7 2  -&gt; 1 2 3 5 6 7</span></span><br><span class="line"><span class="comment">      |                 |                 |                 |                |</span></span><br><span class="line"><span class="comment">    无序区            无序区             无序区             无序区           无序区</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span> InsertSort(<span class="type">int</span> <span class="keyword">Array</span>[], <span class="type">int</span> length)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="type">int</span> <span class="keyword">temp</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j = i - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">temp</span> = <span class="keyword">Array</span>[i];          //待插入数据，即无序区的第一个元素</span><br><span class="line">     </span><br><span class="line">        <span class="keyword">while</span> ((j &gt;= <span class="number">0</span>) &amp;&amp; (<span class="keyword">temp</span> &lt; <span class="keyword">Array</span>[j]))  //跳出循环的两个条件</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">Array</span>[j + <span class="number">1</span>] = <span class="keyword">Array</span>[j];    //数据后移</span><br><span class="line">            <span class="comment">--j;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">Array</span>[j + <span class="number">1</span>] = <span class="keyword">temp</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由上面程序可知，直接插入排序的时间复杂度为O(n^2)，空间复杂度为O(1)，是一种稳定的排序算法。一般不用在数据大于 1000 的场合下使用插入排序。<br>2、希尔排序</p>
 <p>希尔排序也是一种排序算法，是针对上面的直接插入排序对基本已经排好序的数据操作时，可以达到线性排序的效率，以及每次只能移动一位数据的特点，而提出的改进的方法。</p>
 <p>其改进思想为：先将整个待排元素序列分割成若干个子序列（由相隔某个“增量”的元素组成）分别进行直接插入排序，然后依次缩减“增量”再进行插入排序，直到只比较相邻元素的最后一趟排序为止。</p>
 <p>需要注意的是，上面分割成若干个子序列之后，并不是插入排序这单个子序列里面的元素，而是将每个子序列的对应第一个元素进行插入排序，对应第二个，第三个。。。然后逐步缩小步长，缩小步长就意味着子序列的合并，最后成一个序列(步长为1)，然后进行直接插入排序，因为此时的数据基本已经排好序，所以再进行直接插入排序可以获得较好的效率。</p>
 <p>根据上面思想可以很快的实现希尔排序算法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void ShellSort(int Array [], int length)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j, gap;</span><br><span class="line">	int temp;</span><br><span class="line"></span><br><span class="line">	for (gap &#x3D; length &#x2F; 2; gap &gt; 0; gap &#x2F;&#x3D; 2)</span><br><span class="line">		for (i &#x3D; 0; i &lt; gap; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			&#x2F;&#x2F;下面为直接插入排序，排序的是数组里间隔gap的元素</span><br><span class="line">			for (j &#x3D; i + gap; j &lt; length; j +&#x3D; gap)</span><br><span class="line">			&#123;</span><br><span class="line">				int k &#x3D; j - gap;</span><br><span class="line">				temp &#x3D; Array[j];</span><br><span class="line">				while (k&gt;&#x3D;0 &amp;&amp; Array[k] &gt; temp)</span><br><span class="line">				&#123;</span><br><span class="line">					Array[k + gap] &#x3D; Array[k];</span><br><span class="line">					k -&#x3D; gap;</span><br><span class="line">				&#125;</span><br><span class="line">				Array[k + gap] &#x3D; temp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> ShellSort(<span class="type">int</span> <span class="keyword">Array</span> [], <span class="type">int</span> length)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i, j, gap;</span><br><span class="line">	<span class="type">int</span> <span class="keyword">temp</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (gap = length / <span class="number">2</span>; gap &gt; <span class="number">0</span>; gap /= <span class="number">2</span>)</span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; gap; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			//下面为直接插入排序，排序的是数组里间隔gap的元素</span><br><span class="line">			<span class="keyword">for</span> (j = i + gap; j &lt; length; j += gap)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="type">int</span> k = j - gap;</span><br><span class="line">				<span class="keyword">temp</span> = <span class="keyword">Array</span>[j];</span><br><span class="line">				<span class="keyword">while</span> (k&gt;=<span class="number">0</span> &amp;&amp; <span class="keyword">Array</span>[k] &gt; <span class="keyword">temp</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">Array</span>[k + gap] = <span class="keyword">Array</span>[k];</span><br><span class="line">					k -= gap;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">Array</span>[k + gap] = <span class="keyword">temp</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">下面简单的演示这一算法过程（为排版，输入数组数据比较小）</span><br><span class="line">&#x2F;* </span><br><span class="line">        3, 2, 4, 7, 6, 5, 1</span><br><span class="line">gap&#x3D;n&#x2F;2       3, 2, 4 </span><br><span class="line">&#x3D;3            7, 6, 5</span><br><span class="line">              1</span><br><span class="line">每列排序       1, 2, 4</span><br><span class="line">              3, 6, 5</span><br><span class="line">              7</span><br><span class="line">gap&#x3D;gap&#x2F;2     1</span><br><span class="line">&#x3D;1            2</span><br><span class="line">              4</span><br><span class="line">              3</span><br><span class="line">              6</span><br><span class="line">              5</span><br><span class="line">              7</span><br><span class="line">直接插入排序得结果</span><br><span class="line">*&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">下面简单的演示这一算法过程（为排版，输入数组数据比较小）</span></span><br><span class="line"><span class="string">/*</span> </span><br><span class="line">        <span class="number">3</span><span class="string">,</span> <span class="number">2</span><span class="string">,</span> <span class="number">4</span><span class="string">,</span> <span class="number">7</span><span class="string">,</span> <span class="number">6</span><span class="string">,</span> <span class="number">5</span><span class="string">,</span> <span class="number">1</span></span><br><span class="line"><span class="string">gap=n/2</span>       <span class="number">3</span><span class="string">,</span> <span class="number">2</span><span class="string">,</span> <span class="number">4</span> </span><br><span class="line"><span class="string">=3</span>            <span class="number">7</span><span class="string">,</span> <span class="number">6</span><span class="string">,</span> <span class="number">5</span></span><br><span class="line">              <span class="number">1</span></span><br><span class="line"><span class="string">每列排序</span>       <span class="number">1</span><span class="string">,</span> <span class="number">2</span><span class="string">,</span> <span class="number">4</span></span><br><span class="line">              <span class="number">3</span><span class="string">,</span> <span class="number">6</span><span class="string">,</span> <span class="number">5</span></span><br><span class="line">              <span class="number">7</span></span><br><span class="line"><span class="string">gap=gap/2</span>     <span class="number">1</span></span><br><span class="line"><span class="string">=1</span>            <span class="number">2</span></span><br><span class="line">              <span class="number">4</span></span><br><span class="line">              <span class="number">3</span></span><br><span class="line">              <span class="number">6</span></span><br><span class="line">              <span class="number">5</span></span><br><span class="line">              <span class="number">7</span></span><br><span class="line"><span class="string">直接插入排序得结果</span></span><br><span class="line"><span class="string">*/</span></span><br></pre></td></tr></table></figure>
 
 <p>由上面可知，希尔算法的设计思想大致可这么理解：将数组元素放在一个表中然后对每列进行插入排序，（表的列数等于步长，对每列进行插入排序时，并不是简单的将索引加1，而是将索引加步长），然后逐步缩减步长，列数减少，每列的元素增多，再对每列进行插入排序，直至步长为1，相当于只有一列元素，就是进行直接插入排序了。</p>
 <p>由上面可知，希尔算法的设计思想大致可这么理解：将数组元素放在一个表中然后对每列进行插入排序，（表的列数等于步长，对每列进行插入排序时，并不是简单的将索引加1，而是将索引加步长），然后逐步缩减步长，列数减少，每列的元素增多，再对每列进行插入排序，直至步长为1，相当于只有一列元素，就是进行直接插入排序了。</p>
@@ -332,8 +333,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">KJH</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -384,7 +385,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">KJH</span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
@@ -399,9 +400,6 @@
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 
-<span id="busuanzi_container_site_uv">
-  本站总访问量<span id="busuanzi_value_site_uv"></span>次
-</span>
         
 
 
@@ -455,3 +453,5 @@
 
 </body>
 </html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

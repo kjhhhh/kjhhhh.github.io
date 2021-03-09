@@ -24,12 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构快速排序">
 <meta property="og:url" content="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="KJHの博客">
 <meta property="og:description" content="快速排序也是采用分治法，将问题化整归零来处理。 步骤为：  从数列中调出一个元素，称为 “基准”（pivot）；  重新排序数列，排序规则就是将数列中比基准值大的放在基准的后面，将比基准值小的放在基准的前面，在这个分区退出之后，该基准就处于数列的中间位置（非绝对中间位置），这个称为分区操作；  递归地把小于基准值元素的子数列和大于基准值元素的子序列排序。递归的终止条件就是数列的大小是零或一，也就是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:53:28.939Z">
 <meta property="article:modified_time" content="2021-03-07T03:07:09.865Z">
-<meta property="article:author" content="KJH">
+<meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
 
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>数据结构快速排序 | Hexo</title>
+  <title>数据结构快速排序 | KJHの博客</title>
   
 
 
@@ -97,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">KJHの博客</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
   </div>
 
   <div class="site-nav-right">
@@ -165,12 +166,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="KJH">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="KJHの博客">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -237,10 +238,10 @@
 <p>经过一轮分区，基准值 “4” 已经到了排序好的位置，然后将其左右两边的子数列再次进行分区比较</p>
 <p>全部与基准值比较放置后，基准值便到了合理位置，如此递归，知道子序列中的元素为零或一，如上面的 57，7是基准值，位置放好后，其左子数列元素个数为一，右子数列元素个数为零。</p>
 <p>从上面的操作图可以很好地理解快速排序的设计思想，就是留出一个空位，然后用数补上，就又留下一个空位，再补上，最后将基准值补上最后一个空位。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">int Partition(int Array[], int left, int right)</span><br><span class="line">&#123;</span><br><span class="line">	int L &#x3D; left, R &#x3D; right;</span><br><span class="line">	int pivot &#x3D; Array[L];</span><br><span class="line"></span><br><span class="line">	while (L &lt; R)    </span><br><span class="line">	&#123;</span><br><span class="line">		while ((L &lt; R) &amp;&amp; (Array[R] &gt; pivot))</span><br><span class="line">			--R;</span><br><span class="line">		if (L &lt; R)</span><br><span class="line">		&#123;</span><br><span class="line">			Array[L] &#x3D; Array[R];   &#x2F;&#x2F;补数的时候，要知道空位在哪</span><br><span class="line">			++L;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		while ((L &lt; R) &amp;&amp; (Array[L] &lt; pivot))</span><br><span class="line">			++L;</span><br><span class="line">		if (L &lt; R)</span><br><span class="line">		&#123;</span><br><span class="line">			Array[R] &#x3D; Array[L];</span><br><span class="line">			--R;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	Array[L] &#x3D; pivot;    &#x2F;&#x2F;补上最后的空位</span><br><span class="line">	return L;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void QuickSort(int Array[], int left, int right)</span><br><span class="line">&#123;</span><br><span class="line">	if (left &lt; right)</span><br><span class="line">	&#123;</span><br><span class="line">		int pos &#x3D; Partition(Array, left, right);</span><br><span class="line">		QuickSort(Array, left, pos - 1);           &#x2F;&#x2F;注意边界</span><br><span class="line">		QuickSort(Array, pos + 1, right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="keyword">Partition</span>(<span class="type">int</span> <span class="keyword">Array</span>[], <span class="type">int</span> left, <span class="type">int</span> right)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> L = left, R = right;</span><br><span class="line">	<span class="type">int</span> pivot = <span class="keyword">Array</span>[L];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (L &lt; R)    </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> ((L &lt; R) &amp;&amp; (<span class="keyword">Array</span>[R] &gt; pivot))</span><br><span class="line">			<span class="comment">--R;</span></span><br><span class="line">		<span class="keyword">if</span> (L &lt; R)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">Array</span>[L] = <span class="keyword">Array</span>[R];   //补数的时候，要知道空位在哪</span><br><span class="line">			++L;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		<span class="keyword">while</span> ((L &lt; R) &amp;&amp; (<span class="keyword">Array</span>[L] &lt; pivot))</span><br><span class="line">			++L;</span><br><span class="line">		<span class="keyword">if</span> (L &lt; R)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">Array</span>[R] = <span class="keyword">Array</span>[L];</span><br><span class="line">			<span class="comment">--R;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">Array</span>[L] = pivot;    //补上最后的空位</span><br><span class="line">	<span class="keyword">return</span> L;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> QuickSort(<span class="type">int</span> <span class="keyword">Array</span>[], <span class="type">int</span> left, <span class="type">int</span> right)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (left &lt; right)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> pos = <span class="keyword">Partition</span>(<span class="keyword">Array</span>, left, right);</span><br><span class="line">		QuickSort(<span class="keyword">Array</span>, left, pos - <span class="number">1</span>);           //注意边界</span><br><span class="line">		QuickSort(<span class="keyword">Array</span>, pos + <span class="number">1</span>, right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>针对上面的 partition() ，下面简化一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int Partition(int Array[], int left, int right)</span><br><span class="line">&#123;</span><br><span class="line">    int pivot &#x3D; Array[left];</span><br><span class="line"></span><br><span class="line">    while (left &lt; right)</span><br><span class="line">    &#123;</span><br><span class="line">        while (left &lt; right &amp;&amp; Array[right] &gt; pivot)   &#x2F;&#x2F;两种情况跳出循环</span><br><span class="line">            --right;</span><br><span class="line">        Array[left] &#x3D; Array[right];                   </span><br><span class="line">     </span><br><span class="line">        while (left &lt; right &amp;&amp; Array[left] &lt;&#x3D; pivot)   &#x2F;&#x2F;</span><br><span class="line">            ++left;</span><br><span class="line">        Array[right] &#x3D; Array[left];</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    Array[left] &#x3D; pivot;</span><br><span class="line">    return left;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int <span class="type">Partition</span>(int <span class="type">Array</span>[], int <span class="keyword">left</span>, int <span class="keyword">right</span>)</span><br><span class="line">&#123;</span><br><span class="line">    int pivot = <span class="type">Array</span>[<span class="keyword">left</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">left</span> &lt; <span class="keyword">right</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">left</span> &lt; <span class="keyword">right</span> &amp;&amp; <span class="type">Array</span>[<span class="keyword">right</span>] &gt; pivot)   <span class="comment">//两种情况跳出循环</span></span><br><span class="line">            --<span class="keyword">right</span>;</span><br><span class="line">        <span class="type">Array</span>[<span class="keyword">left</span>] = <span class="type">Array</span>[<span class="keyword">right</span>];                   </span><br><span class="line">     </span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">left</span> &lt; <span class="keyword">right</span> &amp;&amp; <span class="type">Array</span>[<span class="keyword">left</span>] &lt;= pivot)   <span class="comment">//</span></span><br><span class="line">            ++<span class="keyword">left</span>;</span><br><span class="line">        <span class="type">Array</span>[<span class="keyword">right</span>] = <span class="type">Array</span>[<span class="keyword">left</span>];</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="type">Array</span>[<span class="keyword">left</span>] = pivot;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">left</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>复杂度分析：</p>
 <ol>
@@ -344,8 +345,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">KJH</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -396,7 +397,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">KJH</span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
@@ -411,9 +412,6 @@
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 
-<span id="busuanzi_container_site_uv">
-  本站总访问量<span id="busuanzi_value_site_uv"></span>次
-</span>
         
 
 
@@ -467,3 +465,5 @@
 
 </body>
 </html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
