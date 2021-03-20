@@ -161,6 +161,2198 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/" class="post-title-link" itemprop="url">数据库系统结构和组成</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 12:21:40 / 修改时间：12:22:40" itemprop="dateCreated datePublished" datetime="2021-03-07T12:21:40+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>0.思维导图</p>
+<p>1.数据库系统结构<br>（1）两种角度<br>从数据库管理系统角度看，数据库系统通常采用三级模式结构，是数据库系统内部的系统结构</p>
+<p>从数据库最终用户角度看（数据库系统外部的体系结构） ，数据库系统的结构分为:<br>单用户结构<br>主从式结构<br>分布式结构<br>客户／服务器<br>浏览器／应用服务器／数据库服务器多层结构等</p>
+<p>（2）数据库系统模式的概念<br>来自张教授的解疑：模式是数据库结构的描述、关系模式是表的结构的描述;</p>
+<p>“型” 和“值” 的概念</p>
+<p>型(Type)<br>对某一类数据的结构和属性的说明<br>值(Value)<br>是型的一个具体赋值<br>例如<br>学生记录型：<br>（学号，姓名，性别，系别，年龄，籍贯）<br>一个记录值：<br>（900201，李明，男，计算机，22，江苏）</p>
+<p>模式（Schema）</p>
+<p>数据库逻辑结构和特征的描述<br>是型的描述<br>反映的是数据的结构及其联系<br>模式是相对稳定的<br>实例（Instance）</p>
+<p>模式的一个具体值<br>反映数据库某一时刻的状态<br>同一个模式可以有很多实例<br>实例随数据库中的数据的更新而变动<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表</p>
+<p>例如：在学生选课数据库模式中，包含学生记录、课程记录和学生选课记录</p>
+<p>2003年的一个学生数据库实例，包含：<br>2003年学校中所有学生的记录<br>学校开设的所有课程的记录<br>所有学生选课的记录<br>2002年度学生数据库模式对应的实例与2003年度学生数据库模式对应的实例是不同的<br>（3）数据库系统的三级模式结构</p>
+<p>① 模式（Schema）<br>模式（也称逻辑模式）</p>
+<p>数据库中全体数据的逻辑结构和特征的描述<br>所有用户的公共数据视图，综合了所有用户的需求<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表</p>
+<p>模式的地位：是数据库系统模式结构的中间层</p>
+<p>与数据的物理存储细节和硬件环境无关<br>与具体的应用程序、开发工具及高级程序设计语言无关<br>模式的定义:</p>
+<p>数据的逻辑结构（数据项的名字、类型、取值范围等）<br>数据之间的联系<br>数据有关的安全性、完整性要求<br>② 外模式（External Schema）<br>外模式（也称子模式或用户模式）</p>
+<p>数据库用户（包括应用程序员和最终用户）使用的局部数据的逻辑结构和特征的描述<br>数据库用户的数据视图，是与某一应用有关的数据的逻辑表示，可以看成把数据库的部分数据，运用在不同的应用程序上，在UI界面上显示<br>一个数据库只有一个模式，可以把模式看成唯一的数据库，实例就是数据库里面的多个表<br>外模式的地位：介于模式与应用之间</p>
+<p>模式与外模式的关系：一对多<br>外模式通常是模式的子集;<br>一个数据库可以有多个外模式。反映了不同的用户的应用需求、看待数据的方式、对数据保密的要求;<br>对模式中同一数据，在外模式中的结构、类型、长度、保密级别等都可以不同;<br>外模式与应用的关系：一对多<br>同一外模式也可以为某一用户的多个应用系统所使用;<br>但一个应用程序只能使用一个外模式;可以看成把数据库的部分数据，运用在不同的应用程序上，在UI界面上显示<br>外模式的用途</p>
+<p>保证数据库安全性的一个有力措施；<br>每个用户只能看见和访问所对应的外模式中的数据；<br>③ 内模式（Internal Schema）<br>内模式（也称存储模式）</p>
+<p>是数据物理结构和存储方式的描述<br>是数据在数据库内部的表示方式:<br>记录的存储方式（顺序存储，按照B树结构存储，<br>按hash方法存储）<br>索引的组织方式<br>数据是否压缩存储<br>数据是否加密<br>数据存储记录结构的规定<br>一个数据库只有一个内模式<br>·例如学生记录，如果按堆存储，则插入一条新记录总是放在学生记录存储的最后.</p>
+<p>如果按·学号升序存储，则插入一条记录就要找到它应在的位置插入，如图1.29（b）所示<br>如果按照学生年龄聚簇存放，假如新插入的S3是16岁，则应插入的位置如图1.29（c）所示</p>
+<p>④ 数据库模式、外模式、内模式总结</p>
+<p>数据库模式</p>
+<p>即全局逻辑结构是数据库的中心与关键<br>独立于数据库的其他层次<br>设计数据库模式结构时应首先确定数据库的逻辑模式<br>数据库的外模式</p>
+<p>面向具体的应用程序<br>定义在逻辑模式之上<br>独立于存储模式和存储设备<br>当应用需求发生较大变化，相应外模式不能满足其视图要求时，该外模式就得做相应改动<br>设计外模式时应充分考虑到应用的扩充性<br>数据库的内模式</p>
+<p>依赖于它的全局逻辑结构<br>独立于具体的存储设备<br>将全局逻辑结构中所定义的数据结构及其联系按照一定的物理存储策略进行组织，以达到较好的时间与空间效率<br>（4）数据库的二级映像功能与数据独立性<br>·三级模式是对数据的三个抽象级别</p>
+<p>二级映象在DBMS内部实现这三个抽象层次的联系和转换</p>
+<p>外模式／模式映像<br>模式／内模式映像</p>
+<p>① 外模式／模式映象<br>模式：描述的是数据的全局逻辑结构<br>外模式：描述的是数据的局部逻辑结构<br>同一个模式可以有任意多个外模式<br>每一个外模式，数据库系统都有一个外模式／模式映象，定义外模式与模式之间的对应关系,看成数据库的数据与API调用的部分数据之间的关系(I think)<br>映象定义通常包含在各自外模式的描述中<br>保证数据的逻辑独立性</p>
+<p>当模式改变时，数据库管理员修改有关的外模式／模式映象，使外模式保持不变<br>应用程序是依据数据的外模式编写的，从而应用程序不必修改，保证了数据与程序的逻辑独立性，简称数据的逻辑独立性。<br>② 模式／内模式映象<br>模式／内模式映象定义了数据全局逻辑结构与存储结构之间的对应关系。</p>
+<p>  例如，说明逻辑记录和字段在内部是如何表示的<br>1<br>数据库中模式／内模式映象是唯一的<br>该映象定义通常包含在模式描述中<br>保证数据的物理独立性</p>
+<p>当数据库的存储结构改变了（例如选用了另一种存储结构），数据库管理员修改模式／内模式映象，使模式保持不变.<br>应用程序不受影响。保证了数据与程序的物理独立性，简称数据的物理独立性。<br>特定的应用程序</p>
+<p>在外模式描述的数据结构上编制的<br>依赖于特定的外模式<br>与数据库的模式和存储结构独立<br>不同的应用程序有时可以共用同一个外模式<br>数据库的二级映像</p>
+<p>保证了数据库外模式的稳定性<br>从底层保证了应用程序的稳定性，除非应用需求本身发生变化，否则应用程序一般不需要修改<br>数据与程序之间的独立性，使得数据的定义和描述可以从应用程序中分离出去</p>
+<p>数据的存取由DBMS管理</p>
+<p>用户不必考虑存取路径等细节<br>简化了应用程序的编制<br>大大减少了应用程序的维护和修改<br>2.数据库的组成<br>数据库<br>数据库管理系统（及其开发工具）<br>应用系统<br>数据库管理员<br>硬件平台及数据库<br>软件<br>人员<br>（1）硬件平台及数据库<br>数据库系统对硬件资源的要求</p>
+<p>(1) 足够大的内存</p>
+<p>操作系统<br>DBMS的核心模块<br>数据缓冲区<br>应用程序<br>(2) 足够大的外存</p>
+<p>磁盘或磁盘阵列<br>数据库<br>光盘、磁带<br>数据备份<br>(3) 较高的通道能力，提高数据传送率</p>
+<p>（2） 软件<br>DBMS<br>支持DBMS运行的操作系统<br>与数据库接口的高级语言及其编译系统<br>以DBMS为核心的应用开发工具<br>为特定应用环境开发的数据库应用系统<br>（3）人 员<br>数据库管理员<br>系统分析员和数据库设计人员<br>应用程序员<br>用户<br>不同的人员涉及不同的数据抽象级别，具有不同的数据视图，如下图所示</p>
+<p>① 数据库管理员(DBA)<br>具体职责：<br>1.决定数据库中的信息内容和结构<br>2.决定数据库的存储结构和存取策略<br>3.定义数据的安全性要求和完整性约束条件<br>4.监控数据库的使用和运行</p>
+<p>周期性转储数据库<br>数据文件<br>日志文件<br>系统故障恢复<br>介质故障恢复<br>监视审计文件<br>5.数据库的改进和重组</p>
+<p>性能监控和调优<br>定期对数据库进行重组织，以提高系统的性能<br>需求增加和改变时，数据库须需要重构造<br>② 系统分析员<br>具体职责：</p>
+<p>负责应用系统的需求分析和规范说明<br>与用户及DBA协商，确定系统的硬软件配置<br>参与数据库系统的概要设计<br>③ 数据库设计人员<br>具体职责：</p>
+<p>参加用户需求调查和系统分析<br>确定数据库中的数据<br>设计数据库各级模式<br>④ 应用程序员<br>具体职责：</p>
+<p>设计和编写应用系统的程序模块<br>进行调试和安装<br>⑤ 用户<br>用户是指最终用户（End User）。<br>最终用户通过应用系统的用户接口使用数据库。<br>1.偶然用户</p>
+<p>不经常访问数据库，但每次访问数据库时往往需要不同的数据库信息<br>企业或组织机构的高中级管理人员<br>2.简单用户</p>
+<p>主要工作是查询和更新数据库<br>银行的职员、机票预定人员、旅馆总台服务员<br>3.复杂用户</p>
+<p>工程师、科学家、经济学家、科技工作者等<br>直接使用数据库语言访问数据库，甚至能够基于数据库管理系统的API编制自己的应用程序</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">数据库数据模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 12:20:04 / 修改时间：12:21:22" itemprop="dateCreated datePublished" datetime="2021-03-07T12:20:04+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>0.思维导图</p>
+<p>1.数据模型的概念<br>在数据库中用数据模型这个工具来抽象、表示和处理现实世界中的数据和信息。<br>通俗地讲数据模型就是现实世界的模拟。<br>数据模型应满足三方面要求：</p>
+<p>能比较真实地模拟现实世界<br>容易为人所理解<br>便于在计算机上实现<br>2.两大类数据模型<br>数据模型分为两类（分属两个不同的层次）</p>
+<p>(1) 概念模型 也称信息模型，它是按用户的观点来对数据和信息建模，用于数据库设计。<br>(2) 逻辑模型和物理模型<br>逻辑模型主要包括网状模型、层次模型、关系模型、面向对象模型等，按计算机系统的观点对数据建模，用于DBMS实现。<br>物理模型是对数据最底层的抽象，描述数据在系统内部的表示方式和存取方法，在磁盘或磁带上的存储方式和存取方法。<br>客观对象的抽象过程—两步抽象<br>现实世界中的客观对象抽象为概念模型；<br>把概念模型转换为某一DBMS支持的数据模型。</p>
+<p>3.数据模型的组成要素<br>(1)数据结构<br>数据结构是所研究的对象类型的集合。这些对象是数据库的组成成分，数据结构指对象和对象间联系的表达和实现，是对系统静态特征的描述，包括两个方面：<br>（1）数据本身：类型、内容、性质。例如关系模型中的域、属性、关系等。<br>（2）数据之间的联系：数据之间是如何相互关联的，例如关系模型中的主码、外码联系等。</p>
+<p>(2)数据操作<br>数据操作</p>
+<p>对数据库中各种对象(型)的实例(值)允许执行的操作，及有关的操作规则<br>数据操作的类型</p>
+<p>查询<br>更新(包括插入、删除、修改)<br>(3)数据的完整性约束条件<br>数据的完整性约束条件是一组完整性规则的集合，规定数据库状态及状态变化所应满足的条件，以保证数据的正确性、有效性和相容性。<br>完整性规则：给定的数据模型中数据及其联系所具有的制约和储存规则</p>
+<p>4.概念模型<br>(1)用途与基本要求<br>概念模型的用途:</p>
+<p>概念模型用于信息世界的建模<br>是现实世界到机器世界的一个中间层次<br>是数据库设计的有力工具<br>数据库设计人员和用户之间进行交流的语言<br>对概念模型的基本要求:</p>
+<p>较强的语义表达能力<br>能够方便、直接地表达应用中的各种语义知识<br>简单、清晰、易于用户理解<br>(2) 信息世界中的基本概念<br>(1) 实体（Entity）<br>客观存在并可相互区别的事物称为实体。<br>可以是具体的人、事、物或抽象的概念。<br>(2) 属性（Attribute）<br>实体所具有的某一特性称为属性。<br>一个实体可以由若干个属性来刻画。<br>(3) 码（Key）<br>唯一标识实体的属性集称为码。<br>(4) 域（Domain）<br>属性的取值范围称为该属性的域。<br>(5) 实体型（Entity Type）<br>用实体名及其属性名集合来抽象和刻画同类实体称为实体型<br>(6) 实体集（Entity Set）<br>同一类型实体的集合称为实体集<br>(7) 联系（Relationship）<br>现实世界中事物内部以及事物之间的联系在信息世界中反映为实体内部的联系和实体之间的联系。<br>实体内部的联系通常是指组成实体的各属性之间的联系<br>实体之间的联系通常是指不同实体集之间的联系<br>(3)两个实体型之间的联系</p>
+<p>① 一对一联系（1:1）<br>实例</p>
+<p>一个班级只有一个正班长<br>一个班长只在一个班中任职</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中至多有一个（也可以没有）实体与之联系，反之亦然。则称实体集A与实体集B具有一对一联系，记为1:1</p>
+<p>② 一对多联系（1:n）<br>实例</p>
+<p>一个班级中有若干名学生，<br>每个学生只在一个班级中学习</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中有n个实体（n≥0）与之联系，反之，对于实体集B中的每一个实体，实体集A中至多只有一个实体与之联系，则称实体集A与实体集B有一对多联系，记为1:n<br>③ 多对多联系（m:n）<br>实例</p>
+<p>课程与学生之间的联系：<br>一门课程同时有若干个学生选修<br>一个学生可以同时选修多门课程</p>
+<p>定义：<br>如果对于实体集A中的每一个实体，实体集B中有n个实体（n≥0）与之联系，反之，对于实体集B中的每一个实体，实体集A中也有m个实体（m≥0）与之联系，则称实体集A与实体B具有多对多联系，记为m:n<br>(4)两个以上实体型之间的联系<br>① 一对多联系（1:m||1:n）<br>若实体集E1，E2，…，En存在联系，对于实体集Ej（j=1，2，…，i-1i+1，…，n）中的给定实体，最多只和Ei中的一个实体相联系，则我们说Ei与E1E2，…，Ei-1，Ei+1，…，En之间的联系是一对多的。<br>实例</p>
+<p>课程、教师与参考书三个实体型<br>一门课程可以有若干个教师讲授，<br>使用若干本参考书，<br>每一个教师只讲授一门课程，<br>每一本参考书只供一门课程使用</p>
+<p>② 一对一联系（1:1:1）<br>实例</p>
+<p>一个独生子女只有一个父亲，一个母亲<br>一个父亲也只有一个独生子女<br>一个母亲也只有一个独生子女</p>
+<p>③ 多对多联系（m:n:p）<br>实例<br>供应商、项目、零件三个实体型<br>一个供应商可以供给多个项目多种零件<br>每个项目可以使用多个供应商供应的零件<br>每种零件可由不同供应商供给</p>
+<p>(5)单个实体型内的联系<br>① 一对多联系（1:n）<br>实例<br>职工实体型内部具有领导与被领导的联系<br>某一职工（干部）“领导”若干名职工<br>一个职工仅被另外一个职工直接领导<br>这是一对多的联系</p>
+<p>② 一对一联系（1:1）<br>身份证可以唯一确认一个人的身份，人与身份证有确认和被确认的关系<br>一个身份证唯一确定一个人<br>一个人也唯一确认一个身份证</p>
+<p>③ 多对多联系 （m:n）<br>饮料和厂商之间有制造和被制造的关系<br>多个饮料可以被多个厂商制造<br>多个厂商可以制造出多种饮料</p>
+<p>(6)概念模型的一种表示方法<br>① 实体－联系方法(E-R方法)<br>E-R图也称实体-联系图(Entity Relationship Diagram)，提供了表示实体类型、属性和联系的方法，用E-R图来描述现实世界的概念模型<br>E-R方法也称为E-R模型<br>② 实体型<br>用矩形表示，矩形框内写明实体名。</p>
+<p>③ 属性<br>用椭圆形表示，并用无向边将其与相应的实体连接起来</p>
+<p>④ 联系<br>联系本身：<br>用菱形表示，菱形框内写明联系名，并用无向边分别与有关实体连接起来，同时在无向边旁标上联系的类型（1:1、1:n或m:n）</p>
+<p>⑤ 联系的表示方法</p>
+<p>⑥ 联系的表示方法示例</p>
+<p>⑦ 联系的属性<br>联系本身也是一种实体型，也可以有属性。如果一个联系具有属性，则这些属性也要用无向边与该联系连接起来</p>
+<p>⑧ 一个实例<br>用E-R图表示某个工厂物资管理的概念模型</p>
+<p>实体<br>仓库： 仓库号、面积、电话号码<br>零件 ：零件号、名称、规格、单价、描述<br>供应商：供应商号、姓名、地址、电话号码、帐号<br>项目：项目号、预算、开工日期<br>职工：职工号、姓名、年龄、职称<br>实体之间的联系如下：</p>
+<p>(1)一个仓库可以存放多种零件，一种零件可以存放在多个仓库中。仓库和零件具有多对多的联系。用库存量来表示某种零件在某个仓库中的数量。<br>(2)一个仓库有多个职工当仓库保管员，一个职工只能在一个仓库工作，仓库和职工之间是一对多的联系。职工实体型中具有一对多的联系<br>(3)职工之间具有领导-被领导关系。即仓库主任领导若干保管员。<br>(4)供应商、项目和零件三者之间具有多对多的联系</p>
+<p>5.非关系模型<br>（1）层次模型(Hierarchical Model)<br>层次模型是数据库系统中最早出现的数据模型<br>层次数据库系统的典型代表是IBM公司的IMS（Information Management System）数据库管理系统<br>层次模型用树形结构来表示各类实体以及实体间的联系<br>① 数据结构<br>满足下面两个条件的基本层次联系的集合为层次模型</p>
+<p>有且只有一个结点没有双亲结点，这个结点称为根结点<br>根以外的其它结点有且只有一个双亲结点<br>层次模型中的几个术语<br>根结点，双亲结点，兄弟结点，叶结点</p>
+<p>② 特点<br>结点的双亲是唯一的<br>只能直接处理一对多的实体联系<br>每个记录类型可以定义一个排序字段，也称为·码字段<br>任何记录值只有按其路径查看时，才能显出它的全部意义<br>没有一个子女记录值能够脱离双亲记录值而独立存在</p>
+<p>③ 多对多联系在层次模型中的表示<br>方法：</p>
+<p>将多对多联系分解成一对多联系<br>分解方法：</p>
+<p>冗余结点法<br>虚拟结点法<br>④ 数据操纵与完整性约束<br>层次模型的数据操纵：</p>
+<p>查询<br>插入<br>删除<br>更新<br>层次模型的完整性约束条件：</p>
+<p>无相应的双亲结点值就不能插入子女结点值<br>如果删除双亲结点值，则相应的子女结点值也被同时删除<br>更新操作时，应更新所有相应记录，以保证数据的一致性<br>⑤ 存储结构<br>邻接法：<br>按照层次树前序遍历（T-L-R）的顺序把所有记录值依次邻接存放，即通过物理空间的位置相邻来实现层次顺序。又可分为：子女－兄弟链接法和层次序列链接法。</p>
+<p>❶ 子女-兄弟链接法<br>每个记录设两类指针，分别指向最左边的子女（每个记录型对应一个）和最近的兄弟</p>
+<p>❷ 层次序列链接法<br>按树的前序穿越顺序链接各记录值</p>
+<p>⑥ 优缺点<br>优点：<br>层次模型的数据结构比较简单清晰<br>查询效率高，性能优于关系模型，不低于网状模型<br>层次数据模型提供了良好的完整性支持<br>缺点：<br>多对多联系表示不自然<br>对插入和删除操作的限制多，应用程序的编写比较复杂<br>查询子女结点必须通过双亲结点<br>由于结构严密，层次命令趋于程序化<br>（2）网状模型(Network Model)<br>网状数据库系统采用网状模型作为数据的组织方式</p>
+<p>典型代表是DBTG系统：<br>亦称CODASYL系统<br>70年代由DBTG提出的一个系统方案<br>奠定了数据库系统的基本概念、方法和技术<br>实际系统:<br>Cullinet Software Inc.公司的 IDMS<br>Univac公司的 DMS1100<br>Honeywell公司的IDS/2<br>HP公司的IMAGE<br>① 数据结构<br>网状模型:<br>满足下面两个条件的基本层次联系的集合：</p>
+<p>允许一个以上的结点无双亲；<br>一个结点可以有多于一个的双亲。<br>表示方法(与层次数据模型相同):<br>实体型：用记录类型描述<br>每个结点表示一个记录类型（实体）<br>属性：用字段描述<br>每个记录类型可包含若干个字段<br>联系：用结点之间的连线表示记录类型（实体）之<br>间的一对多的父子联系</p>
+<p>网状模型与层次模型的区别:</p>
+<p>网状模型允许多个结点没有双亲结点<br>网状模型允许结点有多个双亲结点<br>网状模型允许两个结点之间有多种联系（复合联系）<br>网状模型可以更直接地去描述现实世界<br>层次模型实际上是网状模型的一个特例<br>网状模型中子女结点与双亲结点的联系可以不唯一<br>要为每个联系命名，并指出与该联系有关的双亲记录和子女记录</p>
+<p>多对多联系在网状模型中的表示:<br>方法：将多对多联系直接分解成一对多联系</p>
+<p>例如：一个学生可以选修若干门课程，·某一课程可以被多个学生选修，学生与课程之间是多对多联系 ·</p>
+<p>引进一个学生选课的联结记录，由3个数据项组成<br>学号<br>课程号<br>成绩<br>表示某个学生选修某一门课程及其成绩</p>
+<p>② 网状数据模型的操纵与完整性约束（续）<br>网状数据库系统（如DBTG）对数据操纵加 了一些限制，提供了一定的完整性约束</p>
+<p>码：唯一标识记录的数据项的集合<br>一个联系中双亲记录与子女记录之间是一对多联系<br>支持双亲记录和子女记录之间某些约束条件<br>③ 存储结构<br>关键：</p>
+<p>实现记录之间的联系<br>常用方法：</p>
+<p>单向链接<br>双向链接<br>环状链接<br>向首链接</p>
+<p>④ 优缺点<br>优点<br>能够更为直接地描述现实世界，如一个结点可以有多个双亲；<br>具有良好的性能，存取效率较高；</p>
+<p>缺点<br>结构比较复杂，而且随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握；<br>DDL、DML语言复杂，用户不容易使用；</p>
+<p>6.关系模型<br>关系数据库系统采用关系模型作为数据的组织方式<br>1970年美国IBM公司San Jose研究室的研究员E.F.Codd首次提出了数据库系统的关系模型<br>计算机厂商新推出的数据库管理系统几乎都支持关系模型</p>
+<p>（1）数据结构<br>在用户观点下，关系模型中数据的逻辑结构是一张二维表，它由行和列组成。<br>几个名词解释：</p>
+<p>关系（Relation）<br>一个关系对应通常说的一张表</p>
+<p>元组（Tuple）<br>表中的一行即为一个元组</p>
+<p>属性（Attribute）<br>表中的一列即为一个属性，给每一个属性起一个名称即属性名</p>
+<p>主码（Key）<br>表中的某个属性组，它可以唯一确定一个元组。</p>
+<p>域（Domain）<br>属性的取值范围。</p>
+<p>分量<br>元组中的一个属性值。</p>
+<p>关系模式<br>对关系的描述<br>关系名（属性1，属性2，…，属性n）<br>学生（学号，姓名，年龄，性别，系，年级）</p>
+<p>举几个例子：</p>
+<p>例1<br>学生、系、系与学生之间的·一对多联系：<br>学生（学号，姓名，年龄，性别，系号，年级）<br>系 (系号，系名，办公地点)</p>
+<p>例2<br>系、系主任、系与系主任间的一对一联系</p>
+<p>例3<br>学生、课程、学生与课程之间的多对多联系：<br>学生（学号，姓名，年龄，性别，系号，年级）<br>课程（课程号，课程名，学分）<br>选修（学号，课程号，成绩）</p>
+<p>规范化：</p>
+<p>关系必须是规范化的，满足一定的规范条件<br>最基本的规范条件：关系的每一个分量必须是一个不可分的数据项, 不允许表中还有表<br>图1.27中工资和扣除是可分的数据项 ,不符合关系模型要求</p>
+<p>（2）关系数据模型的操纵与完整性约束<br>数据操作是集合操作，操作对象和操作结果都是关系<br>查询<br>插入<br>删除<br>更新</p>
+<p>数据操作是集合操作，操作对象和操作结果都是关系，即若干元组的集合存取路径对用户隐蔽，用户只要指出“干什么”，不必详细说明“怎么干”</p>
+<p>关系的完整性约束条件<br>实体完整性<br>参照完整性<br>用户定义的完整性</p>
+<p>（3）存储结构<br>实体及实体间的联系都用表来表示<br>表以文件形式存储<br>有的DBMS一个表对应一个操作系统文件；<br>有的DBMS自己设计文件结构；<br>（4）优缺点<br>优点<br>建立在严格的数学概念的基础上;<br>概念单一:<br>实体和各类联系都用关系来表示;<br>对数据的检索结果也是关系;<br>关系模型的存取路径对用户透明;<br>具有更高的数据独立性，更好的安全保密性<br>简化了程序员的工作和数据库开发建立的工作;<br>缺点<br>存取路径对用户透明导致查询效率往往不如非关系数据模型;<br>为提高性能，必须对用户的查询请求进行优化,增加了开发DBMS的难度;<br>7.面向对象数据模型<br>将语义数据模型和面向对象程序设计方法结合起来，用面向对象观点来描述现实世界实体(对象)的逻辑组织、对象间限制、联系等的模型。</p>
+<p>一系列面向对象核心概念构成了面向对象数据模型( Object Oriented Data Model, 00模型)的基础，主要包括以下一些概念:</p>
+<p>(1)现实世界中的任何事物都被建模为对象。每个对象具有一个唯一的对象标识<br>(OID)。<br>(2)对象是其状态和行为的封装，其中状态是对象属性值的集合，行为是变更对象状<br>态的方法集合。<br>(3)具有相同属性和方法的对象的全体构成了类，类中的对象称为类的实例。<br>(4)类的属性的定义域也可以是类，从而构成了类的复合。类具有继承性，一个类可以继承另一个类的属性与方法，被继承类和继承类也称为超类和子类。类与类之间的复合与继承关系形成了一个有向无环图，称为类层次。<br>(5)对象是被封装起来的，它的状态和行为在对象外部不可见，从外部只能通过对象显式定义的消息传递对对象进行操作。<br>面向对象数据库(OODB)的研究始于20世纪80年代，有许多面向对象数据库产品相继问世，较著名的有Object Store、02、ONTOS等。</p>
+<p>与传统数据库一样，面向对象数据库系统对数据的操纵包括数据查询、增加、删除、修改等，也具有并发控制、故障恢复、存储管理等完整的功能。不仅能支持传统数据库应用，也能支持非传统领域的应用，包括CAD/CAM、OA、CIMS、GIS以及图形、图像等多媒体领域、工程领域和数据集成等领域。</p>
+<p>尽管如此，由于面向对象数据库操作语言过于复杂，没有得到广大用户，特别是开发人员的认可，加上面向对象数据库企图完全替代关系数据库管理系统的思路，增加了企业系统升级的负担，客户不接受，·面向对象数据库产品终究没有在市场上获得成功。</p>
+<p>8.对象关系模型<br>对象关系数据库系统(Object Relational DataBase System, ORDBS) 是关系数据库与面向对象数据库的结合。<br>它保持了关系数据库系统的非过程化数据存取方式和数据独立性，继承了关系数据库系统已有的技术，支持原有的数据管理，又能支持00模型和对象管理。各数据库厂商都在原来的产品基础上进行了扩展。<br>1999 年发布的SQL标准(也称为SQL99)，增加了SQL/Object Language Binding, 提供了面向对象的功能标准。SQL99对ORDBS标准的制定滞后于实际系统的实现。所以各个ORDBS产品在支持对象模型方面虽然思想一致，但是所采用的术语、语言语法、扩展的功能都不尽相同。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">数据库系统概述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-04 12:51:22" itemprop="dateCreated datePublished" datetime="2021-03-04T12:51:22+08:00">2021-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 12:19:57" itemprop="dateModified" datetime="2021-03-07T12:19:57+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>0.思维导图<br>1.四大基本概念<br>（1）数据–Data<br>① 数据的定义<br>② 数据的种类<br>③ 数据的特点<br>④ 数据举例<br>（2）数据库–Database<br>① 数据库的定义<br>② 数据库的基本特征<br>（3）数据库管理系统–DataBase Management System<br>① 什么是DBMS?<br>② DBMS的用途<br>③ DBMS的主要功能<br>（4）数据库系统–Database System<br>① 什么是数据库系统（Database System，简称DBS）<br>② 数据库系统的构成<br>③ 数据库系统的特点<br>❶ 数据结构化<br>❷ 数据的共享性高，冗余度低，易扩充<br>❸ 数据独立性高<br>❹ 数据由DBMS统一管理和控制<br>❺ 应用程序与数据的对应关系(数据库系统)<br>2.数据管理技术的产生和发展<br>（1） 什么是数据管理<br>（2） 数据管理技术的发展过程<br>（3）时期<br>（4） 产生的背景<br>0.思维导图</p>
+<p>1.四大基本概念<br>（1）数据–Data<br>数据(Data)是数据库中存储的基本对象<br>① 数据的定义<br>描述事物的符号记录</p>
+<p>② 数据的种类<br>文本、图形、图像、音频、视频、学生的档案记录、货物的运输情况等</p>
+<p>③ 数据的特点<br>数据与其语义是不可分的</p>
+<p>④ 数据举例<br>数据的含义称为数据的语义，数据与其语义是不可分的。<br>例如 93是一个数据<br>语义1：学生某门课的成绩<br>语义2：某人的体重<br>语义3：计算机系2003级学生人数<br>语义4：请同学给出。。。</p>
+<p>学生档案中的学生记录<br>（李明，男，197205，江苏南京市，计算机系，1990）<br>语义：学生姓名、性别、出生年月、籍贯、所在院系、<br>入学时间<br>解释：李明是个大学生，1972年5月出生，江苏南京市人，1990年考入计算机系</p>
+<p>（2）数据库–Database<br>① 数据库的定义<br>数据库(Database,简称DB)是长期储存在计算机内、有组织、可共享的大量数据的集合。</p>
+<p>② 数据库的基本特征<br>数据按一定的数据模型组织、描述和储存<br>可为各种用户共享<br>冗余度较小<br>数据独立性较高<br>易扩展<br>（3）数据库管理系统–DataBase Management System<br>① 什么是DBMS?<br>DBMS是位于用户与操作系统之间的一层数据管理软件。是基础软件，是一个大型复杂的软件系统</p>
+<p>② DBMS的用途<br>科学地组织和存储数据、高效地获取和维护数据</p>
+<p>③ DBMS的主要功能<br>数据定义功能<br>提供数据定义语言(DDL)<br>定义数据库中的数据对象</p>
+<p>数据组织、存储和管理<br>分类组织、存储和管理各种数据<br>确定组织数据的文件结构和存取方式<br>实现数据之间的联系<br>提供多种存取方法提高存取效率</p>
+<p>数据操纵功能<br>提供数据操纵语言(DML)<br>实现对数据库的基本操作 (查询、插入、删除和修改)</p>
+<p>数据库的事务管理和运行管理<br>数据库在建立、运行和维护时由DBMS统一管理和控制<br>保证数据的安全性、完整性、多用户对数据的并发使用<br>发生故障后的系统恢复</p>
+<p>数据库的建立和维护功能(实用程序)<br>数据库初始数据装载转换<br>数据库转储<br>介质故障恢复<br>数据库的重组织<br>性能监视分析等</p>
+<p>其它功能<br>DBMS与网络中其它软件系统的通信<br>两个DBMS系统的数据转换<br>异构数据库之间的互访和互操作</p>
+<p>（4）数据库系统–Database System<br>① 什么是数据库系统（Database System，简称DBS）<br>在计算机系统中引入数据库后的系统构成</p>
+<p>② 数据库系统的构成<br>数据库 Database<br>数据库管理系统（及其开发工具）Database Management System<br>应用系统<br>数据库管理员 Database Administrator</p>
+<p>③ 数据库系统的特点<br>❶ 数据结构化<br>整体数据的结构化是数据库的主要特征之一</p>
+<p>整体结构化<br>不再仅仅针对某一个应用，而是面向全组织<br>不仅数据内部结构化，整体是结构化的，数据之间具有联系</p>
+<p>数据库中实现的是数据的真正结构化<br>数据的结构用数据模型描述，无需程序定义和解释<br>数据可以变长<br>数据的最小存取单位是数据项</p>
+<p>❷ 数据的共享性高，冗余度低，易扩充<br>数据库系统从整体角度看待和描述数据，数据面向整个系统，可以被多个用户、多个应用共享使用。<br>数据共享的好处<br>减少数据冗余，节约存储空间<br>避免数据之间的不相容性与不一致性<br>使系统易于扩充<br>❸ 数据独立性高<br>物理独立性<br>指用户的应用程序与存储在磁盘上的数据库中数据是相互独立的。当数据的物理存储改变了，应用程序不用改变。<br>逻辑独立性<br>指用户的应用程序与数据库的逻辑结构是相互独立的。数据的逻辑结构改变了，用户程序也可以不变。<br>数据独立性是由DBMS的二级映像功能来保证的<br>❹ 数据由DBMS统一管理和控制<br>DBMS提供的数据控制功能</p>
+<p>(1)·数据的安全性（Security）保护·<br>保护数据，以防止不合法的使用造成的数据的泄密和破坏。<br>(2)数据的完整性（Integrity）检查<br>将数据控制在有效的范围内，或保证数据之间满足一定的关系。<br>(3)并发（Concurrency）控制<br>对多用户的并发操作加以控制和协调，防止相互干扰而得到错误的结果。<br>(4)数据库恢复（Recovery）<br>将数据库从错误状态恢复到某一已知的正确状态。<br>❺ 应用程序与数据的对应关系(数据库系统)</p>
+<p>2.数据管理技术的产生和发展<br>（1） 什么是数据管理<br>对数据进行分类、组织、编码、存储、检索和维护<br>数据处理的中心问题<br>（2） 数据管理技术的发展过程<br>人工管理阶段(20世纪40年代中–50年代中)<br>文件系统阶段(20世纪50年代末–60年代中)<br>数据库系统阶段(20世纪60年代末–现在)<br>（3）时期<br>20世纪60年代末以来<br>（4） 产生的背景<br>应用背景 大规模管理<br>硬件背景 大容量磁盘、磁盘阵列<br>软件背景 有数据库管理系统<br>处理方式 联机实时处理,分布处理,批处理</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">计算机组成原理笔记总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-04 12:46:31 / 修改时间：14:59:17" itemprop="dateCreated datePublished" datetime="2021-03-04T12:46:31+08:00">2021-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">计组</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="计算机组成原理笔记总结"><a href="#计算机组成原理笔记总结" class="headerlink" title="计算机组成原理笔记总结"></a>计算机组成原理笔记总结</h1><p>第1章：计算机的系统<br>第3章：系统总线<br>第4章：存储器<br>一. 概述<br>二.主存储器<br>1.概述</p>
+<ol start="2">
+<li>半导体储存芯片</li>
+<li>随机存储器（RAM）</li>
+<li>只读存储器（ROM）</li>
+<li>存储器与CPU的连接</li>
+<li>存储器校验</li>
+<li>提高访存速度的措施<br>三.高速缓冲存储器（cache）</li>
+<li>概述</li>
+<li>Cache–主存地址映射和替换策略<br>四.辅助存储器（外部存储器）<br>第5章：输入输出系统<br>一.发展情况，了解历史<br>二.系统组成<br>三.I/O设备与主机的联系方式<br>四.I/O设备与主机信息传送的控制方式<br>第1章：计算机的系统<br>硬件：指计算机实体部分。（看得见摸得着的）<br>软件：通过编译具有各类特殊功能的程序组成（看不见摸不着）</li>
+</ol>
+<p>冯.诺依曼计算机：以运算器为中心<br>现代计算机：以存储器为中心</p>
+<p>1.计算机由运算器，存储器，控制器，输入，输出设备过构成。<br>2.现代计算机三大组成：CPU，I/O设备，主存储器<br>3.工作步骤：（1）建立数学模型 （2）确定计算方法（3）编制解题程序<br>4.存储容量=存储单元个数（MAR 1k=1024=2^10）x存储字长（MDR 1M=2 ^20）</p>
+<p>ax^2+bx+c在计算机中的运行过程</p>
+<p>各种英文代号解释</p>
+<p>CPU:（Central Processing Unit)中央处理器<br>I/O设备：（Input/Output Equip-ment）输入，输出设备<br>MM: （Main Memory)主存储器<br>ALU: （Arithmetic Logic Unit）算数逻辑单元<br>ACC：（Accumulator）累加器<br>MQ：（Multiplier-Quotient Register）乘商寄存器<br>X：操作数寄存器<br>PC：（Program Counter）程序计数器<br>IR：（Instruction Register）指令寄存器<br>CU：（Control Unit）控制单元<br>MAR：（Memory Address Register）存储器地址寄存器，反映单元个数<br>MDR：（Memory Data Register）存储器数据寄存器，反映字长</p>
+<p>第3章：系统总线<br>总线是信号的公共传输线，是连接多个部件的信息传输线，是各部件共享的传输介质。</p>
+<p>发展过程：</p>
+<p>面向CPU的双总线：这种结构在I/O设备与主存交换信息是仍然要占用CPU，因此还会影响CPU的工作效率。<br>单总线结构（系统总线）：只有一组总线，当都要占用总线时，就会发生冲突。<br>以存储器为中心的双总线结构：由单总线基础上，在CPU与主存之间连接一条存储总线。<br>分类：</p>
+<p>片内总线：芯片内部的线。<br>系统总线：计算机各部件之间的信息传输线。<br>（1）数据总线（双向）：传输数据信息。位数与机器字长，存储字长有关，是衡量性能重要参数。<br>（2）地址总线（单向）：指出在数据总线上数据在主存单元或I/O设备的地址，地址线的位数与存储单元的个数有关<br>（3）控制总线（单向，双向）：发出各种控制信号，监视各部件状态。<br>通信总线：用于计算机系统之间或计算机系统与其他系统（外部系统） 传输方式：串行通信，并行通信<br>特性：</p>
+<p>机器特性<br>电气特性<br>功能特性<br>时间特性<br>性能指标：</p>
+<p>总线宽度：指数据总线的根数，用bit（位）表示，如8位（8根）。<br>总线带宽(数据传输速率)：既单位时间内总线上传输数据的位数，用每秒传输信息的字节数来衡量，单位用MBps(兆字节每秒)。<br>时钟同步/异步：数据与时钟。<br>总线复用：地址线和数据线的复用。<br>信号总线：三种总线的总和。<br>判优控制</p>
+<p>主设备对总线有控制权，从设备只能响应从设备发来的总线命令<br>判优控制可分为集中式和分布式。<br>集中控制优先权仲裁方式：<br>（1）链式查询：控制线少，对电路故障敏感，优先级低的设备难请求<br>（2）计数器定时查询：控制复制<br>（3）独立请求方式：响应快，优先次序控制灵活</p>
+<p>通信控制</p>
+<p>总线周期：完成一次总线操作的时间。<br>目的：解决通信双方如何协调配合。<br>方式：<br>（1）同步通信：通信双方由统一时标。<br>（2）异步通信：采用应答方式，没有公共时钟标准。<br>（3）半同步通信：同步，异步结合。<br>（4）分离式通信：充分挖掘系统总线每个瞬间的潜力。<br>第4章：存储器<br>一. 概述<br>分类：</p>
+<p>层次结构：</p>
+<p>性能指标：速度，容量，位价（每位价格）。</p>
+<p>存储层次结构：<br>（1）缓存-主存层次：解决CPU和主存速度不匹配问题。<br>（2）主存-辅存层次：解决容量问题。</p>
+<p>二.主存储器<br>1.概述<br>基本组成： 存储体（大楼）–存储单元（房间）–存储元件（床位）– 0 / 1（无人/有人）。<br>主存中存储单元地址的分配： 主存个存储单元的空间位置是由单元地址号来表示，地址总线是指出储存单元地址号，由地址号可以读出写入一个储存字。<br>技术指标：<br>（1）存储容量 ：指主存能存放二进制代码的总位数，也可用字节总数 来表示。<br>存储容量=存储单元个数 x 存储字长<br>存储容量=存储单元个数 x 存储字长/8<br>（2）存储速度 ：由存取时间和存储周期来表示。<br>2. 半导体储存芯片<br>基本结构：</p>
+<p>容量：由地址线（单向）和数据线（双向）的位数共同反应。<br>列：</p>
+<p>地址线    数据线    容量<br>10    4    2^10(1k)<em>4<br>14    1    2^14(16k)</em>1<br>13    8    2^13(8k)*8<br>控制线：<br>（1）读写控制线：决定芯片进行读写操作。<br>（2）片选线：用来选择储存芯片。<br>译码驱动方式：线选法和重合法</p>
+<p>3.随机存储器（RAM）<br>DRAM(动态)：用在主存<br>SRAM(静态)：用在缓存</p>
+<p>DRAM(动态)    SRAM(静态)<br>存储原理    容量    触发器<br>集成度    高    低<br>芯片引脚    少    多<br>功耗    小    大<br>价格    低    高<br>速度    慢    快<br>刷新    有    无<br>4.只读存储器（ROM）<br>定义： 一般保存系统程序或系统的配置信息<br>半导体ROM基本器件：MOS型和TTL型。</p>
+<p>MROM:用户不发改变原始状态。<br>PROM：可以改变一次（一次性）。<br>EPROM：（多次性编程）。<br>EEPROM：既可局部，也可全部。<br>闪速存储器：快擦型存储器<br>5.存储器与CPU的连接<br>存储容量的扩展<br>CS （片选线 ）：连接芯片<br>WE：读，写</p>
+<p>（1）位扩展 ： 指增加存储字长（就是增加数据线）。<br>（2）字扩展 ：指增加存储器字的数量，也称存储单元（就是增加地址线）<br>（3）字，位扩展 ：两个都增。</p>
+<p>存储器与CPU连接<br>（1）地址线连接：通常将CPU地址线的低位与存储芯片的地址线相连（CPU地址线多于存储芯片地址线）。<br>（2）数据线连接 : 若存储芯片与CPU的数据线不相等，就对存储芯片进行扩位（使他们数据位数相等）。<br>（3）读 / 写命令线连接 ：高电平为读，低电平为写。<br>（4）片选线连接 ：是CPU与存储芯片正确工作的关键。片选有效信号与CPU的访存信号MREQ（低电平有效，有效时，这次访问的地址才在存储器当中）有关。<br>（5）合理选择存储芯片 ：ROM存放系统程序，RAM为用户编程设计。<br>解题步骤<br>（1）写出对应的二进制地址码<br>（2）确定芯片数量及类型<br>（3）分配地址线<br>（4）确定片选信号<br>（5）确定片选逻辑</p>
+<p>6.存储器校验<br>汉明码：1950年提出，具有以为纠错能力。<br>汉明码的分组是一种非划分方式。<br>校验位： 指对一组数据进行效验，不和其他组共有。<br>7.提高访存速度的措施<br>目的：提高主存的存取速度<br>多体并行系统：采用多体模块组成的存储器。</p>
+<p>三.高速缓冲存储器（cache）<br>1.概述<br>主要作用：解决主存与CPU速度不匹配的问题。</p>
+<p>CPU<br>缓存<br>主存<br>工作原理<br>主存由2^n个可编译的字组成，每个字有唯一的n位地址<br>主存 和 缓存以块 为单位存储。<br>块的大小相同</p>
+<p>CPU读取主存的字<br>两种情况（1）所需字已在缓存中，可直接访问Cache（一次送一个字节）。<br>（2）不在，将改字所在的主存整个字块调到缓存。<br>命中率<br>（1）Cache 容量越大 CPU命中率越高。<br>（2）命中Cache：说明主存快已经调入缓存中。<br>（3）未命中：未调入。<br>基本结构<br>（1）Cache存储体。<br>（2）地址映射变换机构<br>（3）替换机构<br>（4）Cache的读写操作</p>
+<p>2.Cache–主存地址映射和替换策略<br>映射机构：主存的块可以放到缓存那些块当中。<br>替换机构：完成了主存当中的一个块在Cache当中的查找操作。</p>
+<p>直接映射（不灵活）：某一 主存块只能固定映射到某一缓存块。<br>全相联映射（成本高）：某一主存块能 映射到任一缓存块<br>组相联映射：某一 主存块只能映射到某一缓存组中的存储块当中<br>算法：</p>
+<p>先进先出（First-In-First-out,FIFO）算法。<br>近期最少使用（Least Recently Used,LRU）算法。<br>四.辅助存储器（外部存储器）<br>特点：不直接与CPU交换信息<br>与主存一起组成了存储器系统的主存-辅存层次</p>
+<p>第5章：输入输出系统<br>你们可能看不懂我的题目，那么接下来跟我一起去了解输入输出系统的学习过程。</p>
+<p>输入输出，通俗话讲就是进去出来（希望能过审）。</p>
+<p>它有多牛逼呢？<br>它是除了CPU和存储器计算机硬件系统第三个关键部分。</p>
+<p>一.发展情况，了解历史<br>早期阶段<br>（1）分散连接<br>（2）CPU与I/O设备串行工作<br>（4）程序查询方式<br>（3）I/O设备通过CPU与主存交换消息</p>
+<p>接口模块和DMA阶段<br>（1）总线连接<br>（2）CPU和I/O设备并行<br>（3）工作：中断方式，DMA方式。</p>
+<p>具有通道结构阶段<br>I/O设备通过通道与主机交换信息。</p>
+<p>具有I/O处理机的阶段</p>
+<p>二.系统组成<br>是由I/O软件和I/O硬件组成的。</p>
+<p>1.I/O软件<br>（1）I/O指令</p>
+<p>操作码    命令码    设备码<br>（2）通道指令</p>
+<p>指出数组的首地址，传送字数，操作命令<br>是通道自身的指令，用来执行I/O操作<br>2.I/O硬件：包括接口模块和I/O设备。</p>
+<p>三.I/O设备与主机的联系方式<br>I/O设备的编址方式<br>（1）统一编址：将I/O地址看做是存储器地址的一部分。<br>（2）不统一编址：指I/O地址和存储器地址分开</p>
+<p>设备寻址：用设备选择电路识别是否被选中。</p>
+<p>传送方式<br>（1）并行方式（数据同时输送）：传送快，但数据线多<br>（2）串行方式（逐位传送）：速度慢，但只需一根数据线和地址线</p>
+<p>联络方式<br>（1）立即响应方式<br>（2）异步工作采用应答信号联络<br>（3）同步工作采用同步时标联络</p>
+<p>连接方式<br>（1）辐射式：增删困难<br>（2）总线式：现代被采用</p>
+<p>四.I/O设备与主机信息传送的控制方式<br>程序查询<br>程序中断<br>DMA方式</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">QT入门教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-11 19:33:21 / 修改时间：19:34:17" itemprop="dateCreated datePublished" datetime="2021-01-11T19:33:21+08:00">2021-01-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>45k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>41 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>目录</p>
+<p><a href="#_Toc471841976">1……………………………………………………………………………………………………… Qt概述… 1</a></p>
+<p><a href="#_Toc471841977">1.1 什么是Qt 1</a></p>
+<p><a href="#_Toc471841978">1.2 Qt的发展史… 1</a></p>
+<p><a href="#_Toc471841979">1.3 支持的平台… 1</a></p>
+<p><a href="#_Toc471841980">1.4 Qt版本… 1</a></p>
+<p><a href="#_Toc471841981">1.5 Qt的下载与安装… 2</a></p>
+<p><a href="#_Toc471841982">下载地址：… 2</a></p>
+<p><a href="#_Toc471841983">Linux Host 2</a></p>
+<p><a href="#_Toc471841984">OS X Host 2</a></p>
+<p><a href="#_Toc471841985">Windows Host 2</a></p>
+<p><a href="#_Toc471841986">安装… 3</a></p>
+<p><a href="#_Toc471841987">1.6 Qt的优点… 3</a></p>
+<p><a href="#_Toc471841988">1.7 成功案例… 3</a></p>
+<p><a href="#_Toc471841989">2………………………………………………………………………………………………. 创建Qt项目… 3</a></p>
+<p><a href="#_Toc471841990">2.1 使用向导创建… 3</a></p>
+<p><a href="#_Toc471841991">2.2  手动创建… 7</a></p>
+<p><a href="#_Toc471841992">2.3  .pro文件… 9</a></p>
+<p><a href="#_Toc471841993">2.4  一个最简单的Qt应用程序… 10</a></p>
+<p><a href="#_Toc471841994">3 第一个Qt小程序… 12</a></p>
+<p><a href="#_Toc471841995">3.1 按钮的创建… 12</a></p>
+<p><a href="#_Toc471841996">3.2 对象模型（对象树）… 12</a></p>
+<p><a href="#_Toc471841997">3.3 Qt窗口坐标体系… 14</a></p>
+<p><a href="#_Toc471841998">4 信号和槽机制… 15</a></p>
+<p><a href="#_Toc471841999">4.1 系统自带的信号和槽… 15</a></p>
+<p><a href="#_Toc471842000">4.2 自定义信号和槽… 16</a></p>
+<p><a href="#_Toc471842001">4.3信号槽的拓展… 18</a></p>
+<p><a href="#_Toc471842002">4.4 Qt4版本的信号槽写法… 19</a></p>
+<p><a href="#_Toc471842003">4.5 Lambda表达式… 19</a></p>
+<p><a href="#_Toc471842004">5 QMainWindow.. 21</a></p>
+<p><a href="#_Toc471842005">5.1 菜单栏… 22</a></p>
+<p><a href="#_Toc471842006">5.2 工具栏… 22</a></p>
+<p><a href="#_Toc471842007">5.3 状态栏… 23</a></p>
+<p><a href="#_Toc471842008">5.4 铆接部件… 23</a></p>
+<p><a href="#_Toc471842009">5.5 核心部件（中心部件）… 23</a></p>
+<p><a href="#_Toc471842010">5.6 资源文件… 24</a></p>
+<p><a href="#_Toc471842011">6 对话框QDialog. 28</a></p>
+<p><a href="#_Toc471842012">6.1 基本概念… 28</a></p>
+<p><a href="#_Toc471842013">6.2 标准对话框… 28</a></p>
+<p><a href="#_Toc471842014">6.3 自定义消息框… 29</a></p>
+<p><a href="#_Toc471842015">6.4 消息对话框… 30</a></p>
+<p><a href="#_Toc471842016">6.5 标准文件对话框… 33</a></p>
+<p><a href="#_Toc471842017">7 布局管理器… 36</a></p>
+<p><a href="#_Toc471842018">7.1 系统提供的布局控件… 37</a></p>
+<p><a href="#_Toc471842019">7.2 利用widget做布局… 37</a></p>
+<p><a href="#_Toc471842020">8 常用控件… 38</a></p>
+<p><a href="#_Toc471842021">8.1 QLabel控件使用… 38</a></p>
+<p><a href="#_Toc471842022">显示文字 （普通文本、html）… 39</a></p>
+<p><a href="#_Toc471842023">显示图片… 39</a></p>
+<p><a href="#_Toc471842024">显示动画… 39</a></p>
+<p><a href="#_Toc471842025">8.2 QLineEdit 40</a></p>
+<p><a href="#_Toc471842026">8.3 其他控件… 41</a></p>
+<p><a href="#_Toc471842027">8.4 自定义控件… 41</a></p>
+<p><a href="#_Toc471842028">9 Qt消息机制和事件… 44</a></p>
+<p><a href="#_Toc471842029">9.1 事件… 44</a></p>
+<p><a href="#_Toc471842030">9.2 event（）… 47</a></p>
+<p><a href="#_Toc471842031">9.3 事件过滤器… 50</a></p>
+<p><a href="#_Toc471842032">9.4 总结… 54</a></p>
+<p><a href="#_Toc471842033">10 绘图和绘图设备… 56</a></p>
+<p><a href="#_Toc471842034">10.1 QPainter 56</a></p>
+<p><a href="#_Toc471842035">10.2 绘图设备… 58</a></p>
+<p><a href="#_Toc471842036">10.2.1 QPixmap、QBitmap、QImage. 59</a></p>
+<p><a href="#_Toc471842037">10.2.2 QPicture. 62</a></p>
+<p><a href="#_Toc471842038">11 文件系统… 63</a></p>
+<p><a href="#_Toc471842039">11.1 基本文件操作… 65</a></p>
+<p><a href="#_Toc471842040">11.2 二进制文件读写… 67</a></p>
+<p><a href="#_Toc471842041">11.3 文本文件读写… 68</a></p>
+<h1 id="1-Qt概述"><a href="#1-Qt概述" class="headerlink" title="1  Qt概述"></a>1  Qt概述</h1><h2 id="1-1-什么是Qt"><a href="#1-1-什么是Qt" class="headerlink" title="1.1 什么是Qt"></a>1.1 什么是Qt</h2><p>Qt是一个<strong>跨平台</strong>的C++<strong>图形用户界面应用程序框架</strong>。它为应用程序开发者提供建立艺术级图形界面所需的所有功能。它是完全面向对象的，很容易扩展，并且允许真正的组件编程。</p>
+<h2 id="1-2-Qt的发展史"><a href="#1-2-Qt的发展史" class="headerlink" title="1.2 Qt的发展史"></a>1.2 Qt的发展史</h2><p>1991年 Qt最早由奇趣科技开发</p>
+<p>1996年 进入商业领域，它也是目前流行的Linux桌面环境KDE的基础</p>
+<p>2008年 奇趣科技被诺基亚公司收购，Qt称为诺基亚旗下的编程语言</p>
+<p>2012年 Qt又被Digia公司收购</p>
+<p>2014年4月 跨平台的集成开发环境Qt Creator3.1.0发布，同年5月20日配发了Qt5.3正式版，至此Qt实现了对iOS、Android、WP等各平台的全面支持。</p>
+<p>当前Qt最新版本为 5.8.0</p>
+<h2 id="1-3-支持的平台"><a href="#1-3-支持的平台" class="headerlink" title="1.3 支持的平台"></a>1.3 支持的平台</h2><p>l Windows – XP、Vista、Win7、Win8、Win2008、Win10</p>
+<p>l Uinux/X11 – Linux、Sun Solaris、HP-UX、Compaq Tru64 UNIX、IBM AIX、SGI IRIX、FreeBSD、BSD/OS、和其他很多X11平台</p>
+<p>l Macintosh – Mac OS X</p>
+<p>l Embedded – 有帧缓冲支持的嵌入式Linux平台，Windows CE</p>
+<h2 id="1-4-Qt版本"><a href="#1-4-Qt版本" class="headerlink" title="1.4 Qt版本"></a>1.4 Qt版本</h2><p>Qt按照不同的版本发行，分为商业版和开源版</p>
+<p>l 商业版</p>
+<p>为商业软件提供开发，他们提供传统商业软件发行版，并且提供在商业有效期内的免费升级和技术支持服务。</p>
+<p>l 开源的LGPL版本：</p>
+<p>为了开发自有而设计的开放源码软件，它提供了和商业版本同样的功能，在GNU通用公共许可下，它是免费的。</p>
+<h2 id="1-5-Qt的下载与安装"><a href="#1-5-Qt的下载与安装" class="headerlink" title="1.5 Qt的下载与安装"></a>1.5 Qt的下载与安装</h2><h3 id="下载地址："><a href="#下载地址：" class="headerlink" title="下载地址："></a>下载地址：</h3><p><a href="http://www.qt.io/download-open-source/" target="_blank" rel="noopener">http</a><a href="http://www.qt.io/download-open-source/" target="_blank" rel="noopener">://</a><a href="http://www.qt.io/download-open-source/" target="_blank" rel="noopener">www.qt.io/download-open-source/</a></p>
+<h3 id="Linux-Host"><a href="#Linux-Host" class="headerlink" title="Linux Host"></a>Linux Host</h3><p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x86-5.5.0.run" target="_blank" rel="noopener">Qt 5.5.0 for Linux 32-bit (535 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x86-5.5.0.run.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x64-5.5.0-2.run" target="_blank" rel="noopener">Qt 5.5.0 for Linux 64-bit (532 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x64-5.5.0-2.run.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x64-android-5.5.0-2.run" target="_blank" rel="noopener">Qt 5.5.0 for Android (Linux 64-bit, 605 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x64-android-5.5.0-2.run.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x86-android-5.5.0.run" target="_blank" rel="noopener">Qt 5.5.0 for Android (Linux 32-bit, 608 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-linux-x86-android-5.5.0.run.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<h3 id="OS-X-Host"><a href="#OS-X-Host" class="headerlink" title="OS X Host"></a>OS X Host</h3><p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-clang-5.5.0.dmg" target="_blank" rel="noopener">Qt 5.5.0 for Mac (588 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-clang-5.5.0.dmg.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-android-5.5.0.dmg" target="_blank" rel="noopener">Qt 5.5.0 for Android (Mac, 652 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-android-5.5.0.dmg.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-android-ios-5.5.0.dmg" target="_blank" rel="noopener">Qt 5.5.0 for Android and iOS (Mac, 1.7 GB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-mac-x64-android-ios-5.5.0.dmg.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<h3 id="Windows-Host"><a href="#Windows-Host" class="headerlink" title="Windows Host"></a>Windows Host</h3><p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2013_64-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows 64-bit (VS 2013, 650 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2013_64-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2013-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows 32-bit (VS 2013, 633 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2013-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2012-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows 32-bit (VS 2012, 587 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2012-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2010-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows 32-bit (VS 2010, 585 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-msvc2010-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-mingw492-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows 32-bit (MinGW 4.9.2, 959 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-mingw492-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-android-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Android (Windows 32-bit, 1.0 GB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-android-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<p>·    <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-winrt-5.5.0.exe" target="_blank" rel="noopener">Qt 5.5.0 for Windows RT 32-bit (621 MB)</a> <a href="http://download.qt.io/official_releases/qt/5.5/5.5.0/qt-opensource-windows-x86-winrt-5.5.0.exe.mirrorlist" target="_blank" rel="noopener">  (info)</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>默认安装（建议组件全部选中）</p>
+<p>·    Qt对不同的平台提供了不同版本的安装包，可根据实际情况自行下载安装，本文档使用<strong>qt-opensource-windows-x86-mingw482_opengl-5.3.1</strong> 版本进行讲解</p>
+<h2 id="1-6-Qt的优点"><a href="#1-6-Qt的优点" class="headerlink" title="1.6 Qt的优点"></a>1.6 Qt的优点</h2><p>l 跨平台，几乎支持所有的平台</p>
+<p>l 接口简单，容易上手，学习QT框架对学习其他框架有参考意义。</p>
+<p>l 一定程度上简化了内存回收机制 </p>
+<p>l 开发效率高，能够快速的构建应用程序。</p>
+<p>l 有很好的社区氛围，市场份额在缓慢上升。</p>
+<p>l 可以进行嵌入式开发。</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image002.jpg" alt="img"></p>
+<h2 id="1-7-成功案例"><a href="#1-7-成功案例" class="headerlink" title="1.7 成功案例"></a>1.7 成功案例</h2><p>l Linux桌面环境KDE</p>
+<p>l WPS Office 办公软件</p>
+<p>l Skype 网络电话</p>
+<p>l Google Earth 谷歌地图</p>
+<p>l VLC多媒体播放器</p>
+<p>l VirtualBox虚拟机软件</p>
+<p>l …</p>
+<h1 id="2-创建Qt项目"><a href="#2-创建Qt项目" class="headerlink" title="2  创建Qt项目"></a>2  创建Qt项目</h1><h2 id="2-1-使用向导创建"><a href="#2-1-使用向导创建" class="headerlink" title="2.1 使用向导创建"></a>2.1 使用向导创建</h2><p>打开Qt Creator 界面选择 New Project或者选择菜单栏 【文件】-【新建文件或项目】菜单项</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image004.jpg" alt="img"></p>
+<p>弹出New Project对话框，选择Qt Widgets Application， </p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image006.jpg" alt="img"></p>
+<p>选择【Choose】按钮，弹出如下对话框</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image007.png" alt="img"></p>
+<p>设置项目名称和路径，按照向导进行下一步，</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image009.jpg" alt="img"></p>
+<p>选择编译套件</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image011.jpg" alt="img"></p>
+<p>向导会默认添加一个继承自CMainWindow的类，可以在此修改类的名字和基类。默认的基类有QMainWindow、QWidget以及QDialog三个，我们可以选择QWidget（类似于空窗口），这里我们可以先创建一个不带UI的界面，继续下一步</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image013.jpg" alt="img"></p>
+<p>系统会默认给我们添加main.cpp、mywidget.cpp、 mywidget.h和一个.pro项目文件，点击完成，即可创建出一个Qt桌面程序。</p>
+<h2 id="2-2-手动创建"><a href="#2-2-手动创建" class="headerlink" title="2.2    手动创建"></a>2.2    手动创建</h2><p>添加一个空项目</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image015.jpg" alt="img"></p>
+<p>选择【choose】进行下一步。设置项目名称和路径 —&gt; 选择编译套件 –&gt; 修改类信息 –&gt; 完成（步骤同上），生成一个空项目。在空项目中添加文件：在项目名称上单击鼠标右键弹出右键菜单，选择【添加新文件】</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image016.png" alt="img"></p>
+<p>弹出新建文件对话框</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image018.jpg" alt="img"></p>
+<p>在此对话框中选择要添加的类或者文件，根据向导完成文件的添加。</p>
+<h2 id="2-3-pro文件"><a href="#2-3-pro文件" class="headerlink" title="2.3    .pro文件"></a>2.3    .pro文件</h2><p>在使用Qt向导生成的应用程序.pro文件格式如下：</p>
+<p>QT    += core gui //包含的模块</p>
+<p>greaterThan(QT_MAJOR_VERSION, 4): QT += widgets //大于Qt4版本 才包含widget模块</p>
+<p>TARGET = QtFirst //应用程序名 生成的.exe程序名称</p>
+<p>TEMPLATE = app  //模板类型  应用程序模板</p>
+<p>SOURCES += main.cpp\  //源文件</p>
+<p>​    mywidget.cpp</p>
+<p>HEADERS += mywidget.h  //头文件</p>
+<p><strong>.pro**</strong>就是工程文件(project)，它是qmake自动生成的用于生产makefile的配置文件**。.pro文件的写法如下：</p>
+<p>l 注释</p>
+<p>从“#”开始，到这一行结束。</p>
+<p>l 模板变量告诉qmake为这个应用程序生成哪种makefile。下面是可供使用的选择：<strong>TEMPLATE</strong> = app</p>
+<p>n app -建立一个应用程序的makefile。这是默认值，所以如果模板没有被指定，这个将被使用。</p>
+<p>n lib - 建立一个库的makefile。</p>
+<p>n vcapp - 建立一个应用程序的VisualStudio项目文件。</p>
+<p>n vclib - 建立一个库的VisualStudio项目文件。</p>
+<p>n subdirs -这是一个特殊的模板，它可以创建一个能够进入特定目录并且为一个项目文件生成makefile并且为它调用make的makefile。</p>
+<p>l #指定生成的应用程序名： </p>
+<p><strong>TARGET</strong> = QtDemo</p>
+<p>l #工程中包含的头文件</p>
+<p><strong>HEADERS</strong> += include/painter.h</p>
+<p>l #工程中包含的.ui设计文件</p>
+<p><strong>FORMS</strong> += forms/painter.ui</p>
+<p>l #工程中包含的源文件</p>
+<p><strong>SOURCES</strong> += sources/main.cpp sources</p>
+<p>l #工程中包含的资源文件</p>
+<p><strong>RESOURCES</strong> += qrc/painter.qrc</p>
+<p>l <strong>greaterThan(QT_MAJOR_VERSION, 4): QT += widgets</strong></p>
+<p><strong>这条语句的含义是，如果QT_MAJOR_VERSION大于4（也就是当前使用的Qt5及更高版本）需要增加widgets模块。如果项目仅需支持Qt5，也可以直接添加“QT += widgets”一句。不过为了保持代码兼容，最好还是按照QtCreator生成的语句编写。</strong></p>
+<p>l #配置信息</p>
+<p>CONFIG用来告诉qmake关于应用程序的配置信息。</p>
+<p>CONFIG += c++11  //使用c++11的特性</p>
+<p>在这里使用“+=”，是因为我们添加我们的配置选项到任何一个已经存在中。这样做比使用“=”那样替换已经指定的所有选项更安全。</p>
+<h2 id="2-4-一个最简单的Qt应用程序"><a href="#2-4-一个最简单的Qt应用程序" class="headerlink" title="2.4    一个最简单的Qt应用程序"></a>2.4    一个最简单的Qt应用程序</h2><p>main入口函数中</p>
+<p>#include “widget.h”</p>
+<p>#include <QApplication></QApplication></p>
+<p>int main(int argc, char *argv[])</p>
+<p>{</p>
+<p>  QApplication a(argc, argv);</p>
+<p>  Widget w;</p>
+<p>  w.show();</p>
+<p>  return a.exec();</p>
+<p>}</p>
+<p>解释：</p>
+<p>l Qt系统提供的标准类名声明头文件没有.h后缀</p>
+<p>l Qt一个类对应一个头文件，类名就是头文件名</p>
+<p>l QApplication应用程序类</p>
+<p>n 管理图形用户界面应用程序的控制流和主要设置。</p>
+<p>n 是Qt的整个后台管理的命脉 它<strong>包含主事件循环</strong>，在其中来自窗口系统和其它资源的<strong>所有事件处理和调度</strong>。它也处理<strong>应用程序的初始化和结束</strong>，并且<strong>提供对话管理</strong>。</p>
+<p>n 对于任何一个使用Qt的图形用户界面应用程序，都正好存在一个QApplication 对象，而不论这个应用程序在同一时间内是不是有0、1、2或更多个窗口。</p>
+<p>l a.exec()</p>
+<p><strong>程序进入消息循环</strong>，等待对用户输入进行响应。这里main()把控制权转交给Qt，Qt完成事件处理工作，当应用程序退出的时候exec()的值就会返回。<strong>在exec()中，Qt接受并处理用户和系统的事件并且把它们传递给适当的窗口部件。</strong></p>
+<h1 id="3-第一个Qt小程序"><a href="#3-第一个Qt小程序" class="headerlink" title="3 第一个Qt小程序"></a>3 第一个Qt小程序</h1><h2 id="3-1-按钮的创建"><a href="#3-1-按钮的创建" class="headerlink" title="3.1 按钮的创建"></a>3.1 按钮的创建</h2><p>在Qt程序中，最常用的控件之一就是按钮了，首先我们来看下如何创建一个按钮</p>
+<p>QPushButton * btn = new QPushButton; 头文件 #include <QPushButton></QPushButton></p>
+<p>  //设置父亲</p>
+<p>  btn-&gt;setParent(this);</p>
+<p>  //设置文字</p>
+<p>  btn-&gt;setText(“德玛西亚”);</p>
+<p>  //移动位置</p>
+<p>  btn-&gt;move(100,100);</p>
+<p>  //第二种创建</p>
+<p>  QPushButton * btn2 = new QPushButton(“孙悟空”,this);</p>
+<p>  //重新指定窗口大小</p>
+<p>  this-&gt;resize(600,400);</p>
+<p>  //设置窗口标题</p>
+<p>  this-&gt;setWindowTitle(“第一个项目”);</p>
+<p>  //限制窗口大小</p>
+<p>  this-&gt;setFixedSize(600,400);</p>
+<p>上面代码中，一个按钮其实就是一个QPushButton类下的对象，如果只是创建出对象，是无法显示到窗口中的，所以我们需要依赖一个父窗口，也就是指定一个父亲利用setParent函数即可，如果想设置按钮上显示的文字利用setText，移动按钮位置用move</p>
+<p>​     对于窗口而言，我们可以修改左上角窗口的标题setWindowTitle，重新指定窗口大小：resize，或者设置固定的窗口大小setFixedSize；</p>
+<h2 id="3-2-对象模型（对象树）"><a href="#3-2-对象模型（对象树）" class="headerlink" title="3.2 对象模型（对象树）"></a>3.2 对象模型（对象树）</h2><p>在Qt中创建对象的时候会提供一个Parent对象指针，下面来解释这个parent到底是干什么的。</p>
+<p>l QObject是以对象树的形式组织起来的。</p>
+<p>n 当你创建一个QObject对象时，会看到QObject的构造函数接收一个QObject指针作为参数，这个参数就是 parent，也就是父对象指针。</p>
+<p>这相当于，<strong>在创建QObject对象时，可以提供一个其父对象，我们创建的这个QObject对象会自动添加到其父对象的children()列表。</strong></p>
+<p>n <strong>当父对象析构的时候，这个列表中的所有对象也会被析构。（注意，这里的父对象并不是继承意义上的父类！）</strong></p>
+<p>这种机制在 GUI 程序设计中相当有用。例如，一个按钮有一个QShortcut（快捷键）对象作为其子对象。当我们删除按钮的时候，这个快捷键理应被删除。这是合理的。</p>
+<p>l QWidget是能够在屏幕上显示的一切组件的父类。</p>
+<p>n <strong>QWidget**</strong>继承自QObject，因此也继承了这种对象树关系。一个孩子自动地成为父组件的一个子组件**。因此，它会显示在父组件的坐标系统中，被父组件的边界剪裁。例如，当用户关闭一个对话框的时候，应用程序将其删除，那么，我们希望属于这个对话框的按钮、图标等应该一起被删除。事实就是如此，因为这些都是对话框的子组件。</p>
+<p>n 当然，<strong>我们也可以自己删除子对象，它们会自动从其父对象列表中删除。</strong>比如，当我们删除了一个工具栏时，其所在的主窗口会自动将该工具栏从其子对象列表中删除，并且自动调整屏幕显示。</p>
+<p>Qt 引入对象树的概念，在一定程度上解决了内存问题。</p>
+<p>l 当一个QObject对象在堆上创建的时候，Qt 会同时为其创建一个对象树。不过，对象树中对象的顺序是没有定义的。这意味着，销毁这些对象的顺序也是未定义的。</p>
+<p>l 任何对象树中的 QObject对象 delete 的时候，如果这个对象有 parent，则自动将其从 parent 的children()列表中删除；如果有孩子，则自动 delete 每一个孩子。Qt 保证没有QObject会被 delete 两次，这是由析构顺序决定的。</p>
+<p>如果QObject在栈上创建，Qt 保持同样的行为。正常情况下，这也不会发生什么问题。来看下下面的代码片段：</p>
+<p>{</p>
+<p>  QWidget window;</p>
+<p>  QPushButton quit(“Quit”, &amp;window);</p>
+<p>}</p>
+<p>作为父组件的 window 和作为子组件的 quit 都是QObject的子类（事实上，它们都是QWidget的子类，而QWidget是QObject的子类）。这段代码是正确的，quit 的析构函数不会被调用两次，因为标准 C++要求，<strong>局部对象的析构顺序应该按照其创建顺序的相反过程</strong>。因此，这段代码在超出作用域时，会先调用 quit 的析构函数，将其从父对象 window 的子对象列表中删除，然后才会再调用 window 的析构函数。</p>
+<p>但是，如果我们使用下面的代码：</p>
+<p>{</p>
+<p>  QPushButton quit(“Quit”);</p>
+<p>  QWidget window;</p>
+<p>  quit.setParent(&amp;window);</p>
+<p>}</p>
+<p>情况又有所不同，析构顺序就有了问题。我们看到，在上面的代码中，作为父对象的 window 会首先被析构，因为它是最后一个创建的对象。在析构过程中，它会调用子对象列表中每一个对象的析构函数，也就是说， quit 此时就被析构了。然后，代码继续执行，在 window 析构之后，quit 也会被析构，因为 quit 也是一个局部变量，在超出作用域的时候当然也需要析构。但是，这时候已经是第二次调用 quit 的析构函数了，C++ 不允许调用两次析构函数，因此，程序崩溃了。</p>
+<p>由此我们看到，Qt 的对象树机制虽然帮助我们在一定程度上解决了内存问题，但是也引入了一些值得注意的事情。这些细节在今后的开发过程中很可能时不时跳出来烦扰一下，所以，我们最好从开始就养成良好习惯，在 Qt 中，尽量在构造的时候就指定 parent 对象，并且大胆在堆上创建。</p>
+<h2 id="3-3-Qt窗口坐标体系"><a href="#3-3-Qt窗口坐标体系" class="headerlink" title="3.3 Qt窗口坐标体系"></a>3.3 Qt窗口坐标体系</h2><p>坐标体系：</p>
+<p>以左上角为原点（0,0），X向右增加，Y向下增加。</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image019.png" alt="img"></p>
+<p>对于嵌套窗口，其坐标是<strong>相对于父窗口</strong>来说的。</p>
+<h1 id="4-信号和槽机制"><a href="#4-信号和槽机制" class="headerlink" title="4 信号和槽机制"></a>4 信号和槽机制</h1><p>信号槽是 Qt 框架引以为豪的机制之一。所谓信号槽，实际就是观察者模式。<strong>当某个事件发生之后</strong>，比如，按钮检测到自己被点击了一下，<strong>它就会发出一个信号（signal）</strong>。这种发出是没有目的的，类似广播。<strong>如果有对象对这个信号感兴趣，它就会使用连接（connect）函数</strong>，意思是，<strong>将想要处理的信号和自己的一个函数（称为槽（slot））绑定来处理这个信号</strong>。也就是说，<strong>当信号发出时，被连接的槽函数会自动被回调</strong>。这就类似观察者模式：当发生了感兴趣的事件，某一个操作就会被自动触发。</p>
+<h2 id="4-1-系统自带的信号和槽"><a href="#4-1-系统自带的信号和槽" class="headerlink" title="4.1 系统自带的信号和槽"></a>4.1 系统自带的信号和槽</h2><p>下面我们完成一个小功能，上面我们已经学习了按钮的创建，但是还没有体现出按钮的功能，按钮最大的功能也就是点击后触发一些事情，比如我们点击按钮，就把当前的窗口给关闭掉，那么在Qt中，这样的功能如何实现呢？</p>
+<p>​     其实无法两行代码就可以搞定了，我们看下面的代码</p>
+<p> QPushButton * quitBtn = new QPushButton(“关闭窗口”,this);</p>
+<p> connect(quitBtn,&amp;QPushButton::clicked,this,&amp;MyWidget::close);</p>
+<p>第一行是创建一个关闭按钮，这个之前已经学过，第二行就是核心了，也就是信号槽的使用方式</p>
+<p>connect()函数最常用的一般形式：</p>
+<p>connect(sender, signal, receiver, slot);</p>
+<p>参数解释：</p>
+<p>n sender：发出信号的对象</p>
+<p>n signal：发送对象发出的信号</p>
+<p>n receiver：接收信号的对象</p>
+<p>n slot：接收对象在接收到信号之后所需要调用的函数（槽函数）</p>
+<p>那么系统自带的信号和槽通常如何查找呢，这个就需要利用帮助文档了，在帮助文档中比如我们上面的按钮的点击信号，在帮助文档中输入QPushButton，首先我们可以在Contents中寻找关键字 signals，信号的意思，但是我们发现并没有找到，这时候我们应该想到也许这个信号的被父类继承下来的，因此我们去他的父类QAbstractButton中就可以找到该关键字，点击signals索引到系统自带的信号有如下几个</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image021.jpg" alt="img"></p>
+<p>这里的clicked就是我们要找到，槽函数的寻找方式和信号一样，只不过他的关键字是slot。</p>
+<h2 id="4-2-自定义信号和槽"><a href="#4-2-自定义信号和槽" class="headerlink" title="4.2 自定义信号和槽"></a>4.2 自定义信号和槽</h2><p>使用connect()可以让我们连接系统提供的信号和槽。但是，Qt 的信号槽机制并不仅仅是使用系统提供的那部分，还会允许我们自己设计自己的信号和槽。</p>
+<p>下面我们看看使用 Qt 的信号槽：</p>
+<p>首先定义一个学生类和老师类：</p>
+<p>  老师类中声明信号 饿了 hungry</p>
+<p>signals:</p>
+<p>​    void hungury();</p>
+<p>  学生类中声明槽  请客 treat</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="string">slots:</span></span><br></pre></td></tr></table></figure>
+
+<p>​    void treat();</p>
+<p>  在窗口中声明一个公共方法下课，这个方法的调用会触发老师饿了这个信号，而响应槽函数学生请客</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="string">MyWidget:</span>:ClassIsOver()</span><br></pre></td></tr></table></figure>
+
+<p>{</p>
+<p>  //发送信号</p>
+<p>  emit teacher-&gt;hungury();</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#125;</span><br><span class="line">    学生响应了槽函数，并且打印信息</span><br></pre></td></tr></table></figure>
+
+<p>//自定义槽函数 实现</p>
+<p>void Student::eat()</p>
+<p>{</p>
+<p>​    qDebug() &lt;&lt; “该吃饭了！”;</p>
+<p>}</p>
+<p>在窗口中连接信号槽</p>
+<p>  teacher = new Teacher(this);</p>
+<p>  student = new Student(this);</p>
+<p>  connect(teacher,&amp;Teacher::hungury,student,&amp;Student::treat);</p>
+<p>并且调用下课函数，测试打印出 “该吃饭了”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>自定义的信号 hungry带参数，需要提供重载的自定义信号和 自定义槽</p>
+<p>void hungury(QString name); 自定义信号</p>
+<p>void treat(QString name );  自定义槽</p>
+<p>但是由于有两个重名的自定义信号和自定义的槽，直接连接会报错，所以需要利用函数指针来指向函数地址， 然后在做连接</p>
+<p>void (Teacher:: * teacherSingal)(QString) = &amp;Teacher::hungury;</p>
+<p>void (Student:: * studentSlot)(QString) = &amp;Student::treat;</p>
+<p>connect(teacher,teacherSingal,student,studentSlot);</p>
+<p><strong>自定义信号槽需要注意的事项**</strong>：**</p>
+<p>l <strong>发送者和接收者都需要是QObject的子类（当然，槽函数是全局函数、Lambda 表达式等无需接收者的时候除外）；</strong></p>
+<p>l <strong>信号和槽函数返回值是 void</strong></p>
+<p>l <strong>信号只需要声明，不需要实现</strong></p>
+<p>l <strong>槽函数需要声明也需要实现</strong></p>
+<p>l <strong>槽函数是普通的成员函数，作为成员函数，会受到 public、private、protected 的影响；</strong></p>
+<p>l <strong>使用 emit 在恰当的位置发送信号；</strong></p>
+<p>l <strong>使用connect()函数连接信号和槽。</strong></p>
+<p>l <strong>任何成员函数、static 函数、全局函数和 Lambda 表达式都可以作为槽函数</strong></p>
+<p>l <strong>信号槽要求信号和槽的参数一致，所谓一致，是参数类型一致。</strong></p>
+<p>l <strong>如果信号和槽的参数不一致，允许的情况是，槽函数的参数可以比信号的少，即便如此，槽函数存在的那些参数的顺序也必须和信号的前面几个一致起来。这是因为，你可以在槽函数中选择忽略信号传来的数据（也就是槽函数的参数比信号的少）。</strong></p>
+<h2 id="4-3信号槽的拓展"><a href="#4-3信号槽的拓展" class="headerlink" title="4.3信号槽的拓展"></a>4.3信号槽的拓展</h2><p>l 一个信号可以和多个槽相连</p>
+<p><strong>如果是这种情况，这些槽会一个接一个的被调用，但是它们的**</strong>调用顺序是不确定的。**</p>
+<p>l 多个信号可以连接到一个槽</p>
+<p><strong>只要任意一个信号发出，这个槽就会被调用</strong>。</p>
+<p>l 一个信号可以连接到另外的一个信号</p>
+<p><strong>当第一个信号发出时，第二个信号被发出。除此之外，这种信号-信号的形式和信号-槽的形式没有什么区别。</strong></p>
+<p>l 槽可以被取消链接</p>
+<p>这种情况并不经常出现，因为<strong>当一个对象delete之后，Qt自动取消所有连接到这个对象上面的槽</strong>。</p>
+<p>l 信号槽可以断开</p>
+<p>利用<strong>disconnect</strong>关键字是可以断开信号槽的</p>
+<p>l 使用Lambda 表达式</p>
+<p>在使用 Qt 5 的时候，能够支持 Qt 5 的编译器都是支持 Lambda 表达式的。</p>
+<p>  在连接信号和槽的时候，槽函数可以使用Lambda表达式的方式进行处理。后面我们会详细介绍什么是Lambda表达式</p>
+<h2 id="4-4-Qt4版本的信号槽写法"><a href="#4-4-Qt4版本的信号槽写法" class="headerlink" title="4.4 Qt4版本的信号槽写法"></a>4.4 Qt4版本的信号槽写法</h2><p>connect(zt,<strong>SIGNAL</strong>(hungry(QString)),st,<strong>SLOT</strong>(treat(QString)));</p>
+<p>这里使用了<strong>SIGNAL和SLOT这两个宏，将两个函数名转换成了字符串</strong>。注意到connect()函数的 signal 和 slot 都是接受字符串，一旦出现连接不成功的情况，Qt4是没有编译错误的（因为一切都是字符串，编译期是不检查字符串是否匹配），而是在运行时给出错误。这无疑会增加程序的不稳定性。</p>
+<p>Qt5在语法上完全兼容Qt4，而反之是不可以的。</p>
+<h2 id="4-5-Lambda表达式"><a href="#4-5-Lambda表达式" class="headerlink" title="4.5 Lambda表达式"></a>4.5 Lambda表达式</h2><p>C++11中的Lambda表达式<strong>用于定义并创建匿名的函数对象</strong>，以简化编程工作。首先看一下Lambda表达式的基本构成：</p>
+<p><a href="parameters">capture</a> mutable -&gt;return-type</p>
+<p>{</p>
+<p>statement</p>
+<p>}</p>
+<p><a href="操作符重载函数参数">函数对象参数</a>mutable -&gt;返回值{函数体}</p>
+<p>① 函数对象参数；</p>
+<p>[]，标识一个<strong>Lambda的开始</strong>，这部分必须存在，<strong>不能省略</strong>。函数对象参数是传递给编译器自动生成的函数对象类的构造函数的。函数对象参数只能使用那些到定义Lambda为止时Lambda所在作用范围内可见的局部变量（包括Lambda所在类的this）。函数对象参数有以下形式：</p>
+<p>n 空。没有使用任何函数对象参数。</p>
+<p>n =。函数体内可以使用Lambda所在作用范围内所有可见的局部变量（包括Lambda所在类的this），并且是<strong>值传递方式</strong>（相当于编译器自动为我们按值传递了所有局部变量）。</p>
+<p>n &amp;。函数体内可以使用Lambda所在作用范围内所有可见的局部变量（包括Lambda所在类的this），并且是<strong>引用传递方式</strong>（相当于编译器自动为我们按引用传递了所有局部变量）。</p>
+<p>n this。函数体内可以使用Lambda所在类中的成员变量。</p>
+<p>n a。将a按值进行传递。按值进行传递时，函数体内不能修改传递进来的a的拷贝，因为默认情况下函数是const的。<strong>要修改传递进来的a的拷贝</strong>，可以添加mutable修饰符。</p>
+<p>n &amp;a。将a按引用进行传递。</p>
+<p>n a, &amp;b。将a按值进行传递，b按引用进行传递。</p>
+<p>n =，&amp;a, &amp;b。除a和b按引用进行传递外，其他参数都按值进行传递。</p>
+<p>n &amp;, a, b。除a和b按值进行传递外，其他参数都按引用进行传递。</p>
+<p>② 操作符重载函数参数；</p>
+<p>标识重载的()操作符的参数，没有参数时，这部分可以省略。参数可以通过按值（如：(a,b)）和按引用（如：(&amp;a,&amp;b)）两种方式进行传递。</p>
+<p>③ 可修改标示符；</p>
+<p>mutable声明，这部分可以省略。按值传递函数对象参数时，加上mutable修饰符后，可以修改按值传递进来的拷贝（注意是能修改拷贝，而不是值本身）。</p>
+<p>  QPushButton * myBtn = new QPushButton (this);</p>
+<p>  QPushButton * myBtn2 = new QPushButton (this);</p>
+<p>  myBtn2-&gt;move(100,100);</p>
+<p>  int m = 10;</p>
+<p>  connect(myBtn,&amp;QPushButton::clicked,this,[m] ()mutable { m = 100 + 10; qDebug() &lt;&lt; m; });</p>
+<p>  connect(myBtn2,&amp;QPushButton::clicked,this,[=] () { qDebug() &lt;&lt; m; });</p>
+<p>  qDebug() &lt;&lt; m;</p>
+<p>④ 函数返回值；</p>
+<p>-&gt;返回值类型，标识函数返回值的类型，当返回值为void，或者函数体中只有一处return的地方（此时编译器可以自动推断出返回值类型）时，这部分可以省略。</p>
+<p>⑤ 是函数体；</p>
+<p>  {}，标识函数的实现，这部分不能省略，但函数体可以为空。</p>
+<h1 id="5-QMainWindow"><a href="#5-QMainWindow" class="headerlink" title="5 QMainWindow"></a>5 QMainWindow</h1><p>QMainWindow是一个为用户提供主窗口程序的类，包含一个菜单栏（menu bar）、多个工具栏(tool bars)、多个锚接部件(dock widgets)、一个状态栏(status bar)及一个中心部件(central widget)，是许多应用程序的基础，如文本编辑器，图片编辑器等。</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image023.png" alt="img"></p>
+<h2 id="5-1-菜单栏"><a href="#5-1-菜单栏" class="headerlink" title="5.1 菜单栏"></a>5.1 菜单栏</h2><p>一个主窗口最多只有一个菜单栏。位于主窗口顶部、主窗口标题栏下面。</p>
+<p>l 创建菜单栏，通过QMainWindow类的menubar（）函数获取主窗口菜单栏指针</p>
+<p>QMenuBar *  menuBar() const</p>
+<p>l 创建菜单，调用QMenu的成员函数addMenu来添加菜单</p>
+<p>QAction* addMenu(QMenu * menu)</p>
+<p>QMenu* addMenu(const QString &amp; title)</p>
+<p>QMenu* addMenu(const QIcon &amp; icon, const QString &amp; title)</p>
+<p>l 创建菜单项，调用QMenu的成员函数addAction来添加菜单项</p>
+<p>QAction* activeAction() const</p>
+<p>QAction* addAction(const QString &amp; text)</p>
+<p>QAction* addAction(const QIcon &amp; icon, const QString &amp; text)</p>
+<p>QAction* addAction(const QString &amp; text, const QObject * receiver,</p>
+<p> const char * member, const QKeySequence &amp; shortcut = 0)</p>
+<p>QAction* addAction(const QIcon &amp; icon, const QString &amp; text, </p>
+<p>const QObject * receiver, const char * member, </p>
+<p>const QKeySequence &amp; shortcut = 0)</p>
+<p>Qt 并没有专门的菜单项类，只是使用一个QAction类，抽象出公共的动作。当我们把QAction对象添加到菜单，就显示成一个菜单项，添加到工具栏，就显示成一个工具按钮。用户可以通过点击菜单项、点击工具栏按钮、点击快捷键来激活这个动作。</p>
+<h2 id="5-2-工具栏"><a href="#5-2-工具栏" class="headerlink" title="5.2 工具栏"></a>5.2 工具栏</h2><p>主窗口的工具栏上可以有多个工具条，通常采用一个菜单对应一个工具条的的方式，也可根据需要进行工具条的划分。</p>
+<p>n 直接调用QMainWindow类的addToolBar（）函数获取主窗口的工具条对象，每增加一个工具条都需要调用一次该函数。</p>
+<p>n 插入属于工具条的动作，即在工具条上添加操作。</p>
+<p>通过QToolBar类的addAction函数添加。</p>
+<p>n 工具条是一个可移动的窗口，它的停靠区域由QToolBar的allowAreas决定，包括：</p>
+<p>n Qt::LeftToolBarArea   停靠在左侧</p>
+<p>n Qt::RightToolBarArea   停靠在右侧</p>
+<p>n Qt::TopToolBarArea    停靠在顶部</p>
+<p>n Qt::BottomToolBarArea   停靠在底部</p>
+<p>n Qt::AllToolBarAreas   以上四个位置都可停靠</p>
+<p><strong>使用setAllowedAreas（）函数指定停靠区域：</strong></p>
+<p>setAllowedAreas（Qt::LeftToolBarArea | Qt::RightToolBarArea）</p>
+<p><strong>使用setMoveable（）函数设定工具栏的可移动性：</strong></p>
+<p>setMoveable（false）//工具条不可移动, 只能停靠在初始化的位置上</p>
+<h2 id="5-3-状态栏"><a href="#5-3-状态栏" class="headerlink" title="5.3 状态栏"></a>5.3 状态栏</h2><p>n 派生自QWidget类，使用方法与QWidget类似，QStatusBar类常用成员函数：</p>
+<p>n 状态栏也只能最多有一个</p>
+<p>//添加小部件</p>
+<p>void addWidget(QWidget * widget, int stretch = 0)</p>
+<p>//插入小部件</p>
+<p>int  insertWidget(int index, QWidget * widget, int stretch = 0)</p>
+<p>//删除小部件</p>
+<p>void removeWidget(QWidget * widget)</p>
+<h2 id="5-4-铆接部件"><a href="#5-4-铆接部件" class="headerlink" title="5.4 铆接部件"></a>5.4 铆接部件</h2><p>铆接部件 QDockWidget，也称浮动窗口，可以有多个。</p>
+<p>QDockWidget * dock = new QDockWidget(“标题”,this);</p>
+<p>  addDockWidget(Qt::LeftDockWidgetArea,dock);</p>
+<p>dock-&gt;setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea); 设置区域范围</p>
+<h2 id="5-5-核心部件（中心部件）"><a href="#5-5-核心部件（中心部件）" class="headerlink" title="5.5 核心部件（中心部件）"></a>5.5 核心部件（中心部件）</h2><p>除了以上几个部件，中心显示的部件都可以作为核心部件，例如一个记事本文件，可以利用QTextEdit做核心部件</p>
+<p>QTextEdit * edit = new QTextEdit(this);</p>
+<p>  setCentralWidget(edit);</p>
+<h2 id="5-6-资源文件"><a href="#5-6-资源文件" class="headerlink" title="5.6 资源文件"></a>5.6 资源文件</h2><p>Qt 资源系统是一个跨平台的资源机制，用于将程序运行时所需要的资源以二进制的形式存储于可执行文件内部。如果你的程序需要加载特定的资源（图标、文本翻译等），那么，将其放置在资源文件中，就再也不需要担心这些文件的丢失。也就是说，如果你将资源以资源文件形式存储，它是会编译到可执行文件内部。</p>
+<p>使用 Qt Creator 可以很方便地创建资源文件。我们可以在工程上点右键，选择“添加新文件…”，可以在 Qt 分类下找到“Qt 资源文件”：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image025.jpg" alt="img"></p>
+<p>点击“选择…”按钮，打开“新建 Qt 资源文件”对话框。在这里我们输入资源文件的名字和路径：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image026.png" alt="img"></p>
+<p>点击下一步，选择所需要的版本控制系统，然后直接选择完成。我们可以在 Qt Creator 的左侧文件列表中看到“资源文件”一项，也就是我们新创建的资源文件：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image028.png" alt="img"></p>
+<p>右侧的编辑区有个“添加”，我们首先需要添加前缀，比如我们将前缀取名为 images。然后选中这个前缀，继续点击添加文件，可以找到我们所需添加的文件。这里，我们选择 document-open.png 文件。当我们完成操作之后，Qt Creator 应该是这样子的：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image029.png" alt="img"></p>
+<p>接下来，我们还可以添加另外的前缀或者另外的文件。这取决于你的需要。当我们添加完成之后，我们可以像前面一章讲解的那样，通过使用 : 开头的路径来找到这个文件。比如，我们的前缀是 /images，文件是 document-open.png，那么就可以使用:/images/document-open.png找到这个文件。</p>
+<p>这么做带来的一个问题是，如果以后我们要更改文件名，比如将 docuemnt-open.png 改成 docopen.png，那么，所有使用了这个名字的路径都需要修改。所以，更好的办法是，我们给这个文件去一个“别名”，以后就以这个别名来引用这个文件。具体做法是，选中这个文件，添加别名信息：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image031.png" alt="img"></p>
+<p>这样，我们可以直接使用:/images/doc-open引用到这个资源，无需关心图片的真实文件名。</p>
+<p>如果我们使用文本编辑器打开 res.qrc 文件，就会看到一下内容：</p>
+<RCC>
+
+<p>​       <qresource prefix="/images"></qresource></p>
+<p>​         <file alias="doc-open">document-open.png</file></p>
+<p>​       </p>
+<p>​       <qresource prefix="/images/fr" lang="fr"></qresource></p>
+<p>​         <file alias="doc-open">document-open-fr.png</file></p>
+<p>​       </p>
+</RCC>
+
+<p>我们可以对比一下，看看 Qt Creator 帮我们生成的是怎样的 qrc 文件。当我们编译工程之后，我们可以在构建目录中找到 qrc_res.cpp 文件，这就是 Qt 将我们的资源编译成了 C++ 代码。</p>
+<h1 id="6-对话框QDialog"><a href="#6-对话框QDialog" class="headerlink" title="6 对话框QDialog"></a>6 对话框QDialog</h1><h2 id="6-1-基本概念"><a href="#6-1-基本概念" class="headerlink" title="6.1 基本概念"></a>6.1 基本概念</h2><p>对话框是 GUI 程序中不可或缺的组成部分。很多不能或者不适合放入主窗口的功能组件都必须放在对话框中设置。对话框通常会是一个顶层窗口，出现在程序最上层，用于实现短期任务或者简洁的用户交互。</p>
+<p>Qt 中使用QDialog类实现对话框。就像主窗口一样，我们通常会设计一个类继承QDialog。QDialog（及其子类，以及所有Qt::Dialog类型的类）的对于其 parent 指针都有额外的解释：<strong>如果 parent 为 NULL，则该对话框会作为一个顶层窗口，否则则作为其父组件的子对话框（此时，其默认出现的位置是 parent 的中心）。顶层窗口与非顶层窗口的区别在于，顶层窗口在任务栏会有自己的位置，而非顶层窗口则会共享其父组件的位置。</strong></p>
+<p><strong>对话框分为模态对话框和非模态对话框。</strong></p>
+<p>l 模态对话框，就是会阻塞同一应用程序中其它窗口的输入。</p>
+<p>模态对话框很常见，比如“打开文件”功能。你可以尝试一下记事本的打开文件，当打开文件对话框出现时，我们是不能对除此对话框之外的窗口部分进行操作的。</p>
+<p>l 与此相反的是非模态对话框，例如查找对话框，我们可以在显示着查找对话框的同时，继续对记事本的内容进行编辑。</p>
+<h2 id="6-2-标准对话框"><a href="#6-2-标准对话框" class="headerlink" title="6.2 标准对话框"></a>6.2 标准对话框</h2><p>所谓标准对话框，是 Qt 内置的一系列对话框，用于简化开发。事实上，有很多对话框都是通用的，比如打开文件、设置颜色、打印设置等。这些对话框在所有程序中几乎相同，因此没有必要在每一个程序中都自己实现这么一个对话框。</p>
+<p>Qt 的内置对话框大致分为以下几类：</p>
+<p>l QColorDialog：    选择颜色；</p>
+<p>l QFileDialog：    选择文件或者目录；</p>
+<p>l QFontDialog：    选择字体；</p>
+<p>l QInputDialog：    允许用户输入一个值，并将其值返回；</p>
+<p>l QMessageBox：     模态对话框，用于显示信息、询问问题等；</p>
+<p>l QPageSetupDialog：  为打印机提供纸张相关的选项；</p>
+<p>l QPrintDialog：    打印机配置；</p>
+<p>l QPrintPreviewDialog：打印预览；</p>
+<p>l QProgressDialog：  显示操作过程。</p>
+<h2 id="6-3-自定义消息框"><a href="#6-3-自定义消息框" class="headerlink" title="6.3 自定义消息框"></a>6.3 自定义消息框</h2><p>Qt 支持模态对话框和非模态对话框。</p>
+<p>模态与非模态的实现：</p>
+<p>l 使用QDialog::exec()实现应用程序级别的模态对话框</p>
+<p>l 使用QDialog::open()实现窗口级别的模态对话框</p>
+<p>l 使用QDialog::show()实现非模态对话框。</p>
+<h4 id="模态对话框"><a href="#模态对话框" class="headerlink" title="模态对话框"></a>模态对话框</h4><p>l Qt 有两种级别的模态对话框：</p>
+<p>n 应用程序级别的模态</p>
+<p>当该种模态的对话框出现时，用户必须首先对对话框进行交互，直到关闭对话框，然后才能访问程序中其他的窗口。</p>
+<p>n 窗口级别的模态</p>
+<p>该模态仅仅阻塞与对话框关联的窗口，但是依然允许用户与程序中其它窗口交互。窗口级别的模态尤其适用于多窗口模式。</p>
+<p>一般默认是应用程序级别的模态。</p>
+<p>在下面的示例中，我们调用了exec()将对话框显示出来，因此这就是一个模态对话框。当对话框出现时，我们不能与主窗口进行任何交互，直到我们关闭了该对话框。</p>
+<p>​       QDialog dialog;</p>
+<p>​       dialog.setWindowTitle(tr(“Hello, dialog!”));</p>
+<p>dialog.exec();</p>
+<h4 id="非模态对话框"><a href="#非模态对话框" class="headerlink" title="非模态对话框"></a>非模态对话框</h4><p>下面我们试着将exec()修改为show()，看看非模态对话框：</p>
+<p>​       QDialog dialog(this);</p>
+<p>​       dialog.setWindowTitle(tr(“Hello, dialog!”));</p>
+<p>​       dialog.show();</p>
+<p>是不是事与愿违？对话框竟然一闪而过！这是因为，<strong>show()函数不会阻塞当前线程，对话框会显示出来，然后函数立即返回，代码继续执行。</strong>注意，dialog 是建立在栈上的，show()函数返回，MainWindow::open()函数结束，dialog 超出作用域被析构，因此对话框消失了。知道了原因就好改了，我们将 dialog 改成堆上建立，当然就没有这个问题了：</p>
+<p>  QDialog *dialog = new QDialog;</p>
+<p>  dialog-&gt;setWindowTitle(tr(“Hello, dialog!”));</p>
+<p>  dialog-&gt;show();</p>
+<p>如果你足够细心，应该发现上面的代码是有问题的：dialog 存在内存泄露！dialog 使用 new 在堆上分配空间，却一直没有 delete。解决方案也很简单：将 MainWindow 的指针赋给 dialog 即可。还记得我们前面说过的 Qt 的对象系统吗？</p>
+<p>不过，这样做有一个问题：如果我们的对话框不是在一个界面类中出现呢？由于QWidget的 parent 必须是QWidget指针，那就限制了我们不能将一个普通的 C++ 类指针传给 Qt 对话框。另外，如果对内存占用有严格限制的话，当我们将主窗口作为 parent 时，主窗口不关闭，对话框就不会被销毁，所以会一直占用内存。在这种情景下，我们可以设置 dialog 的WindowAttribute：</p>
+<p>​       QDialog *dialog = new QDialog;</p>
+<p>​       dialog-&gt;setAttribute(Qt::WA_DeleteOnClose);</p>
+<p>​       dialog-&gt;setWindowTitle(tr(“Hello, dialog!”));</p>
+<p>​       dialog-&gt;show();</p>
+<p><strong>setAttribute()**</strong>函数设置对话框关闭时，自动销毁对话框。**</p>
+<h2 id="6-4-消息对话框"><a href="#6-4-消息对话框" class="headerlink" title="6.4 消息对话框"></a>6.4 消息对话框</h2><p>QMessageBox用于显示消息提示。我们一般会使用其提供的几个 static 函数：</p>
+<p>l 显示关于对话框。</p>
+<p>void about(QWidget * parent, const QString &amp; title, const QString &amp; text)</p>
+<p>这是一个最简单的对话框，其标题是 title，内容是 text，父窗口是 parent。对话框只有一个 OK 按钮。</p>
+<p>l 显示关于 Qt 对话框。该对话框用于显示有关 Qt 的信息。</p>
+<p>void aboutQt(QWidget * parent, const QString &amp; title = QString())：</p>
+<p>l 显示严重错误对话框。</p>
+<p>StandardButton critical(QWidget * parent, </p>
+<p>const QString &amp; title, </p>
+<p>const QString &amp; text, </p>
+<p>StandardButtons buttons = Ok, </p>
+<p>StandardButton defaultButton = NoButton)：</p>
+<p>这个对话框将显示一个红色的错误符号。我们可以通过 buttons 参数指明其显示的按钮。默认情况下只有一个 Ok 按钮，我们可以使用StandardButtons类型指定多种按钮。</p>
+<p>l 与QMessageBox::critical()类似，不同之处在于这个对话框提供一个普通信息图标。</p>
+<p>StandardButton information(QWidget * parent, </p>
+<p>const QString &amp; title, </p>
+<p>const QString &amp; text, </p>
+<p>StandardButtons buttons = Ok, </p>
+<p>StandardButton defaultButton = NoButton)</p>
+<p>l 与QMessageBox::critical ()类似，不同之处在于这个对话框提供一个问号图标，并且其显示的按钮是“是”和“否”。</p>
+<p>StandardButton question(QWidget * parent,</p>
+<p>const QString &amp; title, </p>
+<p>const QString &amp; text, </p>
+<p>StandardButtons buttons = StandardButtons( Yes | No ), </p>
+<p>StandardButton defaultButton = NoButton) </p>
+<p>l 与QMessageBox::critical()类似，不同之处在于这个对话框提供一个黄色叹号图标。</p>
+<p>StandardButton warning(QWidget * parent, </p>
+<p>const QString &amp; title, </p>
+<p>const QString &amp; text, </p>
+<p>StandardButtons buttons = Ok, </p>
+<p>StandardButton defaultButton = NoButton)</p>
+<p>我们可以通过下面的代码来演示下如何使用QMessageBox。</p>
+<p>if (QMessageBox::Yes == QMessageBox::question(this,</p>
+<p>​       tr(“Question”), tr(“Are you OK?”),</p>
+<p>​       QMessageBox::Yes | QMessageBox::No,</p>
+<p>​        QMessageBox::Yes)) </p>
+<p>{</p>
+<p>  QMessageBox::information(this, tr(“Hmmm…”), </p>
+<p>tr(“I’m glad to hear that!”));</p>
+<p>} </p>
+<p>else </p>
+<p>{</p>
+<p>  QMessageBox::information(this, tr(“Hmmm…”), </p>
+<p>tr(“I’m sorry!”));</p>
+<p>}</p>
+<p>我们使用QMessageBox::question()来询问一个问题。</p>
+<p>l 这个对话框的父窗口是 this。</p>
+<p>QMessageBox是QDialog的子类，这意味着它的初始显示位置将会是在 parent 窗口的中央。</p>
+<p>l 第二个参数是对话框的标题。</p>
+<p>l 第三个参数是我们想要显示的内容。</p>
+<p>l 第四个参数是关联的按键类型，我们可以使用或运算符（|）指定对话框应该出现的按钮。比如我们希望是一个 Yes 和一个 No。</p>
+<p>l 最后一个参数指定默认选择的按钮。</p>
+<p>这个函数有一个返回值，用于确定用户点击的是哪一个按钮。按照我们的写法，应该很容易的看出，这是一个模态对话框，因此我们可以直接获取其返回值。</p>
+<p>QMessageBox类的 static 函数优点是方便使用，缺点也很明显：非常不灵活。我们只能使用简单的几种形式。为了能够定制QMessageBox细节，我们必须使用QMessageBox的属性设置 API。如果我们希望制作一个询问是否保存的对话框，我们可以使用如下的代码：</p>
+<p>QMessageBox msgBox;</p>
+<p>msgBox.setText(tr(“The document has been modified.”));</p>
+<p>msgBox.setInformativeText(tr(“Do you want to save your changes?”));</p>
+<p>msgBox.setDetailedText(tr(“Differences here…”));</p>
+<p>msgBox.setStandardButtons(QMessageBox::Save</p>
+<p>​             | QMessageBox::Discard</p>
+<p>​             | QMessageBox::Cancel);</p>
+<p>msgBox.setDefaultButton(QMessageBox::Save);</p>
+<p>int ret = msgBox.exec();</p>
+<p>switch (ret) </p>
+<p>{</p>
+<p>case QMessageBox::Save:</p>
+<p>  qDebug() &lt;&lt; “Save document!”;</p>
+<p>  break;</p>
+<p>case QMessageBox::Discard:</p>
+<p>  qDebug() &lt;&lt; “Discard changes!”;</p>
+<p>  break;</p>
+<p>case QMessageBox::Cancel:</p>
+<p>  qDebug() &lt;&lt; “Close document!”;</p>
+<p>  break;</p>
+<p>}</p>
+<p>msgBox 是一个建立在栈上的QMessageBox实例。我们设置其主要文本信息为“The document has been modified.”，informativeText 则是会在对话框中显示的简单说明文字。下面我们使用了一个detailedText，也就是详细信息，当我们点击了详细信息按钮时，对话框可以自动显示更多信息。我们自己定义的对话框的按钮有三个：保存、丢弃和取消。然后我们使用了exec()是其成为一个模态对话框，根据其返回值进行相应的操作。</p>
+<h2 id="6-5-标准文件对话框"><a href="#6-5-标准文件对话框" class="headerlink" title="6.5 标准文件对话框"></a>6.5 标准文件对话框</h2><p>QFileDialog，也就是文件对话框。在本节中，我们将尝试编写一个简单的文本文件编辑器，我们将使用QFileDialog来打开一个文本文件，并将修改过的文件保存到硬盘。</p>
+<p>首先，我们需要创建一个带有文本编辑功能的窗口。借用我们前面的程序代码，应该可以很方便地完成：</p>
+<p>openAction = new QAction(QIcon(“:/images/file-open”),tr(“&amp;Open…”), this);</p>
+<p>openAction-&gt;setStatusTip(tr(“Open an existing file”));</p>
+<p>saveAction = new QAction(QIcon(“:/images/file-save”), tr(“&amp;Save…”), this);</p>
+<p>saveAction-&gt;setStatusTip(tr(“Save a new file”));</p>
+<p>QMenu *file = menuBar()-&gt;addMenu(tr(“&amp;File”));</p>
+<p>file-&gt;addAction(openAction);</p>
+<p>file-&gt;addAction(saveAction);</p>
+<p>QToolBar *toolBar = addToolBar(tr(“&amp;File”));</p>
+<p>toolBar-&gt;addAction(openAction);</p>
+<p>toolBar-&gt;addAction(saveAction);</p>
+<p>textEdit = new QTextEdit(this);</p>
+<p>setCentralWidget(textEdit);</p>
+<p>我们在菜单和工具栏添加了两个动作：打开和保存。接下来是一个QTextEdit类，这个类用于显示富文本文件。也就是说，它不仅仅用于显示文本，还可以显示图片、表格等等。不过，我们现在只用它显示纯文本文件。QMainWindow有一个setCentralWidget()函数，可以将一个组件作为窗口的中心组件，放在窗口中央显示区。显然，在一个文本编辑器中，文本编辑区就是这个中心组件，因此我们将QTextEdit作为这种组件。</p>
+<p>我们使用connect()函数，为这两个QAction对象添加响应的动作：</p>
+<p>connect(openAction, &amp;QAction::triggered, </p>
+<p>this, &amp;MainWindow::openFile);</p>
+<p>connect(saveAction, &amp;QAction::triggered, </p>
+<p>this, &amp;MainWindow::saveFile);</p>
+<p>下面是最主要的openFile()和saveFile()这两个函数的代码：</p>
+<p>//打开文件</p>
+<p>void MainWindow::openFile()</p>
+<p>{</p>
+<p>  QString path = QFileDialog::getOpenFileName(this,</p>
+<p>​        tr(“Open File”), “.”, tr(“Text Files(*.txt)”));</p>
+<p>  if(!path.isEmpty()) </p>
+<p>{</p>
+<p>​    QFile file(path);</p>
+<p>​    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) </p>
+<p>{</p>
+<p>​      QMessageBox::warning(this, tr(“Read File”),</p>
+<p>​             tr(“Cannot open file:\n%1”).arg(path));</p>
+<p>​      return;</p>
+<p>​    }</p>
+<p>​    QTextStream in(&amp;file);</p>
+<p>​    textEdit-&gt;setText(in.readAll());</p>
+<p>​    file.close();</p>
+<p>  } </p>
+<p>else </p>
+<p>{</p>
+<p>​    QMessageBox::warning(this, tr(“Path”),</p>
+<p>​               tr(“You did not select any file.”));</p>
+<p>   }</p>
+<p>}</p>
+<p>//保存文件</p>
+<p>void MainWindow::saveFile()</p>
+<p>{</p>
+<p>  QString path = QFileDialog::getSaveFileName(this,</p>
+<p>​        tr(“Open File”), “.”, tr(“Text Files(*.txt)”));</p>
+<p>  if(!path.isEmpty()) </p>
+<p>{</p>
+<p>​    QFile file(path);</p>
+<p>​    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) </p>
+<p>{</p>
+<p>​      QMessageBox::warning(this, tr(“Write File”),</p>
+<p>​             tr(“Cannot open file:\n%1”).arg(path));</p>
+<p>​      return;</p>
+<p>​    }</p>
+<p>​    QTextStream out(&amp;file);</p>
+<p>​    out &lt;&lt; textEdit-&gt;toPlainText();</p>
+<p>​    file.close();</p>
+<p>  } </p>
+<p>else </p>
+<p>{</p>
+<p>​    QMessageBox::warning(this, tr(“Path”),</p>
+<p>​               tr(“You did not select any file.”));</p>
+<p>  }</p>
+<p>}</p>
+<p>在openFile()函数中，我们使用QFileDialog::getOpenFileName()来获取需要打开的文件的路径。这个函数原型如下：</p>
+<p>QString getOpenFileName(QWidget * parent = 0,</p>
+<p>​            const QString &amp; caption = QString(),</p>
+<p>​            const QString &amp; dir = QString(),</p>
+<p>​             const QString &amp; filter = QString(),</p>
+<p>​            QString * selectedFilter = 0,</p>
+<p>​            Options options = 0)</p>
+<p>不过注意，它的所有参数都是可选的，因此在一定程度上说，这个函数也是简单的。这六个参数分别是：</p>
+<p>l parent：父窗口。</p>
+<p>Qt 的标准对话框提供静态函数，用于返回一个模态对话框；</p>
+<p>l caption：对话框标题；</p>
+<p>l dir：对话框打开时的默认目录</p>
+<p>n “.” 代表程序运行目录</p>
+<p>n “/” 代表当前盘符的根目录（特指 Windows 平台；Linux 平台当然就是根目录），这个参数也可以是平台相关的，比如“C:\”等；</p>
+<p>l filter：过滤器。</p>
+<p>我们使用文件对话框可以浏览很多类型的文件，但是，很多时候我们仅希望打开特定类型的文件。比如，文本编辑器希望打开文本文件，图片浏览器希望打开图片文件。<strong>过滤器就是用于过滤特定的后缀名</strong>。如果我们使用“Image Files(<em>.jpg <em>.png)”，则只能显示后缀名是 jpg 或者 png 的文件。*</em>如果需要多个过滤器，使用“;;”分割**，比如“JPEG Files(</em>.jpg);;PNG Files(*.png)”；</p>
+<p>l selectedFilter：默认选择的过滤器；</p>
+<p>l options：对话框的一些参数设定</p>
+<p>比如只显示文件夹等等，它的取值是enum QFileDialog::Option，每个选项可以使用 | 运算组合起来。</p>
+<p><strong>QFileDialog::getOpenFileName()**</strong>返回值是选择的文件路径。**我们将其赋值给 path。通过判断 path 是否为空，可以确定用户是否选择了某一文件。只有当用户选择了一个文件时，我们才执行下面的操作。</p>
+<p>在saveFile()中使用的QFileDialog::getSaveFileName()也是类似的。使用这种静态函数，在 Windows、Mac OS 上面都是直接调用本地对话框，但是 Linux 上则是QFileDialog自己的模拟。这暗示了，如果你不使用这些静态函数，而是直接使用QFileDialog进行设置，那么得到的对话框很可能与系统对话框的外观不一致。这一点是需要注意的。</p>
+<h1 id="7-布局管理器"><a href="#7-布局管理器" class="headerlink" title="7 布局管理器"></a>7 布局管理器</h1><p>所谓 GUI 界面，归根结底，就是一堆组件的叠加。我们创建一个窗口，把按钮放上面，把图标放上面，这样就成了一个界面。在放置时，组件的位置尤其重要。我们必须要指定组件放在哪里，以便窗口能够按照我们需要的方式进行渲染。这就涉及到组件定位的机制。</p>
+<p><strong>Qt</strong> <strong>提供了两种组件定位机制：绝对定位和布局定位。</strong></p>
+<p>l 绝对定位就是一种最原始的定位方法：给出这个组件的坐标和长宽值。</p>
+<p>这样，Qt 就知道该把组件放在哪里以及如何设置组件的大小。但是这样做带来的一个问题是，如果用户改变了窗口大小，比如点击最大化按钮或者使用鼠标拖动窗口边缘，采用绝对定位的组件是不会有任何响应的。这也很自然，因为你并没有告诉 Qt，在窗口变化时，组件是否要更新自己以及如何更新。或者，还有更简单的方法：禁止用户改变窗口大小。但这总不是长远之计。</p>
+<p>l 布局定位：你只要把组件放入某一种布局，布局由专门的布局管理器进行管理。当需要调整大小或者位置的时候，Qt 使用对应的布局管理器进行调整。</p>
+<p>布局定位完美的解决了使用绝对定位的缺陷。</p>
+<p>Qt 提供的布局中以下三种是我们最常用的：</p>
+<p>l QHBoxLayout：按照水平方向从左到右布局；</p>
+<p>l QVBoxLayout：按照竖直方向从上到下布局；</p>
+<p>l QGridLayout：在一个网格中进行布局，类似于 HTML 的 table；</p>
+<h2 id="7-1-系统提供的布局控件"><a href="#7-1-系统提供的布局控件" class="headerlink" title="7.1 系统提供的布局控件"></a>7.1 系统提供的布局控件</h2><p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image033.jpg" alt="img"></p>
+<p>这4个为系统给我们提供的布局的控件，但是使用起来不是非常的灵活，这里就不详细介绍了。</p>
+<h2 id="7-2-利用widget做布局"><a href="#7-2-利用widget做布局" class="headerlink" title="7.2 利用widget做布局"></a>7.2 利用widget做布局</h2><p>第二种布局方式是利用控件里的widget来做布局，在Containers中</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image035.jpg" alt="img"></p>
+<p>在widget中的控件可以进行水平、垂直、栅格布局等操作，比较灵活。</p>
+<p>再布局的同时我们需要灵活运用弹簧的特性让我们的布局更加的美观，下面是一个登陆窗口，利用widget可以搭建出如下登陆界面：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image037.jpg" alt="img"></p>
+<h1 id="8-常用控件"><a href="#8-常用控件" class="headerlink" title="8 常用控件"></a>8 常用控件</h1><p>Qt为我们应用程序界面开发提供的一系列的控件，下面我们介绍两种最常用一些控件，所有控件的使用方法我们都可以通过帮助文档获取。</p>
+<h2 id="8-1-QLabel控件使用"><a href="#8-1-QLabel控件使用" class="headerlink" title="8.1 QLabel控件使用"></a>8.1 QLabel控件使用</h2><p>QLabel是我们最常用的控件之一，其功能很强大，我们可以用来显示文本，图片和动画等。</p>
+<h3 id="显示文字-（普通文本、html）"><a href="#显示文字-（普通文本、html）" class="headerlink" title="显示文字 （普通文本、html）"></a>显示文字 （普通文本、html）</h3><p>通过QLabel类的setText函数设置显示的内容:</p>
+<p>void  setText(const QString &amp;)</p>
+<p>l 可以显示普通文本字符串</p>
+<p>QLable *label = new QLable;</p>
+<p>label-&gt;setText(“Hello, World!”);</p>
+<p>l 可以显示HTML格式的字符串</p>
+<p>比如显示一个链接:</p>
+<p>QLabel * label = new QLabel(this);</p>
+<p>label -&gt;setText(“Hello, World”);</p>
+<p>label -&gt;setText(“</p><h1>&lt;a href=&quot;<a href="https://www.baidu.com\&quot;&gt;百度一下" target="_blank" rel="noopener">https://www.baidu.com\&quot;&gt;百度一下</a></h1>“);<p></p>
+<p>label -&gt;setOpenExternalLinks(true);</p>
+<p>其中setOpenExternalLinks()函数是用来设置用户点击链接之后是否自动打开链接，如果参数指定为true则会自动打开。</p>
+<h3 id="显示图片"><a href="#显示图片" class="headerlink" title="显示图片"></a>显示图片</h3><p>可以使用QLabel的成员函数setPixmap设置图片</p>
+<p>void setPixmap(const QPixmap &amp;)</p>
+<p>首先定义QPixmap对象</p>
+<p>QPixmap pixmap;</p>
+<p>然后加载图片</p>
+<p>pixmap.load(“:/Image/boat.jpg”);</p>
+<p>最后将图片设置到QLabel中</p>
+<p>QLabel *label = new QLabel;</p>
+<p>label.setPixmap(pixmap);</p>
+<h3 id="显示动画"><a href="#显示动画" class="headerlink" title="显示动画"></a>显示动画</h3><p>可以使用QLabel 的成员函数setMovie加载动画，可以播放gif格式的文件</p>
+<p>void setMovie(QMovie * movie)</p>
+<p>首先定义QMovied对象，并初始化:</p>
+<p>QMovie *movie = new QMovie(“:/Mario.gif”);</p>
+<p>播放加载的动画：</p>
+<p>movie-&gt;start();</p>
+<p>将动画设置到QLabel中：</p>
+<p>QLabel *label = new QLabel；</p>
+<p>label-&gt;setMovie(movie);</p>
+<h2 id="8-2-QLineEdit"><a href="#8-2-QLineEdit" class="headerlink" title="8.2 QLineEdit"></a>8.2 QLineEdit</h2><p>Qt提供的单行文本编辑框。</p>
+<h4 id="设置-获取内容"><a href="#设置-获取内容" class="headerlink" title="设置/获取内容"></a>设置/获取内容</h4><p>l 获取编辑框内容使用text（），函数声明如下：</p>
+<p>QString  text() const</p>
+<p>l 设置编辑框内容</p>
+<p>void setText(const QString &amp;)</p>
+<h4 id="设置显示模式"><a href="#设置显示模式" class="headerlink" title="设置显示模式"></a>设置显示模式</h4><p>使用QLineEdit类的setEchoMode () 函数设置文本的显示模式,函数声明:</p>
+<p>void setEchoMode(EchoMode mode)</p>
+<p>EchoMode是一个枚举类型,一共定义了四种显示模式:</p>
+<p>l QLineEdit::Normal  模式显示方式，按照输入的内容显示。</p>
+<p>l QLineEdit::NoEcho 不显示任何内容，此模式下无法看到用户的输入。</p>
+<p>l QLineEdit::Password 密码模式，输入的字符会根据平台转换为特殊字符。</p>
+<p>l QLineEdit::PasswordEchoOnEdit 编辑时显示字符否则显示字符作为密码。</p>
+<p>另外，我们再使用QLineEdit显示文本的时候，希望在左侧留出一段空白的区域，那么，就可以使用QLineEdit给我们提供的setTextMargins函数：</p>
+<p>void setTextMargins(int left, int top, int right, int bottom)</p>
+<p>用此函数可以指定显示的文本与输入框上下左右边界的间隔的像素数。</p>
+<h2 id="8-3-其他控件"><a href="#8-3-其他控件" class="headerlink" title="8.3 其他控件"></a>8.3 其他控件</h2><p>Qt中控件的使用方法可参考Qt提供的帮助文档。</p>
+<h2 id="8-4-自定义控件"><a href="#8-4-自定义控件" class="headerlink" title="8.4 自定义控件"></a>8.4 自定义控件</h2><p>在搭建Qt窗口界面的时候，在一个项目中很多窗口，或者是窗口中的某个模块会被经常性的重复使用。一般遇到这种情况我们都会将这个窗口或者模块拿出来做成一个独立的窗口类，以备以后重复使用。</p>
+<p>在使用Qt的ui文件搭建界面的时候，工具栏栏中只为我们提供了标准的窗口控件，如果我们想使用自定义控件怎么办？</p>
+<p>例如：我们从QWidget派生出一个类SmallWidget，实现了一个自定窗口，</p>
+<p>// smallwidget.h</p>
+<p>class SmallWidget : public QWidget</p>
+<p>{</p>
+<p>  Q_OBJECT</p>
+<p>public:</p>
+<p>  explicit SmallWidget(QWidget *parent = 0);</p>
+<p>signals:</p>
+<p>public slots:</p>
+<p>private:</p>
+<p>  QSpinBox* spin;</p>
+<p>  QSlider* slider;</p>
+<p>};</p>
+<p>// smallwidget.cpp</p>
+<p>SmallWidget::SmallWidget(QWidget *parent) : QWidget(parent)</p>
+<p>{</p>
+<p>  spin = new QSpinBox(this);</p>
+<p>  slider = new QSlider(Qt::Horizontal, this);</p>
+<p>  // 创建布局对象</p>
+<p>  QHBoxLayout* layout = new QHBoxLayout;</p>
+<p>  // 将控件添加到布局中</p>
+<p>  layout-&gt;addWidget(spin);</p>
+<p>  layout-&gt;addWidget(slider);</p>
+<p>  // 将布局设置到窗口中</p>
+<p>  setLayout(layout);</p>
+<p>  // 添加消息响应</p>
+<p>  connect(spin, </p>
+<p>static_cast&lt;void (QSpinBox::*)(int)&gt;(&amp;QSpinBox::valueChanged),</p>
+<p> slider, &amp;QSlider::setValue);</p>
+<p>  connect(slider, &amp;QSlider::valueChanged,</p>
+<p>spin, &amp;QSpinBox::setValue);</p>
+<p>}</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image038.png" alt="img"></p>
+<p>那么这个SmallWidget可以作为独立的窗口显示,也可以作为一个控件来使用：</p>
+<p>打开Qt的.ui文件,因为SmallWidget是派生自Qwidget类,所以需要在ui文件中先放入一个QWidget控件, 然后再上边鼠标右键</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image039.png" alt="img"></p>
+<p>弹出提升窗口部件对话框</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image040.png" alt="img"></p>
+<p>添加要提升的类的名字,然后选择 添加 </p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image041.png" alt="img"></p>
+<p>添加之后,类名会显示到上边的列表框中,然后单击提升按钮,完成操作.</p>
+<p>我们可以看到, 这个窗口对应的类从原来的QWidget变成了SmallWidget</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image042.png" alt="img"></p>
+<p>再次运行程序,这个widget_3中就能显示出我们自定义的窗口了.</p>
+<h1 id="9-Qt消息机制和事件"><a href="#9-Qt消息机制和事件" class="headerlink" title="9 Qt消息机制和事件"></a>9 Qt消息机制和事件</h1><h2 id="9-1-事件"><a href="#9-1-事件" class="headerlink" title="9.1 事件"></a>9.1 事件</h2><p>事件（event）是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如键盘事件等；另一些事件则是由系统自动发出，如计时器事件。</p>
+<p>在前面我们也曾经简单提到，<strong>Qt 程序</strong>需要在main()函数创建一个QApplication对象，然后调用它的exec()函数。这个函数就是开始 Qt 的事件循环。在执行exec()函数之后，程序将进入事件循环来监听应用程序的事件。当事件发生时，Qt 将创建一个事件对象。<strong>Qt 中所有事件类都继承于QEvent</strong>。在事件对象创建完毕后，Qt 将这个事件对象传递给QObject的event()函数。<strong>event()函数并不直接处理事件，而是按照事件对象的类型分派给特定的事件处理函数</strong>（event handler），关于这一点，会在后边详细说明。</p>
+<p>在所有组件的父类QWidget中，定义了很多事件处理的回调函数，如</p>
+<p>n keyPressEvent()</p>
+<p>n keyReleaseEvent()</p>
+<p>n mouseDoubleClickEvent()</p>
+<p>n mouseMoveEvent()</p>
+<p>n mousePressEvent()</p>
+<p>n mouseReleaseEvent() 等。</p>
+<p>这些函数都是 protected virtual 的，也就是说，我们可以在子类中重新实现这些函数。下面来看一个例子：</p>
+<p>class EventLabel : public QLabel</p>
+<p>{</p>
+<p>protected:</p>
+<p>  void mouseMoveEvent(QMouseEvent *event);</p>
+<p>  void mousePressEvent(QMouseEvent *event);</p>
+<p>  void mouseReleaseEvent(QMouseEvent *event);</p>
+<p>};</p>
+<p>void EventLabel::mouseMoveEvent(QMouseEvent *event)</p>
+<p>{</p>
+<p>this-&gt;setText(QString(“<center><h1>Move: (%1, %2)</h1></center></p>
+").arg(QString::number(event->x()),
+
+<p>​      QString::number(event-&gt;y())));</p>
+<p>}</p>
+<p>void EventLabel::mousePressEvent(QMouseEvent *event)</p>
+<p>{</p>
+<p>  this-&gt;setText(QString(“<center><h1>Press:(%1, %2)</h1></center></p>
+").arg(QString::number(event->x()),
+
+<p>​        QString::number(event-&gt;y())));</p>
+<p>}</p>
+<p>void EventLabel::mouseReleaseEvent(QMouseEvent *event)</p>
+<p>{</p>
+<p>  QString msg;</p>
+<p>  msg.sprintf(“<center><h1>Release: (%d, %d)</h1></center>“,</p>
+<p>​        event-&gt;x(), event-&gt;y());</p>
+<p>  this-&gt;setText(msg);</p>
+<p>}</p>
+<p>int main(int argc, char *argv[])</p>
+<p>{</p>
+<p>  QApplication a(argc, argv);</p>
+<p>  EventLabel *label = new EventLabel;</p>
+<p>  label-&gt;setWindowTitle(“MouseEvent Demo”);</p>
+<p>  label-&gt;resize(300, 200);</p>
+<p>  label-&gt;show();</p>
+<p>  return a.exec();</p>
+<p>}</p>
+<p>l EventLabel继承了QLabel，覆盖了mousePressEvent()、mouseMoveEvent()和MouseReleaseEvent()三个函数。我们并没有添加什么功能，只是在鼠标按下（press）、鼠标移动（move）和鼠标释放（release）的时候，把当前鼠标的坐标值显示在这个Label上面。由于QLabel是支持 HTML 代码的，因此我们直接使用了 HTML 代码来格式化文字。</p>
+<p>l QString的arg()函数可以自动替换掉QString中出现的占位符。其占位符以 % 开始，后面是占位符的位置，例如 %1，%2 这种。</p>
+<p>QString(“[%1, %2]”).arg(x).arg(y);</p>
+<p>语句将会使用x替换 %1，y替换 %2，因此，生成的QString为[x, y]。</p>
+<p>l 在mouseReleaseEvent()函数中，我们使用了另外一种QString的构造方法。我们使用类似 C 风格的格式化函数sprintf()来构造QString。</p>
+<p>运行上面的代码，当我们点击了一下鼠标之后，label 上将显示鼠标当前坐标值。</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image043.png" alt="img"></p>
+<p>为什么要点击鼠标之后才能在mouseMoveEvent()函数中显示鼠标坐标值？</p>
+<p><strong>这是因为QWidget中有一个mouseTracking属性，该属性用于设置是否追踪鼠标。只有鼠标被追踪时，mouseMoveEvent()才会发出。如果mouseTracking是 false（默认即是），组件在至少一次鼠标点击之后，才能够被追踪，也就是能够发出mouseMoveEvent()事件。如果mouseTracking为 true，则mouseMoveEvent()直接可以被发出。</strong></p>
+<p>知道了这一点，我们就可以在main()函数中添加如下代码：</p>
+<p>label-&gt;setMouseTracking(true);</p>
+<p>在运行程序就没有这个问题了。    </p>
+<h2 id="9-2-event（）"><a href="#9-2-event（）" class="headerlink" title="9.2 event（）"></a>9.2 event（）</h2><p>事件对象创建完毕后，Qt 将这个事件对象传递给QObject的event()函数。event()函数并不直接处理事件，而是将这些事件对象按照它们不同的类型，分发给不同的事件处理器（event handler）。</p>
+<p>如上所述，<strong>event()函数主要用于事件的分发</strong>。所以，如果你希望在事件分发之前做一些操作，就可以重写这个event()函数了。例如，我们希望在一个QWidget组件中监听 tab 键的按下，那么就可以继承QWidget，并重写它的event()函数，来达到这个目的：</p>
+<p>bool CustomWidget::event(QEvent *e)</p>
+<p>{</p>
+<p>  if (e-&gt;type() == QEvent::KeyPress) {</p>
+<p>​    QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(e);</p>
+<p>​    if (keyEvent-&gt;key() == Qt::Key_Tab) {</p>
+<p>​      qDebug() &lt;&lt; “You press tab.”;</p>
+<p>​      return true;</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  return QWidget::event(e);</p>
+<p>}</p>
+<p>CustomWidget是一个普通的QWidget子类。我们重写了它的event()函数，这个函数有一个QEvent对象作为参数，也就是需要转发的事件对象。函数返回值是 bool 类型。</p>
+<p>l <strong>如果传入的事件已被识别并且处理，则需要返回 true，否则返回 false。如果返回值是 true，那么 Qt 会认为这个事件已经处理完毕，不会再将这个事件发送给其它对象，而是会继续处理事件队列中的下一事件。</strong></p>
+<p>l <strong>在event()函数中，调用事件对象的accept()和ignore()函数是没有作用的，不会影响到事件的传播</strong>。</p>
+<p>我们可以通过使用QEvent::type()函数可以检查事件的实际类型，其返回值是QEvent::Type类型的枚举。我们处理过自己感兴趣的事件之后，可以直接返回 true，表示我们已经对此事件进行了处理；对于其它我们不关心的事件，则需要调用父类的event()函数继续转发，否则这个组件就只能处理我们定义的事件了。为了测试这一种情况，我们可以尝试下面的代码：</p>
+<p>bool CustomTextEdit::event(QEvent *e)</p>
+<p>{</p>
+<p>  if (e-&gt;type() == QEvent::KeyPress) </p>
+<p>{</p>
+<p>​    QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(e);</p>
+<p>​    if (keyEvent-&gt;key() == Qt::Key_Tab) </p>
+<p>{</p>
+<p>​      qDebug() &lt;&lt; “You press tab.”;</p>
+<p>​      return true;</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  return false;</p>
+<p>}</p>
+<p>CustomTextEdit是QTextEdit的一个子类。我们重写了其event()函数，却没有调用父类的同名函数。这样，我们的组件就只能处理 Tab 键，再也无法输入任何文本，也不能响应其它事件，比如鼠标点击之后也不会有光标出现。这是因为我们只处理的KeyPress类型的事件，并且如果不是KeyPress事件，则直接返回 false，鼠标事件根本不会被转发，也就没有了鼠标事件。</p>
+<p>通过查看QObject::event()的实现，我们可以理解，event()函数同前面的章节中我们所说的事件处理器有什么联系：</p>
+<p>//!!! Qt5</p>
+<p>bool QObject::event(QEvent *e)</p>
+<p>{</p>
+<p>  switch (e-&gt;type()) {</p>
+<p>  case QEvent::Timer:</p>
+<p>​    timerEvent((QTimerEvent*)e);</p>
+<p>​     break;</p>
+<p>  case QEvent::ChildAdded:</p>
+<p>  case QEvent::ChildPolished:</p>
+<p>  case QEvent::ChildRemoved:</p>
+<p>​    childEvent((QChildEvent*)e);</p>
+<p>​    break;</p>
+<p>  // …</p>
+<p>  default:</p>
+<p>​    if (e-&gt;type() &gt;= QEvent::User) {</p>
+<p>​      customEvent(e);</p>
+<p>​      break;</p>
+<p>​    }</p>
+<p>​    return false;</p>
+<p>  }</p>
+<p>  return true;</p>
+<p>}</p>
+<p>这是 Qt 5 中QObject::event()函数的源代码（Qt 4 的版本也是类似的）。我们可以看到，同前面我们所说的一样，Qt 也是使用QEvent::type()判断事件类型，然后调用了特定的事件处理器。比如，如果event-&gt;type()返回值是QEvent::Timer，则调用timerEvent()函数。可以想象，QWidget::event()中一定会有如下的代码：</p>
+<p>switch (event-&gt;type()) {</p>
+<p>  case QEvent::MouseMove:</p>
+<p>​    mouseMoveEvent((QMouseEvent*)event);</p>
+<p>​    break;</p>
+<p>  // …</p>
+<p>}</p>
+<p>事实也的确如此。timerEvent()和mouseMoveEvent()这样的函数，就是我们前面章节所说的事件处理器 event handler。也就是说，<strong>event()函数中实际是通过事件处理器来响应一个具体的事件。这相当于event()函数将具体事件的处理“委托”给具体的事件处理器。而这些事件处理器是 protected virtual 的，因此，我们重写了某一个事件处理器，即可让 Qt 调用我们自己实现的版本。</strong></p>
+<p>由此可以见，event()是一个集中处理不同类型的事件的地方。如果你不想重写一大堆事件处理器，就可以重写这个event()函数，通过QEvent::type()判断不同的事件。鉴于重写event()函数需要十分小心注意父类的同名函数的调用，一不留神就可能出现问题，所以一般还是建议只重写事件处理器（当然，也必须记得是不是应该调用父类的同名处理器）。这其实暗示了event()函数的另外一个作用：屏蔽掉某些不需要的事件处理器。正如我们前面的CustomTextEdit例子看到的那样，我们创建了一个只能响应 tab 键的组件。这种作用是重写事件处理器所不能实现的。</p>
+<h2 id="9-3-事件过滤器"><a href="#9-3-事件过滤器" class="headerlink" title="9.3 事件过滤器"></a>9.3 事件过滤器</h2><p>有时候，对象需要查看、甚至要拦截发送到另外对象的事件。例如，对话框可能想要拦截按键事件，不让别的组件接收到；或者要修改回车键的默认处理。</p>
+<p>通过前面的章节，我们已经知道，Qt 创建了QEvent事件对象之后，会调用QObject的event()函数处理事件的分发。显然，我们可以在event()函数中实现拦截的操作。由于event()函数是 protected 的，因此，需要继承已有类。如果组件很多，就需要重写很多个event()函数。这当然相当麻烦，更不用说重写event()函数还得小心一堆问题。好在 Qt 提供了另外一种机制来达到这一目的：事件过滤器。</p>
+<p>QObject有一个eventFilter()函数，用于建立事件过滤器。函数原型如下：</p>
+<p>virtual bool QObject::eventFilter ( QObject * watched, QEvent * event );</p>
+<p>这个函数正如其名字显示的那样，是一个“事件过滤器”。所谓事件过滤器，可以理解成一种过滤代码。事件过滤器会检查接收到的事件。如果这个事件是我们感兴趣的类型，就进行我们自己的处理；如果不是，就继续转发。这个函数返回一个 bool 类型，如果你想将参数 event 过滤出来，比如，<strong>不想让它继续转发，就返回 true，否则返回 false。</strong>事件过滤器的调用时间是目标对象（也就是参数里面的watched对象）接收到事件对象之前。也就是说，如果你在事件过滤器中停止了某个事件，那么，watched对象以及以后所有的事件过滤器根本不会知道这么一个事件。</p>
+<p>我们来看一段简单的代码：</p>
+<p>class MainWindow : public QMainWindow</p>
+<p> {</p>
+<p> public:</p>
+<p>   MainWindow();</p>
+<p> protected:</p>
+<p>   bool eventFilter(QObject *obj, QEvent *event);</p>
+<p> private:</p>
+<p>   QTextEdit *textEdit;</p>
+<p> };</p>
+<p> MainWindow::MainWindow()</p>
+<p> {</p>
+<p>   textEdit = new QTextEdit;</p>
+<p>   setCentralWidget(textEdit);</p>
+<p>   textEdit-&gt;installEventFilter(this);</p>
+<p> }</p>
+<p> bool MainWindow::eventFilter(QObject *obj, QEvent *event)</p>
+<p> {</p>
+<p>   if (obj == textEdit) {</p>
+<p>​     if (event-&gt;type() == QEvent::KeyPress) {</p>
+<p>​       QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(event);</p>
+<p>​       qDebug() &lt;&lt; “Ate key press” &lt;&lt; keyEvent-&gt;key();</p>
+<p>​       return true;</p>
+<p>​     } else {</p>
+<p>​       return false;</p>
+<p>​     }</p>
+<p>   } else {</p>
+<p>​     // pass the event on to the parent class</p>
+<p>​     return QMainWindow::eventFilter(obj, event);</p>
+<p>   }</p>
+<p> }</p>
+<p>l MainWindow是我们定义的一个类。我们重写了它的eventFilter()函数。为了过滤特定组件上的事件，首先需要判断这个对象是不是我们感兴趣的组件，然后判断这个事件的类型。在上面的代码中，我们不想让textEdit组件处理键盘按下的事件。所以，首先我们找到这个组件，如果这个事件是键盘事件，则直接返回 true，也就是过滤掉了这个事件，其他事件还是要继续处理，所以返回 false。对于其它的组件，我们并不保证是不是还有过滤器，于是最保险的办法是调用父类的函数。</p>
+<p>l eventFilter()函数相当于创建了过滤器，然后我们需要安装这个过滤器。安装过滤器需要调用QObject::installEventFilter()函数。函数的原型如下：</p>
+<p>void QObject::installEventFilter ( QObject * filterObj )</p>
+<p>这个函数接受一个QObject *类型的参数。记得刚刚我们说的，eventFilter()函数是QObject的一个成员函数，因此，任意QObject都可以作为事件过滤器（问题在于，如果你没有重写eventFilter()函数，这个事件过滤器是没有任何作用的，因为默认什么都不会过滤）。已经存在的过滤器则可以通过QObject::removeEventFilter()函数移除。</p>
+<p>l 我们可以向一个对象上面安装多个事件处理器，只要调用多次installEventFilter()函数。如果一个对象存在多个事件过滤器，那么，最后一个安装的会第一个执行，也就是后进先执行的顺序。</p>
+<p>还记得我们前面的那个例子吗？我们使用event()函数处理了 Tab 键：</p>
+<p>bool CustomWidget::event(QEvent *e)</p>
+<p>{</p>
+<p>  if (e-&gt;type() == QEvent::KeyPress) {</p>
+<p>​    QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(e);</p>
+<p>​    if (keyEvent-&gt;key() == Qt::Key_Tab) {</p>
+<p>​      qDebug() &lt;&lt; “You press tab.”;</p>
+<p>​      return true;</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  return QWidget::event(e);</p>
+<p>}</p>
+<p>现在，我们可以给出一个使用事件过滤器的版本：</p>
+<p>bool FilterObject::eventFilter(QObject *object, QEvent *event)</p>
+<p>{</p>
+<p>  if (object == target &amp;&amp; event-&gt;type() == QEvent::KeyPress) </p>
+<p>{</p>
+<p>​    QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(event);</p>
+<p>​    if (keyEvent-&gt;key() == Qt::Key_Tab) {</p>
+<p>​      qDebug() &lt;&lt; “You press tab.”;</p>
+<p>​      return true;</p>
+<p>​    } else {</p>
+<p>​      return false;</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  return false;</p>
+<p>}</p>
+<p>事件过滤器的强大之处在于，我们可以为整个应用程序添加一个事件过滤器。记得，installEventFilter()函数是QObject的函数，QApplication或者QCoreApplication对象都是QObject的子类，因此，我们可以向QApplication或者QCoreApplication添加事件过滤器。<strong>这种全局的事件过滤器将会在所有其它特性对象的事件过滤器之前调用。尽管很强大，但这种行为会严重降低整个应用程序的事件分发效率。</strong>因此，除非是不得不使用的情况，否则的话我们不应该这么做。</p>
+<p><strong>注意，</strong></p>
+<p><strong>事件过滤器和被安装过滤器的组件必须在同一线程，否则，过滤器将不起作用。另外，如果在安装过滤器之后，这两个组件到了不同的线程，那么，只有等到二者重新回到同一线程的时候过滤器才会有效。</strong></p>
+<h2 id="9-4-总结"><a href="#9-4-总结" class="headerlink" title="9.4 总结"></a>9.4 总结</h2><p>Qt 的事件是整个 Qt 框架的核心机制之一，也比较复杂。说它复杂，更多是因为它涉及到的函数众多，而处理方法也很多，有时候让人难以选择。现在我们简单总结一下 Qt 中的事件机制。</p>
+<p>Qt 中有很多种事件：鼠标事件、键盘事件、大小改变的事件、位置移动的事件等等。如何处理这些事件，实际有两种选择：</p>
+<p>l 所有事件对应一个事件处理函数，在这个事件处理函数中用一个很大的分支语句进行选择，其代表作就是 win32 API 的WndProc()函数：</p>
+<p>LRESULT CALLBACK WndProc(HWND hWnd,</p>
+<p>​             UINT message,</p>
+<p>​             WPARAM wParam,</p>
+<p>​             LPARAM lParam)</p>
+<p>在这个函数中，我们需要使用switch语句，选择message参数的类型进行处理，典型代码是：</p>
+<p>switch(message)</p>
+<p>{</p>
+<p>  case WM_PAINT:</p>
+<p>​    // …</p>
+<p>​    break;</p>
+<p>  case WM_DESTROY:</p>
+<p>​    // …</p>
+<p>​    break;</p>
+<p>  …</p>
+<p>}</p>
+<p>l 每一种事件对应一个事件处理函数。Qt 就是使用的这么一种机制：</p>
+<p>n mouseEvent()</p>
+<p>n keyPressEvent()</p>
+<p>n …</p>
+<p>Qt 具有这么多种事件处理函数，肯定有一个地方对其进行分发，否则，Qt 怎么知道哪一种事件调用哪一个事件处理函数呢？这个分发的函数，就是event()。显然，当QMouseEvent产生之后，event()函数将其分发给mouseEvent()事件处理器进行处理。</p>
+<p>event()函数会有两个问题：</p>
+<p>l event()函数是一个 protected 的函数，这意味着我们要想重写event()，必须继承一个已有的类。试想，我的程序根本不想要鼠标事件，程序中所有组件都不允许处理鼠标事件，是不是我得继承所有组件，一一重写其event()函数？protected 函数带来的另外一个问题是，如果我基于第三方库进行开发，而对方没有提供源代码，只有一个链接库，其它都是封装好的。我怎么去继承这种库中的组件呢？</p>
+<p>l event()函数的确有一定的控制，不过有时候我的需求更严格一些：我希望那些组件根本看不到这种事件。event()函数虽然可以拦截，但其实也是接收到了QMouseEvent对象。我连让它收都收不到。这样做的好处是，模拟一种系统根本没有那个事件的效果，所以其它组件根本不会收到这个事件，也就无需修改自己的事件处理函数。这种需求怎么办呢？</p>
+<p>这两个问题是event()函数无法处理的。于是，Qt 提供了另外一种解决方案：事件过滤器。事件过滤器给我们一种能力，让我们能够完全移除某种事件。事件过滤器可以安装到任意QObject类型上面，并且可以安装多个。如果要实现全局的事件过滤器，则可以安装到QApplication或者QCoreApplication上面。这里需要注意的是，如果使用installEventFilter()函数给一个对象安装事件过滤器，那么该事件过滤器只对该对象有效，只有这个对象的事件需要先传递给事件过滤器的eventFilter()函数进行过滤，其它对象不受影响。如果给QApplication对象安装事件过滤器，那么该过滤器对程序中的每一个对象都有效，任何对象的事件都是先传给eventFilter()函数。</p>
+<p><strong>事件过滤器可以解决刚刚我们提出的event()函数的两点不足：</strong></p>
+<p>l <strong>首先，事件过滤器不是 protected 的，因此我们可以向任何QObject子类安装事件过滤器；</strong></p>
+<p>l <strong>其次，事件过滤器在目标对象接收到事件之前进行处理，如果我们将事件过滤掉，目标对象根本不会见到这个事件。</strong></p>
+<p>事实上，还有一种方法，我们没有介绍。Qt 事件的调用最终都会追溯到QCoreApplication::notify()函数，因此，最大的控制权实际上是重写QCoreApplication::notify()。这个函数的声明是：</p>
+<p>virtual bool QCoreApplication::notify ( QObject * receiver,</p>
+<p>​                    QEvent * event );</p>
+<p>该函数会将event发送给receiver，也就是调用receiver-&gt;event(event)，其返回值就是来自receiver的事件处理器。注意，这个函数为任意线程的任意对象的任意事件调用，因此，它不存在事件过滤器的线程的问题。不过我们并不推荐这么做，因为notify()函数只有一个，而事件过滤器要灵活得多。</p>
+<p><strong>现在我们可以总结一下 Qt 的事件处理，实际上是有五个层次：</strong></p>
+<p>l 重写paintEvent()、mousePressEvent()等事件处理函数。这是最普通、最简单的形式，同时功能也最简单。</p>
+<p>l 重写event()函数。event()函数是所有对象的事件入口，QObject和QWidget中的实现，默认是把事件传递给特定的事件处理函数。</p>
+<p>l 在特定对象上面安装事件过滤器。该过滤器仅过滤该对象接收到的事件。</p>
+<p>l 在QCoreApplication::instance()上面安装事件过滤器。该过滤器将过滤所有对象的所有事件，因此和notify()函数一样强大，但是它更灵活，因为可以安装多个过滤器。全局的事件过滤器可以看到 disabled 组件上面发出的鼠标事件。全局过滤器有一个问题：只能用在主线程。</p>
+<p>l 重写QCoreApplication::notify()函数。这是最强大的，和全局事件过滤器一样提供完全控制，并且不受线程的限制。但是全局范围内只能有一个被使用（因为QCoreApplication是单例的）。</p>
+<h1 id="10-绘图和绘图设备"><a href="#10-绘图和绘图设备" class="headerlink" title="10 绘图和绘图设备"></a>10 绘图和绘图设备</h1><h2 id="10-1-QPainter"><a href="#10-1-QPainter" class="headerlink" title="10.1 QPainter"></a>10.1 QPainter</h2><p>Qt 的绘图系统允许使用相同的 API 在屏幕和其它打印设备上进行绘制。整个绘图系统基于QPainter，QPainterDevice和QPaintEngine三个类。</p>
+<p><strong>QPainter</strong>用来执行绘制的操作；<strong>QPaintDevice</strong>是一个二维空间的抽象，这个二维空间允许QPainter在其上面进行绘制，也就是QPainter工作的空间；<strong>QPaintEngine</strong>提供了画笔（QPainter）在不同的设备上进行绘制的统一的接口。QPaintEngine类应用于QPainter和QPaintDevice之间，通常对开发人员是透明的。除非你需要自定义一个设备，否则你是不需要关心QPaintEngine这个类的。我们可以把QPainter理解成画笔；把QPaintDevice理解成使用画笔的地方，比如纸张、屏幕等；而对于纸张、屏幕而言，肯定要使用不同的画笔绘制，为了统一使用一种画笔，我们设计了QPaintEngine类，这个类让不同的纸张、屏幕都能使用一种画笔。</p>
+<p>下图给出了这三个类之间的层次结构:</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image044.png" alt="img"></p>
+<p>上面的示意图告诉我们，<strong>Qt 的绘图系统实际上是，使用QPainter在QPainterDevice上进行绘制，它们之间使用QPaintEngine进行通讯（也就是翻译QPainter的指令）。</strong></p>
+<p>下面我们通过一个实例来介绍QPainter的使用：</p>
+<p>class PaintedWidget : public QWidget</p>
+<p>{</p>
+<p>  Q_OBJECT</p>
+<p>public:</p>
+<p>  PaintedWidget(QWidget *parent = 0);</p>
+<p>protected:</p>
+<p>  void paintEvent(QPaintEvent *);</p>
+<p>}</p>
+<p>注意我们重写了QWidget的paintEvent()函数。接下来就是PaintedWidget的源代码：</p>
+<p>PaintedWidget::PaintedWidget(QWidget *parent) :</p>
+<p>  QWidget(parent)</p>
+<p>{</p>
+<p>  resize(800, 600);</p>
+<p>  setWindowTitle(tr(“Paint Demo”));</p>
+<p>}</p>
+<p>void PaintedWidget::paintEvent(QPaintEvent *)</p>
+<p>{</p>
+<p>  QPainter painter(this);</p>
+<p>  painter.drawLine(80, 100, 650, 500);</p>
+<p>  painter.setPen(Qt::red);</p>
+<p>  painter.drawRect(10, 10, 100, 400);</p>
+<p>  painter.setPen(QPen(Qt::green, 5));</p>
+<p>  painter.setBrush(Qt::blue);</p>
+<p>  painter.drawEllipse(50, 150, 400, 200);</p>
+<p>}</p>
+<p>在构造函数中，我们仅仅设置了窗口的大小和标题。而paintEvent()函数则是绘制的代码。首先，我们在栈上创建了一个QPainter对象，也就是说，每次运行paintEvent()函数的时候，都会重建这个QPainter对象。注意，这一点可能会引发某些细节问题：由于我们每次重建QPainter，因此第一次运行时所设置的画笔颜色、状态等，第二次再进入这个函数时就会全部丢失。有时候我们希望保存画笔状态，就必须自己保存数据，否则的话则需要将QPainter作为类的成员变量。</p>
+<p>QPainter接收一个QPaintDevice指针作为参数。QPaintDevice有很多子类，比如QImage，以及QWidget。注意回忆一下，QPaintDevice可以理解成要在哪里去绘制，而现在我们希望画在这个组件，因此传入的是 this 指针。</p>
+<p>QPainter有很多以 draw 开头的函数，用于各种图形的绘制，比如这里的drawLine()，drawRect()以及drawEllipse()等。当绘制轮廓线时，使用QPainter的pen()属性。比如，我们调用了painter.setPen(Qt::red)将 pen 设置为红色，则下面绘制的矩形具有红色的轮廓线。接下来，我们将 pen 修改为绿色，5 像素宽（painter.setPen(QPen(Qt::green, 5))），又设置了画刷为蓝色。这时候再调用 draw 函数，则是具有绿色 5 像素宽轮廓线、蓝色填充的椭圆。</p>
+<h2 id="10-2-绘图设备"><a href="#10-2-绘图设备" class="headerlink" title="10.2 绘图设备"></a>10.2 绘图设备</h2><p><strong>绘图设备是指继承QPainterDevice的子类。</strong>Qt一共提供了四个这样的类，分别是QPixmap、QBitmap、QImage和 QPicture。其中，</p>
+<p>l QPixmap专门为图像在屏幕上的显示做了优化</p>
+<p>l QBitmap是QPixmap的一个子类，它的色深限定为1，可以使用 QPixmap的isQBitmap()函数来确定这个QPixmap是不是一个QBitmap。</p>
+<p>l QImage专门为图像的像素级访问做了优化。 </p>
+<p>l QPicture则可以记录和重现QPainter的各条命令。</p>
+<h3 id="10-2-1-QPixmap、QBitmap、QImage"><a href="#10-2-1-QPixmap、QBitmap、QImage" class="headerlink" title="10.2.1 QPixmap、QBitmap、QImage"></a>10.2.1 QPixmap、QBitmap、QImage</h3><p>QPixmap继承了QPaintDevice，因此，你可以使用QPainter直接在上面绘制图形。QPixmap也可以接受一个字符串作为一个文件的路径来显示这个文件，比如你想在程序之中打开png、jpeg之类的文件，就可以使用 QPixmap。使用QPainter的drawPixmap()函数可以把这个文件绘制到一个QLabel、QPushButton或者其他的设备上面。<strong>QPixmap是针对屏幕进行特殊优化的，因此，它与实际的底层显示设备息息相关。</strong>注意，这里说的显示设备并不是硬件，而是操作系统提供的原生的绘图引擎。所以，在不同的操作系统平台下，QPixmap的显示可能会有所差别。</p>
+<p><strong>QBitmap**</strong>继承自QPixmap，因此具有QPixmap的所有特性，提供单色图像<strong>。QBitmap的色深始终为1. 色深这个概念来自计算机图形学，是指用于表现颜色的二进制的位数。我们知道，计算机里面的数据都是使用二进制表示的。为了表示一种颜色，我们也会使用二进制。比如我们要表示8种颜色，需要用3个二进制位，这时我们就说色深是3. 因此，所谓色深为1，也就是使用1个二进制位表示颜色。1个位只有两种状态：0和1，因此它所表示的颜色就有两种，黑和白。所以说，</strong>QBitmap实际上是只有黑白两色的图像数据。**</p>
+<p><strong>由于QBitmap色深小，因此只占用很少的存储空间，所以适合做光标文件和笔刷。</strong></p>
+<p>下面我们来看同一个图像文件在QPixmap和QBitmap下的不同表现：</p>
+<p>void PaintWidget::paintEvent(QPaintEvent *)</p>
+<p>{</p>
+<p>  QPixmap pixmap(“:/Image/butterfly.png”);</p>
+<p>  QPixmap pixmap1(“:/Image/butterfly1.png”);</p>
+<p>  QBitmap bitmap(“:/Image/butterfly.png”);</p>
+<p>  QBitmap bitmap1(“:/Image/butterfly1.png”);</p>
+<p>  QPainter painter(this);</p>
+<p>  painter.drawPixmap(0, 0, pixmap);</p>
+<p>  painter.drawPixmap(200, 0, pixmap1);</p>
+<p>  painter.drawPixmap(0, 130, bitmap);</p>
+<p>  painter.drawPixmap(200, 130, bitmap1);</p>
+<p>}</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image045.png" alt="img"></p>
+<p>这里我们给出了两张png图片。butterfly1.png是没有透明色的纯白背景，而butterfly.png是具有透明色的背景。我们分别使用QPixmap和QBitmap来加载它们。注意看它们的区别：白色的背景在QBitmap中消失了，而透明色在QBitmap中转换成了黑色；其他颜色则是使用点的疏密程度来体现的。</p>
+<p>QPixmap使用底层平台的绘制系统进行绘制，无法提供像素级别的操作，而<strong>QImage则是使用独立于硬件的绘制系统，实际上是自己绘制自己，因此提供了像素级别的操作，并且能够在不同系统之上提供一个一致的显示形式。</strong></p>
+<p>我们声明了一个QImage对象，大小是300 x 300，颜色模式是RGB32，即使用32位数值表示一个颜色的RGB值，也就是说每种颜色使用8位。然后我们对每个像素进行颜色赋值，从而构成了这个图像。我们可以把QImage想象成一个RGB颜色的二维数组，记录了每一像素的颜色。</p>
+<p>void PaintWidget::paintEvent(QPaintEvent *)</p>
+<p>{</p>
+<p>  QPainter painter(this);</p>
+<p>  QImage image(300, 300, QImage::Format_RGB32);</p>
+<p>  QRgb value;</p>
+<p>  //将图片背景填充为白色</p>
+<p>  image.fill(Qt::white);</p>
+<p>  //改变指定区域的像素点的值</p>
+<p>  for(int i=50; i&lt;100; ++i)</p>
+<p>  {</p>
+<p>​    for(int j=50; j&lt;100; ++j)</p>
+<p>​    {</p>
+<p>​      value = qRgb(255, 0, 0); // 红色</p>
+<p>​      image.setPixel(i, j, value);</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  //将图片绘制到窗口中</p>
+<p>  painter.drawImage(QPoint(0, 0), image);</p>
+<p>}</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image046.png" alt="img"></p>
+<p>QImage与QPixmap的区别</p>
+<p>l QPixmap主要是用于绘图，针对屏幕显示而最佳化设计，QImage主要是为图像I/O、图片访问和像素修改而设计的</p>
+<p>l QPixmap依赖于所在的平台的绘图引擎，故例如反锯齿等一些效果在不同的平台上可能会有不同的显示效果，QImage使用Qt自身的绘图引擎，可在不同平台上具有相同的显示效果</p>
+<p>l 由于QImage是独立于硬件的，也是一种QPaintDevice，因此我们可以在另一个线程中对其进行绘制，而不需要在GUI线程中处理，使用这一方式可以很大幅度提高UI响应速度。</p>
+<p>l QImage可通过setPixpel()和pixel()等方法直接存取指定的像素。</p>
+<p>QImage与QPixmap之间的转换:</p>
+<p>l QImage转QPixmap</p>
+<p>使用QPixmap的静态成员函数: fromImage()</p>
+<p>QPixmap  fromImage(const QImage &amp; image, </p>
+<p>Qt::ImageConversionFlags flags = Qt::AutoColor)</p>
+<p>l QPixmap转QImage:</p>
+<p>使用QPixmap类的成员函数: toImage()</p>
+<p>QImage toImage() const</p>
+<h3 id="10-2-2-QPicture"><a href="#10-2-2-QPicture" class="headerlink" title="10.2.2 QPicture"></a>10.2.2 QPicture</h3><p>最后一个需要说明的是QPicture。<strong>这是一个可以记录和重现QPainter命令的绘图设备。</strong> <strong>QPicture将QPainter的命令序列化到一个IO设备，保存为一个平台独立的文件格式。</strong>这种格式有时候会是“元文件(meta- files)”。Qt的这种格式是二进制的，不同于某些本地的元文件，Qt的pictures文件没有内容上的限制，只要是能够被QPainter绘制的元素，不论是字体还是pixmap，或者是变换，都可以保存进一个picture中。</p>
+<p><strong>QPicture**</strong>是平台无关的**，因此它可以使用在多种设备之上，比如svg、pdf、ps、打印机或者屏幕。回忆下我们这里所说的QPaintDevice，实际上是说可以有QPainter绘制的对象。QPicture使用系统的分辨率，并且可以调整 QPainter来消除不同设备之间的显示差异。</p>
+<p>如果我们要记录下QPainter的命令，首先要使用QPainter::begin()函数，将QPicture实例作为参数传递进去，以便告诉系统开始记录，记录完毕后使用QPainter::end()命令终止。代码示例如下：</p>
+<p>void PaintWidget::paintEvent(QPaintEvent *)</p>
+<p>{</p>
+<p>  QPicture pic;</p>
+<p>  QPainter painter;</p>
+<p>   //将图像绘制到QPicture中,并保存到文件</p>
+<p>  painter.begin(&amp;pic);</p>
+<p>  painter.drawEllipse(20, 20, 100, 50);</p>
+<p>  painter.fillRect(20, 100, 100, 100, Qt::red);</p>
+<p>  painter.end();</p>
+<p>  pic.save(“D:\drawing.pic”);</p>
+<p>   //将保存的绘图动作重新绘制到设备上</p>
+<p>  pic.load(“D:\drawing.pic”);</p>
+<p>  painter.begin(this);</p>
+<p>  painter.drawPicture(200, 200, pic);</p>
+<p>  painter.end();</p>
+<p>}</p>
+<h1 id="11-文件系统"><a href="#11-文件系统" class="headerlink" title="11 文件系统"></a>11 文件系统</h1><p>文件操作是应用程序必不可少的部分。Qt 作为一个通用开发库，提供了跨平台的文件操作能力。Qt 通过QIODevice提供了对 I/O 设备的抽象，这些设备具有读写字节块的能力。下面是 I/O 设备的类图（Qt5）：</p>
+<p><img src="/2021/01/11/QT%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/clip_image048.png" alt="img"></p>
+<p>l QIODevice：所有 I/O 设备类的父类，提供了字节块读写的通用操作以及基本接口；</p>
+<p>l QFileDevice：Qt5新增加的类，提供了有关文件操作的通用实现。</p>
+<p>l QFlie：访问本地文件或者嵌入资源；</p>
+<p>l QTemporaryFile：创建和访问本地文件系统的临时文件；</p>
+<p>l QBuffer：读写QbyteArray, 内存文件；</p>
+<p>l QProcess：运行外部程序，处理进程间通讯；</p>
+<p>l QAbstractSocket：所有套接字类的父类；</p>
+<p>l QTcpSocket：TCP协议网络数据传输；</p>
+<p>l QUdpSocket：传输 UDP 报文；</p>
+<p>l QSslSocket：使用 SSL/TLS 传输数据；</p>
+<p><strong>文件系统分类:</strong></p>
+<p>l 顺序访问设备:</p>
+<p>是指它们的数据只能访问一遍：从头走到尾，从第一个字节开始访问，直到最后一个字节，中途不能返回去读取上一个字节，这其中，QProcess、QTcpSocket、QUdpSoctet和QSslSocket是顺序访问设备。</p>
+<p>l 随机访问设备:</p>
+<p>可以访问任意位置任意次数，还可以使用QIODevice::seek()函数来重新定位文件访问位置指针，QFile、QTemporaryFile和QBuffer是随机访问设备， </p>
+<h2 id="11-1-基本文件操作"><a href="#11-1-基本文件操作" class="headerlink" title="11.1 基本文件操作"></a>11.1 基本文件操作</h2><p>文件操作是应用程序必不可少的部分。Qt 作为一个通用开发库，提供了跨平台的文件操作能力。在所有的 I/O 设备中，文件 I/O 是最重要的部分之一。因为我们大多数的程序依旧需要首先访问本地文件（当然，在云计算大行其道的将来，这一观点可能改变）。<strong>QFile提供了从文件中读取和写入数据的能力。</strong></p>
+<p><strong>我们通常会将文件路径作为参数传给QFile的构造函数。不过也可以在创建好对象最后，使用setFileName()来修改</strong>。QFile需要使用 / 作为文件分隔符，不过，它会自动将其转换成操作系统所需要的形式。例如 C:/windows 这样的路径在 Windows 平台下同样是可以的。</p>
+<p>QFile主要提供了有关文件的各种操作，比如打开文件、关闭文件、刷新文件等。<strong>我们可以使用QDataStream或QTextStream类来读写文件，也可以使用QIODevice类提供的read()、readLine()、readAll()以及write()这样的函数。</strong>值得注意的是，<strong>有关文件本身的信息，比如文件名、文件所在目录的名字等，则是通过QFileInfo获取</strong>，而不是自己分析文件路径字符串。</p>
+<p>下面我们使用一段代码来看看QFile的有关操作：</p>
+<p>int main(int argc, char *argv[])</p>
+<p>{</p>
+<p>  QApplication app(argc, argv);</p>
+<p>  QFile file(“in.txt”);</p>
+<p>  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {</p>
+<p>​    qDebug() &lt;&lt; “Open file failed.”;</p>
+<p>​    return -1;</p>
+<p>  } else {</p>
+<p>​    while (!file.atEnd()) {</p>
+<p>​      qDebug() &lt;&lt; file.readLine();</p>
+<p>​    }</p>
+<p>  }</p>
+<p>  QFileInfo info(file);</p>
+<p>  qDebug() &lt;&lt; info.isDir();</p>
+<p>  qDebug() &lt;&lt; info.isExecutable();</p>
+<p>  qDebug() &lt;&lt; info.baseName();</p>
+<p>  qDebug() &lt;&lt; info.completeBaseName();</p>
+<p>  qDebug() &lt;&lt; info.suffix();</p>
+<p>  qDebug() &lt;&lt; info.completeSuffix();</p>
+<p>  return app.exec();</p>
+<p>}</p>
+<p>l 我们首先使用QFile创建了一个文件对象。</p>
+<p>这个文件名字是 in.txt。如果你不知道应该把它放在哪里，可以使用QDir::currentPath()来获得应用程序执行时的当前路径。只要将这个文件放在与当前路径一致的目录下即可。</p>
+<p>l 使用open()函数打开这个文件，打开形式是只读方式，文本格式。</p>
+<p>这个类似于fopen()的 r 这样的参数。open()函数返回一个 bool 类型，如果打开失败，我们在控制台输出一段提示然后程序退出。否则，我们利用 while 循环，将每一行读到的内容输出。</p>
+<p>l 可以使用QFileInfo获取有关该文件的信息。</p>
+<p>QFileInfo有很多类型的函数，我们只举出一些例子。比如：</p>
+<p>n isDir()检查该文件是否是目录；</p>
+<p>n isExecutable()  检查该文件是否是可执行文件等。</p>
+<p>n baseName()  可以直接获得文件名；</p>
+<p>n completeBaseName()  获取完整的文件名</p>
+<p>n suffix()  则直接获取文件后缀名。</p>
+<p>n completeSuffix()  获取完整的文件后缀</p>
+<p>我们可以由下面的示例看到，baseName()和completeBaseName()，以及suffix()和completeSuffix()的区别：</p>
+<p>QFileInfo fi(“/tmp/archive.tar.gz”);</p>
+<p>QString base = fi.baseName(); // base = “archive”</p>
+<p>QString base = fi.completeBaseName(); // base = “archive.tar”</p>
+<p>QString ext  = fi.suffix(); // ext = “gz”</p>
+<p>QString ext  = fi.completeSuffix(); // ext = “tar.gz”</p>
+<h2 id="11-2-二进制文件读写"><a href="#11-2-二进制文件读写" class="headerlink" title="11.2 二进制文件读写"></a>11.2 二进制文件读写</h2><p><strong>QDataStream</strong>提供了基于QIODevice的二进制数据的序列化。数据流是一种二进制流，这种流<strong>完全不依赖</strong>于底层操作系统、CPU 或者字节顺序（大端或小端）。例如，在安装了 Windows 平台的 PC 上面写入的一个数据流，可以不经过任何处理，直接拿到运行了 Solaris 的 SPARC 机器上读取。由于数据流就是二进制流，因此我们也可以<strong>直接读写没有编码的二进制数据，例如图像、视频、音频</strong>等。</p>
+<p><strong>QDataStream**</strong>既能够存取 C++ 基本类型，如 int、char、short 等，也可以存取复杂的数据类型，例如自定义的类。实际上，QDataStream对于类的存储，是将复杂的类分割为很多基本单元实现的。**</p>
+<p>结合QIODevice，QDataStream可以很方便地对文件、网络套接字等进行读写操作。我们从代码开始看起：</p>
+<p>QFile file(“file.dat”);</p>
+<p>file.open(QIODevice::WriteOnly);</p>
+<p>QDataStream out(&amp;file);</p>
+<p>out &lt;&lt; QString(“the answer is”);</p>
+<p>out &lt;&lt; (qint32)42;</p>
+<p>l 在这段代码中，我们首先打开一个名为 file.dat 的文件（注意，我们为简单起见，并没有检查文件打开是否成功，这在正式程序中是不允许的）。然后，我们将刚刚创建的file对象的指针传递给一个QDataStream实例out。类似于std::cout标准输出流，QDataStream也重载了输出重定向&lt;&lt;运算符。后面的代码就很简单了：将“the answer is”和数字 42 输出到数据流。由于我们的 out 对象建立在file之上，因此相当于将问题和答案写入file。</p>
+<p>l 需要指出一点：最好使用 Qt 整型来进行读写，比如程序中的qint32。这保证了在任意平台和任意编译器都能够有相同的行为。</p>
+<p>如果你直接运行这段代码，你会得到一个空白的 file.dat，并没有写入任何数据。这是因为我们的file没有正常关闭。<strong>为性能起见，数据只有在文件关闭时才会真正写入</strong>。因此，我们必须在最后添加一行代码：</p>
+<p>file.close(); // 如果不想关闭文件，可以使用 file.flush();</p>
+<p>接下来我们将存储到文件中的答案取出来</p>
+<p>QFile file(“file.dat”);</p>
+<p>file.open(QIODevice::ReadOnly);</p>
+<p>QDataStream in(&amp;file);</p>
+<p>QString str;</p>
+<p>qint32 a;</p>
+<p>in &gt;&gt; str &gt;&gt; a;</p>
+<p><strong>唯一需要注意的是，你必须按照写入的顺序，将数据读取出来。顺序颠倒的话，程序行为是不确定的，严重时会直接造成程序崩溃。</strong></p>
+<p>那么，既然QIODevice提供了read()、readLine()之类的函数，为什么还要有QDataStream呢？QDataStream同QIODevice有什么区别？区别在于，<strong>QDataStream**</strong>提供流的形式，性能上一般比直接调用原始 API 更好一些。**我们通过下面一段代码看看什么是流的形式：</p>
+<p>QFile file(“file.dat”);</p>
+<p>file.open(QIODevice::ReadWrite);</p>
+<p>QDataStream stream(&amp;file);</p>
+<p>QString str = “the answer is 42”;</p>
+<p>stream &lt;&lt; str;</p>
+<h2 id="11-3-文本文件读写"><a href="#11-3-文本文件读写" class="headerlink" title="11.3 文本文件读写"></a>11.3 文本文件读写</h2><p>上一节我们介绍了有关二进制文件的读写。二进制文件比较小巧，却不是人可读的格式。而文本文件是一种人可读的文件。为了操作这种文件，我们需要使用QTextStream类。QTextStream和QDataStream的使用类似，只不过它是操作纯文本文件的。</p>
+<p>QTextStream会自动将 Unicode 编码同操作系统的编码进行转换，这一操作对开发人员是透明的。它也会将换行符进行转换，同样不需要自己处理。<strong>QTextStream**</strong>使用 16 位的QChar作为基础的数据存储单位，同样，它也支持 C++ 标准类型，如 int 等。实际上，这是将这种标准类型与字符串进行了相互转换。**</p>
+<p>QTextStream同QDataStream的使用基本一致，例如下面的代码将把“The answer is 42”写入到 file.txt 文件中：</p>
+<p>QFile data(“file.txt”);</p>
+<p>if (data.open(QFile::WriteOnly | QIODevice::Truncate)) </p>
+<p>{</p>
+<p>  QTextStream out(&amp;data);</p>
+<p>  out &lt;&lt; “The answer is “ &lt;&lt; 42;</p>
+<p>}</p>
+<p>这里，我们在open()函数中增加了QIODevice::Truncate打开方式。我们可以从下表中看到这些打开方式的区别：</p>
+<p>枚举值         描述</p>
+<p>l QIODevice::NotOpen    未打开</p>
+<p>l QIODevice::ReadOnly   以只读方式打开</p>
+<p>l QIODevice::WriteOnly   以只写方式打开</p>
+<p>l QIODevice::ReadWrite   以读写方式打开</p>
+<p>l QIODevice::Append     以追加的方式打开，</p>
+<p>新增加的内容将被追加到文件末尾</p>
+<p>l QIODevice::Truncate   以重写的方式打开，在写入新的数据时会将原有</p>
+<p>​             数据全部清除，游标设置在文件开头。</p>
+<p>l QIODevice::Text      在读取时，将行结束符转换成 \n；在写入时，</p>
+<p>将行结束符转换成本地格式，例如 Win32 平台</p>
+<p>上是 \r\n</p>
+<p>l QIODevice::Unbuffered  忽略缓存</p>
+<p>我们在这里使用了QFile::WriteOnly | QIODevice::Truncate，也就是以只写并且覆盖已有内容的形式操作文件。注意，QIODevice::Truncate会直接将文件内容清空。</p>
+<p>虽然QTextStream的写入内容与QDataStream一致，但是读取时却会有些困难：</p>
+<p>QFile data(“file.txt”);</p>
+<p>if (data.open(QFile::ReadOnly)) </p>
+<p>{</p>
+<p>  QTextStream in(&amp;data);</p>
+<p>  QString str;</p>
+<p>  int ans = 0;</p>
+<p>  in &gt;&gt; str &gt;&gt; ans;</p>
+<p>}</p>
+<p>在使用QDataStream的时候，这样的代码很方便，但是使用了QTextStream时却有所不同：读出的时候，str 里面将是 The answer is 42，ans 是 0。这是因为<strong>当使用QDataStream写入的时候，实际上会在要写入的内容前面，额外添加一个这段内容的长度值。而以文本形式写入数据，是没有数据之间的分隔的。</strong>因此，使用文本文件时，很少会将其分割开来读取，而是使用诸如使用：</p>
+<p>l QTextStream::readLine() 读取一行</p>
+<p>l QTextStream::readAll()读取所有文本</p>
+<p>这种函数之后再对获得的QString对象进行处理。</p>
+<p>默认情况下，QTextStream的编码格式是 Unicode，如果我们需要使用另外的编码，可以使用：</p>
+<p>stream.setCodec(“UTF-8”);</p>
+<p>这样的函数进行设置。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/" class="post-title-link" itemprop="url">数字逻辑知识点汇总2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-03 18:10:01 / 修改时间：18:10:45" itemprop="dateCreated datePublished" datetime="2021-01-03T18:10:01+08:00">2021-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数字电子技术（江晓安）第三版 </p>
+<p>第一章 数制与代码 </p>
+<p>进位计数制的基本概念，进位基数和数位的权值。 </p>
+<p>常用进位计数制：十进制二进制八进制十六进制 </p>
+<p>数制转换： </p>
+<p>把非十进制数转换成十进制数：按权展开相加。 </p>
+<p>十进制数转换成其它进制数：整数转换，采用基数连除法。 </p>
+<p>纯小数转换，采用基数连乘法。 </p>
+<p>二进制数转换成八进制数或十六进制数：以二进制数的小数点为起点，分别向左、</p>
+<p>向右，每三位(或四位)分一组。对于小数部分，最低位一组不足三位(或四位)时，必须在有效位右边补0，使其足位。然后，把每一组二进制数转换成八进制(或十六进制)数，并保持原排序。对于整数部分，最高位一组不足位时，可在有效位的左边补0，也可不补。 </p>
+<p>八进制(或十六进制)数转换成二进制数：只要把八进制(或十六进制)数的每一位数</p>
+<p>码分别转换成三位(或四位)的二进制数， 并保持原排序即可。整数最高位一组左边的0，及小数最低位一组右边的0，可以省略。 </p>
+<p>常用代码：二-十进制码 （BCD码 Binary Coded Decimal) </p>
+<p>—— 用二进制码元来表示十进制数符“0 ~ 9”主要有： 8421BCD码 2421码 余3码 （注意区分有权码和无权码） </p>
+<p>可靠性代码：格雷码和奇偶校验码 </p>
+<p>具有如下特点的代码叫格雷码： 任何相邻的两个码组(包括首、尾两个码组)中，只有一个码元不同。格雷码还具有反射特性，即按教材表中所示的对称轴，除最高位互补反射外，其余低位码元以对称轴镜像反射。格雷码属于无权码。</p>
+<p>在编码技术中，把两个码组中不同的码元的个数叫做这两个码组的距离，简称码距。由于格雷码的任意相邻的两个码组的距离均为1，故又称之为单位距离码。另外，由于首尾两个码组也具有单位距离特性，因而格雷码也叫循环码。 </p>
+<p>奇偶校验码是一种可以检测一位错误的代码。它由信息位和校验位两部分组成。 （要掌握奇偶校验原理及校验位的形成及检测方法） </p>
+<p>字符代码：ASCII码 (American Standard Code for Information Interchange，美国信</p>
+<p>息交换标准代码)</p>
+<p>1</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第二章 基本逻辑运算及集成逻辑门 </p>
+<p>基本逻辑运算: 与逻辑、或逻辑、非逻辑 </p>
+<p>常用复合逻辑：“与非”逻辑、“或非”逻辑、“与或非”逻辑 </p>
+<p>“异或”逻辑 及“同或”逻辑 </p>
+<p>两变量的“异或逻辑”和“同或逻辑”互为反函数。 A⊕B和A⊙B互为对偶式。 </p>
+<p>多变量的“异或”及“同或”： </p>
+<p>  偶数个变量的“同或”等于这偶数个变量的“异或”之非。即 </p>
+<p>​    </p>
+<p>​     </p>
+<p>n个变量的“异或”逻辑的输出值和输入变量取值的对应关系是：输入变量的取值组合中，有奇数个1时，“异或”逻辑的输出值为1；反之，输出值为0。 </p>
+<p>利用此特性，可作为奇偶校验码校验位的产生/校验电路。 </p>
+<p>​    正负逻辑 </p>
+<p>​    在数字系统中，逻辑值是用逻辑电平表示的。若用逻辑高电平UH表示逻</p>
+<p>辑“真”，用逻辑低电平UL表示逻辑“假”，则称为正逻辑；反之，则称为负逻辑。本教材采用正逻辑。（注意：同一个逻辑电路实现的输入输出的电平关系是确定的，但规定正逻辑与负逻辑后实现的逻辑关系是不同的）     </p>
+<p>逻辑运算的优先级别      </p>
+<p>逻辑运算的完备性 </p>
+<p>​    “与”、“或”、“非”是逻辑代数中三种最基本的逻辑运算。 任何逻</p>
+<p>辑函数都可以用这三种运算的组合来构成。即任何数字系统都可以用这三种逻辑门来实现。因此，称“与”、“或”、 “非”是一个完备集合，简称完备集。但是，它不是最好的完备集，因为用它实现逻辑函数，必须同时使用三种不同的逻辑门，这对数字系统的制造、维修都不方便。</p>
+<p>由反演律(参见第三章 摩根定理)可以看出，利用“与”和“非”可以</p>
+<p>2</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>得出“或”；利用“或”和“非”可以得出“与”。因此，“与非”、“或非”、 “与或非”这三种复合运算中的任何一种都能实现“与”、 “或”、“非”的功能，即这三种复合运算各自都是完备集。 </p>
+<p>集成逻辑门 </p>
+<p>由于软件工程专业没有电路、模拟电子的先修课程，此部分涉及到电路细节部分不作要求，只概念性地了解相关集成逻辑芯片的逻辑功能及芯片系列的参数等。</p>
+<p>​    把若干个有源器件和无源器件及其连线，按照一定的功能要求，制做在</p>
+<p>同一块半导体基片上，这样的产品叫集成电路。若它完成的功能是逻辑功能或数字功能， 则称为逻辑集成电路或数字集成电路。最简单的数字集成电路是集成逻辑门。 </p>
+<p>​    集成逻辑门，按照其组成的有源器件的不同可分为两大类： </p>
+<p> 一类是双极性（型）晶体管逻辑门（TTL门晶体管-晶体管逻辑门）； 另一类是单极性（型）绝缘栅场效应管逻辑门，简称MOS门。 </p>
+<p>​    单极性MOS门主要有PMOS门(P沟道增强型MOS管构成的逻辑门)、</p>
+<p>NMOS门(N沟道增强型MOS管构成的逻辑门)和CMOS门(利用PMOS管和NMOS管构成的互补电路构成的门电路，故又叫做互补MOS门。 </p>
+<p>OC门与三态门 </p>
+<p>   OC门可实现“线与”功能，这是TTL门电路做不到的。 </p>
+<p>三态门的输出除了“0”、“1”状态外，还有“高阻”态。(控制端信号的作用：选通) </p>
+<p>TTL与 MOS集成逻辑门 多余输入端的处理：  与门/与非门——多余输入端接高电平  或门/或非门——多余输入端接低电平 </p>
+<p>要牢记各种门电路的逻辑符号！（教材 P243~244）      </p>
+<p>3</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第三章 布尔代数与逻辑函数化简 </p>
+<p>基本公式     </p>
+<p>基本法则： </p>
+<p>代入法则：逻辑等式中的任何变量A，都可用另一函数Z代替，等式仍然成立。 对偶法则：对于任何一个逻辑表达式 F， 如果将其中的“+”换成“·”， “·”</p>
+<p>换成“+”， “１”换成“0”， “0”换成“1”，并保持原先的逻辑优先级，变量不变，两变量以上的非号不动，则可得原函数 F的对偶式 G，且 F和 G互为对偶式。 根据对偶法则知原式F成立，则其对偶式也一定成立。 </p>
+<p>反演法则：将原函数F中的“·”换成“+”, “+”换成“·”； “0”换成“1”， </p>
+<p>“1”换成“0”； 原变量换成反变量，反变量换成原变量，长非号即两个或两个以上变量的非号不变，即可得反函数。 </p>
+<p> 由原函数求反函数，称为反演或求反。摩根定律是进行反演的重要工具。</p>
+<p>多次应用摩根定律，可以求出一个函数的反函数。当函数较复杂时， 求反过程就相当麻烦。为此，人们从实践中归纳出求反演法则，可一步快速求出反函数</p>
+<p>逻辑函数不同形式的转换 </p>
+<p>逻辑函数的表达形式通常可分为五种：(要掌握 画对应的逻辑电路图)  与或式、与非-与非式、与或非式、或与式、或非-或非式 </p>
+<p>4</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>逻辑函数的代数法化简 逻辑函数化简的原则 </p>
+<p>​    逻辑函数化简， 并没有一个严格的原则，通常遵循以下几条原则：     (1)逻辑电路所用的门最少；     (2)各个门的输入端要少；     (3)逻辑电路所用的级数要少；     (4)逻辑电路能可靠地工作。</p>
+<p>卡诺图化简 （依据：逻辑相邻的两个与项可以合并为一项并消去一个变量） 最小项标准式的定义 </p>
+<p>由一般式获得最小项标准式的方法 最小项的性质： 21</p>
+<p>(1)对任何变量的函数式来讲，全部最小项之和为1， 即 mi1</p>
+<p>i0</p>
+<p>(2)两个不同最小项之积为 0， 即 mimj0(ij)(3) n变量有 2n 项最小项， 且对每一最小项而言， 有n个最小项与之相邻。 </p>
+<p>卡诺图的结构 相邻最小项合并规律 </p>
+<p>​    (1)两相邻项可合并为一项， 消去一个取值不同的变量，保留相同变量；   (2)四相邻项可合并为一项， 消去两个取值不同的变量，保留相同变量，</p>
+<p>  标注为1→原变量，0→反变量； </p>
+<p>​    (3)八相邻项可合并为一项，消去三个取值不同的变量，保留相同变量， </p>
+<p>标注与变量关系同上。 </p>
+<p>卡诺图的画圈原则是把具有循环相邻关系的最小项圈在一起 </p>
+<p>与或逻辑形式的卡诺图化简步骤 </p>
+<p>​    (1)将原始函数用卡诺图表示（最小项标准式、一般与或式均可）；     (2)根据最小项合并规律画卡诺圈， 圈住全部“１”方格；     (3)将上述全部卡诺圈的化简结果，“或”起来即得化简后的新函数。 </p>
+<p>与非逻辑形式的卡诺图化简步骤（将与或式两次求反即得与非式）。 </p>
+<p>第一步： 在卡诺图上圈“１”方格， 求得最简与或式；</p>
+<p>第二步： 将最简与或式两次求反， 用求反律展开一次，得到与非表示式； </p>
+<p>或与逻辑形式的卡诺图化简步骤 </p>
+<p> 首先从卡诺图上求其反函数，其方法是圈“０”方格， 然后再取反用反演法则（或摩根定理）即得原函数的或与式。 </p>
+<p>n</p>
+<p> 5</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>无关项及无关项的应用 </p>
+<p>逻辑问题分完全描述和非完全描述两种。 </p>
+<p>对应于变量的每一组取值，函数都有定义，即在每一组变量取值下， 函数 F都有确定的值，不是“１”就是“０”， 逻辑函数与每个最小项均有关，这类问题称为完全描述问题。 </p>
+<p> 在实际的逻辑问题中，变量的某些取值组合不允许出现， 或者是变量之</p>
+<p>间具有一定的制约关系。我们将这类问题称为非完全描述，该函数只与部分最小项有关，而与另一些最小项无关，我们用或者用φ表示。 </p>
+<p>两种表示法：  </p>
+<p>F(1,5,8,12)d(3,7,10,11,14,15)。</p>
+<p>或： FABCABC</p>
+<p>__</p>
+<p>__</p>
+<p></p>
+<p>约束条件为ABACBC0（满足约束关系式的输入变量取值为“合法”取值， 不满足约束关系式的输入变量取值为“非法”取值——无关项×） </p>
+<p>有利于逻辑函数的化简时可以利用相应的无关项。 </p>
+<p>逻辑函数的描述方法常用的有： </p>
+<p>真值表法、布尔代数法、卡诺图法、逻辑图法、波形(时序)图法 （其中 布尔代数法、逻辑图法 具有“多样性”） </p>
+<p>真值表  逻辑函数（最小项标准）式 （原函数，反函数） 卡诺图       </p>
+<p>6</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第四章 组合逻辑电路 </p>
+<p>组合逻辑电路的定义  </p>
+<p>组合逻辑电路的分析过程： </p>
+<p>​    (1)由给定的逻辑电路图， 写出输出端（关于输入）的逻辑表达式；   (2)列出真值表 </p>
+<p>​    (3)从真值表概括出逻辑功能 </p>
+<p>​    (4)对原电路进行改进设计，寻找最佳方案(这一步不一定都要进行)。 </p>
+<p>组合逻辑电路的设计步骤： </p>
+<p>  (1)将文字描述的逻辑命题变换为真值表，这是十分重要的一步。 </p>
+<p>作出真值表前要仔细分析解决逻辑问题的条件，作出输入、输出变量的 逻辑规定 </p>
+<p>  (2)进行函数化简， 化简形式应依据选择什么门而定。   (3)根据化简结果和选定的门电路， 画出逻辑电路图。 </p>
+<p>常用中规模组合逻辑部件的原理和应用 </p>
+<p>以掌握原理和器件的外部特性（逻辑关系）为主，内部电路的细节不必深究！ </p>
+<p>半加器与全加器的定义（理解掌握全加器真值表） </p>
+<p>全加器的应用（了解） </p>
+<p>编码器 优先编码器 </p>
+<p>译码器及其应用 </p>
+<p>集成电路译码器的特点：     ① 为了减轻信号的负载，故集成电路输入一般都采用缓冲级，这样外界</p>
+<p>信号只驱动一个门。 </p>
+<p>​    ② 为了降低功率损耗，译码器的输出端常常是反码输出，即输出低电位</p>
+<p>有效。 </p>
+<p>​    ③ 为了便于扩大功能，增加了一些功能端，如使能端等。 </p>
+<p>译码器的应用：译码器除了用来驱动各种显示器件外，还可实现存储系统 和其它数字系统的地址译码、组成脉冲分配器、程序计数器、代码转换和</p>
+<p>​     由变量译码器可知，它的输出端就表示一项最小项（集成电路译码器</p>
+<p>7</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>输出端就表示一项最小项的“非”），而逻辑函数可以用最小项表示，利用这个特点，可以实现组合逻辑电路的设计，而不需要经过化简过程。 </p>
+<p>数据选择器及其应用 </p>
+<p>数字比较器（集成数字比较器）（了解） </p>
+<p>组合逻辑电路中的竞争与冒险 竞争冒险的概念及其产生原理 </p>
+<p>由于各路径逻辑门电路传输时间的不同，造成输入端的信号到达终点的时间有先有后，这种现象称为竞争。 由于竞争的存在，在某些特定情况下，会令输出出现短暂的“误动作”——出现不应出现的正脉冲（偏“0”冒险）或负脉冲（偏“1”冒险）。 消除竞争冒险的方法（了解） </p>
+<p> （1）修改逻辑设计（增加多余项）。  （2）利用滤波电路。  （3）增加选通电路。            </p>
+<p>8</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第五章 触 发 器 </p>
+<p>时序逻辑电路的特点：在任何时刻电路产生的稳定输出信号不仅与该时刻电路的输入信号有关，而且还与电路过去的状态有关。由于它与过去的状态有关，所以电路中必须具有“记忆”功能的器件（触发器），记住电路过去的状态，并与输入信号共同决定电路的现时输出。 </p>
+<p>时序电路分类： </p>
+<p>同步时序电路和异步时序电路。（有无统一的CP脉冲） </p>
+<p>米里(Mealy)型和莫尔(Moore)型。（按输出变量的依从关系来分） 米里型电路的输出是输入变量及现态的函数； 莫尔型电路的输出只与电路状态的现态有关 </p>
+<p>触发器的基本性质是： </p>
+<p>(1)具有两个稳定的状态，分别表示二进制数码的“1”和“0” </p>
+<p>(2)由一个稳态到另一稳态，必须有外界信号的触发。否则它将长期稳定在某</p>
+<p>个状态，即长期保持所记忆的信息； </p>
+<p>(3)具有两个输出端：原码输出 Q和反码输出 Q。一般用 Q 的状态表明触</p>
+<p>发器的状态。如外界信号使 Q=Q， 则破坏了触发器的状态，这种情况在实际运用中是不允许出现的。</p>
+<p>触发器（Flip Flop）台湾译作正反器， </p>
+<p>学名“双稳态多谐振荡器”（Bistable Multivibrator）。 </p>
+<p>基本RS触发器 </p>
+<p>时钟控制的RS触发器 </p>
+<p>D触发器 特征方程：Qn+1=D </p>
+<p>T触发器 </p>
+<p>’n1nn</p>
+<p>JK触发器 特征方程： （JK触发器可构造T触发器、D触发器） QJQKQ </p>
+<p>集成触发器 ——为解决触发器的空翻和振荡现象而设计的边沿触发的实用器件。 常采用的电路结构：维持阻塞触发器、边沿触发器、主从触发器 </p>
+<p>触发器的直接置位（Sd  Pr）端 和 直接复位（Rd Clear）端 </p>
+<p>触发器的逻辑符号（具有多输入控制端的集成触发器——各信号相“与”） </p>
+<p>9</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>第六章 时序逻辑电路 </p>
+<p>时序电路的分析步骤 （同步、异步）  1.看清电路 </p>
+<p>2.写出方程(激励方程、次态方程、输出方程)3.列出状态迁移（真值）表 4.作出状态转换图 5.功能描述 </p>
+<p>同步时序电路的设计步骤（不同问题步骤不一定相同） 1.根据设计要求建立原始状态图（或已有指定）</p>
+<p>2.状态化简*、状态分配（要考虑能否自启动，必要时修改设计） 3.根据状态转换图 确立状态迁移（真值）表 5.选择（或按要求使用指定的）触发器类型 6.根据状态真值表确定 激励方程和 输出方程 </p>
+<p>7.有利用无关项化简时有时要检查自启动情况必要时修改设计* 8.画出逻辑图 </p>
+<p>*注：有时无此步骤 </p>
+<p>计 数 器 计数器的分类</p>
+<p>1.按进位模数来分  (1)模2 计数器：进位模数为 2n 的计数器均称为模2计数器。其中n为触</p>
+<p>发器级数。 </p>
+<p>(2)非模2计数器：进位模数非2n,用得较多的如十进制计数器。 2. </p>
+<p>(1)同步计数器：计数脉冲引至所有触发器的CP端，使应翻转的触发器同</p>
+<p>(2)异步计数器：计数脉冲并不引至所有触发器的CP端，有的触发器的CP</p>
+<p>端，是其它触发器的输出，因此触发器不是同时动作。 3.按计数增减趋势分 </p>
+<p>(1)递增计数器：每来一个计数脉冲，触发器组成的状态就按二进制代码</p>
+<p>(2)递减计数器：每来一个计数脉冲，触发器组成的状态，按二进制代码</p>
+<p>规律减少。有时又称为减法计数器。 </p>
+<p>(3)双向计数器：又称可逆计数器，计数规律可按递增规律，也可按递减</p>
+<p>规律，由控制端决定。 </p>
+<p>10</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>4.按电路集成度分 </p>
+<p>(1)小规模集成计数器：由若干个集成触发器和门电路， 经外部连线，构</p>
+<p>成具有计数功能的逻辑电路。 </p>
+<p>(2)中规模集成计数器：一般用4个集成触发器和若干个门电路，经内部</p>
+<p>连接集成在一块硅片上，它是计数功能比较完善，并能进行功能扩展的逻辑部件。由于计数器是时序电路，故它的分析与设计与时序电路的分析、 设计完全一样。</p>
+<p>2n进制计数器组成规律 J0K01 </p>
+<p>n</p>
+<p>JKQ110 </p>
+<p>nn J2K2Q0Q1</p>
+<p> nnnn</p>
+<p>J3K3Q0Q1Q2J2Q2</p>
+<p>nnnnn</p>
+<p>J4K4Q0Q1Q2Q3J3Q3 </p>
+<p> ： ：</p>
+<p>​    </p>
+<p>“1”</p>
+<p>1JC11K</p>
+<p>Q0</p>
+<p>nnnnn</p>
+<p>JmKmQ0Q1QmQJQ2m1m1m1 </p>
+<p>CP</p>
+<p>1J</p>
+<p>C11K</p>
+<p>Q1</p>
+<p>&amp;</p>
+<p>1JC11K</p>
+<p>Q2</p>
+<p>&amp;</p>
+<p>1JC11K</p>
+<p>Q3</p>
+<p>同步四位二进制加法计数器 </p>
+<p>2n进制同步减法计数器 </p>
+<p> J0K01 </p>
+<hr>
+<p> J1K1Q0n _____</p>
+<p>J2K2Q0nQ1n </p>
+<p><strong><strong>____</strong></strong> nnn</p>
+<p>J3K3Q0Q1Q2J2Q2n</p>
+<p><strong><strong>__</strong></strong>nnnn J4K4Q0Q1Q2Q3J3Q3n</p>
+<hr>
+<p>nnnnn</p>
+<p> JmKmQ0Q1Qm2Qm1Jm1Qm1</p>
+<p>11</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>2n进制异步加法计数器    </p>
+<p>三位二进制异步加法计数器的逻辑图和波形图(下降沿)      </p>
+<p>三位二进制异步加法计数器的逻辑图和波形图(上升沿)  </p>
+<p>2n进制异步减法计数器  CP “1”“1”Q0“1” Q0</p>
+<p>Q0Q1Q2</p>
+<p> 1J1J1J</p>
+<p>CP2CP0CP1</p>
+<p>CPC1C1C1 Q1</p>
+<p>Q0Q1Q2</p>
+<p>1K1K1KQ1 </p>
+<p>(a)</p>
+<p> Q2</p>
+<p>(b) </p>
+<p>三位二进制异步减法计数器的逻辑图和波形图(下降沿)  </p>
+<p>12</p>
+<p>CP1</p>
+<p>CP2</p>
+<p>数字电子技术（江晓安）第三版 </p>
+<p>​    </p>
+<p>三位二进制异步减法计数器的逻辑图和波形图(上升沿)</p>
+<p>集成计数器功能分析及其应用 </p>
+<p>异步清零端。当清零控制端Cr=0，立即清零，与CP无关。 </p>
+<p> 同步预置端。当预置端 LD = 0,而Cr=1 时，在置数输入端预置某个数据， </p>
+<p>在CP上升沿的时刻，才将数据送入计数器。必须在CP作用下</p>
+<p>寄存器与移位寄存器 </p>
+<p>寄存器  </p>
+<p> 锁存器是由电平触发器完成的，N个电平触发器的时钟端连在一起，</p>
+<p>在CP作用下能接受 N位二进制信息。 Q1Q2Q3Q4 D1D2D3D4</p>
+<p>1D1D1D1D</p>
+<p> F1F2F3F4</p>
+<p>Q1Q2Q3Q4</p>
+<p> C1C1C1C1 CP</p>
+<p>四位锁存器的逻辑图 </p>
+<p>基本寄存器 </p>
+<p>移位寄存器及应用（串行/并行转换、组成移位型计数器） </p>
+<p>两种常用的移位型计数器：即环型计数器和扭环型计数器（约翰逊计数器） </p>
+<p>13</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1048,1250 +3240,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%80%BB%E5%A4%8D%E4%B9%A0%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%80%BB%E5%A4%8D%E4%B9%A0%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/" class="post-title-link" itemprop="url">汇编语言总复习（部分）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-02 23:23:56 / 修改时间：23:25:29" itemprop="dateCreated datePublished" datetime="2021-01-02T23:23:56+08:00">2021-01-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>9.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>《汇编语言程序设计》总复习</strong></p>
-<p><strong>第一：五星复习内容如下：</strong></p>
-<p><strong>一、重点例题1:计算 345AH-3348CH=?</strong></p>
-<p><strong>各状态标志位值？DEBUG显示值？**</strong>教材P213至P219 图11.1**</p>
-<p><strong>“CPAZSTIDO  0 2 4 6 7 8 9 10 11”**</strong>这表示什么意思？**</p>
-<p><strong>二、循环程序分析题</strong></p>
-<p><strong>类似题计算：S=1+2+3+…+100  (原课堂讲过6个)</strong></p>
-<p> <strong>四、子程序设计（段内、段间、模块间,返回RET），中断程序设计格式与调用格式（模块间，返回IRET），编写用户中断程序的步骤和上机操作步骤？</strong></p>
-<p><strong>1**</strong>、子程序创建格式：**</p>
-<p>  <strong>子程序名   proc  far/near</strong></p>
-<p>​    <strong>……**</strong>（代码部分）**</p>
-<p>   <strong>Ret</strong></p>
-<p>  <strong>子程序名  endp</strong></p>
-<p>  <strong>End</strong>  <strong>子程序名</strong></p>
-<p> <strong>2**</strong>、子程序调用格式**</p>
-<p><strong>（1）段内调用：CALL [NEAR PTR] 子程序名</strong>  </p>
-<p><strong>(2)**</strong>段间调用：CALL FAR PTR 子程序名**</p>
-<p><strong>例1：子程序段间调用举例，主程序显示“OK！”，主程序通过段间调用子程序SUB1,子程序SUB1显示“OK！”</strong></p>
-<p>data segment     </p>
-<p>a db ‘OK!$’</p>
-<p>b db ‘Heelo$’</p>
-<p>data ends</p>
-<p>code1 segment</p>
-<p>assume cs:code1,ds:data</p>
-<p>   start:mov ax,data</p>
-<p>​     mov ds,ax</p>
-<p>​     lea dx,a</p>
-<p>​     mov ah,9</p>
-<p>​     int 21h</p>
-<p>​     mov dl,0dh</p>
-<p>​     mov ah,2</p>
-<p>​     int 21h</p>
-<p>​     mov dl,0ah</p>
-<p>​     mov ah,2</p>
-<p>​     int 21h</p>
-<p>​     <strong>call far ptr sub1</strong></p>
-<p>​     mov ah,4ch</p>
-<p>​     int 21h</p>
-<p>​     code1 ends</p>
-<p>​     code2 segment</p>
-<p>​     assume cs:code2</p>
-<p>​      <strong>sub1 proc far</strong>  </p>
-<p>​     <strong>lea dx,b</strong></p>
-<p>​     <strong>mov ah,9</strong></p>
-<p>​     <strong>int 21h</strong></p>
-<p>​     <strong>ret</strong></p>
-<p>​     <strong>sub1 endp</strong></p>
-<p>​     code2 ends</p>
-<p>​     end start</p>
-<p>​       </p>
-<p><strong>例2：子程序段内调用举例，主程序显示“OK！”，主程序通过段内调用子程序SUB1,子程序SUB1显示“OK！”</strong></p>
-<p>data segment     </p>
-<p>a db ‘OK!$’</p>
-<p>b db ‘Heelo$’</p>
-<p>data ends</p>
-<p>code segment</p>
-<p>assume cs:code,ds:data</p>
-<p>   start:mov ax,data</p>
-<p>​     mov ds,ax</p>
-<p>​     lea dx,a</p>
-<p>​     mov ah,9</p>
-<p>​     int 21h</p>
-<p>​     mov dl,0dh</p>
-<p>​     mov ah,2</p>
-<p>​     int 21h</p>
-<p>​     mov dl,0ah</p>
-<p>​     mov ah,2</p>
-<p>​     int 21h</p>
-<p>​     <strong>call near  ptr sub1</strong></p>
-<p>​     mov ah,4ch</p>
-<p>​     int 21h</p>
-<p>​     <strong>sub1 proc far</strong>  </p>
-<p>​     <strong>lea dx,b</strong></p>
-<p>​     <strong>mov ah,9</strong></p>
-<p>​     <strong>int 21h</strong></p>
-<p>​     <strong>ret</strong></p>
-<p>​     <strong>sub1 endp</strong></p>
-<p>​     code ends</p>
-<p>​     end start</p>
-<p><strong>五、汇编MASM5.0系统组成？上机步骤？汇编上机产生的文件（.ASM, .OBJ, LST, .EXE, .CRF, .REF, .MAP）的含义？如何产生的？（2020.12.16日，周三下午详细讲解了）</strong></p>
-<p><strong>六．DOS中断调用（INT 21H 的功能号：1，2，5，9，10，4CH）</strong></p>
-<p><strong>1**</strong>、DOS功能调用的步骤**</p>
-<p><strong>第一步：置入口参数</strong></p>
-<p><strong>第二步：功能号送AH</strong></p>
-<p><strong>第三步：执行INT 21H</strong></p>
-<p><strong>2**</strong>、键盘输入一个字符的ASCII值保存到AL中。**</p>
-<p><strong>MOV AH, 1</strong></p>
-<p><strong>INT 21H</strong></p>
-<p><strong>3.**</strong>屏幕显示一个字符**</p>
-<p><strong>MOV DL,</strong> <strong>字符的ASCII值</strong></p>
-<p><strong>MOV AH, 2</strong></p>
-<p><strong>INT 21H</strong></p>
-<p><strong>4.</strong> <strong>打印机输出一个字符</strong></p>
-<p><strong>MOV DL,</strong> <strong>字符的ASCII值</strong></p>
-<p><strong>MOV AH, 5</strong></p>
-<p><strong>INT 21H</strong></p>
-<p><strong>5**</strong>．屏幕显示一串字符**</p>
-<p>  <strong>LEA DX,</strong> <strong>存放字符串变量名首址</strong></p>
-<p>  <strong>MOV AH, 9</strong></p>
-<p>  <strong>INT 21H</strong></p>
-<p><strong>6.**</strong>键盘输入一串字符保存在变量缓冲区中。**</p>
-<p> <strong>LEA DX,</strong> <strong>字符串变量名</strong></p>
-<p> <strong>MOV AH, 10</strong></p>
-<p> <strong>INT 21H</strong></p>
-<p><strong>7.**</strong>程序结束**</p>
-<p> <strong>MOV AH, 4CH</strong></p>
-<p> <strong>INT 21H</strong></p>
-<p><strong>七、键盘输入整数的程序段从键盘接收十进制数存入BX程序</strong></p>
-<p><strong>思想:键盘与CPU是通过ASCII字符传送,即要把输入的数字字符转换成数字,下面程序段的算法思想是:( 例输入数字字符：374 输入其它非数字字符退出)</strong></p>
-<p><strong>（（（0×10)+3) ×10+7) ×10)+4 ，即将字符’3’,’7’,’4’ 转数值：374</strong></p>
-<p><strong>程序段：</strong></p>
-<p>   <strong>MOV BX, 0</strong></p>
-<p> <strong>NEW:MOV AH, 1</strong></p>
-<p>   <strong>INT  21H</strong></p>
-<p>   <strong>SUB AL,30H</strong></p>
-<p>   <strong>JL EXIT</strong></p>
-<p>   <strong>CMP AL,9</strong></p>
-<p>   <strong>JG EXIT</strong></p>
-<p><strong>CBW</strong></p>
-<p><strong>XCHG AX, BX</strong></p>
-<p><strong>MOV CX, 10</strong></p>
-<p><strong>MUL CX</strong></p>
-<p><strong>XCHG BX,AX</strong></p>
-<p><strong>ADD BX**</strong>，AX**</p>
-<p><strong>JMP NEW</strong></p>
-<p><strong>EXIT:  ………</strong></p>
-<p>例1：编写一个程序，计算S=1+2+3+…+100.主程序段调用子程序outp输出结果。</p>
-<p>data segment</p>
-<p>  s dw 0</p>
-<p>data ends</p>
-<p>  code segment</p>
-<p>  assume cs:code,ds:data</p>
-<p>  start:mov ax,data</p>
-<p>​     mov ds,ax</p>
-<p>​     mov ax,1</p>
-<p>​     mov s,0</p>
-<p>​     mov cx,100</p>
-<p>​    <strong><em>aa1:add s,ax\</em></strong>  <strong><em>；完成S=1+2+3+…+100\</em></strong></p>
-<p>​    <strong><em>inc ax\</em></strong></p>
-<p>​    <strong><em>loop aa1\</em></strong></p>
-<p>​    <strong>call outp</strong>  <strong>；段内调用子程序outp</strong></p>
-<p>​    mov ah,4ch</p>
-<p>​    int 21h</p>
-<p>​    <strong>outp proc</strong>  <strong>；子程序outp 显示结果S</strong></p>
-<p>​    <strong>mov cx,0</strong> </p>
-<p>​    <strong>mov ax,s</strong></p>
-<p><strong>aa2:inc cx</strong></p>
-<p>​     <strong>mov dx,0</strong></p>
-<p>​     <strong>mov bx,10</strong></p>
-<p>​    <strong>div bx</strong></p>
-<p>​    <strong>push dx</strong></p>
-<p>​    <strong>cmp ax,0</strong></p>
-<p>​    <strong>jnz aa2</strong></p>
-<p><strong>aa3:pop dx</strong></p>
-<p>​    <strong>or dl,30h</strong></p>
-<p>​    <strong>mov ah,2</strong></p>
-<p>​    <strong>int 21h</strong></p>
-<p>​    <strong>loop aa3</strong></p>
-<p>​    <strong>ret</strong></p>
-<p>​    <strong>outp endp</strong></p>
-<p>code ends</p>
-<p>end start</p>
-<p><strong>思考：请同学们将该程序改写成段间调用</strong></p>
-<p><strong>第二：系统复习内容如下：</strong></p>
-<p><strong>第一部分</strong> <strong>基础知识</strong></p>
-<p>\1.  各种进制及其转换</p>
-<p>\2.  进制运算</p>
-<p>例：3A2BH+987CH=?D2A7</p>
-<p>10110011B-101110011B=?1000100110</p>
-<p>\3.  计算机中数的和字符的表示</p>
-<p>（1） 原码、反码、补码</p>
-<p>例： X= -3 ，在16位机上，求X的原码、反码、补码=?FFFDH</p>
-<p>原1000 0000 0000 0011</p>
-<p>反 1111 1111 1111 1100</p>
-<p>补 1111 1111 1111 1101</p>
-<p>真值 x = -133d = -1000 0101b , b是二进制数后缀, d是十进制数后缀，</p>
-<p>[-x]原 =1000 0000 1000 0101b,</p>
-<p>以上原码最高位dao是符号位, 1表示负数 , 符号位与数值位之间的空位补0，补齐16位</p>
-<p>[-x]反 =1111 1111 0111 1010b ， 将原码除符号位之外的数值位取反得反码</p>
-<p>[-x]补 =1111 1111 0111 1011b ，将反码末位加1得补码</p>
-<p>（2） ASCII码的概念</p>
-<p>记住下列字符的ASCII值（用十六进制表示）</p>
-<p><strong>‘**</strong>a’<strong>**，</strong> <strong>‘**</strong>A<strong>**’，</strong> <strong>数字‘**</strong>0<strong><strong>’，回车符</strong></strong>CR<strong><strong>，换行符</strong></strong>LF<strong><strong>，空格符</strong></strong>SPACE<strong>**，</strong></p>
-<p><strong>（**</strong>61H<strong><strong>，</strong></strong>41H<strong><strong>，</strong></strong>30H<strong><strong>，</strong></strong>0DH, 0AH<strong><strong>，</strong></strong>20H<strong>**）</strong></p>
-<p>ASCII码的奇、偶校检码概念</p>
-<p>例：字符‘A’的奇校验ASCII值用十六进制表示为：<strong>C1H</strong></p>
-<p>重要知识点： 数字+30H=数字字符的ASCII值</p>
-<p>​       大写字符ASCII值+20H=小写字符的ASCII值</p>
-<p>​       小写字符ASCII值-20H=大写字符的ASCII值</p>
-<p>十六进制数字A<del>F + 37H= ‘A’</del>‘F’的ASCII值。    </p>
-<p>（3）BCD码知识：</p>
-<p>非压缩BCD码、压缩BCD码</p>
-<p>例：十进制数53非压缩BCD码表示为：00000101 00000011</p>
-<p>​         压缩BCD码表示为：01010011</p>
-<p>（4）、在汇编语言中程序设计中数字所带尾符</p>
-<p>H、D（或缺省）、O、B ；例：35H， 35， 1011B 35O</p>
-<p>（5）、几种逻辑运算</p>
-<p>AND、OR、NOT、XOR</p>
-<p><strong>第二部分</strong>   <strong>80X86**</strong>计算机组织**</p>
-<p>1、80X86微处理器的发展  </p>
-<p>2、8086CPU的寄存器组（共14个16位的寄存器）</p>
-<p>（1）8个通用寄存器：AX、BX、CX、DX、SI、DI、BP、SP</p>
-<p>其中AX：AH AL ； BX：BH BL</p>
-<p>  CX：CH CL  ； DX：DH DL</p>
-<p> 注：弄清16位寄存器与8位寄存器的关系。</p>
-<p>（2）4个段寄存器：CS、DS、ES、SS</p>
-<p>（3）2个控制寄存器：IP、FLAGS</p>
-<p>CPU 主要三部分：ALU、控制逻辑、工作寄存器组 </p>
-<p>（4）8086的FLAGS是一个16位的寄存器，有9个标志位，其中6个状态标志位（CF、PF、AF、ZF、SF、OF），3个控制标志位（TF、IF、DF） 标志位在FLAGS的分布（0 2 4 6 8 9 10 11），）P213 图11.1。</p>
-<p><strong>注：在汇编指令中，可放在中括号**</strong>[ ]<strong><strong>的寄存器有</strong></strong>4<strong><strong>个（</strong></strong>SI<strong><strong>，</strong></strong>DI<strong><strong>，</strong></strong>BX<strong><strong>，</strong></strong>BP<strong>**）</strong></p>
-<p><strong>重点例题：计算**</strong>9A3BH-3CD5H=?**</p>
-<p><strong>并指出**</strong>6<strong><strong>个状态标志位的值及</strong></strong>DEBUG<strong>**显示值</strong></p>
-<p><strong>CF=   0   DEBUG**</strong>显示：<strong>**NC</strong></p>
-<p><strong>PF=   1   DEBUG**</strong>显示：<strong>**PE</strong></p>
-<p><strong>AF=    0  DEBUG**</strong>显示：<strong>**NA</strong></p>
-<p><strong>ZF=    0  DEBUG**</strong>显示：<strong>**NZ</strong></p>
-<p><strong>SF=     0  DEBUG**</strong>显示：<strong>**PL</strong></p>
-<p><strong>OF=     1 DEBUG**</strong>显示：<strong>**OV</strong></p>
-<p>（5）8086CPU引脚数（40）、数据线（16）、地址线（20）</p>
-<p>物理地址、逻辑地址及其相互关系，逻辑地址=段地址：偏移地址</p>
-<p>物理地址=段地址×10H+偏移地址</p>
-<p>段的起始地址的规定，小段的首地址：能被16整除的20位物理地址</p>
-<p><strong>第三部分</strong> <strong>80X86**</strong>的指令系统及寻址方式**</p>
-<p>1、指令格式</p>
-<p>操作码 操作数1, 操作数2，……，操作数n</p>
-<p><strong><em>2***</em></strong>、*<strong><strong><em>8086*</em></strong></strong>寻址方式*** <strong><em>（略）\</em></strong></p>
-<p><strong><em>立即寻址、寄存器寻址、直接寻址、寄存器间接寻址、寄存器相对寻址、基址变址寻址、相对基址变址寻址\</em></strong> <strong><em>（共***</em></strong>7*<strong><em>**种）\</em></strong></p>
-<p><strong><em>重点例题：指出下列指令源操作数与目标操作的寻址方式\</em></strong></p>
-<p><strong><em>（1）\</em></strong> <strong><em>MOV AX***</em></strong>，*<strong><em>**[2002H]\</em></strong></p>
-<p><strong><em>（2）\</em></strong> <strong><em>ADD  AX***</em></strong>，*<strong><em>**A[BX+SI]\</em></strong></p>
-<p><strong><em>（3）\</em></strong> <strong><em>MOV BX***</em></strong>，*<strong><em>**2002H\</em></strong></p>
-<p><strong><em>（4）\</em></strong> <strong><em>MOV [BX]***</em></strong>，*<strong><em>**AX\</em></strong></p>
-<p><strong><em>（5）\</em></strong> <strong><em>以第***</em></strong>2*<strong><strong><em>小题为例解答，*</em></strong></strong>ADD  AX*<strong><strong><em>，*</em></strong></strong>A[BX+SI]***</p>
-<p><strong><em>答：源操作数为***</em></strong>A[BX+SI]*<strong><strong><em>，属于相对基址变址寻址；目标操作数为*</em></strong></strong>AX*<strong><em>**，属于寄存器寻址。\</em></strong></p>
-<p><strong><em>3***</em></strong>、指令中操作数的有效地址计算，***</p>
-<p><strong><em>注：指令中存储器操作数默认的段寄存器为***</em></strong>DS***</p>
-<p>4、操作数种类：立即数、寄存器操作数、<strong>存储器操作数（即带**</strong>[ ]<strong>**的操作数）</strong>，操作数的逻辑地址表示法，物理地址表示法。</p>
-<p>例1：8086某存储单元的逻辑地址为1234H :0005H,该单元的物理地址为：12345H。</p>
-<p>例2．某CPU的地址总线宽度为n位，该CPU的寻址能力为2n字节。</p>
-<p><strong>5**</strong>、<strong><strong>8086</strong></strong>的指令系统（本课程重点）**</p>
-<p>（1）数据传送指令</p>
-<p>助记符：MOV、PUSH、POP、PUSHF、POPF、XCHG、LAHF、SAHF、LEA、LDS、LES 等。</p>
-<p>注意指令的格式以及操作数类型的要求</p>
-<p>考试典型题：</p>
-<p>1、执行下列指令序后，CF与PF的值是（ B ）</p>
-<p>​    MOV AX，34BDH</p>
-<p>​    PUSH AX</p>
-<p>​    POPF</p>
-<p>（A）0，0  （B）0，1  （C）1，0   （D）1，1</p>
-<p>0011 0100 1011 1100</p>
-<p>2、（略）累加器专用指令（输入输出指令、端口输入输出指令、长格式和短格式等提法）</p>
-<p>IN、 OUT</p>
-<p>考试典型题：</p>
-<p>1、     用两种方法将字节数据43H从61H端口输出</p>
-<p>方法一：（直接输出或称长格式） MOV AL，43H</p>
-<p>​               OUT 61H，AL</p>
-<p>方法二：（间接输出或称短格式） MOV AL，43H</p>
-<p>​               MOV DX，61H</p>
-<p>​               OUT DX，AL</p>
-<p>注：换码指令 XLAT</p>
-<p>功能： （AL）←((BX)+(AL))</p>
-<p>3、地址传送指令<br> LEA、LDS、LES</p>
-<p>注意地址、地址单元内容、字节、字、双字的概念。</p>
-<p><strong>重点考试题型：</strong>注意根据数据段，画出数据段的数据存储分配示意图以及填写程序段指令旁边寄存器的值。</p>
-<p>4、标志寄存器传送指令  P57</p>
-<p>LAHF、SAHF、PUSHF、POPF</p>
-<p><strong>考试题型：</strong>1、执行下列指令序后，标志寄存器的CF、SF的值是（ B ）</p>
-<p>​      MOV AX，3968H</p>
-<p>​      SAHF</p>
-<p>0011 1001 0110 1000</p>
-<p>（A）0，0   （B）0，1  （C）1，0   （D）1，1</p>
-<p>5、类型转换指令 </p>
-<p>CBW、CWD</p>
-<p>CBW 将AL的符号位扩展到AH</p>
-<p>CWD 将AX的符号位扩展到DX</p>
-<p><strong>考试题型：</strong>1、执行下列指令后，寄存器DX的值是（  D  ）</p>
-<p>​       MOV AX，825AH</p>
-<p>​       CWD</p>
-<p>DX1111 1111 1111 1111（ FFFFH ）AX 1000 0010 0101 1010</p>
-<p>（A）0000H  （B）00FFH  （C）FF00H  （D）FFFFH</p>
-<p>6、算术指令（重点之中的重点内容）</p>
-<p>ADD、ADC、INC、SUB、SBB、DEC、NEG、CMP、TEST、MUL、IMUL、DIV、IDIV、A<strong>AA**</strong>、<strong><strong>AAS</strong></strong>、<strong><strong>DAA</strong></strong>、<strong><strong>DAS</strong></strong>、<strong><strong>AAM</strong></strong>、<strong>**AAD</strong></p>
-<p>考试题型：</p>
-<p>（1）、执行下列指令序列后，寄存器AX的值是（ C ）</p>
-<p>​     MOV AX，0308H</p>
-<p>​     AAD;AH*10+AL-&gt;AX AX=38</p>
-<p>​     MOV BL，9</p>
-<p>​     DIV BL</p>
-<p>38/9 AH=2 AL=4</p>
-<p>（A）0056H   （B）0038H   （C）0204H   （D）0402H</p>
-<p>（2）、执行下列指令序列后，寄存器AX的值是（ C  ）</p>
-<p>​     MOV AL，7</p>
-<p>​     MUL AL</p>
-<p>（A）0049H   （B）0007H   （C）0031H   （D）0707H</p>
-<p>（3）、执行下列指令序列后，寄存器AX的值是（  D ）</p>
-<p>​     MOV AX，0038H AX=56</p>
-<p>​     MOV BL，-9 //BL=256-9=247</p>
-<p>​     IDIV BL</p>
-<p>56/-9 AH=-2 AL=-6 </p>
-<p>（A）0206H   （B）0602H  （C）02FAH  （D）FEFAH</p>
-<p><strong>重点编程题或程序填空题：</strong>(详见BCD码运算实验2程序)</p>
-<p>多位数非压缩BCD码或压缩BCD码的加减法运算程序</p>
-<p>例：计算 3457895+1239877=？（<strong>十分重点</strong>）</p>
-<p>计算 87665-23478=?</p>
-<p>7、逻辑指令（按位运算）</p>
-<p>AND、OR、NOT、XOR、TEST</p>
-<p><strong>重点考试题型：</strong></p>
-<p>（1） 写出4条指令（单条指令）实现对累加器AX清零</p>
-<p>MOV AX, 0</p>
-<p>SUB AX, AX</p>
-<p>XOR AX, AX</p>
-<p>AND  AX, 0</p>
-<p>（2） 实现对AL寄存器的高4位与低4位互换</p>
-<p>MOV  CL, 4</p>
-<p>ROR  AL, CL</p>
-<p>（3） 实现对AL的高4位清零，低4位不变</p>
-<p>AND  AL, 0FH</p>
-<p>8、移位指令</p>
-<p>SHL、SHR、SAL、SAR、ROL、ROR、RCL、RCR</p>
-<p><strong>重点考试题型</strong></p>
-<p>（1） 实现AL的高4位与低4位互换</p>
-<p>（2） 利用移位指令实现对AL的乘2操作、除2操作。</p>
-<p>9、转移类指令</p>
-<p>JXXX 目标处</p>
-<p>（1） 无条件转移指令（段内、段间、直接、间接）</p>
-<p>JMP 标号</p>
-<p>（2） 有条件转移指令</p>
-<p>无符号数比较转移指令：JA/JNBE， JAE/JNB， JE/JZ ， JB/JNAE ，JBE/JNA</p>
-<p>有符号数转移指令：JG/JNLE，JGE/JNL， JE/JZ，JL/JNGE，JLE/JNG</p>
-<p>标志转移指令：JO, JNO, JS, JNS, JP/JPE(PF=1为偶转)，JNP/JPO(PF=0为奇转转)</p>
-<p>10、<strong>(**</strong>略<strong><strong>)</strong></strong>串处理指令**</p>
-<p>MOVS、CMPS、SCAS、LODS、STOS</p>
-<p>串操作指令前缀：REP、REPE/REPZ、REPNE/REPNZ</p>
-<p>重点知识复习：</p>
-<p>串操作指令操作前的准备工作：源串所在段送寄存器DS，源串起始偏移地址送SI；</p>
-<p>目标串所在段送寄存器ES，目标串偏移地址送DI；清方向CLD（保证地址增方向）；重复串操作的次数送寄存器CX。</p>
-<p><strong>考试重点题型（编程题）</strong>：在变量缓冲区A处有一串字符：abcde，现要求传送到内存缓冲区B处，传送完后，并显示B处字符串。</p>
-<p>程序清单：</p>
-<p>​    DATA1 SEGMENT</p>
-<p>​      A DB ‘abcde$’</p>
-<p>​      B DB 6 DUP(‘$’)</p>
-<p>​    DATA1 ENDS</p>
-<p>​    CODE SEGMENT</p>
-<p>​    ASSUME CS:CDE,DS:DATA,ES:DATA</p>
-<p>​    START:MOV AX, DATA ;装填DS、ES的值</p>
-<p>​       MOV DS, AX</p>
-<p>​       MOV ES, AX</p>
-<p>​       MOV CX, 6   ；传送字符数送CX</p>
-<p>​       LEA SI, A   ；源串首址送SI</p>
-<p>​       LEA DI, B   ；目标串首址送DI</p>
-<p>​       CLD      ；清地址方向，正向传送</p>
-<p>​       REP MOVSB  ；重复传送CX次</p>
-<p>​       LEA DX, B  ；显示B处字串</p>
-<p>​       MOV AH, 9</p>
-<p>​       INT 21H</p>
-<p>​       MOV AH, 4CH ；程序结束</p>
-<p>​       INT 21H</p>
-<p>​      CODE ENDS</p>
-<p>​      END START</p>
-<p><strong>习题**</strong>：<strong><strong>编程统计内存变量</strong></strong>A<strong><strong>处字符串中有多少个字符</strong></strong>‘<strong><strong>y’</strong></strong>？**</p>
-<p><strong>提示**</strong>：<strong><strong>利用串操作指令</strong></strong>SCASB<strong>**编程</strong>    </p>
-<p>10、控制转移类指令 P85~P95</p>
-<p>JMP  标号、形如JXX 标号 指令</p>
-<p>（1） 无符号数比较</p>
-<p>（2） 有符号数比较</p>
-<p>（3） 根据标志位值转移指令</p>
-<p>11、循环指令</p>
-<p>LOOP、LOOPZ/LOOPE 、 LOOPNE/LOOPNZ</p>
-<p>考试题型：（1）、编程计算S=1+2+3+…+100</p>
-<p>​     （2）、编程计算S=1×2+2×3+…+10×11</p>
-<p>12、处理机指令</p>
-<p>CLC、STC、CMC、CLI、STI、CLD、STD、NOP、HLT</p>
-<p>ESC 等</p>
-<p>13、子程序设计</p>
-<p>（1）子程序调用指令：CALL 子程序名</p>
-<p>（2）子程序返回主程序指令：RET</p>
-<p>（3）子程序的定义与调用格式，详见《实验3》、《实验4》</p>
-<p>必须搞清调用的书写格式：段内调用（同一个程序且在同一个段之内），段间调用（同一个程序文件中）、段间调用（不同程序文件间）</p>
-<p>14、中断调用</p>
-<p>（1）DOS中断调用格式或步骤</p>
-<p>第一步：置入口参数</p>
-<p>第二步：功能号送AH</p>
-<p>第三步：执行 INT 21H</p>
-<p>(2)必须掌握的DOS中断调用</p>
-<p>功能号：1、2、5、9、10、4CH</p>
-<p>（3）中断处理程序的入口地址，存放在内存最低端地址：即00000H~003FFH处，共1K字节，每个向量号占4字节，低字存放中断处理程序的IP值，高字存放中断处理程序的CS值。中断向量表可管理256个中断处理程序的入口地址，CS：IP值。中断向量号乘4得到该中断向量的IP与CS在中断向量表的位置。</p>
-<p>考试典型题：计算INT 13H 在中断向量表的位置，即向量号13H的IP存放的在中断向量表中的起始地址，向量号13H的CS存放在中断向量表中起始地址。</p>
-<p>（4） 中断处理程序的调用与返回</p>
-<p>调用：INT n  ; 中断返回 IRET</p>
-<p>15、作业P107~P116</p>
-<p><strong>第四部分</strong> <strong>汇编语言程序格式</strong></p>
-<p>1、伪操作</p>
-<p>（1）段定义的格式 </p>
-<p>段名  SEGMENT [定位类型] [组合类型] [使用类型][类别]</p>
-<p> ……</p>
-<p>段名  ENDS</p>
-<p><strong>定位类型**</strong>:** PARA (默认)，被16整除，段地址形如XXX0H;</p>
-<p>​     BYTE</p>
-<p>​     WORD</p>
-<p>​     PAGE 被256整除，段地址形如XX00H</p>
-<p><strong>组合类型</strong>：说明程序连接时段的合并方法，PRIVATE 私有段（默认），在连接时不与其它模块的同名段合并。PUBLIC 公有段，连接时，不同模块同名段连续接形成一个段。COMMON 连接时，不同模块的同名段重叠形成一个段。AT &lt;表达式&gt; 指定段地址值（但不能指定代码段）。MEMORY 与PUBLIC 同义。<strong>STACK:</strong>把不同模块中的同名段组合而形成一个堆栈段。</p>
-<p><strong>使用类型：</strong>只适用于386机型，USE16（默认） 使用16位寻址方式；USE32 使用32位寻址方式。</p>
-<p><strong>类别（**</strong>’CLASS’<strong><strong>）</strong></strong>:<strong>**在引号给出连接时组成段组的类型名，段不合并，但在连接后形成的装入模块中，可以把它们的位置靠在一起。</strong></p>
-<p><strong>例：定义一个**</strong>200<strong><strong>字节的堆栈段，段名</strong></strong>SABC<strong>**。</strong></p>
-<p>  <strong>SABC SEGMENT  STACK</strong></p>
-<p><strong>DW  100 DUP(?)</strong></p>
-<p>  <strong>SABC  ENDS</strong></p>
-<p>（2）数据定义伪指令：DB、DW、DD  </p>
-<p>数值返回操作符  （略）</p>
-<p>TYPE、SIZE、LENGTH、OFFSET、SEG</p>
-<p>2、汇编语言上机过程</p>
-<p>（1）汇编MASM5.0系统文件组成</p>
-<p>MASM.EXE  LINK.EXE   LIB.EXE  CREF.EXE</p>
-<p>EDIT.COM  DEBUG.COM 这些文件功能是什么？</p>
-<p>LIB.EXE 库管理程序，用于建立和管理汇编语言子程序库（.LIB 文件），库文件（.LIB）供连接生成.EXE文件时作为公用程序库调用。</p>
-<p>DEBUG.COM 调试程序，是调试汇编语言的有力工具，共提供了19条命令。（A、C、D、E、T、F、G、H、I、L、M、N、O、P、Q、R、S、T、U、W）</p>
-<p>（2） 汇编上机时可产生哪些文件？</p>
-<p>.ASM  .OBJ  .LST  .CRF .REF .MAP ,EXE</p>
-<p>这些文件是如何产生的？哪些是编辑产生的？哪些是汇编产生的？哪些是边接产生的？ 这些文件的是干什么的？</p>
-<p>.ASM文件：汇编语言源程序文件，用文本编辑工具编辑产生的。</p>
-<p>.OBJ文件：汇编生成的目标文件，它是通过汇编程序MASM.EXE对汇编语言源程序（.asm文件）进行汇编时生成的。</p>
-<p>.LST文件：列表文件，此文件是对汇编语言源程序进行汇编（运行MASM.EXE)时产生的(是汇编时输出文件的可选项），.LST文件包含源程序及注释、地址和目标码（即汇编后的目标程序），它是一种ASCII文件，可用文本编辑工具打开查阅。</p>
-<p>.CRF文件：交叉索引文件，在对源程序进行汇编时（运行MASM.EXE)产生的（是汇编时输出文件的可选项）。它是用来了解源程序中每个符号是在哪里定义的，哪些指令用到了这个符号，给出该指令的行号。注：要查阅.CRF文件内容，必须通过运行交叉索引程序（CREF.EXE）对交叉索引文件（.CRF）生成交叉索引列表文件（.REF)，再用文本编辑工具打开.REF文件查阅。注：交叉索引文件（.CRF）对较大的程序很有用，可以用于帮助查错。</p>
-<p>.REF 文件：交叉索引列表文件，它是运行交叉索引程序（CREF.EXE）产生的一个文件(是交叉索引程序运行的输出项)，具体是针对汇编生成的交叉索相文件（.CRF），然后再运行（CREF.EXE）生成交叉索引列表文件（.REF）。</p>
-<p>.MAP 文件：列表映象文件，它是运行连接程序LINK.EXE时产生的，即对汇编生成的目标文件.OBJ再连接生成可执行文件时生成的（是连接时输出文件的可选项）,。MAP文件提供了各段的名字、起始地址和长度以及程序入口地址。</p>
-<p>.EXE文件：可执行文件，连接生成的。具体运行连接程序LINK.EXE，针对汇编生成的目标文件（.OBJ），再连接生成（.EXE）可执行文件，它可在操作系统环境中双击鼠标或作为运行命令（或在提示符下，输入：文件名 回车）直接运行。</p>
-<p>（3） 汇编操作过程</p>
-<p>编辑、汇编、连接、运行（含调试运行）</p>
-<p>3、DEBUG上机过程及DEBUG命令</p>
-<p>（1）如何启动与退出DEBUG？</p>
-<p>（2）必须掌握的DEBUG命令</p>
-<p>A、G、T、D、E、Q、N、L、W、U 等</p>
-<p>第五部分  补充复习内容</p>
-<p>1、     宏的定义</p>
-<p>宏指令名 MACRO [参数表]</p>
-<p>  指令序列</p>
-<p>ENDM</p>
-<p>2、     宏的调用</p>
-<p>  宏指令名 [实在参数]</p>
-<p>3、     堆栈的定义</p>
-<p>例：定义一个具有100个字节空间的堆栈</p>
-<p>STACK  SEGMENT   <strong>STACK</strong></p>
-<p>​     DW 50 DUP（？）</p>
-<p>SATCK  ENDS</p>
-<p>4、     汇编语言程序的结束方式</p>
-<p>方法一：</p>
-<p>​    MOV AH，4CH</p>
-<p>   INT 21H</p>
-<p>方法二：（利用子程序设计的方法）</p>
-<p>CODE SEGMENT</p>
-<p>​    ASSUME CS：CDOE。DS：DATA</p>
-<p> 子程序名 PROC FAR</p>
-<p>​      PUSH DS</p>
-<p>​      XOR AX，AX</p>
-<p>​      PUSH AX</p>
-<p>​      指令序列</p>
-<p>​      ……</p>
-<p>​      RET</p>
-<p>子程序名 ENDP</p>
-<p>CODE ENDS</p>
-<p>​    END 子程序名</p>
-<p>第5章      重点编程题</p>
-<p>1、键盘输入一串字符，屏幕显示该字符串</p>
-<p>2、将一串字符中的小字字符全部转换成大写字符并输出。</p>
-<p>3、将二进制数：10110011B转换成十进制、八进制和十六进制输出</p>
-<p>（本程序参看做实验中的宏：OUTP）</p>
-<p>4、计算126754+66435=?  912675-22356=？并输出结果</p>
-<p>5、S=1+2+3+…+100 并输出结果</p>
-<p>6、S=1！+2！+3！+…5! 并输出结果</p>
-<p>7、S=12+22+32+…+102 并输出结果</p>
-<p>8、S=1×2+2×3+…+10×11并输出结果</p>
-<p>9、计算S=8！</p>
-<p>10、计算100及其以内奇数和与偶数和。</p>
-<p>​                             </p>
-<p>特别重点题：填写下列程序指令旁边寄存器的值,假定数据段DATA汇编后的段地址为1234H。</p>
-<p>DATA SEGMENT</p>
-<p>A DB 123H ,’123’</p>
-<p>B DW  345H, ‘CD’</p>
-<p>C DD  56789H</p>
-<p>D DW B+3  ;D存放B+3的偏移地址</p>
-<p>E DD C+2  ；E的低字存放C+2的偏移地址，E的高字存放C+2所在段的段地址。</p>
-<p>DATA ENDS</p>
-<p>CODE SEGMENT</p>
-<p>ASSUME CS:CODE,DS:DATA</p>
-<p>START:MOV AX, DATA      ; AX=( 1234H )</p>
-<p>​    MOV DS,  AX</p>
-<p>​    MOV AX, WORD PTR A+2; AX=(3101H)</p>
-<p>​    MOV AX, B+1      ;  AX=(4403H)</p>
-<p>​    MOV AL, BYTE PTR C+3  ;  AL=( 00H)</p>
-<p>​    MOV AX, D+1       ;AX=( 0B00H)</p>
-<p>​    LEA AX, B       ;  AX=(0005H )</p>
-<p>​    LDS AX, C+1     ; AX=( 0567H  ), DS=(0800H )</p>
-<p>​    LES  AX, E     ; AX=(000BH ), ES=(1234H )</p>
-<p>​    MOV AH,4CH</p>
-<p>​    INT 21H</p>
-<p>CODE ENDS</p>
-<p>   END START</p>
-<p><strong>DATA**</strong>段的存储示意图见下表：**</p>
-<p>​       段地址：1234H</p>
-<table>
-<thead>
-<tr>
-<th>存储单元偏移地址</th>
-<th>存储字节单元内容</th>
-<th>变量名</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0000</td>
-<td>23H</td>
-<td>A</td>
-</tr>
-<tr>
-<td>0001</td>
-<td>01H</td>
-<td></td>
-</tr>
-<tr>
-<td>0002</td>
-<td>31H</td>
-<td></td>
-</tr>
-<tr>
-<td>0003</td>
-<td>32H</td>
-<td></td>
-</tr>
-<tr>
-<td>0004</td>
-<td>33H</td>
-<td></td>
-</tr>
-<tr>
-<td>0005</td>
-<td>45H</td>
-<td>B</td>
-</tr>
-<tr>
-<td>0006</td>
-<td>03H</td>
-<td></td>
-</tr>
-<tr>
-<td>0007</td>
-<td>44H（即‘D’）</td>
-<td></td>
-</tr>
-<tr>
-<td>0008</td>
-<td>43H（即‘C’）</td>
-<td></td>
-</tr>
-<tr>
-<td>0009</td>
-<td>89H</td>
-<td>C</td>
-</tr>
-<tr>
-<td>000A</td>
-<td>67H</td>
-<td></td>
-</tr>
-<tr>
-<td>000B</td>
-<td>05H</td>
-<td></td>
-</tr>
-<tr>
-<td>000C</td>
-<td>00H</td>
-<td></td>
-</tr>
-<tr>
-<td>000D</td>
-<td>08H</td>
-<td>D</td>
-</tr>
-<tr>
-<td>000E</td>
-<td>00H</td>
-<td></td>
-</tr>
-<tr>
-<td>000F</td>
-<td>0BH</td>
-<td>E</td>
-</tr>
-<tr>
-<td>0010</td>
-<td>00H</td>
-<td></td>
-</tr>
-<tr>
-<td>0011</td>
-<td>34H</td>
-<td></td>
-</tr>
-<tr>
-<td>0012</td>
-<td>12H</td>
-<td></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A43/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%80%E6%9C%89%E6%8C%87%E4%BB%A43/" class="post-title-link" itemprop="url">汇编语言的所有指令3</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-02 12:36:45 / 修改时间：17:54:30" itemprop="dateCreated datePublished" datetime="2021-01-02T12:36:45+08:00">2021-01-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一、数据传送指令<br>1、传送指令：MOV (move)</p>
-<p>格式：mov dst,src<br>具体用法：</p>
-<p>(1) CPU内部寄存器之间的数据传送，如：mov ah,al</p>
-<p>(2) 立即数送至通用寄存器(非段寄存器)或存储单元，如:mov al,3     mov [bx],1234h</p>
-<p>(3) 寄存器与存储器间的数据传送，如：mov ax,var     mov ax,[bx]</p>
-<p>2、交换指令：XCHG</p>
-<p>xchg OPRD1,OPRD2   ;OPRD可以是通用寄存器或存储单元，但不包括段寄存器，不能同时是存储单元，不能有立即数<br>3、地址传送指令：LEA、LDS、LES</p>
-<p>(1) LEA(Load Effective Address)<br>  格式：  lea REG,OPRD<br>  功能：  把操作数OPRD的有效地址传送到操作数REG<br>   注：   REG必须是16位通用寄存器，OPRD必须是一个存储器操作数</p>
-<p>   如：   lea ax,buf       ;buf是变量名<br>      lea ax,[si+2]<br>(2) LDS(Load pointer into DS)<br>  格式：  lds REG,OPRD<br>  功能：  传送32位地址指针，将OPRD存储的32位数的高16位（段地址）送至DS，低16位（偏移地址）送至REG。（注意OPRD存放的32位数据，不是OPRD本身的地址）<br>   注：   操作数OPRD必须是一个32位存储器操作数，操作数REG可以时16位通用寄存器，但通常是指令指针寄存器（IP）或变址寄存器（SI，DI，SP，BP）</p>
-<p>   如：    lds di,[bx]<br>      lds si,FARPOINTER    ;FARPOINTER是一个32位（双字）变量<br>(3) LES(Load pointer into ES)<br>  格式：    les REG,OPRD<br>  功能：    把操作数OPRD存储的32位数据的高16位（段地址）送至ES，低16位（偏移地址）送至REG</p>
-<p>  其他同LDS<br>二、堆栈操作指令<br>1、进栈指令：push</p>
-<p>格式：push src<br>功能： 把16位数据src压入堆栈。<br>注：   源操作数src可以是通用寄存器和段寄存器，也可以是字存储单元</p>
-<p>如：  push si<br>   push [si]<br>   push var     ;var是16位（字）变量<br>2、出栈指令：pop</p>
-<p>格式：pop dst<br>功能：从堆栈弹出16位数据至dst<br>注： dst可以是通用寄存器和段寄存器，但不能是CS，可以是字存储单元</p>
-<p>如： pop si<br>  pop [si]<br>  pop var       ;var是字变量<br>三、标志操作指令<br>1、标志传送指令：LAHF(Load AH with Flags)、SAHF(Store AH into Flags)、PUSHF、POPF</p>
-<p>(1) LAHF(Load AH with Flags)<br>  格式：LAHF<br>  功能：把标志寄存器的低8位（包括SF(7)、ZF(6)、AF(4)、PF(2)、CF(0)）传送到AH指定位。</p>
-<p>(2) SAHF(Store AH into Flags)<br>  格式：SAHF<br>  功能：把寄存器AH的指定位送至标志寄存器低8位（包括SF(7)、ZF(6)、AF(4)、PF(2)、CF(0)）。</p>
-<p>(3) PUSHF<br>  格式：PUSHF<br>  功能：把标志寄存器的内容（16位）压入堆栈。SP-=2<br>  注： 这条指令不影响标志位</p>
-<p>(4) POPF<br>  格式：POPF<br>  功能：把当前栈顶的一个字传送到标志寄存器。SP+=2<br>2、标志位操作指令：CLC、STC、CMC、CLD、STD、CLI、STI</p>
-<p>(1) CLC(Clear Carry Flag):         CF置0<br>(2) STC(Set Carry Flag):         CF置1</p>
-<p>(3) CMC(Complement Carry Flag):       CF取反</p>
-<p>(4) CLD(Clear Direction Flag):       DF置0，执行串操作指令时，地址递增<br>(5) STD(Set Direction Flag):       DF置1，执行串操作指令时，地址递减</p>
-<p>(6) CLI(Clear Interrupt enable Flag)   IF置0，使CPU不响应来自外部装置的可屏蔽中断，但对不可屏蔽中断和内部中断没有影响<br>(7) STI(Set Interrupt enable Flag)     IF置1，可以响应可屏蔽中断<br>四、加减运算指令<br>加减法运算对无符号数和有符号数的处理一视同仁。即作为无符号数而影响标志位CF和AF，也作为有符号数影响标识OF和SF，且总会影响ZF。加减法运算指令也要影响标志位PF。有些指令稍有例外。<br>存放运算结果的操作数（两个操作数时即左操作数）只能是通用寄存器或存储单元（变量）。如果参与运算的操作数有两个，则最多只能有一个是存储器操作数。<br>如果参与运算的操作数有两个，则它们的类型必须一致，如同时为字节或同时为字等。<br>1、加法指令：add、adc、inc</p>
-<p>(1) add(Addtion)<br>  格式：add OPRD1,OPRD2<br>  功能：OPRD1 = OPRD1 + OPRD2<br>  注：  影响FLAG</p>
-<p>  如：add al,5<br>      add bl,var     ;var是字节变量<br>      add var,si     ;var是字变量</p>
-<p>(2) adc(add with Carry)     ;带进位的加法<br>  格式：adc OPRD1,OPRD2<br>  功能：带进位的加法，OPRD1 = OPRD1 + OPRD2 + CF<br>  注：   影响FLAG，主要用于多字节运算</p>
-<p>  如：   adc al,[bx]<br>     adc dx,ax<br>     adc dx,var     ;var是字变量</p>
-<p>(3) inc(Increment)<br>  格式：inc OPRD<br>  功能：OPRD = OPRD + 1<br>  注： 不影响CF</p>
-<p>  如：inc al<br>    inc var       ;var是字节变量，也可以是字变量<br>    inc cx<br>2、减法指令：sub、sbb、dec、neg、cmp</p>
-<p>(1) sub(Subtraction)<br>  格式：sub OPRD1，OPRD2<br>  功能：OPRD1 = OPRD1 - OPRD2</p>
-<p>  如：  sub ah,12<br>     sub bx,bp<br>     sub al,[bx]<br>     sub [BP],AX<br>     sub AX,VAR     ;VAR是字变量</p>
-<p>(2) sbb(Sub with Borrow)<br>  格式：sbb OPRD1,OPRD2<br>  功能：OPRD1 = OPRD1 - OPRD2 - CF<br>  注：   主要用于多字节数相减的情况</p>
-<p>(3) dec(decrement)<br>  格式：dec OPRD<br>  功能：OPRD = OPRD - 1<br>  注：   操作数OPRD可以是通用寄存器，也可以是存储单元。相减时把操作数作为一个无符号数对待，这条指令影响ZF、SP、OF、PF、AF，但不影响CF，该指令主要用于调整地址指针和计数器。</p>
-<p>(4) neg(Negate)<br>  格式：NEG OPRD<br>  功能：对操作数取补，即OPRD = 0 - OPRD<br>  注： 操作数可以是通用寄存器，也可以是存储单元。此指令结果影响CF、ZF、OF、AF、PF，一般会使CF为1，除非OPRD=0</p>
-<p>(5)   cmp(Compare)<br>  格式：cmp OPRD1,OPRD2<br>  功能：执行OPRD1 - OPRD2，但运算结果不运送到OPRD1<br>  注：   该指令通过OPRD - OPRD2影响标志位CF、ZF、SF、OF、AF、PF来判断OPRD1和OPRD2的大小关系。通过ZF判断是否相等；如果是无符号数，通过CF可判断大小；如果是有符号数，通过SF和OF判断大小<br>五、乘除运算指令<br>1、乘法指令：mul、imul</p>
-<p>(1) mul(Multiply)       ;无符号数乘法指令<br>  格式：MUL OPRD<br>  功能：将OPRD与AX或AL中的操作数相乘，结果保存在DX:AX中或AX中<br>  注： 无符号数相乘分为16位<em>16位和8位</em>8位，结果分别为32位和16位，保存在DX:AX中或AX中，其中结果为32位时，DX为高16位，AX为低16位；结果为16位时，AH为高8位，AL为低8位。</p>
-<p>(2) imul(Signed Multiply)   ;有符号数乘法指令<br>  格式：IMUL OPRD<br>  功能：把乘数和被乘数均作为有符号数进行乘法运算。其余与mul类似<br>  注：   如果乘积结果的高位部分（DX或AH）不是低位的符号扩展，则CF=1，OF=1，否则CF=0，OF=0。即CF=1，OF=1表示AH或DX中含有结果的有效数。<br>     如果除数为0，或8位数除时商超过8位，16位数除时商超过16位，则认为是除溢出，引起0号中断。除法指令对标志位的影响无定义。<br>2、除法指令：div、idiv</p>
-<p>(1) div(Division)       ;无符号数除法指令<br>  格式：DIV OPRD<br>  功能：OPRD为除数，被除数存放在DX:AX或AX中，做除法，结果存放在DX:AX（DX存放余数，AX存放商）或AX（AH余数，AL商）。<br>  注：   8086中除法有32位除以16位和16位除以8位。前者被除数为32位，高位在DX中，低位在AX中，除数OPRD为16位通用寄存器或16位存储器操作数，结果为16位，其中16位余数存放在DX中，16位商存放在AX中；若为16位除以8位，被除数存放在AX中，OPRD为8位通用寄存器或存储器操作数，结果8位余数存放在AH中，8位商存放在AL中。</p>
-<p>(2) idiv(Signed Division)   ;有符号数除法指令<br>  格式：IDIV OPRD<br>  功能：把除数和被除数看做有符号数做除法，其余与div类似<br>3、符号扩展指令：cbw、cwd</p>
-<p>(1) cbw(Convert Byte to Word)<br>  格式：CBW<br>  功能：把寄存器AL中的符号位扩展到寄存器AH</p>
-<p>(2) cwd(Convert Word to Double Word)<br>  格式：CWD<br>  功能：把寄存器AX中的符号扩展到寄存器DX<br>六、逻辑运算和移位指令<br>1、逻辑运算指令：not、and、or、xor、test</p>
-<p>(1) NOT<br>  格式：NOT OPRD<br>  功能：把操作数OPRD取反，然后送回OPRD。<br>  注：   OPRD可以是通用寄存器，也可以是存储器操作数，此指令对标志没有影响</p>
-<p>(2) AND<br>  格式：AND OPRD1,OPRD2<br>  功能：对两个操作数进行按位逻辑“与”运算，结果送到OPRD1中<br>  注： 该指令执行后，CF=0，OF=0，标志PF、ZF、SF反映运算结果，AF未定义。<br>     某个操作数与自身相与，值不变，但可以使CF置0。</p>
-<p>(3) OR<br>  格式：OR OPRD1,OPRD2<br>  功能：对两个操作数进行按位逻辑“或”运算，结果送到OPRD1中<br>  注： 该指令执行后，CF=0，OF=0，标志PF、ZF、SF反映运算结果，AF未定义。<br>     某个操作数与自身相或，值不变，但可以使CF置0。</p>
-<p>(4) XOR<br>  格式：XOR OPRD1,OPRD2<br>  功能：对两个操作数进行按位逻辑“异或”运算，结果送到OPRD1中<br>  注： 该指令执行后，CF=0，OF=0，标志PF、ZF、SF反映运算结果，AF未定义。</p>
-<p>(5) TEST<br>  格式：TEST OPRD1,OPRD2<br>  功能：把OPRD1与OPRD2按位“与”，但结果不送到OPRD1中，仅影响标志位。<br>  注： 该指令执行后，CF=0，OF=0，标志PF、ZF、SF反映运算结果。常用于检测某些位是否为1<br>2、一般移位指令：SAL/SHL,SAR/SHR</p>
-<p>(1) SAL/SHL(Shift Arithmetic Left / Shift Logic Left)     ;算术左移/逻辑左移<br>  格式：SAL OPRD,m<br>     SHL OPRD,m<br>  功能：把操作数OPRD左移m位，每移动一位，右边用0补足1位，移出的最高位进入标志位CF<br>  注：   算术左移和逻辑左移进行相同的动作，为了方便提供了两个助记符。</p>
-<p>(2) SAR(Shift Arithmetic Right)                 ;算数右移指令<br>  格式：SAR OPRD,m<br>  功能：操作数右移m位，同时每移1位，左边的符号位保持不变，移出的最低位进入标志位CF<br>  注：   对有符号数和无符号数，算数右移1位相当于除以2</p>
-<p>(3) SHR(Shift Logic Right)                   ;逻辑右移指令<br>  格式：SHR OPRD,m<br>  功能：操作数右移m位，同时每移1位，左边用0补足，移出的最低位进入标志位CF<br>  注：   对无符号数，逻辑右移1位相当于除以2<br>3、循环移位指令：ROL、ROR、RCL、RCR</p>
-<p>格式：</p>
-<p>ROL OPRD,m</p>
-<p>ROR OPRD,m</p>
-<p>RCL OPRD,m</p>
-<p>RCR OPRD,m</p>
-<p>这些指令只影响CF和OF<br>七、转移指令<br>1、无条件转移指令：JMP(Jump)</p>
-<p>段内转移：改变IP<br>段间转移：改变CS:IP</p>
-<p>(1) 无条件段内直接转移指令<br>  格式：JMP 标号<br>  功能：使控制无条件转移至标号地址处<br>  原理：把编译时计算出的地址差加到IP上</p>
-<p>(2) 无条件段内间接转移指令<br>  格式：JMP OPRD<br>  功能：使控制指令无条件转移到OPRD的内容给定的目标地址处。操作数OPRD可以是通用寄存器，也可以是字存储单元<br>  例如：jmp cx           ;CX寄存器的内容送IP<br>     jmp word ptr [1234h]   ;字存储单元[1234h]的内容送IP</p>
-<p>(3) 无条件段间直接转移指令<br>  格式：jmp far ptr 标号<br>  功能：使控制指令无条件的转移到标号对应的地址处<br>  原理：把编译时产生的标号处的段地址和偏移地址分别置入CS和IP</p>
-<p>(4) 无条件段间间接转移指令<br>  格式：JMP OPRD<br>  功能：使控制指令无条件转移到操作数OPRD的内容给定的目标地址处。操作数OPRD必须是双字存储单元<br>  例如：jmp dword ptr [1234h]   ;双字存储单元的低字内容送IP，高字内容送CS<br>2、条件转移指令</p>
-<p>3、循环指令：LOOP、LOOPE/LOOPZ、LOOPNE/LOOPNZ、JCXZ</p>
-<p>(1) Loop       ;计数循环指令<br>  格式：loop 标号<br>  功能：使转移标号与Loop指令间的指令循环执行CX次<br>  原理：指令执行至loop时，cx减1，如果cx不为0，则跳转至标号处，否则继续执行下一条指令<br>    即：DEC CX<br>      JNZ 标号</p>
-<p>(2) LOOPE/LOOPZ     ;等于/全零循环指令<br>  格式：LOOPE 标号<br>     LOOPZ 标号<br>  功能：该指令使CX自减1，若结果不为0，并且ZF=1，则转移至标号，否则顺序执行。注意指令本身实施的CX自减1操作不影响标志</p>
-<p>(3) LOOPNE/LOOPNZ   ;不等于/非零循环指令<br>  格式：LOOPNE 标号<br>     LOOPNZ 标号<br>  功能：该指令使CX自减1，若结果不为0，并且ZF=0，则转移至标号，否则顺序执行。注意指令本身实施的CX自减1操作不影响标志</p>
-<p>(4) JCXZ       ;跳转指令<br>  格式：JCXZ 标号<br>  功能：当寄存器CX的值为0时跳转到标号，否则顺序执行<br>-——————– </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">汇编语言加减乘除命令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-02 10:41:22 / 修改时间：17:50:58" itemprop="dateCreated datePublished" datetime="2021-01-02T10:41:22+08:00">2021-01-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>281</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1、加法指令"><a href="#1、加法指令" class="headerlink" title="1、加法指令"></a>1、加法指令</h2><h3 id="1-1、add-dst（目标操作数），src"><a href="#1-1、add-dst（目标操作数），src" class="headerlink" title="1.1、add dst（目标操作数），src"></a>1.1、add dst（目标操作数），src</h3><p>将dst（只能是寄存器或者存储器）+src送给dst（无符号加法）</p>
-<h3 id="1-2、adc-dst，src"><a href="#1-2、adc-dst，src" class="headerlink" title="1.2、adc dst，src"></a>1.2、adc dst，src</h3><p>将dst+src+CF送给dst（带进位、借位的加法）</p>
-<h3 id="1-3、inc-oprd（寄存器或者存储器）"><a href="#1-3、inc-oprd（寄存器或者存储器）" class="headerlink" title="1.3、inc oprd（寄存器或者存储器）"></a>1.3、inc oprd（寄存器或者存储器）</h3><p>将oprd+1送给oprd（即自增1运算）</p>
-<h2 id="2、减法指令"><a href="#2、减法指令" class="headerlink" title="2、减法指令"></a>2、减法指令</h2><h3 id="2-1、sub-dst，src"><a href="#2-1、sub-dst，src" class="headerlink" title="2.1、sub dst，src"></a>2.1、sub dst，src</h3><p>将dst（只能是寄存器或者存储器）-src送给dst（无符号减法）</p>
-<h3 id="2-2、sbb-dst，src"><a href="#2-2、sbb-dst，src" class="headerlink" title="2.2、sbb dst，src"></a>2.2、sbb dst，src</h3><p>将dst+src-CF送给dst（带进位、借位的减法）</p>
-<h3 id="2-3、dec-oprd"><a href="#2-3、dec-oprd" class="headerlink" title="2.3、dec oprd"></a>2.3、dec oprd</h3><p>将oprd-1送给oprd（即自减1运算）</p>
-<h2 id="3、乘法指令"><a href="#3、乘法指令" class="headerlink" title="3、乘法指令"></a>3、乘法指令</h2><h2 id="4、除法指令"><a href="#4、除法指令" class="headerlink" title="4、除法指令"></a>4、除法指令</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86Flag%E6%A0%87%E5%BF%97%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86Flag%E6%A0%87%E5%BF%97%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">汇编语言处理Flag标志命令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-02 10:37:35 / 修改时间：10:40:54" itemprop="dateCreated datePublished" datetime="2021-01-02T10:37:35+08:00">2021-01-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>69</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1、处理机命令"><a href="#1、处理机命令" class="headerlink" title="1、处理机命令"></a>1、处理机命令</h2><p>clc： 使CF=0</p>
-<p>stc：使CF=1</p>
-<p>cmc:CF取反</p>
-<p>cld：使DF=0</p>
-<p>std：使DF=1</p>
-<p>cli：使IF=0</p>
-<p>sti：使IF=1</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AF%84%E5%AD%98%E5%99%A8%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AF%84%E5%AD%98%E5%99%A8%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">汇编语言寄存器分类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-02 10:15:08 / 修改时间：10:37:30" itemprop="dateCreated datePublished" datetime="2021-01-02T10:15:08+08:00">2021-01-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>248</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>寄存器共分为14个16位的寄存器。</p>
-<h2 id="1、8个通用寄存器"><a href="#1、8个通用寄存器" class="headerlink" title="1、8个通用寄存器"></a>1、8个通用寄存器</h2><h3 id="1-1、4个数据寄存器"><a href="#1-1、4个数据寄存器" class="headerlink" title="1.1、4个数据寄存器"></a>1.1、4个数据寄存器</h3><p>AX:累加器</p>
-<p>BX:基址寄存器</p>
-<p>CX:计数器</p>
-<p>DX:数据寄存器</p>
-<h3 id="1-2、2个变址寄存器"><a href="#1-2、2个变址寄存器" class="headerlink" title="1.2、2个变址寄存器"></a>1.2、2个变址寄存器</h3><p>SI:源变址寄存器</p>
-<p>DI:目标变址寄存器</p>
-<h3 id="1-3、2个指针寄存器"><a href="#1-3、2个指针寄存器" class="headerlink" title="1.3、2个指针寄存器"></a>1.3、2个指针寄存器</h3><p>BP:基址指针寄存器</p>
-<p>SP:堆栈栈顶寄存器</p>
-<h2 id="2、4个段寄存器"><a href="#2、4个段寄存器" class="headerlink" title="2、4个段寄存器"></a>2、4个段寄存器</h2><p>CS:代码段寄存器</p>
-<p>DS:数据段寄存器 </p>
-<p><strong>用于存放源数据</strong></p>
-<p>ES:附加数据段寄存器</p>
-<p><strong>用于存放目标数据</strong></p>
-<p>SS:堆栈段寄存器</p>
-<h2 id="3、2个控制寄存器"><a href="#3、2个控制寄存器" class="headerlink" title="3、2个控制寄存器"></a>3、2个控制寄存器</h2><p>IP:指令指针寄存器</p>
-<p><strong>用于存放将要执行的下一条指令的偏移地址</strong></p>
-<p>FLAG:标志寄存器 CPAZSO(状态寄存器)</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/" class="post-title-link" itemprop="url">汇编语言数据传送指令1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-01 22:58:11 / 修改时间：22:59:13" itemprop="dateCreated datePublished" datetime="2021-01-01T22:58:11+08:00">2021-01-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="数据传送类指令"><a href="#数据传送类指令" class="headerlink" title="数据传送类指令"></a>数据传送类指令</h1><p>作用：把数据、地址或立即数传送到寄存器或存储单元中</p>
-<h3 id="通用传送指令"><a href="#通用传送指令" class="headerlink" title="通用传送指令"></a>通用传送指令</h3><h5 id="传送指令MOV"><a href="#传送指令MOV" class="headerlink" title="传送指令MOV"></a>传送指令MOV</h5><ul>
-<li>格式：MOV 目的操作数，源操作数<br>功能：将源操作数的内容传送给目的操作数，源操作数不变</li>
-</ul>
-<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507141512860.png" alt="在这里插入图片描述"></p>
-<ul>
-<li>注：MOV指令不改变标志位。<br>操作数的位数需要匹配。即8位配8位，16位配16位<br>两个操作数不能同时为段寄存器，也不能为存储器<br>CS不能作为目的操作数<br>IP不能做目的操作数和源操作数<br>立即数不能直接传送给段寄存器<br>对于存储器单元与立即数同时作为操作数的情况，必须显式指明；byte ptr指示字节类型，word ptr指示字类型、</li>
-<li>例子<br>MOV AX, 1010H<br>MOV BL, 58H<br>MOV BYTE PTR [BX], 10H<br>MOV WORD PTR [BX], 2255H<br>MOV BYTE PTR [SI+20H], 10H</li>
-</ul>
-<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200721144944886.png" alt="在这里插入图片描述"></p>
-<h5 id="数据交换指令XCHG"><a href="#数据交换指令XCHG" class="headerlink" title="数据交换指令XCHG"></a>数据交换指令XCHG</h5><ul>
-<li>格式：XCHG 寄存器，存储器操作数/寄存器</li>
-<li>功能：实现源操作数和目的操作数之间的的内容互换</li>
-<li>注：不能存储器与存储器之间交换<br>XCHG指令不影响标志位</li>
-</ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>,<span class="number">1234h</span>	；<span class="built_in">ax</span>=<span class="number">1234h</span></span><br><span class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>,<span class="number">5678h</span>	；<span class="built_in">bx</span>=<span class="number">5678h</span></span><br><span class="line"><span class="keyword">xchg</span> <span class="built_in">ax</span>,<span class="built_in">bx</span></span><br><span class="line">；<span class="built_in">ax</span>=<span class="number">5678h</span>，<span class="built_in">bx</span>=<span class="number">1234h</span></span><br><span class="line"><span class="keyword">xchg</span> <span class="number">ah</span>,<span class="built_in">al</span>	；<span class="built_in">ax</span>=<span class="number">7856h</span></span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="表转换指令XLAT-（了解）"><a href="#表转换指令XLAT-（了解）" class="headerlink" title="表转换指令XLAT （了解）"></a>表转换指令XLAT （了解）</h5><ul>
-<li>格式 XLAT 或XLAT 首地址</li>
-<li>功能：将AL与BX寄存器内容之和作为偏移地中，将其所对应的存储单元的内容送入AL寄存器。</li>
-<li>执行前：在内存建立一个字节表格，内含要转换成的目的代码<br>BX——存放表格首地址<br>AL——存放相对表格首地址的偏移量</li>
-<li>执行后：将AL寄存器的内容转换为目标代码<br><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507142450852.png" alt="在这里插入图片描述"></li>
-</ul>
-<h3 id="堆栈存储指令（字操作-2个字节）"><a href="#堆栈存储指令（字操作-2个字节）" class="headerlink" title="堆栈存储指令（字操作 2个字节）"></a>堆栈存储指令（字操作 2个字节）</h3><ul>
-<li>堆栈：后进先出FILO，位于堆栈段；SS段寄存器记录其段地址</li>
-<li>堆栈只有一个出口，即当前栈顶；用堆栈指针寄存器SP指定</li>
-</ul>
-<h5 id="进栈指令PUSH"><a href="#进栈指令PUSH" class="headerlink" title="进栈指令PUSH"></a>进栈指令PUSH</h5><ul>
-<li>PUSH：进栈指令先使堆栈指针SP-2，然后把一个字操作数存入堆栈顶部</li>
-<li>格式： PUSH r16/m6/seg；sp&lt;-sp-2(高地址向低地址）<br>；SS：【SP】&lt;-r16/m16/seg<br><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507144307680.png" alt="在这里插入图片描述"></li>
-</ul>
-<h5 id="出栈指令POP"><a href="#出栈指令POP" class="headerlink" title="出栈指令POP"></a>出栈指令POP</h5><ul>
-<li>POP：出栈指令把栈顶的一个字传送至指定的目的操作数，然后堆栈指针SP+2</li>
-<li>POP r16/m16/seg ;r16/m16/seg&lt;-SS:[SP]<br>;SP&lt;-SP+2</li>
-</ul>
-<p><img src="/2021/01/01/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A41/20200507144403629.png" alt="在这里插入图片描述"></p>
-<ul>
-<li>堆栈操作的单位是字，进栈和出栈只对字量<br>字量数据从栈顶压入和弹出时，都是低地址字节送低字节，高地址字节送高字节</li>
-<li>堆栈操作遵循先进后出原则，但可用存储器寻址方式随机存取堆栈中的数据</li>
-<li>作用：临时存放数据，传递参数，保存和恢复寄存器</li>
-</ul>
-<h3 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h3><p>功能：地址传送指令将存储器单元的逻辑地址送至指定的寄存器</p>
-<h5 id="有效地址传送指令LEA"><a href="#有效地址传送指令LEA" class="headerlink" title="有效地址传送指令LEA"></a>有效地址传送指令LEA</h5><ul>
-<li>特点：传送的是存储器操作数的地址（偏移地址，段地址），而不是内容源操作数必须是存储器操作数，目的操作数是16位通用寄存器。<br>OPD可为一个16位的通用寄存器，通常为：BX、BP、SI、DI。OPS可为变量名、标号或地址表达式。</li>
-<li>LEA r16，mem<br>功能：将源操作数的有效地址传送至指定的16通用寄存器</li>
-</ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MOV</span> <span class="built_in">BX</span>,<span class="number">0400H</span></span><br><span class="line"><span class="keyword">MOV</span> <span class="built_in">SI</span>,<span class="number">3CH</span></span><br><span class="line"><span class="keyword">LEA</span> <span class="built_in">BX</span>,[<span class="built_in">BX</span>+<span class="built_in">SI</span>+<span class="number">0F62H</span>] ；<span class="built_in">BX</span>＝<span class="number">0400h</span>＋<span class="number">003ch</span>＋<span class="number">0f62h</span>＝<span class="number">139EH</span></span><br><span class="line"></span><br><span class="line"><span class="number">1234</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>例子<br>设BX=0100H,DI=0030H,DS:[0030H]=2436H, 变量DATA的有效地址为0050H<br>LEA BP, [3000H] ;执行后 BP=3000H<br>LEA BX, [BX+DI] ;执行后 BX=0130H<br>LEA SI, DATA ;执行后 SI＝0050<br>LEA SI, [DI] ;执行后 SI=0030H<br>MOV SI, [DI] ;执行后 SI＝2436H</li>
-</ul>
-<h5 id="指针传送指令LDS-LES"><a href="#指针传送指令LDS-LES" class="headerlink" title="指针传送指令LDS,LES"></a>指针传送指令LDS,LES</h5><ul>
-<li>LDS r16,mem；r16←mem， DS←mem+2<br>LDS指令将主存中mem指定的字送至r16，并将mem的下一字送DS寄存器</li>
-<li>LES r16,mem；r16←mem， ES←mem+2<br>LES指令将主存中mem指定的字送至r16，并将mem的下一字送ES寄存器</li>
-</ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MOV</span> <span class="built_in">WORD</span> <span class="built_in">PTR</span> [<span class="number">3060H</span>],<span class="number">0100H</span></span><br><span class="line"><span class="keyword">MOV</span> <span class="built_in">WORD</span> <span class="built_in">PTR</span> [<span class="number">3062H</span>],<span class="number">1450H</span></span><br><span class="line"><span class="keyword">LES</span> <span class="built_in">DI</span>,[<span class="number">3060H</span>]	；<span class="built_in">DI</span>=<span class="number">0100H</span>，<span class="built_in">ES</span>=<span class="number">1450H</span></span><br><span class="line"><span class="keyword">LDS</span> <span class="built_in">SI</span>,[<span class="number">3060H</span>]	；<span class="built_in">SI</span>=<span class="number">0100H</span>，<span class="built_in">DS</span>=<span class="number">1450H</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2357,7 +3309,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-count">233</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2370,7 +3322,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -2406,12 +3358,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">1.7m</span>
+    <span title="站点总字数">1.9m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">25:36</span>
+    <span title="站点阅读时长">28:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

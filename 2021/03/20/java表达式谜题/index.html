@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 谜题 Java 谜题 1——表达式谜题谜题 1：奇数性下面的方法意图确定它那唯一的参数是否是一个奇数。这个方法能够正确运转 吗？  12345public static boolean isOdd(int i)&amp;#123;  return i % 2 &#x3D;&#x3D; 1; &amp;#125;  奇数可以被定义为被 2 整除余数为 1 的整数。表达式 i % 2 计算的是 i 整除 2  时所产生的余数，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java表达式谜题">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 谜题 Java 谜题 1——表达式谜题谜题 1：奇数性下面的方法意图确定它那唯一的参数是否是一个奇数。这个方法能够正确运转 吗？  12345public static boolean isOdd(int i)&amp;#123;  return i % 2 &#x3D;&#x3D; 1; &amp;#125;  奇数可以被定义为被 2 整除余数为 1 的整数。表达式 i % 2 计算的是 i 整除 2  时所产生的余数，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-20T10:13:32.791Z">
+<meta property="article:modified_time" content="2021-03-20T14:28:11.404Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java进阶学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java表达式谜题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java表达式谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 18:13:32 / 修改时间：22:28:11" itemprop="dateCreated datePublished" datetime="2021-03-20T18:13:32+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-谜题-Java-谜题-1——表达式谜题"><a href="#Java-谜题-Java-谜题-1——表达式谜题" class="headerlink" title="Java 谜题 Java 谜题 1——表达式谜题"></a>Java 谜题 Java 谜题 1——表达式谜题</h1><h2 id="谜题-1：奇数性"><a href="#谜题-1：奇数性" class="headerlink" title="谜题 1：奇数性"></a>谜题 1：奇数性</h2><p>下面的方法意图确定它那唯一的参数是否是一个奇数。这个方法能够正确运转</p>
+<p>吗？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> static <span class="built_in">bool</span>ean isOdd(<span class="built_in">int</span> i)&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> i % <span class="number">2</span> == <span class="number">1</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>奇数可以被定义为被 2 整除余数为 1 的整数。表达式 i % 2 计算的是 i 整除 2 </p>
+<p>时所产生的余数，因此看起来这个程序应该能够正确运转。遗憾的是，它不能；</p>
+<p>它在四分之一的时间里返回的都是错误的答案。 </p>
+<p>为什么是四分之一？因为在所有的 int 数值中，有一半都是负数，而 isOdd 方</p>
+<p>法对于对所有负奇数的判断都会失败。在任何负整数上调用该方法都回返回</p>
+<p>false ，不管该整数是偶数还是奇数。 </p>
+<p>这是 Java 对取余操作符（%）的定义所产生的后果。该操作符被定义为对于所</p>
+<p>有的 int 数值 a 和所有的非零 int 数值 b，都满足下面的恒等式： </p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(a / b)</span> * b + <span class="comment">(a % b)</span> == a</span><br></pre></td></tr></table></figure>
+
+<p>换句话说，如果你用 b 整除 a，将商乘以 b，然后加上余数，那么你就得到了最</p>
+<p>初的值 a 。该恒等式具有正确的含义，但是当与 Java 的截尾整数整除操作符</p>
+<p>相结合时，它就意味着：当取余操作返回一个非零的结果时，它与左操作数具有</p>
+<p>相同的正负符号。 </p>
+<p>当 i 是一个负奇数时，i % 2 等于-1 而不是 1， 因此 isOdd 方法将错误地返</p>
+<p>回 false。为了防止这种意外，请测试你的方法在为每一个数值型参数传递负数、</p>
+<p>零和正数数值时，其行为是否正确。 </p>
+<p>这个问题很容易订正。只需将 i % 2 与 0 而不是与 1 比较，并且反转比较的含</p>
+<p>义即可： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> static <span class="built_in">bool</span>ean isOdd(<span class="built_in">int</span> i)&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> i % <span class="number">2</span> != <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你正在在一个性能临k界（performance-critical）环境中使用 isOdd 方法，</p>
+<p>那么用位操作符 AND（&amp;）来替代取余操作符会显得更好： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> static <span class="built_in">bool</span>ean isOdd(<span class="built_in">int</span> i)&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> (i &amp; <span class="number">1</span>) != <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总之，无论你何时使用到了取余操作符，都要考虑到操作数和结果的符号。该操</p>
+<p>作符的行为在其操作数非负时是一目了然的，但是当一个或两个操作数都是负数</p>
+<p>时，它的行为就不那么显而易见了。</p>
+<h2 id="谜题-2：找零时刻"><a href="#谜题-2：找零时刻" class="headerlink" title="谜题 2：找零时刻"></a>谜题 2：找零时刻</h2><p>请考虑下面这段话所描述的问题： </p>
+<p>Tom 在一家汽车配件商店购买了一个价值$1.10 的火花塞，但是他钱包中都是两</p>
+<p>美元一张的钞票。如果他用一张两美元的钞票支付这个火花塞，那么应该找给他</p>
+<p>多少零钱呢？ </p>
+<p>下面是一个试图解决上述问题的程序，它会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Change</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(<span class="number">2.00</span> - <span class="number">1.10</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可能会很天真地期望该程序能够打印出 0.90，但是它如何才能知道你想要打</p>
+<p>印小数点后两位小数呢？ </p>
+<p>如果你对在 Double.toString 文档中所设定的将 double 类型的值转换为字符串</p>
+<p>的规则有所了解，你就会知道该程序打印出来的小数，是足以将 double 类型的</p>
+<p>值与最靠近它的临近值区分出来的最短的小数，它在小数点之前和之后都至少有</p>
+<p>一位。因此，看起来，该程序应该打印 0.9 是合理的。 </p>
+<p>这么分析可能显得很合理，但是并不正确。如果你运行该程序，你就会发现它打</p>
+<p>印的是 0.8999999999999999。 </p>
+<p>问题在于 1.1 这个数字不能被精确表示成为一个 double，因此它被表示成为最</p>
+<p>接近它的 double 值。该程序从 2 中减去的就是这个值。遗憾的是，这个计算的</p>
+<p>结果并不是最接近 0.9 的 double 值。表示结果的 double 值的最短表示就是你所</p>
+<p>看到的打印出来的那个可恶的数字。 </p>
+<p>更一般地说，问题在于并不是所有的小数都可以用二进制浮点数来精确表示的。 </p>
+<p>如果你正在用的是 JDK 5.0 或更新的版本，那么你可能会受其诱惑，通过使用</p>
+<p>printf 工具来设置输出精度的方订正该程序： </p>
+<p>//拙劣的解决方案——仍旧是使用二进制浮点数</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">System</span><span class="selector-class">.out</span><span class="selector-class">.printf</span>("%<span class="selector-class">.2f</span>%<span class="selector-tag">n</span>",2<span class="selector-class">.00</span> <span class="selector-tag">-</span> 1<span class="selector-class">.10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这条语句打印的是正确的结果，但是这并不表示它就是对底层问题的通用解决方</p>
+<p>案：它使用的仍旧是二进制浮点数的 double 运算。浮点运算在一个范围很广的</p>
+<p>值域上提供了很好的近似，但是它通常不能产生精确的结果。二进制浮点对于货</p>
+<p>币计算是非常不适合的，因为它不可能将 0.1——或者 10 的其它任何次负幂——</p>
+<p>精确表示为一个长度有限的二进制小数 </p>
+<p>解决该问题的一种方式是使用某种整数类型，例如 int 或 long，并且以分为单</p>
+<p>位来执行计算。如果你采纳了此路线，请确保该整数类型大到足够表示在程序中</p>
+<p>你将要用到的所有值。对这里举例的谜题来说，int 就足够了。下面是我们用 int</p>
+<p>类型来以分为单位表示货币值后重写的 println 语句。这个版本将打印出正确答</p>
+<p>案 90 分： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.println((<span class="number">200</span> - <span class="number">110</span>) + <span class="string">"cents"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>解决该问题的另一种方式是使用执行精确小数运算的 BigDecimal。它还可以通</p>
+<p>过 JDBC 与 SQL DECIMAL 类型进行互操作。这里要告诫你一点： 一定要用</p>
+<p>BigDecimal(String)构造器，而千万不要用 BigDecimal(double)。后一个构造</p>
+<p>器将用它的参数的“精确”值来创建一个实例：new BigDecimal(.1)将返回一个</p>
+<p>表示 0.100000000000000055511151231257827021181583404541015625 的</p>
+<p>BigDecimal。通过正确使用 BigDecimal，程序就可以打印出我们所期望的结果</p>
+<p>0.90： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Change1</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">new</span> BigDecimal(<span class="string">"2.00"</span>). </span><br><span class="line"></span><br><span class="line"> subtract(<span class="keyword">new</span> BigDecimal(<span class="string">"1.10"</span>))); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个版本并不是十分地完美，因为 Java 并没有为 BigDecimal 提供任何语言上的</p>
+<p>支持。使用 BigDecimal 的计算很有可能比那些使用原始类型的计算要慢一些，</p>
+<p>对某些大量使用小数计算的程序来说，这可能会成为问题，而对大多数程序来说，</p>
+<p>这显得一点也不重要。 </p>
+<p>总之， 在需要精确答案的地方，要避免使用 float 和 double；对于货币计算，</p>
+<p>要使用 int、long 或 BigDecimal。对于语言设计者来说，应该考虑对小数运算</p>
+<p>提供语言支持。一种方式是提供对操作符重载的有限支持，以使得运算符可以被</p>
+<p>塑造为能够对数值引用类型起作用，例如 BigDecimal。另一种方式是提供原始</p>
+<p>的小数类型，就像 COBOL 与 PL/I 所作的一样。 </p>
+<h2 id="谜题-3：长整除"><a href="#谜题-3：长整除" class="headerlink" title="谜题 3：长整除"></a>谜题 3：长整除</h2><p>这个谜题之所以被称为长整除是因为它所涉及的程序是有关两个 long 型数值整</p>
+<p>除的。被除数表示的是一天里的微秒数；而除数表示的是一天里的毫秒数。这个</p>
+<p>程序会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">LongDivision</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MICROS_PER_DAY = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> long MILLIS_PER_DAY = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(MICROS_PER_DAY/MILLIS_PER_DAY);</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个谜题看起来相当直观。每天的毫秒数和每天的微秒数都是常量。为清楚起见，</p>
+<p>它们都被表示成积的形式。每天的微秒数是（24 小时/天<em>60 分钟/小时</em>60 秒/</p>
+<p>分钟<em>1000 毫秒/秒</em>1000 微秒/毫秒）。而每天的毫秒数的不同之处只是少了最</p>
+<p>后一个因子 1000。 </p>
+<p>当你用每天的毫秒数来整除每天的微秒数时，除数中所有的因子都被约掉了，只</p>
+<p>剩下 1000，这正是每毫秒包含的微秒数。 </p>
+<p>除数和被除数都是 long 类型的，long 类型大到了可以很容易地保存这两个乘积</p>
+<p>而不产生溢出。因此，看起来程序打印的必定是 1000。 </p>
+<p>遗憾的是，它打印的是 5。这里到底发生了什么呢？ </p>
+<p>问题在于常数 MICROS_PER_DAY 的计算“确实”溢出了。尽管计算的结果适合放</p>
+<p>入 long 中，并且其空间还有富余，但是这个结果并不适合放入 int 中。这个计</p>
+<p>算完全是以 int 运算来执行的，并且只有在运算完成之后，其结果才被提升到</p>
+<p>long，而此时已经太迟了：计算已经溢出了，它返回的是一个小了 200 倍的数值。</p>
+<p>从 int提升到long是一种拓宽原始类型转换（widening primitive conversion），</p>
+<p>它保留了（不正确的）数值。这个值之后被 MILLIS_PER_DAY 整除，而</p>
+<p>MILLIS_PER_DAY 的计算是正确的，因为它适合 int 运算。这样整除的结果就得</p>
+<p>到了 5。 </p>
+<p>那么为什么计算会是以 int 运算来执行的呢？因为所有乘在一起的因子都是 int</p>
+<p>数值。当你将两个 int 数值相乘时，你将得到另一个 int 数值。Java 不具有目</p>
+<p>标确定类型的特性，这是一种语言特性，其含义是指存储结果的变量的类型会影</p>
+<p>响到计算所使用的类型。 </p>
+<p>通过使用 long 常量来替代 int 常量作为每一个乘积的第一个因子，我们就可以</p>
+<p>很容易地订正这个程序。这样做可以强制表达式中所有的后续计算都用 long 运</p>
+<p>作来完成。尽管这么做只在 MICROS_PER_DAY 表达式中是必需的，但是在两个乘</p>
+<p>积中都这么做是一种很好的方式。相似地，使用 long 作为乘积的“第一个”数</p>
+<p>值也并不总是必需的，但是这么做也是一种很好的形式。在两个计算中都以 long</p>
+<p>数值开始可以很清楚地表明它们都不会溢出。下面的程序将打印出我们所期望的</p>
+<p>1000： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">LongDivision</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[ ])&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MICROS_PER_DAY = <span class="number">24</span>L * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MILLIS_PER_DAY = <span class="number">24</span>L * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(MICROS_PER_DAY/MILLIS_PER_DAY);</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个教训很简单：当你在操作很大的数字时，千万要提防溢出——它可是一个缄</p>
+<p>默杀手。即使用来保存结果的变量已显得足够大，也并不意味着要产生结果的计</p>
+<p>算具有正确的类型。当你拿不准时，就使用 long 运算来执行整个计算。 </p>
+<p>语言设计者从中可以吸取的教训是：也许降低缄默溢出产生的可能性确实是值得</p>
+<p>做的一件事。这可以通过对不会产生缄默溢出的运算提供支持来实现。程序可以</p>
+<p>抛出一个异常而不是直接溢出，就像 Ada 所作的那样，或者它们可以在需要的时</p>
+<p>候自动地切换到一个更大的内部表示上以防止溢出，就像 Lisp 所作的那样。这</p>
+<p>两种方式都可能会遭受与其相关的性能方面的损失。降低缄默溢出的另一种方式</p>
+<p>是支持目标确定类型，但是这么做会显著地增加类型系统的复杂度 </p>
+<h2 id="谜题-4：初级问题"><a href="#谜题-4：初级问题" class="headerlink" title="谜题 4：初级问题"></a>谜题 4：初级问题</h2><p>得啦，前面那个谜题是有点棘手，但它是有关整除的，每个人都知道整除是很麻</p>
+<p>烦的。那么下面的程序只涉及加法，它又会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Elementary</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(<span class="number">12345</span>+<span class="number">5432</span>l); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从表面上看，这像是一个很简单的谜题——简单到不需要纸和笔你就可以解决</p>
+<p>它。加号的左操作数的各个位是从 1 到 5 升序排列的，而右操作数是降序排列的。</p>
+<p>因此，相应各位的和仍然是常数，程序必定打印 66666。对于这样的分析，只有</p>
+<p>一个问题：当你运行该程序时，它打印出的是 17777。难道是 Java 对打印这样</p>
+<p>的非常数字抱有偏见吗？不知怎么的，这看起来并不像是一个合理的解释。 </p>
+<p>事物往往有别于它的表象。就以这个问题为例，它并没有打印出我们想要的输出。</p>
+<p>请仔细观察 + 操作符的两个操作数，我们是将一个 int 类型的 12345 加到了</p>
+<p>long 类型的 5432l 上。请注意左操作数开头的数字 1 和右操作数结尾的小写字</p>
+<p>母 l 之间的细微差异。数字 1 的水平笔划（称为“臂（arm）”）和垂直笔划（称</p>
+<p>为“茎（stem）”）之间是一个锐角，而与此相对照的是，小写字母 l 的臂和茎</p>
+<p>之间是一个直角。 </p>
+<p>在你大喊“恶心！”之前，你应该注意到这个问题确实已经引起了混乱，这里确</p>
+<p>实有一个教训：在 long 型字面常量中，一定要用大写的 L，千万不要用小写的 l。</p>
+<p>这样就可以完全掐断这个谜题所产生的混乱的源头。 </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.println(<span class="number">12345</span>+<span class="number">5432</span>L);</span><br></pre></td></tr></table></figure>
+
+<p>相类似的，要避免使用单独的一个 l 字母作为变量名。例如，我们很难通过观察</p>
+<p>下面的代码段来判断它到底是打印出列表 l 还是数字 1。 </p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不良代码-使用了 l 作为变量名</span></span><br><span class="line"></span><br><span class="line">List l = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">String</span>&gt;(); </span><br><span class="line"></span><br><span class="line">l.<span class="built_in">add</span>(<span class="string">"Foo"</span>); </span><br><span class="line"></span><br><span class="line">System.out.<span class="built_in">println</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>总之，小写字母 l 和数字 1 在大多数打字机字体中都是几乎一样的。为避免你的</p>
+<p>程序的读者对二者产生混淆，千万不要使用小写的 l 来作为 long 型字面常量的</p>
+<p>结尾或是作为变量名。Java 从 C 编程语言中继承良多，包括 long 型字面常量的</p>
+<p>语法。也许当初允许用小写的 l 来编写 long 型字面常量本身就是一个错误。 </p>
+<h2 id="谜题-5：十六进制的趣事-十六进制的趣事"><a href="#谜题-5：十六进制的趣事-十六进制的趣事" class="headerlink" title="谜题 5：十六进制的趣事 十六进制的趣事"></a>谜题 5：十六进制的趣事 十六进制的趣事</h2><p>下面的程序是对两个十六进制（hex）字面常量进行相加，然后打印出十六进制</p>
+<p>的结果。这个程序会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">JoyOfHex</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println( </span><br><span class="line"></span><br><span class="line"> Long.toHexString(<span class="number">0x100000000</span>L + <span class="number">0xcafebabe</span>)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来很明显，该程序应该打印出 1cafebabe。毕竟，这确实就是十六进制数字</p>
+<p>10000000016 与 cafebabe16 的和。该程序使用的是 long 型运算，它可以支持 16</p>
+<p>位十六进制数，因此运算溢出是不可能的。 </p>
+<p>然而，如果你运行该程序，你就会发现它打印出来的是 cafebabe，并没有任何</p>
+<p>前导的 1。这个输出表示的是正确结果的低 32 位，但是不知何故，第 33 位丢失</p>
+<p>了。 </p>
+<p>看起来程序好像执行的是 int 型运算而不是 long 型运算，或者是忘了加第一个</p>
+<p>操作数。这里到底发生了什么呢？ </p>
+<p>十进制字面常量具有一个很好的属性，即所有的十进制字面常量都是正的，而十</p>
+<p>六进制或是八进制字面常量并不具备这个属性。要想书写一个负的十进制常量，</p>
+<p>可以使用一元取反操作符（-）连接一个十进制字面常量。以这种方式，你可以</p>
+<p>用十进制来书写任何 int 或 long 型的数值，不管它是正的还是负的，并且负的</p>
+<p>十进制常数可以很明确地用一个减号符号来标识。但是十六进制和八进制字面常</p>
+<p>量并不是这么回事，它们可以具有正的以及负的数值。如果十六进制和八进制字</p>
+<p>面常量的最高位被置位了，那么它们就是负数。在这个程序中，数字 0xcafebabe</p>
+<p>是一个 int 常量，它的最高位被置位了，所以它是一个负数。它等于十进制数值</p>
+<p>-889275714。 </p>
+<p>该程序执行的这个加法是一种“混合类型的计算（mixed-type computation）:</p>
+<p>左操作数是 long 类型的，而右操作数是 int 类型的。为了执行该计算，Java 将</p>
+<p>int 类型的数值用拓宽原始类型转换提升为一个 long 类型，然后对两个 long 类</p>
+<p>型数值相加。因为 int 是一个有符号的整数类型，所以这个转换执行的是符合扩</p>
+<p>展：它将负的 int 类型的数值提升为一个在数值上相等的 long 类型数值。 </p>
+<p>这个加法的右操作数 0xcafebabe 被提升为了 long 类型的数值</p>
+<p>0xffffffffcafebabeL。这个数值之后被加到了左操作数 0x100000000L 上。当作</p>
+<p>为 int 类型来被审视时，经过符号扩展之后的右操作数的高 32 位是-1，而左操</p>
+<p>作数的高 32 位是 1，将这两个数值相加就得到了 0，这也就解释了为什么在程序</p>
+<p>输出中前导 1 丢失了。下面所示是用手写的加法实现。（在加法上面的数字是进</p>
+<p>位。） </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1111111</span> </span><br><span class="line"></span><br><span class="line"> <span class="number">0xffffffffcafebabe</span>L</span><br><span class="line"></span><br><span class="line">\+ <span class="number">0x0000000100000000</span>L</span><br><span class="line"></span><br><span class="line">\--------------------- </span><br><span class="line"></span><br><span class="line"> <span class="number">0x00000000cafebabe</span>L</span><br></pre></td></tr></table></figure>
+
+<p>订正该程序非常简单，只需用一个 long 十六进制字面常量来表示右操作数即可。</p>
+<p>这就可以避免了具有破坏力的符号扩展，并且程序也就可以打印出我们所期望的</p>
+<p>结果 1cafebabe： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">JoyOfHex</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println( </span><br><span class="line"></span><br><span class="line"> Long.toHexString(<span class="number">0x100000000</span>L + <span class="number">0xcafebabe</span>L));</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个谜题给我们的教训是：混合类型的计算可能会产生混淆，尤其是十六进制和</p>
+<p>八进制字面常量无需显式的减号符号就可以表示负的数值。为了避免这种窘境，</p>
+<p>通常最好是避免混合类型的计算。对于语言的设计者们来说，应该考虑支持无符</p>
+<p>号的整数类型，从而根除符号扩展的可能性。可能会有这样的争辩：负的十六进</p>
+<p>制和八进制字面常量应该被禁用，但是这可能会挫伤程序员，他们经常使用十六</p>
+<p>进制字面常量来表示那些符号没有任何重要含义的数值。 </p>
+<h2 id="谜题-6：多重转型"><a href="#谜题-6：多重转型" class="headerlink" title="谜题 6：多重转型"></a>谜题 6：多重转型</h2><p>转型被用来将一个数值从一种类型转换到另一种类型。下面的程序连续使用了三</p>
+<p>个转型。那么它到底会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Multicast</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>((<span class="keyword">int</span>)(<span class="keyword">char</span>)(<span class="keyword">byte</span>) <span class="number">-1</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无论你怎样分析这个程序，都会感到很迷惑。它以 int 数值-1 开始，然后从 int</p>
+<p>转型为 byte，之后转型为 char，最后转型回 int。第一个转型将数值从 32 位窄</p>
+<p>化到了 8 位，第二个转型将数值从 8 位拓宽到了 16 位，最后一个转型又将数值</p>
+<p>从 16 位拓宽回了 32 位。这个数值最终是回到了起点吗？如果你运行该程序，你</p>
+<p>就会发现不是。它打印出来的是 65535，但是这是为什么呢？ </p>
+<p>该程序的行为紧密依赖于转型的符号扩展行为。Java 使用了基于 2 的补码的二</p>
+<p>进制运算，因此 int 类型的数值-1 的所有 32 位都是置位的。从 int 到 byte 的</p>
+<p>转型是很简单的，它执行了一个窄化原始类型转化（narrowing primitive </p>
+<p>conversion），直接将除低 8 位之外的所有位全部砍掉。这样做留下的是一个 8</p>
+<p>位都被置位了的 byte，它仍旧表示-1。 </p>
+<p>从 byte 到 char 的转型稍微麻烦一点，因为 byte 是一个有符号类型，而 char</p>
+<p>是一个无符号类型。在将一个整数类型转换成另一个宽度更宽的整数类型时，通</p>
+<p>常是可以保持其数值的，但是却不可能将一个负的 byte 数值表示成一个 char。</p>
+<p>因此，从 byte 到 char 的转换被认为不是一个拓宽原始类型的转换，而是一个拓</p>
+<p>宽并窄化原始类型的转换（widening and narrowing primitive conversion）：</p>
+<p>byte 被转换成了 int，而这个 int 又被转换成了 char。 </p>
+<p>所有这些听起来有点复杂，幸运的是，有一条很简单的规则能够描述从较窄的整</p>
+<p>型转换成较宽的整型时的符号扩展行为：如果最初的数值类型是有符号的，那么</p>
+<p>就执行符号扩展；如果它是 char，那么不管它将要被转换成什么类型，都执行</p>
+<p>零扩展。了解这条规则可以使我们很容易地解决这个谜题。</p>
+<p>因为 byte 是一个有符号的类型，所以在将 byte 数值-1 转换成 char 时，会发生</p>
+<p>符号扩展。作为结果的 char 数值的 16 个位就都被置位了，因此它等于 216-1，</p>
+<p>即 65535。从 char 到 int 的转型也是一个拓宽原始类型转换，所以这条规则告</p>
+<p>诉我们，它将执行零扩展而不是符号扩展。作为结果的 int 数值也就成了 65535，</p>
+<p>这正是程序打印出的结果。 </p>
+<p>尽管这条简单的规则描述了在有符号和无符号整型之间进行拓宽原始类型时的</p>
+<p>符号扩展行为，你最好还是不要编写出依赖于它的程序。如果你正在执行一个转</p>
+<p>型到 char 或从 char 转型的拓宽原始类型转换，并且这个 char 是仅有的无符号</p>
+<p>整型，那么你最好将你的意图明确地表达出来。 </p>
+<p>如果你在将一个 char 数值 c 转型为一个宽度更宽的类型，并且你不希望有符号</p>
+<p>扩展，那么为清晰表达意图，可以考虑使用一个位掩码，即使它并不是必需的： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> i = c &amp; <span class="number">0xffff</span>;</span><br></pre></td></tr></table></figure>
+
+<p>或者，书写一句注释来描述转换的行为： </p>
+<p>int i = c; //不会执行符号扩展</p>
+<p>如果你在将一个 char 数值 c 转型为一个宽度更宽的整型，并且你希望有符号扩</p>
+<p>展，那么就先将 char 转型为一个 short，它与 char 具有同样的宽度，但是它是</p>
+<p>有符号的。在给出了这种细微的代码之后，你应该也为它书写一句注释： </p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = (<span class="keyword">short</span>) c; <span class="comment">//转型将引起符号扩展</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你在将一个 byte 数值 b 转型为一个 char，并且你不希望有符号扩展，那么</p>
+<p>你必须使用一个位掩码来限制它。这是一种通用做法，所以不需要任何注释： </p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char c = (<span class="name">char</span>) (<span class="name">b</span> &amp; <span class="number">0</span>xff)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个教训很简单：如果你通过观察不能确定程序将要做什么，那么它做的就很有</p>
+<p>可能不是你想要的。要为明白清晰地表达你的意图而努力。尽管有这么一条简单</p>
+<p>的规则，描述了涉及有符号和无符号整型拓宽转换的符号扩展行为，但是大多数</p>
+<p>程序员都不知道它。如果你的程序依赖于它，那么你就应该把你的意图表达清楚。 </p>
+<h2 id="谜题-7：互换内容"><a href="#谜题-7：互换内容" class="headerlink" title="谜题 7：互换内容"></a>谜题 7：互换内容</h2><p>下面的程序使用了复合的异或赋值操作符，它所展示的技术是一种编程习俗。那</p>
+<p>么它会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CleverSwap</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> x = <span class="number">1984</span>; <span class="comment">// (0x7c0) </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> y = <span class="number">2001</span>; <span class="comment">// (0x7d1) </span></span><br><span class="line"></span><br><span class="line"> x^= y^= x^= y; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"x= "</span> + x + <span class="string">"; y= "</span> + y); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就像其名称所暗示的，这个程序应该交换变量 x 和 y 的值。如果你运行它，就会</p>
+<p>发现很悲惨，它失败了，打印的是</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = <span class="number">0</span><span class="comment">; y = 1984。</span></span><br></pre></td></tr></table></figure>
+
+<p>交换两个变量的最显而易见的方式是使用一个临时变量： </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">int tmp</span> = x; </span><br><span class="line"></span><br><span class="line"><span class="attribute">x</span> = y; </span><br><span class="line"></span><br><span class="line"><span class="attribute">y</span> = tmp;</span><br></pre></td></tr></table></figure>
+
+<p>很久以前，当中央处理器只有少数寄存器时，人们发现可以通过利用异或操作符</p>
+<p>（^）的属性(x ^ y ^ x) == y 来避免使用临时变量： </p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> = <span class="symbol">x</span> ^ <span class="symbol">y</span>; </span><br><span class="line"></span><br><span class="line"><span class="symbol">y</span> = <span class="symbol">y</span> ^ <span class="symbol">x</span>; </span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = <span class="symbol">y</span> ^ <span class="symbol">x</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这个惯用法曾经在 C 编程语言中被使用过，并进一步被构建到了 C++中，但是它</p>
+<p>并不保证在二者中都可以正确运行。但是有一点是肯定的，那就是它在 Java 中</p>
+<p>肯定是不能正确运行的。 </p>
+<p>Java 语言规范描述到：操作符的操作数是从左向右求值的。为了求表达式 x ^= </p>
+<p>expr 的值，x 的值是在计算 expr 之前被提取的，并且这两个值的异或结果被赋</p>
+<p>给变量 x。在 CleverSwap 程序中，变量 x 的值被提取了两次——每次在表达式</p>
+<p>中出现时都提取一次——但是两次提取都发生在所有的赋值操作之前。 </p>
+<p>下面的代码段详细地描述了将互换惯用法分解开之后的行为，并且解释了为什么</p>
+<p>产生的是我们所看到的输出： </p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 中 x^= y^= x^= y 的实际行为</span></span><br><span class="line"></span><br><span class="line">int tmp1 = <span class="symbol">x</span> ; <span class="comment">// x 在表达式中第一次出现</span></span><br><span class="line"></span><br><span class="line">int tmp2 = <span class="symbol">y</span> ; <span class="comment">// y 的第一次出现</span></span><br><span class="line"></span><br><span class="line">int tmp3 = <span class="symbol">x</span> ^ <span class="symbol">y</span> ; <span class="comment">// 计算 x ^ y</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = tmp3 ; <span class="comment">// 最后一个赋值：存储 x ^ y 到 x</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">y</span> = tmp2 ^ tmp3 ; <span class="comment">// 第二个赋值：存储最初的 x 值到 y 中 </span></span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = tmp1 ^ <span class="symbol">y</span> ; <span class="comment">// 第一个赋值：存储 0 到 x 中</span></span><br></pre></td></tr></table></figure>
+
+<p>在 C 和 C++中，并没有指定表达式的计算顺序。当编译表达式 x ^= expr 时，许</p>
+<p>多 C 和 C++编译器都是在计算 expr 之后才提取 x 的值的，这就使得上述的惯用</p>
+<p>法可以正常运转。尽管它可以正常运转，但是它仍然违背了 C/C++有关不能在两</p>
+<p>个连续的序列点之间重复修改变量的规则。因此，这个惯用法的行为在 C 和 C++</p>
+<p>中也没有明确定义。 </p>
+<p>为了看重其价值，我们还是可以写出不用临时变量就可以互换两个变量内容的</p>
+<p>Java 表达式的。但是它同样是丑陋而无用的： </p>
+<p>// 杀鸡用牛刀的做法，千万不要这么做！</p>
+<p>y = (x^= (y^= x))^ y ; </p>
+<p>这个教训很简单：在单个的表达式中不要对相同的变量赋值两次。表达式如果包</p>
+<p>含对相同变量的多次赋值，就会引起混乱，并且很少能够执行你希望的操作。即</p>
+<p>使对多个变量进行赋值也很容易出错。更一般地讲，要避免所谓聪明的编程技巧。</p>
+<p>它们都是易于产生 bug 的，很难以维护，并且运行速度经常是比它们所替代掉的</p>
+<p>简单直观的代码要慢。 </p>
+<p>语言设计者可能会考虑禁止在一个表达式中对相同的变量多次赋值，但是在一般</p>
+<p>的情况下，强制执行这条禁令会因为别名机制的存在而显得很不灵活。例如，请</p>
+<p>考虑表达式 x = a[i]++ - a[j]++，它是否递增了相同的变量两次呢？这取决于</p>
+<p>在表达式被计算时 i 和 j 的值，并且编译器通常是无法确定这一点。 </p>
+<h2 id="谜题-8：Dos-Equis-Dos-Equis-Dos-Equis"><a href="#谜题-8：Dos-Equis-Dos-Equis-Dos-Equis" class="headerlink" title="谜题 8：Dos Equis Dos Equis Dos Equis"></a>谜题 8：Dos Equis Dos Equis Dos Equis</h2><p>这个谜题将测试你对条件操作符的掌握程度，这个操作符有一个更广为人知的名</p>
+<p>字：问号冒号操作符。下面的程序将会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DosEquis</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">char</span> x = <span class="string">'X'</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> i = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="literal">true</span> ? x : <span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="literal">false</span> ? i : x); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序由两个变量声明和两个 print 语句构成。第一个 print 语句计算条件表</p>
+<p>达式(true ? x : 0)并打印出结果，这个结果是 char 类型变量 x 的值’X’。而</p>
+<p>第二个 print 语句计算表达式(false ? i : x)并打印出结果，这个结果还是依</p>
+<p>旧是’X’的 x，因此这个程序应该打印 XX。然而，如果你运行该程序，你就会</p>
+<p>发现它打印出来的是 X88。这种行为看起来挺怪的。第一个 print 语句打印的是</p>
+<p>X，而第二个打印的却是 88。它们的不同行为说明了什么呢？ </p>
+<p>答案就在规范有关条件表达式部分的一个阴暗的角落里。请注意在这两个表达式</p>
+<p>中，每一个表达式的第二个和第三个操作数的类型都不相同：x 是 char 类型的，</p>
+<p>而 0 和 i 都是 int 类型的。就像在谜题 5 的解答中提到的，混合类型的计算会引</p>
+<p>起混乱，而这一点比在条件表达式中比在其它任何地方都表现得更明显。你可能</p>
+<p>考虑过，这个程序中两个条件表达式的结果类型是相同的，就像它们的操作数类</p>
+<p>型是相同的一样，尽管操作数的顺序颠倒了一下，但是实际情况并非如此。 </p>
+<p>确定条件表达式结果类型的规则过于冗长和复杂，很难完全记住它们，但是其核</p>
+<p>心就是一下三点： </p>
+<p>• 如果第二个和第三个操作数具有相同的类型，那么它就是条件表达式的类</p>
+<p>型。换句话说，你可以通过绕过混合类型的计算来避免大麻烦。 </p>
+<p>• 如果一个操作数的类型是 T，T 表示 byte、short 或 char，而另一个操作</p>
+<p>数是一个 int 类型的常量表达式，它的值是可以用类型 T 表示的，那么条</p>
+<p>件表达式的类型就是 T。 </p>
+<p>• 否则，将对操作数类型运用二进制数字提升，而条件表达式的类型就是第</p>
+<p>二个和第三个操作数被提升之后的类型。 </p>
+<p>2、3 两点对本谜题是关键。在程序的两个条件表达式中，一个操作数的类型是</p>
+<p>char，另一个的类型是 int。在两个表达式中，int 操作数都是 0，它可以被表</p>
+<p>示成一个 char。然而，只有第一个表达式中的 int 操作数是常量（0），而第二</p>
+<p>个表达式中的 int 操作数是变量（i）。因此，第 2 点被应用到了第一个表达式</p>
+<p>上，它返回的类型是 char，而第 3 点被应用到了第二个表达式上，其返回的类</p>
+<p>型是对 int 和 char 运用了二进制数字提升之后的类型，即 int。 </p>
+<p>条件表达式的类型将确定哪一个重载的 print 方法将被调用。对第一个表达式来</p>
+<p>说，PrintStream.print(char)将被调用，而对第二个表达式来说，</p>
+<p>PrintStream.print(int)将被调用。前一个重载方法将变量 x 的值作为 Unicode</p>
+<p>字符（X）来打印，而后一个重载方法将其作为一个十进制整数（88）来打印。</p>
+<p>至此，谜题被解开了。 </p>
+<p>总之，通常最好是在条件表达式中使用类型相同的第二和第三操作数。否则，你</p>
+<p>和你的程序的读者必须要彻底理解这些表达式行为的复杂规范。 </p>
+<p>对语言设计者来说，也许可以设计一个牺牲掉了部分灵活性，但是增加了简洁性</p>
+<p>的条件操作符。例如，要求第二和第三操作数必须就有相同的类型，这看起来就</p>
+<p>很合理。或者，条件操作符可以被定义为对常量没有任何特殊处理。为了让这些</p>
+<p>选择对程序员来说更加容易接受，可以提供用来表示所有原始类型字面常量的语</p>
+<p>法。这也许确实是一个好注意，因为它增加了语言的一致性和完备性，同时又减</p>
+<p>少了对转型的需求。 </p>
+<h2 id="谜题-9：半斤"><a href="#谜题-9：半斤" class="headerlink" title="谜题 9：半斤"></a>谜题 9：半斤</h2><p>现在该轮到你来写些代码了，好消息是，你只需为这个谜题编写两行代码，并为</p>
+<p>下一个谜题也编写两行代码。这有什么难的呢？我们给出一个对变量 x 和 i 的声</p>
+<p>明即可，它肯定是一个合法的语句： </p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，它并不是： </p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>许多程序员都会认为该迷题中的第一个表达式（x += i）只是第二个表达式（x = </p>
+<p>x + i）的简写方式。但是这并不十分准确。这两个表达式都被称为赋值表达式。</p>
+<p>第二条语句使用的是简单赋值操作符（=），而第一条语句使用的是复合赋值操</p>
+<p>作符。（复合赋值操作符包括 +=、-=、*=、/=、%=、&lt;&lt;=、&gt;&gt;=、&gt;&gt;&gt;=、&amp;=、^=</p>
+<p>和|=）Java 语言规范中讲到，复合赋值 E1 op= E2 等价于简单赋值 E1 = </p>
+<p>(T)((E1)op(E2))，其中 T 是 E1 的类型，除非 E1 只被计算一次。 </p>
+<p>换句话说，复合赋值表达式自动地将它们所执行的计算的结果转型为其左侧变量</p>
+<p>的类型。如果结果的类型与该变量的类型相同，那么这个转型不会造成任何影响。</p>
+<p>然而，如果结果的类型比该变量的类型要宽，那么复合赋值操作符将悄悄地执行</p>
+<p>一个窄化原始类型转换。因此，我们有很好的理由去解释为什么在尝试着执行等</p>
+<p>价的简单赋值可能会产生一个编译错误。 </p>
+<p>为了说得具体一些，并提供一个解决方案给这个谜题，假设我们在该谜题的两个</p>
+<p>赋值表达式之前有下面这些声明： </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">short x</span> = 0; </span><br><span class="line"></span><br><span class="line"><span class="attribute">int i</span> = 123456;</span><br></pre></td></tr></table></figure>
+
+<p>复合赋值编译将不会产生任何错误： </p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> += i; <span class="comment">// 包含了一个隐藏的转型！</span></span><br></pre></td></tr></table></figure>
+
+<p>你可能期望 x 的值在这条语句执行之后是 123,456，但是并非如此 l，它的值是</p>
+<p>-7,616。int 类型的数值 123456 对于 short 来说太大了。自动产生的转型悄悄</p>
+<p>地把 int 数值的高两位给截掉了。这也许就不是你想要的了。 </p>
+<p>相对应的简单赋值是非法的，因为它试图将 int 数值赋值给 short 变量，它需要</p>
+<p>一个显式的转型： </p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> = <span class="symbol">x</span> + i; <span class="comment">// 不要编译——“可能会丢掉精度”</span></span><br></pre></td></tr></table></figure>
+
+<p>这应该是明显的，复合赋值表达式可能是很危险的。为了避免这种令人不快的突</p>
+<p>袭，请不要将复合赋值操作符作用于 byte、short 或 char 类型的变量上。在将</p>
+<p>复合赋值操作符作用于 int 类型的变量上时，要确保表达式右侧不是 long、float</p>
+<p>或 double 类型。在将复合赋值操作符作用于 float 类型的变量上时，要确保表</p>
+<p>达式右侧不是 double 类型。这些规则足以防止编译器产生危险的窄化转型。 </p>
+<p>总之，复合赋值操作符会悄悄地产生一个转型。如果计算结果的类型宽于变量的</p>
+<p>类型，那么所产生的转型就是一个危险的窄化转型。这样的转型可能会悄悄地丢</p>
+<p>弃掉精度或数量值。对语言设计者来说，也许让复合赋值操作符产生一个不可见</p>
+<p>的转型本身就是一个错误；对于在复合赋值中的变量类型比计算结果窄的情况，</p>
+<p>也许应该让其非法才对。</p>
+<h2 id="谜题-10：八两"><a href="#谜题-10：八两" class="headerlink" title="谜题 10：八两"></a>谜题 10：八两</h2><p>与上面的例子相反，如果我们给出的关于变量 x 和 i 的声明是如下的合法语句： </p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，它并不是： </p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
+
+<p>乍一看，这个谜题可能看起来与前面一个谜题相同。但是请放心，它们并不一样。</p>
+<p>这两个谜题在哪一条语句必是合法的，以及哪一条语句必是不合法的方面，正好</p>
+<p>相反。 </p>
+<p>就像前面的谜题一样，这个谜题也依赖于有关复合赋值操作符的规范中的细节。</p>
+<p>二者的相似之处就此打住。基于前面的谜题，你可能会想：符合赋值操作符比简</p>
+<p>单赋值操作符的限制要少一些。在一般情况下，这是对的，但是有这么一个领域，</p>
+<p>在其中简单赋值操作符会显得更宽松一些。 </p>
+<p>复合赋值操作符要求两个操作数都是原始类型的，例如 int，或包装了的原始类</p>
+<p>型，例如 Integer，但是有一个例外：如果在+=操作符左侧的操作数是 String</p>
+<p>类型的，那么它允许右侧的操作数是任意类型，在这种情况下，该操作符执行的</p>
+<p>是字符串连接操作。简单赋值操作符（=）允许其左侧的是对象引用类型，这就</p>
+<p>显得要宽松许多了：你可以使用它们来表示任何你想要表示的内容，只要表达式</p>
+<p>的右侧与左侧的变量是赋值兼容的即可。 </p>
+<p>你可以利用这一差异来解决该谜题。要想用 += 操作符来执行字符串连接操作，</p>
+<p>你就必须将左侧的变量声明为 String 类型。通过使用直接赋值操作符，字符串</p>
+<p>连接的结果可以存放到一个 Object 类型的变量中。 </p>
+<p>为了说得具体一些，并提供一个解决方案给这个谜题，假设我们在该谜题的两个</p>
+<p>赋值表达式之前有下面这些声明： </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Object x</span> = <span class="string">"Buy "</span>; </span><br><span class="line"></span><br><span class="line"><span class="attribute">String i</span> = <span class="string">"Effective Java!"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>简单赋值是合法的，因为 x + i 是 String 类型的，而 String 类型又是与 Object</p>
+<p>赋值兼容的： </p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>复合赋值是非法的，因为左侧是一个 Object 引用类型，而右侧是一个 String</p>
+<p>类型： </p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个谜题对程序员来说几乎算不上什么教训。对语言设计者来说，加法的复合赋</p>
+<p>值操作符应该在右侧是 String 类型的情况下，允许左侧是 Object 类型。这项修</p>
+<p>改将根除这个谜题所展示的违背直觉的行为。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" rel="tag"># java进阶学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E5%BC%82%E5%B8%B8/" rel="prev" title="java异常处理">
+      <i class="fa fa-chevron-left"></i> java异常处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E5%AD%97%E7%AC%A6%E8%B0%9C%E9%A2%98/" rel="next" title="java字符谜题">
+      java字符谜题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-谜题-Java-谜题-1——表达式谜题"><span class="nav-number">1.</span> <span class="nav-text">Java 谜题 Java 谜题 1——表达式谜题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-1：奇数性"><span class="nav-number">1.1.</span> <span class="nav-text">谜题 1：奇数性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-2：找零时刻"><span class="nav-number">1.2.</span> <span class="nav-text">谜题 2：找零时刻</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-3：长整除"><span class="nav-number">1.3.</span> <span class="nav-text">谜题 3：长整除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-4：初级问题"><span class="nav-number">1.4.</span> <span class="nav-text">谜题 4：初级问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-5：十六进制的趣事-十六进制的趣事"><span class="nav-number">1.5.</span> <span class="nav-text">谜题 5：十六进制的趣事 十六进制的趣事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-6：多重转型"><span class="nav-number">1.6.</span> <span class="nav-text">谜题 6：多重转型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-7：互换内容"><span class="nav-number">1.7.</span> <span class="nav-text">谜题 7：互换内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-8：Dos-Equis-Dos-Equis-Dos-Equis"><span class="nav-number">1.8.</span> <span class="nav-text">谜题 8：Dos Equis Dos Equis Dos Equis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-9：半斤"><span class="nav-number">1.9.</span> <span class="nav-text">谜题 9：半斤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-10：八两"><span class="nav-number">1.10.</span> <span class="nav-text">谜题 10：八两</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">233</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">28:26</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

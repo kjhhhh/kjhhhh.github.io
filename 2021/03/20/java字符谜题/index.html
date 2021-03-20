@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 谜题 Java 谜题 2——字符谜题谜题 11：最后的笑声下面的程序将打印出什么呢？  1234567891011public class LastLaugh&amp;#123;  public static void main(String[] args)&amp;#123;  System.out.print(&quot;H&quot;+&quot;a&quot;); System.out.print(&#39;H&#39;+&#39;a&#39;);  &amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java字符谜题">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E5%AD%97%E7%AC%A6%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 谜题 Java 谜题 2——字符谜题谜题 11：最后的笑声下面的程序将打印出什么呢？  1234567891011public class LastLaugh&amp;#123;  public static void main(String[] args)&amp;#123;  System.out.print(&quot;H&quot;+&quot;a&quot;); System.out.print(&#39;H&#39;+&#39;a&#39;);  &amp;#125;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-20T11:15:36.043Z">
+<meta property="article:modified_time" content="2021-03-20T14:27:59.219Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java进阶学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E5%AD%97%E7%AC%A6%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java字符谜题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%AD%97%E7%AC%A6%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java字符谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 19:15:36 / 修改时间：22:27:59" itemprop="dateCreated datePublished" datetime="2021-03-20T19:15:36+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>20 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-谜题-Java-谜题-2——字符谜题"><a href="#Java-谜题-Java-谜题-2——字符谜题" class="headerlink" title="Java 谜题 Java 谜题 2——字符谜题"></a>Java 谜题 Java 谜题 2——字符谜题</h1><h2 id="谜题-11：最后的笑声"><a href="#谜题-11：最后的笑声" class="headerlink" title="谜题 11：最后的笑声"></a>谜题 11：最后的笑声</h2><p>下面的程序将打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LastLaugh</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"H"</span>+<span class="string">"a"</span>);</span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">'H'</span>+<span class="string">'a'</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可能会认为这个程序将打印 HaHa。该程序看起来好像是用两种方式连接了 H</p>
+<p>和 a，但是你所见为虚。如果你运行这个程序，就会发现它打印的是 Ha169。那</p>
+<p>么，为什么它会产生这样的行为呢？ </p>
+<p>正如我们所期望的，第一个对 System.out.print 的调用打印的是 Ha：它的参数</p>
+<p>是表达式”H”+”a”，显然它执行的是一个字符串连接。而第二个对</p>
+<p>System.out.print 的调用就是另外一回事了。问题在于’H’和’a’是字符型字面</p>
+<p>常量，因为这两个操作数都不是字符串类型的，所以 + 操作符执行的是加法而</p>
+<p>不是字符串连接。</p>
+<p>编译器在计算常量表达式’H’+’a’时，是通过我们熟知的拓宽原始类型转换将两</p>
+<p>个具有字符型数值的操作数（’H’和’a’）提升为 int 数值而实现的。从 char 到</p>
+<p>int 的拓宽原始类型转换是将 16 位的 char 数值零扩展到 32 位的 int。对于’H’，</p>
+<p>char 数值是 72，而对于’a’，char 数值是 97，因此表达式’H’+’a’等价于 int</p>
+<p>常量 72 + 97，或 169。 </p>
+<p>站在语言的立场上，若干个 char 和字符串的相似之处是虚幻的。语言所关心的</p>
+<p>是，char 是一个无符号 16 位原始类型整数——仅此而已。对类库来说就不尽如</p>
+<p>此了，类库包含了许多可以接受 char 参数，并将其作为 Unicode 字符处理的方</p>
+<p>法。 </p>
+<p>那么你应该怎样将字符连接在一起呢？你可以使用这些类库。例如，你可以使用</p>
+<p>一个字符串缓冲区： </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">StringBuffer sb = <span class="built_in">new</span> StringBuffer(); </span><br><span class="line"></span><br><span class="line">sb.<span class="built_in">append</span>(<span class="string">'H'</span>); </span><br><span class="line"></span><br><span class="line">sb.<span class="built_in">append</span>(<span class="string">'a'</span>); </span><br><span class="line"></span><br><span class="line">System.out.<span class="built_in">println</span>(sb); 这么做可以正常运行，但是显得很丑陋。其实我们还是有办法去避免这种方式所</span><br></pre></td></tr></table></figure>
+
+<p>产生的拖沓冗长的代码。 你可以通过确保至少有一个操作数为字符串类型，来</p>
+<p>强制 + 操作符去执行一个字符串连接操作，而不是一个加法操作。这种常见的</p>
+<p>惯用法用一个空字符串（””）作为一个连接序列的开始，如下所示： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("" + <span class="string">'H'</span> + <span class="string">'a'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这种惯用法可以确保子表达式都被转型为字符串。尽管这很有用，但是多少有一</p>
+<p>点难看，而且它自身可能会引发某些混淆。你能猜到下面的语句将会打印出什么</p>
+<p>吗？如果你不能确定，那么就试一下： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.print(<span class="string">"2 + 2 = "</span> + <span class="number">2</span>+<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果使用的是 JDK 5.0，你还可以使用</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">"%c%c"</span>, <span class="string">'H'</span>, <span class="string">'a'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>总之，使用字符串连接操作符使用格外小心。+ 操作符当且仅当它的操作数中至</p>
+<p>少有一个是 String 类型时，才会执行字符串连接操作；否则，它执行的就是加</p>
+<p>法。如果要连接的没有一个数值是字符串类型的，那么你可以有几种选择： </p>
+<p>• 预置一个空字符串； </p>
+<p>• 将第一个数值用 String.valueOf 显式地转换成一个字符串； </p>
+<p>• 使用一个字符串缓冲区； </p>
+<p>• 或者如果你使用的 JDK 5.0，可以用 printf 方法。 </p>
+<p>这个谜题还包含了一个给语言设计者的教训。操作符重载，即使在 Java 中只在</p>
+<p>有限的范围内得到了支持，它仍然会引起混淆。为字符串连接而重载 + 操作符</p>
+<p>可能就是一个已铸成的错误。 </p>
+<h2 id="谜题-12：ABC"><a href="#谜题-12：ABC" class="headerlink" title="谜题 12：ABC"></a>谜题 12：ABC</h2><p>这个谜题要问的是一个悦耳的问题，下面的程序将打印什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ABC</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">String</span> letters = <span class="string">"ABC"</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">char</span>[] numbers = &#123;<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>&#125;; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(letters + <span class="string">" easy as "</span> + numbers); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可能大家希望这个程序打印出 ABC easy as 123。遗憾的是，它没有。如果你运</p>
+<p>行它，就会发现它打印的是诸如 ABC easy as [C@16f0472 之类的东西。为什么</p>
+<p>这个输出会如此丑陋？ 尽管 char 是一个整数类型，但是许多类库都对其进行了特殊处理，因为 char</p>
+<p>数值通常表示的是字符而不是整数。例如，将一个 char 数值传递给 println 方</p>
+<p>法会打印出一个 Unicode 字符而不是它的数字代码。字符数组受到了相同的特殊</p>
+<p>处理：println 的 char[]重载版本会打印出数组所包含的所有字符，而</p>
+<p>String.valueOf和StringBuffer.append的 char[]重载版本的行为也是类似的。 </p>
+<p>然而，字符串连接操作符在这些方法中没有被定义。该操作符被定义为先对它的</p>
+<p>两个操作数执行字符串转换，然后将产生的两个字符串连接到一起。对包括数组</p>
+<p>在内的对象引用的字符串转换定义如下[JLS 15.18.1.1]： </p>
+<p>如果引用为 null，它将被转换成字符串”null”。否则，该转换的执行就像是不</p>
+<p>用任何参数调用该引用对象的 toString 方法一样；但是如果调用 toString 方法</p>
+<p>的结果是 null，那么就用字符串”null”来代替。 </p>
+<p>那么，在一个非空 char 数组上面调用 toString 方法会产生什么样的行为呢？数</p>
+<p>组是从 Object 那里继承的 toString 方法[JLS 10.7]，规范中描述到：“返回一</p>
+<p>个字符串，它包含了该对象所属类的名字，‘@’符号，以及表示对象散列码的一</p>
+<p>个无符号十六进制整数”[Java-API]。有关 Class.getName 的规范描述到：在</p>
+<p>char[]类型的类对象上调用该方法的结果为字符串”[C”。将它们连接到一起就形</p>
+<p>成了在我们的程序中打印出来的那个丑陋的字符串。 </p>
+<p>有两种方法可以订正这个程序。你可以在调用字符串连接操作之前，显式地将一</p>
+<p>个数组转换成一个字符串： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(letters + <span class="string">" easy as "</span> + </span><br><span class="line"></span><br><span class="line"> <span class="module-access"><span class="module"><span class="identifier">String</span>.</span></span>value<span class="constructor">Of(<span class="params">numbers</span>)</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者，你可以将 System.out.println 调用分解为两个调用，以利用 println 的</p>
+<p>char[]重载版本： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.print(letters + " easy as "); </span><br><span class="line"></span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(numbers);</span><br></pre></td></tr></table></figure>
+
+<p>请注意，这些订正只有在你调用了 valueOf 和 println 方法正确的重载版本的情</p>
+<p>况下，才能正常运行。换句话说，它们严格依赖于数组引用的编译期类型。 </p>
+<p>下面的程序说明了这种依赖性。看起来它像是所描述的第二种订正方式的具体实</p>
+<p>现，但是它产生的输出却与最初的程序所产生的输出一样丑陋，因为它调用的是</p>
+<p>println 的 Object 重载版本，而不是 char[]重载版本。 </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ABC2</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">String</span> letters = <span class="string">"ABC"</span>; </span><br><span class="line"></span><br><span class="line"> Object numbers = <span class="keyword">new</span> <span class="keyword">char</span>[] &#123; <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span> &#125;;</span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(letters + <span class="string">" easy as "</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(numbers); </span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>} 总之，char 数组不是字符串。要想将一个 char 数组转换成一个字符串，就要调</p>
+<p>用 String.valueOf(char[])方法。某些类库中的方法提供了对 char 数组的类似</p>
+<p>字符串的支持，通常是提供一个 Object 版本的重载方法和一个 char[]版本的重</p>
+<p>载方法，而之后后者才能产生我们想要的行为。 </p>
+<p>对语言设计者的教训是：char[]类型可能应该覆写 toString 方法，使其返回数</p>
+<p>组中包含的字符。更一般地讲，数组类型可能都应该覆写 toString 方法，使其</p>
+<p>返回数组内容的一个字符串表示。 </p>
+<h2 id="谜题-13：畜牧场"><a href="#谜题-13：畜牧场" class="headerlink" title="谜题 13：畜牧场"></a>谜题 13：畜牧场</h2><p>George Orwell 的《畜牧场（Animal Farm）》一书的读者可能还记得老上校的</p>
+<p>宣言：“所有的动物都是平等的。”下面的 Java 程序试图要测试这项宣言。那</p>
+<p>么，它将打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimalFarm</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> <span class="keyword">String</span> pig = <span class="string">"length: 10"</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> <span class="keyword">String</span> dog = <span class="string">"length: "</span> + pig.length(); </span><br><span class="line"></span><br><span class="line"> System.out. <span class="built_in">println</span>(<span class="string">"Animals are equal: "</span></span><br><span class="line"></span><br><span class="line"> + pig == dog); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对该程序的表面分析可能会认为它应该打印出 Animal are equal: true。毕竟，</p>
+<p>pig和 dog都是final的 string类型变量，它们都被初始化为字符序列“length:</p>
+<p>10”。换句话说，被 pig 和 dog 引用的字符串是且永远是彼此相等的。然而，==</p>
+<p>操作符测试的是这两个对象引用是否正好引用到了相同的对象上。在本例中，它</p>
+<p>们并非引用到了相同的对象上。 </p>
+<p>你可能知道 String 类型的编译期常量是内存限定的。换句话说，任何两个 String</p>
+<p>类型的常量表达式，如果标明的是相同的字符序列，那么它们就用相同的对象引</p>
+<p>用来表示。如果用常量表达式来初始化 pig 和 dog，那么它们确实会指向相同的</p>
+<p>对象，但是 dog 并不是用常量表达式初始化的。既然语言已经对在常量表达式中</p>
+<p>允许出现的操作作出了限制，而方法调用又不在其中，那么，这个程序就应该打</p>
+<p>印 Animal are equal: false，对吗？ </p>
+<p>嗯，实际上不对。如果你运行该程序，你就会发现它打印的只是 false，并没有</p>
+<p>其它的任何东西。它没有打印 Animal are equal: 。它怎么会不打印这个字符</p>
+<p>串字面常量呢？毕竟打印它才是正确的呀！谜题 11 的解谜方案包含了一条暗示：</p>
+<p>+ 操作符，不论是用作加法还是字符串连接操作，它都比 == 操作符的优先级高。</p>
+<p>因此，println 方法的参数是按照下面的方式计算的： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(("Animals are equal: " + pig) == dog);</span><br></pre></td></tr></table></figure>
+
+<p>这个布尔表达式的值当然是 false，它正是该程序的所打印的输出。 有一个肯定能够避免此类窘境的方法：在使用字符串连接操作符时，总是将非平</p>
+<p>凡的操作数用括号括起来。更一般地讲，当你不能确定你是否需要括号时，应该</p>
+<p>选择稳妥地做法，将它们括起来。如果你在 println 语句中像下面这样把比较部</p>
+<p>分括起来，它将产生所期望的输出 Animals are equal: false ： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("Animals are equal: " + (pig == dog));</span><br></pre></td></tr></table></figure>
+
+<p>可以论证，该程序仍然有问题。 </p>
+<p>如果可以的话，你的代码不应该依赖于字符串常量的内存限定机制。内存限定机</p>
+<p>制只是设计用来减少虚拟机内存占有量的，它并不是作为程序员可以使用的一种</p>
+<p>工具而设计的。就像这个谜题所展示的，哪一个表达式会产生字符串常量并非总</p>
+<p>是很显而易见。 </p>
+<p>更糟的是，如果你的代码依赖于内存限定机制实现操作的正确性，那么你就必须</p>
+<p>仔细地了解哪些域和参数必定是内存限定的。编译器不会帮你去检查这些不变</p>
+<p>量，因为内存限定的和不限定的字符串使用相同的类型（String）来表示的。这</p>
+<p>些因在内存中限定字符串失败而导致的 bug 是非常难以探测到的。 </p>
+<p>在比较对象引用时，你应该优先使用 equals 方法而不是 == 操作符，除非你需</p>
+<p>要比较的是对象的标识而不是对象的值。通过把这个教训应用到我们的程序中，</p>
+<p>我们给出了下面的 println 语句，这才是它应该具有的模样。很明显，在用这种</p>
+<p>方式订正了该程序之后，它将打印出 true： </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.println(<span class="string">"Animals are equal: "</span> + pig.<span class="keyword">equals</span>(dog));</span><br></pre></td></tr></table></figure>
+
+<p>这个谜题对语言设计者来说有两个教训。 </p>
+<p>• 字符串连接的优先级不应该和加法一样。这意味着重载 + 操作符来执行</p>
+<p>字符串连接是有问题的，就像在谜题 11 中提到的一样。 </p>
+<p>• 还有就是，对于不可修改的类型，例如 String，其引用的等价性比值的</p>
+<p>等价性更加让人感到迷惑。也许 == 操作符在被应用于不可修改的类型时</p>
+<p>应该执行值比较。要实现这一点，一种方法是将 == 操作符作为 equals</p>
+<p>方法的简便写法，并提供一个单独的类似于 System.identityHashCode</p>
+<p>的方法来执行引用标识的比较。 </p>
+<h2 id="谜题-14：转义字符的溃败-转义字符的溃败"><a href="#谜题-14：转义字符的溃败-转义字符的溃败" class="headerlink" title="谜题 14：转义字符的溃败 转义字符的溃败"></a>谜题 14：转义字符的溃败 转义字符的溃败</h2><p>下面的程序使用了两个 Unicode 的转义字符，它们是用其十六进制代码来表示</p>
+<p>Unicode 字符。那么，这个程序会打印什么呢？ </p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> EscapeRout&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// \u0022 是双引号的 Unicode 转义字符</span></span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(<span class="string">"a\u0022.length() </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">+\u0022b"</span>.length()); </span><br><span class="line"></span><br><span class="line"> &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>对该程序的一种很肤浅的分析会认为它应该打印出 26，因为在由两个双引号</p>
+<p>“a\u0022.length()+\u0022b”标识的字符串之间总共有 26 个字符。 </p>
+<p>稍微深入一点的分析会认为该程序应该打印 16，因为两个 Unicode 转义字符每</p>
+<p>一个在源文件中都需要用 6 个字符来表示，但是它们只表示字符串中的一个字</p>
+<p>符。因此这个字符串应该比它的外表看其来要短 10 个字符。 如果你运行这个程</p>
+<p>序，就会发现事情远不是这么回事。它打印的既不是 26 也不是 16，而是 2。 </p>
+<p>理解这个谜题的关键是要知道：Java 对在字符串字面常量中的 Unicode 转义字</p>
+<p>符没有提供任何特殊处理。编译器在将程序解析成各种符号之前，先将 Unicode</p>
+<p>转义字符转换成为它们所表示的字符[JLS 3.2]。因此，程序中的第一个 Unicode</p>
+<p>转义字符将作为一个单字符字符串字面常量（”a”）的结束引号，而第二个</p>
+<p>Unicode 转义字符将作为另一个单字符字符串字面常量（”b”）的开始引号。程</p>
+<p>序打印的是表达式”a”.length()+”b”.length()，即 2。 </p>
+<p>如果该程序的作者确实希望得到这种行为，那么下面的语句将要清楚得多： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("a".length()+"b".length());</span><br></pre></td></tr></table></figure>
+
+<p>更有可能的情况是该作者希望将两个双引号字符置于字符串字面常量的内部。使</p>
+<p>用 Unicode 转义字符你是不能实现这一点的，但是你可以使用转义字符序列来实</p>
+<p>现[JLS 3.10.6]。表示一个双引号的转义字符序列是一个反斜杠后面紧跟着一个</p>
+<p>双引号（\”）。如果将最初的程序中的 Unicode 转义字符用转义字符序列来替</p>
+<p>换，那么它将打印出所期望的 16： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("a\".length()+\"b".length());</span><br></pre></td></tr></table></figure>
+
+<p>许多字符都有相应的转义字符序列，包括单引号（&#39;）、换行（\n）、制表符（\t）</p>
+<p>和反斜线（\）。你可以在字符字面常量和字符串字面常量中使用转义字符序列。 </p>
+<p>实际上，你可以通过使用被称为八进制转义字符的特殊类型的转义字符序列，将</p>
+<p>任何 ASCII 字符置于一个字符串字面常量或一个字符字面常量中，但是最好是尽</p>
+<p>可能地使用普通的转义字符序列。 </p>
+<p>普通的转义字符序列和八进制转义字符都比 Unicode 转义字符要好得多，因为与</p>
+<p>Unicode 转义字符不同，转义字符序列是在程序被解析为各种符号之后被处理</p>
+<p>的。 </p>
+<p>ASCII 是字符集的最小公共特性集，它只有 128 个字符，但是 Unicode 有超过</p>
+<p>65,000 个字符。一个 Unicode 转义字符可以被用来在只使用 ASCII 字符的程序</p>
+<p>中插入一个Unicode字符。一个Unicode转义字符精确地等价于它所表示的字符。 </p>
+<p>Unicode 转义字符被设计为用于在程序员需要插入一个不能用源文件字符集表</p>
+<p>示的字符的情况。它们主要用于将非 ASCII 字符置于标识符、字符串字面常量、</p>
+<p>字符字面常量以及注释中。偶尔地，Unicode 转义字符也被用来在看起来颇为相</p>
+<p>似的数个字符中明确地标识其中的某一个，从而增加程序的清晰度。 总之，在字符串和字符字面常量中要优先选择的是转义字符序列，而不是</p>
+<p>Unicode 转义字符。Unicode 转义字符可能会因为它们在编译序列中被处理得过</p>
+<p>早而引起混乱。不要使用 Unicode 转义字符来表示 ASCII 字符。在字符串和字符</p>
+<p>字面常量中，应该使用转义字符序列；对于除这些字面常量之外的情况，应该直</p>
+<p>接将 ASCII 字符插入到源文件中。 </p>
+<h2 id="谜题-15：令人晕头转向的-令人晕头转向的-Hello"><a href="#谜题-15：令人晕头转向的-令人晕头转向的-Hello" class="headerlink" title="谜题 15：令人晕头转向的 令人晕头转向的 Hello"></a>谜题 15：令人晕头转向的 令人晕头转向的 Hello</h2><p>下面的程序是对一个老生常谈的例子做出了稍许的变化之后的版本。那么，它会</p>
+<p>打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* Generated by the IBM IDL-to-Java compiler, version 1.0 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* from F:\TestRoot\apps\a1\units\include\PolicyHome.idl </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* Wednesday, June 17, 1998 6:44:40 o’clock AM GMT+00:00 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"Hell"</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"o world"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个谜题看起来相当简单。该程序包含了两条语句，第一条打印 Hell，而第二</p>
+<p>条在同一行打印 o world，从而将两个字符串有效地连接在了一起。因此，你可</p>
+<p>能期望该程序打印出 Hello world。但是很可惜，你犯了错，实际上，它根本就</p>
+<p>通不过编译。 </p>
+<p>问题在于注释的第三行，它包含了字符\units。这些字符以反斜杠（\）以及紧</p>
+<p>跟着的字母 u 开头的，而它（\u）表示的是一个 Unicode 转义字符的开始。遗憾</p>
+<p>的是，这些字符后面没有紧跟四个十六进制的数字，因此，这个 Unicode 转义字</p>
+<p>符是病构的，而编译器则被要求拒绝该程序。Unicode 转义字符必须是良构的，</p>
+<p>即使是出现在注释中也是如此。 </p>
+<p>在注释中插入一个良构的 Unicode 转义字符是合法的，但是我们几乎没有什么理</p>
+<p>由去这么做。程序员有时会在 JavaDoc 注释中使用 Unicode 转义字符来在文档中</p>
+<p>生成特殊的字符。 </p>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 转义字符在 JavaDoc 注释中有问题的用法</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* This method calls itself recursively, causing a </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* StackOverflowError to be thrown. </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* The algorithm is due to Peter von der Ah\u00E9. </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p>这项技术表示了Unicode转义字符的一种没什么用处的用法。在 Javadoc注释中，</p>
+<p>应该使用 HTML 实体转义字符来代替 Unicode 转义字符：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"></span><br><span class="line">\* This method calls itself recursively, causing <span class="keyword">a</span> </span><br><span class="line"></span><br><span class="line">\* StackOverflowError <span class="keyword">to</span> <span class="keyword">be</span> thrown. </span><br><span class="line"></span><br><span class="line">\* The algorithm <span class="keyword">is</span> due <span class="keyword">to</span> Peter von der Ahé. </span><br><span class="line"></span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>前面的两个注释都应该是的在文档中出现的名字为“Peter der Ahé”，但是后</p>
+<p>一个注释在源文件中还是可理解的。 </p>
+<p>可能你会感到很诧异，在这个谜题中，问题出在注释这一信息来源自一个实际的</p>
+<p>bug 报告。该程序是机器生成的，这使得我们很难追踪到问题的源头</p>
+<p>——IDL-to-Java 编译器。为了避免让其他程序员也陷入此境地，在没有将</p>
+<p>Windows 文件名进行预先处理，以消除的其中的反斜杠的情况下，工具应该确保</p>
+<p>不将 Windows 文件名置于所生成的 Java 源文件的注释中。 </p>
+<p>总之，要确保字符\u 不出现在一个合法的 Unicode 转义字符上下文之外，即使</p>
+<p>是在注释中也是如此。在机器生成的代码中要特别注意此问题。 </p>
+<h2 id="谜题-16：行打印程序"><a href="#谜题-16：行打印程序" class="headerlink" title="谜题 16：行打印程序"></a>谜题 16：行打印程序</h2><p>行分隔符（line separator）是为用来分隔文本行的字符或字符组合而起的名字，</p>
+<p>并且它在不同的平台上是存在差异的。在 Windows 平台上，它是 CR 字符（回车）</p>
+<p>和紧随其后的 LF 字符（换行）组成的，而在 UNIX 平台上，通常单独的 LF 字符</p>
+<p>被当作换行字符来引用。下面的程序将这个字符传递给了 println 方法，那么，</p>
+<p>它将打印出什么呢？它的行为是否是依赖于平台的呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinePrinter</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// Note: \u000A is Unicode representation of linefeed (LF) </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">char</span> c = <span class="number">0x000A</span>; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(c); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序的行为是平台无关的：它在任何平台上都不能通过编译。如果你尝试着</p>
+<p>去编译它，就会得到类似下面的出错信息： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">LinePrinter.java:3</span>: ';' expected </span><br><span class="line"></span><br><span class="line">// Note: \u000A is Unicode representation of linefeed (LF) </span><br><span class="line"></span><br><span class="line">^</span><br><span class="line"></span><br><span class="line">1 error</span><br></pre></td></tr></table></figure>
+
+<p>如果你和大多数人一样，那么这条信息对界定问题是毫无用处的。 </p>
+<p>这个谜题的关键就是程序第三行的注释。与最好的注释一样，这条注释也是一种</p>
+<p>准确的表达，遗憾的是，它有一点准确得过头了。编译器不仅会在将程序解析成</p>
+<p>为符号之前把 Unicode 转义字符转换成它们所表示的字符（谜题 14），而且它</p>
+<p>是在丢弃注释和空格之前做这些事的[JLS 3.2]。 这个程序包含了一个 Unicode 转移字符（\u000A），它位于程序唯一的注释行中。</p>
+<p>就像注释所陈述的，这个转义字符表示换行符，编译器将在丢弃注释之前适时地</p>
+<p>转换它。遗憾的是，这个换行符是表示注释开始的两个斜杠符之后的第一个行终</p>
+<p>结符（line terminator），因此它将终结该注释[JLS 3.4]。所以，该转义字符</p>
+<p>之后的字（is Unicode representation of linefeed (LF)）就不是注释的一部</p>
+<p>分了，而它们在语法上也不是有效的。 </p>
+<p>订正该程序的最简单的方式就是在注释中移除 Unicode 转义字符，但是更好的方</p>
+<p>式是用一个转义字符序列而不是一个十六进制整型字面常量来初始化 c，从而消</p>
+<p>除使用注释的必要： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinePrinter</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">char</span> c = <span class="string">'\n'</span>; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(c); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要这么做了，程序就可以编译并运行，但是这仍然是一个有问题的程序：它是</p>
+<p>平台相关的，这正是本谜题所要表达的真正意图。在某些平台上，例如 UNIX，</p>
+<p>它将打印出两个完整的行分隔符；但是在其它一些平台上，例如 Windows，它就</p>
+<p>不会产生这样的行为。尽管这些输出用肉眼看起来是一样的，但是如果它们要被</p>
+<p>存储到文件中，或是输出到后续的其它处理程序中，那就很容易引发问题。 </p>
+<p>如果你想打印两行空行，你应该调用 println 两次。如果使用的是 JDK 5.0，那</p>
+<p>么你可以用带有格式化字符串”%n%n”的 printf 来代替 println。%n 的每一次出</p>
+<p>现都将导致 printf 打印一个恰当的、与平台相关的行分隔符。 </p>
+<p>我们希望，上面三个谜题已经使你信服：Unicode 转义字符绝对会产生混乱。教</p>
+<p>训很简单：除非确实是必需的，否则就不要使用 Unicode 转义字符。它们很少是</p>
+<p>必需的。 </p>
+<h2 id="谜题-17：嗯？"><a href="#谜题-17：嗯？" class="headerlink" title="谜题 17：嗯？"></a>谜题 17：嗯？</h2><p>下面的是一个合法的 Java 程序吗？如果是，它会打印出什么呢？ </p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">\u</span>0070<span class="symbol">\u</span>0075<span class="symbol">\u</span>0062<span class="symbol">\u</span>006c<span class="symbol">\u</span>0069<span class="symbol">\u</span>0063<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0063<span class="symbol">\u</span>006c<span class="symbol">\u</span>0061<span class="symbol">\u</span>0073<span class="symbol">\u</span>0073<span class="symbol">\u</span>0020<span class="symbol">\u</span>0055<span class="symbol">\u</span>0067<span class="symbol">\u</span>006c<span class="symbol">\u</span>0079</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>007b<span class="symbol">\u</span>0070<span class="symbol">\u</span>0075<span class="symbol">\u</span>0062<span class="symbol">\u</span>006c<span class="symbol">\u</span>0069<span class="symbol">\u</span>0063<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0073<span class="symbol">\u</span>0074<span class="symbol">\u</span>0061<span class="symbol">\u</span>0074<span class="symbol">\u</span>0069<span class="symbol">\u</span>0063</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0076<span class="symbol">\u</span>006f<span class="symbol">\u</span>0069<span class="symbol">\u</span>0064<span class="symbol">\u</span>0020<span class="symbol">\u</span>006d<span class="symbol">\u</span>0061<span class="symbol">\u</span>0069<span class="symbol">\u</span>006e<span class="symbol">\u</span>0028</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0053<span class="symbol">\u</span>0074<span class="symbol">\u</span>0072<span class="symbol">\u</span>0069<span class="symbol">\u</span>006e<span class="symbol">\u</span>0067<span class="symbol">\u</span>005b<span class="symbol">\u</span>005d<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0020<span class="symbol">\u</span>0061<span class="symbol">\u</span>0072<span class="symbol">\u</span>0067<span class="symbol">\u</span>0073<span class="symbol">\u</span>0029<span class="symbol">\u</span>007b</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0053<span class="symbol">\u</span>0079<span class="symbol">\u</span>0073<span class="symbol">\u</span>0074<span class="symbol">\u</span>0065<span class="symbol">\u</span>006d<span class="symbol">\u</span>002e<span class="symbol">\u</span>006f<span class="symbol">\u</span>0075<span class="symbol">\u</span>0074</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>002e<span class="symbol">\u</span>0070<span class="symbol">\u</span>0072<span class="symbol">\u</span>0069<span class="symbol">\u</span>006e<span class="symbol">\u</span>0074<span class="symbol">\u</span>006c<span class="symbol">\u</span>006e<span class="symbol">\u</span>0028<span class="symbol">\u</span>0020</span><br><span class="line"></span><br><span class="line"><span class="symbol">\u</span>0022<span class="symbol">\u</span>0048<span class="symbol">\u</span>0065<span class="symbol">\u</span>006c<span class="symbol">\u</span>006c<span class="symbol">\u</span>006f<span class="symbol">\u</span>0020<span class="symbol">\u</span>0077<span class="symbol">\u</span>0022<span class="symbol">\u</span>002b <span class="symbol">\u</span>0022<span class="symbol">\u</span>006f<span class="symbol">\u</span>0072<span class="symbol">\u</span>006c<span class="symbol">\u</span>0064<span class="symbol">\u</span>0022<span class="symbol">\u</span>0029<span class="symbol">\u</span>003b<span class="symbol">\u</span>007d<span class="symbol">\u</span>007d</span><br></pre></td></tr></table></figure>
+
+<p>这当然是一个合法的 Java 程序！这不是很显而易见吗？它会打印 Hello World。</p>
+<p>噢，可能是不那么明显。事实上，该程序根本让人无法理解。每当你没必要地使</p>
+<p>用了一个 Unicode 转义字符时，都会使你的程序的可理解性更缺失一点，而该程</p>
+<p>序将这种做法发挥到了极致。如果你很好奇，可以看看下面给出的该程序在</p>
+<p>Unicode 转义字符都被转换为它们所表示的字符之后的样子： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Ugly</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&#123;</span><span class="keyword">public</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">( </span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">String</span>[]</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line">System.out </span><br><span class="line"></span><br><span class="line">.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line">“Hello w”+ </span><br><span class="line"></span><br><span class="line">“orld”);&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面给出了将其进行格式化整理之后的样子： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Ugly</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Hello w"</span>+<span class="string">"orld"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个谜题的教训是：仅仅是因为你可以不以应有的方式去进行表达。或者说，如</p>
+<p>果你这么做会造成损害，那么就请不要这么做！更严肃地讲，这个谜题是对前面</p>
+<p>三个教训的补充：Unicode 转义字符只有在你要向程序中插入用其他任何方式都</p>
+<p>无法表示的字符时才是必需的，除此之外的任何情况都不应该避免使用它们。</p>
+<p>Unicode 转义字符降低了程序的清晰度，并且增加了产生 bug 的可能性。 </p>
+<p>对语言的设计者来说，也许使用 Unicode 转义字符来表示 ASCII 字符应该被定义</p>
+<p>为是非法的。这样就可以使得在谜题 14、15 和 17（本谜题）中的程序非法，从</p>
+<p>而消除了大量的混乱。这个限制对程序员并不会造成任何困难。 </p>
+<h2 id="谜题-18：字符串奶酪"><a href="#谜题-18：字符串奶酪" class="headerlink" title="谜题 18：字符串奶酪"></a>谜题 18：字符串奶酪</h2><p>下面的程序从一个字节序列创建了一个字符串，然后迭代遍历字符串中的字符，</p>
+<p>并将它们作为数字打印。请描述一下程序打印出来的数字序列： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringCheese</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">byte</span> bytes[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">256</span>]; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++) </span><br><span class="line"></span><br><span class="line"> bytes[i] = (<span class="keyword">byte</span>)i; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">String</span> str = <span class="keyword">new</span> <span class="keyword">String</span>(bytes); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, n = str.length(); i &lt; n; i++) System.out.<span class="built_in">println</span>((<span class="keyword">int</span>)str.charAt(i) + <span class="string">" "</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，byte 数组用从 0 到 255 每一个可能的 byte 数值进行了初始化，然后这些</p>
+<p>byte 数值通过 String 构造器被转换成了 char 数值。最后，char 数值被转型为</p>
+<p>int 数值并被打印。打印出来的数值肯定是非负整数，因为 char 数值是无符号</p>
+<p>的，因此，你可能期望该程序将按顺序打印出 0 到 255 的整数。 </p>
+<p>如果你运行该程序，可能会看到这样的序列。但是在运行一次，可能看到的就不</p>
+<p>是这个序列了。我们在四台机器上运行它，会看到四个不同的序列，包括前面描</p>
+<p>述的那个序列。这个程序甚至都不能保证会正常终止，比打印其他任何特定字符</p>
+<p>串都要缺乏这种保证。它的行为完全是不确定的。 </p>
+<p>这里的罪魁祸首就是 String(byte[])构造器。有关它的规范描述道：“在通过</p>
+<p>解码使用平台缺省字符集的指定 byte 数组来构造一个新的 String 时，该新</p>
+<p>String 的长度是字符集的一个函数，因此，它可能不等于 byte 数组的长度。当</p>
+<p>给定的所有字节在缺省字符集中并非全部有效时，这个构造器的行为是不确定</p>
+<p>的”[Java-API]。 </p>
+<p>到底什么是字符集？从技术角度上讲，它是“被编码的字符集合和字符编码模式</p>
+<p>的结合物”[Java-API]。换句话说，字符集是一个包，包含了字符、表示字符的</p>
+<p>数字编码以及在字符编码序列和字节序列之间来回转换的方式。转换模式在字符</p>
+<p>集之间存在着很大的区别：某些是在字符和字节之间做一对一的映射，但是大多</p>
+<p>数都不是这样。ISO-8859-1 是唯一能够让该程序按顺序打印从 0 到 255 的整数</p>
+<p>的缺省字符集，它更为大家所熟知的名字是 Latin-1[ISO-8859-1]。 </p>
+<p>J2SE 运行期环境（JRE）的缺省字符集依赖于底层的操作系统和语言。如果你想</p>
+<p>知道你的 JRE 的缺省字符集，并且你使用的是 5.0 或更新的版本，那么你可以通</p>
+<p>过调用 java.nio.charset.Charset.defaultCharset()来了解。如果你使用的是</p>
+<p>较早的版本，那么你可以通过阅读系统属性“file.encoding”来了解。 </p>
+<p>幸运的是，你没有被强制要求必须去容忍各种稀奇古怪的缺省字符集。当你在</p>
+<p>char 序列和 byte 序列之间做转换时，你可以且通常是应该显式地指定字符集。</p>
+<p>除了接受 byte 数字之外，还可以接受一个字符集名称的 String 构造器就是专为</p>
+<p>此目的而设计的。如果你用下面的构造器去替换在最初的程序中的 String 构造</p>
+<p>器，那么不管缺省的字符集是什么，该程序都保证能够按照顺序打印从 0 到 255</p>
+<p>的整数： </p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> str = <span class="literal">new</span> <span class="built_in">String</span>(<span class="built_in">bytes</span>, <span class="string">"ISO-8859-1"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个构造器声明会抛出 UnsupportedEncodingException 异常，因此你必须捕获</p>
+<p>它，或者更适宜的方式是声明 main 方法将抛出它，要不然程序不能通过编译。</p>
+<p>尽管如此，该程序实际上不会抛出异常。Charset 的规范要求 Java 平台的每一</p>
+<p>种实现都要支持某些种类的字符集，ISO-8859-1 就位列其中。 这个谜题的教训是：每当你要将一个 byte 序列转换成一个 String 时，你都在使</p>
+<p>用某一个字符集，不管你是否显式地指定了它。如果你想让你的程序的行为是可</p>
+<p>预知的，那么就请你在每次使用字符集时都明确地指定。对 API 的设计者来说，</p>
+<p>提供这么一个依赖于缺省字符集的 String(byte[])构造器可能并非是一个好主</p>
+<p>意。 </p>
+<h2 id="谜题-19：漂亮的火花"><a href="#谜题-19：漂亮的火花" class="headerlink" title="谜题 19：漂亮的火花"></a>谜题 19：漂亮的火花</h2><p>下面的程序用一个方法对字符进行了分类。这个程序会打印出什么呢？ </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Classifier &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">System</span>.<span class="keyword">out</span>.println( </span><br><span class="line"></span><br><span class="line"> classify(<span class="string">'n'</span>) + classify(<span class="string">'+'</span>) + classify(<span class="string">'2'</span>)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> static String classify(<span class="type">char</span> ch) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> ("0123456789".indexOf(ch) &gt;= <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> "NUMERAL "; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> ("abcdefghijklmnopqrstuvwxyz".indexOf(ch) &gt;= <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> "LETTER "; </span><br><span class="line"></span><br><span class="line"> <span class="comment">/* (Operators not supported yet) </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> if ("+-*/</span>&amp;|!=" &gt;= 0) </span><br><span class="line"></span><br><span class="line"> return "<span class="keyword">OPERATOR</span> "; </span><br><span class="line"></span><br><span class="line"> */ </span><br><span class="line"></span><br><span class="line"> return "<span class="type">UNKNOWN</span>"; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你猜想该程序将打印 LETTER UNKNOWN NUMERAL，那么你就掉进陷阱里面了。</p>
+<p>这个程序连编译都通不过。让我们再看一看相关的部分，这一次我们用粗体字突</p>
+<p>出注释部分： </p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">if (<span class="string">"abcdefghijklmnopqrstuvwxyz"</span>.indexOf(<span class="name">ch</span>) &gt;= <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> return <span class="string">"LETTER "</span><span class="comment">; </span></span><br><span class="line"></span><br><span class="line"> /* (<span class="name">Operators</span> not supported yet) /* (<span class="name">Operators</span> not supported yet) </span><br><span class="line"></span><br><span class="line"> if (<span class="string">"+- if ("</span>+-*/&amp;|!=<span class="string">" &gt;= 0) </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> return "</span>OPERATOR <span class="string">"; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> */ </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> return "</span>UNKNOWN<span class="string">"; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> &#125; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>正如你之所见，注释在包含了字符*/的字符串内部就结束了，结果使得程序在语</p>
+<p>法上变成非法的了。我们将程序中的一部分注释出来的尝试之所以失败了，是因</p>
+<p>为字符串字面常量在注释中没有被特殊处理。 </p>
+<p>更一般地讲，注释内部的文本没有以任何方式进行特殊处理[JLS 3.7]。因此，</p>
+<p>块注释不能嵌套。请考虑下面的代码段： /* Add the numbers from 1 to n */ </p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> <span class="built_in">sum</span> = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line">for (<span class="built_in">int</span> i = <span class="number">1</span>; I &lt;= <span class="built_in">n</span>; i++) </span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span> += i;</span><br></pre></td></tr></table></figure>
+
+<p>现在假设我们要将该代码段注释成为一个块注释，我们再次用粗体字突出整个注</p>
+<p>释： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">/* Add the numbers from 1 to n */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">int</span> sum = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; I &lt;= n; i++) </span><br><span class="line"></span><br><span class="line">sum += i; </span><br><span class="line"></span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>正如你之所见，我们没有能够将最初的代码段注释掉。好在所产生的代码包含了</p>
+<p>一个语法错误，因此编译器将会告诉我们代码存在着问题。 </p>
+<p>你可能偶尔看到过这样的代码段，它被一个布尔表达式为常量 false 的 if 语句</p>
+<p>禁用了： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//code commented out with an if statement - doesn't always work! </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">false</span>) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Add the numbers from 1 to n */</span> </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> sum = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt;= n; i++) </span><br><span class="line"></span><br><span class="line"> sum += i; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>语言规范建议将这种方式作为一种条件编译技术[JLS 14.21]，但是它不适合用</p>
+<p>来注释代码。除非要被禁用的代码是一个合法的语句序列，否则就不要使用这项</p>
+<p>技术。 </p>
+<p>注释掉一个代码段的最好的方式是使用单行的注释序列。大多数 IDE 工具都可以</p>
+<p>自动化这个过程： </p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//code commented out with an if statement - doesn't always work! </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// /* Add the numbers from 1 to n */ </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// int sum = 0; </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// for (int i = 1; i &lt;= n; i++) </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// sum += i;</span></span><br></pre></td></tr></table></figure>
+
+<p>总之，块注释不能可靠地注释掉代码段，应该用单行的注释序列来代替。对语言</p>
+<p>设计者来说，应该注意到可嵌套的块注释并不是一个好主意。他们强制编译器去</p>
+<p>解析块注释内部的文本，而由此引发的问题比它能够解决的问题还要多。 </p>
+<h2 id="谜题-20：我的类是什么？"><a href="#谜题-20：我的类是什么？" class="headerlink" title="谜题 20：我的类是什么？"></a>谜题 20：我的类是什么？</h2><p> 下面的程序被设计用来打印它的类文件的名称。如果你不熟悉类字面常量，那么</p>
+<p>我告诉你 Me.class.getName()将返回 Me 类完整的名称，即</p>
+<p>“com.javapuzzlers.Me”。那么，这个程序会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package com.javapuzzlers; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Me</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> Me.class.getName(). </span><br><span class="line"></span><br><span class="line"> replaceAll(<span class="string">"."</span>,<span class="string">"/"</span>) + <span class="string">".class"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序看起来会获得它的类名（“com.javapuzzlers.Me”），然后用“/”替换</p>
+<p>掉所有出现的字符串“.”，并在末尾追加字符串“.class”。你可能会认为该</p>
+<p>程序将打印 com/javapuzzlers/Me.class，该程序正式从这个类文件中被加载</p>
+<p>的。如果你运行这个程序，就会发现它实际上打印的是</p>
+<p>///////////////////.class。到底怎么回事？难道我们是斜杠的受害者吗？ </p>
+<p>问题在于 String.replaceAll 接受了一个正则表达式作为它的第一个参数，而并</p>
+<p>非接受了一个字符序列字面常量。（正则表达式已经被添加到了 Java 平台的 1.4</p>
+<p>版本中。）正则表达式“.”可以匹配任何单个的字符，因此，类名中的每一个</p>
+<p>字符都被替换成了一个斜杠，进而产生了我们看到的输出。 </p>
+<p>要想只匹配句点符号，在正则表达式中的句点必须在其前面添加一个反斜杠（\）</p>
+<p>进行转义。因为反斜杠字符在字面含义的字符串中具有特殊的含义——它标识转</p>
+<p>义字符序列的开始——因此反斜杠自身必须用另一个反斜杠来转义，这样就可以</p>
+<p>产生一个转义字符序列，它可以在字面含义的字符串中生成一个反斜杠。把这些</p>
+<p>合在一起，就可以使下面的程序打印出我们所期望的</p>
+<p>com/javapuzzlers/Me.class： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package com.javapuzzlers; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Me</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> Me.class.getName().replaceAll(<span class="string">"\\."</span>,<span class="string">"/"</span>) + <span class="string">".class"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了解决这类问题，5.0 版本提供了新的静态方法</p>
+<p>java.util.regex.Pattern.quote。它接受一个字符串作为参数，并可以添加必</p>
+<p>需的转义字符，它将返回一个正则表达式字符串，该字符串将精确匹配输入的字</p>
+<p>符串。下面是使用该方法之后的程序： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package com.javapuzzlers; </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Me</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(Me.class.getName(). replaceAll(Pattern.quote(<span class="string">"."</span>),<span class="string">"/"</span>) + <span class="string">".class"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序的另一个问题是：其正确的行为是与平台相关的。并不是所有的文件系统</p>
+<p>都使用斜杠符号来分隔层次结构的文件名组成部分的。要想获取一个你正在运行</p>
+<p>的平台上的有效文件名，你应该使用正确的平台相关的分隔符号来代替斜杠符</p>
+<p>号。这正是下一个谜题所要做的。 </p>
+<h2 id="谜题-21：我的类是什么？II"><a href="#谜题-21：我的类是什么？II" class="headerlink" title="谜题 21：我的类是什么？II"></a>谜题 21：我的类是什么？II</h2><p>下面的程序所要做的事情正是前一个谜题所做的事情，但是它没有假设斜杠符号</p>
+<p>就是分隔文件名组成部分的符号。相反，该程序使用的是</p>
+<p>java.io.File.separator，它被指定为一个公共的 String 域，包含了平台相关</p>
+<p>的文件名分隔符。那么，这个程序会打印出其正确的、平台相关的类文件名吗？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package com.javapuzzlers; </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MeToo</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(MeToo.class.getName(). </span><br><span class="line"></span><br><span class="line"> replaceAll(<span class="string">"\\."</span>, <span class="built_in">File</span>.separator) + <span class="string">".class"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序根据底层平台的不同会显示两种行为中的一种。如果文件分隔符是斜</p>
+<p>杠，就像在 UNIX 上一样，那么该程序将打印 com/javapuzzlers/MeToo.class，</p>
+<p>这是正确的。但是，如果文件分隔符是反斜杠，就像在 Windows 上一样，那么该</p>
+<p>程序将打印像下面这样的内容： </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Exception</span> <span class="selector-tag">in</span> <span class="selector-tag">thread</span> "<span class="selector-tag">main</span>" </span><br><span class="line"></span><br><span class="line"><span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.StringIndexOutOfBoundsException</span>: <span class="selector-tag">String</span> <span class="selector-tag">index</span> <span class="selector-tag">out</span> <span class="selector-tag">of</span> <span class="selector-tag">range</span>: 1 </span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.String</span><span class="selector-class">.charAt</span>(<span class="selector-tag">String</span><span class="selector-class">.java</span><span class="selector-pseudo">:558)</span> </span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.regex</span><span class="selector-class">.Matcher</span><span class="selector-class">.appendReplacement</span>(<span class="selector-tag">Mather</span>. </span><br><span class="line"></span><br><span class="line"><span class="selector-tag">java</span><span class="selector-pseudo">:696)</span> </span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.regex</span><span class="selector-class">.Matcher</span><span class="selector-class">.replaceAll</span>(<span class="selector-tag">Mather</span><span class="selector-class">.java</span><span class="selector-pseudo">:806)</span> </span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.String</span><span class="selector-class">.replaceAll</span>(<span class="selector-tag">String</span><span class="selector-class">.java</span><span class="selector-pseudo">:2000)</span> </span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">at</span> <span class="selector-tag">com</span><span class="selector-class">.javapuzzlers</span><span class="selector-class">.MeToo</span><span class="selector-class">.main</span>(<span class="selector-tag">MeToo</span><span class="selector-class">.java</span><span class="selector-pseudo">:6)</span></span><br></pre></td></tr></table></figure>
+
+<p>尽管这种行为是平台相关的，但是它并非就是我们所期待的。在 Windows 上出了</p>
+<p>什么错呢？ </p>
+<p>事实证明，String.replaceAll 的第二个参数不是一个普通的字符串，而是一个</p>
+<p>替代字符串（replacement string），就像在 java.util.regex 规范中所定义的</p>
+<p>那样[Java-API]。在替代字符串中出现的反斜杠会把紧随其后的字符进行转义，</p>
+<p>从而导致其被按字面含义而处理了。 </p>
+<p>当你在 Windows 上运行该程序时，替代字符串是单独的一个反斜杠，它是无效的。</p>
+<p>不可否认，抛出的异常应该提供更多一些有用的信息。 那么你应该怎样解决此问题呢？5.0 版本提供了不是一个而是两个新的方法来</p>
+<p>解决它。第一个方法是 java.util.regex.Matcher.quoteReplacement，它将字</p>
+<p>符串转换成相应的替代字符串。下面展示了如何使用这个方法来订正该程序： </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">System</span><span class="selector-class">.out</span><span class="selector-class">.println</span>(<span class="selector-tag">MeToo</span><span class="selector-class">.class</span><span class="selector-class">.getName</span>()<span class="selector-class">.replaceAll</span>("\\.",</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">Matcher</span><span class="selector-class">.quoteReplacement</span>(<span class="selector-tag">File</span><span class="selector-class">.separator</span>)) + "<span class="selector-class">.class</span>");</span><br></pre></td></tr></table></figure>
+
+<p>引入到 5.0 版本中的第二个方法提供了一个更好的解决方案。该方法就是</p>
+<p>String.replace(CharSequence, CharSequence)，它做的事情和</p>
+<p>String.replaceAll 相同，但是它将模式和替代物都当作字面含义的字符串处</p>
+<p>理。下面展示了如何使用这个方法来订正该程序： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">MeToo</span>.</span></span><span class="keyword">class</span>.get<span class="constructor">Name()</span>. </span><br><span class="line"></span><br><span class="line"> replace(<span class="string">"."</span>, <span class="module-access"><span class="module"><span class="identifier">File</span>.</span></span>separator) + <span class="string">".class"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>但是如果你使用的是较早版本的 Java 该怎么办？很遗憾，没有任何捷径能够生</p>
+<p>成替代字符串。完全不使用正则表达式，而使用 String.replace(char,char)也</p>
+<p>许要显得更容易一些： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">MeToo</span>.</span></span><span class="keyword">class</span>.get<span class="constructor">Name()</span>. </span><br><span class="line"></span><br><span class="line"> replace(<span class="character">'.'</span>, <span class="module-access"><span class="module"><span class="identifier">File</span>.</span></span>separatorChar) + <span class="string">".class"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>本谜题和前一个谜题的主要教训是：在使用不熟悉的类库方法时一定要格外小</p>
+<p>心。当你心存疑虑时，就要求助于 Javadoc。还有就是正则表达式是很棘手的：</p>
+<p>它所引发的问题趋向于在运行时刻而不是在编译时刻暴露出来。 </p>
+<p>对 API 的设计者来说，使用方法具名的模式来以明显的方式区分方法行为的差异</p>
+<p>是很重要的。Java 的 String 类就没有很好地遵从这一原则。对许多程序员来说，</p>
+<p>对于哪些字符串替代方法使用的是字面含义的字符串，以及哪些使用的是正则表</p>
+<p>达式或替代字符串，要记住这些都不是一件容易事。 </p>
+<h2 id="谜题-22：URL-的愚弄"><a href="#谜题-22：URL-的愚弄" class="headerlink" title="谜题 22：URL 的愚弄"></a>谜题 22：URL 的愚弄</h2><p>本谜题利用了 Java 编程语言中一个很少被人了解的特性。请考虑下面的程序将</p>
+<p>会做些什么？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserTest</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"iexplore:"</span>); </span><br><span class="line"></span><br><span class="line"> http:<span class="comment">//www.google.com; </span></span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">":maximize"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个有点诡异的问题。该程序将不会做任何特殊的事情，而是直接打印</p>
+<p>iexplore::maximize。在程序中间出现的 URL 是一个语句标号（statement label）</p>
+<p>[JLS 14.7]后面跟着一行行尾注释（end-of-line comment）[JLS 3.7]。在 Java</p>
+<p>中很少需要标号，这多亏了 Java 没有 goto 语句。在本谜题中所引用的“Java</p>
+<p>编程语言中很少被人了解的特性”实际上就是你可以在任何语句前面放置标号。</p>
+<p>这个程序标注了一个表达式语句，它是合法的，但是却没什么用处。 它的价值所在，就是提醒你，如果你真的想要使用标号，那么应该用一种更合理</p>
+<p>的方式来格式化程序： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserTest</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"iexplore:"</span>); </span><br><span class="line"></span><br><span class="line"> http: <span class="comment">//www.google.com; </span></span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">":maximize"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这就是说，我们没有任何可能的理由去使用与程序没有任何关系的标号和注释。 </p>
+<p>本谜题的教训是：令人误解的注释和无关的代码会引起混乱。要仔细地写注释，</p>
+<p>并让它们跟上时代；要切除那些已遭废弃的代码。还有就是如果某些东西看起来</p>
+<p>过于奇怪，以至于不像对的，那么它极有可能就是错的。 </p>
+<h2 id="谜题-23：不劳无获"><a href="#谜题-23：不劳无获" class="headerlink" title="谜题 23：不劳无获"></a>谜题 23：不劳无获</h2><p>下面的程序将打印一个单词，其第一个字母是由一个随机数生成器来选择的。请</p>
+<p>描述该程序的行为： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rhymes</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> Random rnd = <span class="keyword">new</span> Random(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> StringBuffer <span class="keyword">word</span> = null; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">switch</span>(rnd.nextInt(<span class="number">2</span>)) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">'P'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">'G'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">default</span>: <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">'M'</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'a'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'i'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'n'</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">word</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>乍一看，这个程序可能会在一次又一次的运行中，以相等的概率打印出 Pain，</p>
+<p>Gain 或 Main。看起来该程序会根据随机数生成器所选取的值来选择单词的第一</p>
+<p>个字母：0 选 M，1 选 P，2 选 G。谜题的题目也许已经给你提供了线索，它实际</p>
+<p>上既不会打印 Pain，也不会打印 Gain。也许更令人吃惊的是，它也不会打印 Main，</p>
+<p>并且它的行为不会在一次又一次的运行中发生变化，它总是在打印 ain。 </p>
+<p>有三个 bug 凑到一起引发了这种行为。你完全没有发现它们吗？第一个 bug 是所</p>
+<p>选取的随机数使得 switch 语句只能到达其三种情况中的两种。Random.nextInt(int)的规范描述道：“返回一个伪随机的、均等地分布在从 0</p>
+<p>（包括）到指定的数值（不包括）之间的一个 int 数值”[Java-API]。这意味着</p>
+<p>表达式 rnd.nextInt(2)可能的取值只有 0 和 1，Switch 语句将永远也到不了 case </p>
+<p>2 分支，这表示程序将永远不会打印 Gain。nextInt 的参数应该是 3 而不是 2。 </p>
+<p>这是一个相当常见的问题源，被熟知为“栅栏柱错误（fencepost error）”。</p>
+<p>这个名字来源于对下面这个问题最常见的但却是错误的答案，如果你要建造一个</p>
+<p>100 英尺长的栅栏，其栅栏柱间隔为 10 英尺，那么你需要多少根栅栏柱呢？11</p>
+<p>根或 9 根都是正确答案，这取决于是否要在栅栏的两端树立栅栏柱，但是 10 根</p>
+<p>却是错误的。要当心栅栏柱错误，每当你在处理长度、范围或模数的时候，都要</p>
+<p>仔细确定其端点是否应该被包括在内，并且要确保你的代码的行为要与其相对</p>
+<p>应。 </p>
+<p>第二个 bug 是在不同的情况（case）中没有任何 break 语句。不论 switch 表达</p>
+<p>式为何值，该程序都将执行其相对应的 case 以及所有后续的 case[JLS 14.11]。</p>
+<p>因此，尽管每一个 case 都对变量 word 赋了一个值，但是总是最后一个赋值胜出，</p>
+<p>覆盖了前面的赋值。最后一个赋值将总是最后一种情况（default），即 new</p>
+<p>StringBuffer{‘M’}。这表明该程序将总是打印Main，而从来不打印Pain或Gain。 </p>
+<p>在 switch 的各种情况中缺少 break 语句是非常常见的错误。从 5.0 版本起，javac</p>
+<p>提供了-Xlint:fallthrough 标志，当你忘记在一个 case 与下一个 case 之间添</p>
+<p>加 break 语句是，它可以生成警告信息。不要从一个非空的 case 向下进入了另</p>
+<p>一个 case。这是一种拙劣的风格，因为它并不常用，因此会误导读者。十次中</p>
+<p>有九次它都会包含错误。如果 Java 不是模仿 C 建模的，那么它倒是有可能不需</p>
+<p>要 break。对语言设计者的教训是：应该考虑提供一个结构化的 switch 语句。 </p>
+<p>最后一个，也是最微妙的一个 bug 是表达式 new StringBuffer(‘M’)可能没有做</p>
+<p>哪些你希望它做的事情。你可能对 StringBuffer(char)构造器并不熟悉，这很</p>
+<p>容易解释：它压根就不存在。StringBuffer 有一个无参数的构造器，一个接受</p>
+<p>一个 String 作为字符串缓冲区初始内容的构造器，以及一个接受一个 int 作为</p>
+<p>缓冲区初始容量的构造器。在本例中，编译器会选择接受 int 的构造器，通过拓</p>
+<p>宽原始类型转换把字符数值’M’转换为一个 int 数值 77[JLS 5.1.2]。换句话说，</p>
+<p>new StringBuffer(‘M’)返回的是一个具有初始容量 77 的空的字符串缓冲区。该</p>
+<p>程序余下的部分将字符 a、i 和 n 添加到了这个空字符串缓冲区中，并打印出该</p>
+<p>字符串缓冲区那总是 ain 的内容。 </p>
+<p>为了避免这类问题，不管在什么时候，都要尽可能使用熟悉的惯用法和 API。如</p>
+<p>果你必须使用不熟悉的 API，那么请仔细阅读其文档。在本例中，程序应该使用</p>
+<p>常用的接受一个 String 的 StringBuffer 构造器。 </p>
+<p>下面是该程序订正了这三个 bug 之后的正确版本，它将以均等的概率打印 Pain、</p>
+<p>Gain 和 Main： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rhymes1</span> &#123;</span> <span class="keyword">private</span> <span class="keyword">static</span> Random rnd = <span class="keyword">new</span> Random(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> StringBuffer <span class="keyword">word</span> = null; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">switch</span>(rnd.nextInt(<span class="number">3</span>)) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">case</span> <span class="number">1</span>: </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">"P"</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">break</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">case</span> <span class="number">2</span>: </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">"G"</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">break</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">default</span>:</span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span> = <span class="keyword">new</span> StringBuffer(<span class="string">"M"</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">break</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'a'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'i'</span>); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">word</span>.append(<span class="string">'n'</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">word</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>尽管这个程序订正了所有的 bug，它还是显得过于冗长了。下面是一个更优雅的</p>
+<p>版本： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rhymes2</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> Random rnd = <span class="keyword">new</span> Random(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"PGM"</span>.charAt(rnd.nextInt(<span class="number">3</span>)) + <span class="string">"ain"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个更好的版本。尽管它稍微长了一点，但是它更加通用。它不依赖于所</p>
+<p>有可能的输出只是在它们的第一个字符上有所不同的这个事实： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rhymes3</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">String</span> a[] = &#123;<span class="string">"Main"</span>,<span class="string">"Pain"</span>,<span class="string">"Gain"</span>&#125;; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(randomElement(a)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> Random rnd = <span class="keyword">new</span> Random(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">randomElement</span><span class="params">(<span class="keyword">String</span>[] a)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> a[rnd.nextInt(a.length)]; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结一下：首先，要当心栅栏柱错误。其次，牢记在 switch 语句的每一个 case </p>
+<p>中都放置一条 break 语句。第三，要使用常用的惯用法和 API，并且当你在离开老路子的时候，一定要参考相关的文档。第四，一个 char 不是一个 String，</p>
+<p>而是更像一个 int。最后，要提防各种诡异的谜题。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" rel="tag"># java进阶学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B0%9C%E9%A2%98/" rel="prev" title="java表达式谜题">
+      <i class="fa fa-chevron-left"></i> java表达式谜题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E4%B8%AD%E7%BA%A7%E7%9F%A5%E8%AF%86/" rel="next" title="java中级知识点">
+      java中级知识点 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-谜题-Java-谜题-2——字符谜题"><span class="nav-number">1.</span> <span class="nav-text">Java 谜题 Java 谜题 2——字符谜题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-11：最后的笑声"><span class="nav-number">1.1.</span> <span class="nav-text">谜题 11：最后的笑声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-12：ABC"><span class="nav-number">1.2.</span> <span class="nav-text">谜题 12：ABC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-13：畜牧场"><span class="nav-number">1.3.</span> <span class="nav-text">谜题 13：畜牧场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-14：转义字符的溃败-转义字符的溃败"><span class="nav-number">1.4.</span> <span class="nav-text">谜题 14：转义字符的溃败 转义字符的溃败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-15：令人晕头转向的-令人晕头转向的-Hello"><span class="nav-number">1.5.</span> <span class="nav-text">谜题 15：令人晕头转向的 令人晕头转向的 Hello</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-16：行打印程序"><span class="nav-number">1.6.</span> <span class="nav-text">谜题 16：行打印程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-17：嗯？"><span class="nav-number">1.7.</span> <span class="nav-text">谜题 17：嗯？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-18：字符串奶酪"><span class="nav-number">1.8.</span> <span class="nav-text">谜题 18：字符串奶酪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-19：漂亮的火花"><span class="nav-number">1.9.</span> <span class="nav-text">谜题 19：漂亮的火花</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-20：我的类是什么？"><span class="nav-number">1.10.</span> <span class="nav-text">谜题 20：我的类是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-21：我的类是什么？II"><span class="nav-number">1.11.</span> <span class="nav-text">谜题 21：我的类是什么？II</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-22：URL-的愚弄"><span class="nav-number">1.12.</span> <span class="nav-text">谜题 22：URL 的愚弄</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-23：不劳无获"><span class="nav-number">1.13.</span> <span class="nav-text">谜题 23：不劳无获</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">233</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">28:26</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

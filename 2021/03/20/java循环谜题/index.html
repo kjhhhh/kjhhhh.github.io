@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 谜题 Java 谜题 3——循环谜题谜题 24：尽情享受每一个字节 尽情享受每一个字节下面的程序循环遍历 byte 数值，以查找某个特定值。这个程序会打印出什么呢？  123456789101112131415public class BigDelight &amp;#123;  public static void main(String[] args) &amp;#123;  for (byte b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java循环谜题">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 谜题 Java 谜题 3——循环谜题谜题 24：尽情享受每一个字节 尽情享受每一个字节下面的程序循环遍历 byte 数值，以查找某个特定值。这个程序会打印出什么呢？  123456789101112131415public class BigDelight &amp;#123;  public static void main(String[] args) &amp;#123;  for (byte b">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-20T14:27:03.193Z">
+<meta property="article:modified_time" content="2021-03-20T14:32:02.097Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java进阶学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java循环谜题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java循环谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 22:27:03 / 修改时间：22:32:02" itemprop="dateCreated datePublished" datetime="2021-03-20T22:27:03+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-谜题-Java-谜题-3——循环谜题"><a href="#Java-谜题-Java-谜题-3——循环谜题" class="headerlink" title="Java 谜题 Java 谜题 3——循环谜题"></a>Java 谜题 Java 谜题 3——循环谜题</h1><h2 id="谜题-24：尽情享受每一个字节-尽情享受每一个字节"><a href="#谜题-24：尽情享受每一个字节-尽情享受每一个字节" class="headerlink" title="谜题 24：尽情享受每一个字节 尽情享受每一个字节"></a>谜题 24：尽情享受每一个字节 尽情享受每一个字节</h2><p>下面的程序循环遍历 byte 数值，以查找某个特定值。这个程序会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BigDelight</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">byte</span> b = Byte.MIN_VALUE; b &lt; Byte.MAX_VALUE; b++) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (b == <span class="number">0x90</span>) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"Joy!"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个循环在除了 Byte.MAX_VALUE 之外所有的 byte 数值中进行迭代，以查找</p>
+<p>0x90。这个数值适合用 byte 表示，并且不等于 Byte.MAX_VALUE，因此你可能会</p>
+<p>想这个循环在该迭代会找到它一次，并将打印出 Joy!。但是，所见为虚。如果</p>
+<p>你运行该程序，就会发现它没有打印任何东西。怎么回事？ </p>
+<p>简单地说，0x90 是一个 int 常量，它超出了 byte 数值的范围。这与直觉是相悖</p>
+<p>的，因为 0x90 是一个两位的十六进制字面常量，每一个十六进制位都占据 4 个</p>
+<p>比特的位置，所以整个数值也只占据 8 个比特，即 1 个 byte。问题在于 byte 是</p>
+<p>有符号类型。常量 0x90 是一个正的最高位被置位的 8 位 int 数值。合法的 byte</p>
+<p>数值是从-128 到+127，但是 int 常量 0x90 等于+144。 </p>
+<p>拿一个 byte 与一个 int 进行的比较是一个混合类型比较（mixed-type </p>
+<p>comparison）。如果你把 byte 数值想象为苹果，把 int 数值想象成为桔子，那</p>
+<p>么该程序就是在拿苹果与桔子比较。请考虑表达式((byte)0x90 == 0x90)，尽管</p>
+<p>外表看起来是成立的，但是它却等于 false。 </p>
+<p>为了比较 byte 数值(byte)0x90 和 int 数值 0x90，Java 通过拓宽原始类型转换</p>
+<p>将 byte 提升为一个 int[JLS 5.1.2]，然后比较这两个 int 数值。因为 byte 是</p>
+<p>一个有符号类型，所以这个转换执行的是符号扩展，将负的 byte 数值提升为了</p>
+<p>在数字上相等的 int 数值。在本例中，该转换将(byte)0x90 提升为 int 数值-112，</p>
+<p>它不等于 int 数值 0x90，即+144。 </p>
+<p>由于系统总是强制地将一个操作数提升到与另一个操作数相匹配的类型，所以混</p>
+<p>合类型比较总是容易把人搞糊涂。这种转换是不可视的，而且可能不会产生你所</p>
+<p>期望的结果。有若干种方法可以避免混合类型比较。我们继续有关水果的比喻，你可以选择拿苹果与苹果比较，或者是拿桔子与桔子比较。你可以将 int 转型为</p>
+<p>byte，之后你就可以拿一个 byte 与另一个 byte 进行比较了： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (b == (<span class="keyword">byte</span>)<span class="number">0x90</span>) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Joy!"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者，你可以用一个屏蔽码来消除符号扩展的影响，从而将 byte 转型为 int，</p>
+<p>之后你就可以拿一个 int 与另一个 int 进行比较了： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((b &amp; <span class="number">0xff</span>) == <span class="number">0x90</span>) </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.print(<span class="string">"Joy!"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面的两个解决方案都可以正常运行，但是避免这类问题的最佳方法还是将常量</p>
+<p>值移出到循环的外面，并将其在一个常量声明中定义它。下面是我们对此作出的</p>
+<p>第一个尝试： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BigDelight</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> TARGET = <span class="number">0x90</span>; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">byte</span> b = Byte.MIN_VALUE; b &lt; </span><br><span class="line"></span><br><span class="line"> Byte.MAX_VALUE; b++) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (b == TARGET) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"Joy!"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遗憾的是，它根本就通不过编译。常量声明有问题，编译器会告诉你问题所在：</p>
+<p>0x90 对于 byte 类型来说不是一个有效的数值。如果你想下面这样订正该声明，</p>
+<p>那么程序将运行得非常好： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> TARGET = (<span class="keyword">byte</span>)<span class="number">0x90</span>;</span><br></pre></td></tr></table></figure>
+
+<p>总之，要避免混合类型比较，因为它们内在地容易引起混乱（谜题 5）。为了帮</p>
+<p>助实现这个目标，请使用声明的常量替代“魔幻数字”。你已经了解了这确实是</p>
+<p>一个好主意：它说明了常量的含义，集中了常量的定义，并且根除了重复的定义。</p>
+<p>现在你知道它还可以强制你去为每一个常量赋予适合其用途的类型，从而消除了</p>
+<p>产生混合类型比较的一种根源。 </p>
+<p>对语言设计的教训是 byte 数值的符号扩展是产生 bug 和混乱的一种常见根源。</p>
+<p>而用来抵销符号扩展效果所需的屏蔽机制会使得程序显得混乱无序，从而降低了</p>
+<p>程序的可读性。因此，byte 类型应该是无符号的。还可以考虑为所有的原始类</p>
+<p>型提供定义字面常量的机制，这可以减少对易于产生错误的类型转换的需求（谜</p>
+<p>题 27）。 </p>
+<h2 id="谜题-25：无情的增量操作-无情的增量操作"><a href="#谜题-25：无情的增量操作-无情的增量操作" class="headerlink" title="谜题 25：无情的增量操作 无情的增量操作"></a>谜题 25：无情的增量操作 无情的增量操作</h2><p>下面的程序对一个变量重复地进行增量操作，然后打印它的值。那么这个值是什</p>
+<p>么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Increment</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; <span class="built_in">int</span> j = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line"></span><br><span class="line"> j = j++; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(j); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>乍一看，这个程序可能会打印 100。毕竟，它对 j 做了 100 次增量操作。可能会</p>
+<p>令你感到有些震惊，它打印的不是 100 而是 0。所有的增量操作都无影无踪了，</p>
+<p>为什么？ </p>
+<p>就像本谜题的题目所暗示的，问题出在了执行增量操作的语句上： </p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">j</span> = j++<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>大概该语句的作者是想让它执行对 j 的值加 1 的操作，也就是表达式 j++所做的</p>
+<p>操作。遗憾的是，作者大咧咧地将这个表达式的值有赋回给了 j。 </p>
+<p>当++操作符被置于一个变量值之后时，其作用就是一个后缀增量操作符（postfix</p>
+<p>increment operator）[JLS 15.14.2]：表达式 j++的值等于 j 在执行增量操作</p>
+<p>之前的初始值。因此，前面提到的赋值语句首先保存 j 的值，然后将 j 设置为其</p>
+<p>值加 1，最后将 j 复位到它的初始值。换句话说，这个赋值操作等价于下面的语</p>
+<p>句序列： </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">int tmp</span> = j; </span><br><span class="line"></span><br><span class="line"><span class="attribute">j</span> = j + 1; </span><br><span class="line"></span><br><span class="line"><span class="attribute">j</span> = tmp?;</span><br></pre></td></tr></table></figure>
+
+<p>程序重复该过程 100 次，之后 j 的值还是等于它在循环开始之前的值，即 0。 </p>
+<p>订正该程序非常简单，只需从循环中移除无关的赋值操作，只留下： </p>
+<p>for (int i = 0; i &lt; 100; i++) </p>
+<p> j++;</p>
+<p>经过这样的修改，程序就可以打印出我们所期望的 100 了。 </p>
+<p>这与谜题 7 中的教训相同：不要在单个的表达式中对相同的变量赋值超过一次。</p>
+<p>对相同的变量进行多次赋值的表达式会产生混淆，并且很少能够产生你希望的行</p>
+<p>为。 </p>
+<h2 id="谜题-26：在循环中"><a href="#谜题-26：在循环中" class="headerlink" title="谜题 26：在循环中"></a>谜题 26：在循环中</h2><p>下面的程序计算了一个循环的迭代次数，并且在该循环终止时将这个计数值打印</p>
+<p>了出来。那么，它打印的是什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InTheLoop</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> END = Integer.MAX_VALUE; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> START = END - <span class="number">100</span>; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> count = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = START; i &lt;= END; i++) </span><br><span class="line"></span><br><span class="line"> count++; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(count); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你没有非常仔细地查看这个程序，你可能会认为它将打印 100，因为 END 比</p>
+<p>START 大 100。如果你稍微仔细一点，你可能会发现该程序没有使用典型的循环</p>
+<p>惯用法。大多数的循环会在循环索引小于终止值时持续运行，而这个循环则是在</p>
+<p>循环索引小于或等于终止值时持续运行。所以它会打印 101，对吗？ </p>
+<p>嗯，根本不对。如果你运行该程序，就会发现它压根就什么都没有打印。更糟的</p>
+<p>是，它会持续运行直到你撤销它为止。它从来都没有机会去打印 count，因为在</p>
+<p>打印它的语句之前插入的是一个无限循环。 </p>
+<p>问题在于这个循环会在循环索引（i）小于或等于 Integer.MAX_VALUE 时持续运</p>
+<p>行，但是所有的 int 变量都是小于或等于 Integer.MAX_VALUE 的。因为它被定义</p>
+<p>为所有 int 数值中的最大值。当 i 达到 Integer.MAX_VALUE，并且再次被执行增</p>
+<p>量操作时，它就有绕回到了 Integer.MIN_VALUE。 </p>
+<p>如果你需要的循环会迭代到 int 数值的边界附近时，你最好是使用一个 long 变</p>
+<p>量作为循环索引。只需将循环索引的类型从 int 改变为 long 就可以解决该问题，</p>
+<p>从而使程序打印出我们所期望的 101： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (long <span class="built_in">i</span> = START; <span class="built_in">i</span> &lt;= END; <span class="built_in">i</span>++)</span><br></pre></td></tr></table></figure>
+
+<p>更一般地讲，这里的教训就是 int 不能表示所有的整数。无论你在何时使用了一</p>
+<p>个整数类型，都要意识到其边界条件。如果其数值下溢或是上溢了，会怎么样呢？</p>
+<p>所以通常最好是使用一个取之范围更大的类型。（整数类型包括 byte、char、</p>
+<p>short、int 和 long。） </p>
+<p>不使用 long 类型的循环索引变量也可以解决该问题，但是它看起来并不那么漂</p>
+<p>亮： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="keyword">START</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123; </span><br><span class="line"></span><br><span class="line"> count++; </span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">while</span> (i++ != <span class="keyword">END</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果清晰性和简洁性占据了极其重要的地位，那么在这种情况下使用一个 long</p>
+<p>类型的循环索引几乎总是最佳方案。 </p>
+<p>但是有一个例外：如果你在所有的（或者几乎所有的）int 数值上迭代，那么使</p>
+<p>用 int 类型的循环索引的速度大约可以提高一倍。下面是将 f 函数作用于所有</p>
+<p>40 亿个 int 数值上的惯用法： //Apply the function f to all four billion int values </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="type">Integer</span>.MIN_VALUE; </span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123; </span><br><span class="line"></span><br><span class="line"> f(i); </span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">while</span> (i++ != <span class="type">Integer</span>.MAX_VALUE);</span><br></pre></td></tr></table></figure>
+
+<p>该谜题对语言设计者的教训与谜题 3 相同：可能真的值得去考虑，应该对那些不</p>
+<p>会在产生溢出时而不抛出异常的算术运算提供支持。同时，可能还值得去考虑，</p>
+<p>应该对那些在整数值范围之上进行迭代的循环进行特殊设计，就像许多其他语言</p>
+<p>所做的那样。 </p>
+<h2 id="谜题-27：变幻莫测的-i-值"><a href="#谜题-27：变幻莫测的-i-值" class="headerlink" title="谜题 27：变幻莫测的 i 值"></a>谜题 27：变幻莫测的 i 值</h2><p>与谜题 26 中的程序一样，下面的程序也包含了一个记录在终止前有多少次迭代</p>
+<p>的循环。与那个程序不同的是，这个程序使用的是左移操作符（&lt;&lt;）。你的任务</p>
+<p>照旧是要指出这个程序将打印什么。当你阅读这个程序时，请记住 Java 使用的</p>
+<p>是基于 2 的补码的二进制算术运算，因此-1 在任何有符号的整数类型中（byte、</p>
+<p>short、int 或 long）的表示都是所有的位被置位： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Shifty</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> i = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">while</span> (<span class="number">-1</span> &lt;&lt; i != <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> i++;</span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(i); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常量-1 是所有 32 位都被置位的 int 数值（0xffffffff）。左移操作符将 0 移入</p>
+<p>到由移位所空出的右边的最低位，因此表达式（-1 &lt;&lt; i）将 i 最右边的位设置</p>
+<p>为 0，并保持其余的 32 - i 位为 1。很明显，这个循环将完成 32 次迭代，因为</p>
+<p>-1 &lt;&lt; i 对任何小于 32 的 i 来说都不等于 0。你可能期望终止条件测试在 i 等于</p>
+<p>32 时返回 false，从而使程序打印 32，但是它打印的并不是 32。实际上，它不</p>
+<p>会打印任何东西，而是进入了一个无限循环。 </p>
+<p>问题在于（-1 &lt;&lt; 32）等于-1 而不是 0，因为移位操作符之使用其右操作数的低</p>
+<p>5 位作为移位长度。或者是低 6 位，如果其左操作数是一个 long 类数值[JLS</p>
+<p>15.19]。 </p>
+<p>这条规则作用于全部的三个移位操作符：&lt;&lt;、&gt;&gt;和&gt;&gt;&gt;。移位长度总是介于 0 到</p>
+<p>31 之间，如果左操作数是 long 类型的，则介于 0 到 63 之间。这个长度是对 32</p>
+<p>取余的，如果左操作数是 long 类型的，则对 64 取余。如果试图对一个 int 数值</p>
+<p>移位 32 位，或者是对一个 long 数值移位 64 位，都只能返回这个数值自身的值。</p>
+<p>没有任何移位长度可以让一个 int 数值丢弃其所有的 32 位，或者是让一个 long</p>
+<p>数值丢弃其所有的 64 位。 幸运的是，有一个非常容易的方式能够订正该问题。我们不是让-1 重复地移位</p>
+<p>不同的移位长度，而是将前一次移位操作的结果保存起来，并且让它在每一次迭</p>
+<p>代时都向左再移 1 位。下面这个版本的程序就可以打印出我们所期望的 32： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Shifty</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> distance = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> val = <span class="number">-1</span>; val != <span class="number">0</span>; val &lt;&lt;= <span class="number">1</span>) </span><br><span class="line"></span><br><span class="line"> distance++; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(distance); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个订正过的程序说明了一条普遍的原则：如果可能的话，移位长度应该是常量。</p>
+<p>如果移位长度紧盯着你不放，那么你让其值超过 31，或者如果左操作数是 long</p>
+<p>类型的，让其值超过 63 的可能性就会大大降低。当然，你并不可能总是可以使</p>
+<p>用常量的移位长度。当你必须使用一个非常量的移位长度时，请确保你的程序可</p>
+<p>以应付这种容易产生问题的情况，或者压根就不会碰到这种情况。 </p>
+<p>前面提到的移位操作符的行为还有另外一个令人震惊的结果。很多程序员都希望</p>
+<p>具有负的移位长度的右移操作符可以起到左移操作符的作用，反之亦然。但是情</p>
+<p>况并非如此。右移操作符总是起到右移的作用，而左移操作符也总是起到左移的</p>
+<p>作用。负的移位长度通过只保留低 5 位而剔除其他位的方式被转换成了正的移位</p>
+<p>长度——如果左操作数是 long 类型的，则保留低 6 位。因此，如果要将一个 int</p>
+<p>数值左移，其移位长度为-1，那么移位的效果是它被左移了 31 位。 </p>
+<p>总之，移位长度是对 32 取余的，或者如果左操作数是 long 类型的，则对 64 取</p>
+<p>余。因此，使用任何移位操作符和移位长度，都不可能将一个数值的所有位全部</p>
+<p>移走。同时，我们也不可能用右移操作符来执行左移操作，反之亦然。如果可能</p>
+<p>的话，请使用常量的移位长度，如果移位长度不能设为常量，那么就要千万当心。 </p>
+<p>语言设计者可能应该考虑将移位长度限制在从 0 到以位为单位的类型尺寸的范</p>
+<p>围内，并且修改移位长度为类型尺寸时的语义，让其返回 0。尽管这可以避免在</p>
+<p>本谜题中所展示的混乱情况，但是它可能会带来负面的执行结果，因为 Java 的</p>
+<p>移位操作符的语义正是许多处理器上的移位指令的语义。 </p>
+<h2 id="谜题-28：循环者"><a href="#谜题-28：循环者" class="headerlink" title="谜题 28：循环者"></a>谜题 28：循环者</h2><p>下面的谜题以及随后的五个谜题对你来说是扭转了局面，它们不是向你展示某些</p>
+<p>代码，然后询问你这些代码将做些什么，它们要让你去写代码，但是数量会很少。</p>
+<p>这些谜题被称为“循环者（looper）”。你眼前会展示出一个循环，它看起来应</p>
+<p>该很快就终止的，而你的任务就是写一个变量声明，在将它作用于该循环之上时，</p>
+<p>使得该循环无限循环下去。例如，考虑下面的 for 循环： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (int <span class="built_in">i</span> = start; <span class="built_in">i</span> &lt;= start + <span class="number">1</span>; <span class="built_in">i</span>++) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来它好像应该只迭代两次，但是通过利用在谜题 26 中所展示的溢出行为，</p>
+<p>可以使它无限循环下去。下面的的声明就采用了这项技巧： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> start = <span class="type">Integer</span>.MAX_VALUE - <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>现在该轮到你了。什么样的声明能够让下面的循环变成一个无限循环？ </p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">While</span> (i == i + <span class="number">1</span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>仔细查看这个 while 循环，它真的好像应该立即终止。一个数字永远不会等于它</p>
+<p>自己加 1，对吗？嗯，如果这个数字是无穷大的，又会怎样呢？Java 强制要求使</p>
+<p>用 IEEE 754 浮点数算术运算[IEEE 754]，它可以让你用一个 double 或 float</p>
+<p>来表示无穷大。正如我们在学校里面学到的，无穷大加 1 还是无穷大。如果 i</p>
+<p>在循环开始之前被初始化为无穷大，那么终止条件测试(i == i + 1)就会被计算</p>
+<p>为 true，从而使循环永远都不会终止。 </p>
+<p>你可以用任何被计算为无穷大的浮点算术表达式来初始化 i，例如： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> i = <span class="number">1.0</span> / <span class="number">0.0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>不过，你最好是能够利用标准类库为你提供的常量： </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="keyword">Double</span>.POSITIVE_INFINITY;</span><br></pre></td></tr></table></figure>
+
+<p>事实上，你不必将 i 初始化为无穷大以确保循环永远执行。任何足够大的浮点数</p>
+<p>都可以实现这一目的，例如： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> i = <span class="number">1.0e40</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样做之所以可以起作用，是因为一个浮点数值越大，它和其后继数值之间的间</p>
+<p>隔就越大。浮点数的这种分布是用固定数量的有效位来表示它们的必然结果。对</p>
+<p>一个足够大的浮点数加 1 不会改变它的值，因为 1 是不足以“填补它与其后继者</p>
+<p>之间的空隙”。 </p>
+<p>浮点数操作返回的是最接近其精确的数学结果的浮点数值。一旦毗邻的浮点数值</p>
+<p>之间的距离大于 2，那么对其中的一个浮点数值加 1 将不会产生任何效果，因为</p>
+<p>其结果没有达到两个数值之间的一半。对于 float 类型，加 1 不会产生任何效果</p>
+<p>的最小级数是 2</p>
+<p>25，即 33,554,432；而对于 double 类型，最小级数是 2</p>
+<p>54，大约</p>
+<p>是 1.8 × 1016。 </p>
+<p>毗邻的浮点数值之间的距离被称为一个 ulp，它是“最小单位（unit in the last </p>
+<p>place）”的首字母缩写词。在 5.0 版中，引入了 Math.ulp 方法来计算 float</p>
+<p>或 double 数值的 ulp。 </p>
+<p>总之，用一个 double 或一个 float 数值来表示无穷大是可以的。大多数人在第</p>
+<p>一次听到这句话时，多少都会有一点吃惊，可能是因为我们无法用任何整数类型</p>
+<p>来表示无穷大的原因。第二点，将一个很小的浮点数加到一个很大的浮点数上时，</p>
+<p>将不会改变大的浮点数的值。这过于违背直觉了，因为对实际的数字来说这是不</p>
+<p>成立的。我们应该记住二进制浮点算术只是对实际算术的一种近似。 </p>
+<h2 id="谜题-29：循环者的新娘"><a href="#谜题-29：循环者的新娘" class="headerlink" title="谜题 29：循环者的新娘"></a>谜题 29：循环者的新娘</h2><p>请提供一个对 i 的声明，将下面的循环转变为一个无限循环： while (i != i) { </p>
+<p>} </p>
+<p>这个循环可能比前一个还要使人感到困惑。不管在它前面作何种声明，它看起来</p>
+<p>确实应该立即终止。一个数字总是等于它自己，对吗？ </p>
+<p>对，但是 IEEE 754 浮点算术保留了一个特殊的值用来表示一个不是数字的数量</p>
+<p>[IEEE 754]。这个值就是 NaN（“不是一个数字（Not a Number）”的缩写），</p>
+<p>对于所有没有良好的数字定义的浮点计算，例如 0.0/0.0，其值都是它。规范中</p>
+<p>描述道，NaN 不等于任何浮点数值，包括它自身在内[JLS 15.21.1]。因此，如</p>
+<p>果 i 在循环开始之前被初始化为 NaN，那么终止条件测试(i != i)的计算结果就</p>
+<p>是 true，循环就永远不会终止。很奇怪但却是事实。 </p>
+<p>你可以用任何计算结果为 NaN 的浮点算术表达式来初始化 i，例如： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> i = <span class="number">0.0</span> / <span class="number">0.0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>同样，为了表达清晰，你可以使用标准类库提供的常量： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> i = <span class="type">Double</span>.<span class="keyword">NaN</span>;</span><br></pre></td></tr></table></figure>
+
+<p>NaN 还有其他的惊人之处。任何浮点操作，只要它的一个或多个操作数为 NaN，</p>
+<p>那么其结果为 NaN。这条规则是非常合理的，但是它却具有奇怪的结果。例如，</p>
+<p>下面的程序将打印 false： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Test</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">double</span> i = <span class="number">0.0</span> / <span class="number">0.0</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(i - i == <span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这条计算 NaN 的规则所基于的原理是：一旦一个计算产生了 NaN，它就被损坏了，</p>
+<p>没有任何更进一步的计算可以修复这样的损坏。NaN 值意图使受损的计算继续执</p>
+<p>行下去，直到方便处理这种情况的地方为止。 </p>
+<p>总之，float 和 double 类型都有一个特殊的 NaN 值，用来表示不是数字的数量。</p>
+<p>对于涉及 NaN 值的计算，其规则很简单也很明智，但是这些规则的结果可能是违</p>
+<p>背直觉的。 </p>
+<h2 id="谜题-30：循环者的爱子"><a href="#谜题-30：循环者的爱子" class="headerlink" title="谜题 30：循环者的爱子"></a>谜题 30：循环者的爱子</h2><p>请提供一个对 i 的声明，将下面的循环转变为一个无限循环： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">i</span> != <span class="built_in">i</span> + <span class="number">0</span>) &#123; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与前一个谜题不同，你必须在你的答案中不使用浮点数。换句话说，你不能把 i</p>
+<p>声明为 double 或 float 类型的。 与前一个谜题一样，这个谜题初看起来是不可能实现的。毕竟，一个数字总是等</p>
+<p>于它自身加上 0，你被禁止使用浮点数，因此不能使用 NaN，而在整数类型中没</p>
+<p>有 NaN 的等价物。那么，你能给出什么呢？ </p>
+<p>我们必然可以得出这样的结论，即 i 的类型必须是非数值类型的，并且这其中存</p>
+<p>在着解谜方案。唯一的 + 操作符有定义的非数值类型就是 String。+ 操作符被</p>
+<p>重载了：对于 String 类型，它执行的不是加法而是字符串连接。如果在连接中</p>
+<p>的某个操作数具有非 String 的类型，那么这个操作书就会在连接之前转换成字</p>
+<p>符串[JLS 15.18.1]。 </p>
+<p>事实上，i 可以被初始化为任何值，只要它是 String 类型的即可，例如： </p>
+<p>String i = “Buy seventeen copies of Effective Java”; </p>
+<p>int 类型的数值 0 被转换成 String 类型的数值”0”，并且被追加到了感叹号之</p>
+<p>后，所产生的字符串在用 equals 方法计算时就不等于最初的字符串了，这样它</p>
+<p>们在使用==操作符进行计算时，当然就不是相等的。因此，计算布尔表达式(i != </p>
+<p>i + 0)得到的值就是 true，循环也就永远不会被终止了。 </p>
+<p>总之，操作符重载是很容易令人误解的。在本谜题中的加号看起来是表示一个加</p>
+<p>法，但是通过为变量 i 选择合适的类型，即 String，我们让它执行了字符串连</p>
+<p>接操作。甚至是因为变量被命名为 i，都使得本谜题更加容易令人误解，因为 i</p>
+<p>通常被当作整型变量名而被保留的。对于程序的可读性来说，好的变量名、方法</p>
+<p>名和类名至少与好的注释同等重要。 </p>
+<p>对语言设计者的教训与谜题 11 和 13 中的教训相同。操作符重载是很容易引起混</p>
+<p>乱的，也许 + 操作符就不应该被重载用来进行字符串连接操作。有充分的理由</p>
+<p>证明提供一个字符串连接操作符是多么必要，但是它不应该是 + 。 </p>
+<h2 id="谜题-31：循环者的鬼魂"><a href="#谜题-31：循环者的鬼魂" class="headerlink" title="谜题 31：循环者的鬼魂"></a>谜题 31：循环者的鬼魂</h2><p>请提供一个对 i 的声明，将下面的循环转变为一个无限循环： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (i != <span class="number">0</span>) &#123; </span><br><span class="line"></span><br><span class="line"> i &gt;&gt;&gt;= <span class="number">1</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回想一下，&gt;&gt;&gt;=是对应于无符号右移操作符的赋值操作符。0 被从左移入到由移</p>
+<p>位操作而空出来的位上，即使被移位的负数也是如此。 </p>
+<p>这个循环比前面三个循环要稍微复杂一点，因为其循环体非空。在其循环题中，</p>
+<p>i 的值由它右移一位之后的值所替代。为了使移位合法，i 必须是一个整数类型</p>
+<p>（byte、char、short、int 或 long）。无符号右移操作符把 0 从左边移入，因</p>
+<p>此看起来这个循环执行迭代的次数与最大的整数类型所占据的位数相同，即 64</p>
+<p>次。如果你在循环的前面放置如下的声明，那么这确实就是将要发生的事情： </p>
+<p>long i = -1; // -1L has all 64 bits set 你怎样才能将它转变为一个无限循环呢？解决本谜题的关键在于&gt;&gt;&gt;=是一个复</p>
+<p>合赋值操作符。（复合赋值操作符包括*=、/=、%=、+=、-=、&lt;&lt;=、&gt;&gt;=、&gt;&gt;&gt;=、</p>
+<p>&amp;=、^=和|=。）有关混合操作符的一个不幸的事实是，它们可能会自动地执行窄</p>
+<p>化原始类型转换[JLS 15.26.2]，这种转换把一种数字类型转换成了另一种更缺</p>
+<p>乏表示能力的类型。窄化原始类型转换可能会丢失级数的信息，或者是数值的精</p>
+<p>度[JLS 5.1.3]。 </p>
+<p>让我们更具体一些，假设你在循环的前面放置了下面的声明： </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">short i</span> = -1;</span><br></pre></td></tr></table></figure>
+
+<p>因为 i 的初始值（(short)0xffff）是非 0 的，所以循环体会被执行。在执行移</p>
+<p>位操作时，第一步是将 i 提升为 int 类型。所有算数操作都会对 short、byte</p>
+<p>和 char 类型的操作数执行这样的提升。这种提升是一个拓宽原始类型转换，因</p>
+<p>此没有任何信息会丢失。这种提升执行的是符号扩展，因此所产生的 int 数值是</p>
+<p>0xffffffff。然后，这个数值右移 1 位，但不使用符号扩展，因此产生了 int</p>
+<p>数值 0x7fffffff。最后，这个数值被存回到 i 中。为了将 int 数值存入 short</p>
+<p>变量，Java 执行的是可怕的窄化原始类型转换，它直接将高 16 位截掉。这样就</p>
+<p>只剩下(short)oxffff 了，我们又回到了开始处。循环的第二次以及后续的迭代</p>
+<p>行为都是一样的，因此循环将永远不会终止。 </p>
+<p>如果你将 i 声明为一个 short 或 byte 变量，并且初始化为任何负数，那么这种</p>
+<p>行为也会发生。如果你声明 i 为一个 char，那么你将无法得到无限循环，因为</p>
+<p>char 是无符号的，所以发生在移位之前的拓宽原始类型转换不会执行符号扩展。 </p>
+<p>总之，不要在 short、byte 或 char 类型的变量之上使用复合赋值操作符。因为</p>
+<p>这样的表达式执行的是混合类型算术运算，它容易造成混乱。更糟的是，它们执</p>
+<p>行将隐式地执行会丢失信息的窄化转型，其结果是灾难性的。 </p>
+<p>对语言设计者的教训是语言不应该自动地执行窄化转换。还有一点值得好好争论</p>
+<p>的是，Java 是否应该禁止在 short、byte 和 char 变量上使用复合赋值操作符。 </p>
+<h2 id="谜题-32：循环者的诅咒"><a href="#谜题-32：循环者的诅咒" class="headerlink" title="谜题 32：循环者的诅咒"></a>谜题 32：循环者的诅咒</h2><p>请提供一个对 i 的声明，将下面的循环转变为一个无限循环： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">i</span> &lt;= <span class="built_in">j</span> &amp;&amp; <span class="built_in">j</span> &lt;= <span class="built_in">i</span> &amp;&amp; <span class="built_in">i</span> != <span class="built_in">j</span>) &#123; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>噢，不，不要再给我看起来不可能的循环了！如果 i &lt;= j 并且 j &lt;= i，i 不是</p>
+<p>肯定等于 j 吗？这一属性对实数肯定有效。事实上，它是如此地重要，以至于它</p>
+<p>有这样的定义：实数上的≤关系是反对称的。Java 的&lt;=操作符在 5.0 版之前是</p>
+<p>反对称的，但是这从 5.0 版之后就不再是了。 </p>
+<p>直到 5.0 版之前，Java 的数字比较操作符（&lt;、&lt;=、&gt;和&gt;=）要求它们的两个操</p>
+<p>作数都是原始数字类型的（byte、char、short、int、long、float 和 double）</p>
+<p>[JLS 15.20.1]。但是在 5.0 版中，规范作出了修改，新规范描述道：每一个操作数的类型必须可以转换成原始数字类型[JLS 15.20.1，5.1.8]。问题难就难在</p>
+<p>这里了。 </p>
+<p>在 5.0 版中，自动包装（autoboxing）和自动反包装（auto-unboxing）被添加</p>
+<p>到了 Java 语言中。如果你对它们并不了解，请查看：</p>
+<p><a href="http://java.sun.com/j2se/5.0/docs/guide/language/autoboxing.html" target="_blank" rel="noopener">http://java.sun.com/j2se/5.0/docs/guide/language/autoboxing.html</a></p>
+<p>[Boxing]。&lt;=操作符在原始数字类型集上仍然是反对称的，但是现在它还被应用</p>
+<p>到了被包装的数字类型上。（被包装的数字类型有：Byte、Character、Short、</p>
+<p>Integer、Long、Float 和 Double。）&lt;=操作符在这些类型的操作数上不是反对</p>
+<p>称的，因为 Java 的判等操作符（==和!=）在作用于对象引用时，执行的是引用</p>
+<p>ID 的比较，而不是值的比较。 </p>
+<p>让我们更具体一些，下面的声明赋予表达式(i &lt;= j &amp;&amp; j &lt;= i &amp;&amp; i != j)的值</p>
+<p>为 true，从而将这个循环变成了一个无限循环： </p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Integer</span> i = <span class="literal">new</span> <span class="built_in">Integer</span>(<span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"><span class="built_in">Integer</span> j = <span class="literal">new</span> <span class="built_in">Integer</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>前两个子表达式（i &lt;= j 和 j &lt;= i）在 i 和 j 上执行解包转换[JLS 5.1.8]，</p>
+<p>并且在数字上比较所产生的 int 数值。i 和 j 都表示 0，所以这两个子表达式都</p>
+<p>被计算为 true。第三个子表达式（i != j）在对象引用 i 和 j 上执行标识比较，</p>
+<p>因为它们都初始化为一个新的 Integer 实例，因此，第三个子表达式同样也被计</p>
+<p>算为 true，循环也就永远地环绕下去了。 </p>
+<p>你可能会感到奇怪，为什么语言规范没有修改为：当判等操作符作用于被包装的</p>
+<p>数字类型时，它们执行的是值比较。答案很简单：兼容性。当一种语言被广泛使</p>
+<p>用之后，以违反现有规范的方式去改变现有程序的行为是让人无法接受的。下面</p>
+<p>的程序过去总是保证可以打印 false，因此它必须继续保持此特征： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceComparison</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> Integer(<span class="number">0</span>) == <span class="keyword">new</span> Integer(<span class="number">0</span>)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>判等操作符在其两个操作数中只有一个是被包装的数字类型，而另一个是原始类</p>
+<p>型时，执行的确实是数值比较。因为这在 5.0 版之前是非法的，所有在这里没有</p>
+<p>任何兼容性的问题。让我们更具体一些，下面的程序在 1.4 版中是非法的，而在</p>
+<p>5.0 版中将打印 true： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValueComparison</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> Integer(<span class="number">0</span>) == <span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>} 总之，当两个操作数都是被包装的数字类型时，数值比较操作符和判等操作符的</p>
+<p>行为存在着根本的差异：数值比较操作符执行的是值比较，而判等操作符执行的</p>
+<p>是引用标识的比较。 </p>
+<p>对语言设计者来说，如果判等操作符一直执行的都是数值比较（谜题 13），那</p>
+<p>么生活可能就要简单得多、快乐得多。也许真正的教训应该是：语言设计者应该</p>
+<p>拥有高质量的水晶球，以预测语言的未来，并且做出相应的设计决策。严肃一点</p>
+<p>地讲，语言设计者应该考虑语言可能会如何演化，并且应该努力去最小化在演化</p>
+<p>之路上的各种制约影响。 </p>
+<h2 id="谜题-33：循环者遇到了狼人-循环者遇到了狼人"><a href="#谜题-33：循环者遇到了狼人-循环者遇到了狼人" class="headerlink" title="谜题 33：循环者遇到了狼人 循环者遇到了狼人"></a>谜题 33：循环者遇到了狼人 循环者遇到了狼人</h2><p>请提供一个对 i 的声明，将下面的循环转变为一个无限循环。这个循环不需要使</p>
+<p>用任何 5.0 版的特性： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">i</span> != <span class="number">0</span> &amp;&amp; <span class="built_in">i</span> == -<span class="built_in">i</span>) &#123; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这仍然是一个循环。在布尔表达式(i != 0 &amp;&amp; i == -i)中，一元减号操作符作</p>
+<p>用于 i，这意味着它的类型必须是数字型的：一元减号操作符作用于一个非数字</p>
+<p>型操作数是非法的。因此，我们要寻找一个非 0 的数字型数值，它等于它自己的</p>
+<p>负值。NaN 不能满足这个属性，因为它不等于任何数值，因此，i 必须表示一个</p>
+<p>实际的数字。肯定没有任何数字满足这样的属性吗？ </p>
+<p>嗯，没有任何实数具有这种属性，但是没有任何一种 Java 数值类型能够对实数</p>
+<p>进行完美建模。浮点数值是用一个符号位、一个被通俗地称为尾数（mantissa）</p>
+<p>的有效数字以及一个指数来表示的。除了 0 之外，没有任何浮点数等于其符号位</p>
+<p>反转之后的值，因此 i 的类型必然是整数型的。 </p>
+<p>有符号的整数类型使用的是 2 的补码算术运算：为了对一个数值取其负值，你要</p>
+<p>反转其每一位，然后加 1，从而得到结果[JLS 15.15.4]。2 的补码算术运算的一</p>
+<p>个很大的优势是，0 具有唯一的表示形式。如果你要对 int 数值 0 取负值，你将</p>
+<p>得到 0xffffffff+1，它仍然是 0。 </p>
+<p>但是，这也有一个相应的不利之处，总共存在偶数个 int 数值——准确地说有</p>
+<p>2</p>
+<p>32个——其中一个用来表示 0，这样就剩些奇数个 int 数值来表示正整数和负整</p>
+<p>数，这意味着正的和负的 int 数值的数量必然不相等。这暗示着至少有一个 int</p>
+<p>数值，其负值不能正确地表示成为一个 int 数值。 </p>
+<p>事实上，恰恰就有一个这样的 int 数值，它就是 Integer.MIN_VALUE，即-231。</p>
+<p>他的十六进制表示是 0x80000000。其符号位为 1，其余所有的位都是 0。如果我</p>
+<p>们对这个值取负值，那么我们将得到 0x7fffffff+1，也就是 0x80000000，即</p>
+<p>Integer.MIN_VALUE！换句话说，Integer.MIN_VALUE 是它自己的负值，</p>
+<p>Long.MIN_VALUE 也是一样。对这两个值取负值将会产生溢出，但是 Java 在整数</p>
+<p>计算中忽略了溢出。其结果已经阐述清楚了，即使它们并不总是你所期望的。 下面的声明将使得布尔表达式(i != 0 &amp;&amp; i == -i)的计算结果为 true，从而使</p>
+<p>循环无限环绕下去： </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> i = <span class="keyword">Integer</span>.MIN_VALUE;</span><br></pre></td></tr></table></figure>
+
+<p>下面这个也可以： </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> i = <span class="keyword">Long</span>.MIN_VALUE;</span><br></pre></td></tr></table></figure>
+
+<p>如果你对取模运算很熟悉，那么很有必要指出，这个谜题也可以用代数方法解决。</p>
+<p>Java 的 int 算术运算是实际的算术运算对 2</p>
+<p>32取模的运算，因此本谜题需要一个</p>
+<p>对这种线性全等的非 0 解决方案： </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">i</span> ≡ -<span class="built_in">i</span>(<span class="built_in">mod</span> <span class="number">232</span>)</span><br></pre></td></tr></table></figure>
+
+<p>将 i 加到恒等式的两边，我们可以得到： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>i ≡ <span class="number">0</span>(mod <span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+
+<p>对这种全等的非 0 解决方案就是 i = 231。尽管这个值不能表示成为一个 int，</p>
+<p>但是它是和-231全等的，即与 Integer.MIN_VALUE 全等。 </p>
+<p>总之，Java 使用 2 的补码的算术运算，它是非对称的。对于每一种有符号的整</p>
+<p>数类型（int、long、byte 和 short），负的数值总是比正的数值多一个，这个</p>
+<p>多出来的值总是这种类型所能表示的最小数值。对 Integer.MIN_VALUE 取负值得</p>
+<p>到的还是它没有改变过的值，Long.MIN_VALUE 也是如此。对 Short.MIN_VALUE</p>
+<p>取负值并将所产生的 int 数值转型回 short，返回的同样是最初的值</p>
+<p>（Short.MIN_VALUE）。对 Byte.MIN_VALUE 来说，也会产生相似的结果。更一般</p>
+<p>地讲，千万要当心溢出：就像狼人一样，它是个杀手。 </p>
+<p>对语言设计者的教训与谜题 26 中的教训一样。应该对某种溢出不会悄悄发生的</p>
+<p>整数算术运算形式提供语言级的支持。 </p>
+<h2 id="谜题-34：被计数击倒了"><a href="#谜题-34：被计数击倒了" class="headerlink" title="谜题 34：被计数击倒了"></a>谜题 34：被计数击倒了</h2><p>与谜题 26 和 27 中的程序一样，下面的程序有一个单重的循环，它记录迭代的次</p>
+<p>数，并在循环终止时打印这个数。那么，这个程序会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Count</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> <span class="built_in">int</span> START = <span class="number">2000000000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> count = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">float</span> f = START; f &lt; START + <span class="number">50</span>; f++) </span><br><span class="line"></span><br><span class="line"> count++; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(count); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表面的分析也许会认为这个程序将打印 50，毕竟，循环变量（f）被初始化为</p>
+<p>2,000,000,000，而终止值比初始值大 50，并且这个循环具有传统的“半开”形</p>
+<p>式：它使用的是 &lt; 操作符，这是的它包括初始值但是不包括终止值。 然而，这种分析遗漏了关键的一点：循环变量是 float 类型的，而非 int 类型的。</p>
+<p>回想一下谜题 28，很明显，增量操作（f++）不能正常工作。F 的初始值接近于</p>
+<p>Integer.MAX_VALUE，因此它需要用 31 位来精确表示，而 float 类型只能提供</p>
+<p>24 位的精度。对如此巨大的一个 float 数值进行增量操作将不会改变其值。因</p>
+<p>此，这个程序看起来应该无限地循环下去，因为 f 永远也不可能解决其终止值。</p>
+<p>但是，如果你运行该程序，就会发现它并没有无限循环下去，事实上，它立即就</p>
+<p>终止了，并打印出 0。怎么回事呢？ </p>
+<p>问题在于终止条件测试失败了，其方式与增量操作失败的方式非常相似。这个循</p>
+<p>环只有在循环索引 f 比(float)(START + 50)小的情况下才运行。在将一个 int</p>
+<p>与一个 float 进行比较时，会自动执行从 int 到 float 的提升[JLS 15.20.1]。</p>
+<p>遗憾的是，这种提升是会导致精度丢失的三种拓宽原始类型转换的一种[JLS</p>
+<p>5.1.2]。（另外两个是从 long 到 float 和从 long 到 double。） </p>
+<p>f 的初始值太大了，以至于在对其加上 50，然后将结果转型为 float 时，所产生</p>
+<p>的数值等于直接将 f 转换成 float 的数值。换句话说，(float)2000000000 == </p>
+<p>2000000050，因此表达式 f &lt; START + 50 即使是在循环体第一次执行之前就是</p>
+<p>false，所以，循环体也就永远的不到机会去运行。 </p>
+<p>订正这个程序非常简单，只需将循环变量的类型从 float 修改为 int 即可。这样</p>
+<p>就避免了所有与浮点数计算有关的不精确性： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> f = <span class="keyword">START</span>; f &lt; <span class="keyword">START</span> + <span class="number">50</span>; f++)</span><br><span class="line"></span><br><span class="line"> count++;</span><br></pre></td></tr></table></figure>
+
+<p>如果不使用计算机，你如何才能知道 2,000,000,050 与 2,000,000,000 有相同的</p>
+<p>float 表示呢？关键是要观察到 2,000,000,000 有 10 个因子都是 2：它是一个 2</p>
+<p>乘以 9 个 10，而每个 10 都是 5×2。这意味着 2,000,000,000 的二进制表示是以</p>
+<p>10 个 0 结尾的。50 的二进制表示只需要 6 位，所以将 50 加到 2,000,000,000</p>
+<p>上不会对右边 6 位之外的其他为产生影响。特别是，从右边数过来的第 7 位和第</p>
+<p>8 位仍旧是 0。提升这个 31 位的 int 到具有 24 位精度的 float 会在第 7 位和第</p>
+<p>8 位之间四舍五入，从而直接丢弃最右边的 7 位。而最右边的 6 位是</p>
+<p>2,000,000,000 与 2,000,000,050 位以不同之处，因此它们的 float 表示是相同</p>
+<p>的。 </p>
+<p>这个谜题寓意很简单：不要使用浮点数作为循环索引，因为它会导致无法预测的</p>
+<p>行为。如果你在循环体内需要一个浮点数，那么请使用 int 或 long 循环索引，</p>
+<p>并将其转换为float或 double。在将一个int或 long转换成一个float或 double</p>
+<p>时，你可能会丢失精度，但是至少它不会影响到循环本身。当你使用浮点数时，</p>
+<p>要使用 double 而不是 float，除非你肯定 float 提供了足够的精度，并且存在</p>
+<p>强制性的性能需求迫使你使用 float。适合使用 float 而不是 double 的时刻是</p>
+<p>非常非常少的。 </p>
+<p>对语言设计者的教训，仍然是悄悄地丢失精度对程序员来说是非常令人迷惑的。</p>
+<p>请查看谜题 31 有关这一点的深入讨论。 谜题 35：一分钟又一分钟 一分钟又一分钟 </p>
+<p>下面的程序在模仿一个简单的时钟。它的循环变量表示一个毫秒计数器，其计数</p>
+<p>值从 0 开始直至一小时中包含的毫秒数。循环体以定期的时间间隔对一个分钟计</p>
+<p>数器执行增量操作。最后，该程序将打印分钟计数器。那么它会打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Clock</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> minutes = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> ms = <span class="number">0</span>; ms &lt; <span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>; ms++) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (ms % <span class="number">60</span>*<span class="number">1000</span> == <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> minutes++; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(minutes); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个程序中的循环是一个标准的惯用 for 循环。它步进毫秒计数器（ms），从</p>
+<p>0 到一小时中的毫秒数，即 3,600,000，包括前者但是不包括后者。循环体看起</p>
+<p>来是在每当毫秒计数器的计数值是 60,000（一分钟内所包含毫秒数）的倍数时，</p>
+<p>对分钟计数器（minutes）执行增量操作。这在循环的生命周期内总共发生了</p>
+<p>3,600,000/60,000 次，即 60 次，因此你可能期望程序打印出 60，毕竟，这就是</p>
+<p>一小时所包含的分钟数。但是，该程序的运行却会告诉你另外一番景象：它打印</p>
+<p>的是 60000。为什么它会如此频繁地对 minutes 执行了增量操作呢？ </p>
+<p>问题在于那个布尔表达式(ms % 60*1000 == 0)。你可能会认为这个表达式等价</p>
+<p>于(ms % 60000 == 0)，但是它们并不等价。取余和乘法操作符具有相同的优先</p>
+<p>级[JLS 15.17]，因此表达式 ms % 60<em>1000 等价于(ms % 60)</em>1000。如果(ms % </p>
+<p>60)等于 0 的话，这个表达式就等于 0，因此循环每 60 次迭代就对 minutes 执行</p>
+<p>增量操作。这使得最终的结果相差 1000 倍。 </p>
+<p>订正该程序的最简单的方式就是在布尔表达式中插入一对括号，以强制规定计算</p>
+<p>的正确顺序： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ms % (<span class="number">60</span> * <span class="number">1000</span>) == <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> minutes++;</span><br></pre></td></tr></table></figure>
+
+<p>然而，有一个更好的方法可以订正该程序。用被恰当命名的常量来替代所有的魔</p>
+<p>幻数字： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Clock</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> MS_PER_HOUR = <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> MS_PER_MINUTE = <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> minutes = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> ms = <span class="number">0</span>; ms &lt; MS_PER_HOUR; ms++) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (ms % MS_PER_MINUTE == <span class="number">0</span>) </span><br><span class="line"></span><br><span class="line"> minutes++; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(minutes);  &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之所以要在最初的程序中展现表达式 ms % 60*1000，是为了诱使你去认为乘法</p>
+<p>比取余有更高的优先级。然而，编译器是忽略空格的，所以千万不要使用空格来</p>
+<p>表示分组，要使用括号。空格是靠不住的，而括号是从来不说谎的。 </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" rel="tag"># java进阶学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E4%B8%AD%E7%BA%A7%E7%9F%A5%E8%AF%86/" rel="prev" title="java中级知识点">
+      <i class="fa fa-chevron-left"></i> java中级知识点
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/" rel="next" title="java异常谜题">
+      java异常谜题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-谜题-Java-谜题-3——循环谜题"><span class="nav-number">1.</span> <span class="nav-text">Java 谜题 Java 谜题 3——循环谜题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-24：尽情享受每一个字节-尽情享受每一个字节"><span class="nav-number">1.1.</span> <span class="nav-text">谜题 24：尽情享受每一个字节 尽情享受每一个字节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-25：无情的增量操作-无情的增量操作"><span class="nav-number">1.2.</span> <span class="nav-text">谜题 25：无情的增量操作 无情的增量操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-26：在循环中"><span class="nav-number">1.3.</span> <span class="nav-text">谜题 26：在循环中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-27：变幻莫测的-i-值"><span class="nav-number">1.4.</span> <span class="nav-text">谜题 27：变幻莫测的 i 值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-28：循环者"><span class="nav-number">1.5.</span> <span class="nav-text">谜题 28：循环者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-29：循环者的新娘"><span class="nav-number">1.6.</span> <span class="nav-text">谜题 29：循环者的新娘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-30：循环者的爱子"><span class="nav-number">1.7.</span> <span class="nav-text">谜题 30：循环者的爱子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-31：循环者的鬼魂"><span class="nav-number">1.8.</span> <span class="nav-text">谜题 31：循环者的鬼魂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-32：循环者的诅咒"><span class="nav-number">1.9.</span> <span class="nav-text">谜题 32：循环者的诅咒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-33：循环者遇到了狼人-循环者遇到了狼人"><span class="nav-number">1.10.</span> <span class="nav-text">谜题 33：循环者遇到了狼人 循环者遇到了狼人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-34：被计数击倒了"><span class="nav-number">1.11.</span> <span class="nav-text">谜题 34：被计数击倒了</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">233</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">28:26</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 谜题 Java 谜题 5——类谜题谜题 46：令人混淆的构造器案例 令人混淆的构造器案例本谜题呈现给你了两个容易令人混淆的构造器。main 方法调用了一个构造器， 但是它调用的到底是哪一个呢？该程序的输出取决于这个问题的答案。那么它到 底会打印出什么呢？甚至它是否是合法的呢？  123456789101112131415161718192021public class Confusing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java类谜题">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 谜题 Java 谜题 5——类谜题谜题 46：令人混淆的构造器案例 令人混淆的构造器案例本谜题呈现给你了两个容易令人混淆的构造器。main 方法调用了一个构造器， 但是它调用的到底是哪一个呢？该程序的输出取决于这个问题的答案。那么它到 底会打印出什么呢？甚至它是否是合法的呢？  123456789101112131415161718192021public class Confusing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-20T14:41:03.117Z">
+<meta property="article:modified_time" content="2021-03-20T14:44:57.439Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java进阶学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java类谜题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java类谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 22:41:03 / 修改时间：22:44:57" itemprop="dateCreated datePublished" datetime="2021-03-20T22:41:03+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-谜题-Java-谜题-5——类谜题"><a href="#Java-谜题-Java-谜题-5——类谜题" class="headerlink" title="Java 谜题 Java 谜题 5——类谜题"></a>Java 谜题 Java 谜题 5——类谜题</h1><h2 id="谜题-46：令人混淆的构造器案例-令人混淆的构造器案例"><a href="#谜题-46：令人混淆的构造器案例-令人混淆的构造器案例" class="headerlink" title="谜题 46：令人混淆的构造器案例 令人混淆的构造器案例"></a>谜题 46：令人混淆的构造器案例 令人混淆的构造器案例</h2><p>本谜题呈现给你了两个容易令人混淆的构造器。main 方法调用了一个构造器，</p>
+<p>但是它调用的到底是哪一个呢？该程序的输出取决于这个问题的答案。那么它到</p>
+<p>底会打印出什么呢？甚至它是否是合法的呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Confusing</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(Object o)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Object"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(<span class="keyword">double</span>[] dArray)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"double array"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> Confusing(null); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>传递给构造器的参数是一个空的对象引用，因此，初看起来，该程序好像应该调</p>
+<p>用参数类型为 Object 的重载版本，并且将打印出 Object。另一方面，数组也是</p>
+<p>引用类型，因此 null 也可以应用于类型为 double[ ]的重载版本。你由此可能</p>
+<p>会得出结论：这个调用是模棱两可的，该程序应该不能编译。如果你试着去运行</p>
+<p>该程序，就会发现这些直观感觉都是不对的：该程序打印的是 double array。</p>
+<p>这种行为可能显得有悖常理，但是有一个很好的理由可以解释它。 </p>
+<p>Java 的重载解析过程是以两阶段运行的。第一阶段选取所有可获得并且可应用</p>
+<p>的方法或构造器。第二阶段在第一阶段选取的方法或构造器中选取最精确的一</p>
+<p>个。如果一个方法或构造器可以接受传递给另一个方法或构造器的任何参数，那</p>
+<p>么我们就说第一个方法比第二个方法缺乏精确性[JLS 15.12.2.5]。 在我们的程序中，两个构造器都是可获得并且可应用的。构造器</p>
+<p>Confusing(Object)可以接受任何传递给 Confusing(double[ ])的参数，因此</p>
+<p>Confusing(Object)相对缺乏精确性。（每一个 double 数组都是一个 Object，</p>
+<p>但是每一个 Object 并不一定是一个 double 数组。）因此，最精确的构造器就是</p>
+<p>Confusing(double[ ])，这也就解释了为什么程序会产生这样的输出。 </p>
+<p>如果你传递的是一个 double[ ]类型的值，那么这种行为是有意义的；但是如果</p>
+<p>你传递的是 null，这种行为就有违直觉了。理解本谜题的关键在于在测试哪一</p>
+<p>个方法或构造器最精确时，这些测试没有使用实际的参数：即出现在调用中的参</p>
+<p>数。这些参数只是被用来确定哪一个重载版本是可应用的。一旦编译器确定了哪</p>
+<p>些重载版本是可获得且可应用的，它就会选择最精确的一个重载版本，而此时使</p>
+<p>用的仅仅是形式参数：即出现在声明中的参数。 </p>
+<p>要想用一个 null 参数来调用 Confusing(Object)构造器，你需要这样写代码：</p>
+<p>new Confusing((Object)null)。这可以确保只有 Confusing(Object)是可应用</p>
+<p>的。更一般地讲，要想强制要求编译器选择一个精确的重载版本，需要将实际的</p>
+<p>参数转型为形式参数所声明的类型。 </p>
+<p>以这种方式来在多个重载版本中进行选择是相当令人不快的。在你的 API 中，应</p>
+<p>该确保不会让客户端走这种极端。理想状态下，你应该避免使用重载：为不同的</p>
+<p>方法取不同的名称。当然，有时候这无法实现，例如，构造器就没有名称，因而</p>
+<p>也就无法被赋予不同的名称。然而，你可以通过将构造器设置为私有的并提供公</p>
+<p>有的静态工厂，以此来缓解这个问题[EJ Item 1]。如果构造器有许多参数，你</p>
+<p>可以用 Builder 模式[Gamma95]来减少对重载版本的需求量。 </p>
+<p>如果你确实进行了重载，那么请确保所有的重载版本所接受的参数类型都互不兼</p>
+<p>容，这样，任何两个重载版本都不会同时是可应用的。如果做不到这一点，那么</p>
+<p>就请确保所有可应用的重载版本都具有相同的行为[EJ Item 26]。 </p>
+<p>总之，重载版本的解析可能会产生混淆。应该尽可能地避免重载，如果你必须进</p>
+<p>行重载，那么你必须遵守上述方针，以最小化这种混淆。如果一个设计糟糕的</p>
+<p>API 强制你在不同的重载版本之间进行选择，那么请将实际的参数转型为你希望</p>
+<p>调用的重载版本的形式参数所具有的类型。 </p>
+<h2 id="谜题-47：啊呀！我的猫变成狗了-！我的猫变成狗了"><a href="#谜题-47：啊呀！我的猫变成狗了-！我的猫变成狗了" class="headerlink" title="谜题 47：啊呀！我的猫变成狗了 ！我的猫变成狗了"></a>谜题 47：啊呀！我的猫变成狗了 ！我的猫变成狗了</h2><p>下面的程序使用了一个 Counter 类来跟踪每一种家庭宠物叫唤的次数。那么该程</p>
+<p>序会打印出什么呢？ </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> count++; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> count; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Counter</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123; &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">woof</span><span class="params">()</span> </span>&#123; increment(); &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Counter</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Cat</span><span class="params">()</span> </span>&#123; &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">meow</span><span class="params">()</span> </span>&#123; increment(); &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Ruckus</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Dog dogs[] = &#123; <span class="keyword">new</span> Dog(), <span class="keyword">new</span> Dog() &#125;; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; dogs.length; i++) </span><br><span class="line"></span><br><span class="line"> dogs[i].woof(); </span><br><span class="line"></span><br><span class="line"> Cat cats[] = &#123; <span class="keyword">new</span> Cat(), <span class="keyword">new</span> Cat(), <span class="keyword">new</span> Cat() &#125;; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cats.length; i++) </span><br><span class="line"></span><br><span class="line"> cats[i].meow(); </span><br><span class="line"></span><br><span class="line"> System.out.print(Dog.getCount() + <span class="string">" woofs and "</span>); </span><br><span class="line"></span><br><span class="line"> System.out.println(Cat.getCount() + <span class="string">" meows"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们听到两声狗叫和三声猫叫——肯定是好一阵喧闹——因此，程序应该打印 2 </p>
+<p>woofs and 3 meows，不是吗？不：它打印的是 5 woofs and 5 meows。所有这</p>
+<p>些多出来的吵闹声是从哪里来的？我们做些什么才能够阻止它？ </p>
+<p>该程序打印出的犬吠声和猫叫声的数量之和是 10，它是实际总数的两倍。问题</p>
+<p>在于 Dog 和 Cat 都从其共同的超类那里继承了 count 域，而 count 又是一个静态</p>
+<p>域。每一个静态域在声明它的类及其所有子类中共享一份单一的拷贝，因此 Dog</p>
+<p>和 Cat 使用的是相同的 count 域。每一个对 woof 或 meow 的调用都在递增这个域，</p>
+<p>因此它被递增了 5 次。该程序分别通过调用 Dog.getCount 和 Cat.getCount 读取</p>
+<p>了这个域两次，在每一次读取时，都返回并打印了 5。 </p>
+<p>在设计一个类的时候，如果该类构建于另一个类的行为之上，那么你有两种选择：</p>
+<p>一种是继承，即一个类扩展另一个类；另一种是组合，即在一个类中包含另一个</p>
+<p>类的一个实例。选择的依据是，一个类的每一个实例都是另一个类的一个实例，</p>
+<p>还是都有另一个类的一个实例。在第一种情况应该使用继承，而第二种情况应该</p>
+<p>使用组合。当你拿不准时，优选组合而不是继承[EJ Item 14]。 </p>
+<p>一条狗或是一只猫都不是一种计数器，因此使用继承是错误的。Dog 和 Cat 不应</p>
+<p>该扩展 Counter，而是应该都包含一个计数器域。每一种宠物都需要有一个计数器，但并非每一只宠物都需要有一个计数器，因此，这些计数器域应该是静态的。</p>
+<p>我们不必为 Counter 类而感到烦恼；一个 int 域就足够了。 </p>
+<p>下面是我们重新设计过的程序，它会打印出我们所期望的 2 woofs, 3 meows： </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> woofCounter; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123; &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">woofCount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> woofCounter; &#125;; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">woof</span><span class="params">()</span> </span>&#123; woofCounter++; &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> meowCounter; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Cat</span><span class="params">()</span> </span>&#123; &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">meowCount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> meowCounter; &#125;; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">meow</span><span class="params">()</span> </span>&#123; meowCounter++; &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Ruckus 类除了两行语句之外没有其它的变化，这两行语句被修改为使用新的方</p>
+<p>法名来访问计数器： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.print(<span class="module-access"><span class="module"><span class="identifier">Dog</span>.</span></span>woof<span class="constructor">Count()</span> + <span class="string">" woofs and "</span>); </span><br><span class="line"></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Cat</span>.</span></span>meow<span class="constructor">Count()</span> + <span class="string">" meows"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>总之，静态域由声明它的类及其所有子类所共享。如果你需要让每一个子类都具</p>
+<p>有某个域的单独拷贝，那么你必须在每一个子类中声明一个单独的静态域。如果</p>
+<p>每一个实例都需要一个单独的拷贝，那么你可以在基类中声明一个非静态域。还</p>
+<p>有就是，要优选组合而不是继承，除非导出类真的需要被当作是某一种基类来看</p>
+<p>待。 </p>
+<h2 id="谜题-48：我所得到的都是静态的-我所得到的都是静态的"><a href="#谜题-48：我所得到的都是静态的-我所得到的都是静态的" class="headerlink" title="谜题 48：我所得到的都是静态的 我所得到的都是静态的"></a>谜题 48：我所得到的都是静态的 我所得到的都是静态的</h2><p>下面的程序对巴辛吉小鬣狗和其它狗之间的行为差异进行了建模。如果你不知道</p>
+<p>什么是巴辛吉小鬣狗，那么我告诉你，这是一种产自非洲的小型卷尾狗，它们从</p>
+<p>来都不叫唤。那么，这个程序将打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bark</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"woof "</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Basenji</span> <span class="title">extends</span> <span class="title">Dog</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bark</span><span class="params">()</span> </span>&#123; &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bark</span> &#123;</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Dog woofer = <span class="keyword">new</span> Dog(); </span><br><span class="line"></span><br><span class="line"> Dog nipper = <span class="keyword">new</span> Basenji(); </span><br><span class="line"></span><br><span class="line"> woofer.bark(); </span><br><span class="line"></span><br><span class="line"> nipper.bark(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随意地看一看，好像该程序应该只打印一个 woof。毕竟，Basenji 扩展自 Dog，</p>
+<p>并且它的 bark 方法定义为什么也不做。main 方法调用了 bark 方法，第一次是</p>
+<p>在 Dog 类型的 woofer 上调用，第二次是在 Basenji 类型的 nipper 上调用。巴辛</p>
+<p>吉小鬣狗并不会叫唤，但是很显然，这一只会。如果你运行该程序，就会发现它</p>
+<p>打印的是 woof woof。这只可怜的小家伙到底出什么问题了？ </p>
+<p>问题在于 bark 是一个静态方法，而对静态方法的调用不存在任何动态的分派机</p>
+<p>制[JLS 15.12.4.4]。当一个程序调用了一个静态方法时，要被调用的方法都是</p>
+<p>在编译时刻被选定的，而这种选定是基于修饰符的编译期类型而做出的，修饰符</p>
+<p>的编译期类型就是我们给出的方法调用表达式中圆点左边部分的名字。在本案</p>
+<p>中，两个方法调用的修饰符分别是变量 woofer 和 nipper，它们都被声明为 Dog</p>
+<p>类型。因为它们具有相同的编译期类型，所以编译器使得它们调用的是相同的方</p>
+<p>法：Dog.bark。这也就解释了为什么程序打印出 woof woof。尽管 nipper 的运</p>
+<p>行期类型是 Basenji，但是编译器只会考虑其编译器类型。 </p>
+<p>要订正这个程序，直接从两个 bark 方法定义中移除掉 static 修饰符即可。这样，</p>
+<p>Basenji 中的 bark 方法将覆写而不是隐藏 Dog 中的 bark 方法，而该程序也将会</p>
+<p>打印出 woof，而不是 woof woof。通过覆写，你可以获得动态的分派；而通过隐</p>
+<p>藏，你却得不到这种特性。 </p>
+<p>当你调用了一个静态方法时，通常都是用一个类而不是表达式来标识它：例如，</p>
+<p>Dog.bark 或 Basenji.bark。当你在阅读一个 Java 程序时，你会期望类被用作为</p>
+<p>静态方法的修饰符，这些静态方法都是被静态分派的，而表达式被用作为实例方</p>
+<p>法的修饰符，这些实例方法都是被动态分派的。通过耦合类和变量的不同的命名</p>
+<p>规范，我们可以提供一个很强的可视化线索，用来表明一个给定的方法调用是动</p>
+<p>态的还是静态的。本谜题的程序使用了一个表达式作为静态方法调用的修饰符，</p>
+<p>这就误导了我们。千万不要用一个表达式来标识一个静态方法调用。 </p>
+<p>覆写的使用与上述的混乱局面搅到了一起。Basenji 中的 bark 方法与 Dog 中的</p>
+<p>bark 方法具有相同的方法签名，这正是覆写的惯用方式，预示着要进行动态的</p>
+<p>分派。然而在本案中，该方法被声明为是 static 的，而静态方法是不能被覆写</p>
+<p>的；它们只能被隐藏，而这仅仅是因为你没有表达出你应该表达的意思。为了避</p>
+<p>免这样的混乱，千万不要隐藏静态方法。即便在子类中重用了超类中的静态方法</p>
+<p>的名称，也不会给你带来任何新的东西，但是却会丧失很多东西。 </p>
+<p>对语言设计者的教训是：对类和实例方法的调用彼此之间看起来应该具有明显的</p>
+<p>差异。第一种实现此目标的方式是不允许使用表达式作为静态方法的修饰符；第</p>
+<p>二种区分静态方法和实例方法调用的方式是使用不同的操作符，就像 C++那样；第三种方式是通过完全抛弃静态方法这一概念来解决此问题，就像 Smalltalk</p>
+<p>那样。 </p>
+<p>总之，要用类名来修饰静态方法的调用，或者当你在静态方法所属的类中去调用</p>
+<p>它们时，压根不去修饰这些方法，但是千万不要用一个表达式去修饰它们。还有</p>
+<p>就是要避免隐藏静态方法。所有这些原则合起来就可以帮助我们去消除那些容易</p>
+<p>令人误解的覆写，这些覆写需要对静态方法进行动态分派。 </p>
+<h2 id="谜题-49：比生命更大"><a href="#谜题-49：比生命更大" class="headerlink" title="谜题 49：比生命更大"></a>谜题 49：比生命更大</h2><p>假如小报是可信的，那么摇滚之王“猫王”就会直到今天仍然在世。下面的程序</p>
+<p>用来估算猫王当前的腰带尺寸，方法是根据在公开演出中所观察到的他的体态发</p>
+<p>展趋势来进行投射。该程序中使用了</p>
+<p>Calendar.getInstance().get(Calendar.YEAR)这个惯用法，它返回当前的日历</p>
+<p>年份。那么，该程序会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Elvis</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Elvis INSTANCE = <span class="keyword">new</span> Elvis(); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> beltSize; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CURRENT_YEAR = </span><br><span class="line"></span><br><span class="line"> Calendar.getInstance().<span class="built_in">get</span>(Calendar.YEAR); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Elvis</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> beltSize = CURRENT_YEAR - <span class="number">1930</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">beltSize</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> beltSize; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Elvis wears a size "</span> + </span><br><span class="line"></span><br><span class="line"> INSTANCE.beltSize() + <span class="string">" belt."</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一眼看去，这个程序是在计算当前的年份减去 1930 的值。如果它是正确的，</p>
+<p>那么在 2006 年，该程序将打印出 Elvis wears a size 76 belt。如果你尝试着</p>
+<p>去运行该程序，你就会了解到小报是错误的，这证明你不能相信在报纸到读到的</p>
+<p>任何东西。该程序将打印出 Elvis wears a size -1930 belt。也许猫王已经在</p>
+<p>反物质的宇宙中定居了。 </p>
+<p>该程序所遇到的问题是由类初始化顺序中的循环而引起的[JLS 12.4]。让我们来</p>
+<p>看看其细节。Elvis 类的初始化是由虚拟机对其 main 方法的调用而触发的。首</p>
+<p>先，其静态域被设置为缺省值[JLS 4.12.5]，其中 INSTANCE 域被设置为 null，</p>
+<p>CURRENT_YEAR 被设置为 0。接下来，静态域初始器按照其出现的顺序执行。第一</p>
+<p>个静态域是 INSTANCE，它的值是通过调用 Elvis()构造器而计算出来的。 这个构造器会用一个涉及静态域 CURRENT_YEAR 的表达式来初始化 beltSize。通</p>
+<p>常，读取一个静态域是会引起一个类被初始化的事件之一，但是我们已经在初始</p>
+<p>化 Elvis 类了。递归的初始化尝试会直接被忽略掉[JLS 12.4.2, 第 3 步]。因此，</p>
+<p>CURRENT_YEAR 的值仍旧是其缺省值 0。这就是为什么 Elvis 的腰带尺寸变成了</p>
+<p>-1930 的原因。 </p>
+<p>最后，从构造器返回以完成 Elvis 类的初始化，假设我们是在 2006 年运行该程</p>
+<p>序，那么我们就将静态域 CURRENT_YEAR 初始化成了 2006。遗憾的是，这个域现</p>
+<p>在所具有的正确值对于向 Elvis.INSTANCE.beltSize 的计算施加影响来说已经</p>
+<p>太晚了，beltSize 的值已经是-1930 了。这正是后续所有对</p>
+<p>Elvis.INSTANCE.beltSize()的调用将返回的值。 </p>
+<p>该程序表明，在 final 类型的静态域被初始化之前，存在着读取它的值的可能，</p>
+<p>而此时该静态域包含的还只是其所属类型的缺省值。这是与直觉相违背的，因为</p>
+<p>我们通常会将 final 类型的域看作是常量。final 类型的域只有在其初始化表达</p>
+<p>式是常量表达式时才是常量[JLS 15.28]。 </p>
+<p>由类初始化中的循环所引发的问题是难以诊断的，但是一旦被诊断到，通常是很</p>
+<p>容易订正的。要想订正一个类初始化循环，需要重新对静态域的初始器进行排序，</p>
+<p>使得每一个初始器都出现在任何依赖于它的初始器之前。在这个程序中，</p>
+<p>CURRENT_YEAR 的声明属于在 INSTANCE 声明之前的情况，因为 Elvis 实例的创建</p>
+<p>需要 CURRENT_YEAR 被初始化。一旦 CURRENT_YEAR 的声明被移走，Elvis 就真的</p>
+<p>比生命更大了。 </p>
+<p>某些通用的设计模式本质上就是初始化循环的，特别是本谜题所展示的单例模式</p>
+<p>（Singleton）[Gamma95]和服务提供者框架（Service Provider Framework）[EJ </p>
+<p>Item 1]。类型安全的枚举模式（Typesafe Enum pattern）[EJ Item 21]也会引</p>
+<p>起类初始化的循环。5.0 版本添加了对这种使用枚举类型的模式的语言级支持。</p>
+<p>为了减少问题发生的可能性，对枚举类型的静态初始器做了一些限制[JLS 16.5,</p>
+<p>8.9]。 </p>
+<p>总之，要当心类初始化循环。最简单的循环只涉及到一个单一的类，但是它们也</p>
+<p>可能涉及多个类。类初始化循环也并非总是坏事，但是它们可能会导致在静态域</p>
+<p>被初始化之前就调用构造器。静态域，甚至是 final 类型的静态域，可能会在它</p>
+<p>们被初始化之前，被读走其缺省值。 </p>
+<h2 id="谜题-50：不是你的类型"><a href="#谜题-50：不是你的类型" class="headerlink" title="谜题 50：不是你的类型"></a>谜题 50：不是你的类型</h2><p>本谜题要测试你对 Java 的两个最经典的操作符：instanceof 和转型的理解程度。</p>
+<p>下面的三个程序每一个都会做些什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Type1</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">String</span> s = null; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(s instanceof <span class="keyword">String</span>); &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Type2</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">new</span> Type2() instanceof <span class="keyword">String</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Type3</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Type3 t3 = (Type3) <span class="keyword">new</span> Object(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个程序，Type1，展示了 instanceof 操作符应用于一个空对象引用时的行为。</p>
+<p>尽管 null 对于每一个引用类型来说都是其子类型，但是 instanceof 操作符被定</p>
+<p>义为在其左操作数为 null 时返回 false。因此，Type1 将打印 false。这被证明</p>
+<p>是实践中非常有用的行为。如果 instanceof 告诉你一个对象引用是某个特定类</p>
+<p>型的实例，那么你就可以将其转型为该类型，并调用该类型的方法，而不用担心</p>
+<p>会抛出 ClassCastException 或 NullPointerException 异常。 </p>
+<p>第二个程序，Type2，展示了 instanceof 操作符在测试一个类的实例，以查看它</p>
+<p>是否是某个不相关的类的实例时所表现出来的行为。你可能会期望该程序打印出</p>
+<p>false。毕竟，Type2 的实例不是 String 的实例，因此该测试应该失败，对吗？</p>
+<p>不，instanceof 测试在编译时刻就失败了，我们只能得到下面这样的出错消息： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Type2.java:3</span>: inconvertible types </span><br><span class="line"></span><br><span class="line">found : Type2, required: java.lang.String</span><br><span class="line"></span><br><span class="line"> System.out.println(new Type2() instanceof String); </span><br><span class="line"></span><br><span class="line"> ^</span><br></pre></td></tr></table></figure>
+
+<p>该程序编译失败是因为 instanceof 操作符有这样的要求：如果两个操作数的类</p>
+<p>型都是类，其中一个必须是另一个的子类型[JLS 15.20.2, 15.16, 5.5]。Type2</p>
+<p>和 String 彼此都不是对方的子类型，所以 instanceof 测试将导致编译期错误。</p>
+<p>这个错误有助于让你警惕 instanceof 测试，它们可能并没有去做你希望它们做</p>
+<p>的事情。 </p>
+<p>第三个程序，Type3，展示了当要被转型的表达式的静态类型是转型类型的超类</p>
+<p>时，转型操作符的行为。与 instanceof 操作相同，如果在一个转型操作中的两</p>
+<p>种类型都是类，那么其中一个必须是另一个的子类型。尽管对我们来说，这个转</p>
+<p>型很显然会失败，但是类型系统还没有强大到能够洞悉表达式 new Object()的</p>
+<p>运行期类型不可能是 Type3 的一个子类型。因此，该程序将在运行期抛出</p>
+<p>ClassCastException 异常。这有一点违背直觉：第二个程序完全具有实际意义，</p>
+<p>但是却不能编译；而这个程序没有任何实际意义，但是却可以编译。 总之，第一个程序展示了 instanceof 运行期行为的一个很有用的冷僻案例。第</p>
+<p>二个程序展示了其编译期行为的一个很有用的冷僻案例。第三个程序展示了转型</p>
+<p>操作符的行为的一个冷僻案例，在此案例中，编译器并不能将你从你所做荒唐的</p>
+<p>事中搭救出来，只能靠 VM 在运行期来帮你绷紧这根弦。</p>
+<h2 id="谜题-51：那个点是什么？"><a href="#谜题-51：那个点是什么？" class="headerlink" title="谜题 51：那个点是什么？"></a>谜题 51：那个点是什么？</h2><p>下面这个程序有两个不可变的值类（value class），值类即其实例表示值的类。</p>
+<p>第一个类用整数坐标来表示平面上的一个点，第二个类在此基础上添加了一点颜</p>
+<p>色。主程序将创建和打印第二个类的一个实例。那么，下面的程序将打印出什么</p>
+<p>呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">int</span> x, y; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">String</span> name; <span class="comment">// Cached at construction time </span></span><br><span class="line"></span><br><span class="line"> Point(<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.x = x; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.y = y; </span><br><span class="line"></span><br><span class="line"> name = makeName(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">String</span> <span class="title">makeName</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="string">"["</span> + x + <span class="string">","</span> + y + <span class="string">"]"</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">String</span> <span class="title">toString</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> name; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ColorPoint</span> <span class="title">extends</span> <span class="title">Point</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">String</span> color; </span><br><span class="line"></span><br><span class="line"> ColorPoint(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">String</span> color) &#123; </span><br><span class="line"></span><br><span class="line"> super(x, y); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.color = color; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">String</span> <span class="title">makeName</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> super.makeName() + <span class="string">":"</span> + color; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">new</span> ColorPoint(<span class="number">4</span>, <span class="number">2</span>, <span class="string">"purple"</span>)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main 方法创建并打印了一个 ColorPoint 实例。println 方法调用了该</p>
+<p>ColorPoint 实例的 toString 方法，这个方法是在 Point 中定义的。toString方法将直接返回 name 域的值，这个值是通过调用 makeName 方法在 Point 的构造</p>
+<p>器中被初始化的。对于一个 Point 实例来说，makeName 方法将返回[x,y]形式的</p>
+<p>字符串。对于一个 ColorPoint 实例来说，makeName 方法被覆写为返回</p>
+<p>[x,y]:color 形式的字符串。在本例中，x 是 4，y 是 2，color 的 purple，因此</p>
+<p>程序将打印<a href="null。这个程序出什么问题了呢？">4,2</a>:purple，对吗？不，如果你运行该程序，就会发现它打印的是</p>
+<p>这个程序遭遇了实例初始化顺序这一问题。要理解该程序，我们就需要详细跟踪</p>
+<p>该程序的执行过程。下面是该程序注释过的版本的列表，用来引导我们了解其执</p>
+<p>行顺序： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">int</span> x, y; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">String</span> name; <span class="comment">// Cached at construction time </span></span><br><span class="line"></span><br><span class="line"> Point(<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.x = x; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.y = y; </span><br><span class="line"></span><br><span class="line"> name = makeName(); <span class="comment">// 3. Invoke subclass method </span></span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">String</span> <span class="title">makeName</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="string">"["</span> + x + <span class="string">","</span> + y + <span class="string">"]"</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">String</span> <span class="title">toString</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> name; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ColorPoint</span> <span class="title">extends</span> <span class="title">Point</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">String</span> color; </span><br><span class="line"></span><br><span class="line"> ColorPoint(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">String</span> color) &#123; </span><br><span class="line"></span><br><span class="line"> super(x, y); <span class="comment">// 2. Chain to Point constructor </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.color = color; <span class="comment">// 5. Initialize blank final-Too late </span></span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">String</span> <span class="title">makeName</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// 4. Executes before subclass constructor body! </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> super.makeName() + <span class="string">":"</span> + color; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// 1. Invoke subclass constructor </span></span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">new</span> ColorPoint(<span class="number">4</span>, <span class="number">2</span>, <span class="string">"purple"</span>)); </span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>} 在下面的解释中，括号中的数字引用的就是在上述注释版本的列表中的注释标</p>
+<p>号。首先，程序通过调用 ColorPoint 构造器创建了一个 ColorPoint 实例（1）。</p>
+<p>这个构造器以链接调用其超类构造器开始，就像所有构造器所做的那样（2）。</p>
+<p>超类构造器在构造过程中对该对象的 x 域赋值为 4，对 y 域赋值为 2。然后该超</p>
+<p>类构造器调用 makeName，该方法被子类覆写了（3）。 </p>
+<p>ColorPoint 中的 makeName 方法（4）是在 ColorPoint 构造器的程序体之前执行</p>
+<p>的，这就是问题的核心所在。makeName 方法首先调用 super.makeName，它将返</p>
+<p>回我们所期望的<a href="null。这个程序出什么问题了呢？">4,2</a>，然后该方法在此基础上追加字符串“：”和由 color 域</p>
+<p>的值所转换成的字符串。但是此刻 color 域的值是什么呢？由于它仍处于待初始</p>
+<p>化状态，所以它的值仍旧是缺省值 null。因此，makeName 方法返回的是字符串</p>
+<p>“<a href="null。这个程序出什么问题了呢？">4,2</a>:null”。超类构造器将这个值赋给 name 域（3），然后将控制流返回给</p>
+<p>子类的构造器。 </p>
+<p>这之后子类构造器才将“purple”赋予 color 域（5），但是此刻已经为时过晚</p>
+<p>了。color 域已经在超类中被用来初始化 name 域了，并且产生了不正确的值。</p>
+<p>之后，子类构造器返回，新创建的 ColorPoint 实例被传递给 println 方法，它</p>
+<p>适时地调用了该实例的 toString 方法，这个方法返回的是该实例的 name 域的内</p>
+<p>容，即“<a href="null。这个程序出什么问题了呢？">4,2</a>:null”，这也就成为了程序要打印的东西。 </p>
+<p>本谜题说明：在一个 final 类型的实例域被赋值之前，存在着取用其值的可能，</p>
+<p>而此时它包含的仍旧是其所属类型的缺省值。在某种意义上，本谜题是谜题 49</p>
+<p>在实例方面的相似物，谜题 49 是在 final 类型的静态域被赋值之前，取用了它</p>
+<p>的值。在这两种情况中，谜题都是因初始化的循环而产生的，在谜题 49 中，是</p>
+<p>类的初始化；而在本谜题中，是实例初始化。两种情况都存在着产生极大的混乱</p>
+<p>的可能性，但是它们之间有一个重要的差别：循环的类初始化是无法避免的灾难，</p>
+<p>但是循环的实例初始化总是可以且总是应该避免的。 </p>
+<p>无论何时，只要一个构造器调用了一个已经被其子类覆写了的方法，那么该问题</p>
+<p>就会出现，因为以这种方式被调用的方法总是在实例被初始化之前执行。要想避</p>
+<p>免这个问题，就千万不要在构造器中调用可覆写的方法，直接调用或间接调用都</p>
+<p>不行[EJ Item 15]。这项禁令应该扩展至实例初始器和伪构造器</p>
+<p>（pseudoconstructors）readObject 与 clone。（这些方法之所以被称为伪构造</p>
+<p>器，是因为它们可以在不调用构造器的情况下创建对象。） </p>
+<p>你可以通过惰性初始化 name 域来订正该问题，即当它第一次被使用时初始化，</p>
+<p>以此取代积极初始化，即当 Point 实例被创建时初始化。 </p>
+<p>通过这种修改，该程序就可以打印出我们期望的<a href="null。这个程序出什么问题了呢？">4,2</a>:purple。 </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">int</span> x, y; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">String</span> name; <span class="comment">// Lazily initialized </span></span><br><span class="line"></span><br><span class="line"> Point(<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.x = x; <span class="keyword">this</span>.y = y; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// name initialization removed </span></span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">String</span> <span class="title">makeName</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="string">"["</span> + x + <span class="string">","</span> + y + <span class="string">"]"</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// Lazily computers and caches name on first use </span></span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> synchronized <span class="keyword">String</span> <span class="title">toString</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (name == null) </span><br><span class="line"></span><br><span class="line"> name = makeName(); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> name; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>尽管惰性加载可以订正这个问题，但是对于让一个值类去扩展另一个值类，并且</p>
+<p>在其中添加一个会对 euqals 比较方法产生影响的域的这种做法仍旧不是一个好</p>
+<p>主意。你无法在超类和子类上都提供一个基于值的 equals 方法，而同时又不违</p>
+<p>反 Object.equals 方法的通用约定，或者是不消除在超类和子类之间进行有实际</p>
+<p>意义的比较操作的可能性[EJ Item 7]。 </p>
+<p>循环实例初始化问题对语言设计者来说是问题成堆的地方。C++是通过在构造阶</p>
+<p>段将对象的类型从超类类型改变为子类类型来解决这个问题的。如果采用这种解</p>
+<p>决方法，本谜题中最开始的程序将打印<a href="null。这个程序出什么问题了呢？">4,2</a>。我们发现没有任何一种流行的语</p>
+<p>言能够令人满意地解决这个问题。也许，我们值得去考虑，当超类构造器调用子</p>
+<p>类方法时，通过抛出一个不受检查的异常使循环实例初始化非法。 </p>
+<p>总之，在任何情况下，你都务必要记住：不要在构造器中调用可覆 写的方法。</p>
+<p>在实例初始化中产生的循环将是致命的。该问题的解决方案就是惰性初始化[EJ </p>
+<p>Items 13,48]。 </p>
+<h2 id="谜题-52：合计数的玩笑"><a href="#谜题-52：合计数的玩笑" class="headerlink" title="谜题 52：合计数的玩笑"></a>谜题 52：合计数的玩笑</h2><p>下面的程序在一个类中计算并缓存了一个合计数，并且在另一个类中打印了这个</p>
+<p>合计数。那么，这个程序将打印出什么呢？这里给一点提示：你可能已经回忆起</p>
+<p>来了，在代数学中我们曾经学到过，从 1 到 n 的整数总和是 n(n+1)/2。 </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cache</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">static</span> &#123; </span><br><span class="line"></span><br><span class="line"> initializeIfNecessary(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> sum; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getSum</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> initializeIfNecessary(); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> sum; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> initialized = <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> synchronized <span class="keyword">void</span> <span class="title">initializeIfNecessary</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!initialized) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line"></span><br><span class="line"> sum += i; </span><br><span class="line"></span><br><span class="line"> initialized = <span class="literal">true</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(Cache.getSum()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>草草地看一遍，你可能会认为这个程序从 1 加到了 100，但实际上它并没有这么</p>
+<p>做。再稍微仔细地看一看那个循环，它是一个典型的半开循环，因此它将从 0</p>
+<p>循环到 99。有了这个印象之后，你可能会认为这个程序打印的是从 0 到 99 的整</p>
+<p>数总和。用前面提示中给出的公式，我们知道这个总和是 99×100/2，即 4,950。</p>
+<p>但是，这个程序可不这么想，它打印的是 9900，是我们所预期值的整整两倍。</p>
+<p>是什么导致它如此热情地翻倍计算了这个总和呢？ </p>
+<p>该程序的作者显然在确保 sum 在被使用前就已经在初始化这个问题上，经历了众</p>
+<p>多的麻烦。该程序结合了惰性初始化和积极初始化，甚至还用上了同步，以确保</p>
+<p>缓存在多线程环境下也能工作。看起来这个程序已经把所有的问题都考虑到了，</p>
+<p>但是它仍然不能正常工作。它到底出了什么问题呢？ </p>
+<p>与谜题 49 中的程序一样，该程序受到了类初始化顺序问题的影响。为了理解其</p>
+<p>行为，我们来跟踪其执行过程。在可以调用 Client.main 之前，VM 必须初始化</p>
+<p>Client 类。这项初始化工作异常简单，我们就不多说什么了。Client.main 方法</p>
+<p>调用了 Cache.getsum 方法，在 getsum 方法可以被执行之前，VM 必须初始化 Cache</p>
+<p>类。 </p>
+<p>回想一下，类初始化是按照静态初始器在源代码中出现的顺序去执行这些初始器</p>
+<p>的。Cache 类有两个静态初始器：在类顶端的一个 static 语句块，以及静态域</p>
+<p>initialized 的初始化。静态语句块是先出现的，它调用了方法</p>
+<p>initializeIfNecessary，该方法将测试 initialized 域。因为该域还没有被赋</p>
+<p>予任何值，所以它具有缺省的布尔值 false。与此类似，sum 具有缺省的 int 值</p>
+<p>0。因此，initializeIfNecessary 方法执行的正是你所期望的行为，将 4,950</p>
+<p>添加到了 sum 上，并将 initialized 设置为 true。 </p>
+<p>在静态语句块执行之后，initialized 域的静态初始器将其设置回 false，从而</p>
+<p>完成 Cache 的类初始化。遗憾的是，sum 现在包含的是正确的缓存值，但是</p>
+<p>initialized 包含的却是 false：Cache 类的两个关键状态并未同步。 此后，Client 类的 main 方法调用 Cache.getSum 方法，它将再次调用</p>
+<p>initializeIfNecessary 方法。因为 initialized 标志是 false，所以</p>
+<p>initializeIfNecessary方法将进入其循环，该循环将把另一个4,950添加到sum</p>
+<p>上，从而使其值增加到了 9,900。getSum 方法返回的就是这个值，而程序打印的</p>
+<p>也是它。 </p>
+<p>很明显，该程序的作者认为 Cache 类的初始化不会以这种顺序发生。由于不能在</p>
+<p>惰性初始化和积极初始化之间作出抉择，所以作者同时运用这二者，结果产生了</p>
+<p>大麻烦。要么使用积极初始化，要么使用惰性初始化，但是千万不要同时使用二</p>
+<p>者。 </p>
+<p>如果初始化一个域的时间和空间代价比较低，或者该域在程序的每一次执行中都</p>
+<p>需要用到时，那么使用积极初始化是恰当的。如果其代价比较高，或者该域在某</p>
+<p>些执行中并不会被用到，那么惰性初始化可能是更好的选择[EJ Item 48]。另外，</p>
+<p>惰性初始化对于打破类或实例初始化中的循环也可能是必需的（谜题 51）。 </p>
+<p>通过重排静态初始化的顺序，使得 initialized 域在 sum 被初始化之后不被复位</p>
+<p>到 false，或者通过移除 initialized 域的显式静态初始化操作，Cache 类就可</p>
+<p>以得到修复。尽管这样所产生的程序可以工作，但是它们仍旧是混乱的和病构的。</p>
+<p>Cache 类应该被重写为使用积极初始化，这样产生的版本很明显是正确的，而且</p>
+<p>比最初的版本更加简单。 </p>
+<p>使用这个版本的 Cache 类，程序就可以打印出我们所期望的 4950： </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cache</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> sum = computeSum(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">computeSum</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> result = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line"></span><br><span class="line"> result += i; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> result; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getSum</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> sum; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请注意，我们使用了一个助手方法来初始化 sum。助手方法通常都优于静态语句</p>
+<p>块，因为它让你可以对计算命名。只有在极少的情况下，你才必须使用一个静态</p>
+<p>语句块来初始化一个静态域，此时请将该语句块紧随该域声明之后放置。这提高</p>
+<p>了程序的清晰度，并且消除了像最初的程序中出现的静态初始化与静态语句块互</p>
+<p>相竞争的可能性。 </p>
+<p>总之，请考虑类初始化的顺序，特别是当初始化显得很重要时更是如此。请你执</p>
+<p>行测试，以确保类初始化序列的简洁。请使用积极初始化，除非你有某种很好的</p>
+<p>理由要使用惰性初始化，例如性能方面的因素，或者需要打破初始化循环。</p>
+<h2 id="谜题-53：按你的意愿行事-按你的意愿行事"><a href="#谜题-53：按你的意愿行事-按你的意愿行事" class="headerlink" title="谜题 53：按你的意愿行事 按你的意愿行事"></a>谜题 53：按你的意愿行事 按你的意愿行事</h2><p>现在该轮到你写一些代码了。假设你有一个称为 Thing 的库类，它唯一的构造器</p>
+<p>将接受一个 int 参数： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Thing</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> Thing(<span class="built_in">int</span> i) &#123; ... &#125; </span><br><span class="line"></span><br><span class="line"> ... </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Thing 实例没有提供任何可以获取其构造器参数的值的途径。因为 Thing 是一个</p>
+<p>库类，所以你不具有访问其内部的权限，因此你不能修改它。 </p>
+<p>假设你想编写一个称为 MyThing 的子类，其构造器将通过调用</p>
+<p>SomeOtherClass.func()方法来计算超类构造器的参数。这个方法返回的值被一</p>
+<p>个个的调用以不可预知的方式所修改。最后，假设你想将这个曾经传递给超类构</p>
+<p>造器的值存储到子类的一个 final 实例域中，以供将来使用。那么下面就是你自</p>
+<p>然会写出的代码： </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Thing</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> int arg; </span><br><span class="line"></span><br><span class="line"> public <span class="type">MyThing</span>() &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">super</span>(arg = <span class="type">SomeOtherClass</span>.func()); </span><br><span class="line"></span><br><span class="line"> ... </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遗憾的是，这个程序是非法的。如果你尝试着去编译它，那么你将得到一条像下</p>
+<p>面这样的错误消息： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">MyThing</span>.</span></span>java:</span><br><span class="line"></span><br><span class="line">can't reference arg before supertype constructor has been called </span><br><span class="line"></span><br><span class="line"> super(arg = <span class="module-access"><span class="module"><span class="identifier">SomeOtherClass</span>.</span></span>func<span class="literal">()</span>); </span><br><span class="line"></span><br><span class="line"> ^</span><br></pre></td></tr></table></figure>
+
+<p>你怎样才能重写 MyThing 以实现想要的效果呢？MyThing()构造器必须是线程安</p>
+<p>全的：多个线程可能会并发地调用它。 </p>
+<p>这个解决方案内在地就是线程安全的和优雅的，它涉及对 MyThing 中第二个私有</p>
+<p>的构造器的运用： </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Thing</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> int arg; </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> public <span class="type">MyThing</span>() &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>(<span class="type">SomeOtherClass</span>.func()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="type">MyThing</span>(int i) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">super</span>(i); arg = i; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个解决方案使用了交替构造器调用机制（alternate constructor invocation）</p>
+<p>[JLS 8.8.7.1]。这个特征允许一个类中的某个构造器链接调用同一个类中的另</p>
+<p>一个构造器。在本例中，MyThing()链接调用了私有构造器 MyThing(int)，它执</p>
+<p>行了所需的实例初始化。在这个私有构造器中，表达式 SomeOtherClass.func()</p>
+<p>的值已经被捕获到了变量 i 中，并且它可以在超类构造器返回之后存储到 final</p>
+<p>类型的域 param 中。 </p>
+<p>通过本谜题所展示的私有构造器捕获（Private Constructor Capture）惯用法</p>
+<p>是一种非常有用的模式，你应该把它添加到你的技巧库中。我们已经看到了某些</p>
+<p>真的是很丑陋的代码，它们本来是可以通过使用本模式而避免如此丑陋的。 </p>
+<h2 id="谜题-54：Null-与-Void"><a href="#谜题-54：Null-与-Void" class="headerlink" title="谜题 54：Null 与 Void"></a>谜题 54：Null 与 Void</h2><p>下面仍然是经典的 Hello World 程序的另一个变种。那么，这个变种将打印什么</p>
+<p>呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Null</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">greet</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Hello world!"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> ((Null) null).greet(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序看起来似乎应该抛出 NullPointerExceptioin 异常，因为其 main 方法</p>
+<p>是在常量 null 上调用 greet 方法，而你是不可以在 null 上调用方法的，对吗？</p>
+<p>嗯，某些时候是可以的。如果你运次该程序，就会发现它打印出了“Hello </p>
+<p>World!” </p>
+<p>理解本谜题的关键是 Null.greet是一个静态方法。正如你在谜题48中所看到的，</p>
+<p>在静态方法的调用中，使用表达式作为其限定符并非是一个好主意，而这也正是</p>
+<p>问题之所在。不仅表达式的值所引用的对象的运行期类型在确定哪一个方法将被</p>
+<p>调用时并不起任何作用，而且如果对象有标识的话，其标识也不起任何作用。在</p>
+<p>本例中，没有任何对象，但是这并不会造成任何区别。静态方法调用的限定表达</p>
+<p>式是可以计算的，但是它的值将被忽略。没有任何要求其值为非空的限制。 </p>
+<p>要想消除该程序中的混乱，你可以用它的类作为限定符来调用 greet 方法： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Null.greet(); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而更好的方式是完全消除限定符： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> greet(); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总之，本谜题的教训与谜题 48 的完全相同：要么用某种类型来限定静态方法调</p>
+<p>用，要么就压根不要限定它们。对语言设计者来说，应该不允许用表达式来污染</p>
+<p>静态方法调用的可能性存在，因为它们只会产生混乱。 </p>
+<h2 id="谜题-55：特创论"><a href="#谜题-55：特创论" class="headerlink" title="谜题 55：特创论"></a>谜题 55：特创论</h2><p>某些时候，对于一个类来说，跟踪其创建出来的实例个数会非常用有，其典型实</p>
+<p>现是通过让它的构造器递增一个私有静态域来完成的。在下面的程序中，</p>
+<p>Creature 类展示了这种技巧，而 Creator 类对其进行了操练，将打印出已经创</p>
+<p>建的 Creature 实例的数量。那么，这个程序会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Creator</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line"></span><br><span class="line"> Creature creature = <span class="keyword">new</span> Creature(); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(Creature.numCreated()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Creature</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> numCreated = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Creature</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> numCreated++; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">numCreated</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> numCreated; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个捉弄人的问题。该程序看起来似乎应该打印 100，但是它没有打印任何</p>
+<p>东西，因为它根本就不能编译。如果你尝试着去编译它，你就会发现编译器的诊</p>
+<p>断信息基本没什么用处。下面就是 javac 打印的东西： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Creator.java:4</span>: not a statement </span><br><span class="line"></span><br><span class="line"> Creature creature = new Creature(); </span><br><span class="line"></span><br><span class="line"> ^</span><br><span class="line"></span><br><span class="line"><span class="attribute">Creator.java:4</span>: ';' expected </span><br><span class="line"></span><br><span class="line"> Creature creature = new Creature(); </span><br><span class="line"></span><br><span class="line"> ^</span><br></pre></td></tr></table></figure>
+
+<p>一个本地变量声明看起来像是一条语句，但是从技术上说，它不是；它应该是一</p>
+<p>个本地变量声明语句（local variable declaration statement）[JLS 14.4]。</p>
+<p>Java 语言规范不允许一个本地变量声明语句作为一条语句在 for、while 或 do</p>
+<p>循环中重复执行[JLS 14.12-14]。一个本地变量声明作为一条语句只能直接出现在一个语句块中。（一个语句块是由一对花括号以及包含在这对花括展中的语句</p>
+<p>和声明构成的。） </p>
+<p>有两种方式可以订正这个问题。最显而易见的方式是将这个声明至于一个语句块</p>
+<p>中： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123; </span><br><span class="line"></span><br><span class="line"> Creature creature = new Creature(); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而，请注意，该程序没有使用本地变量 creature。因此，将该声明用一个无</p>
+<p>任何修饰的构造器调用来替代将更具实际意义，这样可以强调对新创建对象的引</p>
+<p>用正在被丢弃： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line"></span><br><span class="line"> new Creature();</span><br></pre></td></tr></table></figure>
+
+<p>无论我们做出了上面的哪种修改，该程序都将打印出我们所期望的 100。 </p>
+<p>请注意，用于跟踪 Creature 实例个数的变量（numCreated）是 long 类型而不是</p>
+<p>int 类型的。我们很容易想象到，一个程序创建出的某个类的实例可能会多余 int</p>
+<p>数值的最大值，但是它不会多于 long 数值的最大值。 </p>
+<p>int 数值的最大值是 231-1，即大约 2.1×109，而 long 数值的最大值是 263-1，</p>
+<p>即大约 9.2×1018。当前，每秒钟创建 108 个对象是可能的，这意味着一个程序</p>
+<p>在 long 类型的对象计数器溢出之前，不得不运行大约三千年。即使是面对硬件</p>
+<p>速度的提升，long 类型的对象计数器也应该足以应付可预见的未来。 </p>
+<p>还要注意的是，本谜题中的创建计数策略并不是线程安全的。如果多个线程可以</p>
+<p>并行地创建对象，那么递增计数器的代码和读取计数器的代码都应该被同步： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Thread-safe creation counter </span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Creature</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> numCreated; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Creature</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">synchronized</span> (Creature<span class="class">.<span class="keyword">class</span>) </span>&#123; </span><br><span class="line"></span><br><span class="line"> numCreated++; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">long</span> <span class="title">numCreated</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> numCreated; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者，如果你使用的是 5.0 或更新的版本，你可以使用一个 AtomicLong 实例，</p>
+<p>它在面临并发时可以绕过对同步的需求。 </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Thread-safe creation counter using AtomicLong; </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicLong; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Creature</span> &#123;</span> <span class="keyword">private</span> <span class="keyword">static</span> AtomicLong numCreated = <span class="keyword">new</span> AtomicLong(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Creature</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> numCreated.incrementAndGet(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">numCreated</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> numCreated.<span class="built_in">get</span>(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请注意，把 numCreated 声明为瞬时的是不足以解决问题的，因为 volatile 修饰</p>
+<p>符可以保证其他线程将看到最近赋予该域的值，但是它不能进行原子性的递增操</p>
+<p>作。 </p>
+<p>总之，一个本地变量声明不能被用作 for、while 或 do 循环中的重复执行语句，</p>
+<p>它作为一条语句只能出现在一个语句块中。另外，在使用一个变量来对实例的创</p>
+<p>建进行计数时，要使用 long 类型而不是 int 类型的变量，以防止溢出。最后，</p>
+<p>如果你打算在多线程中创建实例，要么将对实例计数器的访问进行同步，要么使</p>
+<p>用一个 AtomicLong 类型的计数器。 </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" rel="tag"># java进阶学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/" rel="prev" title="java异常谜题">
+      <i class="fa fa-chevron-left"></i> java异常谜题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-谜题-Java-谜题-5——类谜题"><span class="nav-number">1.</span> <span class="nav-text">Java 谜题 Java 谜题 5——类谜题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-46：令人混淆的构造器案例-令人混淆的构造器案例"><span class="nav-number">1.1.</span> <span class="nav-text">谜题 46：令人混淆的构造器案例 令人混淆的构造器案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-47：啊呀！我的猫变成狗了-！我的猫变成狗了"><span class="nav-number">1.2.</span> <span class="nav-text">谜题 47：啊呀！我的猫变成狗了 ！我的猫变成狗了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-48：我所得到的都是静态的-我所得到的都是静态的"><span class="nav-number">1.3.</span> <span class="nav-text">谜题 48：我所得到的都是静态的 我所得到的都是静态的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-49：比生命更大"><span class="nav-number">1.4.</span> <span class="nav-text">谜题 49：比生命更大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-50：不是你的类型"><span class="nav-number">1.5.</span> <span class="nav-text">谜题 50：不是你的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-51：那个点是什么？"><span class="nav-number">1.6.</span> <span class="nav-text">谜题 51：那个点是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-52：合计数的玩笑"><span class="nav-number">1.7.</span> <span class="nav-text">谜题 52：合计数的玩笑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-53：按你的意愿行事-按你的意愿行事"><span class="nav-number">1.8.</span> <span class="nav-text">谜题 53：按你的意愿行事 按你的意愿行事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-54：Null-与-Void"><span class="nav-number">1.9.</span> <span class="nav-text">谜题 54：Null 与 Void</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-55：特创论"><span class="nav-number">1.10.</span> <span class="nav-text">谜题 55：特创论</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">233</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">28:26</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
