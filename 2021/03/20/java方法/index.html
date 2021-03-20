@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 方法在前面几个章节中我们经常使用到 System.out.println()，那么它是什么呢？  println() 是一个方法。 System 是系统类。 out 是标准输出对象。  这句话的用法是调用系统类 System 中的标准输出对象 out 中的方法 println()。 那么什么是方法呢？Java方法是语句的集合，它们在一起执行一个功能。  方法是解决一类问题的步骤的有序组合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java方法">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 方法在前面几个章节中我们经常使用到 System.out.println()，那么它是什么呢？  println() 是一个方法。 System 是系统类。 out 是标准输出对象。  这句话的用法是调用系统类 System 中的标准输出对象 out 中的方法 println()。 那么什么是方法呢？Java方法是语句的集合，它们在一起执行一个功能。  方法是解决一类问题的步骤的有序组合">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/D53C92B3-9643-4871-8A72-33D491299653.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/12-130Q1221013F0.jpg">
+<meta property="article:published_time" content="2021-03-20T08:24:04.435Z">
+<meta property="article:modified_time" content="2021-03-20T08:27:56.099Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/D53C92B3-9643-4871-8A72-33D491299653.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java方法 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 16:24:04 / 修改时间：16:27:56" itemprop="dateCreated datePublished" datetime="2021-03-20T16:24:04+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-方法"><a href="#Java-方法" class="headerlink" title="Java 方法"></a>Java 方法</h1><p>在前面几个章节中我们经常使用到 <strong>System.out.println()</strong>，那么它是什么呢？</p>
+<ul>
+<li>println() 是一个方法。</li>
+<li>System 是系统类。</li>
+<li>out 是标准输出对象。</li>
+</ul>
+<p>这句话的用法是调用系统类 System 中的标准输出对象 out 中的方法 println()。</p>
+<h3 id="那么什么是方法呢？"><a href="#那么什么是方法呢？" class="headerlink" title="那么什么是方法呢？"></a>那么什么是方法呢？</h3><p>Java方法是语句的集合，它们在一起执行一个功能。</p>
+<ul>
+<li>方法是解决一类问题的步骤的有序组合</li>
+<li>方法包含于类或对象中</li>
+<li>方法在程序中被创建，在其他地方被引用</li>
+</ul>
+<h3 id="方法的优点"><a href="#方法的优点" class="headerlink" title="方法的优点"></a>方法的优点</h3><ul>
+<li>\1. 使程序变得更简短而清晰。</li>
+<li>\2. 有利于程序维护。</li>
+<li>\3. 可以提高程序开发的效率。</li>
+<li>\4. 提高了代码的重用性。</li>
+</ul>
+<h3 id="方法的命名规则"><a href="#方法的命名规则" class="headerlink" title="方法的命名规则"></a>方法的命名规则</h3><ul>
+<li>1.方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头写，不使用连接符。例如：<strong>addPerson</strong>。</li>
+<li>2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：<strong>test<MethodUnderTest>_<state></state></MethodUnderTest></strong>，例如 <strong>testPop_emptyStack</strong>。</li>
+</ul>
+<hr>
+<h2 id="方法的定义"><a href="#方法的定义" class="headerlink" title="方法的定义"></a>方法的定义</h2><p>一般情况下，定义一个方法包含以下语法：</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">修饰符 返回值类型 方法名(参数类型 参数名)&#123;</span><br><span class="line">    <span class="params">...</span></span><br><span class="line">    方法体</span><br><span class="line">    <span class="params">...</span></span><br><span class="line">    <span class="keyword">return</span> 返回值;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法包含一个方法头和一个方法体。下面是一个方法的所有部分：</p>
+<ul>
+<li><strong>修饰符：</strong>修饰符，这是可选的，告诉编译器如何调用该方法。定义了该方法的访问类型。</li>
+<li><strong>返回值类型 ：</strong>方法可能会返回值。returnValueType 是方法返回值的数据类型。有些方法执行所需的操作，但没有返回值。在这种情况下，returnValueType 是关键字<strong>void</strong>。</li>
+<li><strong>方法名：</strong>是方法的实际名称。方法名和参数表共同构成方法签名。</li>
+<li><strong>参数类型：</strong>参数像是一个占位符。当方法被调用时，传递值给参数。这个值被称为实参或变量。参数列表是指方法的参数类型、顺序和参数的个数。参数是可选的，方法可以不包含任何参数。</li>
+<li><strong>方法体：</strong>方法体包含具体的语句，定义该方法的功能。</li>
+</ul>
+<p><img src="/2021/03/20/java%E6%96%B9%E6%B3%95/D53C92B3-9643-4871-8A72-33D491299653.jpg" alt="img"></p>
+<p>如：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">int</span> age(<span class="built_in">int</span> birthday)<span class="meta">&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数可以有多个：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">float</span> interest(<span class="built_in">float</span> principal, <span class="built_in">int</span> year)<span class="meta">&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 在一些其它语言中方法指过程和函数。一个返回非void类型返回值的方法称为函数；一个返回void类型返回值的方法叫做过程。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面的方法包含 2 个参数 num1 和 num2，它返回这两个参数的最大值。</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/** 返回两个整型变量数据的较大值 */</span><br><span class="line">public <span class="keyword">static</span> <span class="built_in">int</span> max(<span class="built_in">int</span> num1, <span class="built_in">int</span> num2) &#123;</span><br><span class="line">   <span class="built_in">int</span> <span class="literal">result</span>;</span><br><span class="line">   <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">      <span class="literal">result</span> = num1;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      <span class="literal">result</span> = num2;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">result</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更简略的写法（三元运算符）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 &gt; num2 ? num1 : num2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><p>Java 支持两种调用方法的方式，根据方法是否返回值来选择。</p>
+<p>当程序调用一个方法时，程序的控制权交给了被调用的方法。当被调用方法的返回语句执行或者到达方法体闭括号时候交还控制权给程序。</p>
+<p>当方法返回一个值的时候，方法调用通常被当做一个值。例如：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> larger = max(<span class="number">30</span>, <span class="number">40</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果方法返回值是void，方法调用一定是一条语句。例如，方法println返回void。下面的调用是个语句：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("欢迎访问本博客！");</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>下面的例子演示了如何定义一个方法，以及如何调用它：</p>
+<h2 id="TestMax-java-文件代码："><a href="#TestMax-java-文件代码：" class="headerlink" title="TestMax.java 文件代码："></a>TestMax.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMax</span> &#123;</span></span><br><span class="line">   <span class="comment">/** 主方法 */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> i = <span class="number">5</span>;</span><br><span class="line">      <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">      <span class="keyword">int</span> k = <span class="built_in">max</span>(i, j);</span><br><span class="line">      System.out.<span class="built_in">println</span>( i + <span class="string">" 和 "</span> + j + <span class="string">" 比较，最大值是："</span> + k);</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">/** 返回两个整数变量较大的值 */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> result;</span><br><span class="line">      <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">         result = num1;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">         result = num2;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">return</span> result; </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">5 </span>和 <span class="number">2</span> 比较，最大值是：<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>这个程序包含 main 方法和 max 方法。main 方法是被 JVM 调用的，除此之外，main 方法和其它方法没什么区别。</p>
+<p>main 方法的头部是不变的，如例子所示，带修饰符 public 和 static,返回 void 类型值，方法名字是 main,此外带个一个 String[] 类型参数。String[] 表明参数是字符串数组。</p>
+<hr>
+<h2 id="void-关键字"><a href="#void-关键字" class="headerlink" title="void 关键字"></a>void 关键字</h2><p>本节说明如何声明和调用一个 void 方法。</p>
+<p>下面的例子声明了一个名为 printGrade 的方法，并且调用它来打印给定的分数。</p>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><h2 id="TestVoidMethod-java-文件代码："><a href="#TestVoidMethod-java-文件代码：" class="headerlink" title="TestVoidMethod.java 文件代码："></a>TestVoidMethod.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestVoidMethod</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    printGrade(<span class="number">78.5</span>);</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printGrade</span><span class="params">(<span class="keyword">double</span> score)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (score &gt;= <span class="number">90.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'A'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">80.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'B'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">70.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'C'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">60.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'D'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'F'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">C</span></span><br></pre></td></tr></table></figure>
+
+<p>这里printGrade方法是一个void类型方法，它不返回值。</p>
+<p>一个void方法的调用一定是一个语句。 所以，它被在main方法第三行以语句形式调用。就像任何以分号结束的语句一样。</p>
+<hr>
+<h2 id="通过值传递参数"><a href="#通过值传递参数" class="headerlink" title="通过值传递参数"></a>通过值传递参数</h2><p>调用一个方法时候需要提供参数，你必须按照参数列表指定的顺序提供。</p>
+<p>例如，下面的方法连续n次打印一个消息：</p>
+<h2 id="TestVoidMethod-java-文件代码：-1"><a href="#TestVoidMethod-java-文件代码：-1" class="headerlink" title="TestVoidMethod.java 文件代码："></a>TestVoidMethod.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">nPrintln</span><span class="params">(<span class="keyword">String</span> message, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    System.out.<span class="built_in">println</span>(message);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><p>下面的例子演示按值传递的效果。</p>
+<p>该程序创建一个方法，该方法用于交换两个变量。</p>
+<h2 id="TestPassByValue-java-文件代码："><a href="#TestPassByValue-java-文件代码：" class="headerlink" title="TestPassByValue.java 文件代码："></a>TestPassByValue.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPassByValue</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> num2 = <span class="number">2</span>;</span><br><span class="line"> </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"交换前 num1 的值为："</span> +</span><br><span class="line">                        num1 + <span class="string">" ，num2 的值为："</span> + num2);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 调用swap方法</span></span><br><span class="line">    swap(num1, num2);</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"交换后 num1 的值为："</span> +</span><br><span class="line">                       num1 + <span class="string">" ，num2 的值为："</span> + num2);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** 交换两个变量的方法 */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> n1, <span class="keyword">int</span> n2)</span> </span>&#123;</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t进入 swap 方法"</span>);</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t\t交换前 n1 的值为："</span> + n1</span><br><span class="line">                         + <span class="string">"，n2 的值："</span> + n2);</span><br><span class="line">    <span class="comment">// 交换 n1 与 n2的值</span></span><br><span class="line">    <span class="keyword">int</span> temp = n1;</span><br><span class="line">    n1 = n2;</span><br><span class="line">    n2 = temp;</span><br><span class="line"> </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t\t交换后 n1 的值为 "</span> + n1</span><br><span class="line">                         + <span class="string">"，n2 的值："</span> + n2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">交换前 num1 的值为：<span class="number">1</span> ，num2 的值为：<span class="number">2</span></span><br><span class="line">    进入 swap 方法</span><br><span class="line">        交换前 n1 的值为：<span class="number">1</span>，n2 的值：<span class="number">2</span></span><br><span class="line">        交换后 n1 的值为 <span class="number">2</span>，n2 的值：<span class="number">1</span></span><br><span class="line">交换后 num1 的值为：<span class="number">1</span> ，num2 的值为：<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>传递两个参数调用swap方法。有趣的是，方法被调用后，实参的值并没有改变。</p>
+<hr>
+<h2 id="方法的重载"><a href="#方法的重载" class="headerlink" title="方法的重载"></a>方法的重载</h2><p>上面使用的max方法仅仅适用于int型数据。但如果你想得到两个浮点类型数据的最大值呢？</p>
+<p>解决方法是创建另一个有相同名字但参数不同的方法，如下面代码所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">max</span><span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">    <span class="keyword">return</span> num1;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> num2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你调用max方法时传递的是int型参数，则 int型参数的max方法就会被调用；</p>
+<p>如果传递的是double型参数，则double类型的max方法体会被调用，这叫做方法重载；</p>
+<p>就是说一个类的两个方法拥有相同的名字，但是有不同的参数列表。</p>
+<p>Java编译器根据方法签名判断哪个方法应该被调用。</p>
+<p>方法重载可以让程序更清晰易读。执行密切相关任务的方法应该使用相同的名字。</p>
+<p>重载的方法必须拥有不同的参数列表。你不能仅仅依据修饰符或者返回类型的不同来重载方法。</p>
+<hr>
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>变量的范围是程序中该变量可以被引用的部分。</p>
+<p>方法内定义的变量被称为局部变量。</p>
+<p>局部变量的作用范围从声明开始，直到包含它的块结束。</p>
+<p>局部变量必须声明才可以使用。</p>
+<p>方法的参数范围涵盖整个方法。参数实际上是一个局部变量。</p>
+<p>for循环的初始化部分声明的变量，其作用范围在整个循环。</p>
+<p>但循环体内声明的变量其适用范围是从它声明到循环体结束。它包含如下所示的变量声明：</p>
+<p><img src="/2021/03/20/java%E6%96%B9%E6%B3%95/12-130Q1221013F0.jpg" alt="img"></p>
+<p>你可以在一个方法里，不同的非嵌套块中多次声明一个具有相同的名称局部变量，但你不能在嵌套块内两次声明局部变量。</p>
+<h2 id="命令行参数的使用"><a href="#命令行参数的使用" class="headerlink" title="命令行参数的使用"></a>命令行参数的使用</h2><p>有时候你希望运行一个程序时候再传递给它消息。这要靠传递命令行参数给main()函数实现。</p>
+<p>命令行参数是在执行程序时候紧跟在程序名字后面的信息。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>下面的程序打印所有的命令行参数：</p>
+<h2 id="CommandLine-java-文件代码："><a href="#CommandLine-java-文件代码：" class="headerlink" title="CommandLine.java 文件代码："></a>CommandLine.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandLine</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123; </span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;args.length; i++)&#123;</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"args["</span> + i + <span class="string">"]: "</span> + args[i]);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如下所示，运行这个程序：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ javac CommandLine.java </span><br><span class="line">$ java CommandLine <span class="keyword">this</span> <span class="keyword">is</span> a command line <span class="number">200</span> <span class="number">-100</span></span><br><span class="line">args[<span class="number">0</span>]: <span class="keyword">this</span></span><br><span class="line">args[<span class="number">1</span>]: <span class="keyword">is</span></span><br><span class="line">args[<span class="number">2</span>]: a</span><br><span class="line">args[<span class="number">3</span>]: command</span><br><span class="line">args[<span class="number">4</span>]: line</span><br><span class="line">args[<span class="number">5</span>]: <span class="number">200</span></span><br><span class="line">args[<span class="number">6</span>]: <span class="number">-100</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>当一个对象被创建时候，构造方法用来初始化该对象。构造方法和它所在类的名字相同，但构造方法没有返回值。</p>
+<p>通常会使用构造方法给一个类的实例变量赋初值，或者执行其它必要的步骤来创建一个完整的对象。</p>
+<p>不管你是否自定义构造方法，所有的类都有构造方法，因为 Java 自动提供了一个默认构造方法，默认构造方法的访问修饰符和类的访问修饰符相同(类为 public，构造函数也为 public；类改为 protected，构造函数也改为 protected)。</p>
+<p>一旦你定义了自己的构造方法，默认构造方法就会失效。</p>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>下面是一个使用构造方法的例子：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的构造函数</span></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">MyClass</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> x;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 以下是构造函数</span></span><br><span class="line">  MyClass() &#123;</span><br><span class="line">    x = <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以像下面这样调用构造方法来初始化一个对象：</p>
+<h2 id="ConsDemo-java-文件代码："><a href="#ConsDemo-java-文件代码：" class="headerlink" title="ConsDemo.java 文件代码："></a>ConsDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsDemo</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">      MyClass t1 = <span class="keyword">new</span> MyClass();</span><br><span class="line">      MyClass t2 = <span class="keyword">new</span> MyClass();</span><br><span class="line">      System.out.<span class="built_in">println</span>(t1.x + <span class="string">" "</span> + t2.x);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大多时候需要一个有参数的构造方法。</p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p>下面是一个使用构造方法的例子：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的构造函数</span></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">MyClass</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> x;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 以下是构造函数</span></span><br><span class="line">  MyClass(<span class="built_in">int</span> i ) &#123;</span><br><span class="line">    x = i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以像下面这样调用构造方法来初始化一个对象：</p>
+<h2 id="ConsDemo-java-文件代码：-1"><a href="#ConsDemo-java-文件代码：-1" class="headerlink" title="ConsDemo.java 文件代码："></a>ConsDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsDemo</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">    MyClass t1 = <span class="keyword">new</span> MyClass( <span class="number">10</span> );</span><br><span class="line">    MyClass t2 = <span class="keyword">new</span> MyClass( <span class="number">20</span> );</span><br><span class="line">    System.out.<span class="built_in">println</span>(t1.x + <span class="string">" "</span> + t2.x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">10 </span><span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>JDK 1.5 开始，Java支持传递同类型的可变参数给一个方法。</p>
+<p>方法的可变参数的声明如下所示：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">typeName</span></span>... parameterName</span><br></pre></td></tr></table></figure>
+
+<p>在方法声明中，在指定参数类型后加一个省略号(…) 。</p>
+<p>一个方法中只能指定一个可变参数，它必须是方法的最后一个参数。任何普通的参数必须在它之前声明。</p>
+<h3 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h3><h2 id="VarargsDemo-java-文件代码："><a href="#VarargsDemo-java-文件代码：" class="headerlink" title="VarargsDemo.java 文件代码："></a>VarargsDemo.java 文件代码：</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">VarargsDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[]) &#123;</span><br><span class="line">        <span class="comment">// 调用可变参数的方法</span></span><br><span class="line">        printMax(<span class="number">34</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">56.5</span>);</span><br><span class="line">        printMax(new <span class="built_in">double</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> printMax( <span class="built_in">double</span>... numbers) &#123;</span><br><span class="line">        <span class="keyword">if</span> (numbers.length == <span class="number">0</span>) &#123;</span><br><span class="line">            System.<span class="keyword">out</span>.println(<span class="string">"No argument passed"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="built_in">double</span> result = numbers[<span class="number">0</span>];</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt;  numbers.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (numbers[i] &gt;  result) &#123;</span><br><span class="line">                result = numbers[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"The max value is "</span> + result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The<span class="built_in"> max</span> <span class="keyword">value</span> <span class="literal">is</span> <span class="number">56.5</span></span><br><span class="line">The<span class="built_in"> max</span> <span class="keyword">value</span> <span class="literal">is</span> <span class="number">3.0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="finalize-方法"><a href="#finalize-方法" class="headerlink" title="finalize() 方法"></a>finalize() 方法</h2><p>Java 允许定义这样的方法，它在对象被垃圾收集器析构(回收)之前调用，这个方法叫做 finalize( )，它用来清除回收对象。</p>
+<p>例如，你可以使用 finalize() 来确保一个对象打开的文件被关闭了。</p>
+<p>在 finalize() 方法里，你必须指定在对象销毁时候要执行的操作。</p>
+<p>finalize() 一般格式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// 在这里终结代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键字 protected 是一个限定符，它确保 finalize() 方法不会被该类以外的代码调用。</p>
+<p>当然，Java 的内存回收可以由 JVM 来自动完成。如果你手动使用，则可以使用上面的方法。</p>
+<h3 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h3><h2 id="FinalizationDemo-java-文件代码："><a href="#FinalizationDemo-java-文件代码：" class="headerlink" title="FinalizationDemo.java 文件代码："></a>FinalizationDemo.java 文件代码：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizationDemo</span> </span>&#123;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">    Cake c1 = <span class="keyword">new</span> Cake(<span class="number">1</span>);  </span><br><span class="line">    Cake c2 = <span class="keyword">new</span> Cake(<span class="number">2</span>);  </span><br><span class="line">    Cake c3 = <span class="keyword">new</span> Cake(<span class="number">3</span>);  </span><br><span class="line">      </span><br><span class="line">    c2 = c3 = <span class="keyword">null</span>;  </span><br><span class="line">    System.gc(); <span class="comment">//调用Java垃圾收集器</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cake</span> <span class="keyword">extends</span> <span class="title">Object</span> </span>&#123;  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> id;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Cake</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">this</span>.id = id;  </span><br><span class="line">    System.out.println(<span class="string">"Cake Object "</span> + id + <span class="string">"is created"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> java.lang.Throwable </span>&#123;  </span><br><span class="line">    <span class="keyword">super</span>.finalize();  </span><br><span class="line">    System.out.println(<span class="string">"Cake Object "</span> + id + <span class="string">"is disposed"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行以上代码，输出结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ javac FinalizationDemo.java </span><br><span class="line">$ java FinalizationDemo</span><br><span class="line">Cake Object <span class="number">1</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">2</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">3</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">3</span><span class="keyword">is</span> disposed</span><br><span class="line">Cake Object <span class="number">2</span><span class="keyword">is</span> disposed</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="java正则表达式">
+      <i class="fa fa-chevron-left"></i> java正则表达式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/" rel="next" title="java流(Stream)、文件(File)和IO">
+      java流(Stream)、文件(File)和IO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-方法"><span class="nav-number">1.</span> <span class="nav-text">Java 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#那么什么是方法呢？"><span class="nav-number">1.0.1.</span> <span class="nav-text">那么什么是方法呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法的优点"><span class="nav-number">1.0.2.</span> <span class="nav-text">方法的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法的命名规则"><span class="nav-number">1.0.3.</span> <span class="nav-text">方法的命名规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的定义"><span class="nav-number">1.1.</span> <span class="nav-text">方法的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">1.1.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">1.2.</span> <span class="nav-text">方法调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">1.2.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestMax-java-文件代码："><span class="nav-number">1.3.</span> <span class="nav-text">TestMax.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#void-关键字"><span class="nav-number">1.4.</span> <span class="nav-text">void 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestVoidMethod-java-文件代码："><span class="nav-number">1.5.</span> <span class="nav-text">TestVoidMethod.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过值传递参数"><span class="nav-number">1.6.</span> <span class="nav-text">通过值传递参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestVoidMethod-java-文件代码：-1"><span class="nav-number">1.7.</span> <span class="nav-text">TestVoidMethod.java 文件代码：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-2"><span class="nav-number">1.7.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestPassByValue-java-文件代码："><span class="nav-number">1.8.</span> <span class="nav-text">TestPassByValue.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法的重载"><span class="nav-number">1.9.</span> <span class="nav-text">方法的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量作用域"><span class="nav-number">1.10.</span> <span class="nav-text">变量作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行参数的使用"><span class="nav-number">1.11.</span> <span class="nav-text">命令行参数的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">1.11.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CommandLine-java-文件代码："><span class="nav-number">1.12.</span> <span class="nav-text">CommandLine.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">1.13.</span> <span class="nav-text">构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-2"><span class="nav-number">1.13.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConsDemo-java-文件代码："><span class="nav-number">1.14.</span> <span class="nav-text">ConsDemo.java 文件代码：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-3"><span class="nav-number">1.14.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConsDemo-java-文件代码：-1"><span class="nav-number">1.15.</span> <span class="nav-text">ConsDemo.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变参数"><span class="nav-number">1.16.</span> <span class="nav-text">可变参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-4"><span class="nav-number">1.16.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VarargsDemo-java-文件代码："><span class="nav-number">1.17.</span> <span class="nav-text">VarargsDemo.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finalize-方法"><span class="nav-number">1.18.</span> <span class="nav-text">finalize() 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-5"><span class="nav-number">1.18.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FinalizationDemo-java-文件代码："><span class="nav-number">1.19.</span> <span class="nav-text">FinalizationDemo.java 文件代码：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

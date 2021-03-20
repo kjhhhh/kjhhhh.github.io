@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="My SQL笔记第一章、数据库的介绍数据库定义：数据库是指严格按照数据结构来组织、存储和管理数据的仓库。 一、数据库的功能：​                            1、可以结构化存储大量的数据信息，方便用户进行有效的检索和访问。 ​                            2、可以有效的保持数据信息的一致性、完整性，降低数据的重复。 ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My SQL笔记">
+<meta property="og:url" content="http://yoursite.com/2021/03/13/My%20SQL%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="My SQL笔记第一章、数据库的介绍数据库定义：数据库是指严格按照数据结构来组织、存储和管理数据的仓库。 一、数据库的功能：​                            1、可以结构化存储大量的数据信息，方便用户进行有效的检索和访问。 ​                            2、可以有效的保持数据信息的一致性、完整性，降低数据的重复。 ​">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T08:48:02.016Z">
+<meta property="article:modified_time" content="2021-03-13T08:48:02.162Z">
+<meta property="article:author" content="匡俊桦">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/13/My%20SQL%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>My SQL笔记 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/13/My%20SQL%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          My SQL笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-13 16:48:02" itemprop="dateCreated datePublished" datetime="2021-03-13T16:48:02+08:00">2021-03-13</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="My-SQL笔记"><a href="#My-SQL笔记" class="headerlink" title="My SQL笔记"></a>My SQL笔记</h1><h2 id="第一章、数据库的介绍"><a href="#第一章、数据库的介绍" class="headerlink" title="第一章、数据库的介绍"></a>第一章、数据库的介绍</h2><p>数据库定义：数据库是指严格按照数据结构来组织、存储和管理数据的仓库。</p>
+<h3 id="一、数据库的功能："><a href="#一、数据库的功能：" class="headerlink" title="一、数据库的功能："></a>一、数据库的功能：</h3><p>​                            1、可以结构化存储大量的数据信息，方便用户进行有效的检索和访问。</p>
+<p>​                            2、可以有效的保持数据信息的一致性、完整性，降低数据的重复。</p>
+<p>​                            3、满足应用的共享和安全方面的要求。</p>
+<p>​                            4、数据库技术能够智能化的分析，产生新的有用信息。</p>
+<h3 id="二、常用数据库："><a href="#二、常用数据库：" class="headerlink" title="二、常用数据库："></a>二、常用数据库：</h3><p>​                            1、SQLSevrver：是微软公司的数据库产品。直接面向Microsoft windows操作系统。</p>
+<p>​                            2、Oracle：世界上最好的、最广泛的数据库系统，大中小型计算机，能适应70多种操作系统</p>
+<p>​                            3、DB2：支持中小型大大型机，支持IBM公司和HP及SUN UNIX系统等，可以在主机一主/从方式                                             独立运行，也可以在服务器环境中运行</p>
+<p>​                            4、MySQL:开源代码的关系型数据库管理系统。</p>
+<h3 id="三、数据库和数据表"><a href="#三、数据库和数据表" class="headerlink" title="三、数据库和数据表"></a>三、数据库和数据表</h3><p>​                                    数据库并不能直接存储数据，数据是存储在表中。数据表的每一“行”对应一个实体，在数据                                    库中通常叫作一条“记录（Record)”,每一“列”，如编号、姓名、年龄等，通常称之为“字段“</p>
+<h3 id="四、数据库管理系统和数据库系统"><a href="#四、数据库管理系统和数据库系统" class="headerlink" title="四、数据库管理系统和数据库系统"></a>四、数据库管理系统和数据库系统</h3><p>​    1、数据库管理系统（DBMS）：是一种系统软件，功能是维护数据库，并有效地访问数据库中各个部分的数据。</p>
+<p>​    2、数据库系统（DBS）：由存储介质（磁盘）、处理对象和管理系统共同组成的集合体，通常由软件、数据库、和数据库管理员组成。</p>
+<h3 id="五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）"><a href="#五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）" class="headerlink" title="五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）"></a>五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）</h3><p> SQL语言的结构由5部分构成：（面试中经常提到）</p>
+<p><strong><em>1、数据定义语言（DDL）：在数据库中用来创建、修改、删除数据库中对象的语句。</em></strong></p>
+<p>  如：创建表对象、修改表对象、删除表对象、创建视图对象、修改视图对象、删除视图对象等。</p>
+<p>  它的具体指令有：create(创建语句)、alter(修改语言)、drop(删除语句)</p>
+<p><strong>2、数据操作语言（DML）：在数据库中对表中数据进行添加、修改、删除等操作的语句。</strong></p>
+<p>​    如：添加数据、修改数据、删除数据</p>
+<p>  它的具体指令有：insert、update、delete等</p>
+<p><strong>3、数据查询语言（DQL）：在数据库中对表中数据进行查询操作的语句。</strong></p>
+<p>  如：单表查询、多表查询、模糊查询、子查询等等。</p>
+<p>  它的具有指令有：select</p>
+<p><strong>4、数据控制语言（DCL）：在数据库中对对象权限的管理语句。</strong></p>
+<p>  如：表的查询权限、表的删除权限、表的修改权限。</p>
+<p>  它的具体指令有：grant(授予权限)、revoke(回收权限)、deny(禁用权限)</p>
+<p><strong>5、事务控制语言（TCL）：在数据库中对数据的完整性进行维护操作。</strong></p>
+<p>  它的具体指令有：commit tran(提交事务),rollback tran(回滚事务)</p>
+<h3 id="六、需要自己掌握安装MySQL。"><a href="#六、需要自己掌握安装MySQL。" class="headerlink" title="六、需要自己掌握安装MySQL。"></a>六、需要自己掌握安装MySQL。</h3><h2 id="第二章、数据库和表的基本操作（DDL）"><a href="#第二章、数据库和表的基本操作（DDL）" class="headerlink" title="第二章、数据库和表的基本操作（DDL）"></a>第二章、数据库和表的基本操作（DDL）</h2><h3 id="一、数据类型"><a href="#一、数据类型" class="headerlink" title="一、数据类型"></a>一、数据类型</h3><p>1、整数类型：</p>
+<p>​                        TINYINT（迷你整型） 字节数：1（1个字节是8位）    </p>
+<p>​                        SMALLINT（小整型） 字节数：2</p>
+<p>​                        MEDIUMINT（中整型）字节数：3</p>
+<p>​                        INT （标准整型） 字节数：4</p>
+<p>​                       BIGINT（大整型） 字节数：8</p>
+<p>无符号数的最大值：2^字节数-1，最小值为-最大值+1。</p>
+<p>有符号数的最大值：2^（字节数-1），最小值为负最大值+1。</p>
+<p>2、浮点数类型和定点数类型：</p>
+<p>​                                                    FLOAT：单精度浮点数类型，字节数：4</p>
+<p>​                                                    DOUBLE：双精度浮点数类型，字节数：8</p>
+<p>​                                                    DECIMAL(M,D)：M：数据的长度，D小数点后的长度。</p>
+<p>3、日期和时间类型：</p>
+<p>​                                    YEAR：字节数：1    格式：YYYY</p>
+<p>​                                    DATE：字节数：4    格式：YYYY-MM-DD</p>
+<p>​                                    TIME:  字节数：3     格式：HH:MM:SS</p>
+<p>​                                    DATATIME: 字节数：8  格式： YYYY-MM-DD HH:MM:SS</p>
+<p>​                                    TIMESTAMP（当前时间）： 字节数：4  格式：YYYY-MM-DD  HH-MM-SS</p>
+<p>​    注意：如果插入的数值不合法，系统会自动将对应的零值插入数据库中。</p>
+<p>4、字符串类型</p>
+<p>不可变字符串：CHAR和NCHAR，表示字符串的长度是固定的。如：char(20)，没有给它赋值20个，它在数据库中                        占用的空间还是20个字节。即效率高，但是可能导致空间的浪费。</p>
+<p>可变字符串：VARCHAR和NVARCHAR，表示字符串长度是可以压缩的。 如：varchar(20)，没有给它赋值20个，                        只给了10个，它在数据库中占用的空间只占10个字节， 也就是说它会自动压缩多余的空间。即空间                        可以节省，但是它的执行效率低。</p>
+<p>区别：<br>        char、varchar一般用来存储单字节。如英文字符或数字之类的。<br>        nchar、nvarchar一般用来存储双字节。如中文、日文等。<br>        注意：在MySql中字符串必须定义在单引号中，不要写在双引号中。</p>
+<p>5、其他数据类型：</p>
+<p>​                                TEXT：大文本数据类型（存新闻）</p>
+<p>​                                BOLB:二进制类(用来存放视频、音频等内容)<br>​                                ENUM：枚举类型（单选，只能存储一个枚举字符串值)<br>​                                SET：集合类型，可以存储多个值的类型。（多选如：爱好：打球、打游戏等)<br>​                                BIT：真假类型（判断）</p>
+<h3 id="二、表的约束"><a href="#二、表的约束" class="headerlink" title="二、表的约束"></a>二、表的约束</h3><p>为了防止数据表中插入错误的数据，定义了一些维护数据库完整性的规则，即表的约束，它可以保证数据表中的数据的正确性和唯一性</p>
+<p>1、PRIMARY KEY （主键约束）：用于int类型，保证表中字段的值不能相同且不能为null。注意：每一个数据表中最多只能有一个主键约束，但是主键可以基于多个字段来建立。主键要建立在能够唯一标示一条记录的字段上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">单字段主键</span><br><span class="line">字段名  数据类型  PRIMARY KEY </span><br><span class="line">多字段主键(放在创建表格时所有字段结束后)</span><br><span class="line">PRIMARY KEY (字段名1，字段名2...字段名n);</span><br></pre></td></tr></table></figure>
+
+<p>2、NOT NULL(非空约束)：字段的值不能为null</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名  数据类型 NOT NULL ;</span><br></pre></td></tr></table></figure>
+
+<p>3、UNIQUE（唯一约束）：字段的值不能重复出现，保证字段的唯一性，null值除外</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名  数据类型 UNIQUE ;</span><br></pre></td></tr></table></figure>
+
+<p>4、DEFAULT(默认约束)：用于给数据表中的字段知道默认值，插入一条新数据时，有写数据就按写的数据显示，如果没有就会自动为这个字段插入默认值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名  数据类型 DEFAULT 默认值（如果不是整数类型，记得用单引号把默认值引起来） ;</span><br></pre></td></tr></table></figure>
+
+<p>5、CHECK（检查约束）：表示当前字段的值只能在指定的范围内，在现在的MySql版本中还不支持check约束。<br>#但是再之后的版本中会提供支持。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段名  数据类型 CHECK(值的指定范围)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="三、对数据库的基本定义操作"><a href="#三、对数据库的基本定义操作" class="headerlink" title="三、对数据库的基本定义操作"></a>三、对数据库的基本定义操作</h3><p>语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1、创建数据库：CREATE DATABASE 数据库名称</span><br><span class="line"></span><br><span class="line">​2、切换数据库：USE 数据库名称</span><br><span class="line"></span><br><span class="line">​3、查看所有数据库：SHOW DATABASES  查看数据库所有引擎：SHOW ENGINES </span><br><span class="line">    查看数据库的系统信息：SHOW VARIABLES;</span><br><span class="line"></span><br><span class="line">​4、修改数据库的编码格式：</span><br><span class="line"></span><br><span class="line">					1、在创建的时候指定编码格式：CREATE DATABASE 数据库名 CHARSET 编码格式;</span><br><span class="line"></span><br><span class="line">					2、比如我的数据库已经存在，想改变编码格式,这个时候需要alter：</span><br><span class="line">						ALTER DATABASE 数据库名称  CHARACTER SET 编码格式;</span><br><span class="line"></span><br><span class="line">​5、删除数据库（注意：一定删除数据库就可能导致数据丢失，所以要慎重。)：DROP DATABASE 数据名;</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、数据表的基本操作"><a href="#四、数据表的基本操作" class="headerlink" title="四、数据表的基本操作"></a>四、数据表的基本操作</h3><h4 id="1、创建数据表语法（create-："><a href="#1、创建数据表语法（create-：" class="headerlink" title="1、创建数据表语法（create)："></a>1、创建数据表语法（create)：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE 表名</span><br><span class="line">(	</span><br><span class="line">	字段名1 数据类型  约束条件,</span><br><span class="line">	字段名2 数据类型  约束条件,</span><br><span class="line">	......</span><br><span class="line">	字段名n 数据类型  约束条件</span><br><span class="line">);</span><br><span class="line">注意：约束条件根据需求或者是要插入表的数据来确定，也可以没有约束条件。</span><br><span class="line">     最后一个字段名约束条件或数据类型后不需要跟英文逗号，其他的都需要跟英文逗号。</span><br><span class="line">     字段名或者表名如果与关键字冲突，则用&#96;&#96;将其点起来（键盘！号前面的点）</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、查看数据表结构-DESC-describe-："><a href="#2、查看数据表结构-DESC-describe-：" class="headerlink" title="2、查看数据表结构(DESC:describe)："></a>2、查看数据表结构(DESC:describe)：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DESC 表名;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、删除数据表-drop-（包括表里的数据及表结构，即在数据库里找不到这个表了）："><a href="#3、删除数据表-drop-（包括表里的数据及表结构，即在数据库里找不到这个表了）：" class="headerlink" title="3、删除数据表(drop)（包括表里的数据及表结构，即在数据库里找不到这个表了）："></a>3、删除数据表(drop)（包括表里的数据及表结构，即在数据库里找不到这个表了）：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    DROP TABLE 表名1（表名2,...表名n）;</span><br><span class="line">另一个知识点：</span><br><span class="line">	如果表不存在则创建该表，存在则不创建： CREATE TABLE IF NOT EXISTS 表名;</span><br><span class="line">	删除表格如果存在学生表：DROP TABLE IF EXISTS 表名;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、修改数据表-alter"><a href="#4、修改数据表-alter" class="headerlink" title="4、修改数据表(alter):"></a>4、修改数据表(alter):</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1、修改表名：ALTER TABLE 旧表名 RENAME TO  新表名;</span><br><span class="line"></span><br><span class="line">2、修改字段名： ALTER TABLE  表名 CHANGE  旧字段名 新字段名 新数据类型;</span><br><span class="line"></span><br><span class="line">3、修改字段的数据类型： ALTER TABLE 表名 MODIFY 要修改的字段的名称 修改后的数据类型;</span><br><span class="line"></span><br><span class="line">4、添加字段： ALTER TABLE 表名 ADD 要添加的字段名  数据类型  约束条件;</span><br><span class="line">  添加字段并且放在数据的第一条： ALTER TABLE 表名 ADD  要添加的字段名   数据类型  约束条件 FIRST </span><br><span class="line">  添加字段并放在某字段之后：</span><br><span class="line">  			ALTER TABLE 表名  ADD COLUMN 要添加的字段名   数据类型  约束条件 AFTER  某字段名;</span><br><span class="line">  </span><br><span class="line">5、删除字段：ALTER TABLE 表名 DROP 字段名;</span><br><span class="line"></span><br><span class="line">6、修改字段的排列位置：</span><br><span class="line">				1.把已经存在的某个字段修改为表的第一个字段：	</span><br><span class="line">				   ALTER TABLE 表名  MODIFY 要修改的字段名 数据类型  FIRST </span><br><span class="line">				2.把某个字段修改到某个字段之后：															ALTER TABLE 表名  MODIFY  要修改的字段名   数据类型  约束条件 AFTER  某字段名</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-1-对数据表中的约束条件进行添加，修改，删除"><a href="#4-1-对数据表中的约束条件进行添加，修改，删除" class="headerlink" title="4.1 对数据表中的约束条件进行添加，修改，删除"></a>4.1 对数据表中的约束条件进行添加，修改，删除</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1、添加(add constraint) 修改(modify)约束：</span><br><span class="line">添加主键约束： ALTER TABLE 表名 ADD CONSTRAINT  PRIMARY KEY(需要添加约束条件的字段名);</span><br><span class="line">			</span><br><span class="line">添加联合主键约束： ALTER TABLE 表名  ADD CONSTRAINT 自己取的约束名  PRIMARY KEY(字段名1,字段名2);</span><br><span class="line">			</span><br><span class="line">添加唯一约束： ALTER TABLE 表名 ADD CONSTRAINT 自己取的约束名 UNIQUE(需要约束的字段名);</span><br><span class="line"></span><br><span class="line">添加检查约束: ALTER TABLE 表名 ADD CONSTRAINT  自己取的约束名 CHECK(值的指定范围);</span><br><span class="line"></span><br><span class="line">添加（修改）非空约束： ALTER TABLE 表名 MODIFY 字段名 数据类型 NOT NULL;</span><br><span class="line"></span><br><span class="line">添加（修改）默认约束 ： ALTER TABLE 表名 MODIFY 字段名 数据类型 DEFAULT &#39;默认值&#39;;</span><br><span class="line"></span><br><span class="line">2、删除(drop)约束：</span><br><span class="line">删除主键约束： ALTER TABLE 表名 DROP PRIMARY KEY;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5、设置表的字段值自动增加（AUTO-INCREMENT-）"><a href="#5、设置表的字段值自动增加（AUTO-INCREMENT-）" class="headerlink" title="5、设置表的字段值自动增加（AUTO_INCREMENT ）"></a>5、设置表的字段值自动增加（AUTO_INCREMENT ）</h4><p>一个表中只能有一个自动增长列；自动增长列只能在数字类型上，一般主要指整数类型上；自动增长列必须是主键的一部分；默认自动增长是从1开始，但是可以指定开始值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、在创建表的时候设置自增：字段名 数据类型 约束条件 AUTO_INCREMENT；</span><br><span class="line">在创建表的()后写AUTO_INCREMENT&#x3D;10000 （表示从10000开始自增）【也可以不写，不写默认从1开始】</span><br><span class="line"></span><br><span class="line">2、在表已经建立好的情况下来指明自动增长列的起始值，使用这条代码的时候需要勾选主键，勾选自增</span><br><span class="line">ALTER TABLE 表名 AUTO_INCREMENT&#x3D;1000;</span><br><span class="line"></span><br><span class="line">3、控制自动增长列每次增加的数值。设置所有表的自增</span><br><span class="line"> SET auto_increment_increment&#x3D;20;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、创建和删除索引"><a href="#6、创建和删除索引" class="headerlink" title="6、创建和删除索引"></a>6、创建和删除索引</h3><p>首先:先假设有一张表,表的数据有10W条数据,其中有一条数据是nickname=’css’,如果要拿这条数据的话需要些的sql是 SELECT * FROM award WHERE nickname = ‘css’<br>一般情况下,在没有建立索引的时候,mysql需要扫描全表及扫描10W条数据找这条数据,如果我在nickname上建立索引,那么mysql只需要扫描一行数据及为我们找到这条nickname=’css’的数据,这样性能提升了很多</p>
+<h4 id="6-1索引的创建："><a href="#6-1索引的创建：" class="headerlink" title="6.1索引的创建："></a>6.1索引的创建：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">一、单列索引</span><br><span class="line">1、普通索引,这个是最基本的索引</span><br><span class="line">其sql格式是 CREATE INDEX IndexName ON &#96;TableName&#96;(&#96;字段名&#96;(length)) 或者 ALTER TABLE TableName ADD INDEX IndexName(&#96;字段名&#96;(length))</span><br><span class="line"></span><br><span class="line">第一种方式 :</span><br><span class="line"> CREATE INDEX 索引名 ON 表名(字段名);</span><br><span class="line">第二种方式: </span><br><span class="line">ALTER TABLE award ADD INDEX account_Index(&#96;account&#96;);</span><br><span class="line"></span><br><span class="line">2、唯一索引,与普通索引类似,但是不同的是唯一索引要求所有的类的值是唯一的,这一点和主键索引一样.但是他允许有空值</span><br><span class="line">第一种方式 :</span><br><span class="line">CREATE UNIQUE INDEX 索引名 ON 表名(字段名);</span><br><span class="line">第二种方式: </span><br><span class="line">ALTER TABLE 表名 ADD UNIQUE  INDEX 自己取的索引名 (字段名);</span><br><span class="line"></span><br><span class="line">3、主键索引,不允许有空值,(在B+TREE中的InnoDB引擎中,主键索引起到了至关重要的地位)</span><br><span class="line">主键索引建立的规则是 int优于varchar,一般在建表的时候创建,</span><br><span class="line">最好是与表的其他字段不相关的列或者是业务不相关的列.一般会设为 int 而且是 AUTO_INCREMENT自增类型的</span><br><span class="line"></span><br><span class="line">ALTER TABLE  表名 ADD PRIMARY KEY (字段名) ;</span><br><span class="line"></span><br><span class="line">二、组合索引</span><br><span class="line">一个表中含有多个单列索引不代表是组合索引,通俗一点讲 组合索引是:包含多个字段但是只有索引名称</span><br><span class="line">其sql格式是 CREATE INDEX IndexName On &#96;TableName&#96;(&#96;字段名&#96;(length),&#96;字段名&#96;(length),...);</span><br><span class="line"></span><br><span class="line"> CREATE INDEX 取的索引名 ON 表名(字段名1, 字段名2, 字段名3);</span><br><span class="line"> #如果你建立了 组合索引(索引名) 那么他实际包含的是3个索引 (字段名1) (字段名1, 字段名2, )(字段名1, 字段名2, 字段名3)</span><br><span class="line"> </span><br><span class="line"> 三、全文索引</span><br><span class="line">文本字段上(text)如果建立的是普通索引,那么只有对文本的字段内容前面的字符进行索引,其字符大小根据索引建立索引时申明的大小来规定。如果文本中出现多个一样的字符,而且需要查找的话,那么其条件只能是 where column lick &#39;%xxxx%&#39; 这样做会让索引失效，这个时候全文索引就起到了作用了</span><br><span class="line">ALTER TABLE tablename ADD FULLTEXT(column1, column2)</span><br><span class="line">有了全文索引，就可以用SELECT查询命令去检索那些包含着一个或多个给定单词的数据记录了。</span><br><span class="line">例：</span><br><span class="line">ALTER TABLE award ADD FULLTEXT(aty_id, nickname);# 产品名  价格</span><br><span class="line"></span><br><span class="line">四、Mysql全文搜索match against的用法 </span><br><span class="line">SELECT * FROM tablename WHERE MATCH(aty_id, nickname) AGAINST(‘xxx′, ‘sss′, ‘ddd′);</span><br><span class="line"># 这条命令将把column1和column2字段里有xxx、sss和ddd的数据记录全部查询出来。</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-索引的删除"><a href="#6-2-索引的删除" class="headerlink" title="6.2 索引的删除"></a>6.2 索引的删除</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一种方式：</span><br><span class="line">DROP INDEX 之前创建索引取的索引名 ON 表名;</span><br><span class="line">第二种方式：</span><br><span class="line">ALTER TABLE 表名 DROP INDEX 索引名;</span><br><span class="line">例：删除表award的主键索引</span><br><span class="line">ALTER TABLE award DROP PRIMARY KEY ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-3-使用索引的优点"><a href="#6-3-使用索引的优点" class="headerlink" title="6.3 使用索引的优点"></a>6.3 使用索引的优点</h4><p>1.可以通过建立唯一索引或者主键索引,保证数据库表中每一行数据的唯一性.<br>2.建立索引可以大大提高检索的数据,以及减少表的检索行数<br>3.在表连接的连接条件 可以加速表与表直接的相连<br>4.在分组和排序字句进行数据检索,可以减少查询时间中 分组 和 排序时所消耗的时间(数据库的记录会重新排序)<br>5.建立索引,在查询中使用索引 可以提高性能</p>
+<h4 id="6-4-使用索引的缺点"><a href="#6-4-使用索引的缺点" class="headerlink" title="6.4 使用索引的缺点"></a>6.4 使用索引的缺点</h4><p>1.在创建索引和维护索引 会耗费时间,随着数据量的增加而增加<br>2.索引文件会占用物理空间,除了数据表需要占用物理空间之外,每一个索引还会占用一定的物理空间<br>3.当对表的数据进行 INSERT,UPDATE,DELETE 的时候,索引也要动态的维护,这样就会降低数据的维护速度,(建立索引会占用磁盘空间的索引文件。一般情况这个问题不太严重，但如果你在一个大表上创建了多种组合索引，索引文件的会膨胀很快)。</p>
+<h4 id="6-5-使用索引需要注意的地方"><a href="#6-5-使用索引需要注意的地方" class="headerlink" title="6.5 使用索引需要注意的地方"></a>6.5 使用索引需要注意的地方</h4><p>在建立索引的时候应该考虑索引应该建立在数据库表中的某些列上面 哪一些索引需要建立,哪一些所以是多余的.<br>一般来说,<br>1.在经常需要搜索的列上,可以加快索引的速度<br>2.主键列上可以确保列的唯一性<br>3.在表与表的而连接条件上加上索引,可以加快连接查询的速度<br>4.在经常需要排序(order by),分组(group by)和的distinct 列上加索引 可以加快排序查询的时间,  (单独order by 用不了索引，索引考虑加where 或加limit)<br>5.在一些where 之后的 &lt; &lt;= &gt; &gt;= BETWEEN IN 以及某个情况下的like 建立字段的索引(B-TREE)<br>6.like语句的 如果你对nickname字段建立了一个索引.当查询的时候的语句是 nickname lick ‘%ABC%’ 那么这个索引讲不会起到作用.而nickname lick ‘ABC%’ 那么将可以用到索引<br>7.索引不会包含NULL列,如果列中包含NULL值都将不会被包含在索引中,复合索引中如果有一列含有NULL值那么这个组合索引都将失效,一般需要给默认值0或者 ‘ ‘字符串<br>8.使用短索引,如果你的一个字段是Char(32)或者int(32),在创建索引的时候指定前缀长度 比如前10个字符 (前提是多数值是唯一的..)那么短索引可以提高查询速度,并且可以减少磁盘的空间,也可以减少I/0操作.<br>9.不要在列上进行运算,这样会使得mysql索引失效,也会进行全表扫描<br>10.选择越小的数据类型越好,因为通常越小的数据类型通常在磁盘,内存,cpu,缓存中 占用的空间很少,处理起来更快</p>
+<h4 id="6-6-什么情况下不创建索引"><a href="#6-6-什么情况下不创建索引" class="headerlink" title="6.6  什么情况下不创建索引"></a>6.6  什么情况下不创建索引</h4><p>1.查询中很少使用到的列 不应该创建索引,如果建立了索引然而还会降低mysql的性能和增大了空间需求.<br>2.很少数据的列也不应该建立索引,比如 一个性别字段 0或者1,在查询中,结果集的数据占了表中数据行的比例比较大,mysql需要扫描的行数很多,增加索引,并不能提高效率<br>3.定义为text和image和bit数据类型的列不应该增加索引,<br>4.当表的修改(UPDATE,INSERT,DELETE)操作远远大于检索(SELECT)操作时不应该创建索引,这两个操作是互斥的关系<br>*/</p>
+<h2 id="第三章-添加、更新与删除数据表中的数据（DML）"><a href="#第三章-添加、更新与删除数据表中的数据（DML）" class="headerlink" title="第三章  添加、更新与删除数据表中的数据（DML）"></a>第三章  添加、更新与删除数据表中的数据（DML）</h2><p>DML:数据操作语言[Data manipulation language]：主要是针对表中数据的添加、修改、删除操作）<br>具体的指令有：insert(添加)/update(修改)/delete(删除)</p>
+<h3 id="一、添加数据（insert-into"><a href="#一、添加数据（insert-into" class="headerlink" title="一、添加数据（insert into)"></a>一、添加数据（insert into)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">一、单条数据添加有以下几种方式：</span><br><span class="line">1、字段和值全部写完整</span><br><span class="line">INSERT INTO 表名 (字段名1,字段名2,...字段名n) VALUES(值1,值2,...值n);</span><br><span class="line"></span><br><span class="line">2、直接省略字段名 直接添加值（如果要给每个字段插入值，则可以省略所有的字段名）</span><br><span class="line">INSERT INTO 表名 VALUES(值1,值2,...值n);</span><br><span class="line"></span><br><span class="line">3、有些可以为空的字段可以省略不写</span><br><span class="line">INSERT INTO student(字段名1,字段名2) VALUES(值1,值2);</span><br><span class="line"></span><br><span class="line">另一种写法：</span><br><span class="line">INSERT INTO 表名 set 字段名1&#x3D;值1,字段名2&#x3D;值2...字段名n&#x3D;值n;</span><br><span class="line">二、一次添加多条数据</span><br><span class="line">1、直接省略字段名 直接添加值</span><br><span class="line">INSERT INTO 表名  VALUES</span><br><span class="line">(值1,值2,...值n),</span><br><span class="line">(值1,值2,...值n),</span><br><span class="line">(值1,值2,...值n),</span><br><span class="line">(值1,值2,...值n),</span><br><span class="line">(值1,值2,...值n);</span><br><span class="line">2、有些可以为空的字段可以省略不写</span><br><span class="line">INSERT INTO student(字段名1,字段名2) VALUES(值1,值2)，(值1,值2)，(值1,值2)，(值1,值2)；</span><br><span class="line"></span><br><span class="line">插入数据后，可以用查询语句对表进行查看</span><br><span class="line">SELECT * FROM 表名   （*代表所有的意思）</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：每个值的顺序类型必须与队友的字段相匹配。如果某个字段定义的时候添加了非空约束，但没有添加默认约束，插入新纪录的时候就必须为该字段赋值，否则会提示错误。值的类型除了整数类型不用’’引起来，其他的需要用’’引起来。**</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">三、把一个已经存在的表以及表中的数据插入到一个新表中。(新表的意思是在数据库中原来是不存在的)（通俗的是指表的备份）</span><br><span class="line">1、在复制表的结构的同时复制表中的数据</span><br><span class="line">CREATE TABLE 新表名 SELECT * FROM 旧表名;</span><br><span class="line"></span><br><span class="line">2、只要复制表中的结构不要表中的数据。</span><br><span class="line">CREATE TABLE 新表名  SELECT * FROM student WHERE 1&#x3D;2;</span><br><span class="line">CREATE TABLE 新表名 LIKE 旧表名;</span><br><span class="line"></span><br><span class="line">3、复制表中满足条件的数据与结构</span><br><span class="line">CREATE TABLE 新表名  SELECT * FROM student WHERE 条件;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、更新（修改）数据（update"><a href="#二、更新（修改）数据（update" class="headerlink" title="二、更新（修改）数据（update)"></a>二、更新（修改）数据（update)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1、更新部分数据语法：</span><br><span class="line"> UPDATE 表名 SET 字段名1&#x3D;值1(,字段名2&#x3D;值2,...字段名n&#x3D;值n )WHERE 条件表达式;</span><br><span class="line"> 如果表中有多条记录都满足where子句条件表达式，满足条件的记录都会发生改变</span><br><span class="line"></span><br><span class="line">2、更新所有数据语法：</span><br><span class="line"> UPDATE 表名 SET 字段名1&#x3D;值1(,字段名2&#x3D;值2,...字段名n&#x3D;值n)</span><br><span class="line"> ()表示根据实际情况可以只改一个值还是多个值</span><br><span class="line"> </span><br><span class="line">3、追加值：（如本来是水浒传，用CONCAT后就变成水浒传abc）</span><br><span class="line">UPDATE student SET 字段名1&#x3D;CONCAT(字段名1,&#39;abc&#39;) WHERE 条件表达式;</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、删除数据（delete）"><a href="#三、删除数据（delete）" class="headerlink" title="三、删除数据（delete）"></a>三、删除数据（delete）</h3><p><strong>【注意删除数据时不能写*号】</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、删除部分数据语法：</span><br><span class="line">DELETE FROM  表名 WHERE 条件表达式;</span><br><span class="line"></span><br><span class="line">2、删除全部数据语法：</span><br><span class="line">DELETE FROM  表名 ;</span><br><span class="line">TRUNCATE TABLE 表名;</span><br><span class="line">注意：1、delete可以全表删除，也可以按照条件来删除。而truncate只能全表删除。</span><br><span class="line">	 2、delete在删除数据的时候会做日志，所以删除数据效率要低。但是安全性高。</span><br><span class="line">        而truncate在删除数据时不会做日志，所有删除数据库快。但是安全性低。</span><br><span class="line">	 3、delete在删除表中数据时，如果有自动增长列则下次插入值时会以上次的编号加1.</span><br><span class="line">        而truncate在删除表中数据时，如果有自动增长列则下次重新从1开始.</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第四章、-单表查询（DQL）"><a href="#第四章、-单表查询（DQL）" class="headerlink" title="第四章、 单表查询（DQL）"></a>第四章、 单表查询（DQL）</h2><h3 id="一、简单查询"><a href="#一、简单查询" class="headerlink" title="一、简单查询"></a>一、简单查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">1、查询所有字段</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名;（表内所有字段）</span><br><span class="line">SELECT * FROM 表名;</span><br><span class="line">注意：在数据库查询中尽量减少使用*号。因为代码的可读性不够，执行效率低。</span><br><span class="line">一般在测试或者字段名比较少的情况下使用。</span><br><span class="line"></span><br><span class="line">2、查询指定字段</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名;（表内部分字段）</span><br><span class="line"></span><br><span class="line">3、按条件查询</span><br><span class="line">SELECT * FROM 表名 WHERE 条件表达式;</span><br><span class="line">注意： where 条件表达式可以使用关系运算符（&gt;,&lt;,&#x3D;,!&#x3D;,&lt;&gt;...)</span><br><span class="line"></span><br><span class="line">4、带in关键字查询（判断某个字段的值是否在指定集合中，满足条件的记录将被查询出来）</span><br><span class="line"> SELECT 字段名1,字段名2,...字段名n FROM 表名;（表内部分字段） WHERE 字段名  IN (元素1,元素2);</span><br><span class="line"> SELECT 字段名1,字段名2,...字段名n FROM 表名;（表内部分字段） WHERE 字段名 NOT IN (元素1,元素2);</span><br><span class="line">加not，表示值不是元素1，元素2的记录</span><br><span class="line"></span><br><span class="line">5、带and（ &amp;&amp;）关键字查询（满足两个条件为真）</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE 表达式1 AND(&amp;&amp;) 表达式2... AND 表达式n;</span><br><span class="line"></span><br><span class="line">6、带 or (||)关键字查询 （满足一个条件为真）</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE 表达式1 OR(||) 表达式2... OR 表达式n;</span><br><span class="line">注意：如果and和or关键字一起用，and优先级高于or，先算and表达式，再运算or表达式</span><br><span class="line"></span><br><span class="line">7、带 between... and...关键字查询（值是否在指定范围内，一般使用在数字与日期范围时候）</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE 字段名 BETWEEN 起始值 AND 结束值;</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE 字段名 NOT BETWEEN 起始值 AND 结束值;(不在这个范围)</span><br><span class="line"></span><br><span class="line">8、空值(is null )查询（空值不同于0，也不同于空字符串）</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE  字段名 IS NULL  ;</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 WHERE  字段名 IS NOT NULL ;（不为空）</span><br><span class="line"></span><br><span class="line">9、带 distinct 关键字查询（过滤记录中重复的值，null也算值）</span><br><span class="line">select distinct 需要去重的字段名 from 表名;</span><br><span class="line">select distinct 需要去重的字段名1,字段名2,...字段名n from 表名;（指定的多个字段的值都相同，才会被认为是重复记录）</span><br><span class="line"></span><br><span class="line">10、带 like RLIKE 关键字查询（对字符串进行模糊查询，需要使用通配符%，_符合正则定律）</span><br><span class="line">SELECT * FROM titles WHERE title LIKE &#39;生%&#39;;   -- 以什么开头</span><br><span class="line">SELECT * FROM titles WHERE title LIKE &#39;%术&#39;;   -- 以什么结尾</span><br><span class="line">SELECT * FROM titles WHERE title LIKE &#39;%科%&#39;;  -- 包含</span><br><span class="line"></span><br><span class="line">SELECT * FROM titles WHERE title LIKE &#39;历_&#39;;  -- 一个下划线代表一个占位符,表示以历开头的两个字</span><br><span class="line">SELECT * FROM titles WHERE title LIKE &#39;百___&#39;;-- 多个下划线代表多个占位符，以百开头的三个字</span><br><span class="line"></span><br><span class="line">SELECT * FROM titles WHERE title RLIKE &#39;^历&#39;;  #shift + 6 以什么开头</span><br><span class="line">SELECT * FROM titles WHERE title RLIKE &#39;书$&#39;;  #shift + 4 以什么结尾</span><br><span class="line">SELECT * FROM titles WHERE title RLIKE &#39;美&#39; ;  #包含美的字</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、高级查询"><a href="#二、高级查询" class="headerlink" title="二、高级查询"></a>二、高级查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1、聚合函数：对一组值进行统计，并返回唯一值</span><br><span class="line"> count()统计记录的条数，null值不会忽略： SELECT COUNT(*) FROM 表名; </span><br><span class="line"> </span><br><span class="line"> 在使用聚合函数时，如果记录中有NULL则聚合函数会自动过滤它。</span><br><span class="line">SUM()求和函数：SELECT SUM (字段名) FROM 表名</span><br><span class="line">AVG()求平均值：SELECT AVG(字段名) FROM 表名</span><br><span class="line">MAX()求最大值：SELECT MAX(字段名) FROM 表名</span><br><span class="line">MIN()求最小值：SELECT MIN(字段名) FROM 表名</span><br><span class="line"></span><br><span class="line">2、对查询结果排序 order by （ ASC升序  DESC降序)</span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 ORDER BY 字段名1 （ASC&#x2F;DESC）,字段名2（ASC&#x2F;DESC）;</span><br><span class="line">如果 order by 字段名后不写任何，默认升序排列，写了DESC就按降序排列。注意：null可以被认为是最小值，也会参与排序。</span><br><span class="line"></span><br><span class="line">3、分组查询 group by （按某个字段或某个值分组，字段中的值相同的为一组，一般和聚合函数一起使用）</span><br><span class="line">SELECT 字段名1或函数,字段名2,...字段名n FROM 表名 GROUP BY 字段名1,字段名2,...字段名n (HAVING 条件表达式)</span><br><span class="line">注意 group by 和 having关键字一起使用，不是 where</span><br><span class="line"></span><br><span class="line">4、分页查询 limit </span><br><span class="line">SELECT 字段名1,字段名2,...字段名n FROM 表名 LIMIT （偏移量）返回记录的条数</span><br><span class="line">例：SELECT * FROM student2 grade LIMIT 4 #查询表中前4条记录</span><br><span class="line">SELECT * FROM student2 grade DESC LIMIT 4,4; #查询greade字段值在表中第5位到第8位的学生（从高到低）</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、函数汇总"><a href="#三、函数汇总" class="headerlink" title="三、函数汇总"></a>三、函数汇总</h3><p>1、数学函数<br> CEIL(9.09);   向上取舍，10<br> FLOOR(9.99);  向下取舍 9</p>
+<p>2、字符串函数<br>LENGTH(‘i love you’); 返回字符串长度<br> CONCAT(‘abc’,’efg’); 返回连接产生的新字符串<br>LOWER(‘AAAA’); 返回字符串的小写形式<br>UPPER(‘bbbb’); 返回字符串的大写形式<br>SUBSTRING(‘abcdefg’,1,6); #第一个值是起始位置，第二个值是截取的长度<br>REPLACE(‘myLoveYou’,’my’,’XXX’);  使用XXX替换my</p>
+<p>3、日期函数<br> NOW();获取当前的年月日时分秒<br> CURDATE(); 获取年月日<br> CURTIME(); 获取时分秒</p>
+<p> ADDDATE(‘2017-1-1’,20); 添加日期</p>
+<p> ADDDATE(‘2017-1-31’,-20); 减日期</p>
+<p>4、函数是可以嵌套的<br> YEAR(NOW());<br>MONTH(NOW());<br>DAY(NOW());<br>HOUR(NOW());<br>DAYOFWEEK(NOW()); #返回日期在本周的星期几索引，星期天 = 1，星期一 = 2，星期六 = 7<br>WEEKDAY(NOW()); #WEEKDAY函数返回一个日期的工作日索引值，即星期一为0，星期二为1，星期日为6。范围从0到6，表示星期一到星期日。<br>DAYOFYEAR(NOW()); #返回年份为日期的天，范围为1至366。<br>WEEKOFYEAR(NOW()); #返回日期中的日历星期数，范围是从1至53。<br>QUARTER(NOW()); #返回年份日期的季度值，范围为1〜4。</p>
+<p>5、判断函数</p>
+<p>IF(exp,v1,v2) :如果表达式exp为真，则返回V1，否则返回V2</p>
+<p>IFNULL（字段名，0）   如果当前字段的值为null,则使用0来替换<br>ISNULL（）  判断有值就返回0，没有值就返回1</p>
+<p>CASE(字段) WHEN 表达式 THEN 结果 （WHEN 表达式 THEN 结果）…ELSE 结果 END</p>
+<p>相当于针对范围判断的时候类似于if…else if…else if…else…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">例：SELECT TYPE,CASE(TYPE) WHEN &#39;business&#39; THEN &#39;商业书籍&#39;</span><br><span class="line">                       WHEN &#39;mod_cook&#39; THEN &#39;烹调书籍&#39;</span><br><span class="line">                       WHEN &#39;popular_comp&#39; THEN &#39;电脑书籍&#39;</span><br><span class="line">                       WHEN &#39;psychology&#39; THEN &#39;物理书籍&#39;</span><br><span class="line">                       WHEN &#39;trad_cook&#39; THEN &#39;交通书籍&#39;</span><br><span class="line">                       WHEN &#39;UNDECIDED&#39; THEN &#39;绘图书籍&#39;</span><br><span class="line">                       ELSE &#39;其他书籍&#39;</span><br><span class="line">           END AS &#39;书籍类型123&#39;</span><br><span class="line">FROM titles;</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、为表和字段取别名-AS"><a href="#四、为表和字段取别名-AS" class="headerlink" title="四、为表和字段取别名 AS"></a>四、为表和字段取别名 AS</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给表取别名：</span><br><span class="line">SELECT * FROM 表名 （AS） 别名;   #AS可以省略不写</span><br><span class="line">给字段取别名</span><br><span class="line">SELECT 字段名 （AS） &#39;别名&#39; FROM 表名 ;</span><br><span class="line">取好别名后，查询所有这个表的数据</span><br><span class="line">SELECT * FROM 表名 别名;</span><br><span class="line"></span><br><span class="line">通过别名点出字段名，例如：</span><br><span class="line">SELECT t.&#96;advance&#96;,t.&#96;notes&#96;,t.&#96;price&#96;,t.&#96;pub_id&#96;,t.&#96;title&#96;,t.&#96;type&#96; FROM titles t;</span><br><span class="line">注意需要先把 select 及from后面的表名，别命写出来以后才可以点出字段名，不然你用.是出不来选择的字段名</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第五章、多表查询（DQL）"><a href="#第五章、多表查询（DQL）" class="headerlink" title="第五章、多表查询（DQL）"></a>第五章、多表查询（DQL）</h2><h3 id="一、外键-foreign-key"><a href="#一、外键-foreign-key" class="headerlink" title="一、外键 foreign key"></a>一、外键 foreign key</h3><p>外键是指引用另一个表中的一列或多列，被引用的列应该具有主键约束或唯一性约束。外键用于建立和加强两个表数据之间的连接。</p>
+<p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">添加外键约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> <span class="keyword">constraint</span> FK_ID（外键字段名） <span class="keyword">foreign</span> <span class="keyword">key</span> <span class="keyword">REFERENCES</span> 外表表名（主键字段名）</span><br><span class="line">或者直接在创建表的下面写</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> pro_sal</span><br><span class="line">(	sal_id <span class="built_in">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	sal_date <span class="built_in">DATE</span>  <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	sal_prodect_id  <span class="built_in">VARCHAR</span>(<span class="number">20</span>)   <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	sal_count <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	sal_money <span class="built_in">DECIMAL</span>(<span class="number">10</span>,<span class="number">0</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	<span class="keyword">FOREIGN</span> <span class="keyword">KEY</span>(sal_id) <span class="keyword">REFERENCES</span> saler(s_id ),</span><br><span class="line">	<span class="keyword">FOREIGN</span> <span class="keyword">KEY</span>(sal_prodect_id ) <span class="keyword">REFERENCES</span> pros(p_id)	</span><br><span class="line">);</span><br><span class="line">删除外键约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> <span class="keyword">foreign</span> <span class="keyword">key</span> 外键名；</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、操作关联表"><a href="#二、操作关联表" class="headerlink" title="二、操作关联表"></a>二、操作关联表</h3><p>1、关联关系</p>
+<p>①多对一</p>
+<p>最常见的一种关系，如员工与部门之间的关系，一个部门可以有多个员工，而一个员工不能属多个部门。在这个关系中，外键建在多的一方。</p>
+<p>②多对多</p>
+<p>也是数据表的一种关系，如学生与课程之间的关系，一个学生可以选择多门课程，一个课程也供多个学生选择。</p>
+<p>为了实现这种关系，需要定义一章中间表（称为连接表），该表会存在两个外键，分别参照课程表和学生表，注意：连接表的两个外键都是可以重复的，但是两个外键之间 关系是不能重复的，所有这两个外键又是连接表的联合主键</p>
+<p>③一对一</p>
+<p>如人和身份证。要建立外键，首先要分清主从关系，从表需要主表的存在才有意义。</p>
+<p>一般这种关系在数据库中并不常见，一般会应用到：1、分割具有很多列的表；2、由于安全原因而隔离表的一部分；3、保存临时数据，并且可以毫不费力地通过删除该表而删除这些数据</p>
+<p>2、添加数据</p>
+<p>外键列只能插入参照列存在的值，所有如果要添加数据，需要先为主表添加数据，然后从表中的外键列只能添加主表中与外键列相关联的列的值</p>
+<p>3、删除数据</p>
+<p>两个具有关联关系的表中删除数据时，一定要先删除从表中的数据，然后再删除主表中的数据，否则会报错。</p>
+<h3 id="三、连接查询"><a href="#三、连接查询" class="headerlink" title="三、连接查询"></a>三、连接查询</h3><h4 id="1、交叉连接-cross-join"><a href="#1、交叉连接-cross-join" class="headerlink" title="1、交叉连接 cross join"></a>1、交叉连接 cross join</h4><h4 id="2、内连接-inner-join…on…"><a href="#2、内连接-inner-join…on…" class="headerlink" title="2、内连接 inner join…on…"></a>2、内连接 inner join…on…</h4><h4 id="3、外连接"><a href="#3、外连接" class="headerlink" title="3、外连接"></a>3、外连接</h4><p>​                    左连接left join</p>
+<p>​                    右连接 right join</p>
+<h4 id="4、复合连接查询"><a href="#4、复合连接查询" class="headerlink" title="4、复合连接查询"></a>4、复合连接查询</h4><h3 id="四、子查询"><a href="#四、子查询" class="headerlink" title="四、子查询"></a>四、子查询</h3><p>子查询是指在一个查询语句嵌套在另一个查询语句内部的查询，首先执行子查询中的语句，然后将返回的结果作为外层查询的过滤条件</p>
+<h4 id="1、带in关键字的子查询"><a href="#1、带in关键字的子查询" class="headerlink" title="1、带in关键字的子查询"></a>1、带in关键字的子查询</h4><h4 id="2、带exists关键字的子查询"><a href="#2、带exists关键字的子查询" class="headerlink" title="2、带exists关键字的子查询"></a>2、带exists关键字的子查询</h4><h4 id="3、带any关键字的子查询"><a href="#3、带any关键字的子查询" class="headerlink" title="3、带any关键字的子查询"></a>3、带any关键字的子查询</h4><h4 id="4、带all关键字的子查询"><a href="#4、带all关键字的子查询" class="headerlink" title="4、带all关键字的子查询"></a>4、带all关键字的子查询</h4><h4 id="5、带比较运算符的子查询"><a href="#5、带比较运算符的子查询" class="headerlink" title="5、带比较运算符的子查询"></a>5、带比较运算符的子查询</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/13/java%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" rel="prev" title="java基础笔记">
+      <i class="fa fa-chevron-left"></i> java基础笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/13/java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="next" title="java面向对象">
+      java面向对象 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#My-SQL笔记"><span class="nav-number">1.</span> <span class="nav-text">My SQL笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章、数据库的介绍"><span class="nav-number">1.1.</span> <span class="nav-text">第一章、数据库的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、数据库的功能："><span class="nav-number">1.1.1.</span> <span class="nav-text">一、数据库的功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、常用数据库："><span class="nav-number">1.1.2.</span> <span class="nav-text">二、常用数据库：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、数据库和数据表"><span class="nav-number">1.1.3.</span> <span class="nav-text">三、数据库和数据表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、数据库管理系统和数据库系统"><span class="nav-number">1.1.4.</span> <span class="nav-text">四、数据库管理系统和数据库系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）"><span class="nav-number">1.1.5.</span> <span class="nav-text">五、SQL语言（与数据库进行交换的语言：称之为结构化查询语言）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、需要自己掌握安装MySQL。"><span class="nav-number">1.1.6.</span> <span class="nav-text">六、需要自己掌握安装MySQL。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章、数据库和表的基本操作（DDL）"><span class="nav-number">1.2.</span> <span class="nav-text">第二章、数据库和表的基本操作（DDL）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">一、数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、表的约束"><span class="nav-number">1.2.2.</span> <span class="nav-text">二、表的约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、对数据库的基本定义操作"><span class="nav-number">1.2.3.</span> <span class="nav-text">三、对数据库的基本定义操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、数据表的基本操作"><span class="nav-number">1.2.4.</span> <span class="nav-text">四、数据表的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、创建数据表语法（create-："><span class="nav-number">1.2.4.1.</span> <span class="nav-text">1、创建数据表语法（create)：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、查看数据表结构-DESC-describe-："><span class="nav-number">1.2.4.2.</span> <span class="nav-text">2、查看数据表结构(DESC:describe)：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、删除数据表-drop-（包括表里的数据及表结构，即在数据库里找不到这个表了）："><span class="nav-number">1.2.4.3.</span> <span class="nav-text">3、删除数据表(drop)（包括表里的数据及表结构，即在数据库里找不到这个表了）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、修改数据表-alter"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">4、修改数据表(alter):</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-对数据表中的约束条件进行添加，修改，删除"><span class="nav-number">1.2.4.4.1.</span> <span class="nav-text">4.1 对数据表中的约束条件进行添加，修改，删除</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、设置表的字段值自动增加（AUTO-INCREMENT-）"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">5、设置表的字段值自动增加（AUTO_INCREMENT ）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、创建和删除索引"><span class="nav-number">1.2.5.</span> <span class="nav-text">6、创建和删除索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1索引的创建："><span class="nav-number">1.2.5.1.</span> <span class="nav-text">6.1索引的创建：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-索引的删除"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">6.2 索引的删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-使用索引的优点"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">6.3 使用索引的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-4-使用索引的缺点"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">6.4 使用索引的缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-使用索引需要注意的地方"><span class="nav-number">1.2.5.5.</span> <span class="nav-text">6.5 使用索引需要注意的地方</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-6-什么情况下不创建索引"><span class="nav-number">1.2.5.6.</span> <span class="nav-text">6.6  什么情况下不创建索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-添加、更新与删除数据表中的数据（DML）"><span class="nav-number">1.3.</span> <span class="nav-text">第三章  添加、更新与删除数据表中的数据（DML）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、添加数据（insert-into"><span class="nav-number">1.3.1.</span> <span class="nav-text">一、添加数据（insert into)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、更新（修改）数据（update"><span class="nav-number">1.3.2.</span> <span class="nav-text">二、更新（修改）数据（update)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、删除数据（delete）"><span class="nav-number">1.3.3.</span> <span class="nav-text">三、删除数据（delete）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章、-单表查询（DQL）"><span class="nav-number">1.4.</span> <span class="nav-text">第四章、 单表查询（DQL）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、简单查询"><span class="nav-number">1.4.1.</span> <span class="nav-text">一、简单查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、高级查询"><span class="nav-number">1.4.2.</span> <span class="nav-text">二、高级查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、函数汇总"><span class="nav-number">1.4.3.</span> <span class="nav-text">三、函数汇总</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、为表和字段取别名-AS"><span class="nav-number">1.4.4.</span> <span class="nav-text">四、为表和字段取别名 AS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章、多表查询（DQL）"><span class="nav-number">1.5.</span> <span class="nav-text">第五章、多表查询（DQL）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、外键-foreign-key"><span class="nav-number">1.5.1.</span> <span class="nav-text">一、外键 foreign key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、操作关联表"><span class="nav-number">1.5.2.</span> <span class="nav-text">二、操作关联表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、连接查询"><span class="nav-number">1.5.3.</span> <span class="nav-text">三、连接查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、交叉连接-cross-join"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">1、交叉连接 cross join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、内连接-inner-join…on…"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">2、内连接 inner join…on…</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、外连接"><span class="nav-number">1.5.3.3.</span> <span class="nav-text">3、外连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、复合连接查询"><span class="nav-number">1.5.3.4.</span> <span class="nav-text">4、复合连接查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、子查询"><span class="nav-number">1.5.4.</span> <span class="nav-text">四、子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、带in关键字的子查询"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">1、带in关键字的子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、带exists关键字的子查询"><span class="nav-number">1.5.4.2.</span> <span class="nav-text">2、带exists关键字的子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、带any关键字的子查询"><span class="nav-number">1.5.4.3.</span> <span class="nav-text">3、带any关键字的子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、带all关键字的子查询"><span class="nav-number">1.5.4.4.</span> <span class="nav-text">4、带all关键字的子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、带比较运算符的子查询"><span class="nav-number">1.5.4.5.</span> <span class="nav-text">5、带比较运算符的子查询</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

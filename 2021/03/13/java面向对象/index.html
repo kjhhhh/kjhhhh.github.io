@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="JAVA面向对象 第一章  抽象和封装一、面向对象1、类（Class）和对象(Object)万物皆对象。 类：具有相同特征（属性）与行为（方法）的对象我们可以把它归纳为一个类别，这个类别就是类。 类和对象的关系：类是对象的模板，对象是类别的一个实例。（在Java中类就是数据类型，对象就是类的变量） 2、面向对象设计面向对象设计的过程就是抽象的过程。分为以下三步来完成。 第一步：发现类 第二步：发现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java面向对象">
+<meta property="og:url" content="http://yoursite.com/2021/03/13/java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="JAVA面向对象 第一章  抽象和封装一、面向对象1、类（Class）和对象(Object)万物皆对象。 类：具有相同特征（属性）与行为（方法）的对象我们可以把它归纳为一个类别，这个类别就是类。 类和对象的关系：类是对象的模板，对象是类别的一个实例。（在Java中类就是数据类型，对象就是类的变量） 2、面向对象设计面向对象设计的过程就是抽象的过程。分为以下三步来完成。 第一步：发现类 第二步：发现">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T08:48:19.290Z">
+<meta property="article:modified_time" content="2021-03-13T08:48:19.489Z">
+<meta property="article:author" content="匡俊桦">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/13/java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java面向对象 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/13/java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java面向对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-13 16:48:19" itemprop="dateCreated datePublished" datetime="2021-03-13T16:48:19+08:00">2021-03-13</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>44k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>40 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>JAVA面向对象</p>
+<h2 id="第一章-抽象和封装"><a href="#第一章-抽象和封装" class="headerlink" title="第一章  抽象和封装"></a>第一章  抽象和封装</h2><h3 id="一、面向对象"><a href="#一、面向对象" class="headerlink" title="一、面向对象"></a>一、面向对象</h3><h4 id="1、类（Class）和对象-Object"><a href="#1、类（Class）和对象-Object" class="headerlink" title="1、类（Class）和对象(Object)"></a>1、类（Class）和对象(Object)</h4><p>万物皆对象。</p>
+<p>类：具有相同特征（属性）与行为（方法）的对象我们可以把它归纳为一个类别，这个类别就是类。</p>
+<p>类和对象的关系：类是对象的模板，对象是类别的一个实例。（在Java中类就是数据类型，对象就是类的变量）</p>
+<h4 id="2、面向对象设计"><a href="#2、面向对象设计" class="headerlink" title="2、面向对象设计"></a>2、面向对象设计</h4><p>面向对象设计的过程就是抽象的过程。分为以下三步来完成。</p>
+<p>第一步：发现类</p>
+<p>第二步：发现类的属性</p>
+<p>第三步：发现类的方法</p>
+<h3 id="二、类图"><a href="#二、类图" class="headerlink" title="二、类图"></a>二、类图</h3><p>类图用UML（统一建模语言），Power Designer软件进行画图</p>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th align="center">Dog</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>属性</td>
+<td align="center">+name:String</td>
+</tr>
+<tr>
+<td>属性由修饰符  属性名和属性值的数据类型构成</td>
+<td align="center">+health:int</td>
+</tr>
+<tr>
+<td>修饰符：+代表public  ; -代表private ; #代表protected</td>
+<td align="center">+love:int</td>
+</tr>
+<tr>
+<td>属性</td>
+<td align="center">+strain:String</td>
+</tr>
+<tr>
+<td>方法：由修饰符 方法名 参数：名字：类型，名字类型 和返回值构成</td>
+<td align="center">+print():void</td>
+</tr>
+</tbody></table>
+<p>注意：抽象时遵循的原则如下：</p>
+<p>1、属性、方法的设置是为了解决业务问题</p>
+<p>2、关注主要属性、方法</p>
+<p>3、如没有必要，不用增加额外的类、属性与方法</p>
+<h3 id="三、构造方法和方法重载"><a href="#三、构造方法和方法重载" class="headerlink" title="三、构造方法和方法重载"></a>三、构造方法和方法重载</h3><h4 id="1、构造方法-Constructor"><a href="#1、构造方法-Constructor" class="headerlink" title="1、构造方法(Constructor)"></a>1、构造方法(Constructor)</h4><p>Java 可以通过无参或带参数的构造方法可以完成赋值的初始化工作。构造方法是一个特殊的方法，没有构造方法时，系统会提供一个空的构造方法。你在new一个对象的时候就是在调用这个方法。请注意：当你自己定义构造方法时，系统不再生成无参的构造方法。</p>
+<p> 一个类可以提供多个构造函数，但是要求，参数列表必须不一样。</p>
+<p>语法：</p>
+<p>​            修饰符   类名(  ){</p>
+<p>​                                    //初始化代码</p>
+<p>​                                                    }</p>
+<p>//快捷键生成构造方法 alt + shift + s  + o</p>
+<h4 id="2、构造方法的作用和特点"><a href="#2、构造方法的作用和特点" class="headerlink" title="2、构造方法的作用和特点"></a>2、构造方法的作用和特点</h4><p>特点：构造方法的名称和类名相同，没有返回值类型。</p>
+<p>作用：在创建对象时，执行一些初始化操作，如给成员属性赋初始值</p>
+<p>建议：生成有参构造函数后，再生成一个无参构造函数</p>
+<h4 id="3、构造方法的重载（Overload）"><a href="#3、构造方法的重载（Overload）" class="headerlink" title="3、构造方法的重载（Overload）"></a>3、构造方法的重载（Overload）</h4><p>在同一个作用域中(类)，方法名相同，参数列表不同（方法的参数类型、个数、顺序至少有一个不同，和参数类型定义的属性名称没有关系），就是方法重载。</p>
+<p>方法重载与 访问修饰符 和 返回值类型无关。                                                                                                                                                                                                                                                                                                                                                                                                                   </p>
+<h4 id="4、构造方法的作用域"><a href="#4、构造方法的作用域" class="headerlink" title="4、构造方法的作用域"></a>4、构造方法的作用域</h4><p>1、当前类的其他构造方法通过this语句调用它</p>
+<p>2、当前类的子类的构造方法通过super语句调用它</p>
+<p>3、在程序中通过new语句调用它</p>
+<h3 id="四、static关键字"><a href="#四、static关键字" class="headerlink" title="四、static关键字"></a>四、static关键字</h3><p>作用：能被类的所有实例共享，可作为实例之间进行交流的共享数据；如果类的所有实例都包含一个相同的常量属性，可把这个属性定义为静态常量从而节省内存空间。</p>
+<p>孙卫琴：p223-230</p>
+<p>static可以用于修饰 属性、方法、代码块。在加载类的过程中，完成静态变量的内存分配，再执行静态块，两者是在创建之前执行的。注意：在加载类的时候，static修饰的属性、方法、代码块只会初始化一次。</p>
+<p>1、static 修饰的变量属于这个类所有，即由这个类所创建的所有对象共用同一个static变量。即在类的内部，可以     在任何方法内直接访问它的静态变量</p>
+<p>2、static(静态的)声明的属性，称之为 静态变量； 没有使用static声明的就是实例变量。</p>
+<p>静态变量和实例变量的区别是：①实例变量必须使用 对象调用 ，而类变量可以使用类名直接调用。</p>
+<p>​                                                     ②、静态变量在内存中只存在一个拷贝，只为它分配一次内存；实例变量每创建一                                                            个实例，就分配一次内存</p>
+<p>3、static修饰的方法，叫做静态方法。</p>
+<p>在静态方法中，不能使用普通的成员(实例)变量。</p>
+<p>在静态方法中，不能使用this和super关键字。</p>
+<p>在静态方法中，只能访问类属性和其他类方法。</p>
+<p>静态方法不能被重写</p>
+<p>4、在普通方法中不能使用静态变量，即静态变量不能是局部变量。且局部变量必须要有初始值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String name = <span class="string">"旺财"</span>; <span class="comment">// 昵称</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> health = <span class="number">100</span>; <span class="comment">// 健康值</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> love; <span class="comment">// 亲密度</span></span><br><span class="line">	String sex;  <span class="comment">//公 母 </span></span><br><span class="line">	<span class="keyword">static</span> String MALE = <span class="string">"公"</span>;  </span><br><span class="line">	<span class="keyword">static</span> String female = <span class="string">"母"</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//static修饰的方法，叫做静态(类)方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//在静态方法中，也不能使用普通的成员(实例)变量</span></span><br><span class="line">		sex = <span class="string">"公"</span>;</span><br><span class="line">		System.out.println(<span class="string">"我要咬你"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> num;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//static修饰代码块</span></span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		num = <span class="number">100</span>;</span><br><span class="line">		System.out.println(num);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> localv = <span class="number">0</span>; <span class="comment">//局部变量，必须要有初始值。</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//在普通方法中，不能使用静态变量；</span></span><br><span class="line"><span class="comment">//		static int i = 0;</span></span><br><span class="line">		health = health - n;</span><br><span class="line">		System.out.println(name + <span class="string">" "</span> + localv + <span class="string">" "</span> + health + <span class="string">" "</span> + love);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="五、封装"><a href="#五、封装" class="headerlink" title="五、封装"></a>五、封装</h3><p>1、封装的好处：隐藏类的实现细节，让使用者只能通过程序规定的方法来访问数据，程序员可以方便地加入存取    控制语句，限制不合理操作（提高类的安全性和合理性）</p>
+<p>2、封装的步骤：</p>
+<p>​                            第一步：修改属性的可见性来限制对属性的访问，使用权限控制符控制属性或方法的可见性</p>
+<p>​                            第二步：为每个属性创建一对赋值（setter）方法和取值（getter）方法，用于对这些属性的存取</p>
+<p>​                            第三步：在赋值方法（setter）中，加入对属性的存取控制语句，避免出现不合理需求赋值</p>
+<p>3、权限控制符</p>
+<p>①pirivate（私有的）：成员变量和方法只能在其定义的类中被访问，如果要在外部访问，就需要使用setter和                                        getter方法访问。</p>
+<p>②friendly(默认，不写)：只能在同一个包里访问</p>
+<p>③protected(受保护的)：可以被同一个包中的类访问，被同一个项目中不同包的子类访问</p>
+<p>④public（公共的）：可以被同一个项目中所有类访问，具有项目可见性，是最大的访问权限</p>
+<h3 id="六、this关键字"><a href="#六、this关键字" class="headerlink" title="六、this关键字"></a>六、this关键字</h3><p>this是对当前对象的一个默认引用，用于区分同名成员变量。在实例方法内部，都有一个this引用变量，指向调用这个方法的对象。                                                                                                                                                                  </p>
+<p>1、this只能调用实例变量、实例方法和构造方法</p>
+<p>2、this不能调用类变量和类方法，也不能调用局部变量。</p>
+<p>【回顾：1、成员变量（也就是在类中声明的变量：它在整个类中有效）</p>
+<p>​                2、局部变量（在方法内声明的变量就是局部变量，包括方法的参数也是属于局部变量，局部变</p>
+<p>​                                      量只能在当前的方法中有效。）】</p>
+<h4 id="七、笔记"><a href="#七、笔记" class="headerlink" title="七、笔记"></a>七、笔记</h4><p>1、一般属性不会给值（成员变量），除非值是固定的，成员变量的值，必须要new了个对象才能使用</p>
+<p>2、常见错误：</p>
+<p>1、方法内部定义的变量（局部变量）必须赋初始值、</p>
+<p>2、在普通方法中不能使用静态变量static修饰的变量</p>
+<p>3、在静态方法中也不能使用普通变量</p>
+<h2 id="第二章-继承"><a href="#第二章-继承" class="headerlink" title="第二章   继承"></a>第二章   继承</h2><p>继承可以提供代码的可重用性，可维护性，可扩展性。但是继承会增加代码的耦合度。</p>
+<h3 id="一、继承（inheritance）"><a href="#一、继承（inheritance）" class="headerlink" title="一、继承（inheritance）"></a>一、继承（inheritance）</h3><p>相同属性和方法从父类继承，避免了代码重复，也方便了日后的代码修改。</p>
+<h4 id="1、语法"><a href="#1、语法" class="headerlink" title="1、语法"></a>1、语法</h4><p>​                修饰符    SubClass    extends    Superclass{</p>
+<p>​                                    //类定义部分</p>
+<p>​                                }</p>
+<p>解释：继承通过extends关键字实现，SubClass成称为子类或派生类（class  类名），Superclass称为父类或者基类、超类。</p>
+<p>如果类前面的修饰符是public则该类在整个项目中可见，如果没有public修饰符，则该类在当前包可见。注意：不可以使用private和protected修饰类。</p>
+<h4 id="2、子类可以继承父类的哪些东西"><a href="#2、子类可以继承父类的哪些东西" class="headerlink" title="2、子类可以继承父类的哪些东西"></a>2、子类可以继承父类的哪些东西</h4><p>首先：无法继承父类的构造方法，但是可以通过super关键字调用构造方法</p>
+<p>分两种情况：</p>
+<p>1、当Sub类和Super类位于同一个包中：Sub类继承Super类中public、protected和默认访问级别的成员变量和成员方法（即父类定义的属性和方法）。</p>
+<p>2、当Sub类和Super类位于不同包中：Sub类继承Super类中public、protected访问级别的成员变量和成员方法（即父类定义的属性和方法）。</p>
+<p>注意：从中可以看出无法继承private修饰的属性和方法。</p>
+<table>
+<thead>
+<tr>
+<th>访问修饰符</th>
+<th>本类</th>
+<th>同包</th>
+<th>子类</th>
+<th>其他</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>private</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>默认（friendly）</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>protected</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>public</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+</tbody></table>
+<h4 id="3、继承的特性"><a href="#3、继承的特性" class="headerlink" title="3、继承的特性"></a>3、继承的特性</h4><p>Java中只支持单继承，即一个类只能 直接继承一个类。它们之间的关系是is a的关系。</p>
+<p>尽管一个类只能有一个直接父类，但是它可以有多个间接的父类。如base1 extends base2 , sub extends base1</p>
+<p>sub类间接继承了base2。</p>
+<p>注意：所有的JAVA类都直接或者间接的继承了java.lang.Object类。Objiec类是所有Java类的祖先。</p>
+<h3 id="二、子类重新父类方法（-Override）"><a href="#二、子类重新父类方法（-Override）" class="headerlink" title="二、子类重新父类方法（@Override）"></a>二、子类重新父类方法（@Override）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">* 方法重写： 方法名、返回值类型、参数列表、访问修饰符必须一致；</span><br><span class="line">* 条件：</span><br><span class="line">* <span class="number">1</span>.方法签名一致；（方法名、返回值类型、参数列表）</span><br><span class="line">* <span class="number">2</span>.访问修饰符必须大于等于重写方法的访问权限</span><br><span class="line">	如父类修饰符是<span class="keyword">protected</span>，那么子类方法重写的修饰符不能是默认或<span class="keyword">private</span></span><br><span class="line">* <span class="number">3</span>.重写只存在继承关系</span><br><span class="line">* <span class="number">4</span>.重写的方法不能抛出比被重写方法更多的异常</span><br><span class="line">* </span><br><span class="line">* <span class="number">5</span>.父类的静态方法不能被子类覆盖为非静态方法。</span><br><span class="line">* <span class="number">6</span>.子类可以定义与父类的静态方法同名的静态方法，以便在子类中隐藏父类的静态方法。</span><br><span class="line">* <span class="number">7</span>.父类的非静态方法不能被子类覆盖为静态方法；</span><br><span class="line">* <span class="number">8</span>.父类的私有方法不能被子类覆盖；</span><br><span class="line">* <span class="number">9</span>.父类的抽象方法可以被子类通过两种途径覆盖：一是子类实现父类的抽象方法；二是子类重新声明父类的抽象方法；</span><br><span class="line">* <span class="number">10</span>.父类的非抽象方法可以被覆盖为抽象方法。</span><br></pre></td></tr></table></figure>
+<h3 id="三、继承关系的构造方法，super关键字"><a href="#三、继承关系的构造方法，super关键字" class="headerlink" title="三、继承关系的构造方法，super关键字"></a>三、继承关系的构造方法，super关键字</h3><h4 id="1、super关键字介绍"><a href="#1、super关键字介绍" class="headerlink" title="1、super关键字介绍"></a>1、super关键字介绍</h4><p>super关键字是一个指示编译器调用超类方法的特殊关键字。</p>
+<p>1、super必须出现在子类（子类的方法和构造方法）中，而不是其他位置</p>
+<p>2、super可以访问父类的成员，如父类的属性、方法、构造方法</p>
+<p>3、注意访问权限的限制，如无法通过super访问private成员</p>
+<h4 id="2、继承关系中的构造方法"><a href="#2、继承关系中的构造方法" class="headerlink" title="2、继承关系中的构造方法"></a>2、继承关系中的构造方法</h4><p>①用super关键字来调用父类的构造方法时，需要遵循的原则：</p>
+<p>1、在子类构造方法中，不能直接用父类方法名调用父类构造方法，而是用super语句</p>
+<p>2、如果在子类的构造方法中有super语句，它必须作为构造方法的第一条语句。</p>
+<p>②在创建子类的对象时，JAVA虚拟机首先执行父类的构造方法，然后再执行子类的构造方法，在多级继承的情况下，将从继承数的最上层父类开始，依次执行各个类的构造方法，这样可以保证子类对象从所有直接或间接父类中继承的实例变量都被正确的初始化。</p>
+<p>③子类的构造方法中没有通过super显示调用父类的有参构造方法，也没有通过this显示调用自身的其他构造方法，则系统会默认先调用父类的无参构造方法，写不写super()都一样。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">super</span>.name;	<span class="comment">//访问直接父类的name属性</span></span><br><span class="line"><span class="keyword">super</span>.<span class="built_in">print</span>(); 	<span class="comment">//访问直接父类print方法</span></span><br><span class="line"><span class="keyword">super</span>(name);<span class="comment">//访问直接父类对应的构造方法，只能出现在构造方法中</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="四、抽象类（abstract）"><a href="#四、抽象类（abstract）" class="headerlink" title="四、抽象类（abstract）"></a>四、抽象类（abstract）</h3><p>abstract不能修饰属性和构造方法，可以修饰类和方法。抽象类是为了某些没有意义的类进行实例化而延伸出的概念。</p>
+<p>抽象类和抽象方法的特点：</p>
+<p>1、抽象类和抽象方法都通过abstract关键字来修饰</p>
+<p>2、抽象类不能被实例化。抽象类不一定有抽象方法。</p>
+<p>3、抽象方法只有方法声明，没有方法实现，即没有方法体。有抽象方法的类必须声明为抽象类。子类必须重写所有的抽象方法才能实例化，否则子类还是一个抽象类。(如果子类也是个抽象类，抽象方法可以不重写)、</p>
+<p>4、抽象类可以有构造方法，其构造方法可以被本类的其他构造放调用，若此构造方法不是有private修饰，也可以被本类的子类中的构造方法调用。</p>
+<p>5、abstract不能和private/static同时修饰一个方法，abstract 不能和final修饰一个方法或类。</p>
+<h3 id="五、final修饰符"><a href="#五、final修饰符" class="headerlink" title="五、final修饰符"></a>五、final修饰符</h3><p>1、用final修饰的类，不能再被继承，没有子类。</p>
+<p>2、final修饰的方法可以被继承但是不允许被子类方法覆盖。所以final和abstract不能连用。</p>
+<p>3、final修饰的变量表示常量，只能被赋值一次</p>
+<p>4、final不能被用来修饰构造方法</p>
+<p>5、局部变量只有final可以修饰，不可以用其他修饰符修饰</p>
+<p>孙卫琴：p217-222</p>
+<h2 id="第三章-多态"><a href="#第三章-多态" class="headerlink" title="第三章  多态"></a>第三章  多态</h2><p>p189</p>
+<h3 id="一、多态"><a href="#一、多态" class="headerlink" title="一、多态"></a>一、多态</h3><h4 id="1、什么是多态"><a href="#1、什么是多态" class="headerlink" title="1、什么是多态"></a>1、什么是多态</h4><p>在JAVA中，同一个引用类型（同一个实现接口），使用不同的实例而执行不同的操作</p>
+<h4 id="2、为什么使用多态"><a href="#2、为什么使用多态" class="headerlink" title="2、为什么使用多态"></a>2、为什么使用多态</h4><p>通过多态可以减少类中的代码量，可以提高代码的可扩展性和可维护性。继承是多态的基础，没有继承就没有多态</p>
+<h4 id="3、实现多态的3个条件"><a href="#3、实现多态的3个条件" class="headerlink" title="3、实现多态的3个条件"></a>3、实现多态的3个条件</h4><p>①继承的存在</p>
+<p>②子类重写父类方法</p>
+<p>③父类引用变量指向子类对象</p>
+<h3 id="二、父类引用变量和子类实例间的类型转换"><a href="#二、父类引用变量和子类实例间的类型转换" class="headerlink" title="二、父类引用变量和子类实例间的类型转换"></a>二、父类引用变量和子类实例间的类型转换</h3><h4 id="1、向上转型（upcasting）"><a href="#1、向上转型（upcasting）" class="headerlink" title="1、向上转型（upcasting）"></a>1、向上转型（upcasting）</h4><p>将一个父类的引用指向一个子类对象，属于自动进行转换。此时通过父类引用变量调用的方法是子类覆盖或继承父类的方法，不能调用子类特有方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	Master master = <span class="keyword">new</span> Master();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//父类的引用 指向 子类的对象，会自动进行类型转化，称之为向上转型</span></span><br><span class="line">	Pet pet = <span class="keyword">new</span> Dog();</span><br><span class="line">	Pet pet1 = <span class="keyword">new</span> Cat();</span><br><span class="line">	Pet pet2 = <span class="keyword">new</span> Duck();</span><br><span class="line">	</span><br><span class="line">	master.feed(pet);</span><br><span class="line">	master.feed(pet1);</span><br><span class="line">	master.feed(pet2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、向下转型"><a href="#2、向下转型" class="headerlink" title="2、向下转型"></a>2、向下转型</h4><p>将一个指向子类对象的父类引用赋给子类的一个引用，此时必须进行强制类型转换。转换后可以调用子类特有方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	Master master = <span class="keyword">new</span> Master();</span><br><span class="line">	Pet pet = <span class="keyword">new</span> Dog();</span><br><span class="line">	Dog dog =(Dog)pet; <span class="comment">//向下转型，进行强制转换</span></span><br><span class="line">	Cat c =(Cat)pet;<span class="comment">//这个将会报错，因为pet是父类的引用，实例是狗，但是现在讲狗强行转换成猫</span></span><br><span class="line">					报错词条为：ClassCastException</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、instanceof-运算符"><a href="#三、instanceof-运算符" class="headerlink" title="三、instanceof 运算符"></a>三、instanceof 运算符</h3><p>为了避免出现ClassCastException异常，JAVA提供了instanceof运算符来进行类型的判断</p>
+<h4 id="1、语法-1"><a href="#1、语法-1" class="headerlink" title="1、语法"></a>1、语法</h4><p>​                对象  instanceof 类或接口</p>
+<p>instanceof用来判断一个对象是否属于一个类或者实现了一个接口，结果为true或false。在强制转换之前通过instanceof检查对象的真实类型，对象的类型必须和instanceof的第二个参数所指定的类或接口在继承树上有上下级关系，否则会出现编译错误。</p>
+<h4 id="2、例子"><a href="#2、例子" class="headerlink" title="2、例子"></a>2、例子</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bigMove</span><span class="params">(Hero hero)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(hero <span class="keyword">instanceof</span> XiaoQiao) &#123;</span><br><span class="line">			XiaoQiao xiaoqiao = (XiaoQiao)hero;</span><br><span class="line">			xiaoqiao.dazzlingStar();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(hero <span class="keyword">instanceof</span>  DaJi) &#123;</span><br><span class="line">			DaJi daji = (DaJi)hero;</span><br><span class="line">			daji.queenWorship();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(hero <span class="keyword">instanceof</span>  ZhuGeliang) &#123;</span><br><span class="line">			ZhuGeliang zgl = (ZhuGeliang)hero;</span><br><span class="line">			zgl.GasBomb();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、多态的两种使用场景"><a href="#四、多态的两种使用场景" class="headerlink" title="四、多态的两种使用场景"></a>四、多态的两种使用场景</h3><h4 id="1、使用父类作为形参"><a href="#1、使用父类作为形参" class="headerlink" title="1、使用父类作为形参"></a>1、使用父类作为形参</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Hero</span> </span>&#123; <span class="comment">//父类</span></span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> MP;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> hurt;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">attack</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DaJi</span>  <span class="keyword">extends</span> <span class="title">Hero</span> </span>&#123;	<span class="comment">//继承了Hero父类</span></span><br><span class="line">	<span class="meta">@Override</span>		<span class="comment">//子类重写父类方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">attack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"我是妲己，我的攻击力是"</span>+setHurt(<span class="number">15</span>)+<span class="string">"魔法"</span>+<span class="keyword">super</span>.setMP(<span class="keyword">super</span>.getMP()-<span class="number">30</span>));</span><br><span class="line">		<span class="keyword">return</span> setHurt(<span class="number">15</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XiaoQiao</span> <span class="keyword">extends</span> <span class="title">Hero</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">attack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"我是小乔，我的攻击力是"</span>+<span class="keyword">super</span>.setHurt(<span class="number">10</span>)+<span class="string">"魔法"</span>+<span class="keyword">super</span>.setMP(<span class="keyword">super</span>.getMP()-<span class="number">20</span>));</span><br><span class="line">		<span class="keyword">return</span> setHurt(<span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line">        </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Player</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">player</span><span class="params">(Hero hero)</span> </span>&#123;	<span class="comment">//使用父类作为形参，这样选择了哪个英雄就调用它重写的攻击方法</span></span><br><span class="line">		<span class="keyword">return</span> hero.attack();		<span class="comment">//如果不这么写，将每个子类的方法都写在上面，违反了开闭原则										//开闭原则： 对扩展开发，对修改关闭！</span></span><br><span class="line">	&#125;</span><br><span class="line">       </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHero</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Player play = <span class="keyword">new</span> Player();</span><br><span class="line">		Hero hero = <span class="keyword">new</span> XiaoQiao();</span><br><span class="line">		hero.setMP(<span class="number">100</span>);</span><br><span class="line">		play.player(hero);<span class="comment">//调用父类作为形参的方法，调用的是父类引用指向的实例的子类的重写方法</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、使用父类作为方法返回值"><a href="#2、使用父类作为方法返回值" class="headerlink" title="2、使用父类作为方法返回值"></a>2、使用父类作为方法返回值</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function"><span class="keyword">public</span> Hero <span class="title">select</span><span class="params">(<span class="keyword">int</span> heroId)</span> </span>&#123;	<span class="comment">//使用父类作为方法返回值</span></span><br><span class="line">		Hero hero = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">if</span>(heroId==<span class="number">1</span>) &#123;</span><br><span class="line">			hero=<span class="keyword">new</span> XiaoQiao();</span><br><span class="line">			System.out.println(<span class="string">"你选择了小乔"</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(heroId==<span class="number">2</span>) &#123;</span><br><span class="line">			hero = <span class="keyword">new</span> DaJi();</span><br><span class="line">			System.out.println(<span class="string">"你选择了妲己"</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			hero = <span class="keyword">new</span> ZhuGeliang();</span><br><span class="line">			System.out.println(<span class="string">"你选择了诸葛亮"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> hero;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHero</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Player play = <span class="keyword">new</span> Player();</span><br><span class="line">		Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		System.out.println(<span class="string">"请输入要出战的英雄：1、小乔  2、妲己  3、诸葛亮"</span>);</span><br><span class="line">		<span class="keyword">int</span> heroId = input.nextInt();</span><br><span class="line">		Hero hero=play.select(heroId);	<span class="comment">//父类引用接收玩家调用的父类作为返回值类型的方法，</span></span><br><span class="line">		hero.attack();	<span class="comment">//输出发结果为，返回的英雄子类的重写方法</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第四章-接口"><a href="#第四章-接口" class="headerlink" title="第四章 接口"></a>第四章 接口</h2><p>孙卫琴：p236-261</p>
+<h3 id="一、接口"><a href="#一、接口" class="headerlink" title="一、接口"></a>一、接口</h3><h4 id="1、接口的作用"><a href="#1、接口的作用" class="headerlink" title="1、接口的作用"></a>1、接口的作用</h4><p>提高系统之间松耦合的有力手段，提高了系统的可扩展性和可维护性。</p>
+<h4 id="2、JAVA中接口的意思"><a href="#2、JAVA中接口的意思" class="headerlink" title="2、JAVA中接口的意思"></a>2、JAVA中接口的意思</h4><p>一是指系统对外提供的所有服务，在对象中表现为public类型的方法声明。</p>
+<p>二是指用interface关键字定义的实实在在的接口，也称为接口类型，它用于明确的描述系统对外提高的所有服务，它能够更加清晰的把系统实现细节与接口分离。</p>
+<h4 id="3、语法"><a href="#3、语法" class="headerlink" title="3、语法"></a>3、语法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个接口，关键字interface</span></span><br><span class="line">修饰符 <span class="class"><span class="keyword">interface</span> 接口名 （<span class="keyword">extends</span> 父接口1,父接口2...）</span>&#123;</span><br><span class="line"><span class="comment">//常量定义</span></span><br><span class="line"><span class="comment">//方法定义</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现接口，关键字implements</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> 类名 （<span class="keyword">extends</span> 父类名） <span class="title">imlements</span> 接口1,接口2,...</span>&#123;</span><br><span class="line"><span class="comment">//类成员</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、接口的特性"><a href="#二、接口的特性" class="headerlink" title="二、接口的特性"></a>二、接口的特性</h3><p>1、接口的命名规范与类相同，一般以”able“为后缀，表示可以做…，接口的修饰符只能是public或默认的。</p>
+<p>2、接口中的属性都会自动用public static final修饰，即接口中的属性都是全局静态常量。接口中的常量必须在定义时指定初始值</p>
+<p>3、接口中所有方法都是抽象方法，接口中的方法都会自动用public abstract修饰，即接口中只有全局抽象方法</p>
+<p>4、接口不能被实例化，接口中不能有构造方法。但是允许定义接口类型的引用变量，该引用变量实现了这个接口的类的实例。</p>
+<p>5、接口必须通过类来实现它的抽象方法，类实现接口的关键字是implements。接口的实现类必须实现接口的全部方法，否则必须定义为抽象类。写抽象类实现接口不会报错。</p>
+<p>6、一个接口不能实现另一个接口，但是可以接口之间可以通过extends实现继承关系，一个接口可以继承多个接口，即复合接口，但是接口不能继承类。</p>
+<p>7、一个类只能有一个直接父类，但是可以通过implements实现多个接口。如果类继承了父类又实现了多个接口，extends关键字必须位于implements关键字之前</p>
+<h3 id="三、接口的具体表现"><a href="#三、接口的具体表现" class="headerlink" title="三、接口的具体表现"></a>三、接口的具体表现</h3><h4 id="1、接口表示一种能力"><a href="#1、接口表示一种能力" class="headerlink" title="1、接口表示一种能力"></a>1、接口表示一种能力</h4><p>一个类实现了某个接口，就表示这个类具备了某种能力。</p>
+<h4 id="2、接口表示一种约定"><a href="#2、接口表示一种约定" class="headerlink" title="2、接口表示一种约定"></a>2、接口表示一种约定</h4><p>创建接口，在接口内定义后面的实现接口的类都具备的一个方法（约定），然后再创建实现接口的具体类，重写这个方法，返回不同的值，然后再创建一个都遵循这个约定的类，类的属性使用接口名作为数据类型，创建一个有参构造方法，并在方法里用接口类作为形参。在测试类，用接口作为引用，要使用哪个实现类就new哪个实现类，，创建一个遵循这个约定的类的实例，然后调用有参构造方法。</p>
+<p>接口体现了约定和实现相分离的原则，通过面向接口编程，可以降低代码间的耦合性，提高代码的可扩展性和可维护性。面向接口编程就意味着：开发系统时，主体架构使用接口，接口构成系统的骨架，这样可以同更换实现接口的类来更换系统。</p>
+<h2 id="第五章-设计模式"><a href="#第五章-设计模式" class="headerlink" title="第五章 设计模式"></a>第五章 设计模式</h2><h3 id="一、设计模式"><a href="#一、设计模式" class="headerlink" title="一、设计模式"></a>一、设计模式</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><p>是一套反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。设计模式与编程语言无关。</p>
+<h4 id="2、种类"><a href="#2、种类" class="headerlink" title="2、种类"></a>2、种类</h4><p>①分布式编程模式</p>
+<p>②用户界面模式</p>
+<p>③数据型模式</p>
+<p>④面向对象模式</p>
+<h4 id="3、作用与目的"><a href="#3、作用与目的" class="headerlink" title="3、作用与目的"></a>3、作用与目的</h4><p>优点：提高代码的可复用性、可扩展性、可维护性、灵活性。</p>
+<p>作用：高内聚，低耦合。</p>
+<h3 id="二、设计模式七大原则"><a href="#二、设计模式七大原则" class="headerlink" title="二、设计模式七大原则"></a>二、设计模式七大原则</h3><p>这个原则其实就是告诉我们用抽象构建框架，用实现扩展细节的注意事项：单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合；开闭原则是总纲，告诉我们要对外扩展开发，对修改关闭。</p>
+<p><strong>1、单一职责原则（SRP）</strong>：应该有且仅有一个原因引起类的变更，即一个类只负责一项职责。</p>
+<p><strong>2、里氏替换原则（LSP）</strong>：判断是否适合使用继承。如果父类出现的地方子类可以无损替换。即父类可以替换子类，但是对于程序不会有任何影响。子类可以扩展父类的功能，但不能改变父类原有的功能</p>
+<p><strong>3、依赖倒置原则（DIP）</strong>：能用接口的地方尽量用接口</p>
+<p><strong>4、接口隔离原则（ISP）</strong>：接口的单一职能原则，建立单一接口，接口尽量细化，同时接口中的方法尽量少。</p>
+<p><strong>5、迪米特法则（Law of Demeter）</strong>：最少知道原则，低耦合，（只和朋友交流，朋友的朋友和你无关（不要让第三个类）；也要和朋友保持距离（方法不要完全暴露，用非public修饰符修饰方法））</p>
+<p><strong>6、开闭原则（OCP）</strong>：对扩展开放，对修改关闭。尽量不要去修改源码。相当于上面5个人原则的总结。</p>
+<p><strong>7、组合/聚合复用原则（CARP）</strong>：尽量使用合成/聚合，尽量不要使用类继承。</p>
+<p>聚合：弱的拥有，</p>
+<h3 id="三、简单工厂模式（Simple-Factory）"><a href="#三、简单工厂模式（Simple-Factory）" class="headerlink" title="三、简单工厂模式（Simple Factory）"></a>三、简单工厂模式（Simple Factory）</h3><p>1、它的组成：</p>
+<p>​                1、工厂类角色（最后创建使用判断逻辑或商业逻辑去创建一个子类的实例的一个类，类里面含有一个父                                                类作为返回值的带参方法）</p>
+<p>​                2、抽象产品角色（先创建抽象父类）</p>
+<p>​                3、具体产品角色（再创建继承父类的子类）</p>
+<p>2、缺点：违反了开闭原则，违反了高内聚分配原则</p>
+<p>​        优点：松耦合</p>
+<h3 id="四、工厂方法模式（Factory-Method）"><a href="#四、工厂方法模式（Factory-Method）" class="headerlink" title="四、工厂方法模式（Factory Method）"></a>四、工厂方法模式（Factory Method）</h3><p>它的组成：</p>
+<p>​                    1、抽象工厂角色（3创建一个含有创建产品角色的抽象方法）</p>
+<p>​                    2、具体工厂角色（4最后依次创建生产产品角色的工厂，含有new产品角色的方法）</p>
+<p>​                    3、抽象产品角色（1先创建抽象父类）</p>
+<p>​                    4、具体产品角色（2再创建继承父类的子类）</p>
+<p>测试类：先创建有抽象共产角色引用指向的一个工厂角色实例，然后再用抽象产品角色指向工厂角色实例调用的创建产品角色的方法，然后再用抽象产品角色的角色名调用具体产品角色负责的职责。</p>
+<h3 id="五、单例模式"><a href="#五、单例模式" class="headerlink" title="五、单例模式"></a>五、单例模式</h3><p>一个类只有一个实例</p>
+<p>两种形式：</p>
+<p>1、饿（饥）汉式</p>
+<p>单例类需要先在属性那里创建一个由静态和私有修饰符修饰的自我实例；然后将构造函数私有化，最后提供一个静态的公共的获取实例的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.singleton;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式：一个类只有一个实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 24541</span></span><br><span class="line"><span class="comment"> * 单例模式有两种形式：1.饿(饥)汉式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">	<span class="comment">//直接自己创建一个对象(实例)</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//单例类，需要将构造方法私有化</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//提供静态的公共的获取实例的方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> singleton;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、懒汉式</p>
+<p>是一种懒加载的思想。在要用对象的时候再new对象</p>
+<p>需要先在属性那里自我引用等于null，然后将构造函数私有化，最会提供一个静态同步的公共的获取实例的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.singleton;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式：一个类只有一个实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 24541</span></span><br><span class="line"><span class="comment"> * 单例模式有两种形式：2.懒汉式  。是一种懒加载的思想</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton2</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton2 singleton = <span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取实例</span></span><br><span class="line"><span class="comment">	 * 当高并发时，在判断时，可能出现对象多次创建的情况，造成一个类不止一个实例</span></span><br><span class="line"><span class="comment">	 * 怎么解决？  加锁。synchronized同步 加锁，</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(singleton == <span class="keyword">null</span>) &#123;     </span><br><span class="line">			singleton = <span class="keyword">new</span> Singleton2();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> singleton ;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第六章、项目总结"><a href="#第六章、项目总结" class="headerlink" title="第六章、项目总结"></a>第六章、项目总结</h2><p>1、使用数组和静态变量来初始化各个级别需要用到的既定的，多个数据。数组的声明</p>
+<p>2、String和StringBufffer的运用及其转换，连接字符串，和StringBuffer转换成String的语法，怎么创建StringBuffer实例。</p>
+<p>String类用concat拼接，但是要用一个变量来接收拼接后的字符串：S=a.concat(“b”)</p>
+<p>StringBuffer类用append在原有的字符串后追加字符串，不需要变量来接收</p>
+<p>StringBuffer转换成String类，StringBuffer buffer = new StringBuffer()//创建StringBuffer实例; buffer.toString()//转换成String类；</p>
+<p>3、随机数的声明：Random random = new Random();</p>
+<p>4、System.currentTimeMillis()；返回系统当前时间（以毫秒为单位），所以换算成秒，需要除以1000</p>
+<p>5、System.exit(0)；System.exit(1);        // public static void exit(int status)终止当前运行的Java虚拟机。 该参数作为状态代码； 按照惯例，非零状态码表示异常终止。</p>
+<p>6、Game game =new Game(this);    //这里面的this代表对    public Game(Player play) {    this.play=play;}用户创建的Player类对象的引用。</p>
+<p>7、基本的for循环和if else的使用。</p>
+<p>8、在一个类的方法里调用其他类的方法来实现这个类需要实现的这个方法。</p>
+<h2 id="第七章-程序异常与log4j"><a href="#第七章-程序异常与log4j" class="headerlink" title="第七章  程序异常与log4j"></a>第七章  程序异常与log4j</h2><h3 id="一、异常的概念（Exception）"><a href="#一、异常的概念（Exception）" class="headerlink" title="一、异常的概念（Exception）"></a>一、异常的概念（Exception）</h3><p>p264-300</p>
+<p>1、异常是由JAVA应用程序抛出和处理的非严重错误，它可以分为Checked异常和运行时异常两大类。异常是Throwable的子类，Throwable有2个直接子类，一个是Exception，一个是Error（靠程序本身无法恢复的严重错误）</p>
+<p>2、Checked（受检）异常：异常类和任何不是RuntimeException的子类的子类都是检查异常（直接受到jvm检查的异常，程序必须处理该类异常，不然会编译错误）。必须捕获或者声明抛出，否则无法通过编译。处理方式包括两种：通过try-catch在当前位置捕获并处理异常；通过throw声明抛出异常，交给上一级调用方法处理。</p>
+<p>3、运行时异常(RuntimeException)不要求必须捕获或者声明抛出，如果运行时发生异常，会输出异常的堆栈信息并中止程序运行（如：ArryIndexOutOfBoundsException、NullPointerException、InputMismatchException）</p>
+<h3 id="二、异常处理"><a href="#二、异常处理" class="headerlink" title="二、异常处理"></a>二、异常处理</h3><h4 id="1、常见的异常类型"><a href="#1、常见的异常类型" class="headerlink" title="1、常见的异常类型"></a>1、常见的异常类型</h4><table>
+<thead>
+<tr>
+<th>异常</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exception</td>
+<td>异常层次结构的根类</td>
+</tr>
+<tr>
+<td>ArithmeticException</td>
+<td>算数错误情形，如以零作除数</td>
+</tr>
+<tr>
+<td>ArryIndexOutOfBoundsException</td>
+<td>数组下标越界</td>
+</tr>
+<tr>
+<td>NullPointerException</td>
+<td>尝试访问null对象成员</td>
+</tr>
+<tr>
+<td>ClassNotFullException</td>
+<td>不能加载所需的类</td>
+</tr>
+<tr>
+<td>InputMismatchException</td>
+<td>欲得到的数据类型与实际输入的类型不匹配</td>
+</tr>
+<tr>
+<td>illegalArgumentException</td>
+<td>方法接收到非法参数</td>
+</tr>
+<tr>
+<td>ClassCastException</td>
+<td>对象强制类型转换出错</td>
+</tr>
+<tr>
+<td>NumberFormatException</td>
+<td>数字格式转换异常，如把“abc“转换成数字</td>
+</tr>
+</tbody></table>
+<p>在Eclipce的报错里，先看报错类型，再找到自己写的那句代码报错行数查看。</p>
+<h4 id="2、Java异常处理通过5个关键字来实现"><a href="#2、Java异常处理通过5个关键字来实现" class="headerlink" title="2、Java异常处理通过5个关键字来实现"></a>2、Java异常处理通过5个关键字来实现</h4><p>try、catch、finally、throw和throws</p>
+<p>1、try{}：将可能出现异常的代码放在try块中进行监视。try块中的变量，不可以在catch和finally块中使用，除非写在try块外面。</p>
+<p>2、catch（exception e）{}：    catch捕获异常,cacth块中可以将捕获的异常进行处理</p>
+<p>3、finally{}：就是不管是否出现异常，始终会被执行的代码，比如必须关闭的资源。唯一不被执行的情况：在异常处理代码中执行System.exit(1)，exit里是数字几，都将退出Java虚拟机。</p>
+<p>4、throw：使用throw手动抛出的异常会被JAVA虚拟机接收，会在下面提示处理，相当于是一个提示。throw语句后面不可以跟其他语句，因为这些语句永远不会被执行</p>
+<p>5、throws：用于声明异常，自身不做异常处理，而是交给调用者处理</p>
+<h4 id="3、对5个关键字的具体分析"><a href="#3、对5个关键字的具体分析" class="headerlink" title="3、对5个关键字的具体分析"></a>3、对5个关键字的具体分析</h4><p>1、try-catch捕获异常：首先执行try语句块中的语句，有三种情况</p>
+<p>①try语句块正常执行完毕，不会发生异常，catch块中的所有语句都将被忽略</p>
+<p>②try语句块在执行中遇到异常，这个异常与catch中声明的异常类型相匹配（完全一致或是其父类），那么在try语句块中剩余的代码将被忽略，而相应的Catch块将会被执行</p>
+<p>③try语句块在执行中遇到异常，而抛出的异常在catch块里面没有被声明，那程序立刻退出</p>
+<p>2、try-catch-finally：try块是必需的，catch和finally块至少出现其一。</p>
+<p>分为两种情况</p>
+<p>①try语句块正常执行完毕，那么finally块会被执行</p>
+<p>②try语句块在执行中遇到异常，无论这种异常是否被catch都将执行finally块中的代码</p>
+<p>③如果出现return语句，finally块也将被执行，如果出现异常：执行顺序为：try块或catch中return之前的语句，执行finally块中的语句，然后执行try块或catch中return语句退出。</p>
+<p>3、try-catch-catch-catch-finally：分别捕获</p>
+<p>多个catch的顺序必须是从子类到父类，最后一个一定是Exception类。</p>
+<p>3、声明异常—throws，用于把异常抛出去给别人处理？</p>
+<p>throws可以同时声明多个异常，用逗号隔开</p>
+<p>两种方式：</p>
+<p>一种：通过try-catch捕获并处理异常，调用者处理</p>
+<p>另一种：通过throws继续声明异常（交给别人处理），如果调用者不打算处理该异常，可以通过throws声明异常，让上一级调用者处理异常（不太建议用这种）</p>
+<p>4、抛出异常—throw，手动抛出，自己声明这个异常？你自己觉得这个地方有异常</p>
+<p>注意：throw和throws的区别：</p>
+<p>①作用不同：throw用于在程序中抛出异常；throws用于声明在该方法内抛出了异常</p>
+<p>②使用位置不同：throw位于方法体内部，可以作为单独语句使用；throws必须跟在方法参数列表的后面，不能单独使用</p>
+<p>③内容不同：throw抛出一个异常对象，而且只能是一个；throws后面跟异常类，而且可以跟多个异常类</p>
+<p>5、访问异常信息</p>
+<p>如果程序需要在catch块中访问异常对象的相关信息，可以通过调用catch后异常形参的方法来获取</p>
+<p>所有异常对象都包含的几个常用方法</p>
+<p>①getMessage():返回该异常的详细描述字符串。需要自己放在print里，且输出的是关键信息，不够详细</p>
+<p>②printStackTrace():将该异常的跟踪栈信息输出到标准错误输出，自己会打印，且会精确到行，一般用这个。</p>
+<p>③printStackTrace(PrintSteam s):将该异常的跟踪栈信息输出到指定输出流</p>
+<p>④getStackTrace()：返回该异常的跟踪栈信息</p>
+<p>6、使用finally回收资源</p>
+<p>为了保证一定能回收try块中打开的物理资源，异常处理机制提供了finally块。</p>
+<p>finally中不要使用return或throw，因为这会使try，catch中的return或throws失效</p>
+<h3 id="三、自己定义的异常类"><a href="#三、自己定义的异常类" class="headerlink" title="三、自己定义的异常类"></a>三、自己定义的异常类</h3><p>Exception类并没有定义它自己的任何方法，继承了Throwable类提供的方法，也可以自定义的异常类中覆盖这些方法中的一个或多个方法。</p>
+<h3 id="四、异常处理规则"><a href="#四、异常处理规则" class="headerlink" title="四、异常处理规则"></a>四、异常处理规则</h3><p>1、不要过度使用异常，</p>
+<p>2、不要使用过于庞大的try块</p>
+<p>3、避免使用catch all语句</p>
+<p>4、不要忽略捕获到的异常：方案：处理异常；重新抛出新异常；在合适的层处理异常</p>
+<h3 id="五、Log4j"><a href="#五、Log4j" class="headerlink" title="五、Log4j"></a>五、Log4j</h3><p>开源日志记录工具Log4j：以文件形式记录异常信息，程序正常运行的关键步骤信息</p>
+<h4 id="1、日志及分类"><a href="#1、日志及分类" class="headerlink" title="1、日志及分类"></a>1、日志及分类</h4><p>①SQL日志：记录系统执行的SQL语句</p>
+<p>②异常日志：记录系统运行中发生的异常事件</p>
+<p>③业务日志：记录系统运行过程，如用户登录、操作记录</p>
+<h4 id="2、下载log4j的Jar文件"><a href="#2、下载log4j的Jar文件" class="headerlink" title="2、下载log4j的Jar文件"></a>2、下载log4j的Jar文件</h4><p>地址：<a href="http://logging.apache.org/log4j/1.2/download.html" target="_blank" rel="noopener">http://logging.apache.org/log4j/1.2/download.html</a></p>
+<h4 id="3、log4j的构成"><a href="#3、log4j的构成" class="headerlink" title="3、log4j的构成"></a>3、log4j的构成</h4><p>配置3个方面的内容：</p>
+<p>①根目录Logger（级别和目的地）:日志写出器，供程序员输出日志信息</p>
+<p>②目的地Appender（控制台、文件等等）：日志目的地，把格式化好的日志信息输出到指定的地方去</p>
+<p>③输出样式Layout：日志格式化器，用来把程序员的Logging request 格式化成字符串</p>
+<h4 id="4、怎么使用log4j记录日志"><a href="#4、怎么使用log4j记录日志" class="headerlink" title="4、怎么使用log4j记录日志"></a>4、怎么使用log4j记录日志</h4><p>①将log4j.jar包放到项目中，每新开一个项目就要将log4j.jar放到里面去，jar包放入项目中后，点击右键</p>
+<p>Build Path然后再点击Add to Build Path</p>
+<p>②创建log4j.properties文件：可以直接将已经写好的log4j.properties放到src路径下，一般一个项目或者公司共用一个log4j.properties。当然也可以自己写，点击项目名称右键然后点击New—File—输入配置文件名，文件名的后缀必须是log4j.properties</p>
+<p>③编写log4j.properties文件，配置日志信息</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##log4j.properties配置文件的作用：在导入第三方jar包(插件包)时，起到一个说明配置的作用。</span></span><br><span class="line"><span class="comment">##设置记录日志的根配置，包括日志的级别  和 追加器的名称</span></span><br><span class="line"><span class="comment">##日志的级别：调试 debug &lt; 信息 info &lt; 警告 warn &lt; 错误 error &lt; 致命 fatal    off关闭    all所有</span></span><br><span class="line"><span class="meta">log4j.rootLogger</span>=<span class="string">warn,stdout,logfile   </span></span><br><span class="line"></span><br><span class="line"><span class="comment">##----------------------------------------------------------</span></span><br><span class="line"><span class="comment">##配置追加器的类型ConsoleAppender 是控制台追加器</span></span><br><span class="line"><span class="meta">log4j.appender.stdout</span>=<span class="string">org.apache.log4j.ConsoleAppender  </span></span><br><span class="line"><span class="comment">##Target源，输出源System.out  和 System.err</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.Target</span>=<span class="string">System.out</span></span><br><span class="line"><span class="comment">##设置日志输出的布局  SimpleLayout简单布局</span></span><br><span class="line"><span class="comment">#log4j.appender.stdout.layout=org.apache.log4j.SimpleLayout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout.ConversionPattern</span>=<span class="string">%d&#123;yyyy-MM-dd HH:mm:ss&#125; %l %F %p %m%n</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##----------------------------------------------------------</span></span><br><span class="line"><span class="comment">##FileAppender 文件追加器</span></span><br><span class="line"><span class="meta">log4j.appender.logfile</span>=<span class="string">org.apache.log4j.FileAppender</span></span><br><span class="line"><span class="comment">###  file是，输出的日志文件地址。</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.File</span>=<span class="string">hc2003.log	##文件名是可以自己定义的</span></span><br><span class="line"><span class="comment">### PatternLayout是表达式布局</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="comment">### ConversionPattern就是定义表达式的内容，%d代表时间，%l代表line，就是日志记录的行数，%F 记录日志的文件，%p 日志优先级 %m 日志的信息 %n 换行</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout.ConversionPattern</span>=<span class="string">%d&#123;yyyy-MM-dd HH:mm:ss&#125; %l %F %p %m%n</span></span><br></pre></td></tr></table></figure>
+
+<p>④在程序中使用log4j记录日志信息</p>
+<p>需要在类后面，main方法前写</p>
+<p>public static Logger logger =Logger.getLogger(类名.class);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogDemo</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 使用log4j的步骤： 1)导包：将jar复制到项目中，将jar 加到构建路径中，add build path 2)编写配置文件</span></span><br><span class="line"><span class="comment">	 * log4j.properties 3)在需要记录日志的地方，创建日志对象即可使用</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Logger logger = Logger.getLogger(LogDemo<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		<span class="keyword">try</span> &#123;   </span><br><span class="line">            logger.info(<span class="string">"程序开始了"</span>);</span><br><span class="line">			System.out.print(<span class="string">"请输入被除数:"</span>);</span><br><span class="line">			<span class="keyword">int</span> num1 = in.nextInt();</span><br><span class="line">			System.out.print(<span class="string">"请输入除数:"</span>);</span><br><span class="line">			<span class="keyword">int</span> num2 = in.nextInt();</span><br><span class="line">			System.out.println(String.format(<span class="string">"%d / %d = %d"</span>, </span><br><span class="line">							num1, num2, num1/ num2));</span><br><span class="line">		&#125;<span class="keyword">catch</span> (Exception e) &#123; </span><br><span class="line">			logger.debug(<span class="string">"除法出错了~~debug"</span>);</span><br><span class="line">			logger.info(<span class="string">"除法出错了~~info"</span>);</span><br><span class="line">			logger.warn(<span class="string">"除法出错了~~warn"</span>);</span><br><span class="line">			logger.error(<span class="string">"除法出错了~~error"</span>);</span><br><span class="line">			logger.fatal(<span class="string">"除法出错了~~fatal"</span>);</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;  </span><br><span class="line">			System.out.println(<span class="string">"最后被执行的代码！！"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5、log4j配置文件"><a href="#5、log4j配置文件" class="headerlink" title="5、log4j配置文件"></a>5、log4j配置文件</h4><p>log4j.rootLogger=warn,stdout,logfile   </p>
+<h5 id="1、定义输出级别和目的地"><a href="#1、定义输出级别和目的地" class="headerlink" title="1、定义输出级别和目的地"></a>1、定义输出级别和目的地</h5><p>warn指的日志记录器（Logger）的输出级别。级别从高到低有：off&gt;fatal&gt;error&gt;warn&gt;info&gt;debug&gt;all</p>
+<p>日志记录器只输出那些级别高于或等于它的信息。如：级别为debug，将输出fatal、error、warn、info、debug；级别为error将只输出fatal、error级别的日志信息</p>
+<h5 id="2、详细配置日志输出目的地-Appender"><a href="#2、详细配置日志输出目的地-Appender" class="headerlink" title="2、详细配置日志输出目的地 Appender"></a>2、详细配置日志输出目的地 Appender</h5><p>stdout,logfile指的是日志输出目的地的名字，名字可以自己命名，可以有多个目的地，常用的目的地有两种：</p>
+<p>①ConsoleAppender：输出日志事件到控制台。通过Target属性配置输出到System.out或System.err，默认是out</p>
+<p>②FileAppender：输出日志时间到一个文件，通过File属性配置文件的路径及名称。</p>
+<h5 id="3、然后针对每个Appender设置日志布局类型Layout"><a href="#3、然后针对每个Appender设置日志布局类型Layout" class="headerlink" title="3、然后针对每个Appender设置日志布局类型Layout"></a>3、然后针对每个Appender设置日志布局类型Layout</h5><p>Appender必须使用一个与之相关联 布局类型Layout，用来制定它的输出样式。最常用的Layout有3种：</p>
+<p>①HTMLLayout：格式化日志输出为HTML表格</p>
+<p>②SimpleLayout：格式：”输出级别Level——，日志消息“</p>
+<p>③PattemLayout：根据制定的转换模式格式化日志输出，需要配置layout.ConversionPattern属性，</p>
+<h5 id="4、最后如果是PattemLayout格式就自定义layout-ConversionPattern属性"><a href="#4、最后如果是PattemLayout格式就自定义layout-ConversionPattern属性" class="headerlink" title="4、最后如果是PattemLayout格式就自定义layout.ConversionPattern属性"></a>4、最后如果是PattemLayout格式就自定义layout.ConversionPattern属性</h5><p>配置参数含义如下：</p>
+<p>%d:用来设置输出日志的日期和时间，默认格式为IS08601，也可以指定格式，比如%d{yyyy-MM-ddHH:mm:ss}</p>
+<p>%m：用来输出代码中指定的消息</p>
+<p>%n：换行</p>
+<p>%1:输出日志时间的发生位置，包括类名、发生的线程,以及在代码中的行数。</p>
+<p>%p:输出优先级</p>
+<p>%F：用来输出文件名</p>
+<p>%M：用来输出方法名</p>
+<h2 id="第八章-集合框架"><a href="#第八章-集合框架" class="headerlink" title="第八章 集合框架"></a>第八章 集合框架</h2><h3 id="一、集合框架"><a href="#一、集合框架" class="headerlink" title="一、集合框架"></a>一、集合框架</h3><h4 id="1、概念-1"><a href="#1、概念-1" class="headerlink" title="1、概念"></a>1、概念</h4><p>Java集合框架是为了表示和操作集合而规定的一种统一的标准体系结构。是为完美完美提供了一套性能优良、使用方便的接口和类，它们都位于java.util包中。</p>
+<h4 id="2、内容"><a href="#2、内容" class="headerlink" title="2、内容"></a>2、内容</h4><p>集合框架都包含三大块内容</p>
+<p>①对外的接口：表示集合的抽象数据类型，如Collection、List、Set、Map、Iterator</p>
+<p>Collection接口：储存一组不唯一（允许重复）、无序的对象</p>
+<p>Set接口继承Collection接口：存储一组唯一(不允许重复)、无序的对象，实现类是HashSet,TreeSet</p>
+<p>List接口继承Collection接口：存储一组不唯一（允许重复）、有序（以元素插入的次序来放置元素，不会重新排列）的对象，它们的实现类是ArryList，LinkedList</p>
+<p>Map接口：存储一组成对的键—值对象，提供key(键)到value(值)的映射。Map中的key不要求有序，不允许重复。value同样不要求有序，但允许重复。它的实现类是HashMap,TreeMap</p>
+<p>Iterator接口：是负责定义访问和遍历元素的接口。</p>
+<p>②接口的实现：集合框架中接口的具体实现：ArrayList、HashMap、HashSet</p>
+<p>③对集合运算的算法：在一个实现了某个集合框架中的接口的对象身上完成某种有用的计算方法。Java提供了进行集合操作的工具类Collections。</p>
+<h3 id="二、List接口"><a href="#二、List接口" class="headerlink" title="二、List接口"></a>二、List接口</h3><p>List：存储一组不唯一（允许重复）、有序（以元素插入的次序来放置元素，不会重新排列）的对象</p>
+<h4 id="1、ArryList（数组列表）集合类"><a href="#1、ArryList（数组列表）集合类" class="headerlink" title="1、ArryList（数组列表）集合类"></a>1、ArryList（数组列表）集合类</h4><p>一片连续的空间存储，遍历效率高。</p>
+<p>ArryList常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>方法说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean add(Object o)</td>
+<td>在列表末尾顺序添加元素，起始索引位置从0开始</td>
+</tr>
+<tr>
+<td>void add(int index,Object 0)</td>
+<td>在指定的索引位置添加元素，原索引位置及其后面的元素依次后移。</td>
+</tr>
+<tr>
+<td>int size()</td>
+<td>返回列表中的元素个数</td>
+</tr>
+<tr>
+<td>Object get(int index)</td>
+<td>返回指定索引位置处的元素，取出的是Object类，使用前要强转</td>
+</tr>
+<tr>
+<td>boolean contains(Object o)</td>
+<td>判断列表中是否存在指定元素</td>
+</tr>
+<tr>
+<td>boolean remove(Object 0)</td>
+<td>从列表中删除元素</td>
+</tr>
+<tr>
+<td>Object remove(int index)</td>
+<td>从列表中删除指定位置元素，起始索引位置从0开始</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Hero lb = <span class="keyword">new</span> Hero(<span class="string">"刘备"</span>);</span><br><span class="line">		Hero zy = <span class="keyword">new</span> Hero(<span class="string">"赵云"</span>);</span><br><span class="line">		Hero dz = <span class="keyword">new</span> Hero(<span class="string">"董卓"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建集合对象</span></span><br><span class="line">		List heroList = <span class="keyword">new</span> ArrayList();</span><br><span class="line">		heroList.add(lb);  <span class="comment">//使用add()向集合中添加元素</span></span><br><span class="line">		heroList.add(zy);</span><br><span class="line">		</span><br><span class="line">		heroList.add(<span class="number">0</span>, dz);  <span class="comment">//指定下标添加</span></span><br><span class="line">		</span><br><span class="line">		heroList.remove(<span class="number">1</span>);  <span class="comment">//删除指定下标的元素</span></span><br><span class="line">		heroList.remove(dz);</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"集合的大小"</span>+heroList.size());<span class="comment">//size()集合的大小</span></span><br><span class="line">		</span><br><span class="line">		Hero zgl = <span class="keyword">new</span> Hero(<span class="string">"诸葛亮"</span>);</span><br><span class="line">		<span class="keyword">boolean</span> flag1 = heroList.contains(dz); <span class="comment">// 如果此列表包含指定元素，则返回 true</span></span><br><span class="line">		<span class="keyword">boolean</span> flag2 = heroList.contains(zgl);</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"flag1:"</span>+flag1);</span><br><span class="line">		System.out.println(<span class="string">"flag2:"</span>+flag2);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;heroList.size();i++) &#123;  </span><br><span class="line">			Hero hero  = (Hero) heroList.get(i);</span><br><span class="line">			System.out.println(<span class="string">"三国英雄："</span>+hero.getName());</span><br><span class="line">		&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、LinkedList（链表）集合类"><a href="#2、LinkedList（链表）集合类" class="headerlink" title="2、LinkedList（链表）集合类"></a>2、LinkedList（链表）集合类</h4><p>增删改效率高，遍历效率相对低，所以插入删除数据较频繁时，使用LinkedList。ArryList方法LinkedList也适用，因为是链表式存储所以有它特有的方法：addFirst(),addLast(),removeFirst(),removeLast().</p>
+<p>LinkedList特殊方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void addFirst(Object o)</td>
+<td>在列表是首部添加元素</td>
+</tr>
+<tr>
+<td>void addLast(Object o)</td>
+<td>在列表是末尾添加元素</td>
+</tr>
+<tr>
+<td>Object getFirst()</td>
+<td>返回列表中的第一个元素</td>
+</tr>
+<tr>
+<td>Object getLast()</td>
+<td>返回列表中的最后一个元素</td>
+</tr>
+<tr>
+<td>Object removeFirst()</td>
+<td>删除并返回列表中的第一个元素</td>
+</tr>
+<tr>
+<td>Object removeLast()</td>
+<td>删除并返回列表中的最后一个元素</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用链表</span></span><br><span class="line">		Hero cc = <span class="keyword">new</span> Hero(<span class="string">"曹操"</span>);</span><br><span class="line">		Hero gj = <span class="keyword">new</span> Hero(<span class="string">"郭嘉"</span>);</span><br><span class="line">		Hero smy = <span class="keyword">new</span> Hero(<span class="string">"司马懿"</span>); </span><br><span class="line"></span><br><span class="line">		LinkedList heroList2 = <span class="keyword">new</span> LinkedList();	<span class="comment">//</span></span><br><span class="line">		heroList2.add(cc);</span><br><span class="line">		</span><br><span class="line">		heroList2.addFirst(smy);  <span class="comment">//LinkedList特有的方法，向头尾进行添加元素</span></span><br><span class="line">		heroList2.addLast(gj);</span><br><span class="line">		</span><br><span class="line">		heroList2.removeFirst();</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------------------------"</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;heroList2.size();i++) &#123;  </span><br><span class="line">			Hero hero  = (Hero) heroList2.get(i);</span><br><span class="line">			System.out.println(<span class="string">"三国英雄："</span>+hero.getName());</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"集合的是否为空:"</span>+heroList2.isEmpty()); <span class="comment">//isEmpty()判断集合是否为空，空则返回true</span></span><br><span class="line">		heroList2.clear();  <span class="comment">//清除所有元素</span></span><br><span class="line">		System.out.println(<span class="string">"集合的大小:"</span>+heroList2.size());</span><br><span class="line">		System.out.println(<span class="string">"集合的是否为空:"</span>+heroList2.isEmpty());</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="三、Set接口"><a href="#三、Set接口" class="headerlink" title="三、Set接口"></a>三、Set接口</h3><p>存储一组唯一(不允许重复)、无序的对象，实现类是HashSet,TreeSet</p>
+<p>1、Hashset</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SetDemo</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Pig ff = <span class="keyword">new</span> Pig(<span class="string">"菲菲"</span>);</span><br><span class="line">		Pig crq = <span class="keyword">new</span> Pig(<span class="string">"超人强"</span>);</span><br><span class="line">		Pig xdd = <span class="keyword">new</span> Pig(<span class="string">"小呆呆"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建set使用 hashSet实现类</span></span><br><span class="line">		Set&lt;Pig&gt; pigSet = <span class="keyword">new</span> HashSet&lt;Pig&gt;();</span><br><span class="line">		pigSet.add(ff);   <span class="comment">//因为set是无序的，所以没有指定下标添加的方法</span></span><br><span class="line">		pigSet.add(crq);</span><br><span class="line">		pigSet.add(xdd);</span><br><span class="line">		</span><br><span class="line">		pigSet.add(ff);  <span class="comment">//set是唯一，也就是不允许重复。所以添加相同元素时,无效</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(pigSet.size());</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//针对无序的遍历方式一：使用增强for循环  --&gt;foreach  </span></span><br><span class="line">		 <span class="comment">/**</span></span><br><span class="line"><span class="comment">		  * for(Type1  param2: param3)   &#123;  &#125;</span></span><br><span class="line"><span class="comment">		  * Type1需要遍历集合内元素的类型</span></span><br><span class="line"><span class="comment">		  * param2就是每次取出来元素的别名</span></span><br><span class="line"><span class="comment">		  * param3 就是需要被遍历的集合对象</span></span><br><span class="line"><span class="comment">		  */</span></span><br><span class="line">		<span class="keyword">for</span>(Pig pig:pigSet) &#123;  </span><br><span class="line">			System.out.println(pig.getName());</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"-------------------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//使用foreach遍历数组</span></span><br><span class="line">	    <span class="keyword">int</span>[] arr= &#123;<span class="number">1</span>,<span class="number">22</span>,<span class="number">66</span>,<span class="number">88</span>&#125;;</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> num:arr) &#123;</span><br><span class="line">	    	System.out.println(num);</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	    System.out.println(<span class="string">"------使用迭代器-------------"</span>);</span><br><span class="line">	    <span class="comment">//针对无序的遍历方式二：使用迭代器</span></span><br><span class="line">	    Iterator&lt;Pig&gt; it = pigSet.iterator();  <span class="comment">//可以理解为，之前set无序，现在将无序的集合交给迭代器管理，内部进行了排列</span></span><br><span class="line">	    <span class="keyword">while</span>(it.hasNext()) &#123;  <span class="comment">//当 迭代器中下一个元素有值</span></span><br><span class="line">	    	Pig pig = it.next();   <span class="comment">//取出迭代器中的下一个值</span></span><br><span class="line">	    	System.out.println(pig.getName());</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="四、Map接口"><a href="#四、Map接口" class="headerlink" title="四、Map接口"></a>四、Map接口</h3><p>存储一组成对的键—值对象，提供key(键)到value(值)的映射。Map中的key不要求有序，不允许重复。value同样不要求有序，但允许重复。</p>
+<p>1、HashMap</p>
+<p>Map的常用方法:</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Object put(Object key,Object value)</td>
+<td>以“键-值对”的方式存储</td>
+</tr>
+<tr>
+<td>Object get(Object key)</td>
+<td>根据键返回相关联的值，若不存在指定键，则返回null</td>
+</tr>
+<tr>
+<td>Object remove(Object key)</td>
+<td>删除指定的键映射的“键-值对”</td>
+</tr>
+<tr>
+<td>int size()</td>
+<td>返回元素个数</td>
+</tr>
+<tr>
+<td>Set keySet()</td>
+<td>返回键的集合</td>
+</tr>
+<tr>
+<td>Collection values()</td>
+<td>返回值的集合</td>
+</tr>
+<tr>
+<td>boolean containsKey(Object key)</td>
+<td>若存在指定的键映射的“键-值对”，则返回true</td>
+</tr>
+<tr>
+<td>boolean isEmpty()</td>
+<td>若不存在键-值映射关系，则返回true</td>
+</tr>
+<tr>
+<td>void clear</td>
+<td>从此映射中移除所有映射关系</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.ch08;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapDemo</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//建立国家英文简称和中文全名间的键值映射</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		 <span class="comment">//map是以key-value(键值对)的形式保存数据的集合</span></span><br><span class="line">		<span class="comment">//map的接口实现类有：HashMap，HashTable,TreeMap</span></span><br><span class="line">		<span class="comment">//&lt;String,Object&gt; 指定map的泛型  第一个String是 key的类型，第二个Object是value的类型</span></span><br><span class="line">		Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();    </span><br><span class="line">		</span><br><span class="line">		map.put(<span class="string">"CN"</span>, <span class="string">"中国"</span>);   <span class="comment">//存值 使用put()方法</span></span><br><span class="line">		map.put(<span class="string">"US"</span>, <span class="string">"美国"</span>);</span><br><span class="line">		map.put(<span class="string">"JP"</span>, <span class="string">"日本"</span>);</span><br><span class="line">		</span><br><span class="line">		map.put(<span class="string">"JP"</span>, <span class="string">"脚盆"</span>);  <span class="comment">//key唯一，当存储相同key时，会覆盖</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(map.get(<span class="string">"JP"</span>));  <span class="comment">//取值使用 get()方法</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//判断是否在map中有某个键使用containsKey()方法</span></span><br><span class="line">		<span class="keyword">boolean</span>  flag = map.containsKey(<span class="string">"US"</span>);</span><br><span class="line">		System.out.println(flag);</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"-----使用foreach循环遍历map-----"</span>);</span><br><span class="line">		<span class="comment">//遍历map</span></span><br><span class="line">		Set&lt;String&gt; keySet = map.keySet();  <span class="comment">//先获取 所有的key ;keySet()就可以获取所以的key并以set集合返回</span></span><br><span class="line">		<span class="keyword">for</span>(String key:keySet) &#123;</span><br><span class="line">			System.out.print(<span class="string">"key值为："</span>+key);</span><br><span class="line">			System.out.println(<span class="string">"---对应key的值为："</span>+map.get(key));</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		map.remove(<span class="string">"US"</span>);  <span class="comment">//从map集合中删除元素时，只能根据键值删除，使用remove(key)</span></span><br><span class="line">		System.out.println(<span class="string">"当前map的大小为："</span>+map.size());</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"-----使用迭代器进行遍历map-----"</span>);</span><br><span class="line">		Iterator&lt;String&gt; it = keySet.iterator();  <span class="comment">//将key的set集合，交给迭代器管理</span></span><br><span class="line">		<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">			String key = it.next();   <span class="comment">//从迭代器中取出下一个值，也就是key</span></span><br><span class="line">			System.out.print(<span class="string">"key值为："</span>+key);</span><br><span class="line">			System.out.println(<span class="string">"---对应key的值为："</span>+map.get(key));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="五、Iterator迭代器"><a href="#五、Iterator迭代器" class="headerlink" title="五、Iterator迭代器"></a>五、Iterator迭代器</h3><p>Collection接口的iterate()方法返回一个Iterator，然后通过Iterator接口的两个方法即可方便的实现遍历</p>
+<p>方法：boolean hasNext():判断是否存在另一个可访问元素；  Object next()：返回要访问的下一个元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">"-----使用迭代器进行遍历map-----"</span>);</span><br><span class="line">		Iterator&lt;String&gt; it = keySet.iterator();  <span class="comment">//将key的set集合，交给迭代器管理</span></span><br><span class="line">		<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">			String key = it.next();   <span class="comment">//从迭代器中取出下一个值，也就是key</span></span><br><span class="line">			System.out.print(<span class="string">"key值为："</span>+key);</span><br><span class="line">			System.out.println(<span class="string">"---对应key的值为："</span>+map.get(key));</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="六、泛型（Generic）集合"><a href="#六、泛型（Generic）集合" class="headerlink" title="六、泛型（Generic）集合"></a>六、泛型（Generic）集合</h3><p>泛型解决了通过get(int index)方法取出集合中元素必须强制类型转换。</p>
+<p>使用泛型集合在创建集合对象时指定集合中元素的类型，从集合中取出元素时无须进行类型强制转换，并且如果把非指定类型对象放入集合，会出现编译错误。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListDemo2</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Hero lb = <span class="keyword">new</span> Hero(<span class="string">"刘备"</span>);</span><br><span class="line">		Hero zy = <span class="keyword">new</span> Hero(<span class="string">"赵云"</span>);</span><br><span class="line">		Hero dz = <span class="keyword">new</span> Hero(<span class="string">"董卓"</span>);</span><br><span class="line">		</span><br><span class="line">		Pig zzx = <span class="keyword">new</span> Pig(<span class="string">"猪猪侠"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 创建集合对象</span></span><br><span class="line">		 <span class="comment">//&lt;E&gt;代表泛型。泛型就是广泛的类型，代表什么类型都可以 。可以将&lt;E&gt;限定为&lt;Hero&gt;，也就是你想限定集合的类型</span></span><br><span class="line">        <span class="comment">//没有泛型 List herolist = new ArrayList();</span></span><br><span class="line">		List&lt;Hero&gt; heroList = <span class="keyword">new</span> ArrayList&lt;Hero&gt;();  </span><br><span class="line">		heroList.add(lb);</span><br><span class="line">		heroList.add(zy);</span><br><span class="line">		heroList.add(dz);</span><br><span class="line">		</span><br><span class="line">		System.out.println(heroList.size());</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;heroList.size();i++) &#123;  </span><br><span class="line">			Hero hero  =  heroList.get(i);</span><br><span class="line">            <span class="comment">//没有泛型必须强转：Hero hero =(Hero) heroList.get(i);</span></span><br><span class="line">			System.out.println(<span class="string">"三国英雄："</span>+hero.getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="第九章-使用JDBC访问MySQL数据库"><a href="#第九章-使用JDBC访问MySQL数据库" class="headerlink" title="第九章 使用JDBC访问MySQL数据库"></a>第九章 使用JDBC访问MySQL数据库</h1><h3 id="一、JDBC简介"><a href="#一、JDBC简介" class="headerlink" title="一、JDBC简介"></a>一、JDBC简介</h3><h4 id="1、概念-2"><a href="#1、概念-2" class="headerlink" title="1、概念"></a>1、概念</h4><p>JDBC充当了Java程序与各种不同数据库之间的中介。JDBC是java数据库连接技术（Java DateBase Connectivity）的简称，由一组使用Java语言编写的类和接口组成，可以为多种关系数据库提供统一访问。在JAVA中我们只需要正确加载JDBC驱动，正确调用JDBC API就可以进行数据库访问了。</p>
+<h4 id="2、JDBC-API"><a href="#2、JDBC-API" class="headerlink" title="2、JDBC API"></a>2、JDBC API</h4><p>由Sun公司提供，提供了java应用程序与各种不同数据库交互的标准接口，如Connection(连接)接口，Statement接口、ResultSet(结果集接口)、PreparedStetement接口等。开发者使用这些JDBC接口进行各类数据库操作</p>
+<h4 id="3、JDBC-DriverManager"><a href="#3、JDBC-DriverManager" class="headerlink" title="3、JDBC DriverManager"></a>3、JDBC DriverManager</h4><p>负责管理各种不同JDBC驱动，位于JDK的java.sql包中</p>
+<h4 id="4、JDBC驱动"><a href="#4、JDBC驱动" class="headerlink" title="4、JDBC驱动"></a>4、JDBC驱动</h4><p>JDBC驱动由各个数据库厂商提供，负责连接各种不同的数据库，它们都实现了JDBC API中定义的各种接口。访问MySQL和Oracle需要不同的驱动。</p>
+<h3 id="二、JDBC工作步骤或模板"><a href="#二、JDBC工作步骤或模板" class="headerlink" title="二、JDBC工作步骤或模板"></a>二、JDBC工作步骤或模板</h3><h4 id="1、加载JDBC驱动"><a href="#1、加载JDBC驱动" class="headerlink" title="1、加载JDBC驱动"></a>1、加载JDBC驱动</h4><p>​    代码：Class.forName(“JDBC 驱动类的名称”)</p>
+<h4 id="2、与数据库建立连接"><a href="#2、与数据库建立连接" class="headerlink" title="2、与数据库建立连接"></a>2、与数据库建立连接</h4><p>​    代码：Connectio     con =DriverManager.getConnection(URL，数据库用户名，密码)</p>
+<p>URL：例jdbc:mysql://localhost:3306/epet?characterEncoding=utf-8</p>
+<p>由jdbc:连接的数据库名称：//本机地址：断就名称/数据库名称，为了解决在java新增的数据到数据库出现乱码问题，使用?characterEncoding=utf-8，设置字符编码格式来解决。</p>
+<h4 id="3、发送SQL语句，并得到返回结果"><a href="#3、发送SQL语句，并得到返回结果" class="headerlink" title="3、发送SQL语句，并得到返回结果"></a>3、发送SQL语句，并得到返回结果</h4><p>​    代码：statement stmt=con.createStatement();</p>
+<p>​                ResultSet rs=stmt.executeQuery(“要执行的SQL语句”)</p>
+<h4 id="4、处理返回结果"><a href="#4、处理返回结果" class="headerlink" title="4、处理返回结果"></a>4、处理返回结果</h4><p>主要是针对查询操作的结果集，通过循环取出结果集中每条记录并做相应处理</p>
+<p>代码：while(rs.next()){</p>
+<p>​                    int id =rs.getlnt(“id”)；</p>
+<p>​                    String name =re.getString(“name”)；</p>
+<p>​                    System.out.println(id+”+name”);</p>
+<p>​                }</p>
+<h4 id="5、释放资源"><a href="#5、释放资源" class="headerlink" title="5、释放资源"></a>5、释放资源</h4><p>注意关闭顺序，要先关闭ResultSet结果集，再Statement，最后Connection。</p>
+<p>​    代码：rs.close();</p>
+<p>​                stmt.close();</p>
+<p>​                con.close();</p>
+<p>如果不需要这三个对象，可以显示关闭它们，代码：public void close();</p>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch09_01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.sql.Statement;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDBCTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//新增</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Connection con = <span class="keyword">null</span>;</span><br><span class="line">		Statement stmt = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//1.加载驱动</span></span><br><span class="line">			Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">			<span class="comment">//2.建立连接</span></span><br><span class="line">			 con = DriverManager.getConnection(<span class="string">"jdbc:mysql://localhost:3306/oop_jbdc?characterEncoding=utf-8"</span>,<span class="string">"root"</span>,<span class="string">"root"</span>);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//3.发送sql,获取结果集</span></span><br><span class="line">			  stmt = con.createStatement();  <span class="comment">//使用连接对象获取命令对象</span></span><br><span class="line">			 String sql = <span class="string">"insert into sheep values(null,'懒羊羊','母','14')"</span>;</span><br><span class="line">			 <span class="keyword">int</span> result  = stmt.executeUpdate(sql);  <span class="comment">//执行命令时，会有返回；修改返回的是 数据库中表受的影响的行数</span></span><br><span class="line">			<span class="comment">//4.处理结果集</span></span><br><span class="line">			<span class="keyword">if</span>(result &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				System.out.println(<span class="string">"新增成功~"</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				System.out.println(<span class="string">"新增失败~"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="comment">//5.关闭资源</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				stmt.close();</span><br><span class="line">				con.close();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常见错误：</p>
+<p>1、JDBC驱动类的名称书写错误，出现ClassNotFoundException异常</p>
+<p>2、数据库连接字符串，数据库用户名、密码书写错误，出现SQLException异常</p>
+<p>3、数据库操作结束后，没有关闭数据库连接，导致仍然占有系统资源</p>
+<p>4、关闭数据库连接语句没有放到finally语句块中，导致语句可能没有被执行</p>
+<h3 id="三、Connection接口"><a href="#三、Connection接口" class="headerlink" title="三、Connection接口"></a>三、Connection接口</h3><p>负责连接数据库并担任传送数据的任务。</p>
+<p>两种常用的驱动方式</p>
+<h4 id="1、JDBC-ODBC桥连方式"><a href="#1、JDBC-ODBC桥连方式" class="headerlink" title="1、JDBC-ODBC桥连方式"></a>1、JDBC-ODBC桥连方式</h4><p>通过JDBC-ODBC桥连方式可以访问所有ODBC可以访问的数据库，但是不能提供很好的性能，不适合实际系统应用</p>
+<h4 id="2、纯Java方式连接数据库"><a href="#2、纯Java方式连接数据库" class="headerlink" title="2、纯Java方式连接数据库"></a>2、纯Java方式连接数据库</h4><p>纯Java驱动方式由JDBC驱动直接访问数据库，驱动程序完全用Java语言编写，运行速度快，而且具备跨平台特点。</p>
+<p>先下载数据库厂商提供的驱动程序jar包，并将jar包引入工程中，并查看相关帮助文档，获得驱动类的名称和数据库连接字符串，然后开始进行编程，与数据库建立连接</p>
+<h3 id="四、Statement接口和ResultSet接口"><a href="#四、Statement接口和ResultSet接口" class="headerlink" title="四、Statement接口和ResultSet接口"></a>四、Statement接口和ResultSet接口</h3><h4 id="1、Statement接口"><a href="#1、Statement接口" class="headerlink" title="1、Statement接口"></a>1、Statement接口</h4><p>由Connection产生，负责执行SQL语句</p>
+<p>①获取Connection对象，然后使用Connection对象创建Statement对象(  stmt = con.createStatement();)，然后使用Statement对象将SQL语句发送到数据库中</p>
+<p>②Statement接口的基本数据库操作方法：</p>
+<p><strong>ResulSet executeQuery(Sting sql)*</strong>:可以执行SQL查询并获取Result对象。</p>
+<p><strong>int executrUpdate(Sting sql):</strong>可以执行插入、删除、更新的操作，返回值是执行该操作所影响的行数</p>
+<p><strong>boolean execute(Sting sql)</strong>:可以执行任意SQL语句，若结果为ResultSet对象，则返回true，若为更新技术或者不存在任何结果，则返回false</p>
+<h4 id="2、ResultSet接口"><a href="#2、ResultSet接口" class="headerlink" title="2、ResultSet接口"></a>2、ResultSet接口</h4><p>负责保存和处理Statement执行后所产生的查询结果</p>
+<p>①ResultSet接口常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean next()</td>
+<td>将光标从当前位置向下移动一行</td>
+</tr>
+<tr>
+<td>boolean prevoius()</td>
+<td>将光标从当前位置向上移动一行</td>
+</tr>
+<tr>
+<td>void close()</td>
+<td>关闭ResultSet对象</td>
+</tr>
+<tr>
+<td>int getInt(int columnIndex)</td>
+<td>以int的形式获取结果集当前行指定列号的值</td>
+</tr>
+<tr>
+<td>int getInt(String columnLable)</td>
+<td>以int的形式获取结果集当前行指定列名的值</td>
+</tr>
+<tr>
+<td>float getFloat(float columnIndex)</td>
+<td>以float的形式获取结果集当前行指定列号的值</td>
+</tr>
+<tr>
+<td>float getFloat(String columnLable)</td>
+<td>以float的形式获取结果集当前行指定列名的值</td>
+</tr>
+<tr>
+<td>String getString(int columnIndex)</td>
+<td>以String的形式获取结果集当前行指定列号的值</td>
+</tr>
+<tr>
+<td>String getString(String columnLable)</td>
+<td>以String的形式获取结果集当前行指定列名的值</td>
+</tr>
+<tr>
+<td>int getRow()</td>
+<td>得到光标当前所指引的行号</td>
+</tr>
+<tr>
+<td>boolean absolute(int row)</td>
+<td>光标移动到row指定的行</td>
+</tr>
+</tbody></table>
+<h3 id="五、PreparedStatement接口"><a href="#五、PreparedStatement接口" class="headerlink" title="五、PreparedStatement接口"></a>五、PreparedStatement接口</h3><p>PreparedStatement接口：Statement的子接口，也由Connection产生，同样负责执行SQL语句，与Statement接口相比，具有高安全性、高性能、高可读性和高可维护性的优点。可以有效解决SQL注入问题</p>
+<h4 id="1、使用PreparedStatement操作数据库的步骤"><a href="#1、使用PreparedStatement操作数据库的步骤" class="headerlink" title="1、使用PreparedStatement操作数据库的步骤"></a>1、使用PreparedStatement操作数据库的步骤</h4><h5 id="①创建PreparedStatement对象"><a href="#①创建PreparedStatement对象" class="headerlink" title="①创建PreparedStatement对象"></a>①创建PreparedStatement对象</h5><p>​    代码：PreparedStatement  pstmt = con.prepareStatement(“sql执行语句”)；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String sql =<span class="string">"insert into dog (name,health,love,strain)values(?,?,?,?)"</span>; <span class="comment">//使用？作为占位符，避免SQL注入隐患</span></span><br><span class="line">	p=con.prepareStatement(sql);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="②设置每个输入参数的值"><a href="#②设置每个输入参数的值" class="headerlink" title="②设置每个输入参数的值"></a>②设置每个输入参数的值</h5><p>SetXxx()方法，Xxxx是与该参数对应的数据类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p.setString(<span class="number">1</span>, <span class="string">"美美"</span>);	<span class="comment">//这里的1就是SQL语句里的第几个？，使用预编译命令对象的setXxx方法替换，第一个参数是QL语句里的第几个？，第二个参数是具体参数，这里的Xxx就是第二个参数的数据类型</span></span><br><span class="line">		p.setInt(<span class="number">2</span>, <span class="number">90</span>);</span><br><span class="line">		p.setInt(<span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">		p.setString(<span class="number">4</span>, <span class="string">"酷酷的雪瑞纳"</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="③执行SQL语句"><a href="#③执行SQL语句" class="headerlink" title="③执行SQL语句"></a>③执行SQL语句</h5><p><strong>ResulSet executeQuery()</strong>:可以执行SQL查询并获取Result对象。</p>
+<p><strong>int executrUpdate():</strong>可以执行插入、删除、更新的操作，返回值是执行该操作所影响的行数</p>
+<p><strong>boolean execute()</strong>:可以执行任意SQL语句，若结果为ResultSet对象，则返回true，若为更新技术或者不存在任何结果，则返回false</p>
+<p>虽然和statement执行方法相同，但是不需要SQL语句做参数，SQL语句已经在创建对象PreparedStatement时指定了。</p>
+<p>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pstmt=con.prepareStatment(sql)；</span><br><span class="line">rs=pstmt.executrQuery();</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第十一章-数据库访问层"><a href="#第十一章-数据库访问层" class="headerlink" title="第十一章  数据库访问层"></a>第十一章  数据库访问层</h2><h3 id="一、数据持久化"><a href="#一、数据持久化" class="headerlink" title="一、数据持久化"></a>一、数据持久化</h3><h4 id="1、持久化"><a href="#1、持久化" class="headerlink" title="1、持久化"></a>1、持久化</h4><p>持久化是将程序中的数据在瞬时状态和持久状态间转换的机制。Jdbc就是一种持久化机制，将程序直接保存成文本文件或xml文件也是持久化机制的一种实现，常用的就是将数据保存到数据库中。持久化的主要操作为：读取、查找、保存、删除、修改。</p>
+<h4 id="2、DAO模式"><a href="#2、DAO模式" class="headerlink" title="2、DAO模式"></a>2、DAO模式</h4><p>DAO（Data Access Objects）:数据存储对象，是指位于业务逻辑和持久化数据之间实现对持久化数据的访问。</p>
+<p>DAO的作用：隔离业务逻辑层和数据访问层。</p>
+<p>3、DAO模式的组成</p>
+<p>每个类放在不同的包里</p>
+<p><strong>DAO接口：</strong>把对数据库的所有操作定义成抽象方法，可以提供多种实现。里面用实现类作为形参</p>
+<p><strong>DAO实现类：</strong>针对不同数据库给出DAO接口定义方法的具体实现。根据不同的数据库建立不同的接口实现类，重写接口里的方法。    </p>
+<p><strong>实体类：</strong>用于存放和传输对象数据，里面的属性与数据库表字段名相对应</p>
+<p><strong>数据库连接和关闭工具类：</strong>避免数据库连接和关闭代码的重复使用，方便修改。即JDBC里的加载驱动，连接，关闭资源专用类</p>
+<h3 id="二、分层开发"><a href="#二、分层开发" class="headerlink" title="二、分层开发"></a>二、分层开发</h3><p>一般分为：表示层（用户界面UI）、业务逻辑层（biz/server）、数据库管理层（DAO模式）。写代码时从底层往上写</p>
+<p>DAO模式就是分层开发思想的一种具体体现</p>
+<h4 id="1、优势"><a href="#1、优势" class="headerlink" title="1、优势"></a>1、优势</h4><p>①每一层专注于自己功能的实现，便于提高质量。</p>
+<p>②便于分工协作，从而提高效率</p>
+<p>③便于代码复用</p>
+<p>④便于程序开发</p>
+<h4 id="2、原则"><a href="#2、原则" class="headerlink" title="2、原则"></a>2、原则</h4><p>①封装性原则：每个层次向外提供公开的统一接口，而隐藏内部的功能实现细节，其他层次不能也没有必要了解其内部细节</p>
+<p>②顺序访问原则：下一层为上一层提供服务，而不使用上一层提供的服务</p>
+<p>③业务逻辑层可以访问数据访问层的功能，而数据库访问层不能访问业务逻辑层功能</p>
+<h4 id="3、使用实体类传送数据"><a href="#3、使用实体类传送数据" class="headerlink" title="3、使用实体类传送数据"></a>3、使用实体类传送数据</h4><p>把相关信息使用实体类封装，在程序中把实体类最为方法的输入参数或返回结果，实现数据传递，非常方便。</p>
+<p>1.实体类的特征：</p>
+<p>①实体类的属性都用private修饰，方法用public修饰</p>
+<p>②对实体类提供无参构造方法，根据业务需求提供相应的有参构造方法。实体类最好实现java.io.Serilalizable接口，支持序列化机制，可以将该对象转换成字节序列而保存在磁盘上或在网络上传输</p>
+<p>③如果实体类实现了java.io.Serilalizable接口，则应该定义属性serialVersionUID解决不同版本之间的序列化问题。</p>
+<p>​                                                                                                                                                                                                                </p>
+<h2 id="第十三章、-File-IO流"><a href="#第十三章、-File-IO流" class="headerlink" title="第十三章、 File/IO流"></a>第十三章、 File/IO流</h2><h3 id="一、File"><a href="#一、File" class="headerlink" title="一、File"></a>一、File</h3><h4 id="1、文件"><a href="#1、文件" class="headerlink" title="1、文件"></a>1、文件</h4><p>相关记录或放在一起的数据的集合。常见文件类型：扩展名为txt/doc/xls/jpg/java/class等文件</p>
+<h4 id="2、java-io包"><a href="#2、java-io包" class="headerlink" title="2、java.io包"></a>2、java.io包</h4><p>在java中，提供了java.io包，里面提供了一些接口和类，对文件和目录属性的操作、对文件读写的操作。</p>
+<h4 id="3、File"><a href="#3、File" class="headerlink" title="3、File"></a>3、File</h4><p>File对象即可表示文件，也可表示目录，利用它可以对文件或目录进行基本操作，如：名称、最后修改日期、文件大小</p>
+<h5 id="①创建File对象的语法："><a href="#①创建File对象的语法：" class="headerlink" title="①创建File对象的语法："></a>①创建File对象的语法：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	File  file = <span class="keyword">new</span> File(String pathName);	</span><br><span class="line"><span class="comment">//如：	File  file = new File("C:\\Users\\Lenovo\\Desktop\\11.sql");</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	pathName是文件保存的路径，文件路径的分隔符必须写成\\</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="②File常见方法"><a href="#②File常见方法" class="headerlink" title="②File常见方法"></a>②File常见方法</h5><table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean exists()</td>
+<td>判断文件或目录是否存在</td>
+</tr>
+<tr>
+<td>boolean isFile()</td>
+<td>判断是否是文件</td>
+</tr>
+<tr>
+<td>boolean isDirectory()</td>
+<td>判断是否是目录</td>
+</tr>
+<tr>
+<td>String getPath()</td>
+<td>返回此对象表示的文件的相对路径名</td>
+</tr>
+<tr>
+<td>String getAbsolutePath()</td>
+<td>返回此对象表示的文件的绝对路径名</td>
+</tr>
+<tr>
+<td>String getName()</td>
+<td>返回此对象表示的文件或目录的名称</td>
+</tr>
+<tr>
+<td>boolean delete()</td>
+<td>删除此对象指定的文件或目录</td>
+</tr>
+<tr>
+<td>boolean createNewFile()</td>
+<td>创建名称的空文件，不创建文件夹</td>
+</tr>
+<tr>
+<td>long length</td>
+<td>返回文件的长度，单位为字节，若文件不存在，返回0L</td>
+</tr>
+</tbody></table>
+<p>③示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileMethods</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		FileMethods fm =<span class="keyword">new</span> FileMethods();</span><br><span class="line">		File file =<span class="keyword">null</span>;</span><br><span class="line">		file=<span class="keyword">new</span> File(<span class="string">"C:\\Users\\Lenovo\\Desktop\\11.sql"</span>);</span><br><span class="line">		fm.create(file);</span><br><span class="line">		<span class="comment">//fm.showFileInfo(file);</span></span><br><span class="line">		<span class="comment">//fm.delete(file);</span></span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">create</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				file.createNewFile();</span><br><span class="line">				System.out.println(<span class="string">"文件已创建！"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">			file.delete();</span><br><span class="line">			System.out.println(<span class="string">"文件已删除！"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showFileInfo</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (file.isFile()) &#123;</span><br><span class="line">				System.out.println(<span class="string">"名称："</span>+file.getName());</span><br><span class="line">				System.out.println(<span class="string">"相对路径："</span>+file.getPath());</span><br><span class="line">				System.out.println(<span class="string">"绝对路径："</span>+file.getAbsolutePath());</span><br><span class="line">				System.out.println(<span class="string">"文件大小："</span>+file.length()+<span class="string">"字节"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (file.isDirectory()) &#123;</span><br><span class="line">				System.out.println(<span class="string">"此文件是目录"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"文件不存在！"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、Java的流IO"><a href="#二、Java的流IO" class="headerlink" title="二、Java的流IO"></a>二、Java的流IO</h3><p>1、流：是指一连串流动的字符，是以先进先出的方式发送和接收数据的通道。程序和数据源之间是通过流联系起来的。</p>
+<p>2、流可以分为输入流和输出流，也可以分为字节流和字符流。（InputStream/OutputStram;Reader/Writer。它们都是抽象类，不能实例化。）</p>
+<h3 id="三、读取文件"><a href="#三、读取文件" class="headerlink" title="三、读取文件"></a>三、读取文件</h3><h4 id="一、使用字节流读取文件（FileInputStream类是InputStream的子类）"><a href="#一、使用字节流读取文件（FileInputStream类是InputStream的子类）" class="headerlink" title="一、使用字节流读取文件（FileInputStream类是InputStream的子类）"></a>一、使用字节流读取文件（FileInputStream类是InputStream的子类）</h4><p>作用就是将JAVA程序外的文件中的数据输入到内存中</p>
+<h5 id="1、读取数据的常用方法"><a href="#1、读取数据的常用方法" class="headerlink" title="1、读取数据的常用方法"></a>1、读取数据的常用方法</h5><table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int read()</td>
+<td>从输入流读取1个8位的字节，把它转换为0~255之间的整数(asike码)返回</td>
+</tr>
+<tr>
+<td>int read(byte[]  b)</td>
+<td>将数据读取到字节数组中</td>
+</tr>
+<tr>
+<td>int read(byte[] b,int off,int len)</td>
+<td>从输入流中读取最多的len长度的字节，保存到字节数组b中，保存的位置从off开始</td>
+</tr>
+<tr>
+<td>void close()</td>
+<td>关闭输入流</td>
+</tr>
+<tr>
+<td>int avaliable（）</td>
+<td>返回从该输入流中可以读取（或跳过）的字节数的估计值，而不会被下一次调用此输入流的方法阻塞</td>
+</tr>
+</tbody></table>
+<h5 id="2、使用FileInputStream读取文本文件的步骤"><a href="#2、使用FileInputStream读取文本文件的步骤" class="headerlink" title="2、使用FileInputStream读取文本文件的步骤"></a>2、使用FileInputStream读取文本文件的步骤</h5><p>①引入相关类（import java.io.IOException/import java.io.InputStream/import java.io.FileInputStream）</p>
+<p>②创建一个文件输入流对象</p>
+<p>​    File file = new File(“C:\test.txt”);</p>
+<p>InputStream fi=new FileInputStream(file);</p>
+<p>③利用文件输入流的方法读取文本文件的数据</p>
+<p>fi.available(); //可读取的字节数</p>
+<p>fi.read();  //读取文件的数据</p>
+<p>④关闭文件输入流对象</p>
+<p>fi.close();</p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="comment">//字节输入流InputStream，读取文本文件，read()</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileInputStreamTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		FileInputStream fis =<span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			fis=<span class="keyword">new</span> FileInputStream(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">			<span class="keyword">int</span> data;</span><br><span class="line">			System.out.println(<span class="string">"可读取的字节数："</span>+fis.available());</span><br><span class="line">			<span class="keyword">while</span> ((data=fis.read())!=-<span class="number">1</span>) &#123;</span><br><span class="line">				System.out.println((<span class="keyword">char</span>)data+<span class="string">""</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">catch</span>(FileNotFoundException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">catch</span>(IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (fis != <span class="keyword">null</span>) &#123;</span><br><span class="line">					fis.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、使用Reader读取文本文件"><a href="#二、使用Reader读取文本文件" class="headerlink" title="二、使用Reader读取文本文件"></a>二、使用Reader读取文本文件</h4><h5 id="1、FileReader读文本文件"><a href="#1、FileReader读文本文件" class="headerlink" title="1、FileReader读文本文件"></a>1、FileReader读文本文件</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"></span><br><span class="line"><span class="comment">//字符输入流Reader类，FileReader是它的子类</span></span><br><span class="line"><span class="keyword">import</span> java.io.FileReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.Reader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileReadTest</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	Reader fr =<span class="keyword">null</span>;</span><br><span class="line">	StringBuffer sbf=<span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		fr=<span class="keyword">new</span> FileReader(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">		<span class="keyword">char</span> ch[] = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>];</span><br><span class="line">		sbf=<span class="keyword">new</span> StringBuffer();</span><br><span class="line">		<span class="keyword">int</span> length=fr.read(ch);</span><br><span class="line">		<span class="keyword">while</span> ((length!=-<span class="number">1</span>)) &#123;</span><br><span class="line">			sbf.append(ch);</span><br><span class="line">			length=fr.read();</span><br><span class="line">			System.out.println(sbf.append(ch));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (fr != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				fr.close();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				System.out.println(<span class="string">"错误！"</span>);</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2、BufferReader读文件"><a href="#2、BufferReader读文件" class="headerlink" title="2、BufferReader读文件"></a>2、BufferReader读文件</h5><p>BufferReader有一个特有的方法：readline()，读取一行数据，返回字符串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.FileReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BUfferReader字符流输入类，可避免每次都从数据源读取数据进行字符编码转换</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BufferReaderTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		FileReader fr =<span class="keyword">null</span>;</span><br><span class="line">		BufferedReader br =<span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			fr=<span class="keyword">new</span> FileReader(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);	<span class="comment">//创建fileReader对象</span></span><br><span class="line">			br=<span class="keyword">new</span> BufferedReader(fr);	<span class="comment">//创建BufferedReader对象</span></span><br><span class="line">			<span class="comment">//读取一行数据，BufferReader类特有方法</span></span><br><span class="line">			String line =br.readLine();</span><br><span class="line">			<span class="keyword">while</span> (line!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				System.out.println(line);</span><br><span class="line">				line=br.readLine();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			System.out.println(<span class="string">"文件不存在！"</span>);</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (br != <span class="keyword">null</span>) &#123;</span><br><span class="line">					br.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (fr != <span class="keyword">null</span>) &#123;</span><br><span class="line">					fr.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">	</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、写文件"><a href="#四、写文件" class="headerlink" title="四、写文件"></a>四、写文件</h2><h3 id="1、使用OutputStream写文件"><a href="#1、使用OutputStream写文件" class="headerlink" title="1、使用OutputStream写文件"></a>1、使用OutputStream写文件</h3><h5 id="①方法"><a href="#①方法" class="headerlink" title="①方法"></a>①方法</h5><table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void write(int c)</td>
+<td>写入一个字节数据</td>
+</tr>
+<tr>
+<td>void write(byte[] buf)</td>
+<td>写入数组buf的所有字节</td>
+</tr>
+<tr>
+<td>void writr(byte[] buf,int 0ff, int len)</td>
+<td>将字节数据组从off的位置开始，长度为len的字节数据输出到输出流中</td>
+</tr>
+<tr>
+<td>void close()</td>
+<td>关闭输出流</td>
+</tr>
+</tbody></table>
+<h5 id="②步骤"><a href="#②步骤" class="headerlink" title="②步骤"></a>②步骤</h5><p>①引入相关类（import java.io.IOException/import java.io.OutputStream/import java.io.FileOnputStream）</p>
+<p>②创建一个文件输出流对象</p>
+<p>​    File file = new File(“C:\test.txt”);</p>
+<p>OutputStream fos=new FileOutputStream(file);</p>
+<p>③利用文件输出流的方法把数据写入文本文件中</p>
+<p>String str=”好好学习”</p>
+<p>byte[] words =str.getBytes();</p>
+<p>fos.write(words,0,words.length)</p>
+<p>④关闭文件输出流对象</p>
+<p>fos.close();</p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用字节流读写文本文件</span></span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputStreamTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		FileOutputStream fos=<span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String str =<span class="string">"好好学习 Java"</span>;</span><br><span class="line">			<span class="keyword">byte</span>[] words=str.getBytes();</span><br><span class="line">			fos=<span class="keyword">new</span> FileOutputStream(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">			fos.write(words, <span class="number">0</span>, words.length);</span><br><span class="line">			System.out.println(<span class="string">"hello 文件已更新！"</span>);</span><br><span class="line">		&#125;<span class="keyword">catch</span>(IOException obj) &#123;</span><br><span class="line">			System.out.println(<span class="string">"创建文件时出错！"</span>);</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (fos != <span class="keyword">null</span>) &#123;</span><br><span class="line">					fos.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、使用Writer写文件"><a href="#2、使用Writer写文件" class="headerlink" title="2、使用Writer写文件"></a>2、使用Writer写文件</h3><p>①方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>write(String str)</td>
+<td>将str字符串里包含的字符输出到指定的输出流中</td>
+</tr>
+<tr>
+<td>write(String str,in off,int len)</td>
+<td>将str字符串里从off位置开始长度为len的字符输出到输出流中</td>
+</tr>
+<tr>
+<td>void close()</td>
+<td>关闭输出流</td>
+</tr>
+<tr>
+<td>void flush()</td>
+<td>刷新输出流</td>
+</tr>
+</tbody></table>
+<p>②步骤</p>
+<p>1、引入相关类</p>
+<p>2、创建一个FileWriter对象</p>
+<p>3、利用FileWriter类的方法写文本文件</p>
+<p>4、相关流对象的清空和关闭</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"><span class="comment">//字符流写文本文件，FileWriter类</span></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.FileWriter;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.Writer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileWriterTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Writer fw =<span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			fw=<span class="keyword">new</span> FileWriter(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">			fw.write(<span class="string">"我热爱我的团队！"</span>);</span><br><span class="line">			fw.flush();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			System.out.println(<span class="string">"文件不存在！"</span>);</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (fw != <span class="keyword">null</span>) &#123;</span><br><span class="line">					fw.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、使用BufferedWriter"><a href="#2、使用BufferedWriter" class="headerlink" title="2、使用BufferedWriter"></a>2、使用BufferedWriter</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> oop_ch13_demo;</span><br><span class="line"><span class="comment">//字符流写文本文件，BufferedWriter类</span></span><br><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.BufferedWriter;</span><br><span class="line"><span class="keyword">import</span> java.io.FileReader;</span><br><span class="line"><span class="keyword">import</span> java.io.FileWriter;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BufferedWriterTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		FileWriter fw =<span class="keyword">null</span>;</span><br><span class="line">		BufferedWriter bw =<span class="keyword">null</span>;</span><br><span class="line">		FileReader fr = <span class="keyword">null</span>;</span><br><span class="line">		BufferedReader br =<span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			fw=<span class="keyword">new</span> FileWriter(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">			bw=<span class="keyword">new</span> BufferedWriter(fw);</span><br><span class="line">			<span class="comment">//写入信息</span></span><br><span class="line">			bw.write(<span class="string">"大家好！"</span>);</span><br><span class="line">			bw.write(<span class="string">"我正在学习BufferedWriter。"</span>);</span><br><span class="line">			bw.newLine();  <span class="comment">//插入换行符</span></span><br><span class="line">			bw.write(<span class="string">"请多多指教！"</span>);</span><br><span class="line">			bw.newLine();</span><br><span class="line">			bw.flush();  <span class="comment">//刷新缓冲区</span></span><br><span class="line">			fw.close();   <span class="comment">//关闭流</span></span><br><span class="line">			</span><br><span class="line">			<span class="comment">//读取文件内容</span></span><br><span class="line">			 fr = <span class="keyword">new</span> FileReader(<span class="string">"C:\\Users\\Lenovo\\Desktop\\hello.txt"</span>);</span><br><span class="line">			 br = <span class="keyword">new</span> BufferedReader(fr);</span><br><span class="line">			String line = br.readLine();</span><br><span class="line">			<span class="keyword">while</span> (line!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				System.out.println(line);</span><br><span class="line">				line=br.readLine();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			System.out.println(<span class="string">"文件不存在"</span>);</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (bw!= <span class="keyword">null</span>) &#123;</span><br><span class="line">					bw.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (br!= <span class="keyword">null</span>) &#123;</span><br><span class="line">					br.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (fr != <span class="keyword">null</span>) &#123;</span><br><span class="line">					fr.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、读写二进制文件（图片）"><a href="#五、读写二进制文件（图片）" class="headerlink" title="五、读写二进制文件（图片）"></a>五、读写二进制文件（图片）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.DataInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.DataOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">task4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		DataInputStream dis =<span class="keyword">null</span>;	</span><br><span class="line">		DataOutputStream out =<span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			FileInputStream fis =<span class="keyword">new</span> FileInputStream(<span class="string">"C:\\myFile\\top.bmp"</span>);</span><br><span class="line">			dis=<span class="keyword">new</span> DataInputStream(fis);</span><br><span class="line">			FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\myPicture.bmp"</span>);</span><br><span class="line">			out=<span class="keyword">new</span> DataOutputStream(fos);</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">int</span> num;</span><br><span class="line">			<span class="keyword">while</span> ((num=dis.read())!=-<span class="number">1</span>) &#123;</span><br><span class="line">				out.write(num);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (out != <span class="keyword">null</span>) &#123;</span><br><span class="line">					out.close();</span><br><span class="line">					&#125;</span><br><span class="line">				<span class="keyword">if</span> (dis != <span class="keyword">null</span>) &#123;</span><br><span class="line">					dis.close();</span><br><span class="line">				&#125;</span><br><span class="line">				&#125;<span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第十四章、XML与XML解析"><a href="#第十四章、XML与XML解析" class="headerlink" title="第十四章、XML与XML解析"></a>第十四章、XML与XML解析</h2><h3 id="一、XML（可扩展的标记语言）"><a href="#一、XML（可扩展的标记语言）" class="headerlink" title="一、XML（可扩展的标记语言）"></a>一、XML（可扩展的标记语言）</h3><h4 id="1、定义"><a href="#1、定义" class="headerlink" title="1、定义"></a>1、定义</h4><p>被设计用来传输和存储数据。</p>
+<p>①XML最基本、最主要的“功能”就是在文档中逐加标记，而标记的添加必须遵循一 定的规则。规则是标记必须成对出现</p>
+<p>②所使用的标记都是非预定义的，即用户自己定义的，只要遵循XML的标记命名规则，可以在文档内添加任何标记</p>
+<p>③对于自定义的标记，用户可以在文档内或外进行说明。XML对所使用的标记进行说明的部分称为DTD，即文档类型定义。DTD定义了用户使用的所有标记之间的逻辑关系和结构，一般这个有专门的，我们需要按这个规定来写。</p>
+<p>④XML文档的标记只描述文档的内容（文档的结构和意义），不描述其如何显示、输出等格式化信息</p>
+<h4 id="2、XML的作用"><a href="#2、XML的作用" class="headerlink" title="2、XML的作用"></a>2、XML的作用</h4><p>①不同系统平台间的信息互通</p>
+<p>②整合多种不同数据源的数据</p>
+<p>③平衡客户端和服务端的处理负荷</p>
+<p>④以灵活多变的方式显示数据</p>
+<p>⑤更精确的数据检索</p>
+<p>⑥更长的生命力、</p>
+<h3 id="二、解析XML"><a href="#二、解析XML" class="headerlink" title="二、解析XML"></a>二、解析XML</h3><p>XML解析方式分为四种：</p>
+<p>1、DOM解析（将XML文档转换成一个对象模型的集合，随机访问机制，但是一次性读取对内存消耗大，容易溢出）</p>
+<p>2、SAX解析（顺序访问模式，速度快，内存消耗小，但编码麻烦，很难同时访问XML文件中的多处不同数据）</p>
+<p>3、JDOM解析（仅使用工具类，不适用接口，使用了大量的Collections）</p>
+<p>4、DOM4J解析：JDOM的智能分支，合并了许多超出基本XML文档表示的功能，它使用接口和抽象基本类方法</p>
+<p>​                            性能优异、灵活性好、功能强大和极端易用，是一个开放源码的文件。所以了解这种即可</p>
+<p>步骤：1、导入DOM4J的包，并且build path</p>
+<p>​            2、创建XML文件，可以直接放在JAVA项目下，新建，其他，选择XML类型文件建立，然后点击source输入                要写的内容</p>
+<p>​            3、建立一个类，开始解析：</p>
+<p>​            ① 创建流对象，由Dom4j相关的jar提供SAXReader<br>​                SAXReader saxReader = new SAXReader();</p>
+<p>​            ②将文件和 file对象关联<br>​                File file = new File(“NewFile2.xml”);</p>
+<p>​            ③读取xml文件会 生成一个document文档对象(document类)</p>
+<p>​                Document document = saxReader.read(file);</p>
+<p>​            ④获取根节点元素（Element 类，通过实例可以调出其方法， root.getName（）可以获取根节点元素名                称）</p>
+<p>​                Element root = document.getRootElement();</p>
+<p>​            ⑤通过根节点元素获取子节点元素（是Element 类的elements()方法，返回的是一个列表）</p>
+<p>​                List<Element> elements = root.elements();</Element></p>
+<p>​            ⑥通过foreach遍历子节点元素，然后需要子节点下面的元素称为孙节点，可以先用是Element 类的                elements()方法获取孙节点，继续遍历，可以通过Element 类的getText()获取元素的文本</p>
+<p>​            </p>
+<h3 id="三、DOM4J解析代码示例"><a href="#三、DOM4J解析代码示例" class="headerlink" title="三、DOM4J解析代码示例"></a>三、DOM4J解析代码示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hc.xml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.dom4j.Document;</span><br><span class="line"><span class="keyword">import</span> org.dom4j.DocumentException;</span><br><span class="line"><span class="keyword">import</span> org.dom4j.Element;</span><br><span class="line"><span class="keyword">import</span> org.dom4j.io.SAXReader;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * dom4j解析xml</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 24541</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dom4jParseXmlDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 创建流对象，由Dom4j相关的jar提供</span></span><br><span class="line">			SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">			<span class="comment">// 将文件和 file对象关联</span></span><br><span class="line">			File file = <span class="keyword">new</span> File(<span class="string">"book.xml"</span>);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//读取xml文件会 生成一个document文档对象</span></span><br><span class="line">			Document document = saxReader.read(file);</span><br><span class="line">			<span class="comment">//获取根节点元素</span></span><br><span class="line">			Element root = document.getRootElement();</span><br><span class="line">			System.out.println(root.getName());</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//通过根节点元素获取子节点元素</span></span><br><span class="line">			List&lt;Element&gt; elements = root.elements();</span><br><span class="line">			<span class="comment">//遍历子节点</span></span><br><span class="line">			<span class="keyword">for</span> (Element element : elements) &#123;</span><br><span class="line">				System.out.println(<span class="string">"---------------------"</span>);</span><br><span class="line">				<span class="comment">//通过元素中 属性的键值，获取属性的值</span></span><br><span class="line">				System.out.println(element.attributeValue(<span class="string">"id"</span>));</span><br><span class="line">				<span class="comment">//获取孙节点元素</span></span><br><span class="line">				List&lt;Element&gt; childElements = element.elements();</span><br><span class="line">				<span class="keyword">for</span> (Element element2 : childElements) &#123;</span><br><span class="line">					<span class="comment">//获取元素的 文本</span></span><br><span class="line">					System.out.println(element2.getText());</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (DocumentException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第十六章、反射</p>
+<p>一、类对象</p>
+<p>Java中有个类，java.lang.Class类。这个类的对象，被称之为类对象。</p>
+<p>1、获取类对象</p>
+<p>三种方法：</p>
+<p>①类名.class</p>
+<p>例如：要获取Student类的类对象，Class c =Student.class，基本类型只能用这个方法来获取类对象，如：Class c = int.class</p>
+<p>②getClass()方法</p>
+<p>Object类中定义了getClass()方法，即获得对象的实际类型，对象的类的比较用“==”，这个方法的作用：通过类的对象获得类对象</p>
+<p>③Class.forName()方法</p>
+<p>forName是Class类的一个静态方法，，可以根据类名返回类对象。它的签名是</p>
+<p>public static Class forName(String className)throw ClasNotFoundException</p>
+<p>如果className不存在就声明异常，如果有，className需要带包名。如Class.forName(“java.util.ArrayList”)</p>
+<p>2、使用类对象获取类的信息</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getName()</td>
+<td>获得类的名称，包含包名</td>
+</tr>
+<tr>
+<td>getSimpleName()</td>
+<td>获得类的名称，不包括包名</td>
+</tr>
+<tr>
+<td>getSuperClass()</td>
+<td>获得本类的父类的类对象</td>
+</tr>
+<tr>
+<td>getInterfaces()</td>
+<td>获得本类所实现的所有接口的类对象，返回值类型为class[]</td>
+</tr>
+</tbody></table>
+<p>3、使用类对象获取类中方法的信息</p>
+<p>① public Method[] getDeclaredMethods() throws SecurityException</p>
+<p>返回的Method数组中，包括在本类中定义的所有方法，包括私有方法，但是不能获得父类中的任何方法</p>
+<p>②public Method[] getMethods() throws SecurityException</p>
+<p>返回的Method数组中，包括所有的公开方法，包括父类中定义的公开方法，但是私有方法不会被获取</p>
+<p>注解:</p>
+<p>SecurityException未检查异常，处理不处理皆可；</p>
+<p>Method类是java.lang.reflect包中定义的类，可以用getName()方法获取方法名，也可以直接调用Method对象的toString()方法直接返回方法的签名</p>
+<p>4、使用类对象创建类的对象</p>
+<p>①Class类的一个方法：newInstance()，能够通过类的无参构造方法创建一个对象</p>
+<p>​    如：Class c =Student.class;</p>
+<p>​            Student stu =(Student)c.newInstance();</p>
+<p>二、反射包</p>
+<p>以下的几个类都在java.lang.reflect这个反射包内</p>
+<p>1、FieId类</p>
+<p>封装了属性信息，一个File对象封装了一个属性的信息</p>
+<p>①获取特定属性</p>
+<p>先获取FieId对象，有两个方法,可以根据属性名获取FieIdduix </p>
+<p>1、FieId getDeclaredFieId(String name)</p>
+<p>只能获取本类属性，包括本类的非公开方法，不能获得父类的</p>
+<p>2、FieId getFieId(String name)</p>
+<p>可以获得本类的公开属性以及从父类继承到的公开属性，但无法包括非公开方法</p>
+<p>②修改、读取属性</p>
+<p>然后根据获得的FieId对象通过反射获取、修改属性的值</p>
+<p>先确认修改属性值的三要素：</p>
+<p>1、确定要修改哪一个对象的属性；</p>
+<p>2、确认要修改对象的哪一个属性；</p>
+<p>3、确认要修改的属性值</p>
+<p>然后通过FieId对象调用set方法</p>
+<p>public void set(Object obj,Object value)</p>
+<p>obj：表示要修改属性的对象</p>
+<p>value：表示修改后的属性值</p>
+<p>例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Student stu =<span class="keyword">new</span> Student();</span><br><span class="line">Class c = stu.getClass()；</span><br><span class="line">FieId nameFieId =c.getFieId(<span class="string">"name"</span>);</span><br><span class="line">nameFieId.set(stu,<span class="string">"tom"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2.2、私有属性</p>
+<p>上面是公开的属性获得方式，还可以获得私有的， 只需要在读取和修改前调用一个方法</p>
+<p>public void setAccessible(boolean flag)</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Student stu =<span class="keyword">new</span> <span class="constructor">Student()</span>;</span><br><span class="line">Class c = stu.get<span class="constructor">Class()</span>；</span><br><span class="line">FieId ageFieId =c.get<span class="constructor">DeclaredFieId(<span class="string">"age"</span>)</span>;</span><br><span class="line">ageFieId.set<span class="constructor">Accessible(<span class="params">true</span>)</span>;</span><br><span class="line">ageFieId.set(stu,<span class="keyword">new</span> <span class="constructor">Integer(18)</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2、Method类</p>
+<p>①获得特定方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getMethod</span><span class="params">(String name,Class[] parameterTypes)</span></span>;</span><br><span class="line">可以获得公开方法，包括父类的</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getDeclaredMethod</span><span class="params">(String name,Class[] parameterTypes)</span></span>;</span><br><span class="line">只能获得本类的方法，不包括父类，但是不限于公开的方法</span><br></pre></td></tr></table></figure>
+
+<p>name：表示方法名</p>
+<p>Class[] parameterTypes：代表参数列表的数组</p>
+<p>②利用反射，调用对象的方法</p>
+<p>先确认四要素：</p>
+<p>1、确认对哪个对象调用方法</p>
+<p>2、确认调用这个对象的哪个方法</p>
+<p>3、需要传入的实参</p>
+<p>4、方法可以有返回值</p>
+<p>先获得即将被调用的方法所对应的Method</p>
+<p>3、Constructor类</p>
+<p>三、反射的作用</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/13/My%20SQL%E7%AC%94%E8%AE%B0/" rel="prev" title="My SQL笔记">
+      <i class="fa fa-chevron-left"></i> My SQL笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/13/HTML5+CSS3%E7%AC%94%E8%AE%B0/" rel="next" title="HTML5+CSS3笔记">
+      HTML5+CSS3笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-抽象和封装"><span class="nav-number">1.</span> <span class="nav-text">第一章  抽象和封装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、面向对象"><span class="nav-number">1.1.</span> <span class="nav-text">一、面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、类（Class）和对象-Object"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、类（Class）和对象(Object)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、面向对象设计"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、面向对象设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、类图"><span class="nav-number">1.2.</span> <span class="nav-text">二、类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、构造方法和方法重载"><span class="nav-number">1.3.</span> <span class="nav-text">三、构造方法和方法重载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、构造方法-Constructor"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、构造方法(Constructor)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、构造方法的作用和特点"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、构造方法的作用和特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、构造方法的重载（Overload）"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、构造方法的重载（Overload）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、构造方法的作用域"><span class="nav-number">1.3.4.</span> <span class="nav-text">4、构造方法的作用域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、static关键字"><span class="nav-number">1.4.</span> <span class="nav-text">四、static关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、封装"><span class="nav-number">1.5.</span> <span class="nav-text">五、封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、this关键字"><span class="nav-number">1.6.</span> <span class="nav-text">六、this关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#七、笔记"><span class="nav-number">1.6.1.</span> <span class="nav-text">七、笔记</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-继承"><span class="nav-number">2.</span> <span class="nav-text">第二章   继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、继承（inheritance）"><span class="nav-number">2.1.</span> <span class="nav-text">一、继承（inheritance）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、语法"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、子类可以继承父类的哪些东西"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、子类可以继承父类的哪些东西</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、继承的特性"><span class="nav-number">2.1.3.</span> <span class="nav-text">3、继承的特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、子类重新父类方法（-Override）"><span class="nav-number">2.2.</span> <span class="nav-text">二、子类重新父类方法（@Override）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、继承关系的构造方法，super关键字"><span class="nav-number">2.3.</span> <span class="nav-text">三、继承关系的构造方法，super关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、super关键字介绍"><span class="nav-number">2.3.1.</span> <span class="nav-text">1、super关键字介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、继承关系中的构造方法"><span class="nav-number">2.3.2.</span> <span class="nav-text">2、继承关系中的构造方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、抽象类（abstract）"><span class="nav-number">2.4.</span> <span class="nav-text">四、抽象类（abstract）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、final修饰符"><span class="nav-number">2.5.</span> <span class="nav-text">五、final修饰符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-多态"><span class="nav-number">3.</span> <span class="nav-text">第三章  多态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、多态"><span class="nav-number">3.1.</span> <span class="nav-text">一、多态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、什么是多态"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、什么是多态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、为什么使用多态"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、为什么使用多态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、实现多态的3个条件"><span class="nav-number">3.1.3.</span> <span class="nav-text">3、实现多态的3个条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、父类引用变量和子类实例间的类型转换"><span class="nav-number">3.2.</span> <span class="nav-text">二、父类引用变量和子类实例间的类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、向上转型（upcasting）"><span class="nav-number">3.2.1.</span> <span class="nav-text">1、向上转型（upcasting）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、向下转型"><span class="nav-number">3.2.2.</span> <span class="nav-text">2、向下转型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、instanceof-运算符"><span class="nav-number">3.3.</span> <span class="nav-text">三、instanceof 运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、语法-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">1、语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、例子"><span class="nav-number">3.3.2.</span> <span class="nav-text">2、例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、多态的两种使用场景"><span class="nav-number">3.4.</span> <span class="nav-text">四、多态的两种使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、使用父类作为形参"><span class="nav-number">3.4.1.</span> <span class="nav-text">1、使用父类作为形参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用父类作为方法返回值"><span class="nav-number">3.4.2.</span> <span class="nav-text">2、使用父类作为方法返回值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-接口"><span class="nav-number">4.</span> <span class="nav-text">第四章 接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、接口"><span class="nav-number">4.1.</span> <span class="nav-text">一、接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、接口的作用"><span class="nav-number">4.1.1.</span> <span class="nav-text">1、接口的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、JAVA中接口的意思"><span class="nav-number">4.1.2.</span> <span class="nav-text">2、JAVA中接口的意思</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、语法"><span class="nav-number">4.1.3.</span> <span class="nav-text">3、语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、接口的特性"><span class="nav-number">4.2.</span> <span class="nav-text">二、接口的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、接口的具体表现"><span class="nav-number">4.3.</span> <span class="nav-text">三、接口的具体表现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、接口表示一种能力"><span class="nav-number">4.3.1.</span> <span class="nav-text">1、接口表示一种能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、接口表示一种约定"><span class="nav-number">4.3.2.</span> <span class="nav-text">2、接口表示一种约定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章-设计模式"><span class="nav-number">5.</span> <span class="nav-text">第五章 设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、设计模式"><span class="nav-number">5.1.</span> <span class="nav-text">一、设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、概念"><span class="nav-number">5.1.1.</span> <span class="nav-text">1、概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、种类"><span class="nav-number">5.1.2.</span> <span class="nav-text">2、种类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、作用与目的"><span class="nav-number">5.1.3.</span> <span class="nav-text">3、作用与目的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、设计模式七大原则"><span class="nav-number">5.2.</span> <span class="nav-text">二、设计模式七大原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、简单工厂模式（Simple-Factory）"><span class="nav-number">5.3.</span> <span class="nav-text">三、简单工厂模式（Simple Factory）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、工厂方法模式（Factory-Method）"><span class="nav-number">5.4.</span> <span class="nav-text">四、工厂方法模式（Factory Method）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、单例模式"><span class="nav-number">5.5.</span> <span class="nav-text">五、单例模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第六章、项目总结"><span class="nav-number">6.</span> <span class="nav-text">第六章、项目总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第七章-程序异常与log4j"><span class="nav-number">7.</span> <span class="nav-text">第七章  程序异常与log4j</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、异常的概念（Exception）"><span class="nav-number">7.1.</span> <span class="nav-text">一、异常的概念（Exception）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、异常处理"><span class="nav-number">7.2.</span> <span class="nav-text">二、异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、常见的异常类型"><span class="nav-number">7.2.1.</span> <span class="nav-text">1、常见的异常类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Java异常处理通过5个关键字来实现"><span class="nav-number">7.2.2.</span> <span class="nav-text">2、Java异常处理通过5个关键字来实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、对5个关键字的具体分析"><span class="nav-number">7.2.3.</span> <span class="nav-text">3、对5个关键字的具体分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、自己定义的异常类"><span class="nav-number">7.3.</span> <span class="nav-text">三、自己定义的异常类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、异常处理规则"><span class="nav-number">7.4.</span> <span class="nav-text">四、异常处理规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Log4j"><span class="nav-number">7.5.</span> <span class="nav-text">五、Log4j</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、日志及分类"><span class="nav-number">7.5.1.</span> <span class="nav-text">1、日志及分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、下载log4j的Jar文件"><span class="nav-number">7.5.2.</span> <span class="nav-text">2、下载log4j的Jar文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、log4j的构成"><span class="nav-number">7.5.3.</span> <span class="nav-text">3、log4j的构成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、怎么使用log4j记录日志"><span class="nav-number">7.5.4.</span> <span class="nav-text">4、怎么使用log4j记录日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、log4j配置文件"><span class="nav-number">7.5.5.</span> <span class="nav-text">5、log4j配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、定义输出级别和目的地"><span class="nav-number">7.5.5.1.</span> <span class="nav-text">1、定义输出级别和目的地</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、详细配置日志输出目的地-Appender"><span class="nav-number">7.5.5.2.</span> <span class="nav-text">2、详细配置日志输出目的地 Appender</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、然后针对每个Appender设置日志布局类型Layout"><span class="nav-number">7.5.5.3.</span> <span class="nav-text">3、然后针对每个Appender设置日志布局类型Layout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、最后如果是PattemLayout格式就自定义layout-ConversionPattern属性"><span class="nav-number">7.5.5.4.</span> <span class="nav-text">4、最后如果是PattemLayout格式就自定义layout.ConversionPattern属性</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第八章-集合框架"><span class="nav-number">8.</span> <span class="nav-text">第八章 集合框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、集合框架"><span class="nav-number">8.1.</span> <span class="nav-text">一、集合框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、概念-1"><span class="nav-number">8.1.1.</span> <span class="nav-text">1、概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、内容"><span class="nav-number">8.1.2.</span> <span class="nav-text">2、内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、List接口"><span class="nav-number">8.2.</span> <span class="nav-text">二、List接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、ArryList（数组列表）集合类"><span class="nav-number">8.2.1.</span> <span class="nav-text">1、ArryList（数组列表）集合类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、LinkedList（链表）集合类"><span class="nav-number">8.2.2.</span> <span class="nav-text">2、LinkedList（链表）集合类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Set接口"><span class="nav-number">8.3.</span> <span class="nav-text">三、Set接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Map接口"><span class="nav-number">8.4.</span> <span class="nav-text">四、Map接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Iterator迭代器"><span class="nav-number">8.5.</span> <span class="nav-text">五、Iterator迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、泛型（Generic）集合"><span class="nav-number">8.6.</span> <span class="nav-text">六、泛型（Generic）集合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第九章-使用JDBC访问MySQL数据库"><span class="nav-number"></span> <span class="nav-text">第九章 使用JDBC访问MySQL数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、JDBC简介"><span class="nav-number">0.1.</span> <span class="nav-text">一、JDBC简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、概念-2"><span class="nav-number">0.1.1.</span> <span class="nav-text">1、概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、JDBC-API"><span class="nav-number">0.1.2.</span> <span class="nav-text">2、JDBC API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、JDBC-DriverManager"><span class="nav-number">0.1.3.</span> <span class="nav-text">3、JDBC DriverManager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、JDBC驱动"><span class="nav-number">0.1.4.</span> <span class="nav-text">4、JDBC驱动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、JDBC工作步骤或模板"><span class="nav-number">0.2.</span> <span class="nav-text">二、JDBC工作步骤或模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、加载JDBC驱动"><span class="nav-number">0.2.1.</span> <span class="nav-text">1、加载JDBC驱动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、与数据库建立连接"><span class="nav-number">0.2.2.</span> <span class="nav-text">2、与数据库建立连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、发送SQL语句，并得到返回结果"><span class="nav-number">0.2.3.</span> <span class="nav-text">3、发送SQL语句，并得到返回结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、处理返回结果"><span class="nav-number">0.2.4.</span> <span class="nav-text">4、处理返回结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、释放资源"><span class="nav-number">0.2.5.</span> <span class="nav-text">5、释放资源</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Connection接口"><span class="nav-number">0.3.</span> <span class="nav-text">三、Connection接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、JDBC-ODBC桥连方式"><span class="nav-number">0.3.1.</span> <span class="nav-text">1、JDBC-ODBC桥连方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、纯Java方式连接数据库"><span class="nav-number">0.3.2.</span> <span class="nav-text">2、纯Java方式连接数据库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Statement接口和ResultSet接口"><span class="nav-number">0.4.</span> <span class="nav-text">四、Statement接口和ResultSet接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Statement接口"><span class="nav-number">0.4.1.</span> <span class="nav-text">1、Statement接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、ResultSet接口"><span class="nav-number">0.4.2.</span> <span class="nav-text">2、ResultSet接口</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、PreparedStatement接口"><span class="nav-number">0.5.</span> <span class="nav-text">五、PreparedStatement接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、使用PreparedStatement操作数据库的步骤"><span class="nav-number">0.5.1.</span> <span class="nav-text">1、使用PreparedStatement操作数据库的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①创建PreparedStatement对象"><span class="nav-number">0.5.1.1.</span> <span class="nav-text">①创建PreparedStatement对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②设置每个输入参数的值"><span class="nav-number">0.5.1.2.</span> <span class="nav-text">②设置每个输入参数的值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#③执行SQL语句"><span class="nav-number">0.5.1.3.</span> <span class="nav-text">③执行SQL语句</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十一章-数据库访问层"><span class="nav-number">1.</span> <span class="nav-text">第十一章  数据库访问层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、数据持久化"><span class="nav-number">1.1.</span> <span class="nav-text">一、数据持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、持久化"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、持久化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、DAO模式"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、DAO模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、分层开发"><span class="nav-number">1.2.</span> <span class="nav-text">二、分层开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、优势"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、原则"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、使用实体类传送数据"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、使用实体类传送数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十三章、-File-IO流"><span class="nav-number">2.</span> <span class="nav-text">第十三章、 File&#x2F;IO流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、File"><span class="nav-number">2.1.</span> <span class="nav-text">一、File</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、文件"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、java-io包"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、java.io包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、File"><span class="nav-number">2.1.3.</span> <span class="nav-text">3、File</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①创建File对象的语法："><span class="nav-number">2.1.3.1.</span> <span class="nav-text">①创建File对象的语法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②File常见方法"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">②File常见方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Java的流IO"><span class="nav-number">2.2.</span> <span class="nav-text">二、Java的流IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、读取文件"><span class="nav-number">2.3.</span> <span class="nav-text">三、读取文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、使用字节流读取文件（FileInputStream类是InputStream的子类）"><span class="nav-number">2.3.1.</span> <span class="nav-text">一、使用字节流读取文件（FileInputStream类是InputStream的子类）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、读取数据的常用方法"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">1、读取数据的常用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、使用FileInputStream读取文本文件的步骤"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">2、使用FileInputStream读取文本文件的步骤</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、使用Reader读取文本文件"><span class="nav-number">2.3.2.</span> <span class="nav-text">二、使用Reader读取文本文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、FileReader读文本文件"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">1、FileReader读文本文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、BufferReader读文件"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">2、BufferReader读文件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、写文件"><span class="nav-number">3.</span> <span class="nav-text">四、写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、使用OutputStream写文件"><span class="nav-number">3.1.</span> <span class="nav-text">1、使用OutputStream写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①方法"><span class="nav-number">3.1.0.1.</span> <span class="nav-text">①方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②步骤"><span class="nav-number">3.1.0.2.</span> <span class="nav-text">②步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、使用Writer写文件"><span class="nav-number">3.2.</span> <span class="nav-text">2、使用Writer写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用BufferedWriter"><span class="nav-number">3.2.1.</span> <span class="nav-text">2、使用BufferedWriter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、读写二进制文件（图片）"><span class="nav-number">4.</span> <span class="nav-text">五、读写二进制文件（图片）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十四章、XML与XML解析"><span class="nav-number">5.</span> <span class="nav-text">第十四章、XML与XML解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、XML（可扩展的标记语言）"><span class="nav-number">5.1.</span> <span class="nav-text">一、XML（可扩展的标记语言）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、定义"><span class="nav-number">5.1.1.</span> <span class="nav-text">1、定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、XML的作用"><span class="nav-number">5.1.2.</span> <span class="nav-text">2、XML的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、解析XML"><span class="nav-number">5.2.</span> <span class="nav-text">二、解析XML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、DOM4J解析代码示例"><span class="nav-number">5.3.</span> <span class="nav-text">三、DOM4J解析代码示例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

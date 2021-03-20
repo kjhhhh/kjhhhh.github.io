@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 循环结构 - for, while 及 do…while顺序结构的程序语句只能被执行一次。如果您想要同样的操作执行多次,，就需要使用循环结构。 Java中有三种主要的循环结构：  while 循环 do…while 循环 for 循环  在Java5中引入了一种主要用于数组的增强型for循环。  while 循环while是最基本的循环，它的结构为： 1while( 布尔表达式 ) &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java循环结构">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 循环结构 - for, while 及 do…while顺序结构的程序语句只能被执行一次。如果您想要同样的操作执行多次,，就需要使用循环结构。 Java中有三种主要的循环结构：  while 循环 do…while 循环 for 循环  在Java5中引入了一种主要用于数组的增强型for循环。  while 循环while是最基本的循环，它的结构为： 1while( 布尔表达式 ) &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-20T07:58:22.674Z">
+<meta property="article:modified_time" content="2021-03-20T08:00:19.048Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java循环结构 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java循环结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 15:58:22 / 修改时间：16:00:19" itemprop="dateCreated datePublished" datetime="2021-03-20T15:58:22+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-循环结构-for-while-及-do…while"><a href="#Java-循环结构-for-while-及-do…while" class="headerlink" title="Java 循环结构 - for, while 及 do…while"></a>Java 循环结构 - for, while 及 do…while</h1><p>顺序结构的程序语句只能被执行一次。如果您想要同样的操作执行多次,，就需要使用循环结构。</p>
+<p>Java中有三种主要的循环结构：</p>
+<ul>
+<li><strong>while</strong> 循环</li>
+<li><strong>do…while</strong> 循环</li>
+<li><strong>for</strong> 循环</li>
+</ul>
+<p>在Java5中引入了一种主要用于数组的增强型for循环。</p>
+<hr>
+<h2 id="while-循环"><a href="#while-循环" class="headerlink" title="while 循环"></a>while 循环</h2><p>while是最基本的循环，它的结构为：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">while</span><span class="params">( 布尔表达式 )</span></span> &#123;  <span class="comment">//循环内容 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>只要布尔表达式为 true，循环就会一直执行下去。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码："><a href="#Test-java-文件代码：" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> x = <span class="number">10</span>;</span><br><span class="line">      <span class="keyword">while</span>( x &lt; <span class="number">20</span> ) &#123;</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"value of x : "</span> + x );</span><br><span class="line">         x++;</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">value of x :</span> <span class="number">10</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">11</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">12</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">13</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">14</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">15</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">16</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">17</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">18</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="do…while-循环"><a href="#do…while-循环" class="headerlink" title="do…while 循环"></a>do…while 循环</h2><p>对于 while 语句而言，如果不满足条件，则不能进入循环。但有时候我们需要即使不满足条件，也至少执行一次。</p>
+<p>do…while 循环和 while 循环相似，不同的是，do…while 循环至少会执行一次。</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">       <span class="comment">//代码语句</span></span><br><span class="line">&#125;<span class="keyword">while</span>(布尔表达式);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>布尔表达式在循环体的后面，所以语句块在检测布尔表达式之前已经执行了。 如果布尔表达式的值为 true，则语句块一直执行，直到布尔表达式的值为 false。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码：-1"><a href="#Test-java-文件代码：-1" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123;</span><br><span class="line">      <span class="keyword">int</span> x = <span class="number">10</span>;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">do</span>&#123;</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"value of x : "</span> + x );</span><br><span class="line">         x++;</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;<span class="keyword">while</span>( x &lt; <span class="number">20</span> );</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">value of x :</span> <span class="number">10</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">11</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">12</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">13</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">14</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">15</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">16</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">17</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">18</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><p>虽然所有循环结构都可以用 while 或者 do…while表示，但 Java 提供了另一种语句 —— for 循环，使一些循环结构变得更加简单。</p>
+<p>for循环执行的次数是在执行前就确定的。语法格式如下：</p>
+<p>for(初始化; 布尔表达式; 更新) {    //代码语句 }</p>
+<p>关于 for 循环有以下几点说明：</p>
+<ul>
+<li>最先执行初始化步骤。可以声明一种类型，但可初始化一个或多个循环控制变量，也可以是空语句。</li>
+<li>然后，检测布尔表达式的值。如果为 true，循环体被执行。如果为false，循环终止，开始执行循环体后面的语句。</li>
+<li>执行一次循环后，更新循环控制变量。</li>
+<li>再次检测布尔表达式。循环执行上面的过程。</li>
+</ul>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码：-2"><a href="#Test-java-文件代码：-2" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">10</span>; x &lt; <span class="number">20</span>; x = x+<span class="number">1</span>) &#123;</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"value of x : "</span> + x );</span><br><span class="line">         System.out.<span class="built_in">print</span>(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">value of x :</span> <span class="number">10</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">11</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">12</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">13</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">14</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">15</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">16</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">17</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">18</span></span><br><span class="line"><span class="attr">value of x :</span> <span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Java-增强-for-循环"><a href="#Java-增强-for-循环" class="headerlink" title="Java 增强 for 循环"></a>Java 增强 for 循环</h2><p>Java5 引入了一种主要用于数组的增强型 for 循环。</p>
+<p>Java 增强 for 循环语法格式如下:</p>
+<p>for(声明语句 : 表达式) {   //代码句子 }</p>
+<p><strong>声明语句：</strong>声明新的局部变量，该变量的类型必须和数组元素的类型匹配。其作用域限定在循环语句块，其值与此时数组元素的值相等。</p>
+<p><strong>表达式：</strong>表达式是要访问的数组名，或者是返回值为数组的方法。</p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码：-3"><a href="#Test-java-文件代码：-3" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Test &#123;</span><br><span class="line">   <span class="built_in">public</span> static <span class="type">void</span> main(String args[])&#123;</span><br><span class="line">      <span class="type">int</span> [] numbers = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>&#125;;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">for</span>(<span class="type">int</span> x : numbers )&#123;</span><br><span class="line">         <span class="keyword">System</span>.<span class="keyword">out</span>.print( x );</span><br><span class="line">         <span class="keyword">System</span>.<span class="keyword">out</span>.print(",");</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">System</span>.<span class="keyword">out</span>.print("\n");</span><br><span class="line">      String [] names =&#123;"James", "Larry", "Tom", "Lacy"&#125;;</span><br><span class="line">      <span class="keyword">for</span>( String <span class="type">name</span> : names ) &#123;</span><br><span class="line">         <span class="keyword">System</span>.<span class="keyword">out</span>.print( <span class="type">name</span> );</span><br><span class="line">         <span class="keyword">System</span>.<span class="keyword">out</span>.print(",");</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>,<span class="number">50</span>,</span><br><span class="line">James,Larry,Tom,Lacy,</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="break-关键字"><a href="#break-关键字" class="headerlink" title="break 关键字"></a>break 关键字</h2><p>break 主要用在循环语句或者 switch 语句中，用来跳出整个语句块。</p>
+<p>break 跳出最里层的循环，并且继续执行该循环下面的语句。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>break 的用法很简单，就是循环结构中的一条语句：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码：-4"><a href="#Test-java-文件代码：-4" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[]) &#123;</span><br><span class="line">      <span class="built_in">int</span> [] numbers = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>&#125;;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">for</span>(<span class="built_in">int</span> x : numbers ) &#123;</span><br><span class="line">         <span class="comment">// x 等于 30 时跳出循环</span></span><br><span class="line">         <span class="keyword">if</span>( x == <span class="number">30</span> ) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         System.<span class="keyword">out</span>.print( x );</span><br><span class="line">         System.<span class="keyword">out</span>.print(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="continue-关键字"><a href="#continue-关键字" class="headerlink" title="continue 关键字"></a>continue 关键字</h2><p>continue 适用于任何循环控制结构中。作用是让程序立刻跳转到下一次循环的迭代。</p>
+<p>在 for 循环中，continue 语句使程序立即跳转到更新语句。</p>
+<p>在 while 或者 do…while 循环中，程序立即跳转到布尔表达式的判断语句。</p>
+<h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><p>continue 就是循环体中一条简单的语句：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件代码：-5"><a href="#Test-java-文件代码：-5" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[]) &#123;</span><br><span class="line">      <span class="built_in">int</span> [] numbers = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>&#125;;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">for</span>(<span class="built_in">int</span> x : numbers ) &#123;</span><br><span class="line">         <span class="keyword">if</span>( x == <span class="number">30</span> ) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         System.<span class="keyword">out</span>.print( x );</span><br><span class="line">         System.<span class="keyword">out</span>.print(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line"><span class="number">40</span></span><br><span class="line"><span class="number">50</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="prev" title="java运算符">
+      <i class="fa fa-chevron-left"></i> java运算符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/jaav%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5/" rel="next" title="java条件语句">
+      java条件语句 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-循环结构-for-while-及-do…while"><span class="nav-number">1.</span> <span class="nav-text">Java 循环结构 - for, while 及 do…while</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#while-循环"><span class="nav-number">1.1.</span> <span class="nav-text">while 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">1.1.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码："><span class="nav-number">1.2.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#do…while-循环"><span class="nav-number">1.3.</span> <span class="nav-text">do…while 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-1"><span class="nav-number">1.4.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for循环"><span class="nav-number">1.5.</span> <span class="nav-text">for循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-2"><span class="nav-number">1.5.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-2"><span class="nav-number">1.6.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-增强-for-循环"><span class="nav-number">1.7.</span> <span class="nav-text">Java 增强 for 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-3"><span class="nav-number">1.7.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-3"><span class="nav-number">1.8.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#break-关键字"><span class="nav-number">1.9.</span> <span class="nav-text">break 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">1.9.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-4"><span class="nav-number">1.9.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-4"><span class="nav-number">1.10.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#continue-关键字"><span class="nav-number">1.11.</span> <span class="nav-text">continue 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-1"><span class="nav-number">1.11.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-5"><span class="nav-number">1.11.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-5"><span class="nav-number">1.12.</span> <span class="nav-text">Test.java 文件代码：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 流(Stream)、文件(File)和IOJava.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。 Java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。 一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。 Java 为 I&#x2F;O 提供了强大的而灵活的支持，使其更广泛地应用到文件传输和网络编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java流(Stream)、文件(File)和IO">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 流(Stream)、文件(File)和IOJava.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。 Java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。 一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。 Java 为 I&#x2F;O 提供了强大的而灵活的支持，使其更广泛地应用到文件传输和网络编">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/iostream2xx.png">
+<meta property="article:published_time" content="2021-03-20T08:37:43.806Z">
+<meta property="article:modified_time" content="2021-03-20T08:43:10.553Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/iostream2xx.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java流(Stream)、文件(File)和IO | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java流(Stream)、文件(File)和IO
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 16:37:43 / 修改时间：16:43:10" itemprop="dateCreated datePublished" datetime="2021-03-20T16:37:43+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-流-Stream-、文件-File-和IO"><a href="#Java-流-Stream-、文件-File-和IO" class="headerlink" title="Java 流(Stream)、文件(File)和IO"></a>Java 流(Stream)、文件(File)和IO</h1><p>Java.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。</p>
+<p>Java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。</p>
+<p>一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。</p>
+<p>Java 为 I/O 提供了强大的而灵活的支持，使其更广泛地应用到文件传输和网络编程中。</p>
+<p>但本节讲述最基本的和流与 I/O 相关的功能。我们将通过一个个例子来学习这些功能。</p>
+<hr>
+<h2 id="读取控制台输入"><a href="#读取控制台输入" class="headerlink" title="读取控制台输入"></a>读取控制台输入</h2><p>Java 的控制台输入由 System.in 完成。</p>
+<p>为了获得一个绑定到控制台的字符流，你可以把 System.in 包装在一个 BufferedReader 对象中来创建一个字符流。</p>
+<p>下面是创建 BufferedReader 的基本语法：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader br = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span>                       <span class="type">InputStreamReader</span>(System.<span class="keyword">in</span>));</span><br></pre></td></tr></table></figure>
+
+<p>BufferedReader 对象创建后，我们便可以使用 read() 方法从控制台读取一个字符，或者用 readLine() 方法读取一个字符串。</p>
+<hr>
+<h2 id="从控制台读取多字符输入"><a href="#从控制台读取多字符输入" class="headerlink" title="从控制台读取多字符输入"></a>从控制台读取多字符输入</h2><p>从 BufferedReader 对象读取一个字符要使用 read() 方法，它的语法如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="keyword">read</span>( ) <span class="keyword">throws</span> IOException</span><br></pre></td></tr></table></figure>
+
+<p>每次调用 read() 方法，它从输入流读取一个字符并把该字符作为整数值返回。 当流结束的时候返回 -1。该方法抛出 IOException。</p>
+<p>下面的程序示范了用 read() 方法从控制台不断读取字符直到用户输入 <strong>q</strong>。</p>
+<h2 id="BRRead-java-文件代码："><a href="#BRRead-java-文件代码：" class="headerlink" title="BRRead.java 文件代码："></a>BRRead.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 BufferedReader 在控制台读取字符</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BRRead</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> c;</span><br><span class="line">        <span class="comment">// 使用 System.in 创建 BufferedReader</span></span><br><span class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"输入字符, 按下 'q' 键退出。"</span>);</span><br><span class="line">        <span class="comment">// 读取字符</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            c = (<span class="keyword">char</span>) br.<span class="built_in">read</span>();</span><br><span class="line">            System.out.<span class="built_in">println</span>(c);</span><br><span class="line">        &#125; <span class="keyword">while</span> (c != <span class="string">'q'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">输入字符, 按下 <span class="string">'q'</span> 键退出。</span><br><span class="line">runoob</span><br><span class="line">r</span><br><span class="line">u</span><br><span class="line">n</span><br><span class="line">o</span><br><span class="line">o</span><br><span class="line">b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q</span><br><span class="line">q</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="从控制台读取字符串"><a href="#从控制台读取字符串" class="headerlink" title="从控制台读取字符串"></a>从控制台读取字符串</h2><p>从标准输入读取一个字符串需要使用 BufferedReader 的 readLine() 方法。</p>
+<p>它的一般格式是：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> readLine( ) <span class="keyword">throws</span> IOException</span><br></pre></td></tr></table></figure>
+
+<p>下面的程序读取和显示字符行直到你输入了单词”end”。</p>
+<h2 id="BRReadLines-java-文件代码："><a href="#BRReadLines-java-文件代码：" class="headerlink" title="BRReadLines.java 文件代码："></a>BRReadLines.java 文件代码：</h2><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 BufferedReader 在控制台读取字符</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> class BRReadLines &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 使用 System.in 创建 BufferedReader</span></span><br><span class="line">        <span class="keyword">BufferedReader</span> br = <span class="keyword">new</span> <span class="keyword">BufferedReader</span>(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">        <span class="keyword">String</span> <span class="built_in">str</span>;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Enter lines of text."</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Enter 'end' to quit."</span>);</span><br><span class="line">        do &#123;</span><br><span class="line">            <span class="built_in">str</span> = br.readLine();</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="built_in">str</span>);</span><br><span class="line">        &#125; <span class="keyword">while</span> (!<span class="built_in">str</span>.equals(<span class="string">"end"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Enter <span class="keyword">lines</span> <span class="keyword">of</span> <span class="keyword">text</span>.</span><br><span class="line">Enter <span class="string">'end'</span> <span class="built_in">to</span> quit.</span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">one</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">one</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">two</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">two</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>JDK 5 后的版本我们也可以使用 <a href="https://www.runoob.com/java/java-scanner-class.html" target="_blank" rel="noopener">Java Scanner</a> 类来获取控制台的输入。</p>
+</blockquote>
+<h2 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h2><p>在此前已经介绍过，控制台的输出由 print( ) 和 println() 完成。这些方法都由类 PrintStream 定义，System.out 是该类对象的一个引用。</p>
+<p>PrintStream 继承了 OutputStream类，并且实现了方法 write()。这样，write() 也可以用来往控制台写操作。</p>
+<p>PrintStream 定义 write() 的最简单格式如下所示：</p>
+<p>void write(int byteval)</p>
+<p>该方法将 byteval 的低八位字节写到流中。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面的例子用 write() 把字符 “A” 和紧跟着的换行符输出到屏幕：</p>
+<h2 id="WriteDemo-java-文件代码："><a href="#WriteDemo-java-文件代码：" class="headerlink" title="WriteDemo.java 文件代码："></a>WriteDemo.java 文件代码：</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line">//演示 <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>().</span><br><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> WriteDemo &#123;</span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line">        <span class="type">int</span> b;</span><br><span class="line">        b = <span class="string">'A'</span>;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>(b);</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>(<span class="string">'\n'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>System.out.write(‘\n’);    } }</p>
+<p>运行以上实例在输出窗口输出 “A” 字符</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">A</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>write() 方法不经常使用，因为 print() 和 println() 方法用起来更为方便。</p>
+<hr>
+<h2 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h2><p>如前所述，一个流被定义为一个数据序列。输入流用于从源读取数据，输出流用于向目标写数据。</p>
+<p>下图是一个描述输入流和输出流的类层次图。</p>
+<p><img src="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/iostream2xx.png" alt="img"></p>
+<p>下面将要讨论的两个重要的流是 FileInputStream 和 FileOutputStream：</p>
+<hr>
+<h2 id="FileInputStream"><a href="#FileInputStream" class="headerlink" title="FileInputStream"></a>FileInputStream</h2><p>该流用于从文件读取数据，它的对象可以用关键字 new 来创建。</p>
+<p>有多种构造方法可用来创建对象。</p>
+<p>可以使用字符串类型的文件名来创建一个输入流对象来读取文件：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">InputStream f</span> = new FileInputStream(<span class="string">"C:/java/hello"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用一个文件对象来创建一个输入流对象来读取文件。我们首先得使用 File() 方法来创建一个文件对象：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File f = <span class="keyword">new</span> <span class="constructor">File(<span class="string">"C:/java/hello"</span>)</span>; </span><br><span class="line">InputStream out = <span class="keyword">new</span> <span class="constructor">FileInputStream(<span class="params">f</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>创建了InputStream对象，就可以使用下面的方法来读取流或者进行其他的流操作。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>序号</strong></th>
+<th align="left"><strong>方法及描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><strong>public void close() throws IOException{}</strong> 关闭此文件输入流并释放与此流有关的所有系统资源。抛出IOException异常。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>protected void finalize()throws IOException {}</strong> 这个方法清除与该文件的连接。确保在不再引用文件输入流时调用其 close 方法。抛出IOException异常。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>public int read(int r)throws IOException{}</strong> 这个方法从 InputStream 对象读取指定字节的数据。返回为整数值。返回下一字节数据，如果已经到结尾则返回-1。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>public int read(byte[] r) throws IOException{}</strong> 这个方法从输入流读取r.length长度的字节。返回读取的字节数。如果是文件结尾则返回-1。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>public int available() throws IOException{}</strong> 返回下一次对此输入流调用的方法可以不受阻塞地从此输入流读取的字节数。返回一个整数值。</td>
+</tr>
+</tbody></table>
+<p>除了 InputStream 外，还有一些其他的输入流，更多的细节参考下面链接：</p>
+<ul>
+<li><a href="https://www.runoob.com/java/java-bytearrayinputstream.html" target="_blank" rel="noopener">ByteArrayInputStream</a></li>
+<li><a href="https://www.runoob.com/java/java-datainputstream.html" target="_blank" rel="noopener">DataInputStream</a></li>
+</ul>
+<hr>
+<h2 id="FileOutputStream"><a href="#FileOutputStream" class="headerlink" title="FileOutputStream"></a>FileOutputStream</h2><p>该类用来创建一个文件并向文件中写数据。</p>
+<p>如果该流在打开文件进行输出前，目标文件不存在，那么该流会创建该文件。</p>
+<p>有两个构造方法可以用来创建 FileOutputStream 对象。</p>
+<p>使用字符串类型的文件名来创建一个输出流对象：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream f = <span class="keyword">new</span> <span class="type">FileOutputStream</span>(<span class="string">"C:/java/hello"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用一个文件对象来创建一个输出流来写文件。我们首先得使用File()方法来创建一个文件对象：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File f = <span class="keyword">new</span> <span class="constructor">File(<span class="string">"C:/java/hello"</span>)</span>; </span><br><span class="line">OutputStream f = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="params">f</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>创建OutputStream 对象完成后，就可以使用下面的方法来写入流或者进行其他的流操作。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>序号</strong></th>
+<th align="left"><strong>方法及描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><strong>public void close() throws IOException{}</strong> 关闭此文件输入流并释放与此流有关的所有系统资源。抛出IOException异常。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>protected void finalize()throws IOException {}</strong> 这个方法清除与该文件的连接。确保在不再引用文件输入流时调用其 close 方法。抛出IOException异常。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>public void write(int w)throws IOException{}</strong> 这个方法把指定的字节写到输出流中。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>public void write(byte[] w)</strong> 把指定数组中w.length长度的字节写到OutputStream中。</td>
+</tr>
+</tbody></table>
+<p>除了OutputStream外，还有一些其他的输出流，更多的细节参考下面链接：</p>
+<ul>
+<li><a href="https://www.runoob.com/java/java-bytearrayoutputstream.html" target="_blank" rel="noopener">ByteArrayOutputStream</a></li>
+<li><a href="https://www.runoob.com/java/java-dataoutputstream.html" target="_blank" rel="noopener">DataOutputStream</a></li>
+</ul>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>下面是一个演示 InputStream 和 OutputStream 用法的例子：</p>
+<h2 id="fileStreamTest-java-文件代码："><a href="#fileStreamTest-java-文件代码：" class="headerlink" title="fileStreamTest.java 文件代码："></a>fileStreamTest.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">fileStreamTest</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">byte</span> bWrite[] = &#123; <span class="number">11</span>, <span class="number">21</span>, <span class="number">3</span>, <span class="number">40</span>, <span class="number">5</span> &#125;;</span><br><span class="line">            OutputStream os = <span class="keyword">new</span> FileOutputStream(<span class="string">"test.txt"</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; bWrite.length; x++) &#123;</span><br><span class="line">                os.<span class="built_in">write</span>(bWrite[x]); <span class="comment">// writes the bytes</span></span><br><span class="line">            &#125;</span><br><span class="line">            os.<span class="built_in">close</span>();</span><br><span class="line"> </span><br><span class="line">            InputStream is = <span class="keyword">new</span> FileInputStream(<span class="string">"test.txt"</span>);</span><br><span class="line">            <span class="keyword">int</span> <span class="built_in">size</span> = is.<span class="built_in">available</span>();</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">size</span>; i++) &#123;</span><br><span class="line">                System.out.<span class="built_in">print</span>((<span class="keyword">char</span>) is.<span class="built_in">read</span>() + <span class="string">"  "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            is.<span class="built_in">close</span>();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            System.out.<span class="built_in">print</span>(<span class="string">"Exception"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的程序首先创建文件test.txt，并把给定的数字以二进制形式写进该文件，同时输出到控制台上。</p>
+<p>以上代码由于是二进制写入，可能存在乱码，你可以使用以下代码实例来解决乱码问题：</p>
+<h2 id="fileStreamTest2-java-文件代码："><a href="#fileStreamTest2-java-文件代码：" class="headerlink" title="fileStreamTest2.java 文件代码："></a>fileStreamTest2.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件名 :fileStreamTest2.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">fileStreamTest2</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line"> </span><br><span class="line">        <span class="built_in">File</span> f = <span class="keyword">new</span> <span class="built_in">File</span>(<span class="string">"a.txt"</span>);</span><br><span class="line">        FileOutputStream fop = <span class="keyword">new</span> FileOutputStream(f);</span><br><span class="line">        <span class="comment">// 构建FileOutputStream对象,文件不存在会自动新建</span></span><br><span class="line"> </span><br><span class="line">        OutputStreamWriter writer = <span class="keyword">new</span> OutputStreamWriter(fop, <span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="comment">// 构建OutputStreamWriter对象,参数可以指定编码,默认为操作系统默认编码,windows上是gbk</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"中文输入"</span>);</span><br><span class="line">        <span class="comment">// 写入到缓冲区</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"\r\n"</span>);</span><br><span class="line">        <span class="comment">// 换行</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"English"</span>);</span><br><span class="line">        <span class="comment">// 刷新缓存冲,写入到文件,如果下面已经没有写入的内容了,直接close也会写入</span></span><br><span class="line"> </span><br><span class="line">        writer.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭写入流,同时会把缓冲区内容写入文件,所以上面的注释掉</span></span><br><span class="line"> </span><br><span class="line">        fop.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭输出流,释放系统资源</span></span><br><span class="line"> </span><br><span class="line">        FileInputStream fip = <span class="keyword">new</span> FileInputStream(f);</span><br><span class="line">        <span class="comment">// 构建FileInputStream对象</span></span><br><span class="line"> </span><br><span class="line">        InputStreamReader reader = <span class="keyword">new</span> InputStreamReader(fip, <span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="comment">// 构建InputStreamReader对象,编码与写入相同</span></span><br><span class="line"> </span><br><span class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">while</span> (reader.<span class="built_in">ready</span>()) &#123;</span><br><span class="line">            sb.append((<span class="keyword">char</span>) reader.<span class="built_in">read</span>());</span><br><span class="line">            <span class="comment">// 转成char加到StringBuffer对象中</span></span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(sb.toString());</span><br><span class="line">        reader.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭读取流</span></span><br><span class="line"> </span><br><span class="line">        fip.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭输入流,释放系统资源</span></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="文件和I-O"><a href="#文件和I-O" class="headerlink" title="文件和I/O"></a>文件和I/O</h2><p>还有一些关于文件和I/O的类，我们也需要知道：</p>
+<ul>
+<li><a href="https://www.runoob.com/java/java-file.html" target="_blank" rel="noopener">File Class(类)</a></li>
+<li><a href="https://www.runoob.com/java/java-filereader.html" target="_blank" rel="noopener">FileReader Class(类)</a></li>
+<li><a href="https://www.runoob.com/java/java-filewriter.html" target="_blank" rel="noopener">FileWriter Class(类)</a></li>
+</ul>
+<hr>
+<h2 id="Java中的目录"><a href="#Java中的目录" class="headerlink" title="Java中的目录"></a>Java中的目录</h2><h3 id="创建目录："><a href="#创建目录：" class="headerlink" title="创建目录："></a>创建目录：</h3><p>File类中有两个方法可以用来创建文件夹：</p>
+<ul>
+<li><strong>mkdir( )</strong>方法创建一个文件夹，成功则返回true，失败则返回false。失败表明File对象指定的路径已经存在，或者由于整个路径还不存在，该文件夹不能被创建。</li>
+<li><strong>mkdirs()</strong>方法创建一个文件夹和它的所有父文件夹。</li>
+</ul>
+<p>下面的例子创建 “/tmp/user/java/bin”文件夹：</p>
+<h2 id="CreateDir-java-文件代码："><a href="#CreateDir-java-文件代码：" class="headerlink" title="CreateDir.java 文件代码："></a>CreateDir.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CreateDir</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">String</span> dirname = <span class="string">"/tmp/user/java/bin"</span>;</span><br><span class="line">        <span class="built_in">File</span> d = <span class="keyword">new</span> <span class="built_in">File</span>(dirname);</span><br><span class="line">        <span class="comment">// 现在创建目录</span></span><br><span class="line">        d.mkdirs();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译并执行上面代码来创建目录 “/tmp/user/java/bin”。</p>
+<p><strong>注意：</strong> Java 在 UNIX 和 Windows 自动按约定分辨文件路径分隔符。如果你在 Windows 版本的 Java 中使用分隔符 (/) ，路径依然能够被正确解析。</p>
+<hr>
+<h2 id="读取目录"><a href="#读取目录" class="headerlink" title="读取目录"></a>读取目录</h2><p>一个目录其实就是一个 File 对象，它包含其他文件和文件夹。</p>
+<p>如果创建一个 File 对象并且它是一个目录，那么调用 isDirectory() 方法会返回 true。</p>
+<p>可以通过调用该对象上的 list() 方法，来提取它包含的文件和文件夹的列表。</p>
+<p>下面展示的例子说明如何使用 list() 方法来检查一个文件夹中包含的内容：</p>
+<h2 id="DirList-java-文件代码："><a href="#DirList-java-文件代码：" class="headerlink" title="DirList.java 文件代码："></a>DirList.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DirList</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">String</span> dirname = <span class="string">"/tmp"</span>;</span><br><span class="line">        <span class="built_in">File</span> f1 = <span class="keyword">new</span> <span class="built_in">File</span>(dirname);</span><br><span class="line">        <span class="keyword">if</span> (f1.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"目录 "</span> + dirname);</span><br><span class="line">            <span class="keyword">String</span> s[] = f1.<span class="built_in">list</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length; i++) &#123;</span><br><span class="line">                <span class="built_in">File</span> f = <span class="keyword">new</span> <span class="built_in">File</span>(dirname + <span class="string">"/"</span> + s[i]);</span><br><span class="line">                <span class="keyword">if</span> (f.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">                    System.out.<span class="built_in">println</span>(s[i] + <span class="string">" 是一个目录"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.<span class="built_in">println</span>(s[i] + <span class="string">" 是一个文件"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(dirname + <span class="string">" 不是一个目录"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">目录 /tmp</span><br><span class="line">bin 是一个目录</span><br><span class="line"><span class="class"><span class="keyword">lib</span> 是一个目录</span></span><br><span class="line">demo 是一个目录</span><br><span class="line">test.txt 是一个文件</span><br><span class="line">README 是一个文件</span><br><span class="line">index.html 是一个文件</span><br><span class="line"><span class="keyword">include</span> 是一个目录</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="删除目录或文件"><a href="#删除目录或文件" class="headerlink" title="删除目录或文件"></a>删除目录或文件</h2><p>删除文件可以使用 <strong>java.io.File.delete()</strong> 方法。</p>
+<p>以下代码会删除目录 <strong>/tmp/java/</strong>，需要注意的是当删除某一目录时，必须保证该目录下没有其他文件才能正确删除，否则将删除失败。</p>
+<p>测试目录结构：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/java/</span><br><span class="line"><span class="string">|-- 1.log</span></span><br><span class="line"><span class="string">|-- test</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="DeleteFileDemo-java-文件代码："><a href="#DeleteFileDemo-java-文件代码：" class="headerlink" title="DeleteFileDemo.java 文件代码："></a>DeleteFileDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeleteFileDemo</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里修改为自己的测试目录</span></span><br><span class="line">        <span class="built_in">File</span> folder = <span class="keyword">new</span> <span class="built_in">File</span>(<span class="string">"/tmp/java/"</span>);</span><br><span class="line">        deleteFolder(folder);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 删除文件及目录</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleteFolder</span><span class="params">(<span class="built_in">File</span> folder)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">File</span>[] files = folder.listFiles();</span><br><span class="line">        <span class="keyword">if</span> (files != null) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">File</span> f : files) &#123;</span><br><span class="line">                <span class="keyword">if</span> (f.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">                    deleteFolder(f);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    f.<span class="keyword">delete</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        folder.<span class="keyword">delete</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E6%96%B9%E6%B3%95/" rel="prev" title="java方法">
+      <i class="fa fa-chevron-left"></i> java方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/javaScanner%E7%B1%BB/" rel="next" title="javaScanner类">
+      javaScanner类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-流-Stream-、文件-File-和IO"><span class="nav-number">1.</span> <span class="nav-text">Java 流(Stream)、文件(File)和IO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取控制台输入"><span class="nav-number">1.1.</span> <span class="nav-text">读取控制台输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从控制台读取多字符输入"><span class="nav-number">1.2.</span> <span class="nav-text">从控制台读取多字符输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BRRead-java-文件代码："><span class="nav-number">1.3.</span> <span class="nav-text">BRRead.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从控制台读取字符串"><span class="nav-number">1.4.</span> <span class="nav-text">从控制台读取字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BRReadLines-java-文件代码："><span class="nav-number">1.5.</span> <span class="nav-text">BRReadLines.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制台输出"><span class="nav-number">1.6.</span> <span class="nav-text">控制台输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">1.6.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WriteDemo-java-文件代码："><span class="nav-number">1.7.</span> <span class="nav-text">WriteDemo.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读写文件"><span class="nav-number">1.8.</span> <span class="nav-text">读写文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FileInputStream"><span class="nav-number">1.9.</span> <span class="nav-text">FileInputStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FileOutputStream"><span class="nav-number">1.10.</span> <span class="nav-text">FileOutputStream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">1.10.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fileStreamTest-java-文件代码："><span class="nav-number">1.11.</span> <span class="nav-text">fileStreamTest.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fileStreamTest2-java-文件代码："><span class="nav-number">1.12.</span> <span class="nav-text">fileStreamTest2.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和I-O"><span class="nav-number">1.13.</span> <span class="nav-text">文件和I&#x2F;O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java中的目录"><span class="nav-number">1.14.</span> <span class="nav-text">Java中的目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建目录："><span class="nav-number">1.14.1.</span> <span class="nav-text">创建目录：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CreateDir-java-文件代码："><span class="nav-number">1.15.</span> <span class="nav-text">CreateDir.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取目录"><span class="nav-number">1.16.</span> <span class="nav-text">读取目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DirList-java-文件代码："><span class="nav-number">1.17.</span> <span class="nav-text">DirList.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除目录或文件"><span class="nav-number">1.18.</span> <span class="nav-text">删除目录或文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DeleteFileDemo-java-文件代码："><span class="nav-number">1.19.</span> <span class="nav-text">DeleteFileDemo.java 文件代码：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

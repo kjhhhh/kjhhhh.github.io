@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java Number &amp; Math 类一般地，当需要使用数字的时候，我们通常使用内置数据类型，如：byte、int、long、double 等。 实例123int a &#x3D; 5000;float b &#x3D; 13.65f;byte c &#x3D; 0x4a;  然而，在实际开发过程中，我们经常会遇到需要使用对象，而不是内置数据类型的情形。为了解决这个问题，Java 语言为每一个内置数据类型提供了对应的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaNumber和Math类">
+<meta property="og:url" content="http://yoursite.com/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java Number &amp; Math 类一般地，当需要使用数字的时候，我们通常使用内置数据类型，如：byte、int、long、double 等。 实例123int a &#x3D; 5000;float b &#x3D; 13.65f;byte c &#x3D; 0x4a;  然而，在实际开发过程中，我们经常会遇到需要使用对象，而不是内置数据类型的情形。为了解决这个问题，Java 语言为每一个内置数据类型提供了对应的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/OOP_WrapperClass.png">
+<meta property="article:published_time" content="2021-03-20T08:04:20.714Z">
+<meta property="article:modified_time" content="2021-03-20T08:09:16.987Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/OOP_WrapperClass.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>javaNumber和Math类 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          javaNumber和Math类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-20 16:04:20 / 修改时间：16:09:16" itemprop="dateCreated datePublished" datetime="2021-03-20T16:04:20+08:00">2021-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-Number-amp-Math-类"><a href="#Java-Number-amp-Math-类" class="headerlink" title="Java Number &amp; Math 类"></a>Java Number &amp; Math 类</h1><p>一般地，当需要使用数字的时候，我们通常使用内置数据类型，如：<strong>byte、int、long、double</strong> 等。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> a = <span class="number">5000</span>;</span><br><span class="line"><span class="built_in">float</span> b = <span class="number">13.65f</span>;</span><br><span class="line">byte c = <span class="number">0x4a</span>;</span><br></pre></td></tr></table></figure>
+
+<p>然而，在实际开发过程中，我们经常会遇到需要使用对象，而不是内置数据类型的情形。为了解决这个问题，Java 语言为每一个内置数据类型提供了对应的包装类。</p>
+<p>所有的包装类<strong>（Integer、Long、Byte、Double、Float、Short）</strong>都是抽象类 Number 的子类。</p>
+<table>
+<thead>
+<tr>
+<th align="left">包装类</th>
+<th align="left">基本数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Boolean</td>
+<td align="left">boolean</td>
+</tr>
+<tr>
+<td align="left">Byte</td>
+<td align="left">byte</td>
+</tr>
+<tr>
+<td align="left">Short</td>
+<td align="left">short</td>
+</tr>
+<tr>
+<td align="left">Integer</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">Long</td>
+<td align="left">long</td>
+</tr>
+<tr>
+<td align="left">Character</td>
+<td align="left">char</td>
+</tr>
+<tr>
+<td align="left">Float</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">Double</td>
+<td align="left">double</td>
+</tr>
+</tbody></table>
+<p><img src="/2021/03/20/javanumber%E5%92%8Cmath%E7%B1%BB/OOP_WrapperClass.png" alt="Java Number类"></p>
+<p>这种由编译器特别支持的包装称为装箱，所以当内置数据类型被当作对象使用的时候，编译器会把内置类型装箱为包装类。相似的，编译器也可以把一个对象拆箱为内置类型。Number 类属于 java.lang 包。</p>
+<p>下面是一个使用 Integer 对象的实例：</p>
+<h2 id="Test-java-文件代码："><a href="#Test-java-文件代码：" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123;</span><br><span class="line">      Integer x = <span class="number">5</span>;</span><br><span class="line">      x =  x + <span class="number">10</span>;</span><br><span class="line">      System.<span class="keyword">out</span>.println(x); </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<p>当 x 被赋为整型值时，由于x是一个对象，所以编译器要对x进行装箱。然后，为了使x能进行加运算，所以要对x进行拆箱。</p>
+<hr>
+<h2 id="Java-Math-类"><a href="#Java-Math-类" class="headerlink" title="Java Math 类"></a>Java Math 类</h2><p>Java 的 Math 包含了用于执行基本数学运算的属性和方法，如初等指数、对数、平方根和三角函数。</p>
+<p>Math 的方法都被定义为 static 形式，通过 Math 类可以在主函数中直接调用。</p>
+<h2 id="Test-java-文件代码：-1"><a href="#Test-java-文件代码：-1" class="headerlink" title="Test.java 文件代码："></a>Test.java 文件代码：</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">class</span> Test &#123;  </span><br><span class="line">    public static void main (String <span class="literal">[]</span>args)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"90 度的正弦值："</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>sin(Math.PI/<span class="number">2</span>));  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"0度的余弦值："</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>cos(<span class="number">0</span>));  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"60度的正切值："</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>tan(Math.PI/<span class="number">3</span>));  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"1的反正切值： "</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>atan(<span class="number">1</span>));  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"π/2的角度值："</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span><span class="keyword">to</span><span class="constructor">Degrees(Math.PI<span class="operator">/</span>2)</span>);  </span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(Math.PI);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">90</span> 度的正弦值：<span class="number">1.0</span></span><br><span class="line"><span class="number">0</span>度的余弦值：<span class="number">1.0</span></span><br><span class="line"><span class="number">60</span>度的正切值：<span class="number">1.7320508075688767</span></span><br><span class="line"><span class="number">1</span>的反正切值： <span class="number">0.7853981633974483</span></span><br><span class="line">π/<span class="number">2</span>的角度值：<span class="number">90.0</span></span><br><span class="line"><span class="number">3.141592653589793</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Number-amp-Math-类方法"><a href="#Number-amp-Math-类方法" class="headerlink" title="Number &amp; Math 类方法"></a>Number &amp; Math 类方法</h2><p>下面的表中列出的是 Number &amp; Math 类常用的一些方法：</p>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">方法与描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><a href="https://www.runoob.com/java/number-xxxvalue.html" target="_blank" rel="noopener">xxxValue()</a> 将 Number 对象转换为xxx数据类型的值并返回。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><a href="https://www.runoob.com/java/number-compareto.html" target="_blank" rel="noopener">compareTo()</a> 将number对象与参数比较。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><a href="https://www.runoob.com/java/number-equals.html" target="_blank" rel="noopener">equals()</a> 判断number对象是否与参数相等。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><a href="https://www.runoob.com/java/number-valueof.html" target="_blank" rel="noopener">valueOf()</a> 返回一个 Number 对象指定的内置数据类型</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><a href="https://www.runoob.com/java/number-tostring.html" target="_blank" rel="noopener">toString()</a> 以字符串形式返回值。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><a href="https://www.runoob.com/java/number-parseInt.html" target="_blank" rel="noopener">parseInt()</a> 将字符串解析为int类型。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left"><a href="https://www.runoob.com/java/number-abs.html" target="_blank" rel="noopener">abs()</a> 返回参数的绝对值。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><a href="https://www.runoob.com/java/number-ceil.html" target="_blank" rel="noopener">ceil()</a> 返回大于等于( &gt;= )给定参数的的最小整数，类型为双精度浮点型。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left"><a href="https://www.runoob.com/java/number-floor.html" target="_blank" rel="noopener">floor()</a> 返回小于等于（&lt;=）给定参数的最大整数 。</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left"><a href="https://www.runoob.com/java/number-rint.html" target="_blank" rel="noopener">rint()</a> 返回与参数最接近的整数。返回类型为double。</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left"><a href="https://www.runoob.com/java/number-round.html" target="_blank" rel="noopener">round()</a> 它表示<strong>四舍五入</strong>，算法为 <strong>Math.floor(x+0.5)</strong>，即将原来的数字加上 0.5 后再向下取整，所以，Math.round(11.5) 的结果为12，Math.round(-11.5) 的结果为-11。</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left"><a href="https://www.runoob.com/java/number-min.html" target="_blank" rel="noopener">min()</a> 返回两个参数中的最小值。</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left"><a href="https://www.runoob.com/java/number-max.html" target="_blank" rel="noopener">max()</a> 返回两个参数中的最大值。</td>
+</tr>
+<tr>
+<td align="left">14</td>
+<td align="left"><a href="https://www.runoob.com/java/number-exp.html" target="_blank" rel="noopener">exp()</a> 返回自然数底数e的参数次方。</td>
+</tr>
+<tr>
+<td align="left">15</td>
+<td align="left"><a href="https://www.runoob.com/java/number-log.html" target="_blank" rel="noopener">log()</a> 返回参数的自然数底数的对数值。</td>
+</tr>
+<tr>
+<td align="left">16</td>
+<td align="left"><a href="https://www.runoob.com/java/number-pow.html" target="_blank" rel="noopener">pow()</a> 返回第一个参数的第二个参数次方。</td>
+</tr>
+<tr>
+<td align="left">17</td>
+<td align="left"><a href="https://www.runoob.com/java/number-sqrt.html" target="_blank" rel="noopener">sqrt()</a> 求参数的算术平方根。</td>
+</tr>
+<tr>
+<td align="left">18</td>
+<td align="left"><a href="https://www.runoob.com/java/number-sin.html" target="_blank" rel="noopener">sin()</a> 求指定double类型参数的正弦值。</td>
+</tr>
+<tr>
+<td align="left">19</td>
+<td align="left"><a href="https://www.runoob.com/java/number-cos.html" target="_blank" rel="noopener">cos()</a> 求指定double类型参数的余弦值。</td>
+</tr>
+<tr>
+<td align="left">20</td>
+<td align="left"><a href="https://www.runoob.com/java/number-tan.html" target="_blank" rel="noopener">tan()</a> 求指定double类型参数的正切值。</td>
+</tr>
+<tr>
+<td align="left">21</td>
+<td align="left"><a href="https://www.runoob.com/java/number-asin.html" target="_blank" rel="noopener">asin()</a> 求指定double类型参数的反正弦值。</td>
+</tr>
+<tr>
+<td align="left">22</td>
+<td align="left"><a href="https://www.runoob.com/java/number-acos.html" target="_blank" rel="noopener">acos()</a> 求指定double类型参数的反余弦值。</td>
+</tr>
+<tr>
+<td align="left">23</td>
+<td align="left"><a href="https://www.runoob.com/java/number-atan.html" target="_blank" rel="noopener">atan()</a> 求指定double类型参数的反正切值。</td>
+</tr>
+<tr>
+<td align="left">24</td>
+<td align="left"><a href="https://www.runoob.com/java/number-atan2.html" target="_blank" rel="noopener">atan2()</a> 将笛卡尔坐标转换为极坐标，并返回极坐标的角度值。</td>
+</tr>
+<tr>
+<td align="left">25</td>
+<td align="left"><a href="https://www.runoob.com/java/number-todegrees.html" target="_blank" rel="noopener">toDegrees()</a> 将参数转化为角度。</td>
+</tr>
+<tr>
+<td align="left">26</td>
+<td align="left"><a href="https://www.runoob.com/java/number-toradians.html" target="_blank" rel="noopener">toRadians()</a> 将角度转换为弧度。</td>
+</tr>
+<tr>
+<td align="left">27</td>
+<td align="left"><a href="https://www.runoob.com/java/number-random.html" target="_blank" rel="noopener">random()</a> 返回一个随机数。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Math-的-floor-round-和-ceil-方法实例比较"><a href="#Math-的-floor-round-和-ceil-方法实例比较" class="headerlink" title="Math 的 floor,round 和 ceil 方法实例比较"></a>Math 的 floor,round 和 ceil 方法实例比较</h2><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">Math.floor</th>
+<th align="left">Math.round</th>
+<th align="left">Math.ceil</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.4</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">1.5</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">1.6</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">-1.4</td>
+<td align="left">-2</td>
+<td align="left">-1</td>
+<td align="left">-1</td>
+</tr>
+<tr>
+<td align="left">-1.5</td>
+<td align="left">-2</td>
+<td align="left">-1</td>
+<td align="left">-1</td>
+</tr>
+<tr>
+<td align="left">-1.6</td>
+<td align="left">-2</td>
+<td align="left">-2</td>
+<td align="left">-1</td>
+</tr>
+</tbody></table>
+<h2 id="floor-round-和-ceil-实例："><a href="#floor-round-和-ceil-实例：" class="headerlink" title="floor,round 和 ceil 实例："></a>floor,round 和 ceil 实例：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> &#123;</span>   </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">double</span>[] nums = &#123; <span class="number">1.4</span>, <span class="number">1.5</span>, <span class="number">1.6</span>, <span class="number">-1.4</span>, <span class="number">-1.5</span>, <span class="number">-1.6</span> &#125;;   </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">double</span> num : nums) &#123;   </span><br><span class="line">      test(num);   </span><br><span class="line">    &#125;   </span><br><span class="line">  &#125;   </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">double</span> num)</span> </span>&#123;   </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"Math.floor("</span> + num + <span class="string">")="</span> + Math.<span class="built_in">floor</span>(num));   </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"Math.round("</span> + num + <span class="string">")="</span> + Math.round(num));   </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"Math.ceil("</span> + num + <span class="string">")="</span> + Math.<span class="built_in">ceil</span>(num));   </span><br><span class="line">  &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例执行输出结果为：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Math.floor(<span class="number">1.4</span>)=<span class="number">1.0</span></span><br><span class="line">Math.round(<span class="number">1.4</span>)=<span class="number">1</span></span><br><span class="line">Math.ceil(<span class="number">1.4</span>)=<span class="number">2.0</span></span><br><span class="line">Math.floor(<span class="number">1.5</span>)=<span class="number">1.0</span></span><br><span class="line">Math.round(<span class="number">1.5</span>)=<span class="number">2</span></span><br><span class="line">Math.ceil(<span class="number">1.5</span>)=<span class="number">2.0</span></span><br><span class="line">Math.floor(<span class="number">1.6</span>)=<span class="number">1.0</span></span><br><span class="line">Math.round(<span class="number">1.6</span>)=<span class="number">2</span></span><br><span class="line">Math.ceil(<span class="number">1.6</span>)=<span class="number">2.0</span></span><br><span class="line">Math.floor(<span class="number">-1.4</span>)=<span class="number">-2.0</span></span><br><span class="line">Math.round(<span class="number">-1.4</span>)=<span class="number">-1</span></span><br><span class="line">Math.ceil(<span class="number">-1.4</span>)=<span class="number">-1.0</span></span><br><span class="line">Math.floor(<span class="number">-1.5</span>)=<span class="number">-2.0</span></span><br><span class="line">Math.round(<span class="number">-1.5</span>)=<span class="number">-1</span></span><br><span class="line">Math.ceil(<span class="number">-1.5</span>)=<span class="number">-1.0</span></span><br><span class="line">Math.floor(<span class="number">-1.6</span>)=<span class="number">-2.0</span></span><br><span class="line">Math.round(<span class="number">-1.6</span>)=<span class="number">-2</span></span><br><span class="line">Math.ceil(<span class="number">-1.6</span>)=<span class="number">-1.0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Java-xxxValue-方法"><a href="#Java-xxxValue-方法" class="headerlink" title="Java xxxValue() 方法"></a>Java xxxValue() 方法</h1><hr>
+<p>xxxValue() 方法用于将 Number 对象转换为 <strong>xxx</strong> 数据类型的值并返回。</p>
+<p>相关的方法有：</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">方法及描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">byte</td>
+<td align="left"><strong>byteValue() :</strong>以 byte 形式返回指定的数值。</td>
+</tr>
+<tr>
+<td align="left">abstract double</td>
+<td align="left"><strong>doubleValue() :</strong>以 double 形式返回指定的数值。</td>
+</tr>
+<tr>
+<td align="left">abstract float</td>
+<td align="left"><strong>floatValue() :</strong>以 float 形式返回指定的数值。</td>
+</tr>
+<tr>
+<td align="left">abstract int</td>
+<td align="left"><strong>intValue() :</strong>以 int 形式返回指定的数值。</td>
+</tr>
+<tr>
+<td align="left">abstract long</td>
+<td align="left"><strong>longValue() :</strong>以 long 形式返回指定的数值。</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left"><strong>shortValue() :</strong>以 short 形式返回指定的数值。</td>
+</tr>
+</tbody></table>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>以上各函数不接受任何的参数。</p>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p>转换为 <strong>xxx</strong> 类型后该对象表示的数值。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><h2 id="Test-java-文件"><a href="#Test-java-文件" class="headerlink" title="Test.java 文件"></a>Test.java 文件</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span>&#123; </span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123;</span><br><span class="line">      Integer x = <span class="number">5</span>;</span><br><span class="line">      <span class="comment">// 返回 byte 原生数据类型</span></span><br><span class="line">      System.<span class="keyword">out</span>.println( x.byteValue() );</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// 返回 double 原生数据类型</span></span><br><span class="line">      System.<span class="keyword">out</span>.println(x.<span class="built_in">double</span>Value());</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// 返回 long 原生数据类型</span></span><br><span class="line">      System.<span class="keyword">out</span>.println( x.longValue() );      </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译以上程序，输出结果为：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">5.0</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Java-compareTo-方法"><a href="#Java-compareTo-方法" class="headerlink" title="Java compareTo() 方法"></a>Java compareTo() 方法</h1><hr>
+<p>compareTo() 方法用于将 Number 对象与方法的参数进行比较。可用于比较 Byte, Long, Integer等。</p>
+<p>该方法用于两个相同数据类型的比较，两个不同类型的数据不能用此方法来比较。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> compareTo( NumberSubClass <span class="built_in">ref</span>erenceName )</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><p><strong>referenceName</strong> – 可以是一个 Byte, Double, Integer, Float, Long 或 Short 类型的参数。</p>
+<h3 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li>如果指定的数与参数相等返回0。</li>
+<li>如果指定的数小于参数返回 -1。</li>
+<li>如果指定的数大于参数返回 1。</li>
+</ul>
+<h2 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span>&#123; </span><br><span class="line">   <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123;</span><br><span class="line">      Integer x = <span class="number">5</span>;</span><br><span class="line">      System.<span class="keyword">out</span>.println(x.compareTo(<span class="number">3</span>));</span><br><span class="line">      System.<span class="keyword">out</span>.println(x.compareTo(<span class="number">5</span>));</span><br><span class="line">      System.<span class="keyword">out</span>.println(x.compareTo(<span class="number">8</span>));            </span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译以上程序，输出结果为：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Java-equals-方法"><a href="#Java-equals-方法" class="headerlink" title="Java equals() 方法"></a>Java equals() 方法</h1><hr>
+<p>equals() 方法用于判断 Number 对象与方法的参数进是否相等。</p>
+<h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">boolean</span> <span class="keyword">equals</span>(<span class="built_in">Object</span> o)</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h3><p><strong>o</strong> – 任何对象。</p>
+<h3 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h3><p>如 Number 对象不为 Null，且与方法的参数类型与数值都相等返回 True，否则返回 False。</p>
+<p>Double 和 Float 对象还有一些额外的条件，可以参阅 API 手册：<a href="https://www.runoob.com/manual/jdk1.6/" target="_blank" rel="noopener">JDK 1.6</a>。</p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><h2 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Test</span>&#123;</span><br><span class="line">        <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123;</span><br><span class="line">                Integer x = <span class="number">5</span>;</span><br><span class="line">                Integer y = <span class="number">10</span>;</span><br><span class="line">                Integer z =<span class="number">5</span>;</span><br><span class="line">                Short a = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">                System.<span class="keyword">out</span>.println(x.equals(y));  </span><br><span class="line">                System.<span class="keyword">out</span>.println(x.equals(z)); </span><br><span class="line">                System.<span class="keyword">out</span>.println(x.equals(a));</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译以上程序，输出结果为：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># java基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/javaswitch%E8%AF%AD%E5%8F%A5/" rel="prev" title="javaswitch语句">
+      <i class="fa fa-chevron-left"></i> javaswitch语句
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/20/javaCharater%E7%B1%BB/" rel="next" title="javaCharacter类">
+      javaCharacter类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-Number-amp-Math-类"><span class="nav-number">1.</span> <span class="nav-text">Java Number &amp; Math 类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">1.1.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码："><span class="nav-number">1.2.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Math-类"><span class="nav-number">1.3.</span> <span class="nav-text">Java Math 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件代码：-1"><span class="nav-number">1.4.</span> <span class="nav-text">Test.java 文件代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Number-amp-Math-类方法"><span class="nav-number">1.5.</span> <span class="nav-text">Number &amp; Math 类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Math-的-floor-round-和-ceil-方法实例比较"><span class="nav-number">1.6.</span> <span class="nav-text">Math 的 floor,round 和 ceil 方法实例比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#floor-round-和-ceil-实例："><span class="nav-number">1.7.</span> <span class="nav-text">floor,round 和 ceil 实例：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-xxxValue-方法"><span class="nav-number">2.</span> <span class="nav-text">Java xxxValue() 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">2.0.1.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值"><span class="nav-number">2.0.2.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">2.0.3.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-java-文件"><span class="nav-number">2.1.</span> <span class="nav-text">Test.java 文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-compareTo-方法"><span class="nav-number">3.</span> <span class="nav-text">Java compareTo() 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">3.0.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数-1"><span class="nav-number">3.0.2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值-1"><span class="nav-number">3.0.3.</span> <span class="nav-text">返回值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例-2"><span class="nav-number">3.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-equals-方法"><span class="nav-number">4.</span> <span class="nav-text">Java equals() 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-1"><span class="nav-number">4.0.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数-2"><span class="nav-number">4.0.2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值-2"><span class="nav-number">4.0.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-3"><span class="nav-number">4.0.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例-4"><span class="nav-number">4.1.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第一周总结笔记第一章    初识JAVA1、什么是JAVAJAVA是能够跨越多平台的、可移植性最高的一种面向对象的编程语言。JAVA语言可以编写桌面应用程序、Web应用程序以及分布式系统和嵌入式系统应用程序等。 2、Java的几个版本（几个开发模式）A、JavaSE  (JAVA开发标准：是学习JAVA程序开发的基础,包含JAVA语言基础、JDBC数据库操作、I&#x2F;O输入输出、网络通讯、多线程等技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础笔记">
+<meta property="og:url" content="http://yoursite.com/2021/03/13/java%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="第一周总结笔记第一章    初识JAVA1、什么是JAVAJAVA是能够跨越多平台的、可移植性最高的一种面向对象的编程语言。JAVA语言可以编写桌面应用程序、Web应用程序以及分布式系统和嵌入式系统应用程序等。 2、Java的几个版本（几个开发模式）A、JavaSE  (JAVA开发标准：是学习JAVA程序开发的基础,包含JAVA语言基础、JDBC数据库操作、I&#x2F;O输入输出、网络通讯、多线程等技术">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T08:47:46.934Z">
+<meta property="article:modified_time" content="2021-03-13T08:47:47.035Z">
+<meta property="article:author" content="匡俊桦">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/13/java%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java基础笔记 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/13/java%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java基础笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-13 16:47:46 / 修改时间：16:47:47" itemprop="dateCreated datePublished" datetime="2021-03-13T16:47:46+08:00">2021-03-13</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="第一周总结"><a href="#第一周总结" class="headerlink" title="第一周总结"></a>第一周总结</h2><h3 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h3><h4 id="第一章-初识JAVA"><a href="#第一章-初识JAVA" class="headerlink" title="第一章    初识JAVA"></a>第一章    初识JAVA</h4><h5 id="1、什么是JAVA"><a href="#1、什么是JAVA" class="headerlink" title="1、什么是JAVA"></a>1、什么是JAVA</h5><p>JAVA是能够跨越多平台的、可移植性最高的一种面向对象的编程语言。JAVA语言可以编写桌面应用程序、Web应用程序以及分布式系统和嵌入式系统应用程序等。</p>
+<h5 id="2、Java的几个版本（几个开发模式）"><a href="#2、Java的几个版本（几个开发模式）" class="headerlink" title="2、Java的几个版本（几个开发模式）"></a>2、Java的几个版本（几个开发模式）</h5><p>A、JavaSE  (JAVA开发标准：是学习JAVA程序开发的基础,包含JAVA语言基础、JDBC数据库操作、I/O输入输出、网络通讯、多线程等技术)</p>
+<p>B、JavaEE  (JAVA企业级开发：是在企业进行商业软件开发的重要技术，也是我们就业的核心)</p>
+<p>C、JavaME  (JAVA内嵌式开发：一般是终端智能设备的软件开发。)</p>
+<h5 id="3、JAVA开发环境的安装："><a href="#3、JAVA开发环境的安装：" class="headerlink" title="3、JAVA开发环境的安装："></a>3、JAVA开发环境的安装：</h5><h6 id="1、JAVA的开发工具："><a href="#1、JAVA的开发工具：" class="headerlink" title="1、JAVA的开发工具："></a>1、JAVA的开发工具：</h6><ul>
+<li>a、使用记事本开发(一般不推荐)  </li>
+<li>b、Jcreator(JAVA简单程序开发)<br>c、Eclipse (目前常)</li>
+<li>d、idea (目前常用)<br>e、…….. </li>
+</ul>
+<h6 id="2、JAVA语言开发环境的搭建："><a href="#2、JAVA语言开发环境的搭建：" class="headerlink" title="2、JAVA语言开发环境的搭建："></a>2、JAVA语言开发环境的搭建：</h6><ul>
+<li>a、首先在电脑上安装jdk.(从网上下载或从老师哪里获取jdk安装程序)<br>b、把jdk安装在指定的文件夹下。（注意：1、不要安装在中文目录下面。2、不要安装在带有空格 的目录下面。）<br> c、在环境变量中设置path，让Eclipse能够找到javac.exe与java.exe，从而可以对JAVA源代码进行 编译与执行。</li>
+<li>jdk开发环境安装好之后就可以使用Eclipse来进行JAVA程序的开发。（注意：一定要先安装jdk 并设置好开发环境才可以使用Eclipse开发工具，否则报错） </li>
+</ul>
+<h5 id="4、开发一个Java程序"><a href="#4、开发一个Java程序" class="headerlink" title="4、开发一个Java程序"></a>4、开发一个Java程序</h5><h6 id="1、编写程序框架"><a href="#1、编写程序框架" class="headerlink" title="1、编写程序框架"></a>1、编写程序框架</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">hello</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>hello 为类的名称，它要和程序文件的名称一模一样。类名前面要用public和class(java中最小的运行单元：类)修饰，它们的先后顺序不能改变，中间要用空格分隔。类名后要跟一对大括号，所有属于这个类的代码都在大括号中。</p>
+<h6 id="2、编写main-方法的框架"><a href="#2、编写main-方法的框架" class="headerlink" title="2、编写main()方法的框架"></a>2、编写main()方法的框架</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main()方法是Java程序的入口，所有java应用程序的起始点，没有main()方法就不知道从哪里开始执行程序。一个程序只有、一个main()方法。</p>
+<h6 id="3、编写代码"><a href="#3、编写代码" class="headerlink" title="3、编写代码"></a>3、编写代码</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"这是我的第一个JAVA程序"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面“System.out.println()”是把程序中的数据显示在控制台的语句就是控制输出语句。  </p>
+<p>输出控制语句的分类：<br>a、输出内容但是不换行操作：System.out.print();    </p>
+<p>b、输出内容并且进行换行操作。System.out.println(); </p>
+<h5 id="5、Java程序的注释"><a href="#5、Java程序的注释" class="headerlink" title="5、Java程序的注释"></a>5、Java程序的注释</h5><p>注释就是对源代码的解释。注释是不会被编译的，因为注释是给开发人员来看的，在调试中也常用到</p>
+<p>注释的分类：<br>    a、单行注释：//    </p>
+<p>​    b、多行注释:/*      <em>/<br>​    c、文档注释:/*</em>     */</p>
+<h5 id="6、Java中的转义字符"><a href="#6、Java中的转义字符" class="headerlink" title="6、Java中的转义字符"></a>6、Java中的转义字符</h5><p>A、转义字符为 ：   \</p>
+<p>B、转义字符的目的：字符串中实现特殊的功能。  </p>
+<p>C、有哪些转义字符：<br>        a、 \n(表示强制换行操作)    </p>
+<p>​        b、\t(表示水平制表符，一次打印多个空格)    </p>
+<p>​        c、\”    </p>
+<pre><code>d、\\  注意：不是所有的字母或者字符都可以转义。</code></pre><h5 id="7、Java的编码规范"><a href="#7、Java的编码规范" class="headerlink" title="7、Java的编码规范"></a>7、Java的编码规范</h5><p>a、类名必需用public修饰</p>
+<p>b、一行只写一条语句</p>
+<p>c、用{}括起来的部分通常表示程序的某一层次结构。”{“要求放在这一结构开始行的最末，}与该结构的第一个字母对齐，并独占一行。</p>
+<p>d、低一层次的语句或注释应该比高一层次的语句或注释缩进若干个空格后再书写，使程序更加清晰，增加程序的可读性。</p>
+<h5 id="8、常见错误"><a href="#8、常见错误" class="headerlink" title="8、常见错误"></a>8、常见错误</h5><p>1、类不可以随便命名（public修饰的类的名称必需与JAVA文件同名）</p>
+<p>2、mian()方法中void不可少</p>
+<p>3、Java对大小写很敏感，必需要按照规范写大小写</p>
+<p>4、；是必需的（在Java中，一个完整的语句都要以；结束，；一定要用英文输入方法写</p>
+<p>5、输出的字符串必须要用引号引起来，而且必须是英文的引号</p>
+<p>6、输出语句中的+号，+号两边是数字的则进行累加操作，+号两边只要有一边是字符串则相连</p>
+<h3 id="第二章、数据类型、变量和运算符"><a href="#第二章、数据类型、变量和运算符" class="headerlink" title="第二章、数据类型、变量和运算符"></a>第二章、数据类型、变量和运算符</h3><h4 id="一、数据类型"><a href="#一、数据类型" class="headerlink" title="一、数据类型"></a>一、数据类型</h4><h5 id="1、什么是数据类型："><a href="#1、什么是数据类型：" class="headerlink" title="1、什么是数据类型："></a>1、什么是数据类型：</h5><p>数据类型就是指根据数据的特点进行的一种分类，同特点的数据就是一种类 型。那么它们在内存中占用的空间大小是一致的。所以变量在内存中所占空间的大小是通过数据类型来 决定的。</p>
+<h5 id="2、数据类型的分类："><a href="#2、数据类型的分类：" class="headerlink" title="2、数据类型的分类："></a>2、数据类型的分类：</h5><h6 id="A、数值类型：（整数、浮点数、非数值）"><a href="#A、数值类型：（整数、浮点数、非数值）" class="headerlink" title="A、数值类型：（整数、浮点数、非数值）"></a>A、数值类型：（整数、浮点数、非数值）</h6><p>①整数类型（只包含整数，不能包含小数的情况）<br>   a、byte（-128~127）范围的整数值。</p>
+<p>   b、short（-32768~32767）范围的整数值。 </p>
+<p>   c、int：int是默认使用的整数类型，-21亿~21亿之间的值。<br>   d、long：它是最大的整数类型。 </p>
+<p>②浮点数类型：ﬂoat（单精度）double（双精度）    </p>
+<p> 以上两种都可以用来存放整数和小数，只是它们的存放的值的大小与精度不同。在JAVA中默 认就是double类型的。</p>
+<p>③字符类型：char（用于存储单个字符：’A’,’b’,’4’,‘@’,’男’）  </p>
+<p> 每一个从键盘上输入的值都会有一个对应的数字编号。<br>    A是65，a是97，Z是90，z是122，0对应48,9对应57，“如果大小写转换可以用对于的数字编号进行加减 。0对应48,9对应57；”对应32.  </p>
+<h6 id="B、非数值类型："><a href="#B、非数值类型：" class="headerlink" title="B、非数值类型："></a>B、非数值类型：</h6><p>   a、boolean（布尔类型：true与false）:它主要使用于判断语句与循环语句。<br>   b、String（字符串类型）：凡是内容包含在一对双引号中的都是字符串。比如： “hello”,”12345”,”a”,”中国你好！”。 </p>
+<p>数据类型从小到大：byte&gt;short&gt;char&gt;int&gt;long&gt;ﬂoat&gt;double</p>
+<h5 id="3、数据类型之间的转换："><a href="#3、数据类型之间的转换：" class="headerlink" title="3、数据类型之间的转换："></a>3、数据类型之间的转换：</h5><p>主要是指数值类型之间的转换。如：整数类型、浮点数类型、字符类型 之间的转换</p>
+<p>a、自动类型转换（隐式转换）：把小的数据类型赋值给大的数据类型，不会出现数据问题，但 是会导致空间的浪费。<br> b、强制类型转换（显示转换）：把大的数据类型赋值给小的数据类型,有可能导致数据丢失。所 以在使用的要注意数据问题。</p>
+<h4 id="二、变量"><a href="#二、变量" class="headerlink" title="二、变量"></a>二、变量</h4><h5 id="1、什么是变量："><a href="#1、什么是变量：" class="headerlink" title="1、什么是变量："></a>1、什么是变量：</h5><p>   变量就类似于生活中的容器，它在程序的运行过程中用来<strong>临时</strong>存放数据。 </p>
+<h5 id="2、变量的命名规则："><a href="#2、变量的命名规则：" class="headerlink" title="2、变量的命名规则："></a>2、变量的命名规则：</h5><p>  A、变量名只能以字母、下划线和美元符$开头，其后可以跟字母、数字、美元符和下划线。  </p>
+<p> B、变量名要见名知意。<br> C、因为JAVA是区分大小写的，所有变量名相同，但是大小写不同也代表着它是不同的变量。  </p>
+<p> D、在JAVA中变量名是采用骆驼命名法。什么是骆驼命名法：它是指如果变量名或者方法名是由 一个或者多个单词构成则除了第一个单词的首字母小写外，其他每个单词的首字母均大写。</p>
+<p>如：String studentSystemName=”jack”;<br>                 帕斯卡命名法：它是指如果类名是由一个或者多个单词构成则每个单词的首字母均大写。 如：Class Student</p>
+<h5 id="3、变量的注意事项："><a href="#3、变量的注意事项：" class="headerlink" title="3、变量的注意事项："></a>3、变量的注意事项：</h5><p>   A、变量必须首先声明并且赋了值才可以使用。  </p>
+<p> B、在同一个作用范围内不能声明同名的变量。</p>
+<h5 id="4、使用语法："><a href="#4、使用语法：" class="headerlink" title="4、使用语法："></a>4、使用语法：</h5><p>数据类型 变量名=值  （申明一个变量的同时给变量赋值）例：double score=95.5;  String name=”皓晨”</p>
+<p>char sex=’男’</p>
+<h5 id="5、常见错误"><a href="#5、常见错误" class="headerlink" title="5、常见错误"></a>5、常见错误</h5><p>1、变量未赋值先使用     例：String name</p>
+<p>2、使用非法的变量名    例：int %hour=20</p>
+<p>3、变量不能重名    例：string name=”皓晨”    string name=”Tom”</p>
+<h4 id="三、运算符"><a href="#三、运算符" class="headerlink" title="三、运算符"></a>三、运算符</h4><p>1、算术运算符：+、-、*、/、%、++、–</p>
+<p>2、赋值运算符：=、+=、-+、*=、/=、%=</p>
+<p>3、比较运算符：&gt;、&lt;、&gt;=、&lt;=、！=、== (注意：比较运算符进行的运算最终的结果是布尔类型 的值，也就是真与假) </p>
+<p> 注意：==一般使用在数值类型上以及布尔类型，字符串内容的比较尽量不要使用==来判断 是否相等，而是建议使用equals()方法来进行判断。</p>
+<p>4、逻辑运算符：！、&amp;&amp;、||、&amp;、|</p>
+<p>5、运算符的优先级：<br>   算术运算符-》比较运算符-》逻辑运算符-》赋值运算符。  （运算符的优先级是可以通过小括号来改变的 ）</p>
+<h4 id="四、输入操作"><a href="#四、输入操作" class="headerlink" title="四、输入操作"></a>四、输入操作</h4><p>1、输入操作就是让程序按照用户输入的值来进行对应的操作。 </p>
+<p>2、在JAVA中如进行输入操作：</p>
+<p> A、导入java.util.Scanner类。如：import java.util.Scanner;  </p>
+<p>B、创建输入对象。如：Scanner input = new Scanner(System.in);</p>
+<p>C、通过调用输入对象的方法来进行数据的输入操作。</p>
+<p>​     a、 数据类型   变量名  =  input.next数据类型（）     注意后面的数据类型首字母要大写</p>
+<p>​             （  如：double num = input.nextDouble();        boolean b = input.nextBoolean();）</p>
+<p>​      b、特殊情况的有：</p>
+<p>​                1、字符串类型为：  String str1 = input.next();</p>
+<p>​                2、在使用Scanenr输入对象进行输入字符操作时，没有提供字符的输入。</p>
+<p>​                         char  sex;</p>
+<p>​                         sex = input.next().charAt(0);    //input.next().charAt(0)这句代码表示从输入的字符串中获取第一个                    字符。0表示第一个位 置，1表示第二个位置。</p>
+<p>​      </p>
+<h3 id="第九章、循环嵌套"><a href="#第九章、循环嵌套" class="headerlink" title="第九章、循环嵌套"></a>第九章、循环嵌套</h3><p>义指循环里面包含了其他循环</p>
+<h4 id="一、循环嵌套的方式："><a href="#一、循环嵌套的方式：" class="headerlink" title="一、循环嵌套的方式："></a>一、循环嵌套的方式：</h4><p> 1、for循环嵌套for循环   </p>
+<p> 2、while循环嵌套while循环     </p>
+<p>3、do…while与do…while嵌套循环</p>
+<p>4、while与for循环嵌套</p>
+<p> 5、while循环嵌套do…while循环      </p>
+<p>6、do…while循环嵌套while循环   </p>
+<p>注意：内循环结束后才可执行外循环语句，在双层循环中，外循环变量变化一次，内循环变量要从初始值到结束值变化一遍。</p>
+<h4 id="二、循环嵌套中的跳转语句："><a href="#二、循环嵌套中的跳转语句：" class="headerlink" title="二、循环嵌套中的跳转语句："></a>二、循环嵌套中的跳转语句：</h4><p> 1、continue:在内循环中continue语句跳转时是跳过了内循环中剩余语句进入内循环的下一次循环<br> 2、break：跳出本层循环，提前结束本层循环，执行循环下面的语句。即break只能影响一层循环。</p>
+<p> 3、return:结束当前方法的调用。</p>
+<h3 id="第十一章、数组及应用"><a href="#第十一章、数组及应用" class="headerlink" title="第十一章、数组及应用"></a>第十一章、数组及应用</h3><p>在Java中，数组就是一个变量，用于将相同数据类型的数据存储在内存中。数组中的每一个数据元素都属于同一数据类型。</p>
+<h4 id="一、数组的基本要素："><a href="#一、数组的基本要素：" class="headerlink" title="一、数组的基本要素："></a>一、数组的基本要素：</h4><p>1.标识符：数组的名称（类似变量名)</p>
+<p>2.数组元素：即数组中存放 的数据</p>
+<p>3.数组下标：对数组的元素进行编号，方便计算机根据编号去存取。注意下标（index)从0开始。</p>
+<p>4.元素类型：储存在数组中的数组元素应该是同一数据类型。</p>
+<h4 id="二、了解数组"><a href="#二、了解数组" class="headerlink" title="二、了解数组"></a>二、了解数组</h4><p>由数组的数据类型    数组的名称      数组的空间（数组大小）定义</p>
+<p>1、数组定义的方式：   </p>
+<p>A、int[]  arrs = new int[10];(推荐使用)<br>       int arrs[] = new int[10];  </p>
+<p>B、int[] arrs = new int[]{1,2,3,4,5,6,7,8,9,10};//通过直接赋值的方式来决定数组的大小  </p>
+<p>C、int[] arrs = {1,2,3,4,5,6,7,8,9,10};</p>
+<p>D、int[] arrs;//这里只是声明了一个数组，数组大小没有确定（也就是数组大小没有指明） </p>
+<p>​     ………<br>​     int size=10;           </p>
+<p>​     arrs = new int[size];//在使用数组的时候才指定数组的大小</p>
+<h4 id="三、数组使用的注意事项"><a href="#三、数组使用的注意事项" class="headerlink" title="三、数组使用的注意事项"></a>三、数组使用的注意事项</h4><ul>
+<li><p>1、数组一般保存同数组类型的值。</p>
+<p>​      如果要把所有不同类型放一个数组可以使用 ：obiect[]  objes  = object[]{0,”abc”,’c’}</p>
+</li>
+<li><p>2、数组元素的下标从0到数组的长度减一（-1）.如果你的数组下标不在这个范围则会导致数组下标越界</p>
+<p>​     会提示如下错误：</p>
+<p>​        java.lang.ArrayIndexOutOfBoundsException    </p>
+<p>​     //Array(数组) Index(下标) OutOfBounds(超出范围) Exception(异常：错误)</p>
+</li>
+<li><p>3、数组如果定义好了但是没有进行赋值操作的话，它会具有默认值。整数类型的数组默认值为0，浮 点数组默认值为0.0，布尔数组默认值为false,字符串数组默认值为null.</p>
+</li>
+<li><p>4、注意数组在内存中是连续开辟内存空间的（就像一个行和一个列组成的表格），所以可以通过循环的方式来快速操作数组中的元素。</p>
+</li>
+<li><p>5、对于数组的长度尽量不要使用数字常量，而是建议使用数组名.length来获取，这样代码更易于维护。</p>
+</li>
+<li><p>6、数组的大小一旦确定则不能更改。</p>
+</li>
+</ul>
+<h4 id="四、数组的应用"><a href="#四、数组的应用" class="headerlink" title="四、数组的应用"></a>四、数组的应用</h4><p>1、需要学会对数组里的元素进行添加、修改、查询、删除、排序操作。（这个地方没有听明白）</p>
+<p>2、数组排序（所谓的排序就是指值按照从小到大排列，叫升序(ASC)。从大到小叫降序(DESC)。）</p>
+<p>2.1：     Arrays.sort(arrs);     //使用此代码可以让计算机自动对数组里的元素进行升序排列</p>
+<p>2.2：冒泡排序法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span>[] arrs = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">9</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span> &#125;;</span><br><span class="line">		System.out.println(<span class="string">"没有排序之前的结果："</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> n : arrs) &#123;</span><br><span class="line">			System.out.print(n + <span class="string">"\t"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 实现排序算法</span></span><br><span class="line">		<span class="comment">// 外循环控制比较的轮数</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">int</span> temp;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arrs.length - <span class="number">1</span>; i++) &#123; </span><br><span class="line">			<span class="comment">//  内循环控制每一轮要比较的次数</span></span><br><span class="line">			</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arrs.length - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">													</span><br><span class="line">				<span class="keyword">if</span> (arrs[j] &gt; arrs[j + <span class="number">1</span>]) &#123; </span><br><span class="line">					temp = arrs[j]; </span><br><span class="line">					arrs[j] =arrs[j + <span class="number">1</span>];</span><br><span class="line">					arrs[j + <span class="number">1</span>] = temp; </span><br><span class="line">					&#125; </span><br><span class="line">				<span class="comment">// 记录循环的总次数 </span></span><br><span class="line">					count++; </span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"进行排序之后的结果："</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> n : arrs) &#123;</span><br><span class="line">			System.out.print(n + <span class="string">"\t"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"\n\n一共循环的次数为："</span> + count);</span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="第十三章、类和对象"><a href="#第十三章、类和对象" class="headerlink" title="第十三章、类和对象"></a>第十三章、类和对象</h3><h4 id="一、对象"><a href="#一、对象" class="headerlink" title="一、对象"></a>一、对象</h4><p>万物皆对象</p>
+<h4 id="二、类（class"><a href="#二、类（class" class="headerlink" title="二、类（class)"></a>二、类（class)</h4><p>1、类：具有相同特征（属性）与行为（方法）的对象我们可以把它归纳为一个类别，这个类别就是类。</p>
+<p>2、类和对象的关系：类是对象的模板，对象是类别的一个实例。（在Java中类就是数据类型，对象就是类的变量）</p>
+<p>3、数据类型的分类</p>
+<p>a、根据值的特点分为：1、数值类型：byte/short/int/long/float/double/char)</p>
+<p>​                                         2、非数值类型：（boolean/String)</p>
+<p>b、根据值存储在内存中的位置分为：1、值类型(小数据/简单数据):它们存储在栈中，栈的特点是空间小运算快。</p>
+<p>​                                                                （有：byte\short\int\long\float\double\char\boolean）</p>
+<p>​                                                                2、引用类型(大数据/复杂型）:它们存储在堆栈中，堆栈的特点是空间大，                                                                    运算慢（有：：String\Array(数组）\class（类）\interface（接口类型）</p>
+<h4 id="三、类的结构（由属性和方法构成）"><a href="#三、类的结构（由属性和方法构成）" class="headerlink" title="三、类的结构（由属性和方法构成）"></a>三、类的结构（由属性和方法构成）</h4><p>Java的类模板</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> 类名&#123;</span><br><span class="line">	<span class="comment">//定义属性部分</span></span><br><span class="line">	属性<span class="number">1</span>;</span><br><span class="line">	属性<span class="number">2</span>;</span><br><span class="line">	属性<span class="number">3</span>；</span><br><span class="line">	.....	</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//定义方法部分</span></span><br><span class="line">	方法<span class="number">1</span>;</span><br><span class="line">	方法<span class="number">2</span>;</span><br><span class="line">	方法<span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> lesson13;     <span class="comment">//包名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;   <span class="comment">//Student就是类的名称</span></span><br><span class="line">	String name;				</span><br><span class="line">	<span class="keyword">int</span> no;</span><br><span class="line">	<span class="comment">//以上为类的属性</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"姓名："</span>+name+<span class="string">" ,学号: "</span>+no);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//以上为类的方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上可以看出在Java中要创建一个类，需要使用一个class，一个类名和一对大括号。其中class是创建类的关键字，class前的public表示公有的，不可以漏写。类的主体就包含在{}中</p>
+<p>1、类的命名需要遵循的规则：a、类名通常由多个单词构成，每个单词的首字母大写（帕斯卡命名法）</p>
+<p>​                                                    b、类名要见名知意，避免使用缩写词，除非已经被广泛使用</p>
+<p>​                                                    c、不能使用JAVA中的关键字；不能以数字开头；不能包含任何嵌入的空格或点号                                                        以及除下划线及$字符外的特殊字符</p>
+<p>2、类的属性：就是由类的基本属性构成。</p>
+<p>​    编写类的属性：</p>
+<p>​    通过在类的主体中定义变量来描述类所具有的属性，这些变量成为类的成员变量。</p>
+<p>3、类的方法：由方法的签名和方法体构成 (方法指一个类型具备的功能或能做的事)</p>
+<h4 id="四、如何创建对象"><a href="#四、如何创建对象" class="headerlink" title="四、如何创建对象"></a>四、如何创建对象</h4><p>1、定义好了一个类，就可以根据定义的类的模板来创建对象了。类的作用就是用来创建对象，由类生成对象成为类的实例化过程。一个类可以创建多个对象。</p>
+<p>创建对象的语法：</p>
+<p>​            类名  对象名 = new  类名（）;</p>
+<p>引用对象的语法：</p>
+<p>​             对象名.属性     //引用对象的属性</p>
+<p>​            对象名.方法名（）     //引用对象的方法</p>
+<p>​            对象名.属性=         //给对象属性赋值</p>
+<p>从以上语法可以看出：在创建类的对象时，需要使用JAVA的 new 关键字。使用new创建对象时，我们并没有给它的数据成员赋值，因为每个对象的属性值可能不一样，所以在创建对象后再给它的数据成员赋值。</p>
+<p>引用对象的属性和方法时，需要用到”.”操作符访问类的属性和方法。</p>
+<p>注意：在定义类时，如果没有给属性赋初始值，Java会给它一个默认值</p>
+<p>int: 0     double:0.0        char:’\u0000’         boolean:false          String:null</p>
+<p>例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> lesson13;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test3</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Student student1 = <span class="keyword">new</span> Student();</span><br><span class="line">		student1.name = <span class="string">"泰勒"</span>;</span><br><span class="line">		student1.no = <span class="number">20150001</span>;</span><br><span class="line">		student1.show();</span><br><span class="line">		</span><br><span class="line">		Student student2 = <span class="keyword">new</span> Student();</span><br><span class="line">		student2.name = <span class="string">"贾斯丁"</span>;</span><br><span class="line">		student2.no = <span class="number">20150002</span>;</span><br><span class="line">		student2.show();	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="五、包的介绍"><a href="#五、包的介绍" class="headerlink" title="五、包的介绍"></a>五、包的介绍</h4><p>1、什么是包：JAVA中的包类似于操作系统中的文件夹。</p>
+<p>2、包的作用：分类管理与维护所有的类；避免了命名上的冲突。</p>
+<p>3、如何来创建包：需要使用关键字：package。 </p>
+<p>4、创建包的注意事项：</p>
+<p>​                                        A、包名都统一采用小写形式</p>
+<p>​                                        B、包名一般采用域名的倒写方式来进行命名，因为域名是唯一的，不容易冲突。如：</p>
+<p>​                                                cn.com.taobao</p>
+<p>​                                        C、包的创建要定义在所有代码的前面。</p>
+<p>​                                        D、包是可以嵌套的（子包）。</p>
+<p>​                                        E、不要使用java或者javax等词作为用户创建的包名。（因为容易出错并会覆盖java中系                                                统自带的程序）</p>
+<p>5、如何导入包。</p>
+<p>A、导入包的关键字是import。</p>
+<p>​    a、要导入包的其中某个类语法: import   包名.类名</p>
+<p>​    b、要导入包下的某些类语法：import  包名.*      （即导入这个包所有类）</p>
+<p>注意：导入包的时候，只导入当前包中的类，当前包中的子包中的类是不会自动导入的，需要手动</p>
+<p>导入。</p>
+<h3 id="第十四章、类的方法"><a href="#第十四章、类的方法" class="headerlink" title="第十四章、类的方法"></a>第十四章、类的方法</h3><h4 id="一、方法的结构"><a href="#一、方法的结构" class="headerlink" title="一、方法的结构"></a>一、方法的结构</h4><p>由方法的签名和方法体构成 (方法指一个类型具备的功能或能做的事)</p>
+<h5 id="1、语法："><a href="#1、语法：" class="headerlink" title="1、语法："></a>1、语法：</h5><p>​            访问修饰符  返回值类型 方法名（）{</p>
+<p>​            方法体</p>
+<p>​            }</p>
+<h5 id="2、方法的签名（对方法体的描述）"><a href="#2、方法的签名（对方法体的描述）" class="headerlink" title="2、方法的签名（对方法体的描述）"></a>2、方法的签名（对方法体的描述）</h5><p>包含：1、方法访问修饰符；2、方法的返回值类型；3、方法的名称；4、方法的参数</p>
+<p>​        1、方法访问修饰符：public / private/default / protected （受保护的）</p>
+<p>​         public(公共的，公开的)：用public关键字修饰的成员可以在任何位置访问</p>
+<p>​         private(私有的)：只能在当前类的内部访问，不能再类的外部访问。（安全性高）</p>
+<p>​         default（默认的）：如果成员的前面没有修饰符则为默认，这样的成员只能在当前包中访问，包外是不能访                                             问的，包括子包也不可以访问。</p>
+<p>​        2、方法的返回值类型：表示一个方法执行完成之后可以获取到的执行结果。这里的结果是指返回</p>
+<p>​                                                的类型，如果没有返回结果则指定void即可。如果有返回结果就在方法体中用                                                return，方法的返回值类型改成需要返回的值的数据类型（如：int/string等）</p>
+<p>​        3、方法的名称：方法名是对方法体的命名，有了方法名我们就可以非常方便的重复调用方法体的代码块。方                                    法名一般使用动词，表示动作、能力、行为、功能。</p>
+<p>​                                    方法名使用骆驼命名法：方法或变量的第一个单词的首字母小写，后面每个单词的首字                                    母大写）</p>
+<p>​        4、方法的参数：就是指提供给方法的数据，希望方法能够根据我们提供的数据来进行操作。</p>
+<p>​                                    有带参方法和不带参方法，没有参数就用  （），括号必须有，如果有参数可以把参数写在（）.</p>
+<p>​                                    如（int num1,int num2)(String name).根据数据的来源是本地的还是外部接收的来决定使用                                    哪个方法。</p>
+<h5 id="3、方法体（方法体就是要实现的功能代码块）"><a href="#3、方法体（方法体就是要实现的功能代码块）" class="headerlink" title="3、方法体（方法体就是要实现的功能代码块）"></a>3、方法体（方法体就是要实现的功能代码块）</h5><p>方法体就是包含在{}中的代码块。方法体包含了该方法的所有处理逻辑，一般包含变量定义和执行语句。</p>
+<h4 id="二、方法调用"><a href="#二、方法调用" class="headerlink" title="二、方法调用"></a>二、方法调用</h4><p>语法：</p>
+<p>​        对象名.方法名（）</p>
+<p>凡是涉及类的方法的调用，均使用以下两种形式：1、同一个类中的方法，直接使用方法名调用该方法</p>
+<p>​                                                                                     2、不同类的方法，首先创建对象，再使用“对象名.方法名”调                                                                                            用。</p>
+<h4 id="三、带参方法"><a href="#三、带参方法" class="headerlink" title="三、带参方法"></a>三、带参方法</h4><p>语法：</p>
+<p>​            访问修饰符    返回值类型        方法名    （参数列表）{</p>
+<p>​                    方法主体</p>
+<p>​            }</p>
+<h5 id="1、参数列表："><a href="#1、参数列表：" class="headerlink" title="1、参数列表："></a>1、参数列表：</h5><p>​                    是传送给方法的参数列表，用于传递方法在执行时所需要的外面数据，列表中各参数以逗号分隔。</p>
+<p>​                    格式：（数据类型  参数1， 数据类型  参数2 ……..数据类型  参数n），n&gt;=0,=0即无参方法</p>
+<h5 id="2、调用带参方法"><a href="#2、调用带参方法" class="headerlink" title="2、调用带参方法"></a>2、调用带参方法</h5><p>语法：</p>
+<p>​            对象名.方法名（参数1，参数2，……参数n）</p>
+<p>注意：1、调用带参方法时必须传入实际的参数的值。参数分为形参和实参：等待别人赋值的叫形参，有实际数据                叫实参。</p>
+<p>​            2、调用方法时需要先实例化对象，再调用方法；实参的类型，数量，顺序都要与形参一一对应。</p>
+<p>​            3、类中的属性也可以是数组，也是用“.”访问数据成员或数据成员的元素。</p>
+<p>​                如：StuedentBiz  stuBiz = new StuedentBiz;</p>
+<p>​                        stuBiz.names或stuBiz.names[1];</p>
+<h4 id="四、变量的作用域-指变量的作用范围"><a href="#四、变量的作用域-指变量的作用范围" class="headerlink" title="四、变量的作用域(指变量的作用范围)"></a>四、变量的作用域(指变量的作用范围)</h4><p>根据范围可以分为：</p>
+<p>​                                1、成员变量（也就是在类中声明的变量：它在整个类中有效）</p>
+<p>​                                2、局部变量（在方法内声明的变量就是局部变量，包括方法的参数也是属于局部变量，局部变</p>
+<p>​                                      量只能在当前的方法中有效。）</p>
+<p>​                                3、循环变量。（它也是属于局部变量，只是它比局部变量的作用范围更小。只能在循环内部有</p>
+<p>​                                       效。）</p>
+<p><strong>注意：当成员变量名称与局部变量名称同名时采用就近优先的原则，优先使用局部变量。如果希</strong></p>
+<p><strong>望使用成员变量则加上关键字this来区别。</strong></p>
+<h4 id="五、JavaDoc注释（文档注释）"><a href="#五、JavaDoc注释（文档注释）" class="headerlink" title="五、JavaDoc注释（文档注释）"></a>五、JavaDoc注释（文档注释）</h4><p>1、相当于软件使用说明书，它能够从程序源代码中抽取类、方法、成员等注释，形参一个和源代码配套的API帮      助文档。</p>
+<p>2、语法规则：以     /**     开头，以     */   结尾。每个注释包含一些描述性的文本及若干个人Javadoc标签。</p>
+<p>3、javadoc标签：一般以   @   为前缀，常见的Javadoc标签有：</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>含义</th>
+<th>标签</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@author</td>
+<td>作者名</td>
+<td>@version</td>
+<td align="center">版本标识</td>
+</tr>
+<tr>
+<td>@parameter</td>
+<td>参数及其意义</td>
+<td>@since</td>
+<td align="center">最早使用该方法/类/接口的JDK版本</td>
+</tr>
+<tr>
+<td>@return</td>
+<td>返回值</td>
+<td>@throws</td>
+<td align="center">异常类及抛出条件</td>
+</tr>
+</tbody></table>
+<p>4、生成JavaDoc文档：在Eclipse中打开File&gt;Export&gt;导出&gt;选择Java菜单中的JavaDOC选项提交即可。</p>
+<h4 id="第十六章、字符串"><a href="#第十六章、字符串" class="headerlink" title="第十六章、字符串"></a>第十六章、字符串</h4><p>1、在Java中凡是包含双引号的都是字符串</p>
+<p>2、分类：</p>
+<p>​                1、不可变字符串（字符串常量）：String就是不可变字符串，就是字符串一旦创建好了，不能在原来的                                                                            空间进行修改，一旦修改需要开辟一个新的空间，原来的空间需要注                                                                            销，所以如果你的数据有很多变量时，不要用String。</p>
+<p>​                2、可变字符串（字符串变量）：StringBuffer就是可变字符串，用于存储和操作可能发生变化的字符                                                                        串。</p>
+<p>3、字符串长度调用的语法为：   字符串变量名.length()、</p>
+<p>3、字符串的比较：1、==进行比较，比较的是字符串在内存中的地址是否相等</p>
+<p>​                                 2、equals()进行比较，比较的是字符串对象的值是的相等</p>
+<p>​                                 3、字符串比较的语法：字符串1==字符串2    ；字符串1.equals.（字符串2）</p>
+<p>三、字符串常用的方法</p>
+<p>1、不可变字符串的方法：</p>
+<p>​                                        1、charAt(index)  :返回指定字符串位置上的字符</p>
+<p>​                                        2、compareTo()：比较字符串相同位置上的字符是否相等。如果比较的两个字符串相等则                                                                        返回0，如果第一个字符串的字符编码大于第二个字符串的字符编码则                                                                        返回大于0的值，否则返回小于0的值</p>
+<p>​                                        3、concat():拼接字符串，与+功能类似，例：S1=S2.concat(S3);</p>
+<p>​                                        4、enaWith():判断是否以某个字符串结尾</p>
+<p>​                                              starWith():判断是否以某个字符串开头</p>
+<p>​                                        5、equals()：判断存储在内存堆中的值是否相等。</p>
+<p>​                                        6、equalsIgnoerCase()：判断存储在内存堆中的值是否相等,但是不区分大小写。    </p>
+<p>​                                        7、indexOf(“某字符”)/indexOf(“某字符”，从第几个数的数字):</p>
+<p>​                                                在字符串中搜索某个指定的字符或字符串，它返回出现第一个匹配字符的位                                                置，如果没有找到匹配，则返回-1。/返回从第几个数字数的第一个匹配的位置。</p>
+<p>​                                            lastIndexOf():在字符串中搜索某个指定的字符或字符串,它搜索最后一个出现的字符或字                                            符串的位置。</p>
+<p>​                                        8、length()：调用这个方法返回的结果是字符串中的字符数，长度从1开始数</p>
+<p>​                                        9、replace(旧字符，新字符)：用某个新字符替换原来的某个字符</p>
+<p>​                                        10、split(“”):对字符串进行分割，（）里面是什么就是以什么分割</p>
+<p>​                                        11、subString(int index)：从括号里指定的字符串的位置一直到字符串的末尾</p>
+<p>​                                                substring(begin index,endindex):beginindex是从0开始数的，endindex是从1开                                                                                                            始数的</p>
+<p>​                                        12、toUpperCase()：把字符串返回大写形式</p>
+<p>​                                        13、toLowerCase()：把字符串返回小写形式</p>
+<p>​                                        15、toCharArry()：把字符串返回字符数组</p>
+<p>​                                        16、new String(数组名):把字符数组转换成字符串</p>
+<p>2、可变字符串的方法：</p>
+<p>​                                    1、append()：在原有的字符串后追加字符串</p>
+<p>​                                    2、insert(index,插入的字符串)：在原有字符串插入新的字符串，index都是从0开始计算的</p>
+<p>​                                    3、delete(要删除的字符串起始位置，要删除的字符串结束位置)：删除字符串，从0计算</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/" rel="prev" title="Linux 基础命令总结">
+      <i class="fa fa-chevron-left"></i> Linux 基础命令总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/13/My%20SQL%E7%AC%94%E8%AE%B0/" rel="next" title="My SQL笔记">
+      My SQL笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一周总结"><span class="nav-number">1.</span> <span class="nav-text">第一周总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#笔记"><span class="nav-number">1.1.</span> <span class="nav-text">笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一章-初识JAVA"><span class="nav-number">1.1.1.</span> <span class="nav-text">第一章    初识JAVA</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、什么是JAVA"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1、什么是JAVA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Java的几个版本（几个开发模式）"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2、Java的几个版本（几个开发模式）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、JAVA开发环境的安装："><span class="nav-number">1.1.1.3.</span> <span class="nav-text">3、JAVA开发环境的安装：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1、JAVA的开发工具："><span class="nav-number">1.1.1.3.1.</span> <span class="nav-text">1、JAVA的开发工具：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2、JAVA语言开发环境的搭建："><span class="nav-number">1.1.1.3.2.</span> <span class="nav-text">2、JAVA语言开发环境的搭建：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、开发一个Java程序"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">4、开发一个Java程序</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1、编写程序框架"><span class="nav-number">1.1.1.4.1.</span> <span class="nav-text">1、编写程序框架</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2、编写main-方法的框架"><span class="nav-number">1.1.1.4.2.</span> <span class="nav-text">2、编写main()方法的框架</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3、编写代码"><span class="nav-number">1.1.1.4.3.</span> <span class="nav-text">3、编写代码</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、Java程序的注释"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">5、Java程序的注释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、Java中的转义字符"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">6、Java中的转义字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、Java的编码规范"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">7、Java的编码规范</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、常见错误"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">8、常见错误</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二章、数据类型、变量和运算符"><span class="nav-number">1.2.</span> <span class="nav-text">第二章、数据类型、变量和运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">一、数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、什么是数据类型："><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1、什么是数据类型：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、数据类型的分类："><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2、数据类型的分类：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#A、数值类型：（整数、浮点数、非数值）"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">A、数值类型：（整数、浮点数、非数值）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#B、非数值类型："><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">B、非数值类型：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、数据类型之间的转换："><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3、数据类型之间的转换：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、变量"><span class="nav-number">1.2.2.</span> <span class="nav-text">二、变量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、什么是变量："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1、什么是变量：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、变量的命名规则："><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2、变量的命名规则：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、变量的注意事项："><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3、变量的注意事项：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、使用语法："><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4、使用语法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、常见错误"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">5、常见错误</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、运算符"><span class="nav-number">1.2.3.</span> <span class="nav-text">三、运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、输入操作"><span class="nav-number">1.2.4.</span> <span class="nav-text">四、输入操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第九章、循环嵌套"><span class="nav-number">1.3.</span> <span class="nav-text">第九章、循环嵌套</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、循环嵌套的方式："><span class="nav-number">1.3.1.</span> <span class="nav-text">一、循环嵌套的方式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、循环嵌套中的跳转语句："><span class="nav-number">1.3.2.</span> <span class="nav-text">二、循环嵌套中的跳转语句：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十一章、数组及应用"><span class="nav-number">1.4.</span> <span class="nav-text">第十一章、数组及应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、数组的基本要素："><span class="nav-number">1.4.1.</span> <span class="nav-text">一、数组的基本要素：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、了解数组"><span class="nav-number">1.4.2.</span> <span class="nav-text">二、了解数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、数组使用的注意事项"><span class="nav-number">1.4.3.</span> <span class="nav-text">三、数组使用的注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、数组的应用"><span class="nav-number">1.4.4.</span> <span class="nav-text">四、数组的应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十三章、类和对象"><span class="nav-number">1.5.</span> <span class="nav-text">第十三章、类和对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、对象"><span class="nav-number">1.5.1.</span> <span class="nav-text">一、对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、类（class"><span class="nav-number">1.5.2.</span> <span class="nav-text">二、类（class)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、类的结构（由属性和方法构成）"><span class="nav-number">1.5.3.</span> <span class="nav-text">三、类的结构（由属性和方法构成）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、如何创建对象"><span class="nav-number">1.5.4.</span> <span class="nav-text">四、如何创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、包的介绍"><span class="nav-number">1.5.5.</span> <span class="nav-text">五、包的介绍</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十四章、类的方法"><span class="nav-number">1.6.</span> <span class="nav-text">第十四章、类的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、方法的结构"><span class="nav-number">1.6.1.</span> <span class="nav-text">一、方法的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、语法："><span class="nav-number">1.6.1.1.</span> <span class="nav-text">1、语法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、方法的签名（对方法体的描述）"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">2、方法的签名（对方法体的描述）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、方法体（方法体就是要实现的功能代码块）"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">3、方法体（方法体就是要实现的功能代码块）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、方法调用"><span class="nav-number">1.6.2.</span> <span class="nav-text">二、方法调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、带参方法"><span class="nav-number">1.6.3.</span> <span class="nav-text">三、带参方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、参数列表："><span class="nav-number">1.6.3.1.</span> <span class="nav-text">1、参数列表：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、调用带参方法"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">2、调用带参方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、变量的作用域-指变量的作用范围"><span class="nav-number">1.6.4.</span> <span class="nav-text">四、变量的作用域(指变量的作用范围)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、JavaDoc注释（文档注释）"><span class="nav-number">1.6.5.</span> <span class="nav-text">五、JavaDoc注释（文档注释）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十六章、字符串"><span class="nav-number">1.6.6.</span> <span class="nav-text">第十六章、字符串</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">227</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
