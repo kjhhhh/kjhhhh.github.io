@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java 谜题 Java 谜题 6——库谜题谜题 56：大问题作为一项热身活动，我们来测试一下你对 BigInteger 的了解程度。下面这个程 序将打印出什么呢？  12345678910111213141516171819202122232425import java.math.sBigInteger; public class BigProblem &amp;#123;  public static">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java库谜题">
+<meta property="og:url" content="http://yoursite.com/2021/03/21/java%E5%BA%93%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="Java 谜题 Java 谜题 6——库谜题谜题 56：大问题作为一项热身活动，我们来测试一下你对 BigInteger 的了解程度。下面这个程 序将打印出什么呢？  12345678910111213141516171819202122232425import java.math.sBigInteger; public class BigProblem &amp;#123;  public static">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-21T13:34:54.751Z">
+<meta property="article:modified_time" content="2021-03-21T13:38:28.940Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="java进阶学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/21/java%E5%BA%93%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java库谜题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/21/java%E5%BA%93%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java库谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-21 21:34:54 / 修改时间：21:38:28" itemprop="dateCreated datePublished" datetime="2021-03-21T21:34:54+08:00">2021-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-谜题-Java-谜题-6——库谜题"><a href="#Java-谜题-Java-谜题-6——库谜题" class="headerlink" title="Java 谜题 Java 谜题 6——库谜题"></a>Java 谜题 Java 谜题 6——库谜题</h1><h2 id="谜题-56：大问题"><a href="#谜题-56：大问题" class="headerlink" title="谜题 56：大问题"></a>谜题 56：大问题</h2><p>作为一项热身活动，我们来测试一下你对 BigInteger 的了解程度。下面这个程</p>
+<p>序将打印出什么呢？ </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import java.math.sBigInteger; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BigProblem</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[ ] args</span>)</span> &#123; </span><br><span class="line"></span><br><span class="line"> BigInteger fiveThousand = <span class="keyword">new</span> BigInteger(<span class="string">"5000"</span>);</span><br><span class="line"></span><br><span class="line"> BigInteger fiftyThousand = <span class="keyword">new</span> BigInteger(<span class="string">"50000"</span>); </span><br><span class="line"></span><br><span class="line"> BigInteger fiveHundredThousand = <span class="keyword">new</span> BigInteger(<span class="string">"500000"</span>); </span><br><span class="line"></span><br><span class="line"> BigInteger total = BigInteger.ZERO; </span><br><span class="line"></span><br><span class="line"> total.<span class="keyword">add</span>(fiveThousand); </span><br><span class="line"></span><br><span class="line"> total.<span class="keyword">add</span>(fiftyThousand); </span><br><span class="line"></span><br><span class="line"> total.<span class="keyword">add</span>(fiveHundredThousand); </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(total); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可能会认为这个程序会打印出 555000。毕竟，它将 total 设置为用 BigInteger</p>
+<p>表示的 0，然后将 5,000、50,000 和 500,000 加到了这个变量上。如果你运行该</p>
+<p>程序，你就会发现它打印的不是 555000，而是 0。很明显，所有这些加法对 total</p>
+<p>没有产生任何影响。 </p>
+<p>对此有一个很好理由可以解释：BigInteger 实例是不可变的。String、</p>
+<p>BigDecimal 以及包装器类型：Integer、Long、Short、Byte、Character、Boolean、</p>
+<p>Float 和 Double 也是如此，你不能修改它们的值。我们不能修改现有实例的值，</p>
+<p>对这些类型的操作将返回新的实例。起先，不可变类型看起来可能很不自然，但是它们具有很多胜过与其向对应的可变类型的优势。不可变类型更容易设计、实</p>
+<p>现和使用；它们出错的可能性更小，并且更加安全[EJ Item 13]。 </p>
+<p>为了在一个包含对不可变对象引用的变量上执行计算，我们需要将计算的结果赋</p>
+<p>值给该变量。这样做就会产生下面的程序，它将打印出我们所期望的 555000： </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import java.math.BigInteger; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BigProblem</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span> &#123; </span><br><span class="line"></span><br><span class="line"> BigInteger fiveThousand = <span class="keyword">new</span> BigInteger(<span class="string">"5000"</span>); </span><br><span class="line"></span><br><span class="line"> BigInteger fiftyThousand = <span class="keyword">new</span> BigInteger(<span class="string">"50000"</span>); </span><br><span class="line"></span><br><span class="line"> BigInteger fiveHundredThousand = <span class="keyword">new</span> BigInteger(<span class="string">"500000"</span>); </span><br><span class="line"></span><br><span class="line"> BigInteger total = BigInteger.ZERO; </span><br><span class="line"></span><br><span class="line"> total = total.<span class="keyword">add</span>(fiveThousand); </span><br><span class="line"></span><br><span class="line"> total = total.<span class="keyword">add</span>(fiftyThousand); </span><br><span class="line"></span><br><span class="line"> total = total.<span class="keyword">add</span>(fiveHundredThousand); </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(total); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本谜题的教训是：不要被误导，认为不可变类型是可变的。这是一个在刚入门的</p>
+<p>Java 程序员中很常见的错误。公正地说，Java 不可变类型的某些方法名促使我</p>
+<p>们走上了歧途。像 add、subtract 和 negate 之类的名字似乎是在暗示这些方法</p>
+<p>将修改它们所调用的实例。也许 plus、minus 和 negation 才是更好的名字。 </p>
+<p>对 API 设计来说，其教训是：在命名不可变类型的方法时，应该优选介词和名词，</p>
+<p>而不是动词。介词适用于带有参数的方法，而名词适用于不带参数的方法。对语</p>
+<p>言设计者而言，其教训与谜题 2 相同，那就是应该考虑对操作符重载提供有限的</p>
+<p>支持，这样算数操作符就可以作用于诸如 BigInteger 这样的数值型的引用类型。</p>
+<p>由此，即使是初学者也不会认为计算表达式 total + fiveThousand 将会对 total</p>
+<p>的值产生任何影响。 </p>
+<h2 id="谜题-57：名字里有什么？"><a href="#谜题-57：名字里有什么？" class="headerlink" title="谜题 57：名字里有什么？"></a>谜题 57：名字里有什么？</h2><p>下面的程序包含了一个简单的不可变类，它表示一个名字，其 main 方法将一个</p>
+<p>名字置于一个集合中，并检查该集合是否确实包含了该名字。那么，这个程序到</p>
+<p>底会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Name</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">String</span> first, last; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Name</span><span class="params">(<span class="keyword">String</span> first, <span class="keyword">String</span> last)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.first = first; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.last = last; </span><br><span class="line"></span><br><span class="line"> &#125; <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!(o instanceof Name)) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"> Name n = (Name)o; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> n.first.equals(first) &amp;&amp; n.last.equals(last); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Set s = <span class="keyword">new</span> HashSet(); </span><br><span class="line"></span><br><span class="line"> s.add(<span class="keyword">new</span> Name(<span class="string">"Mickey"</span>, <span class="string">"Mouse"</span>));</span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> s.contains(<span class="keyword">new</span> Name(<span class="string">"Mickey"</span>, <span class="string">"Mouse"</span>))); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个 Name 实例由一个姓和一个名构成。两个 Name 实例在通过 equals 方法进行</p>
+<p>计算时，如果它们的姓相等且名也相等，则这两个 Name 实例相等。姓和名是用</p>
+<p>在 String 中定义的 equals 方法来比较的，两个字符串如果以相同的顺序包含相</p>
+<p>同的若干个字符，那么它们就相等。因此，两个 Name 实例如果表示相同的名字，</p>
+<p>那么它们就相等。例如，下面的方法调用将返回 true： </p>
+<p>new Name(“Mickey”, “Mouse”).equals(new Name(“Mickey”, “Mouse”)) </p>
+<p>该程序的 main 方法创建了两个 Name 实例，它们都表示 Mickey Mouse。该程序</p>
+<p>将第一个实例放置到了一个散列集合中，然后检查该集合是否包含第二个实例。</p>
+<p>这两个 Name 实例是相等的，因此看起来该程序似乎应该打印 true。如果你运行</p>
+<p>它，几乎可以肯定它将打印 false。那么这个程序出了什么问题呢？ </p>
+<p>这里的 bug 在于 Name 违反了 hashCode 约定。这看起来有点奇怪，因为 Name 连</p>
+<p>hashCode 都没有，但是这确实是问题所在。Name 类覆写了 equals 方法，而</p>
+<p>hashCode 约定要求相等的对象要具有相同的散列码。为了遵守这项约定，无论</p>
+<p>何时，只要你覆写了 equals 方法，你就必须同时覆写 hashCode 方法[EJ Item 8]。 </p>
+<p>因为 Name 类没有覆写 hashCode 方法，所以它从 Object 那里继承了其 hashCode</p>
+<p>实现。这个实现返回的是基于标识的散列码。换句话说，不同的对象几乎总是产</p>
+<p>生不相等的散列值，即使它们是相等的也是如此。所以说 Name 没有遵守 hashCode</p>
+<p>的约定，因此包含 Name 元素的散列集合的行为是不确定的。 </p>
+<p>当程序将第一个 Name 实例放置到散列集合中时，该集合就会在某个散列位置上</p>
+<p>放置这个实例对应的项。该集合是基于实例的散列值来选择散列位置的，这个散</p>
+<p>列值是通过实例的 hashCode 方法计算出来的。 </p>
+<p>当该程序在检查第二个 Name 实例是否包含在散列集合中时，它基于第二个实例</p>
+<p>的散列值来选择要搜索的散列位置。因为第二个实例有别于第一个实例，因此它</p>
+<p>极有可能产生不同的散列值。如果这两个散列值映射到了不同的位置，那么contains 方法将返回 false：我们所喜爱的啮齿动物米老鼠就在这个散列集合</p>
+<p>中，但是该集合却找不到他。 </p>
+<p>假设两个 Name 实例映射到了相同的位置，那又会怎样呢？我们所了解的所有的</p>
+<p>HashSet 实现都进行了一种优化，即每一项在存储元素本身之外，还存储了元素</p>
+<p>的散列值。在搜索某个元素时，这种实现通过遍历集合中的项，去拿存储在每一</p>
+<p>项中的散列值与我们想要查找的元素的散列值进行比较，从而选取适当的散列位</p>
+<p>置。只有在两个元素的散列值相等的情况下，这种实现才会认为这两个元素相等。</p>
+<p>这种优化是有实际意义的，因为比较散列码相对于比较元素来说，其代价要小得</p>
+<p>多。 </p>
+<p>对散列集合来说，这项优化并不足以使其能够搜索到正确的位置；两个 Name 实</p>
+<p>例必须具有相同的散列值才能让散列集合能够将它们识别为是相等的。该程序偶</p>
+<p>尔也会打印出 true，这是因为被连续创建的两个对象偶尔也会具有相同的标识</p>
+<p>散列码。一个粗略的实验表明，这种偶然性出现的概率大约是 25,000,000 分之</p>
+<p>一。这个实验的结果可能会因所使用的 Java 实现的不同而有所变化，但是在任</p>
+<p>何我们所知的 JRE 上，你基本上是不可能看到该程序打印出 true 的。 </p>
+<p>要想订正该程序，只需在 Name 类中添加一个恰当的 hashCode 方法即可。尽管任</p>
+<p>何其返回值仅有姓和名来确定的方法都可以满足 hashCode 的约定，但是高质量</p>
+<p>的散列函数应该尝试着对不同的名字返回不同的散列值。下面的方法就能够很好</p>
+<p>地实现这一点[EJ Item 8]。只要我们把该方法添加到了程序中，那么该程序就</p>
+<p>可以打印出我们所期望的 true： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> hashCode() &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="number">37</span> * first.hashCode() + last.hashCode(); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总之，当你覆写 equals 方法时，一定要记着覆写 hashCode 方法。更一般地讲，</p>
+<p>当你在覆写一个方法时，如果它具有一个通用的约定，那么你一定要遵守它。对</p>
+<p>于大多数在Object中声明的非final的方法，都需要注意这一点[EJ Chapter 3]。</p>
+<p>不采用这项建议就会导致任意的、不确定的行为。 </p>
+<h2 id="谜题-58：产生它的散列码-产生它的散列码"><a href="#谜题-58：产生它的散列码-产生它的散列码" class="headerlink" title="谜题 58：产生它的散列码 产生它的散列码"></a>谜题 58：产生它的散列码 产生它的散列码</h2><p>本谜题试图从前一个谜题中吸取教训。下面的程序还是由一个 Name 类和一个</p>
+<p>main 方法构成，这个 main 方法还是将一个名字放置到一个散列集合中，然后检</p>
+<p>查该集合是否包含了这个名字。然而，这一次 Name 类已经覆写了 hashCode 方法。</p>
+<p>那么下面的程序将打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Name</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">String</span> first, last; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">Name</span><span class="params">(<span class="keyword">String</span> first, <span class="keyword">String</span> last)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.first = first; <span class="keyword">this</span>.last = last; &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Name n)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> n.first.equals(first) &amp;&amp; n.last.equals(last); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="number">31</span> * first.hashCode() + last.hashCode();</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[ ] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Set s = <span class="keyword">new</span> HashSet(); </span><br><span class="line"></span><br><span class="line"> s.add(<span class="keyword">new</span> Name(<span class="string">"Donald"</span>, <span class="string">"Duck"</span>)); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>( </span><br><span class="line"></span><br><span class="line"> s.contains(<span class="keyword">new</span> Name(<span class="string">"Donald"</span>, <span class="string">"Duck"</span>))); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与谜题 57 一样，该程序的 main 方法创建了两个 Name 实例，它们表示的是相同</p>
+<p>的名字。这一次使用的名字是 Donald Duck 而不是 Mickey Mouse，但是它们不</p>
+<p>应该有很大的区别。main 方法同样还是将第一个实例置于一个散列集合中，然</p>
+<p>后检查该集合中是否包含了第二个实例。这一次 hashCode 方法明显是正确的，</p>
+<p>因此看起来该程序应该打印 true。但是，表象再次欺骗了我们：它总是打印出</p>
+<p>false。这一次又是哪里出错了呢？ </p>
+<p>这个程序的缺陷与谜题 57 中的缺陷很相似，在谜题 57 中，Name 覆写了 equals</p>
+<p>方法，但是没有覆写 hashCode 方法；而在本谜题中，Name 覆写了 hashCode 方</p>
+<p>法，但是没有覆写 equals 方法。这并不是说 Name 没有声明一个 equals 方法，</p>
+<p>它确实声明了，但是那是个错误的声明。Name 类声明了一个参数类型是 Name 而</p>
+<p>不是 Object 的 equals 方法。这个类的作者可能想要覆写 equals 方法，但是却</p>
+<p>错误地重载了它[JLS 8.4.8.1, 8.4.9]。 </p>
+<p>HashSet 类是使用 equals(Object)方法来测试元素的相等性的；Name 类中声明</p>
+<p>一个 equals(Name)方法对 HashSet 不造成任何影响。那么 Name 是从哪里得到了</p>
+<p>它的 equals(Object)方法的呢？它是从 Object 哪里继承而来的。这个方法只有</p>
+<p>在它的参数与在其上调用该方法的对象完全相同时才返回 true。我们的程序中</p>
+<p>的 main 方法将一个 Name 实例插入到了散列集合中，并且测试另一个实例是否存</p>
+<p>在于该散列集合中，由此可知该测试一定是返回 false 的。对我们而言，两个实</p>
+<p>例可以代表那令人惊奇的水禽唐老鸭，但是对散列映射表而言，它们只是两个不</p>
+<p>相等的对象。 </p>
+<p>订正该程序只需用可以在谜题 57 中找到的覆写的 equals 方法来替换重载的</p>
+<p>equals 方法即可。通过使用这个 equals 方法，该程序就可以打印出我们所期望</p>
+<p>的 true： </p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">boolean</span> <span class="keyword">equals</span>(Object o) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!(o instanceof Name)) </span><br><span class="line"></span><br><span class="line"><span class="built_in"> return</span> <span class="literal">false</span>; Name n = (Name)o; </span><br><span class="line"></span><br><span class="line"><span class="built_in"> return</span> n.<span class="keyword">first</span>.<span class="keyword">equals</span>(<span class="keyword">first</span>) &amp;&amp; n.<span class="keyword">last</span>.<span class="keyword">equals</span>(<span class="keyword">last</span>); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要让该程序可以正常工作，你只需增加一个覆写的 equals 方法即可。你不必剔</p>
+<p>除那个重载的版本，但是你最好是删掉它。重载为错误和混乱提供了机会[EJ </p>
+<p>Item 26]。如果兼容性要求强制你必须保留一个自身类型的 equals 方法，那么</p>
+<p>你应该用自身类型的重载去实现 Object 的重载，以此来确保它们具有相同的行</p>
+<p>为： </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="type">boolean</span> equals(<span class="keyword">Object</span> o) &#123; <span class="keyword">return</span> o instanceof <span class="type">Name</span> &amp;&amp; equals((<span class="type">Name</span>) </span><br><span class="line"></span><br><span class="line">o); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>本谜题的教训是：当你想要进行覆写时，千万不要进行重载。为了避免无意识地</p>
+<p>重载，你应该机械地对你想要覆写的每一个超类方法都拷贝其声明，或者更好的</p>
+<p>方式是让你的 IDE 帮你去做这些事。这样做除了可以保护你免受无意识的重载之</p>
+<p>害，而且还可以保护你免受拼错方法名之害。如果你使用的 5.0 或者更新的版本，</p>
+<p>那么对于那些意在覆写超类方法的方法，你可以将@Override 注释应用于每一个</p>
+<p>这样的方法的声明上： </p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override <span class="keyword">public</span> <span class="built_in">Boolean</span> <span class="keyword">equals</span>(Object o) &#123; <span class="params">...</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在使用这个注释时，除非被注释的方法确实覆写了一个超类方法，否则它将不能</p>
+<p>编译。对语言设计者来说，值得去考虑在每一个覆写超类方法的方法声明上都添</p>
+<p>加一个强制性的修饰符。 </p>
+<h2 id="谜题-59：什么是差？"><a href="#谜题-59：什么是差？" class="headerlink" title="谜题 59：什么是差？"></a>谜题 59：什么是差？</h2><p>下面的程序在计算一个 int 数组中的元素两两之间的差，将这些差置于一个集合</p>
+<p>中，然后打印该集合的尺寸大小。那么，这个程序将打印出什么呢？ </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Differences</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[ ] args) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> vals[ ] = &#123; <span class="number">789</span>, <span class="number">678</span>, <span class="number">567</span>, <span class="number">456</span>, <span class="number">345</span>, <span class="number">234</span>, <span class="number">123</span>, <span class="number">012</span> &#125;; </span><br><span class="line"></span><br><span class="line"> Set diffs = new HashSet(); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; vals.length; i++) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> j = i; j &lt; vals.length; j++) </span><br><span class="line"></span><br><span class="line"> diffs.add(vals[i] - vals[j]); </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(diffs.size()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>外层循环迭代数组中的每一个元素，而内层循环从外层循环当前迭代到的元素开</p>
+<p>始迭代到数组中的最后一个元素。因此，这个嵌套的循环将遍历数组中每一种可能的两两组合。（元素可以与其自身组成一对。）这个嵌套循环中的每一次迭代</p>
+<p>都计算了一对元素之间的差（总是正的），并将这个差存储到了集合中，集合是</p>
+<p>可以消除重复元素的。因此，本谜题就带来了一个问题，在由 vals 数组中的元</p>
+<p>素结成的对中，有多少唯一的正的差存在呢？ </p>
+<p>当你仔细观察程序中的数组时，会发现其构成模式非常明显：连续两个元素之间</p>
+<p>的差总是 111。因此，两个元素之间的差是它们在数组之间的偏移量之差的函数。</p>
+<p>如果两个元素是相同的，那么它们的差就是 0；如果两个元素是相邻的，那么它</p>
+<p>们的差就是 111；如果两个元素被另一个元素分割开了，那么它们的差就是 222；</p>
+<p>以此类推。看起来不同的差的数量与元素间不同的距离的数量是相等的，也就是</p>
+<p>等于数组的尺寸，即 8。如果你运行该程序，就会发现它打印的是 14。怎么回事</p>
+<p>呢？ </p>
+<p>上面的分析有一个小的漏洞。要想了解清楚这个缺陷，我们可以通过将 println</p>
+<p>语句中的.size()这几个字符移除掉，来打印出集合中的内容。这么做会产生下</p>
+<p>面的输出： </p>
+<p>[111,222,446,557,668,113,335,444,779,224,0,333,555,666]</p>
+<p>这些数字并非都是 111 的倍数。在 vals 数组中肯定有两个毗邻的元素的差是</p>
+<p>113。如果你观察该数组的声明，不可能很清楚地发现原因所在： </p>
+<p>int vals[ ] = { 789, 678, 567, 456, 345, 234, 123, 012 }; </p>
+<p>但是如果你打印数组的内容，你就会看见下面的内容： </p>
+<p>[789,678,567,456,345,234,123,10]</p>
+<p>为什么数组中的最后一个元素是 10 而不是 12 呢？因为以 0 开头的整数类型字面</p>
+<p>常量将被解释成为八进制数值[JLS 3.10.1]。这个隐晦的结构是从 C 编程语言那</p>
+<p>里遗留下来东西，C 语言产生于 1970 年代，那时八进制比现在要通用得多。 </p>
+<p>一旦你知道了 012 == 10，就会很清楚为什么该程序打印出了 14：有 6 个不涉及</p>
+<p>最后一个元素的唯一的非 0 差，有 7 个涉及最后一个元素的非 0 差，还有 0，加</p>
+<p>在一起正好是 14 个唯一的差。订正该程序的方法更加明显：将八进制整型字面</p>
+<p>常量 012 替换为十进制整型字面常量 12。如果你这么做了，该程序将打印出我</p>
+<p>们所期望的 8。 </p>
+<p>本谜题的教训很简单：千万不要在一个整型字面常量的前面加上一个 0；这会使</p>
+<p>它变成一个八进制字面常量。有意识地使用八进制整型字面常量的情况相当少</p>
+<p>见，你应该对所有的这种特殊用法增加注释。对语言设计者来说，在决定应该包</p>
+<p>含什么特性时，应该考虑到其限制条件。当有所迟疑时，应该将它剔除在外。 </p>
+<h2 id="谜题-60：一行的方法-现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些"><a href="#谜题-60：一行的方法-现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些" class="headerlink" title="谜题 60：一行的方法 现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些"></a>谜题 60：一行的方法 现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些</h2><p>方法的方法体都只包含一行代码。各就各位，预备，编码！ </p>
+<p>• A．编写一个方法，它接受一个包含元素的 List，并返回一个新的 List，</p>
+<p>它以相同的顺序包含相同的元素，只不过它把第二次以及后续出现的重复</p>
+<p>元素都剔除了。例如，如果你传递了一个包</p>
+<p>含”spam”,”sausage”,”spam”,”spam”,”bacon”,”spam”,”t</p>
+<p>omato”和”spam”的列表，那么你将得到一个包</p>
+<p>含”spam”,”sausage”,”bacon”,”tomato”的新列表。 </p>
+<p>• B．编写一个方法，它接受一个由 0 个或多个由逗号分隔的标志所组成的</p>
+<p>字符串，并返回一个表示这些标志的字符串数组，数组中的元素的顺序与</p>
+<p>这些标志在输入字符串中出现的顺序相同。每一个逗号后面都可能会跟随</p>
+<p>0 个或多个空格字符，这个方法忽略它们。例如，如果你传递的字符串</p>
+<p>是”fear, surprise, ruthless efficiency, an almost fanatical </p>
+<p>devotion to the Pope, nice red uniforms”，那么你得到的将是一个</p>
+<p>包含 5 个元素的字符串数组，这些元素</p>
+<p>是”fear”，”surprise”，”ruthless efficiency”，”an almost </p>
+<p>fanatical devotion to the Pope” 和 “nice red uniform”。 </p>
+<p>• C．假设你有一个多维数组，出于调试的目的，你想打印它。你不知道这</p>
+<p>个数组有多少级，以及在数组的每一级中所存储的对象的类型。编写一个</p>
+<p>方法，它可以向你显示出在每一级上的所有元素。 </p>
+<p>• D．编写一个方法，它接受两个 int 数值，并在第一个数值与第二个数值</p>
+<p>以二进制补码形式进行比较，具有更多的位被置位时，返回 true。 </p>
+<p>A．众所周知，你可以通过把集合（collection）中的元素置于一个 Set 中将集</p>
+<p>合中的所有重复元素都消除掉。在本谜题中，你还被要求要保持最初的集合中的</p>
+<p>元素顺序。幸运的是，有一种 Set 的实现可以维护其元素被插入的顺序，它提供</p>
+<p>的导入性能接近 HashMap。它就是 LinkedHashSet，它是在 1.4 版本的 JDK 中被</p>
+<p>添加到 Java 平台中的。在内部，它是用一个链接列表来处理的，从而被实现为</p>
+<p>一个散列表。它还有一个映射表版本可供你使用，以定制缓存。一旦你了解了</p>
+<p>LinkedHashSet，本谜题就很容易解决了。剩下唯一的关键就是你被要求要返回</p>
+<p>一个 List，因此你必须用 LinkedHashSet 的内容来初始化一个 List。把它们放</p>
+<p>到一块，就形成了下面的解决方案： </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;E&gt; <span class="built_in">List</span>&lt;E&gt; withoutDuplicates(<span class="built_in">List</span>&lt;E&gt; original) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;E&gt;(<span class="keyword">new</span> LinkedHashSet&lt;E&gt;(original)); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>B．在将字符串解析成标志时，许多程序员都立刻想到了使用 StringTokenizer。</p>
+<p>这是最不幸的事情，自 1.4 版本开始，由于正则表达式被添加到了 Java 平台中</p>
+<p>（java.util.regex），StringTokenizer 开始变得过时了。如果你试图通过</p>
+<p>StringTokenizer 来解决本谜题，那么你很快就会意识到它不是非常适合。通过</p>
+<p>使用正则表达式，它就是小菜一碟。为了在一行代码中解决本谜题，我们要使用</p>
+<p>很方便的方法 String.split，它接受一个描述标志分界符的正则表达式作为参</p>
+<p>数。如果你以前从来没有使用过正则表达式，那么它们看起来会显得有一点神秘，</p>
+<p>但是它们惊人地强大，值得我们好好学习一下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">String</span>[ ] parse(<span class="keyword">String</span> <span class="built_in">string</span>) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="built_in">string</span>.split(<span class="string">",\\S*"</span>); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>C．这是一个讲究技巧的问题。你甚至不必去编写一个方法。这个方法在 5.0 或</p>
+<p>之后的版本中已经提供了，它就是 Arrays.deepToString。如果你传递给它一个</p>
+<p>对象引用的数组，它将返回一个精密的字符串表示。它可以处理嵌套数组，甚至</p>
+<p>可以处理循环引用，即一个数组元素直接或间接地引用了其嵌套外层的数组。事</p>
+<p>实上，5.0 版本中的 Arrays 类提供了一整套的 toString、equals 和 hashCode</p>
+<p>方法，使你能够打印、比较或散列任何原始类型数组或对象引用数组的内容。 </p>
+<p>D．为了在一行代码中解决该谜题，你需要了解在 5.0 版本中添加到 Java 平台中</p>
+<p>的一整套位操作方法。整数类型的包装器类（Integer、Long、Short、Byte 和</p>
+<p>Char）现在支持通用的位处理操作，包括 highestOneBit、lowestOneBit、</p>
+<p>numberOfLeadingZeros、numberOfTrailingZeros、bitCount、rotateLeft、</p>
+<p>rotateRight、reverse、signum 和 reverseBytes。在本例中，你需要的是</p>
+<p>Integer.bitCount，它返回的是一个 int 数值中被置位的位数： </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static Boolean has<span class="constructor">MoreBitsSet(<span class="params">int</span> <span class="params">i</span>, <span class="params">int</span> <span class="params">j</span>)</span> &#123; </span><br><span class="line"></span><br><span class="line"> return (<span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>bit<span class="constructor">Count(<span class="params">i</span>)</span> &gt; <span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>bit<span class="constructor">Count(<span class="params">j</span>)</span>); </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总之，Java 平台的每一个主版本都在其类库中隐藏了一些宝藏。本谜题的所有 4</p>
+<p>个部分都依赖于这样的宝藏。每当该平台发布一个新版本时，你都应该研究就一</p>
+<p>下新特性和提高（new features and enhancements）页面，这样你就不会遗漏</p>
+<p>掉新版本提供的任何惊喜[Features-1.4, Features-5.0]。了解类库中有些什么</p>
+<p>可以节省你大量的时间和精力，并且可以提高你的程序的速度和质量。 </p>
+<h2 id="谜题-61：日期游戏"><a href="#谜题-61：日期游戏" class="headerlink" title="谜题 61：日期游戏"></a>谜题 61：日期游戏</h2><p>下面的程序演练了 Date 和 Calendar 类的某些基本特性，它会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatingGame</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[ ] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Calendar cal = Calendar.getInstance(); </span><br><span class="line"></span><br><span class="line"> cal.<span class="built_in">set</span>(<span class="number">1999</span>, <span class="number">12</span>, <span class="number">31</span>); <span class="comment">// Year, Month, Day</span></span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(cal.<span class="built_in">get</span>(Calendar.YEAR) + <span class="string">" "</span>); </span><br><span class="line"></span><br><span class="line"> Date d = cal.getTime(); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(d.getDay()); </span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>} 该程序创建了一个 Calendar 实例，它应该表示的是 1999 年的除夕夜，然后该程</p>
+<p>序打印年份和日。看起来该程序应该打印 1999 31，但是它没有；它打印的是 2000 </p>
+<p>1。难道这是致命的 Y2K(千年虫)问题吗？ </p>
+<p>不，事情比我们想象的要糟糕得多：这是致命的 Date/Calendar 问题。在 Java</p>
+<p>平台首次发布时，它唯一支持日历计算类的就是 Date 类。这个类在能力方面是</p>
+<p>受限的，特别是当需要支持国际化时，它就暴露出了一个基本的设计缺陷：Date</p>
+<p>实例是易变的。在 1.1 版中，Calendar 类被添加到了 Java 平台中，以矫正 Date</p>
+<p>的缺点，由此大部分的 Date 方法就都被弃用了。遗憾的是，这么做只能使情况</p>
+<p>更糟。我们的程序说明 Date 和 Calendar API 有许多问题。 </p>
+<p>该程序的第一个 bug 就位于方法调用 cal.set(1999,12,31)中。当月份以数字来</p>
+<p>表示时，习惯上我们将第一个月被赋值为 1。遗憾的是，Date 将一月表示为 0，</p>
+<p>而 Calendar 延续了这个错误。因此，这个方法调用将日历设置到了 1999 年第</p>
+<p>13 个月的第 31 天。但是标准的（西历）日历只有 12 个月，该方法调用肯定应</p>
+<p>该抛出一个 IllegalArgumentException 异常，对吗？它是应该这么做，但是它</p>
+<p>并没有这么做。Calendar 类直接将其替换为下一年，在本例中即 2000 年的第一</p>
+<p>个月。这也就解释了我们的程序为什么打印出的第一个数字是 2000。 </p>
+<p>有两种方法可以订正这个问题。你可以将 cal.set 调用的第二个参数由 12 改为</p>
+<p>11，但是这么做容易引起混淆，因为数字 11 会让读者误以为是 11 月。更好的方</p>
+<p>式是使用 Calendar 专为此目的而定义的常量，即 Calendar.DECEMBER。 </p>
+<p>该程序打印出的第二个数字又是怎么回事呢？cal.set 调用很明显是要把日历</p>
+<p>设置到这个月的第 31 天，Date 实例 d 表示的是与 Calendar 相同的时间点，因</p>
+<p>此它的 getDay 方法应该返回 31，但是程序打印的却是 1，这是怎么搞得呢？ </p>
+<p>为了找出原因，你必须先阅读一下文档，它叙述道 Date.getDay 返回的是 Date</p>
+<p>实例所表示的星期日期，而不是月份日期。这个返回值是基于 0 的，从星期天开</p>
+<p>始计算。因此程序所打印的 1 表示 2000 年 1 月 31 日是星期一。请注意，相应的</p>
+<p>Calendar 方法 get(Calendar.DAY_OF_WEEK) 不知为什么返回的是基于 1 的星期</p>
+<p>日期值，而不是像 Date 的对应方法那样返回基于 0 的星期日期值。 </p>
+<p>有两种方法可以订正这个问题。你可以调用 Date.date 这一名字极易让人混淆的</p>
+<p>方法，它返回的是月份日期。然而，与大多数 Date 方法一样，它已经被弃用了，</p>
+<p>因此你最好是将 Date 彻底抛弃，直接调用 Calendar 的</p>
+<p>get(Calendar.DAY_OF_MONTH)方法。用这两种方法，该程序都可以打印出我们想</p>
+<p>要的 1999 31： </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatingGame</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Calendar cal = Calendar.getInstance(); </span><br><span class="line"></span><br><span class="line"> cal.<span class="built_in">set</span>(<span class="number">1999</span>, Calendar.DECEMBER, <span class="number">31</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(cal.<span class="built_in">get</span>(Calendar.YEAR) + <span class="string">" "</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(cal.<span class="built_in">get</span>(Calendar.DAY_OF_MONTH)); &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本谜题只是掀开了 Calendar 和 Date 缺陷的冰山一角。这些 API 简直就是雷区。</p>
+<p>Calendar 其他的严重问题包括弱类型（几乎每样事物都是一个 int）、过于复杂</p>
+<p>的状态空间、拙劣的结构、不一致的命名以及不一致的雨衣等。在使用 Calendar</p>
+<p>和 Date 的时候一定要当心，千万要记着查阅 API 文档。 </p>
+<p>对 API 设计者来说，其教训是：如果你不能在第一次设计时就使它正确，那么至</p>
+<p>少应该在第二次设计时应该使它正确，绝对不能留到第三次设计时去处理。如果</p>
+<p>你对某个 API 的首次尝试出现了严重问题，那么你的客户可能会原谅你，并且会</p>
+<p>再给你一次机会。如果你第二次尝试又有问题，你可能会永远坚持这些错误了。 </p>
+<p>谜题 62：名字游戏 </p>
+<p>下面的程序将两个映射关系放置到了一个映射表中，然后打印它们的尺寸。那么，</p>
+<p>它会打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NameGame</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[ ])</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; m = </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> IdentityHashMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;(); </span><br><span class="line"></span><br><span class="line"> m.<span class="built_in">put</span>(<span class="string">"Mickey"</span>, <span class="string">"Mouse"</span>); </span><br><span class="line"></span><br><span class="line"> m.<span class="built_in">put</span>(<span class="string">"Mickey"</span>, <span class="string">"Mantle"</span>);</span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(m.<span class="built_in">size</span>()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对该程序的一种幼稚的分析认为，它应该打印 1。该程序虽然将两个映射关系放</p>
+<p>置到了映射表中，但是它们具有相同的键（Mickey）。这是一个映射表，不是一</p>
+<p>个多重映射表，所以棒球传奇人物（Mickey Mantle）应该覆盖了啮齿类动画明</p>
+<p>星（Mickey Mouse），从而只留下一个映射关系在映射表中。 </p>
+<p>更透彻一些的分析会对这个预测产生质疑。IdentityHashMap 的文档中叙述道：</p>
+<p>“这个类用一个散列表实现了 Map 接口，它在比较键时，使用的是引用等价性而</p>
+<p>不是值等价性”[Java-API]。换句话说，如果第二次出现的字符串字面常量</p>
+<p>“Mickey”被计算出来是与第一次出现的“Mickey”字符串不同的 String 实例</p>
+<p>的话，那么该程序应该打印 2 而不是 1。如此说来，该程序到底是打印 1，还是</p>
+<p>打印 2，抑或是其行为会根据不同的实现而有所变化？ </p>
+<p>如果你试着运行该程序，你就会发现，尽管我们那个幼稚的分析是有缺陷的，但</p>
+<p>是该程序正如这种分析所指出的一样，打印出来的是 1。这是为什么呢？语言规</p>
+<p>范保证了字符串是内存限定的，换句话说，相等的字符串常量同时也是相同的</p>
+<p>[JLS 15.28]。这可以确保在我们的程序中第二次出现的字符串字面常量“Mickey”引用到了与第一次相同的 String 实例上，因此尽管我们使用了一个</p>
+<p>IdentityHashMap 来代替诸如 HashMap 这样的通用目的的 Map 实现，但是对程序</p>
+<p>的行为却不会产生任何影响。我们那个幼稚的分析忽略了两个细节，但是这些细</p>
+<p>节造成的影响却彼此有效地抵消了。 </p>
+<p>本谜题的一个重要教训是：不要使用 IdentityHashMap，除非你需要其基于标识</p>
+<p>的语义；它不是一个通用目的的 Map 实现。这些语义对于实现保持拓扑结构的对</p>
+<p>象图转换（topology-preserving object graph transformations）非常有用，</p>
+<p>例如序列化和深层复制。我们得到的次要教训是字符串常量是内存限定的。正如</p>
+<p>在谜题 13 中所述，在任何时候，程序都应该尽量不依赖于这种行为去保证它们</p>
+<p>的操作正确。 </p>
+<h2 id="谜题-63：更多同样的问题-更多同样的问题"><a href="#谜题-63：更多同样的问题-更多同样的问题" class="headerlink" title="谜题 63：更多同样的问题 更多同样的问题"></a>谜题 63：更多同样的问题 更多同样的问题</h2><p>下面的程序除了是面向对象的这一点之外，与前一个非常相似。因为从前一个程</p>
+<p>序中已经吸取了教训，这个程序使用了一个通用目的的 Map 实现，即一个</p>
+<p>HashMap，来替代前一个程序的 IdentityHashMap。那么，这个程序会打印出什</p>
+<p>么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MoreNames</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> Map&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt; m = <span class="keyword">new</span> HashMap&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;(); </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">MoreNames</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> m.<span class="built_in">put</span>(<span class="string">"Mickey"</span>, <span class="string">"Mouse"</span>); </span><br><span class="line"></span><br><span class="line"> m.<span class="built_in">put</span>(<span class="string">"Mickey"</span>, <span class="string">"Mantle"</span>);</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> m.<span class="built_in">size</span>(); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[ ])</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> MoreNames moreNames = <span class="keyword">new</span> MoreNames(); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(moreNames.<span class="built_in">size</span>()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序看起来很直观，其 main 方法通过调用无参数的构造器创建了一个</p>
+<p>MoreNames 实例。这个 MoreNames 实例包含一个私有的 Map 域（m），它被初始</p>
+<p>化成一个空的 HashMap。该无参数的构造器似乎将两个映射关系放置到了映射表</p>
+<p>m 中，这两个映射关系都具有相同的键（Mickey）。我们从前一个谜题已知，棒</p>
+<p>球手（Mickey Mantle）应该覆盖啮齿明星（Mickey Mouse），从而只留下一个</p>
+<p>映射关系。main 方法之后在 MoreNames 实例上调用了 size 方法，它会调用映射</p>
+<p>表 m 上的 size 方法，并返回结果，我们假设其为 1。这种分析还剩下一个问题：</p>
+<p>该程序打印的是 0 而不是 1。这种分析出了什么错呢？ 问题在于 MoreNames 没有任何程序员声明的构造器。它拥有的只是一个返回值为</p>
+<p>void 的实例方法，即 MoreNames，作者可能是想让它作为构造器的。遗憾的是，</p>
+<p>返回类型（void）的出现将想要的构造器声明变成了一个方法声明，而且该方法</p>
+<p>永远都不会被调用。因为 MoreNames 没有任何程序员声明的构造器，所以编译器</p>
+<p>会帮助（真的是在帮忙吗？）生成一个公共的无参数构造器，它除了初始化它所</p>
+<p>创建的域实例之外，不做任何事情。就像前面提到的，m 被初始化成了一个空的</p>
+<p>HashMap。当在这个 HashMap 上调用 size 方法时，它将返回 0，这正是该程序打</p>
+<p>印出来的内容。 </p>
+<p>订正该程序很简单，只需将 void 返回类型从 MoreNames 声明中移除即可，这将</p>
+<p>使它从一个实例方法声明变成一个构造器声明。通过这种修改，该程序就可以打</p>
+<p>印出我们所期望的 1。 </p>
+<p>本谜题的教训是：不要因为偶然地添加了一个返回类型，而将一个构造器声明变</p>
+<p>成了一个方法声明。尽管一个方法的名字与声明它的类的名字相同是合法的，但</p>
+<p>是你千万不要这么做。更一般地讲，要遵守标准的命名习惯，它强制要求方法名</p>
+<p>必须以小写字母开头，而类名应该以大写字母开头。 </p>
+<p>对语言设计者来说，在没有任何程序员声明的构造器的情况下，自动生成一个缺</p>
+<p>省的构造器这种做法并非是一个很好的主意。如果确实生成了这样的构造器，也</p>
+<p>许应该让它们是私有的。有好几种其他的方法可以消除这个陷阱。一种方法是禁</p>
+<p>止方法名与类名相同，就像 C#所作的那样，另一种是彻底消灭所有的构造器，</p>
+<p>就像 Smalltalk 所作的那样。 </p>
+<h2 id="谜题-64：按余数编组"><a href="#谜题-64：按余数编组" class="headerlink" title="谜题 64：按余数编组"></a>谜题 64：按余数编组</h2><p>下面的程序将生成整数对 3 取余的柱状图，那么，它将打印出什么呢？ </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Mod</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[ ] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> <span class="keyword">int</span> MODULUS = <span class="number">3</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span>[] histogram = <span class="keyword">new</span> <span class="keyword">int</span>[MODULUS]; </span><br><span class="line"></span><br><span class="line"> <span class="comment">// Iterate over all ints (Idiom from Puzzle 26) </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> i = Integer.MIN_VALUE; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">do</span> &#123;</span><br><span class="line"></span><br><span class="line"> histogram[Math.<span class="built_in">abs</span>(i) % MODULUS]++; </span><br><span class="line"></span><br><span class="line"> &#125; <span class="keyword">while</span> (i++ != Integer.MAX_VALUE); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; MODULUS; j++) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(histogram[j] + <span class="string">" "</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序首先初始化 int 数组 histogram，其每一个位置都为对 3 取余的一个数值</p>
+<p>而准备（0、1 和 2），所有这三个位置都被初始化为 0。然后，该程序在所有 232</p>
+<p>个 int 数值上遍历变量 i，使用的是在谜题 26 中介绍的惯用法。因为整数取余操作（%）在第一个操作数是负数时，可以返回一个负值，就像在谜题 1 中所描</p>
+<p>述的那样，所以该程序在计算 i 被 3 整除的余数之前，先取 i 的绝对值。然后用</p>
+<p>这个余数来递增数组位置的索引。在循环完成之后，该程序将打印 histogram</p>
+<p>数组中的内容，它的元素表示对 3 取余得到 0、1 和 2 的 int 数值的个数。 </p>
+<p>该程序所打印的三个数字应该彼此大致相等，它们加起来应该等于 232。如果你</p>
+<p>想知道怎样计算出它们的精确值，那么你需要有一点数学气质，并仔细阅读下面</p>
+<p>两段话。否则，你可以跳过这两段话。 </p>
+<p>该程序打印的三个数字不可能精确地相等，因为它们必须加起来等于 232，这个</p>
+<p>数字不能被 3 除尽。如果你仔细观察 2 的连续幂级数对 3 取余的值，就会发现，</p>
+<p>它们在 1 和 2 之间交替变化：20 对 3 取余是 1，21 对 3 取余是 2，22 对 3 取余</p>
+<p>是 1，23 对 3 取余是 2，以此类推。每一个 2 的偶次幂对 3 取余的值都是 1，每</p>
+<p>一个 2 的奇次幂对 3 取余的值都是 2。因为 232 对 3 取余是 1，所以该程序所打</p>
+<p>印的三个数字中有一个将比另外两个大 1，但是它是哪一个呢？ </p>
+<p>该循环依次递增三个数组元素的数值，因此该循环最后递增的那个数值必然是最</p>
+<p>大的数值，它就是表示 Integer.MAX_VALUE 或(232-1)对 3 取余的数值。因为 231</p>
+<p>是 2 的奇次幂，所以它对 3 取余应该得到 2，因此(232-1)对 3 取余将得到 1。</p>
+<p>该程序打印的三个数字中的第二个表示的就是对 3 取余得到 1 的 int 数值的个</p>
+<p>数，因此，我们期望这个值比第一个和最后一个数值大 1。 </p>
+<p>由此，该程序应该在运行了相当长的时间之后，打印(232/3)的较小值 (232/3)</p>
+<p>的较大值 (232/3)的较小值，即 1431655765 1431655766 1431655765。但是它</p>
+<p>真的是这么做的吗？不，它几乎立刻就抛出了下面的异常： </p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Exception</span> <span class="keyword">in</span> thread <span class="string">"main"</span> ArrayIndexOutOfBoundsException: -<span class="number">2</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">at</span> <span class="keyword">Mod</span>.main(<span class="keyword">Mod</span>.java:<span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+
+<p>问题出在哪了呢？ </p>
+<p>问题在于该程序对 Math.abs 方法的使用上，它会导致错误的对 3 取余的数值。</p>
+<p>考虑一下当 i 为 -2 时所发生的事情，该程序计算 Math.abs(-2) % 3 的数值，</p>
+<p>得到 2，但是-2 对 3 取余应该得到 1。这可以解释为什么产生了不正确的统计结</p>
+<p>果，但是还有一个问题留待解决，为什么程序抛出了</p>
+<p>ArrayIndexOutOfBoundsException 异常呢？这个异常表明该程序使用了一个负</p>
+<p>的数组索引，但是这肯定是不可能的：数组索引是通过的接受 i 的绝对值并计算</p>
+<p>这个绝对值被 3 整除时的余数而计算出来的。在计算一个非负的 int 数值整除一</p>
+<p>个正的 int 数值的余数时，可以保证将产生一个非负的结果[JLS 15.17.3]。我</p>
+<p>们又要问了，这里又出了什么问题呢？ </p>
+<p>要回答这个问题，我们必须要去看看 Math.abs 的文档。这个方法的名字有一点</p>
+<p>带有欺骗性，它几乎总是返回它的参数的绝对值，但是在有一种情况下，它做不</p>
+<p>到这一点。文档中叙述道：“如果其参数等于 Integer.MIN_VALUE，那么产生的</p>
+<p>结果与该参数相同，它是一个负数。”通过对这条知识的掌握，就可以很清楚地知道为什么该程序立即抛出了 ArrayIndexOutOfBoundsException 异常。循环索</p>
+<p>引 i 的初始值是 Integer.MIN_VALUE，由 Math.abs(Integer.MIN_VALUE) % 3 所</p>
+<p>产生的数组索引等于 Integer.MIN_VALUE % 3，即 -2。 </p>
+<p>为了订正这个程序，我们必须用一个真正的取余操作来替代伪取余计算</p>
+<p>(Math.abs(i) % MODULUS)。如果我们将这个表达式替换为对下面这个方法的调</p>
+<p>用，那么该程序就可以产生我们做期望的输出 1431655765 1431655766</p>
+<p>1431655765： </p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private <span class="keyword">static</span> <span class="built_in">int</span> <span class="keyword">mod</span>(<span class="built_in">int</span> i, <span class="built_in">int</span> modulus) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> <span class="literal">result</span> = i % modulus; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">result</span> &lt; <span class="number">0</span> ? <span class="literal">result</span> + modulus : <span class="literal">result</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本谜题的教训是：Math.abs 不能保证一定会返回非负的结果。如果它的参数是</p>
+<p>Integer.MIN_VALUE，或者对于 long 版本的实现传递的是 Long.MIN_VALUE，那</p>
+<p>么它将返回它的参数。这个方法在一般情况下是不会这么做的，上述这种行为的</p>
+<p>根源在于 2 的补码算数具有不对称性，这在谜题 33 中已经很详细的讨论过了。</p>
+<p>简单地讲，没有任何 int 数值可以表示 Integer.MIN_VALUE 的负值，也没有任何</p>
+<p>long 数值可以表示 Long.MIN_VALUE 的负值。对类库的设计者来说，也许在将</p>
+<p>Integer.MIN_VALUE 和 Long.MIN_VALUE 传递给 Math.abs 时，抛出</p>
+<p>IllegalArgumentException 会显得更合理。然而，有人可能会争辩道，该方法</p>
+<p>的实际行为应该与 Java 内置的整数算术操作相一致，它们在溢出时并不会抛出</p>
+<p>异常。 </p>
+<h2 id="谜题-65：一种疑似排序的惊人传奇-一种疑似排序的惊人传奇"><a href="#谜题-65：一种疑似排序的惊人传奇-一种疑似排序的惊人传奇" class="headerlink" title="谜题 65：一种疑似排序的惊人传奇 一种疑似排序的惊人传奇"></a>谜题 65：一种疑似排序的惊人传奇 一种疑似排序的惊人传奇</h2><p>下面的程序使用定制的比较器，对一个由随机挑选的 Integer 实例组成的数组进</p>
+<p>行排序，然后打印了一个描述了数组顺序的单词。回忆一下，Comparator 接口</p>
+<p>只有一个方法，即 compare，它在第一个参数小于第二个参数时返回一个负数，</p>
+<p>在两个参数相等时返回 0，在第一个参数大于第二个参数时返回一个整数。这个</p>
+<p>程序是展示 5.0 版特性的一个样例程序。它使用了自动包装和解包、泛型和枚举</p>
+<p>类型。那么，它会打印出什么呢？ </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*; </span><br><span class="line"></span><br><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> SuspiciousSort &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">public</span> static <span class="type">void</span> main(String[ ] args) &#123; </span><br><span class="line"></span><br><span class="line"> Random rnd = <span class="built_in">new</span> Random(); </span><br><span class="line"></span><br><span class="line"> <span class="type">Integer</span>[ ] arr = <span class="built_in">new</span> <span class="type">Integer</span>[<span class="number">100</span>]; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) </span><br><span class="line"></span><br><span class="line"> arr[i] = rnd.nextInt(); </span><br><span class="line"></span><br><span class="line"> Comparator&lt;<span class="type">Integer</span>&gt; cmp = <span class="built_in">new</span> Comparator&lt;<span class="type">Integer</span>&gt;() &#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">public</span> <span class="type">int</span> compare(<span class="type">Integer</span> i1, <span class="type">Integer</span> i2) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> i2 - i1; </span><br><span class="line"></span><br><span class="line"> &#125; &#125;; </span><br><span class="line"></span><br><span class="line"> Arrays.sort(arr, cmp); </span><br><span class="line"></span><br><span class="line"> <span class="keyword">System</span>.<span class="keyword">out</span>.println(<span class="keyword">order</span>(arr)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> enum <span class="keyword">Order</span> &#123; ASCENDING, DESCENDING, <span class="keyword">CONSTANT</span>, UNORDERED &#125;; </span><br><span class="line"></span><br><span class="line"> static <span class="keyword">Order</span> <span class="keyword">order</span>(<span class="type">Integer</span>[ ] a) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="type">boolean</span> ascending = <span class="keyword">false</span>; </span><br><span class="line"></span><br><span class="line"> <span class="type">boolean</span> descending = <span class="keyword">false</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; a.length; i++) &#123; </span><br><span class="line"></span><br><span class="line"> ascending |= a[i] &gt; a[i<span class="number">-1</span>]; </span><br><span class="line"></span><br><span class="line"> descending |= a[i] &lt; a[i<span class="number">-1</span>]; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (ascending &amp;&amp; !descending) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">Order</span>.ASCENDING; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (descending &amp;&amp; !ascending) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">Order</span>.DESCENDING; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!ascending) </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">Order</span>.<span class="keyword">CONSTANT</span>; // <span class="keyword">All</span> elements equal </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">Order</span>.UNORDERED; // <span class="keyword">Array</span> <span class="keyword">is</span> <span class="keyword">not</span> sorted</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序的 main 方法创建了一个 Integer 实例的数组，并用随机数对其进行了初</p>
+<p>始化，然后用比较器 cmp 对该数组进行排序。这个比较器的 compare 方法将返回</p>
+<p>它的第二个参数减去第一个参数的值，如果第二个参数表示的是比第一个参数大</p>
+<p>的数值，其返回值就是正的；如果这两个参数相等，其返回值为 0；如果第二个</p>
+<p>参数表示的是比第一个参数小的数值，其返回值就是负的。这种行为正好与</p>
+<p>compare 方法通常的做法相反，因此，该比较器应该施加的是降序排列。 </p>
+<p>在对数组排序之后，main 方法将该数组传递给了静态方法 order，然后打印由这</p>
+<p>个方法返回的结果。该方法在数组中所有的元素都表示相同的数值时，返回</p>
+<p>CONSTANT；在数组中每一对毗邻的元素中第二个元素都大于等于第一个元素时，</p>
+<p>返回 ASCENDING；在数组中每一对毗邻的元素中第二个元素都小于等于第一个元</p>
+<p>素时，返回 DESCENDING；在这些条件都不满足时，返回 UNORDERED。尽管理论上</p>
+<p>说，数组中的 100 个随机数有可能彼此都相等，但是这种奇特现象发生的非常小：</p>
+<p>232×99 分之一，即大约 5×10953 分之一。因此，该程序看起来应该打印</p>
+<p>DESCENDING。如果你运行该程序，几乎可以肯定你将看到它打印的是 UNORDERED。</p>
+<p>为什么它会产生如此的行为呢？ </p>
+<p>order 方法很直观，它并不会说谎。Arrays.sort 方法已经存在许多年了，它工</p>
+<p>作得非常好。现在只有一个地方能够发现 bug 了：比较器。乍一看，这个比较器</p>
+<p>似乎不可能出错。毕竟，它使用的是标准的惯用法：如果你有两个数字，你想得</p>
+<p>到一个数值，其符号表示它们的顺序，那么你可以计算它们的差。这个惯用法至少从 1970 年代早期就一直存在了，它在早期的 UNIX 里面被广泛地应用。遗憾的</p>
+<p>是，这种惯用法从来都没有正确地工作过。本谜题也许应该称为“白痴一般的惯</p>
+<p>用法的案例”。这种惯用法的问题在于定长的整数没有大到可以保存任意两个同</p>
+<p>等长度的整数之差的程度。当你在做两个 int 或 long 数值的减法时，其结果可</p>
+<p>能会溢出，在这种情况下我们就会得到错误的符号。 </p>
+<p>例如，请考虑下面的程序： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Overflow</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> x = <span class="number">-2000000000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="built_in">int</span> z = <span class="number">2000000000</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(x - z); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很明显，x 比 z 小，但是程序打印的是 294967296，它是一个正数。既然这种比</p>
+<p>较的惯用法是有问题的，那么为什么它会被如此广泛地应用呢？因为它在大多数</p>
+<p>时间里可以正常工作的。它只在用来来进行比较的两个数字的差大于</p>
+<p>Integer.MAX_VALUE 的时候才会出问题。这意味着对于许多应用而言，在实际使</p>
+<p>用中是不会看到这种错误的。更糟的是，它们被观察到的次数少之又少，以至于</p>
+<p>这个 bug 永远都不会被发现和订正。 </p>
+<p>那么这对于我们的程序的行为意味着什么呢？如果你查阅一下 Comparator 的文</p>
+<p>档，你就会看到它所实现的排序关系必须是可传递的（transitive），换句话说，</p>
+<p>(compare(x,y) &gt; 0)&amp;&amp;(compare(y,z) &gt; 0)蕴含着 compare(x,z) &gt; 0。如果我</p>
+<p>们取 Overflow 例子中的 x 和 z，并取 y 为 0，那么我们的比较器在这些数值上就</p>
+<p>违反了可传递性。事实上，在所有随机选取的 int 数值对中，有四分之一该比较</p>
+<p>器都会返回错误的值。用这样的比较器来执行一个搜索或排序，或者用它去排序</p>
+<p>一个有序的集合，都会产生不确定的行为，就像我们在运行本谜题的程序时所看</p>
+<p>到的那样。出于数学上的倾向性，Comparator.compare 方法的一般约定要求比</p>
+<p>较器要产生一个全序（total order），但是这个比较器在数个计算上都未能做</p>
+<p>到这一点。 </p>
+<p>我们可以通过替换遵守上述一般约定的 Comparator 实现来订正我们的程序。因</p>
+<p>为我们只是想要反转自然排序的顺序，所以我们甚至可以不必编写我们自己的比</p>
+<p>较器。Collection 类提供了一个可以产生这种顺序的比较器。如果你用</p>
+<p>Arrays.sort(arr,Collections.reverseOrder())来替代最初的 Arrays.sort 调</p>
+<p>用，该程序就可以打印出我们所期望的 DESCENDING。 </p>
+<p>或者，你可以编写你自己的比较器。下面的代码并不“聪明”，但是它可以工作，</p>
+<p>从而使该程序可以打印出我们所期望的 DESCENDING： </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> compare(Integer i1, Integer i2) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> (i2 &lt; i1 ? <span class="number">-1</span> : (i2 == i1 ? <span class="number">0</span> :<span class="number">1</span>)); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>本谜题有数个教训，最具体的是：不要使用基于减法的比较器，除非你能够确保</p>
+<p>要比较的数值之间的差永远不会大于 Integer.MAX_VALUE [EJ Item 11]。更一</p>
+<p>般地讲，要意识到 int 的溢出，就像谜题 3、26 和 33 所讨论的那样。另一个教</p>
+<p>训是你应该避免“聪明”的代码。应该努力去编写清晰正确的代码，不要对它作</p>
+<p>任何优化，除非该优化被证明是必需的[EJ Item 37]。 </p>
+<p>对语言设计者来说，得到的教训与谜题 3、26 和 33 相同：也许真的值得去考虑</p>
+<p>支持某种形式整数算数运算，它不会在溢出时不抛出异常。还有就是可能应该在</p>
+<p>语言中提供一个三值的比较器操作符，就像 Perl 所作的那样（&lt;=&gt;操作符）。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" rel="tag"># java进阶学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/21/javahashmap%E4%B8%AD%E7%9A%84%E6%B7%BB%E5%8A%A0%E9%97%AE%E9%A2%98/" rel="prev" title="javahashmap添加时遇到的问题">
+      <i class="fa fa-chevron-left"></i> javahashmap添加时遇到的问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/21/java%E6%9B%B4%E5%A4%9A%E7%9A%84%E7%B1%BB%E8%B0%9C%E9%A2%98/" rel="next" title="javag更多的类谜题">
+      javag更多的类谜题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-谜题-Java-谜题-6——库谜题"><span class="nav-number">1.</span> <span class="nav-text">Java 谜题 Java 谜题 6——库谜题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-56：大问题"><span class="nav-number">1.1.</span> <span class="nav-text">谜题 56：大问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-57：名字里有什么？"><span class="nav-number">1.2.</span> <span class="nav-text">谜题 57：名字里有什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-58：产生它的散列码-产生它的散列码"><span class="nav-number">1.3.</span> <span class="nav-text">谜题 58：产生它的散列码 产生它的散列码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-59：什么是差？"><span class="nav-number">1.4.</span> <span class="nav-text">谜题 59：什么是差？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-60：一行的方法-现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些"><span class="nav-number">1.5.</span> <span class="nav-text">谜题 60：一行的方法 现在该轮到你写一些代码了。下面的谜题每一个都可以用一个方法来解决，这些</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-61：日期游戏"><span class="nav-number">1.6.</span> <span class="nav-text">谜题 61：日期游戏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-63：更多同样的问题-更多同样的问题"><span class="nav-number">1.7.</span> <span class="nav-text">谜题 63：更多同样的问题 更多同样的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-64：按余数编组"><span class="nav-number">1.8.</span> <span class="nav-text">谜题 64：按余数编组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谜题-65：一种疑似排序的惊人传奇-一种疑似排序的惊人传奇"><span class="nav-number">1.9.</span> <span class="nav-text">谜题 65：一种疑似排序的惊人传奇 一种疑似排序的惊人传奇</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">29:11</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

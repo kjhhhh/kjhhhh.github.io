@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、计算机系统概论1. 冯诺依曼计算机组成 主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线） 2. 计算机层次结构 应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层 3. 计算机性能指标 非时间指标   【字长】机器一次能处理的二进制位数 ，常见的有32位或64位 【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成原理简要知识">
+<meta property="og:url" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="一、计算机系统概论1. 冯诺依曼计算机组成 主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线） 2. 计算机层次结构 应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层 3. 计算机性能指标 非时间指标   【字长】机器一次能处理的二进制位数 ，常见的有32位或64位 【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-53fb11083ce6d4c4039f40497a8abea9_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-a91d9377c5c8a88a47f197c706da156d_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-8e4f8e5decc4c25d9304f12b7774af0e_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-2568da28e5180607b641ca3082b3c7a6_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-c3a55fc6829a4e5f840568818775e60a_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-a390f5de9ad30f5c55a598b3fd31dfae_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-69ad6afdd2f15d203a7069dc6c5ae923_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-3e88cbaffc457a89d19c3754a604db0b_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-f3f51de1f54ffe72fcc3ce9b0a1fc9cf_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-6371aa4c70f70d95669776d5ceac0d3b_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-4271c728b057a63072e7b6f25dcb35e4_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-34773de68815131c23a88d9b71465e0f_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-d409136646e365a3ff783958ef9d4b28_720w.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-31350dada7dd881313879ac4f226303c_720w.jpg">
+<meta property="article:published_time" content="2021-03-21T11:47:55.034Z">
+<meta property="article:modified_time" content="2021-03-21T11:50:56.439Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="计算机组成原理基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-53fb11083ce6d4c4039f40497a8abea9_720w.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机组成原理简要知识 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机组成原理简要知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-21 19:47:55 / 修改时间：19:50:56" itemprop="dateCreated datePublished" datetime="2021-03-21T19:47:55+08:00">2021-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">计组</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、计算机系统概论"><a href="#一、计算机系统概论" class="headerlink" title="一、计算机系统概论"></a><strong>一、计算机系统概论</strong></h2><p><strong>1. 冯诺依曼计算机组成</strong></p>
+<p>主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）</p>
+<p><strong>2. 计算机层次结构</strong></p>
+<p>应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层</p>
+<p><strong>3. 计算机性能指标</strong></p>
+<p><strong>非时间指标</strong></p>
+<ul>
+<li><ul>
+<li>【字长】机器一次能处理的二进制位数 ，常见的有32位或64位</li>
+<li>【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与存储器之间的数据总线的位数</li>
+<li>【主存容量】主存的大小</li>
+<li>【存储带宽】单位时间内与主存交换的二进制位数 B/s</li>
+</ul>
+</li>
+</ul>
+<p><strong>时间指标</strong></p>
+<ul>
+<li><ul>
+<li>【主频f】时钟震荡的频率 Hz；【时钟周期T】时钟震荡一次的时间 t</li>
+<li>【外频】cpu与主板之间同步的时钟频率，系统总线的工作频率；【倍频】主频与外频的倍数 =主频/外频</li>
+<li>【CPI】clock cycles per instruction，执行一条指令需要的周期数（平均）</li>
+<li>【MIPS】million instructions per second，每秒执行的指令总条数 MIPS= f / CPI （忽略单位）</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、数据表示"><a href="#二、数据表示" class="headerlink" title="二、数据表示"></a><strong>二、数据表示</strong></h2><p><strong>1. 基本概念</strong></p>
+<ul>
+<li><strong>真值</strong>：+0101，-0100</li>
+<li><strong>机器数</strong>： [x]原=0101</li>
+</ul>
+<p><strong>2. 几种机器数</strong></p>
+<ul>
+<li><strong>原码</strong>：x = -0101，[x]原 = 1101</li>
+<li><strong>反码</strong>：x = -0101，[x]反 = 1010</li>
+<li><strong>补码</strong>：x = -0101，[x]补 = 1011</li>
+<li><strong>移码</strong>：x = -0101，[x]移 = 2^n + x = 0011</li>
+</ul>
+<blockquote>
+<p>PS：这里说说对补码与移码自己的理解。补码是为了化减法为加法方便计算机设计运算，移码是为了方便比较大小，用在浮点数的阶码中。<br>补码——<strong>任何一个有模的系统中，减法都可以通过加其补码来表示</strong>。最简单的例子就是以12为模的钟表，比如现在是3点，那么<strong>-5个小时</strong>就等于<strong>+7个小时</strong>，都是10点。这里7就是5的补码。<br>移码——数据对应关系一次挪动一下位置，使得看起来小的数真值也小。比如原本0000表示0，现在表示-128，然后0001表示-127，一直到1111表示+127，这样就方便比较了。</p>
+</blockquote>
+<p><strong>3. 定点数与浮点数</strong></p>
+<p><strong>定点数</strong>：小数点固定 x.xxxxxx，表示范围受限，忘掉它吧</p>
+<p><strong>浮点数</strong>：数的范围和精度分别表示。</p>
+<p><strong>一般格式</strong> ：EEEE……EMMM…….M，E部分是<strong>阶码</strong>（数的范围i），M部分是<strong>尾数</strong>（数的精度）。缺点：阶码和尾数位数不固定，太灵活了</p>
+<p><strong>IEEE754格式</strong>：跟我背下来—-</p>
+<p>32位的是（单精度）：1位符号位S + 8位偏指数E + 23位有效尾数M，偏移值为127。</p>
+<p>64位的是（双精度）：1位符号位S + 11位偏指数E + 52位有效尾数M，偏移值为1023。</p>
+<p>真值就是（32位为例） N = (-1)^S * 2^(E-127) * 1.M</p>
+<p><strong>浮点数的特殊情况</strong>：</p>
+<p>E=0,M=0：机器零</p>
+<p>E=255,M=0：无穷大，对应于x/0</p>
+<p>E=255,M!=0：非数值NaN，对应0/0</p>
+<p>ps：附上一份IEEE754文档：<a href="https://link.zhihu.com/?target=https%3A//files.cnblogs.com/files/flashsun/7542008-2008.pdf">https://files.cnblogs.com/files/flashsun/7542008-2008.pdf</a></p>
+<p><strong>4. 数据校验</strong></p>
+<p><strong>基本原理</strong>：增加冗余码</p>
+<p><strong>码距</strong>：合法编码之间不同二进制位数的最小值</p>
+<p><strong>码距与检错、纠错能力</strong>：</p>
+<ul>
+<li><ul>
+<li>码距 d&gt;=e+1：检查e个错误</li>
+<li>码距 d&gt;=2t+1：纠正t个错误</li>
+<li>码距 d&gt;=e+t+1：同时检查e个错误，并纠正t个错误。（e&gt;=t）</li>
+</ul>
+</li>
+</ul>
+<p>PS：这里说下我的理解，增加码距就是增加非法编码的数量，看到非法编码就算<strong>检查出错误了</strong>，而非法编码距离哪个合法编码比较进就认为正确的应该是什么（简单理解，可参考下面的图），也就是可以<strong>纠正错误</strong>。这里看到过一个好的几何理解图，仔细品味下：</p>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-53fb11083ce6d4c4039f40497a8abea9_720w.jpg" alt="img"></p>
+<p>举个例子：比如一共有8位，码距为1则检查不出任何错误，因为所有编码都是合法编码。如果码距为2，那合法编码应该像 00000000，00000011，00001100，00001111这样，那如果出现00000001这样的非法编码就出错了，可检查一位错，但如果两位同时错了，则有可能又跳到另一个合法编码上了，就检查不出2位错。</p>
+<p>那如果码距是3，那合法编码应该像 00000000，00000111，00111000，00111111 这样，那如果出现一位错 00000001，或者两位错00000011，都是非法编码，都能检查出错误，并且此时可以纠正00000001为00000000，纠正00000011为00000111。但是三位同时错就检查不出了。</p>
+<p><strong>常见校验策略</strong>：奇偶校验，CRC校验，海明校验</p>
+<p>ps：海明编码最强视频演示教程：<a href="https://link.zhihu.com/?target=https%3A//www.youtube.com/watch%3Fv%3D373FUw-2U2k">https://www.youtube.com/watch?v=373FUw-2U2k</a></p>
+<h2 id="三、运算方法与运算器"><a href="#三、运算方法与运算器" class="headerlink" title="三、运算方法与运算器"></a><strong>三、运算方法与运算器</strong></h2><p><strong>1. 定点数运算及溢出</strong></p>
+<p><strong>定点数加减法</strong>：减法化加法，用补码直接相加，忽略进位</p>
+<p><strong>溢出</strong>：运算结果超出了某种数据类型的表示范围</p>
+<p><strong>溢出检测方法</strong>：统一思想概括为<strong>正正得负或负负得正则溢出</strong>，正负或负正不可能溢出</p>
+<p><strong>方法1</strong>：V = XYS + XYS（XY为两个加数的符号位，S为结果的符号位，_表示非），那么V = 1则为溢出</p>
+<p><strong>方法2</strong>：V = C0 ⊕ C1（C0是最高数据位产生的进位，C1是符号位产生的进位），那么V = 1则为溢出</p>
+<p><strong>方法3</strong>：V = Xf1 ⊕ Xf2（数据采用变型补码 Xf1Xf2 X0X1X2X3… ）</p>
+<p>PS：以上方法都是利用正正得负负负得正则溢出为出发点的电路设计</p>
+<p><strong>2. 补码一位乘法——Booth算法</strong></p>
+<p>[x·y]补 = [x]补·( -y0＋∑ yi2-i )</p>
+<p>　　　= [<em>x</em>]补·[ - <em>y</em>0 + <em>y</em>12-1 + <em>y</em>22-2 + … + <em>yn</em>2-<em>n</em>]</p>
+<p>　　　= [<em>x</em>]补·[ - <em>y</em>0 + (<em>y</em>1 - <em>y</em>12-1) + (<em>y</em>22-1 - <em>y</em>22-2) + … + (<em>yn<em>2-(</em>n</em>-1) - <em>yn<em>2-</em>n</em>)]</p>
+<p>　　　= [<em>x</em>]补·[(<em>y</em>1 - <em>y</em>0) + (<em>y</em>2 - <em>y</em>1) 2-1 + … + (<em>yn</em> - <em>yn</em>-1) 2-(<em>n</em>-1) + (0 - <em>yn</em>)2-<em>n</em>]</p>
+<p>总结起来设计数字电路的规则就是：</p>
+<ul>
+<li>为00或者为11的时候，直接右移一位</li>
+<li>为01的时候，加x的补，然后右移一位</li>
+<li>为10的时候，加-x的补，然后右移一位</li>
+</ul>
+<p>PS：其实第一行和最后一行都能设计数字电路，为什么要从第一个式子推到最后一个式子呢？原因有两点：</p>
+<p>1）二进制中如果有0，可以不进行运算</p>
+<p>2）如果有连续的1可以减少计算次数，比如 a * 001111100 = a * (010000000 - 0000000100)</p>
+<p>所以每次判断 yn+1 - yn就可以减少计算次数了</p>
+<p>参考：<a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/xisheng/p/9260861.html">https://www.cnblogs.com/xisheng/p/9260861.html</a></p>
+<p><strong>3. 定点数除法</strong> — 略，没找到好的资料</p>
+<p><strong>4. 浮点数加减法</strong></p>
+<p>（1）求阶差，阶码小的对齐大的</p>
+<p>（2）尾数加减</p>
+<p>（3）结果规格化</p>
+<h2 id="四、存储系统"><a href="#四、存储系统" class="headerlink" title="四、存储系统"></a><strong>四、存储系统</strong></h2><p><strong>1. 存储系统层次结构</strong></p>
+<p><strong>主存速度缓慢的原因</strong>：主存增速与CPU不同步，执行指令期间多次访问主存</p>
+<p><strong>主存容量不足的原因</strong>：</p>
+<ul>
+<li>存在制约主存容量的技术因素：如由CPU、主板等相关技术指标规定了主存容量</li>
+<li>应用对主存容量需求不断扩大：window98 – 8M，windows 8 – 1G</li>
+</ul>
+<p>—–&gt; <strong>存储体系结构化层次</strong>： CPU – Cache1 – Cache2（解决速度） – 主存 – 辅存（解决容量）</p>
+<p><strong>存储体系结构化层次理论基础</strong>：</p>
+<ul>
+<li><strong>时间局部性</strong>：程序体现为循环结构</li>
+<li><strong>空间局部性</strong>：程序体现为顺序结构</li>
+</ul>
+<p><strong>2. 主存中的数据组织</strong></p>
+<p><strong>存储字长</strong>：主存的一个存储单元所包含的二进制位数，目前大多数计算机主存按字节编址，主要由32为和64位</p>
+<p><strong>数据存储与边界的关系</strong>：</p>
+<ul>
+<li>按边界对齐的数据存储，未按边界对齐的数据存储</li>
+<li>边界对齐与存储地址的关系：（32位为例）</li>
+</ul>
+<ol>
+<li><strong>双字长</strong>边界对齐：起始地址最末三位为000（8字节整数倍）</li>
+<li><strong>单字长</strong>边界对齐：起始地址最末二位为00（4字节整数倍）</li>
+<li><strong>半字长</strong>边界对齐：起始地址最末一位为0（2字节整数倍）</li>
+</ol>
+<p><strong>大端与小端存储方式</strong>：</p>
+<ul>
+<li><strong>大端</strong>：最高字节地址是数据地址（0123存成0123）</li>
+<li><strong>小端</strong>：最低字节地址是数据地址（0123存成3210）</li>
+</ul>
+<p><strong>3. 存储器分类</strong></p>
+<ul>
+<li><strong>SRAM存储器</strong>：存取速度快，但集成度低，功耗大，做缓存</li>
+<li><strong>DRAM存储器</strong>：存取速度慢，但集成度高，功耗低，做主存</li>
+</ul>
+<p>DRAM刷新方式：集中刷新、分散刷新、异步刷新</p>
+<p><strong>4. 主存容量的扩展</strong></p>
+<ul>
+<li><strong>位扩展法</strong>：8K * 8位 –&gt; 8K * 32位</li>
+<li><strong>字扩展法</strong>：8K * 8位 –&gt; 32K * 8位</li>
+<li><strong>字位同时扩展法</strong>：8K * 8位 –&gt; 32K * 32位</li>
+</ul>
+<p><strong>5. Cache的基本原理</strong></p>
+<p><strong>cache的工作过程</strong></p>
+<ul>
+<li><ul>
+<li><strong>数据</strong>：cpu与cache交换字，cache与内存交换块</li>
+<li><strong>读</strong>：命中，不命中</li>
+<li><strong>写</strong>：写穿策略，写回策略</li>
+</ul>
+</li>
+</ul>
+<p><strong>写策略</strong></p>
+<ul>
+<li><ul>
+<li><strong>写穿策略</strong>（write through）：同时写缓存和内存，好像<strong>穿过缓存</strong>一样。若不命中，先写到主存中，并选择性地同时分配到缓存中（写分配/非写分配）</li>
+<li><strong>写回策略</strong>（write back）：写到缓存后不管了，只有当缓存的内容替换回主存时再管，需有脏位。好像<strong>隔段时间后再写回</strong>到主存中一样</li>
+</ul>
+</li>
+</ul>
+<p><strong>地址映射机制</strong></p>
+<ul>
+<li><p><strong>相联存储器</strong>：地址本身包含着位置啊可比较的信息啊等内容信息，可根据区分地址内容进行寻址</p>
+</li>
+<li><p><strong>主存地址</strong> = 块地址 + 块内偏移地址 = （Tag + Index） + 块内偏移地址</p>
+</li>
+<li><p><strong>cache结构</strong></p>
+</li>
+<li><ul>
+<li>好多行，每行与主存块大小相等</li>
+<li>每行 = tag + data + valid + dirty</li>
+</ul>
+</li>
+<li><p><strong>三种映射方式</strong></p>
+</li>
+<li><ul>
+<li><strong>全相联：</strong>cache行号 = random（内存块号）</li>
+<li><strong>直接相联：</strong>cache行号 = 内存块号 % cache行数</li>
+<li><strong>组相联：</strong>两者结合。8行1路组相联就是全相联，8行8路组相联就是直接相联</li>
+</ul>
+</li>
+</ul>
+<p><strong>替换算法</strong></p>
+<ul>
+<li><ul>
+<li>先进先出法-FIFO</li>
+<li>最近最不经常使用法-LFU</li>
+<li>近期最少使用法-LRU</li>
+<li>随机替换法</li>
+</ul>
+</li>
+</ul>
+<p><strong>6. 虚拟存储器</strong></p>
+<p><strong>解决问题</strong>：主存容量不足。希望向程序员提供更大（比主存大）的编程空间</p>
+<p><strong>分类</strong>：页式，段式，段页式</p>
+<p><strong>页式实现方式</strong>：MMU（Memory Management Unit） + 页表 + TLB（Transaction Lookaside Buffer：地址转换后备缓冲器）</p>
+<p><strong>页式转换过程</strong>：虚拟地址 = 虚拟页号 + 页内偏移 ==&gt; 物理页号 + 页内偏移</p>
+<p><strong>7. RAID</strong></p>
+<p><strong>概念</strong>：独立磁盘构成的具有冗余能力的阵列（Redundant Arrays Independent Disks）</p>
+<p><strong>核心技术</strong>：使用异或运算恢复数据 （x⊕y = z –&gt; x = y⊕z）</p>
+<p><strong>分类</strong>：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li><strong>RAID0</strong>：条带均匀分布</li>
+<li><strong>RAID1</strong>：以镜像为冗余方式</li>
+<li><strong>RAID3/4</strong>：有校验盘</li>
+<li><strong>RAID5</strong>：校验信息分布式</li>
+<li><strong>RAID10/01</strong>：10是先镜像再条带化，01是先条带化再镜像</li>
+<li><strong>RAID50</strong>：先RAID5，再条带化</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="五、指令系统"><a href="#五、指令系统" class="headerlink" title="五、指令系统"></a><strong>五、指令系统</strong></h2><p><strong>1. 指令系统基本概念</strong></p>
+<p><strong>指令集</strong>：一台机器所有指令的集合。<strong>系列机</strong>（同一公司不同时期生产）；<strong>兼容机</strong>（不同公司生产）</p>
+<p><strong>指令字长</strong>：指令中包含的二进制位数，有<strong>等长指令</strong>、<strong>变长指令</strong>。</p>
+<p><strong>指令分类</strong></p>
+<ul>
+<li><ul>
+<li><p><strong>根据层次结构</strong>：高级、汇编、机器、微指令</p>
+</li>
+<li><p><strong>根据地址码字段个数</strong>：零、一、二、三地址指令</p>
+</li>
+<li><p><strong>根据操作数物理位置</strong></p>
+</li>
+<li><ul>
+<li>存储器-存储器（SS）</li>
+<li>寄存器-寄存器（RR）</li>
+<li>寄存器-存储器（RS）</li>
+</ul>
+</li>
+<li><p><strong>根据指令功能</strong>：传送、算术运算、位运算、控制转移</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>指令格式</strong>：操作码+数据源+寻址方式</p>
+<p><strong>2. 寻址方式</strong></p>
+<p><strong>指令寻址方式：</strong>顺序寻址，跳跃寻址</p>
+<p><strong>操作数寻址方式</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>立即数寻址</strong>：地址码字段是操作数本身 MOV AX, 200H</li>
+<li><strong>寄存器寻址</strong>：地址码字段是寄存器地址 MOV AX, BX</li>
+<li><strong>直接寻址</strong>：地址码字段是内存地址 MOV AX, [200H]</li>
+<li><strong>间接寻址</strong>：地址码字段是内存地址的地址 MOV AX, I[200H]</li>
+<li><strong>寄存器间接寻址</strong>：地址码字段是存内存地址的寄存器地址 MOV AX, [BX]</li>
+<li><strong>相对寻址</strong>：操作数地址 + 当前PC的值</li>
+<li><strong>基址寻址</strong>：操作数地址 + 基址寄存器的值（一段程序中不变） MOV AX, 32[B]</li>
+<li><strong>变址寻址</strong>：操作数地址 + 变址寄存器的值（随程序不断变化） MOV AX, 32[SI]</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. MIPS</strong></p>
+<p><strong>三种指令格式</strong></p>
+<ul>
+<li><ul>
+<li><strong>R型指令</strong></li>
+<li><strong>I型指令</strong></li>
+<li><strong>J型指令</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="六、中央处理器"><a href="#六、中央处理器" class="headerlink" title="六、中央处理器"></a><strong>六、中央处理器</strong></h2><p><strong>1. CPU的组成与功能</strong></p>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-a91d9377c5c8a88a47f197c706da156d_720w.jpg" alt="img"></p>
+<p><strong>2. 数据通路</strong></p>
+<p><strong>概念</strong>：执行部件间传送信息的路径，分共享通路（总线）和专用通路</p>
+<p><strong>抽象模型</strong>：时钟驱动下，A –&gt; 组合逻辑 –&gt; B</p>
+<p><strong>D触发器定时模型</strong>：</p>
+<ul>
+<li><ul>
+<li><p>时钟触发前要稳定一段时间：建立时间（Setup Time）</p>
+</li>
+<li><p>时钟触发后要稳定一段时间：保持时间（Hold Time）</p>
+</li>
+<li><p>时钟触发到输出稳定的时间：触发器延迟（Clk_to_Q）</p>
+</li>
+<li><p><strong>与时钟周期的关系</strong>：</p>
+</li>
+<li><ul>
+<li>时钟周期 &gt; Clk_to_Q + 关键路径时延 + Setup Time</li>
+<li>Clk_to_Q + 最短路径时延 &gt; Hold Time</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 指令周期</strong></p>
+<p><strong>指令执行的一般流程</strong></p>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-8e4f8e5decc4c25d9304f12b7774af0e_720w.jpg" alt="img"></p>
+<p><strong>基本概念</strong></p>
+<ul>
+<li><ul>
+<li><strong>时钟周期</strong> = 节拍脉冲 = 震荡周期</li>
+<li><strong>机器周期</strong> = CPU周期 = 从主存读取一条指令的最短时间</li>
+<li><strong>指令周期</strong> = 从主存读指令并执行指令的时间</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-2568da28e5180607b641ca3082b3c7a6_720w.jpg" alt="img"></p>
+<p><strong>指令时间控制</strong>：</p>
+<p><strong>机器周期数节拍数同步方式实践定长指令周期</strong>不变不变按机器周期mips单周期<strong>变长指令周期</strong>变变按时钟周期mips多周期</p>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-c3a55fc6829a4e5f840568818775e60a_720w.jpg" alt="img"></p>
+<p><strong>4. CPU设计</strong></p>
+<p>略，详情请参见<a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/flashsun/p/9507089.html">《自制CPU系列》</a></p>
+<h2 id="七、总线"><a href="#七、总线" class="headerlink" title="七、总线"></a><strong>七、总线</strong></h2><p><strong>1. 系统总线的特性及应用</strong></p>
+<p><strong>总线概念</strong>：将计算机系统中各部件连接起来</p>
+<p><strong>总线分类</strong>：（外部/内部，系统/非系统，串行/并行，同步/异步…）</p>
+<p><strong>①. 按用途分类：</strong></p>
+<ul>
+<li><ul>
+<li><ul>
+<li><strong>存储总线</strong>：cpu与存储器</li>
+<li><strong>系统总线</strong>：连接存储总线和IO总线的中间总线</li>
+<li><strong>IO总线</strong>：连接外部设备</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>②. 按位置分类：</strong></p>
+<ul>
+<li><ul>
+<li><ul>
+<li><strong>外部总线</strong>：USB，火线（IEEE1394）</li>
+<li><strong>内部总线</strong>：PCI（连网卡），AGB（连显卡）</li>
+<li>（芯）<strong>片内总线</strong>：AMBA（ARM处理器）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>③. 按组成分类</strong></p>
+<ul>
+<li><ul>
+<li><ul>
+<li><strong>数据总线</strong>：传数据，双向三态</li>
+<li><strong>地址总线</strong>：传地址，单向三态</li>
+<li><strong>控制总线</strong>：控制信号和时序信号</li>
+<li><strong>电源线和地线</strong>：略</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. 总线性能和总线事物</strong></p>
+<p><strong>总线的性能参数</strong></p>
+<ul>
+<li><ul>
+<li><strong>总线频率</strong>：总线工作速率f，单位是MHz</li>
+<li><strong>总线宽度</strong>：数据总线的宽度w，单位是bit</li>
+<li><strong>总线传输速率</strong>：总线传输数据量BW，单位是MB/s。BW = w / 8 * f</li>
+</ul>
+</li>
+</ul>
+<p><strong>总线事务</strong></p>
+<ul>
+<li><ul>
+<li><strong>概念</strong>：从请求总线到完成使用的操作序列（请求 - 裁决 - 地址传输 - 数据传输 - 总线释放）</li>
+<li><strong>角色</strong>：主设备（CPU，DMA）和从设备</li>
+<li><strong>四个阶段</strong>：请求与仲裁 - 传输 - 寻址 - 结束</li>
+<li><strong>常见总线操作</strong>：读，写，读修改写，写后读，块操作</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 总线连接方式</strong></p>
+<ul>
+<li><strong>单总线结构</strong></li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-a390f5de9ad30f5c55a598b3fd31dfae_720w.jpg" alt="img"></p>
+<ul>
+<li><strong>双总线结构</strong></li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-69ad6afdd2f15d203a7069dc6c5ae923_720w.jpg" alt="img"></p>
+<ul>
+<li><strong>多总线结构</strong></li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-3e88cbaffc457a89d19c3754a604db0b_720w.jpg" alt="img"></p>
+<ul>
+<li><p><strong>总线桥</strong>：不同速率总线之间的连接，起速度缓冲、电平转换、控制协议转换的作用</p>
+</li>
+<li><ul>
+<li>多级总线结构（南北桥）</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-f3f51de1f54ffe72fcc3ce9b0a1fc9cf_720w.jpg" alt="img"></p>
+<ul>
+<li><ul>
+<li>单总线结构</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-6371aa4c70f70d95669776d5ceac0d3b_720w.jpg" alt="img"></p>
+<ul>
+<li><strong>总线结构对系统性能的影响</strong></li>
+</ul>
+<p><strong>多总线单总线对最大存储容量</strong>不影响因要与io共享内存，影响<strong>对指令系统</strong>增加IO指令无IO指令<strong>对吞吐量</strong>大小</p>
+<p><strong>4. 总线仲裁和数据传输方式</strong></p>
+<p><strong>菊花链式串行总线仲裁</strong>：简单，只要有一个主设备占用总线，其他就占不了</p>
+<p><strong>集中式并行总线仲裁</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>固定优先级策略</strong>：优先级高的主设备，总会优先控制总线权</li>
+<li><strong>轮叫式策略</strong>：皇帝轮流做</li>
+<li><strong>LRG策略</strong>：最近获得控制权的，再获得控制权的优先级高（经常用的就更容易获得总线控制权）</li>
+</ul>
+</li>
+</ul>
+<p><strong>5. 总线标准</strong></p>
+<p><strong>概念</strong>：计算机各部件之间利用总线传输信息应遵守的协议和规范，包括硬件和软件两部分</p>
+<p><strong>常见的总线标准</strong></p>
+<ul>
+<li><ul>
+<li><ul>
+<li><p><strong>机箱内部总线：</strong></p>
+</li>
+<li><ul>
+<li><p><strong>ISA - EISA - VESA</strong></p>
+</li>
+<li><ul>
+<li><strong>ISA（Industrial Standard Architecture）</strong>：最早指定的总线技术标准，总线宽度8/16位，频率5-8MHz，带宽5-8MB/s</li>
+<li><strong>EISA</strong>：宽度变成32位</li>
+<li><strong>VESA</strong>：宽度变成64位</li>
+</ul>
+</li>
+<li><p><strong>PCI（PCIe） - AGP</strong></p>
+</li>
+<li><ul>
+<li>主要用于系统总线和IO总线，取代ISA</li>
+<li>地址总线和数据总线分时复用，支持即插即用（自动寻找驱动程序）</li>
+<li>32/64位，133/264MB/s</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>机箱外部总线：</strong></p>
+</li>
+<li><ul>
+<li>USB等…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="八、输入输出系统"><a href="#八、输入输出系统" class="headerlink" title="八、输入输出系统"></a><strong>八、输入输出系统</strong></h2><p><strong>1. 输入输出系统概述</strong></p>
+<p><strong>组成</strong>：外设、接口、总线、管理软件</p>
+<p><strong>基本功能</strong></p>
+<ul>
+<li><ul>
+<li>完成计算机内外的信息传递</li>
+<li>保证CPU正确选择输出设备</li>
+<li>利用缓冲等，实现主机与外设的速度匹配</li>
+</ul>
+</li>
+</ul>
+<p><strong>特点：</strong>异步性、实时性、设备无关性</p>
+<p><strong>输入过程：</strong>CPU把地址值放入总线 –&gt; CPU等候设备数据有效 –&gt; CPU从总线读入数据存入寄存器</p>
+<p><strong>输出过程：</strong>CPU把地址值放入总线 –&gt; CPU把数据值放入总线 –&gt; 设备等数据有效取走数据</p>
+<p><strong>IO系统性能</strong>：存储IO、通信IO</p>
+<ul>
+<li><ul>
+<li><strong>连接特性</strong>：哪些设备可以和IO相连</li>
+<li><strong>IO系统容量</strong>：IO系统可以容纳的设备数</li>
+<li><strong>响应时间</strong>：从用户输入命令到得到结果所花的时间（s）</li>
+<li><strong>吞吐率</strong>：单位时间完成的IO操作次数（用IOP表示）</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. 输入输出方式</strong></p>
+<p><strong>无条件IO方式</strong>：执行IO指令时，CPU默认外设已经准备就绪，外设很难满足这一点</p>
+<p><strong>程序控制IO方式</strong>：执行IO指令时，先获取设备状态（设备状态寄存器），决定下一步操作（程序决定）</p>
+<ul>
+<li><ul>
+<li>数据要经过CPU，CPU还要浪费大量时间查询设备状态</li>
+</ul>
+</li>
+</ul>
+<p><strong>中断IO方式</strong>：外设主动通知CPU接收或输出数据，有实时性</p>
+<p><strong>DMA方式</strong>：由硬件执行IO，外设准备好后通知DMA，DMA接管总线，完成数据交换</p>
+<ul>
+<li><ul>
+<li>既有中断的优点，又降低了服务的开销</li>
+</ul>
+</li>
+</ul>
+<p><strong>通道和IO处理机方式</strong>：外设种类很多速度差别很大，将外设管理工作从CPU总分离出来</p>
+<ul>
+<li><ul>
+<li>通道本身就是个简单的CPU，执行IO指令的处理机</li>
+<li>IO处理机是通道的进一步发展，更像一个CPU了</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 中断请求与响应</strong></p>
+<p><strong>概念</strong>：CPU由内部外部事件引起CPU中断正在运行的程序，具有随机性（符合输入输出系统特性）</p>
+<p><strong>作用</strong>：主机与外设并行；故障处理；实时处理</p>
+<p><strong>类型</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>内部中断</strong>（软件、异常）</li>
+<li><strong>外部中断</strong>（可屏蔽中断INTR、不可屏蔽中断NMI）</li>
+</ul>
+</li>
+</ul>
+<p><strong>基本功能</strong>：</p>
+<ul>
+<li><ul>
+<li><p><strong>中断信号的保持与清除</strong>：通过寄存器存起来，处理完清零</p>
+</li>
+<li><p><strong>中断优先级</strong>：硬件响应优先序、软件服务优先序（中断服务程序开头，设置自己的中断屏蔽位）</p>
+</li>
+<li><p><strong>中断源识别</strong>：系统分配给每个中断源的代号（中断号），中断号获取可以用硬件或软件方式</p>
+</li>
+<li><p><strong>中断处理</strong>：</p>
+</li>
+<li><ul>
+<li><strong>响应</strong>：每执行完一条指令，就会判断是否有中断请求</li>
+<li><strong>处理</strong>：保存断点（返回地址）、执行中断程序、返回断点</li>
+</ul>
+</li>
+<li><p><strong>中断控制</strong>：</p>
+</li>
+<li><ul>
+<li><strong>中断触发方式</strong>：指外设以什么逻辑信号去申请中断（边沿触发、电平触发）</li>
+<li><strong>中断排队方式</strong>：按优先级、循环轮流排队</li>
+<li><strong>中断嵌套</strong>：中断正在执行的中断程序，不可屏蔽中断不能嵌套</li>
+<li><strong>中断屏蔽</strong>：处理器内部有个触发器，“1”时才会响应外部中断</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-4271c728b057a63072e7b6f25dcb35e4_720w.jpg" alt="img"></p>
+<p><strong>4. DMA方式</strong></p>
+<p><strong>原理</strong>：数据传送不经过CPU，由DMA控制器实现内存和外设、外设和外设之间的直接快速传递</p>
+<p><strong>系统构成</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>DMA作为主设备之一</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-34773de68815131c23a88d9b71465e0f_720w.jpg" alt="img"></p>
+<ul>
+<li><ul>
+<li><strong>DMA与IO接口集成</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-d409136646e365a3ff783958ef9d4b28_720w.jpg" alt="img"></p>
+<ul>
+<li><ul>
+<li><strong>DMA提供专门IO总线</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/Git/myBlog/source/_posts/%E8%AE%A1%E7%BB%84/v2-31350dada7dd881313879ac4f226303c_720w.jpg" alt="img"></p>
+<p><strong>DMA的两种工作状态</strong>：被动态（未获得总线控制权，受CPU控制）、主动态（获得总线控制权）</p>
+<p><strong>传输步骤</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>申请</strong>：一个设备接口试图通过总线向另一个设备发送数据，先向CPU发送DMA信号</li>
+<li><strong>响应</strong>：CPU收到DMA信号，当前总线周期结束后，按DMA信号优先级响应相应的DMA控制器</li>
+<li><strong>数据传送</strong>：DMA收到CPU响应，获得总线控制权，开始直接数据传送</li>
+<li><strong>传送结束</strong>：设备向CPU发送DMA结束信号，交换总线控制权</li>
+</ul>
+</li>
+</ul>
+<p><strong>DMA操作类型</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>数据传送</strong>：源地址数据传到目的地址</li>
+<li><strong>数据校验</strong>：不传输，只校验某数据块内部的每个字节</li>
+<li><strong>数据检索</strong>：不传输，只在制定内存区域内查找某个关键字或某几个数据位是否存在</li>
+</ul>
+</li>
+</ul>
+<p><strong>DMA操作方式</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>单字节传输模式</strong>：每次DMA操作传送一个字节</li>
+<li><strong>块传输模式</strong>：每次传送多个字节，有个当前字节计数器，+1 +1 +1</li>
+<li><strong>请求传输模式</strong>：DMA控制器询问外设，当外设请求信号无效时，暂停传输（不释放总线）；再次有效再继续传输</li>
+<li><strong>级联传输模式</strong>：多个DMA级联，分布式</li>
+</ul>
+</li>
+</ul>
+<p><strong>DMA传输模式</strong>：</p>
+<ul>
+<li><ul>
+<li><strong>停止CPU访问内存</strong>：传输速率高的设备传输时有优势</li>
+<li><strong>周期挪用</strong>：DMA挪用一个或几个内存周期。若此时CPU不需要访存则不冲突，若冲突则DMA优先</li>
+<li><strong>DMA与CPU交替访存</strong>：直接交替访存，不需要浪费时间</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># 计算机组成原理基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/" rel="prev" title="java类谜题">
+      <i class="fa fa-chevron-left"></i> java类谜题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/21/C%E8%AF%AD%E8%A8%80%E6%B5%8B%E8%AF%95cpu%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF/" rel="next" title="C语言测试CPU大端小端模式">
+      C语言测试CPU大端小端模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、计算机系统概论"><span class="nav-number">1.</span> <span class="nav-text">一、计算机系统概论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据表示"><span class="nav-number">2.</span> <span class="nav-text">二、数据表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、运算方法与运算器"><span class="nav-number">3.</span> <span class="nav-text">三、运算方法与运算器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、存储系统"><span class="nav-number">4.</span> <span class="nav-text">四、存储系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、指令系统"><span class="nav-number">5.</span> <span class="nav-text">五、指令系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、中央处理器"><span class="nav-number">6.</span> <span class="nav-text">六、中央处理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、总线"><span class="nav-number">7.</span> <span class="nav-text">七、总线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、输入输出系统"><span class="nav-number">8.</span> <span class="nav-text">八、输入输出系统</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">29:11</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -161,6 +161,796 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">python循环结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:55:09 / 修改时间：21:55:46" itemprop="dateCreated datePublished" datetime="2021-03-07T21:55:09+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="循环结构"><a href="#循环结构" class="headerlink" title="循环结构"></a>循环结构</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>我们在写程序的时候，一定会遇到需要重复执行某条或某些指令的场景。例如用程序控制机器人踢足球，如果机器人持球而且还没有进入射门范围，那么我们就要一直发出让机器人向球门方向移动的指令。在这个场景中，让机器人向球门方向移动就是一个需要重复的动作，当然这里还会用到上一课讲的分支结构来判断机器人是否持球以及是否进入射门范围。再举一个简单的例子，如果要实现每隔1秒中在屏幕上打印一次“hello, world”并持续打印一个小时，我们肯定不能够直接把<code>print(&#39;hello, world&#39;)</code>这句代码写3600遍，这里同样需要循环结构。</p>
+<p>循环结构就是程序中控制某条或某些指令重复执行的结构。在Python中构造循环结构有两种做法，一种是<code>for-in</code>循环，一种是<code>while</code>循环。</p>
+<h3 id="for-in循环"><a href="#for-in循环" class="headerlink" title="for-in循环"></a>for-in循环</h3><p>如果明确的知道循环执行的次数或者要对一个容器进行迭代（后面会讲到），那么我们推荐使用<code>for-in</code>循环，例如下面代码中计算1~100求和的结果（$\displaystyle \sum \limits_{n=1}^{100}n$）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">用for循环实现1~100求和</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">101</span>):</span><br><span class="line">    sum += x</span><br><span class="line">print(sum)</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是上面代码中的<code>range(1, 101)</code>可以用来构造一个从1到100的范围，当我们把这样一个范围放到<code>for-in</code>循环中，就可以通过前面的循环变量<code>x</code>依次取出从1到100的整数。当然，<code>range</code>的用法非常灵活，下面给出了一个例子：</p>
+<ul>
+<li><code>range(101)</code>：可以用来产生0到100范围的整数，需要注意的是取不到101。</li>
+<li><code>range(1, 101)</code>：可以用来产生1到100范围的整数，相当于前面是闭区间后面是开区间。</li>
+<li><code>range(1, 101, 2)</code>：可以用来产生1到100的奇数，其中2是步长，即每次数值递增的值。</li>
+<li><code>range(100, 0, -2)</code>：可以用来产生100到1的偶数，其中-2是步长，即每次数字递减的值。</li>
+</ul>
+<p>知道了这一点，我们可以用下面的代码来实现1~100之间的偶数求和。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">用for循环实现1~100之间的偶数求和</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">101</span>, <span class="number">2</span>):</span><br><span class="line">    sum += x</span><br><span class="line">print(sum)</span><br></pre></td></tr></table></figure>
+
+<p>当然，也可以通过在循环中使用分支结构的方式来实现相同的功能，代码如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">用for循环实现1~100之间的偶数求和</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">101</span>):</span><br><span class="line">    <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        sum += x</span><br><span class="line">print(sum)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：相较于上面直接跳过奇数的做法，下面这种做法很明显并不是很好的选择。</p>
+</blockquote>
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p>如果要构造不知道具体循环次数的循环结构，我们推荐使用<code>while</code>循环。<code>while</code>循环通过一个能够产生或转换出<code>bool</code>值的表达式来控制循环，表达式的值为<code>True</code>则继续循环；表达式的值为<code>False</code>则结束循环。</p>
+<p>下面我们通过一个“猜数字”的小游戏来看看如何使用<code>while</code>循环。猜数字游戏的规则是：计算机出一个1到100之间的随机数，玩家输入自己猜的数字，计算机给出对应的提示信息（大一点、小一点或猜对了），如果玩家猜中了数字，计算机提示用户一共猜了多少次，游戏结束，否则游戏继续。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">猜数字游戏</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">answer = random.randint(<span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    counter += <span class="number">1</span></span><br><span class="line">    number = int(input(<span class="string">'请输入: '</span>))</span><br><span class="line">    <span class="keyword">if</span> number &lt; answer:</span><br><span class="line">        print(<span class="string">'大一点'</span>)</span><br><span class="line">    <span class="keyword">elif</span> number &gt; answer:</span><br><span class="line">        print(<span class="string">'小一点'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'恭喜你猜对了!'</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">print(<span class="string">'你总共猜了%d次'</span> % counter)</span><br><span class="line"><span class="keyword">if</span> counter &gt; <span class="number">7</span>:</span><br><span class="line">    print(<span class="string">'你的智商余额明显不足'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中使用了<code>break</code>关键字来提前终止循环，需要注意的是<code>break</code>只能终止它所在的那个循环，这一点在使用嵌套的循环结构（下面会讲到）需要引起注意。除了<code>break</code>之外，还有另一个关键字是<code>continue</code>，它可以用来放弃本次循环后续的代码直接让循环进入下一轮。</p>
+<p>和分支结构一样，循环结构也是可以嵌套的，也就是说在循环中还可以构造循环结构。下面的例子演示了如何通过嵌套的循环来输出一个九九乘法表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">输出乘法口诀表(九九表)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">        print(<span class="string">'%d*%d=%d'</span> % (i, j, i * j), end=<span class="string">'\t'</span>)</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="练习1：输入一个正整数判断是不是素数。"><a href="#练习1：输入一个正整数判断是不是素数。" class="headerlink" title="练习1：输入一个正整数判断是不是素数。"></a>练习1：输入一个正整数判断是不是素数。</h4><blockquote>
+<p><strong>提示</strong>：素数指的是只能被1和自身整除的大于1的整数。</p>
+</blockquote>
+<p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">输入一个正整数判断它是不是素数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">Date: 2018-03-01</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"></span><br><span class="line">num = int(input(<span class="string">'请输入一个正整数: '</span>))</span><br><span class="line">end = int(sqrt(num))</span><br><span class="line">is_prime = <span class="literal">True</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, end + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> num % x == <span class="number">0</span>:</span><br><span class="line">        is_prime = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="keyword">if</span> is_prime <span class="keyword">and</span> num != <span class="number">1</span>:</span><br><span class="line">    print(<span class="string">'%d是素数'</span> % num)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'%d不是素数'</span> % num)</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习2：输入两个正整数，计算它们的最大公约数和最小公倍数。"><a href="#练习2：输入两个正整数，计算它们的最大公约数和最小公倍数。" class="headerlink" title="练习2：输入两个正整数，计算它们的最大公约数和最小公倍数。"></a>练习2：输入两个正整数，计算它们的最大公约数和最小公倍数。</h4><blockquote>
+<p><strong>提示</strong>：两个数的最大公约数是两个数的公共因子中最大的那个数；两个数的最小公倍数则是能够同时被两个数整除的最小的那个数。</p>
+</blockquote>
+<p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">输入两个正整数计算它们的最大公约数和最小公倍数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">Date: 2018-03-01</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">x = int(input(<span class="string">'x = '</span>))</span><br><span class="line">y = int(input(<span class="string">'y = '</span>))</span><br><span class="line"><span class="comment"># 如果x大于y就交换x和y的值</span></span><br><span class="line"><span class="keyword">if</span> x &gt; y:</span><br><span class="line">    <span class="comment"># 通过下面的操作将y的值赋给x, 将x的值赋给y</span></span><br><span class="line">    x, y = y, x</span><br><span class="line"><span class="comment"># 从两个数中较的数开始做递减的循环</span></span><br><span class="line"><span class="keyword">for</span> factor <span class="keyword">in</span> range(x, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> x % factor == <span class="number">0</span> <span class="keyword">and</span> y % factor == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'%d和%d的最大公约数是%d'</span> % (x, y, factor))</span><br><span class="line">        print(<span class="string">'%d和%d的最小公倍数是%d'</span> % (x, y, x * y // factor))</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="练习3：打印如下所示的三角形图案。"><a href="#练习3：打印如下所示的三角形图案。" class="headerlink" title="练习3：打印如下所示的三角形图案。"></a>练习3：打印如下所示的三角形图案。</h4><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">**</span></span><br><span class="line"><span class="comment">***</span></span><br><span class="line"><span class="comment">****</span></span><br><span class="line"><span class="comment">*****</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">   **</span></span><br><span class="line"><span class="comment">  ***</span></span><br><span class="line"><span class="comment"> ****</span></span><br><span class="line"><span class="comment">*****</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">   ***</span></span><br><span class="line"><span class="comment">  *****</span></span><br><span class="line"><span class="comment"> *******</span></span><br><span class="line"><span class="comment">*********</span></span><br></pre></td></tr></table></figure>
+
+<p>参考答案：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">打印三角形图案</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"</span><span class="string">""</span></span><br><span class="line"></span><br><span class="line">row = int(input(<span class="string">'请输入行数: '</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row):</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(i + 1):</span><br><span class="line">        <span class="builtin-name">print</span>(<span class="string">'*'</span>, <span class="attribute">end</span>=<span class="string">''</span>)</span><br><span class="line">    <span class="builtin-name">print</span>()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(row):</span><br><span class="line">        <span class="keyword">if</span> j &lt; row - i - 1:</span><br><span class="line">            <span class="builtin-name">print</span>(<span class="string">' '</span>, <span class="attribute">end</span>=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="builtin-name">print</span>(<span class="string">'*'</span>, <span class="attribute">end</span>=<span class="string">''</span>)</span><br><span class="line">    <span class="builtin-name">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row):</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(row - i - 1):</span><br><span class="line">        <span class="builtin-name">print</span>(<span class="string">' '</span>, <span class="attribute">end</span>=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(2 * i + 1):</span><br><span class="line">        <span class="builtin-name">print</span>(<span class="string">'*'</span>, <span class="attribute">end</span>=<span class="string">''</span>)</span><br><span class="line">    <span class="builtin-name">print</span>()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">python分支结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:53:53 / 修改时间：21:57:17" itemprop="dateCreated datePublished" datetime="2021-03-07T21:53:53+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<h2 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>迄今为止，我们写的Python代码都是一条一条语句顺序执行，这种代码结构通常称之为顺序结构。然而仅有顺序结构并不能解决所有的问题，比如我们设计一个游戏，游戏第一关的通关条件是玩家获得1000分，那么在完成本局游戏后，我们要根据玩家得到分数来决定究竟是进入第二关，还是告诉玩家“Game Over”，这里就会产生两个分支，而且这两个分支只有一个会被执行。类似的场景还有很多，我们将这种结构称之为“分支结构”或“选择结构”。给大家一分钟的时间，你应该可以想到至少5个以上这样的例子，赶紧试一试。</p>
+<h3 id="if语句的使用"><a href="#if语句的使用" class="headerlink" title="if语句的使用"></a>if语句的使用</h3><p>在Python中，要构造分支结构可以使用<code>if</code>、<code>elif</code>和<code>else</code>关键字。所谓<strong>关键字</strong>就是有特殊含义的单词，像<code>if</code>和<code>else</code>就是专门用于构造分支结构的关键字，很显然你不能够使用它作为变量名（事实上，用作其他的标识符也是不可以）。下面的例子中演示了如何构造一个分支结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">用户身份验证</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">username = input(<span class="string">'请输入用户名: '</span>)</span><br><span class="line">password = input(<span class="string">'请输入口令: '</span>)</span><br><span class="line"><span class="comment"># 用户名是admin且密码是123456则身份验证成功否则身份验证失败</span></span><br><span class="line"><span class="keyword">if</span> username == <span class="string">'admin'</span> <span class="keyword">and</span> password == <span class="string">'123456'</span>:</span><br><span class="line">    print(<span class="string">'身份验证成功!'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'身份验证失败!'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是和C/C++、Java等语言不同，Python中没有用花括号来构造代码块而是<strong>使用了缩进的方式来表示代码的层次结构</strong>，如果<code>if</code>条件成立的情况下需要执行多条语句，只要保持多条语句具有相同的缩进就可以了。换句话说<strong>连续的代码如果又保持了相同的缩进那么它们属于同一个代码块</strong>，相当于是一个执行的整体。<strong>缩进</strong>可以使用任意数量的空格，但<strong>通常使用4个空格</strong>，建议大家<strong>不要使用制表键</strong>或者<strong>设置你的代码编辑工具自动将制表键变成4个空格</strong>。</p>
+<p>当然如果要构造出更多的分支，可以使用<code>if...elif...else...</code>结构或者嵌套的<code>if...else...</code>结构，下面的代码演示了如何利用多分支结构实现分段函数求值。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/formula_1.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/formula_1.png" alt="$$f(x)=\begin{cases} 3x-5&amp;\text{(x&gt;1)}\x+2&amp;\text{(-1}\leq\text{x}\leq\text{1)}\5x+3&amp;\text {(x&lt;-1)}\end{cases}$$"></a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">分段函数求值</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        3x - 5  (x &gt; 1)</span></span><br><span class="line"><span class="string">f(x) =  x + 2   (-1 &lt;= x &lt;= 1)</span></span><br><span class="line"><span class="string">        5x + 3  (x &lt; -1)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">x = float(input(<span class="string">'x = '</span>))</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">1</span>:</span><br><span class="line">    y = <span class="number">3</span> * x - <span class="number">5</span></span><br><span class="line"><span class="keyword">elif</span> x &gt;= <span class="number">-1</span>:</span><br><span class="line">    y = x + <span class="number">2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    y = <span class="number">5</span> * x + <span class="number">3</span></span><br><span class="line">print(<span class="string">'f(%.2f) = %.2f'</span> % (x, y))</span><br></pre></td></tr></table></figure>
+
+<p>当然根据实际开发的需要，分支结构是可以嵌套的，例如判断是否通关以后还要根据你获得的宝物或者道具的数量对你的表现给出等级（比如点亮两颗或三颗星星），那么我们就需要在<code>if</code>的内部构造出一个新的分支结构，同理<code>elif</code>和<code>else</code>中也可以再构造新的分支，我们称之为嵌套的分支结构，也就是说上面的代码也可以写成下面的样子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">分段函数求值</span></span><br><span class="line"><span class="string">		3x - 5	(x &gt; 1)</span></span><br><span class="line"><span class="string">f(x) =	x + 2	(-1 &lt;= x &lt;= 1)</span></span><br><span class="line"><span class="string">		5x + 3	(x &lt; -1)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">x = float(input(<span class="string">'x = '</span>))</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">1</span>:</span><br><span class="line">    y = <span class="number">3</span> * x - <span class="number">5</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">-1</span>:</span><br><span class="line">        y = x + <span class="number">2</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y = <span class="number">5</span> * x + <span class="number">3</span></span><br><span class="line">print(<span class="string">'f(%.2f) = %.2f'</span> % (x, y))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明：</strong> 大家可以自己感受一下这两种写法到底是哪一种更好。在之前我们提到的Python之禅中有这么一句话“Flat is better than nested.”，之所以提倡代码“扁平化”是因为嵌套结构的嵌套层次多了之后会严重的影响代码的可读性，所以能使用扁平化的结构时就不要使用嵌套。</p>
+</blockquote>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="练习1：英制单位英寸与公制单位厘米互换。"><a href="#练习1：英制单位英寸与公制单位厘米互换。" class="headerlink" title="练习1：英制单位英寸与公制单位厘米互换。"></a>练习1：英制单位英寸与公制单位厘米互换。</h4><p>参考答案：</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">英制单位英寸和公制单位厘米互换</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">value</span> = float(input(<span class="string">'请输入长度: '</span>))</span><br><span class="line">unit = input(<span class="string">'请输入单位: '</span>)</span><br><span class="line"><span class="keyword">if</span> unit == <span class="string">'in'</span> or unit == <span class="string">'英寸'</span>:</span><br><span class="line">    print(<span class="string">'%f英寸 = %f厘米'</span> % (<span class="keyword">value</span>, <span class="keyword">value</span> * <span class="number">2.5</span><span class="number">4</span>))</span><br><span class="line">elif unit == <span class="string">'cm'</span> or unit == <span class="string">'厘米'</span>:</span><br><span class="line">    print(<span class="string">'%f厘米 = %f英寸'</span> % (<span class="keyword">value</span>, <span class="keyword">value</span> / <span class="number">2.5</span><span class="number">4</span>))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'请输入有效的单位'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习2：百分制成绩转换为等级制成绩。"><a href="#练习2：百分制成绩转换为等级制成绩。" class="headerlink" title="练习2：百分制成绩转换为等级制成绩。"></a>练习2：百分制成绩转换为等级制成绩。</h4><blockquote>
+<p><strong>要求</strong>：如果输入的成绩在90分以上（含90分）输出A；80分-90分（不含90分）输出B；70分-80分（不含80分）输出C；60分-70分（不含70分）输出D；60分以下输出E。</p>
+</blockquote>
+<p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">百分制成绩转换为等级制成绩</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">score = float(input(<span class="string">'请输入成绩: '</span>))</span><br><span class="line"><span class="keyword">if</span> score &gt;= <span class="number">90</span>:</span><br><span class="line">    grade = <span class="string">'A'</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">80</span>:</span><br><span class="line">    grade = <span class="string">'B'</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">70</span>:</span><br><span class="line">    grade = <span class="string">'C'</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">60</span>:</span><br><span class="line">    grade = <span class="string">'D'</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    grade = <span class="string">'E'</span></span><br><span class="line">print(<span class="string">'对应的等级是:'</span>, grade)</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习3：输入三条边长，如果能构成三角形就计算周长和面积。"><a href="#练习3：输入三条边长，如果能构成三角形就计算周长和面积。" class="headerlink" title="练习3：输入三条边长，如果能构成三角形就计算周长和面积。"></a>练习3：输入三条边长，如果能构成三角形就计算周长和面积。</h4><p>参考答案：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">判断输入的边长能否构成三角形，如果能则计算出三角形的周长和面积</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"</span><span class="string">""</span></span><br><span class="line">a = float(input(<span class="string">'a = '</span>))</span><br><span class="line">b = float(input(<span class="string">'b = '</span>))</span><br><span class="line">c = float(input(<span class="string">'c = '</span>))</span><br><span class="line"><span class="keyword">if</span> a + b &gt; c <span class="keyword">and</span> a + c &gt; b <span class="keyword">and</span> b + c &gt; a:</span><br><span class="line">    <span class="builtin-name">print</span>(<span class="string">'周长: %f'</span> % (a + b + c))</span><br><span class="line">    p = (a + b + c) / 2</span><br><span class="line">   <span class="built_in"> area </span>= (p * (p - a) * (p - b) * (p - c)) ** 0.5</span><br><span class="line">    <span class="builtin-name">print</span>(<span class="string">'面积: %f'</span> % (area))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="builtin-name">print</span>(<span class="string">'不能构成三角形'</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明：</strong> 上面使用的通过边长计算三角形面积的公式叫做<a href="https://zh.wikipedia.org/zh-hans/海伦公式" target="_blank" rel="noopener">海伦公式</a>。</p>
+</blockquote>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E5%9F%BA%E6%9C%AC%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">python基础变量</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:52:10 / 修改时间：22:07:54" itemprop="dateCreated datePublished" datetime="2021-03-07T21:52:10+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="语言元素"><a href="#语言元素" class="headerlink" title="语言元素"></a>语言元素</h2><h4 id="指令和程序"><a href="#指令和程序" class="headerlink" title="指令和程序"></a>指令和程序</h4><p>计算机的硬件系统通常由五大部件构成，包括：运算器、控制器、存储器、输入设备和输出设备。其中，运算器和控制器放在一起就是我们通常所说的中央处理器，它的功能是执行各种运算和控制指令以及处理计算机软件中的数据。我们通常所说的程序实际上就是指令的集合，我们程序就是将一系列的指令按照某种方式组织到一起，然后通过这些指令去控制计算机做我们想让它做的事情。今天我们大多数时候使用的计算机，虽然它们的元器件做工越来越精密，处理能力越来越强大，但究其本质来说仍然属于<a href="https://zh.wikipedia.org/wiki/冯·诺伊曼结构" target="_blank" rel="noopener">“冯·诺依曼结构”</a>的计算机。“冯·诺依曼结构”有两个关键点，一是指出要将存储设备与中央处理器分开，二是提出了将数据以二进制方式编码。二进制是一种“逢二进一”的计数法，跟我们人类使用的“逢十进一”的计数法没有实质性的区别，人类因为有十根手指所以使用了十进制（因为在数数时十根手指用完之后就只能进位了，当然凡事都有例外，玛雅人可能是因为长年光着脚的原因把脚趾头也算上了，于是他们使用了二十进制的计数法，在这种计数法的指导下玛雅人的历法就与我们平常使用的历法不一样，而按照玛雅人的历法，2012年是上一个所谓的“太阳纪”的最后一年，而2013年则是新的“太阳纪”的开始，后来这件事情被以讹传讹的方式误传为”2012年是玛雅人预言的世界末日“这种荒诞的说法，今天我们可以大胆的猜测，玛雅文明之所以发展缓慢估计也与使用了二十进制有关）。对于计算机来说，二进制在物理器件上来说是最容易实现的（高电压表示1，低电压表示0），于是在“冯·诺依曼结构”的计算机都使用了二进制。虽然我们并不需要每个程序员都能够使用二进制的思维方式来工作，但是了解二进制以及它与我们生活中的十进制之间的转换关系，以及二进制与八进制和十六进制的转换关系还是有必要的。如果你对这一点不熟悉，可以自行使用<a href="https://zh.wikipedia.org/wiki/二进制" target="_blank" rel="noopener">维基百科</a>或者<a href="https://baike.baidu.com/" target="_blank" rel="noopener">百度百科</a>科普一下。</p>
+<blockquote>
+<p><strong>说明</strong>：近期关于<strong>量子计算机</strong>的研究已经被推倒了风口浪尖，量子计算机基于量子力学进行运算，使用量子瞬移的方式来传递信息。2018年6月，Intel宣布开发出新款量子芯片并通过了在接近绝对零度环境下的测试；2019年，IBM和Google都推出了自己的量子计算机。</p>
+</blockquote>
+<h3 id="变量和类型"><a href="#变量和类型" class="headerlink" title="变量和类型"></a>变量和类型</h3><p>在程序设计中，变量是一种存储数据的载体。计算机中的变量是实际存在的数据或者说是存储器中存储数据的一块内存空间，变量的值可以被读取和修改，这是所有计算和控制的基础。计算机能处理的数据有很多种类型，除了数值之外还可以处理文本、图形、音频、视频等各种各样的数据，那么不同的数据就需要定义不同的存储类型。Python中的数据类型很多，而且也允许我们自定义新的数据类型（这一点在后面会讲到），我们先介绍几种常用的数据类型。</p>
+<ul>
+<li>整型：Python中可以处理任意大小的整数（Python 2.x中有<code>int</code>和<code>long</code>两种类型的整数，但这种区分对Python来说意义不大，因此在Python 3.x中整数只有int这一种了），而且支持二进制（如<code>0b100</code>，换算成十进制是4）、八进制（如<code>0o100</code>，换算成十进制是64）、十进制（<code>100</code>）和十六进制（<code>0x100</code>，换算成十进制是256）的表示法。</li>
+<li>浮点型：浮点数也就是小数，之所以称为浮点数，是因为按照科学记数法表示时，一个浮点数的小数点位置是可变的，浮点数除了数学写法（如<code>123.456</code>）之外还支持科学计数法（如<code>1.23456e2</code>）。</li>
+<li>字符串型：字符串是以单引号或双引号括起来的任意文本，比如<code>&#39;hello&#39;</code>和<code>&quot;hello&quot;</code>,字符串还有原始字符串表示法、字节字符串表示法、Unicode字符串表示法，而且可以书写成多行的形式（用三个单引号或三个双引号开头，三个单引号或三个双引号结尾）。</li>
+<li>布尔型：布尔值只有<code>True</code>、<code>False</code>两种值，要么是<code>True</code>，要么是<code>False</code>，在Python中，可以直接用<code>True</code>、<code>False</code>表示布尔值（请注意大小写），也可以通过布尔运算计算出来（例如<code>3 &lt; 5</code>会产生布尔值<code>True</code>，而<code>2 == 1</code>会产生布尔值<code>False</code>）。</li>
+<li>复数型：形如<code>3+5j</code>，跟数学上的复数表示一样，唯一不同的是虚部的<code>i</code>换成了<code>j</code>。实际上，这个类型并不常用，大家了解一下就可以了。</li>
+</ul>
+<h4 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h4><p>对于每个变量我们需要给它取一个名字，就如同我们每个人都有属于自己的响亮的名字一样。在Python中，变量命名需要遵循以下这些必须遵守硬性规则和强烈建议遵守的非硬性规则。</p>
+<ul>
+<li>硬性规则：<ul>
+<li>变量名由字母（广义的Unicode字符，不包括特殊字符）、数字和下划线构成，数字不能开头。</li>
+<li>大小写敏感（大写的<code>a</code>和小写的<code>A</code>是两个不同的变量）。</li>
+<li>不要跟关键字（有特殊含义的单词，后面会讲到）和系统保留字（如函数、模块等的名字）冲突。</li>
+</ul>
+</li>
+<li>PEP 8要求：<ul>
+<li>用小写字母拼写，多个单词用下划线连接。</li>
+<li>受保护的实例属性用单个下划线开头（后面会讲到）。</li>
+<li>私有的实例属性用两个下划线开头（后面会讲到）。</li>
+</ul>
+</li>
+</ul>
+<p>当然，作为一个专业的程序员，给变量（事实上应该是所有的标识符）命名时做到见名知意也是非常重要的。</p>
+<h4 id="变量的使用"><a href="#变量的使用" class="headerlink" title="变量的使用"></a>变量的使用</h4><p>下面通过几个例子来说明变量的类型和变量使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">使用变量保存数据并进行加减乘除运算</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">a = <span class="number">321</span></span><br><span class="line">b = <span class="number">12</span></span><br><span class="line">print(a + b)    <span class="comment"># 333</span></span><br><span class="line">print(a - b)    <span class="comment"># 309</span></span><br><span class="line">print(a * b)    <span class="comment"># 3852</span></span><br><span class="line">print(a / b)    <span class="comment"># 26.75</span></span><br></pre></td></tr></table></figure>
+
+<p>在Python中可以使用<code>type</code>函数对变量的类型进行检查。程序设计中函数的概念跟数学上函数的概念是一致的，数学上的函数相信大家并不陌生，它包括了函数名、自变量和因变量。如果暂时不理解这个概念也不要紧，我们会在后续的章节中专门讲解函数的定义和使用。</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">使用type()检查变量的类型</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"</span><span class="string">""</span></span><br><span class="line">a = <span class="number">100</span></span><br><span class="line">b = <span class="number">12.345</span></span><br><span class="line">c = <span class="number">1</span> + <span class="number">5</span>j</span><br><span class="line">d = <span class="string">'hello, world'</span></span><br><span class="line">e = True</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(a))    # &lt;<span class="class"><span class="keyword">class</span> '<span class="title">int</span>'&gt;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(b))    # &lt;<span class="class"><span class="keyword">class</span> '<span class="title">float</span>'&gt;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(c))    # &lt;<span class="class"><span class="keyword">class</span> '<span class="title">complex</span>'&gt;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(d))    # &lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(e))    # &lt;<span class="class"><span class="keyword">class</span> '<span class="title">bool</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用Python中内置的函数对变量类型进行转换。</p>
+<ul>
+<li><code>int()</code>：将一个数值或字符串转换成整数，可以指定进制。</li>
+<li><code>float()</code>：将一个字符串转换成浮点数。</li>
+<li><code>str()</code>：将指定的对象转换成字符串形式，可以指定编码。</li>
+<li><code>chr()</code>：将整数转换成该编码对应的字符串（一个字符）。</li>
+<li><code>ord()</code>：将字符串（一个字符）转换成对应的编码（整数）。</li>
+</ul>
+<p>下面的代码通过键盘输入两个整数来实现对两个整数的算术运算。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">使用input()函数获取键盘输入(字符串)</span></span><br><span class="line"><span class="string">使用int()函数将输入的字符串转换成整数</span></span><br><span class="line"><span class="string">使用print()函数输出带占位符的字符串</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">a = int(input(<span class="string">'a = '</span>))</span><br><span class="line">b = int(input(<span class="string">'b = '</span>))</span><br><span class="line">print(<span class="string">'%d + %d = %d'</span> <span class="comment">% (a, b, a + b))</span></span><br><span class="line">print(<span class="string">'%d - %d = %d'</span> <span class="comment">% (a, b, a - b))</span></span><br><span class="line">print(<span class="string">'%d * %d = %d'</span> <span class="comment">% (a, b, a * b))</span></span><br><span class="line">print(<span class="string">'%d / %d = %f'</span> <span class="comment">% (a, b, a / b))</span></span><br><span class="line">print(<span class="string">'%d // %d = %d'</span> <span class="comment">% (a, b, a // b))</span></span><br><span class="line">print(<span class="string">'%d %% %d = %d'</span> <span class="comment">% (a, b, a % b))</span></span><br><span class="line">print(<span class="string">'%d ** %d = %d'</span> <span class="comment">% (a, b, a ** b))</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：上面的print函数中输出的字符串使用了占位符语法，其中<code>%d</code>是整数的占位符，<code>%f</code>是小数的占位符，<code>%%</code>表示百分号（因为百分号代表了占位符，所以带占位符的字符串中要表示百分号必须写成<code>%%</code>），字符串之后的<code>%</code>后面跟的变量值会替换掉占位符然后输出到终端中，运行上面的程序，看看程序执行结果就明白啦。</p>
+</blockquote>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><p>Python支持多种运算符，下表大致按照优先级从高到低的顺序列出了所有的运算符，运算符的优先级指的是多个运算符同时出现时，先做什么运算然后再做什么运算。除了我们之前已经用过的赋值运算符和算术运算符，我们稍后会陆续讲到其他运算符的使用。</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[]</code> <code>[:]</code></td>
+<td>下标，切片</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>指数</td>
+</tr>
+<tr>
+<td><code>~</code> <code>+</code> <code>-</code></td>
+<td>按位取反, 正负号</td>
+</tr>
+<tr>
+<td><code>*</code> <code>/</code> <code>%</code> <code>//</code></td>
+<td>乘，除，模，整除</td>
+</tr>
+<tr>
+<td><code>+</code> <code>-</code></td>
+<td>加，减</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code> <code>&lt;&lt;</code></td>
+<td>右移，左移</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td>按位与</td>
+</tr>
+<tr>
+<td><code>^</code> `</td>
+<td>`</td>
+</tr>
+<tr>
+<td><code>&lt;=</code> <code>&lt;</code> <code>&gt;</code> <code>&gt;=</code></td>
+<td>小于等于，小于，大于，大于等于</td>
+</tr>
+<tr>
+<td><code>==</code> <code>!=</code></td>
+<td>等于，不等于</td>
+</tr>
+<tr>
+<td><code>is</code> <code>is not</code></td>
+<td>身份运算符</td>
+</tr>
+<tr>
+<td><code>in</code> <code>not in</code></td>
+<td>成员运算符</td>
+</tr>
+<tr>
+<td><code>not</code> <code>or</code> <code>and</code></td>
+<td>逻辑运算符</td>
+</tr>
+<tr>
+<td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>//=</code> <code>**=</code> <code>&amp;=</code> `</td>
+<td>=<code></code>^=<code></code>&gt;&gt;=<code></code>&lt;&lt;=`</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>说明：</strong> 在实际开发中，如果搞不清楚运算符的优先级，可以使用括号来确保运算的执行顺序。</p>
+</blockquote>
+<h4 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h4><p>赋值运算符应该是最为常见的运算符，它的作用是将右边的值赋给左边的变量。下面的例子演示了赋值运算符和复合赋值运算符的使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">赋值运算符和复合赋值运算符</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">3</span></span><br><span class="line">a += b        <span class="comment"># 相当于：a = a + b</span></span><br><span class="line">a *= a + <span class="number">2</span>    <span class="comment"># 相当于：a = a * (a + 2)</span></span><br><span class="line">print(a)      <span class="comment"># 算一下这里会输出什么</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="比较运算符和逻辑运算符"><a href="#比较运算符和逻辑运算符" class="headerlink" title="比较运算符和逻辑运算符"></a>比较运算符和逻辑运算符</h3><p>比较运算符有的地方也称为关系运算符，包括<code>==</code>、<code>!=</code>、<code>&lt;</code>、<code>&gt;</code>、<code>&lt;=</code>、<code>&gt;=</code>，我相信没有什么好解释的，大家一看就能懂，唯一需要提醒的是比较相等用的是<code>==</code>，请注意这个地方是两个等号，因为<code>=</code>是赋值运算符，我们在上面刚刚讲到过，<code>==</code>才是比较相等的比较运算符。比较运算符会产生布尔值，要么是<code>True</code>要么是<code>False</code>。</p>
+<p>逻辑运算符有三个，分别是<code>and</code>、<code>or</code>和<code>not</code>。<code>and</code>字面意思是“而且”，所以<code>and</code>运算符会连接两个布尔值，如果两个布尔值都是<code>True</code>，那么运算的结果就是<code>True</code>；左右两边的布尔值有一个是<code>False</code>，最终的运算结果就是<code>False</code>。相信大家已经想到了，如果<code>and</code>左边的布尔值是<code>False</code>，不管右边的布尔值是什么，最终的结果都是<code>False</code>，所以在做运算的时候右边的值会被跳过（短路处理），这也就意味着在<code>and</code>运算符左边为<code>False</code>的情况下，右边的表达式根本不会执行。<code>or</code>字面意思是“或者”，所以<code>or</code>运算符也会连接两个布尔值，如果两个布尔值有任意一个是<code>True</code>，那么最终的结果就是<code>True</code>。当然，<code>or</code>运算符也是有短路功能的，在它左边的布尔值为<code>True</code>的情况下，右边的表达式根本不会执行。<code>not</code>运算符的后面会跟上一个布尔值，它的作用是得到与该布尔值相反的值，也就是说，后面的布尔值如果是<code>True</code>运算结果就是<code>False</code>，而后面的布尔值如果是<code>False</code>则运算结果就是<code>True</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">比较运算符和逻辑运算符的使用</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">flag0 = <span class="number">1</span> == <span class="number">1</span></span><br><span class="line">flag1 = <span class="number">3</span> &gt; <span class="number">2</span></span><br><span class="line">flag2 = <span class="number">2</span> &lt; <span class="number">1</span></span><br><span class="line">flag3 = flag1 <span class="keyword">and</span> flag2</span><br><span class="line">flag4 = flag1 <span class="keyword">or</span> flag2</span><br><span class="line">flag5 = <span class="keyword">not</span> (<span class="number">1</span> != <span class="number">2</span>)</span><br><span class="line">print(<span class="string">'flag0 ='</span>, flag0)    <span class="comment"># flag0 = True</span></span><br><span class="line">print(<span class="string">'flag1 ='</span>, flag1)    <span class="comment"># flag1 = True</span></span><br><span class="line">print(<span class="string">'flag2 ='</span>, flag2)    <span class="comment"># flag2 = False</span></span><br><span class="line">print(<span class="string">'flag3 ='</span>, flag3)    <span class="comment"># flag3 = False</span></span><br><span class="line">print(<span class="string">'flag4 ='</span>, flag4)    <span class="comment"># flag4 = True</span></span><br><span class="line">print(<span class="string">'flag5 ='</span>, flag5)    <span class="comment"># flag5 = False</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：比较运算符的优先级高于赋值运算符，所以<code>flag0 = 1 == 1</code>先做<code>1 == 1</code>产生布尔值<code>True</code>，再将这个值赋值给变量<code>flag0</code>。<code>print</code>函数可以输出多个值，多个值之间可以用<code>,</code>进行分隔，输出的内容之间默认以空格分开。</p>
+</blockquote>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="练习1：华氏温度转换为摄氏温度。"><a href="#练习1：华氏温度转换为摄氏温度。" class="headerlink" title="练习1：华氏温度转换为摄氏温度。"></a>练习1：华氏温度转换为摄氏温度。</h4><blockquote>
+<p>提示：华氏温度到摄氏温度的转换公式为：$C=(F - 32) \div 1.8$。</p>
+</blockquote>
+<p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">将华氏温度转换为摄氏温度</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">f = float(input(<span class="string">'请输入华氏温度: '</span>))</span><br><span class="line">c = (f - <span class="number">32</span>) / <span class="number">1.8</span></span><br><span class="line">print(<span class="string">'%.1f华氏度 = %.1f摄氏度'</span> % (f, c))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：在使用<code>print</code>函数输出时，也可以对字符串内容进行格式化处理，上面<code>print</code>函数中的字符串<code>%1.f</code>是一个占位符，稍后会由一个<code>float</code>类型的变量值替换掉它。同理，如果字符串中有<code>%d</code>，后面可以用一个<code>int</code>类型的变量值替换掉它，而<code>%s</code>会被字符串的值替换掉。除了这种格式化字符串的方式外，还可以用下面的方式来格式化字符串，其中<code>{f:.1f}</code>和<code>{c:.1f}</code>可以先看成是<code>{f}</code>和<code>{c}</code>，表示输出时会用变量<code>f</code>和变量<code>c</code>的值替换掉这两个占位符，后面的<code>:.1f</code>表示这是一个浮点数，小数点后保留1位有效数字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">f'<span class="subst">&#123;f:<span class="number">.1</span>f&#125;</span>华氏度 = <span class="subst">&#123;c:<span class="number">.1</span>f&#125;</span>摄氏度'</span>)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="练习2：输入圆的半径计算计算周长和面积。"><a href="#练习2：输入圆的半径计算计算周长和面积。" class="headerlink" title="练习2：输入圆的半径计算计算周长和面积。"></a>练习2：输入圆的半径计算计算周长和面积。</h4><p>参考答案：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">输入半径计算圆的周长和面积</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"</span><span class="string">""</span></span><br><span class="line">radius = float(input(<span class="string">'请输入圆的半径: '</span>))</span><br><span class="line">perimeter = 2 * 3.1416 * radius</span><br><span class="line">area = 3.1416 *<span class="built_in"> radius </span>* radius</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">'周长: %.2f'</span> % perimeter)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">'面积: %.2f'</span> % area)</span><br></pre></td></tr></table></figure>
+
+<h4 id="练习3：输入年份判断是不是闰年。"><a href="#练习3：输入年份判断是不是闰年。" class="headerlink" title="练习3：输入年份判断是不是闰年。"></a>练习3：输入年份判断是不是闰年。</h4><p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">输入年份 如果是闰年输出True 否则输出False</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">year = int(input(<span class="string">'请输入年份: '</span>))</span><br><span class="line"><span class="comment"># 如果代码太长写成一行不便于阅读 可以使用\对代码进行折行</span></span><br><span class="line">is_leap = year % <span class="number">4</span> == <span class="number">0</span> <span class="keyword">and</span> year % <span class="number">100</span> != <span class="number">0</span> <span class="keyword">or</span> \</span><br><span class="line">          year % <span class="number">400</span> == <span class="number">0</span></span><br><span class="line">print(is_leap)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：比较运算符会产生布尔值，而逻辑运算符<code>and</code>和<code>or</code>会对这些布尔值进行组合，最终也是得到一个布尔值，闰年输出<code>True</code>，平年输出<code>False</code>。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%88%9D%E8%AF%86python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E5%88%9D%E8%AF%86python/" class="post-title-link" itemprop="url">初识python</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:29:39 / 修改时间：21:32:19" itemprop="dateCreated datePublished" datetime="2021-03-07T21:29:39+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Python简介"><a href="#Python简介" class="headerlink" title="Python简介"></a>Python简介</h3><h4 id="Python的历史"><a href="#Python的历史" class="headerlink" title="Python的历史"></a>Python的历史</h4><ol>
+<li>1989年圣诞节：Guido von Rossum开始写Python语言的编译器。</li>
+<li>1991年2月：第一个Python编译器（同时也是解释器）诞生，它是用C语言实现的（后面），可以调用C语言的库函数。在最早的版本中，Python已经提供了对“类”，“函数”，“异常处理”等构造块的支持，还有对列表、字典等核心数据类型，同时支持以模块为基础来构造应用程序。</li>
+<li>1994年1月：Python 1.0正式发布。</li>
+<li>2000年10月16日：Python 2.0发布，增加了完整的<a href="https://zh.wikipedia.org/wiki/垃圾回收_(計算機科學)" target="_blank" rel="noopener">垃圾回收</a>，提供了对<a href="https://zh.wikipedia.org/wiki/Unicode" target="_blank" rel="noopener">Unicode</a>的支持。与此同时，Python的整个开发过程更加透明，社区对开发进度的影响逐渐扩大，生态圈开始慢慢形成。</li>
+<li>2008年12月3日：Python 3.0发布，它并不完全兼容之前的Python代码，不过因为目前还有不少公司在项目和运维中使用Python 2.x版本，所以Python 3.x的很多新特性后来也被移植到Python 2.6/2.7版本中。</li>
+</ol>
+<p>目前我们使用的Python 3.7.x的版本是在2018年发布的，Python的版本号分为三段，形如A.B.C。其中A表示大版本号，一般当整体重写，或出现不向后兼容的改变时，增加A；B表示功能更新，出现新功能时增加B；C表示小的改动（例如：修复了某个Bug），只要有修改就增加C。如果对Python的历史感兴趣，可以阅读名为<a href="http://www.cnblogs.com/vamei/archive/2013/02/06/2892628.html" target="_blank" rel="noopener">《Python简史》</a>的网络文章。</p>
+<h4 id="Python的优缺点"><a href="#Python的优缺点" class="headerlink" title="Python的优缺点"></a>Python的优缺点</h4><p>Python的优点很多，简单的可以总结为以下几点。</p>
+<ol>
+<li>简单明了，学习曲线低，比很多编程语言都容易上手。</li>
+<li>开放源代码，拥有强大的社区和生态圈，尤其是在数据分析和机器学习领域。</li>
+<li>解释型语言，天生具有平台可移植性，代码可以工作于不同的操作系统。</li>
+<li>对两种主流的编程范式（面向对象编程和函数式编程）都提供了支持。</li>
+<li>代码规范程度高，可读性强，适合有代码洁癖和强迫症的人群。</li>
+</ol>
+<p>Python的缺点主要集中在以下几点。</p>
+<ol>
+<li>执行效率稍低，对执行效率要求高的部分可以由其他语言（如：C、C++）编写。</li>
+<li>代码无法加密，但是现在很多公司都不销售卖软件而是销售服务，这个问题会被弱化。</li>
+<li>在开发时可以选择的框架太多（如Web框架就有100多个），有选择的地方就有错误。</li>
+</ol>
+<h4 id="Python的应用领域"><a href="#Python的应用领域" class="headerlink" title="Python的应用领域"></a>Python的应用领域</h4><p>目前Python在Web应用后端开发、云基础设施建设、DevOps、网络数据采集（爬虫）、自动化测试、数据分析、机器学习等领域都有着广泛的应用。</p>
+<h3 id="安装Python解释器"><a href="#安装Python解释器" class="headerlink" title="安装Python解释器"></a>安装Python解释器</h3><p>想要开始Python编程之旅，首先得在自己使用的计算机上安装Python解释器环境，下面将以安装官方的Python解释器为例，讲解如何在不同的操作系统上安装Python环境。官方的Python解释器是用C语言实现的，也是使用最为广泛的Python解释器，通常称之为CPython。除此之外，Python解释器还有Java语言实现的Jython、C#语言实现的IronPython以及PyPy、Brython、Pyston等版本，有兴趣的读者可以自行了解。</p>
+<h4 id="Windows环境"><a href="#Windows环境" class="headerlink" title="Windows环境"></a>Windows环境</h4><p>可以在<a href="https://www.python.org/" target="_blank" rel="noopener">Python官方网站</a>下载到Python的Windows安装程序（exe文件），需要注意的是如果在Windows 7环境下安装Python 3.x，需要先安装Service Pack 1补丁包（可以通过一些工具软件自动安装系统补丁的功能来安装），安装过程建议勾选“Add Python 3.x to PATH”（将Python 3.x添加到PATH环境变量）并选择自定义安装，在设置“Optional Features”界面最好将“pip”、“tcl/tk”、“Python test suite”等项全部勾选上。强烈建议选择自定义的安装路径并保证路径中没有中文。安装完成会看到“Setup was successful”的提示。如果稍后运行Python程序时，出现因为缺失一些动态链接库文件而导致Python解释器无法工作的问题，可以按照下面的方法加以解决。</p>
+<p>如果系统显示api-ms-win-crt<em>.dll文件缺失，可以参照[《api-ms-win-crt</em>.dll缺失原因分析和解决方法》](<a href="https://zhuanlan.zhihu.com/p/32087135)一文讲解的方法进行处理或者直接在[微软官网](https://www.microsoft.com/zh-cn/download/details.aspx?id=48145)下载Visual" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32087135)一文讲解的方法进行处理或者直接在[微软官网](https://www.microsoft.com/zh-cn/download/details.aspx?id=48145)下载Visual</a> C++ Redistributable for Visual Studio 2015文件进行修复；如果是因为更新Windows的DirectX之后导致某些动态链接库文件缺失问题，可以下载一个<a href="https://dl.pconline.com.cn/download/360074-1.html" target="_blank" rel="noopener">DirectX修复工具</a>进行修复。</p>
+<h4 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h4><p>Linux环境自带了Python 2.x版本，但是如果要更新到3.x的版本，可以在<a href="https://www.python.org/" target="_blank" rel="noopener">Python的官方网站</a>下载Python的源代码并通过源代码构建安装的方式进行安装，具体的步骤如下所示（以CentOS为例）。</p>
+<ol>
+<li>安装依赖库（因为没有这些依赖库可能在源代码构件安装时因为缺失底层依赖库而失败）。</li>
+</ol>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install </span>wget gcc zlib-devel <span class="keyword">bzip2-devel </span>openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>下载Python源代码并解压缩到指定目录。</li>
+</ol>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https:<span class="comment">//www.python.org/ftp/python/3.7.6/Python-3.7.6.tar.xz</span></span><br><span class="line">xz -d Python<span class="number">-3.7</span><span class="number">.6</span>.tar.xz</span><br><span class="line">tar -xvf Python<span class="number">-3.7</span><span class="number">.6</span>.tar</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>切换至Python源代码目录并执行下面的命令进行配置和安装。</li>
+</ol>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd Python<span class="number">-3.7</span><span class="number">.6</span></span><br><span class="line">./configure --prefix=/usr/<span class="keyword">local</span>/python37 --<span class="keyword">enable</span>-optimizations</span><br><span class="line"><span class="built_in">make</span> &amp;&amp; <span class="built_in">make</span> install</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>修改用户主目录下名为.bash_profile的文件，配置PATH环境变量并使其生效。</li>
+</ol>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">vim .bash_profile</span><br><span class="line"><span class="comment"># ... 此处省略上面的代码 ...</span></span><br><span class="line"></span><br><span class="line">export PATH=<span class="variable">$PATH</span><span class="symbol">:/usr/local/python37/bin</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ... 此处省略下面的代码 ...</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>激活环境变量。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure>
+
+<h4 id="macOS环境"><a href="#macOS环境" class="headerlink" title="macOS环境"></a>macOS环境</h4><p>macOS也自带了Python 2.x版本，可以通过<a href="https://www.python.org/" target="_blank" rel="noopener">Python的官方网站</a>提供的安装文件（pkg文件）安装Python 3.x的版本。默认安装完成后，可以通过在终端执行<code>python</code>命令来启动2.x版本的Python解释器，启动3.x版本的Python解释器需要执行<code>python3</code>命令。</p>
+<h3 id="运行Python程序"><a href="#运行Python程序" class="headerlink" title="运行Python程序"></a>运行Python程序</h3><h4 id="确认Python的版本"><a href="#确认Python的版本" class="headerlink" title="确认Python的版本"></a>确认Python的版本</h4><p>可以Windows的命令行提示符中键入下面的命令。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python</span> --<span class="keyword">version</span></span><br></pre></td></tr></table></figure>
+
+<p>在Linux或macOS系统的终端中键入下面的命令。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python3</span> --<span class="keyword">version</span></span><br></pre></td></tr></table></figure>
+
+<p>当然也可以先输入<code>python</code>或<code>python3</code>进入交互式环境，再执行以下的代码检查Python的版本。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(sys.version_info)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(sys.version)</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="编写Python源代码"><a href="#编写Python源代码" class="headerlink" title="编写Python源代码"></a>编写Python源代码</h4><p>可以用文本编辑工具（推荐使用<a href="https://www.sublimetext.com/" target="_blank" rel="noopener">Sublime</a>、<a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>等高级文本编辑工具）编写Python源代码并用py作为后缀名保存该文件，代码内容如下所示。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'hello, world!'</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h4><p>切换到源代码所在的目录并执行下面的命令，看看屏幕上是否输出了”hello, world!”。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python</span> hello.<span class="keyword">py</span></span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python3</span> hello.<span class="keyword">py</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="代码中的注释"><a href="#代码中的注释" class="headerlink" title="代码中的注释"></a>代码中的注释</h4><p>注释是编程语言的一个重要组成部分，用于在源代码中解释代码的作用从而增强程序的可读性和可维护性，当然也可以将源代码中不需要参与运行的代码段通过注释来去掉，这一点在调试程序的时候经常用到。注释在随源代码进入预处理器或编译时会被移除，不会在目标代码中保留也不会影响程序的执行结果。</p>
+<ol>
+<li>单行注释 - 以#和空格开头的部分</li>
+<li>多行注释 - 三个引号开头，三个引号结尾</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">第一个Python程序 - hello, world!</span></span><br><span class="line"><span class="string">向伟大的Dennis M. Ritchie先生致敬</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">print(<span class="string">'hello, world!'</span>)</span><br><span class="line"><span class="comment"># print("你好, 世界！")</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Python开发工具"><a href="#Python开发工具" class="headerlink" title="Python开发工具"></a>Python开发工具</h3><h4 id="IDLE-自带的集成开发工具"><a href="#IDLE-自带的集成开发工具" class="headerlink" title="IDLE - 自带的集成开发工具"></a>IDLE - 自带的集成开发工具</h4><p>IDLE是安装Python环境时自带的集成开发工具，如下图所示。但是由于IDLE的用户体验并不是那么好所以很少在实际开发中被采用。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/python-idle.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/python-idle.png" alt="img"></a></p>
+<h4 id="IPython-更好的交互式编程工具"><a href="#IPython-更好的交互式编程工具" class="headerlink" title="IPython - 更好的交互式编程工具"></a>IPython - 更好的交互式编程工具</h4><p>IPython是一种基于Python的交互式解释器。相较于原生的Python交互式环境，IPython提供了更为强大的编辑和交互功能。可以通过Python的包管理工具pip安装IPython，具体的操作如下所示。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> ipython</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> ipython</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后，可以通过下面的ipython命令启动IPython，如下图所示。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/python-ipython.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/python-ipython.png" alt="img"></a></p>
+<h4 id="Sublime-Text-高级文本编辑器"><a href="#Sublime-Text-高级文本编辑器" class="headerlink" title="Sublime Text - 高级文本编辑器"></a>Sublime Text - 高级文本编辑器</h4><p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/python-sublime.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/python-sublime.png" alt="img"></a></p>
+<ul>
+<li><p>首先可以通过<a href="https://www.sublimetext.com/" target="_blank" rel="noopener">官方网站</a>下载安装程序安装Sublime Text 3或Sublime Text 2。</p>
+</li>
+<li><p>安装包管理工具。</p>
+<ol>
+<li>通过快捷键Ctrl+`或者在View菜单中选择Show Console打开控制台，输入下面的代码。</li>
+</ol>
+<ul>
+<li>Sublime 3</li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  urllib.request,os;pf=<span class="string">'Package Control.sublime-package'</span>;ipp=sublime.installed_packages_path();urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler()));<span class="keyword">open</span>(os.path.<span class="keyword">join</span>(ipp,pf),<span class="string">'wb'</span>).<span class="keyword">write</span>(urllib.request.urlopen(<span class="string">'http://sublime.wbond.net/'</span>+pf.replace(<span class="string">' '</span>,<span class="string">'%20'</span>)).<span class="keyword">read</span>())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Sublime 2</li>
+</ul>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import  urllib2,<span class="built_in">os</span>;pf=<span class="string">'Package Control.sublime-package'</span>;ipp=sublime.installed_packages_path();<span class="built_in">os</span>.makedirs(ipp)ifnotos.<span class="built_in">path</span>.exists(ipp)elseNone;urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler()));<span class="built_in">open</span>(<span class="built_in">os</span>.<span class="built_in">path</span>.join(ipp,pf),<span class="string">'wb'</span>).<span class="built_in">write</span>(urllib2.urlopen(<span class="string">'http://sublime.wbond.net/'</span>+pf.replace(<span class="string">' '</span>,<span class="string">'%20'</span>)).<span class="built_in">read</span>());<span class="built_in">print</span>(<span class="string">'Please restart Sublime Text to finish installation'</span>)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在浏览器中输入 [<a href="https://sublime.wbond.net/Package%20Control.sublime-package]" target="_blank" rel="noopener">https://sublime.wbond.net/Package%20Control.sublime-package]</a>(<a href="https://sublime.wbond.net/Package" target="_blank" rel="noopener">https://sublime.wbond.net/Package</a> Control.sublime-package) 下载包管理工具的安装包，并找到安装Sublime目录下名为”Installed Packages”的目录，把刚才下载的文件放到这个文件加下，然后重启Sublime Text就搞定了。</li>
+</ol>
+</li>
+<li><p>安装插件。通过Preference菜单的Package Control或快捷键Ctrl+Shift+P打开命令面板，在面板中输入Install Package就可以找到安装插件的工具，然后再查找需要的插件。我们推荐大家安装以下几个插件：</p>
+<ul>
+<li>SublimeCodeIntel - 代码自动补全工具插件。</li>
+<li>Emmet - 前端开发代码模板插件。</li>
+<li>Git - 版本控制工具插件。</li>
+<li>Python PEP8 Autoformat - PEP8规范自动格式化插件。</li>
+<li>ConvertToUTF8 - 将本地编码转换为UTF-8。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>说明</strong>：事实上<a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>可能是更好的选择，它不用花钱并提供了更为完整和强大的功能，有兴趣的读者可以自行研究。</p>
+</blockquote>
+<h4 id="PyCharm-Python开发神器"><a href="#PyCharm-Python开发神器" class="headerlink" title="PyCharm - Python开发神器"></a>PyCharm - Python开发神器</h4><p>PyCharm的安装、配置和使用在<a href="https://github.com/jackfrued/Python-100-Days/blob/master/玩转PyCharm.md" target="_blank" rel="noopener">《玩转PyCharm》</a>进行了介绍，有兴趣的读者可以选择阅读。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/python-pycharm.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/python-pycharm.png" alt="img"></a></p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><ol>
+<li><p>在Python交互式环境中输入下面的代码并查看结果，请尝试将看到的内容翻译成中文。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">this</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：输入上面的代码，在Python的交互式环境中可以看到Tim Peter撰写的<a href="https://github.com/jackfrued/Python-100-Days/blob/master/Python之禅.md" target="_blank" rel="noopener">“Python之禅”</a>，里面讲述的道理不仅仅适用于Python，也适用于其他编程语言。</p>
+</blockquote>
+</li>
+<li><p>学习使用turtle在屏幕上绘制图形。</p>
+<blockquote>
+<p><strong>说明</strong>：turtle是Python内置的一个非常有趣的模块，特别适合对计算机程序设计进行初体验的小伙伴，它最早是Logo语言的一部分，Logo语言是Wally Feurzig和Seymour Papert在1966发明的编程语言。</p>
+</blockquote>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.pensize</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.pencolor</span>(<span class="string">'red'</span>)</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.forward</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.right</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.forward</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.right</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.forward</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.right</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.forward</span>(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">turtle</span><span class="selector-class">.mainloop</span>()</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据库系统的关系数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 17:11:15 / 修改时间：17:13:01" itemprop="dateCreated datePublished" datetime="2021-03-07T17:11:15+08:00">2021-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>0.思维导图</p>
+<ol>
+<li>关系<br>什么是关系？</li>
+</ol>
+<p>单一的数据结构—-关系<br>现实世界的实体以及实体间的各种联系均用关系来表示<br>逻辑结构—-二维表<br>从用户角度，关系模型中数据的逻辑结构是一张二维表<br>建立在集合代数的基础上<br>（1）域（Domain）<br>域是一组具有相同数据类型的值的集合。例:<br>整数<br>实数<br>介于某个取值范围的整数<br>长度指定长度的字符串集合<br>{‘男’，‘女’}<br>………………<br>（2）笛卡尔积（Cartesian Product）<br>笛卡尔积<br>给定一组域D1，D2，…，Dn，这些域中可以有相同的。<br>D1，D2，…，Dn的笛卡尔积为：</p>
+<p>所有域的所有取值的一个组合；<br>不能重复；</p>
+<p>元组（Tuple）<br>笛卡尔积中每一个元素（d1，d2，…，dn）叫作一个n元组（n-tuple）或简称元组(Tuple);<br>(张清玫，计算机专业，李勇)、(张清玫，计算机专业，刘晨)等都是元组 ;</p>
+<p>分量（Component）<br>笛卡尔积元素（d1，d2，…，dn）中的每一个值di叫作一个分量;<br>张清玫、计算机专业、李勇、刘晨等都是分量 ;</p>
+<p>基数（Cardinal number）<br>可以把基数看做笛卡尔积元素的个数，及元组的个数；<br>若Di（i＝1，2，…，n）为有限集，其基数为mi（i＝1，2，…，n），则D1×D2×…×Dn的基数M为：</p>
+<p>笛卡尔积的表示方法:<br>笛卡尔积可表示为一个二维表;<br>表中的每行对应一个元组，表中的每列对应一个域;</p>
+<p>（3）关系（Relation）<br>关系<br>·笛卡尔积·D1×D2×…×Dn的子集叫作在域D1，D2，…，Dn上的关系，表示为：</p>
+<p>R：关系名<br>n：关系的目或度（Degree）</p>
+<p>元组<br>·关系·中的每个元素是关系中的元组，通常用t表示。</p>
+<p>单元关系与二元关系<br>当n=1时，称该关系为单元关系（Unary relation）或一元关系 ;<br>当n=2时，称该关系为二元关系（Binary relation）;</p>
+<p>·关系的表示·<br>关系也是一个二维表，表的每行对应一个元组，表的每列对应一个域</p>
+<p>属性<br>关系中不同列可以对应相同的域;<br>为了加以区分，必须对每列起一个名字，称为属性（Attribute）;<br>n目关系必有n个属性;</p>
+<p>码</p>
+<p>候选码（Candidate key）<br>若关系中的某一属性组的值能唯一地标识一个元组，则称该属性组为候选码;<br>简单的情况：候选码只包含一个属性;<br>全码（All-key）<br>最极端的情况：关系模式的所有属性组是这个关系模式的候选码，称为全码（All-key）;<br>主码<br>若一个关系有多个候选码，则选定其中一个为主码（Primary key）;<br>主属性<br>候选码的诸属性称为主属性（Prime attribute）;<br>不包含在任何侯选码中的属性称为非主属性（ Non-Prime attribute）或非码属性（Non-key attribute） ;</p>
+<p>D1，D2，…，Dn的笛卡尔积的某个子集才有实际含义<br>·例：·表2.1 的笛卡尔积没有实际意义<br>取出有实际意义的元组来构造关系<br>关系：SAP(SUPERVISOR，SPECIALITY，POSTGRADUATE)<br>假设：导师与专业：1:1， 导师与研究生：1:n<br>主码：POSTGRADUATE（假设研究生不会重名）<br>SAP关系可以包含三个元组:｛ (张清玫，计算机专业，李勇)， (张清玫，计算机专业，刘晨)，(刘逸，信息专业，王敏) }</p>
+<p>（4）三类关系<br>基本关系（基本表或基表）<br>实际存在的表，是实际存储数据的逻辑表示<br>查询表<br>查询结果对应的表<br>视图表<br>由基本表或其他视图表导出的表，是虚表，不对应实际存储的数据<br>在 SQL 中，视图是基于 SQL 语句的结果集的可视化的表。<br>视图包含行和列，就像一个真实的表。视图中的字段就是来自一个或多个数据库中的真实的表中的字段。<br>我们可以向视图添加 SQL 函数、WHERE 以及 JOIN 语句，我们也可以提交数据，就像这些来自于某个单一的表。<br>注释：数据库的设计和结构不会受到视图中的函数、where 或 join 语句的影响。<br>基本关系(二维表)的性质<br>① 列是同质的（Homogeneous）;<br>② 不同的列可出自同一个域,其中的每一列称为一个属性,不同的属性要给予不同的属性名;<br>③ 列的顺序无所谓，列的次序可以任意交换;<br>④ 任意两个元组的候选码不能相同;<br>⑤ 行的顺序无所谓，行的次序可以任意交换;<br>⑥ 分量必须取原子值,这是规范条件中最基本的一条;<br>2.关系模式<br>（1）什么是关系模式<br>关系模式（Relation Schema）是型<br>关系是值<br>关系模式是对关系的描述:</p>
+<p>元组集合的结构<br>属性构成<br>属性来自的域<br>属性与域之间的映象关系<br>元组语义以及完整性约束条件<br>属性间的数据依赖关系集合<br>（2）定义关系模式<br>关系模式可以形式化地表示为：</p>
+<p>R（U，D，DOM，F）<br>R 关系名<br>U 组成该关系的属性名集合<br>D 属性组U中属性所来自的域<br>DOM 属性向域的映象集合<br>F 属性间的数据依赖关系集合<br>·例:·<br>导师和研究生出自同一个域——人，取不同的属性名，并在模式中定义属性向域的映象，即说明它们分别出自哪个域;<br>DOM（SUPERVISOR-PERSON）= DOM（POSTGRADUATE-PERSON）=PERSON</p>
+<p>关系模式通常可以简记为<br>R (U) 或 R (A1，A2，…，An)<br>R: 关系名<br>A1，A2，…，An : 属性名<br>注：域名及属性向域的映象常常直接说明为属性的类型、长度</p>
+<p>3.关系模式和关系的对比<br>关系模式<br>对关系的描述<br>静态的、稳定的<br>关系<br>关系模式在某一时刻的状态或内容<br>动态的、随时间不断变化的<br>关系模式和关系往往统称为关系<br>在数据库学科中可以把关系模式理解为表的结构、属性之间的关系、约束条件，把关系理解为二维表</p>
+<p>4.关系数据库<br>关系数据库·<br>在一个给定的应用领域中，所有·关系的集合·构成一个关系数据库<br>·关系数据库模式包括<br>若干域的定义;<br>在这些域上定义的若干关系模式;<br>关系数据库的·型·与值<br>关系数据库的型: 关系数据库模式, 对关系数据库的描述。<br>关系数据库的值: 关系模式在某一时刻对应的关系的集合，简称为关系数据库</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E7%BB%84%E6%88%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -729,10 +1519,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-11 19:33:21 / 修改时间：19:34:17" itemprop="dateCreated datePublished" datetime="2021-01-11T19:33:21+08:00">2021-01-11</time>
+              <time title="创建时间：2021-01-11 19:33:21" itemprop="dateCreated datePublished" datetime="2021-01-11T19:33:21+08:00">2021-01-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-21 19:40:35" itemprop="dateModified" datetime="2021-03-21T19:40:35+08:00">2021-03-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -749,14 +1545,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>45k</span>
+              <span>44k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>41 分钟</span>
+              <span>40 分钟</span>
             </span>
 
         </div>
@@ -768,74 +1564,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>目录</p>
-<p><a href="#_Toc471841976">1……………………………………………………………………………………………………… Qt概述… 1</a></p>
-<p><a href="#_Toc471841977">1.1 什么是Qt 1</a></p>
-<p><a href="#_Toc471841978">1.2 Qt的发展史… 1</a></p>
-<p><a href="#_Toc471841979">1.3 支持的平台… 1</a></p>
-<p><a href="#_Toc471841980">1.4 Qt版本… 1</a></p>
-<p><a href="#_Toc471841981">1.5 Qt的下载与安装… 2</a></p>
-<p><a href="#_Toc471841982">下载地址：… 2</a></p>
-<p><a href="#_Toc471841983">Linux Host 2</a></p>
-<p><a href="#_Toc471841984">OS X Host 2</a></p>
-<p><a href="#_Toc471841985">Windows Host 2</a></p>
-<p><a href="#_Toc471841986">安装… 3</a></p>
-<p><a href="#_Toc471841987">1.6 Qt的优点… 3</a></p>
-<p><a href="#_Toc471841988">1.7 成功案例… 3</a></p>
-<p><a href="#_Toc471841989">2………………………………………………………………………………………………. 创建Qt项目… 3</a></p>
-<p><a href="#_Toc471841990">2.1 使用向导创建… 3</a></p>
-<p><a href="#_Toc471841991">2.2  手动创建… 7</a></p>
-<p><a href="#_Toc471841992">2.3  .pro文件… 9</a></p>
-<p><a href="#_Toc471841993">2.4  一个最简单的Qt应用程序… 10</a></p>
-<p><a href="#_Toc471841994">3 第一个Qt小程序… 12</a></p>
-<p><a href="#_Toc471841995">3.1 按钮的创建… 12</a></p>
-<p><a href="#_Toc471841996">3.2 对象模型（对象树）… 12</a></p>
-<p><a href="#_Toc471841997">3.3 Qt窗口坐标体系… 14</a></p>
-<p><a href="#_Toc471841998">4 信号和槽机制… 15</a></p>
-<p><a href="#_Toc471841999">4.1 系统自带的信号和槽… 15</a></p>
-<p><a href="#_Toc471842000">4.2 自定义信号和槽… 16</a></p>
-<p><a href="#_Toc471842001">4.3信号槽的拓展… 18</a></p>
-<p><a href="#_Toc471842002">4.4 Qt4版本的信号槽写法… 19</a></p>
-<p><a href="#_Toc471842003">4.5 Lambda表达式… 19</a></p>
-<p><a href="#_Toc471842004">5 QMainWindow.. 21</a></p>
-<p><a href="#_Toc471842005">5.1 菜单栏… 22</a></p>
-<p><a href="#_Toc471842006">5.2 工具栏… 22</a></p>
-<p><a href="#_Toc471842007">5.3 状态栏… 23</a></p>
-<p><a href="#_Toc471842008">5.4 铆接部件… 23</a></p>
-<p><a href="#_Toc471842009">5.5 核心部件（中心部件）… 23</a></p>
-<p><a href="#_Toc471842010">5.6 资源文件… 24</a></p>
-<p><a href="#_Toc471842011">6 对话框QDialog. 28</a></p>
-<p><a href="#_Toc471842012">6.1 基本概念… 28</a></p>
-<p><a href="#_Toc471842013">6.2 标准对话框… 28</a></p>
-<p><a href="#_Toc471842014">6.3 自定义消息框… 29</a></p>
-<p><a href="#_Toc471842015">6.4 消息对话框… 30</a></p>
-<p><a href="#_Toc471842016">6.5 标准文件对话框… 33</a></p>
-<p><a href="#_Toc471842017">7 布局管理器… 36</a></p>
-<p><a href="#_Toc471842018">7.1 系统提供的布局控件… 37</a></p>
-<p><a href="#_Toc471842019">7.2 利用widget做布局… 37</a></p>
-<p><a href="#_Toc471842020">8 常用控件… 38</a></p>
-<p><a href="#_Toc471842021">8.1 QLabel控件使用… 38</a></p>
-<p><a href="#_Toc471842022">显示文字 （普通文本、html）… 39</a></p>
-<p><a href="#_Toc471842023">显示图片… 39</a></p>
-<p><a href="#_Toc471842024">显示动画… 39</a></p>
-<p><a href="#_Toc471842025">8.2 QLineEdit 40</a></p>
-<p><a href="#_Toc471842026">8.3 其他控件… 41</a></p>
-<p><a href="#_Toc471842027">8.4 自定义控件… 41</a></p>
-<p><a href="#_Toc471842028">9 Qt消息机制和事件… 44</a></p>
-<p><a href="#_Toc471842029">9.1 事件… 44</a></p>
-<p><a href="#_Toc471842030">9.2 event（）… 47</a></p>
-<p><a href="#_Toc471842031">9.3 事件过滤器… 50</a></p>
-<p><a href="#_Toc471842032">9.4 总结… 54</a></p>
-<p><a href="#_Toc471842033">10 绘图和绘图设备… 56</a></p>
-<p><a href="#_Toc471842034">10.1 QPainter 56</a></p>
-<p><a href="#_Toc471842035">10.2 绘图设备… 58</a></p>
-<p><a href="#_Toc471842036">10.2.1 QPixmap、QBitmap、QImage. 59</a></p>
-<p><a href="#_Toc471842037">10.2.2 QPicture. 62</a></p>
-<p><a href="#_Toc471842038">11 文件系统… 63</a></p>
-<p><a href="#_Toc471842039">11.1 基本文件操作… 65</a></p>
-<p><a href="#_Toc471842040">11.2 二进制文件读写… 67</a></p>
-<p><a href="#_Toc471842041">11.3 文本文件读写… 68</a></p>
-<h1 id="1-Qt概述"><a href="#1-Qt概述" class="headerlink" title="1  Qt概述"></a>1  Qt概述</h1><h2 id="1-1-什么是Qt"><a href="#1-1-什么是Qt" class="headerlink" title="1.1 什么是Qt"></a>1.1 什么是Qt</h2><p>Qt是一个<strong>跨平台</strong>的C++<strong>图形用户界面应用程序框架</strong>。它为应用程序开发者提供建立艺术级图形界面所需的所有功能。它是完全面向对象的，很容易扩展，并且允许真正的组件编程。</p>
+          <h1 id="1-Qt概述"><a href="#1-Qt概述" class="headerlink" title="1  Qt概述"></a>1  Qt概述</h1><h2 id="1-1-什么是Qt"><a href="#1-1-什么是Qt" class="headerlink" title="1.1 什么是Qt"></a>1.1 什么是Qt</h2><p>Qt是一个<strong>跨平台</strong>的C++<strong>图形用户界面应用程序框架</strong>。它为应用程序开发者提供建立艺术级图形界面所需的所有功能。它是完全面向对象的，很容易扩展，并且允许真正的组件编程。</p>
 <h2 id="1-2-Qt的发展史"><a href="#1-2-Qt的发展史" class="headerlink" title="1.2 Qt的发展史"></a>1.2 Qt的发展史</h2><p>1991年 Qt最早由奇趣科技开发</p>
 <p>1996年 进入商业领域，它也是目前流行的Linux桌面环境KDE的基础</p>
 <p>2008年 奇趣科技被诺基亚公司收购，Qt称为诺基亚旗下的编程语言</p>
@@ -1996,1250 +2725,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%932/" class="post-title-link" itemprop="url">数字逻辑知识点汇总2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-03 18:10:01 / 修改时间：18:10:45" itemprop="dateCreated datePublished" datetime="2021-01-03T18:10:01+08:00">2021-01-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>数字电子技术（江晓安）第三版 </p>
-<p>第一章 数制与代码 </p>
-<p>进位计数制的基本概念，进位基数和数位的权值。 </p>
-<p>常用进位计数制：十进制二进制八进制十六进制 </p>
-<p>数制转换： </p>
-<p>把非十进制数转换成十进制数：按权展开相加。 </p>
-<p>十进制数转换成其它进制数：整数转换，采用基数连除法。 </p>
-<p>纯小数转换，采用基数连乘法。 </p>
-<p>二进制数转换成八进制数或十六进制数：以二进制数的小数点为起点，分别向左、</p>
-<p>向右，每三位(或四位)分一组。对于小数部分，最低位一组不足三位(或四位)时，必须在有效位右边补0，使其足位。然后，把每一组二进制数转换成八进制(或十六进制)数，并保持原排序。对于整数部分，最高位一组不足位时，可在有效位的左边补0，也可不补。 </p>
-<p>八进制(或十六进制)数转换成二进制数：只要把八进制(或十六进制)数的每一位数</p>
-<p>码分别转换成三位(或四位)的二进制数， 并保持原排序即可。整数最高位一组左边的0，及小数最低位一组右边的0，可以省略。 </p>
-<p>常用代码：二-十进制码 （BCD码 Binary Coded Decimal) </p>
-<p>—— 用二进制码元来表示十进制数符“0 ~ 9”主要有： 8421BCD码 2421码 余3码 （注意区分有权码和无权码） </p>
-<p>可靠性代码：格雷码和奇偶校验码 </p>
-<p>具有如下特点的代码叫格雷码： 任何相邻的两个码组(包括首、尾两个码组)中，只有一个码元不同。格雷码还具有反射特性，即按教材表中所示的对称轴，除最高位互补反射外，其余低位码元以对称轴镜像反射。格雷码属于无权码。</p>
-<p>在编码技术中，把两个码组中不同的码元的个数叫做这两个码组的距离，简称码距。由于格雷码的任意相邻的两个码组的距离均为1，故又称之为单位距离码。另外，由于首尾两个码组也具有单位距离特性，因而格雷码也叫循环码。 </p>
-<p>奇偶校验码是一种可以检测一位错误的代码。它由信息位和校验位两部分组成。 （要掌握奇偶校验原理及校验位的形成及检测方法） </p>
-<p>字符代码：ASCII码 (American Standard Code for Information Interchange，美国信</p>
-<p>息交换标准代码)</p>
-<p>1</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>第二章 基本逻辑运算及集成逻辑门 </p>
-<p>基本逻辑运算: 与逻辑、或逻辑、非逻辑 </p>
-<p>常用复合逻辑：“与非”逻辑、“或非”逻辑、“与或非”逻辑 </p>
-<p>“异或”逻辑 及“同或”逻辑 </p>
-<p>两变量的“异或逻辑”和“同或逻辑”互为反函数。 A⊕B和A⊙B互为对偶式。 </p>
-<p>多变量的“异或”及“同或”： </p>
-<p>  偶数个变量的“同或”等于这偶数个变量的“异或”之非。即 </p>
-<p>​    </p>
-<p>​     </p>
-<p>n个变量的“异或”逻辑的输出值和输入变量取值的对应关系是：输入变量的取值组合中，有奇数个1时，“异或”逻辑的输出值为1；反之，输出值为0。 </p>
-<p>利用此特性，可作为奇偶校验码校验位的产生/校验电路。 </p>
-<p>​    正负逻辑 </p>
-<p>​    在数字系统中，逻辑值是用逻辑电平表示的。若用逻辑高电平UH表示逻</p>
-<p>辑“真”，用逻辑低电平UL表示逻辑“假”，则称为正逻辑；反之，则称为负逻辑。本教材采用正逻辑。（注意：同一个逻辑电路实现的输入输出的电平关系是确定的，但规定正逻辑与负逻辑后实现的逻辑关系是不同的）     </p>
-<p>逻辑运算的优先级别      </p>
-<p>逻辑运算的完备性 </p>
-<p>​    “与”、“或”、“非”是逻辑代数中三种最基本的逻辑运算。 任何逻</p>
-<p>辑函数都可以用这三种运算的组合来构成。即任何数字系统都可以用这三种逻辑门来实现。因此，称“与”、“或”、 “非”是一个完备集合，简称完备集。但是，它不是最好的完备集，因为用它实现逻辑函数，必须同时使用三种不同的逻辑门，这对数字系统的制造、维修都不方便。</p>
-<p>由反演律(参见第三章 摩根定理)可以看出，利用“与”和“非”可以</p>
-<p>2</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>得出“或”；利用“或”和“非”可以得出“与”。因此，“与非”、“或非”、 “与或非”这三种复合运算中的任何一种都能实现“与”、 “或”、“非”的功能，即这三种复合运算各自都是完备集。 </p>
-<p>集成逻辑门 </p>
-<p>由于软件工程专业没有电路、模拟电子的先修课程，此部分涉及到电路细节部分不作要求，只概念性地了解相关集成逻辑芯片的逻辑功能及芯片系列的参数等。</p>
-<p>​    把若干个有源器件和无源器件及其连线，按照一定的功能要求，制做在</p>
-<p>同一块半导体基片上，这样的产品叫集成电路。若它完成的功能是逻辑功能或数字功能， 则称为逻辑集成电路或数字集成电路。最简单的数字集成电路是集成逻辑门。 </p>
-<p>​    集成逻辑门，按照其组成的有源器件的不同可分为两大类： </p>
-<p> 一类是双极性（型）晶体管逻辑门（TTL门晶体管-晶体管逻辑门）； 另一类是单极性（型）绝缘栅场效应管逻辑门，简称MOS门。 </p>
-<p>​    单极性MOS门主要有PMOS门(P沟道增强型MOS管构成的逻辑门)、</p>
-<p>NMOS门(N沟道增强型MOS管构成的逻辑门)和CMOS门(利用PMOS管和NMOS管构成的互补电路构成的门电路，故又叫做互补MOS门。 </p>
-<p>OC门与三态门 </p>
-<p>   OC门可实现“线与”功能，这是TTL门电路做不到的。 </p>
-<p>三态门的输出除了“0”、“1”状态外，还有“高阻”态。(控制端信号的作用：选通) </p>
-<p>TTL与 MOS集成逻辑门 多余输入端的处理：  与门/与非门——多余输入端接高电平  或门/或非门——多余输入端接低电平 </p>
-<p>要牢记各种门电路的逻辑符号！（教材 P243~244）      </p>
-<p>3</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>第三章 布尔代数与逻辑函数化简 </p>
-<p>基本公式     </p>
-<p>基本法则： </p>
-<p>代入法则：逻辑等式中的任何变量A，都可用另一函数Z代替，等式仍然成立。 对偶法则：对于任何一个逻辑表达式 F， 如果将其中的“+”换成“·”， “·”</p>
-<p>换成“+”， “１”换成“0”， “0”换成“1”，并保持原先的逻辑优先级，变量不变，两变量以上的非号不动，则可得原函数 F的对偶式 G，且 F和 G互为对偶式。 根据对偶法则知原式F成立，则其对偶式也一定成立。 </p>
-<p>反演法则：将原函数F中的“·”换成“+”, “+”换成“·”； “0”换成“1”， </p>
-<p>“1”换成“0”； 原变量换成反变量，反变量换成原变量，长非号即两个或两个以上变量的非号不变，即可得反函数。 </p>
-<p> 由原函数求反函数，称为反演或求反。摩根定律是进行反演的重要工具。</p>
-<p>多次应用摩根定律，可以求出一个函数的反函数。当函数较复杂时， 求反过程就相当麻烦。为此，人们从实践中归纳出求反演法则，可一步快速求出反函数</p>
-<p>逻辑函数不同形式的转换 </p>
-<p>逻辑函数的表达形式通常可分为五种：(要掌握 画对应的逻辑电路图)  与或式、与非-与非式、与或非式、或与式、或非-或非式 </p>
-<p>4</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>逻辑函数的代数法化简 逻辑函数化简的原则 </p>
-<p>​    逻辑函数化简， 并没有一个严格的原则，通常遵循以下几条原则：     (1)逻辑电路所用的门最少；     (2)各个门的输入端要少；     (3)逻辑电路所用的级数要少；     (4)逻辑电路能可靠地工作。</p>
-<p>卡诺图化简 （依据：逻辑相邻的两个与项可以合并为一项并消去一个变量） 最小项标准式的定义 </p>
-<p>由一般式获得最小项标准式的方法 最小项的性质： 21</p>
-<p>(1)对任何变量的函数式来讲，全部最小项之和为1， 即 mi1</p>
-<p>i0</p>
-<p>(2)两个不同最小项之积为 0， 即 mimj0(ij)(3) n变量有 2n 项最小项， 且对每一最小项而言， 有n个最小项与之相邻。 </p>
-<p>卡诺图的结构 相邻最小项合并规律 </p>
-<p>​    (1)两相邻项可合并为一项， 消去一个取值不同的变量，保留相同变量；   (2)四相邻项可合并为一项， 消去两个取值不同的变量，保留相同变量，</p>
-<p>  标注为1→原变量，0→反变量； </p>
-<p>​    (3)八相邻项可合并为一项，消去三个取值不同的变量，保留相同变量， </p>
-<p>标注与变量关系同上。 </p>
-<p>卡诺图的画圈原则是把具有循环相邻关系的最小项圈在一起 </p>
-<p>与或逻辑形式的卡诺图化简步骤 </p>
-<p>​    (1)将原始函数用卡诺图表示（最小项标准式、一般与或式均可）；     (2)根据最小项合并规律画卡诺圈， 圈住全部“１”方格；     (3)将上述全部卡诺圈的化简结果，“或”起来即得化简后的新函数。 </p>
-<p>与非逻辑形式的卡诺图化简步骤（将与或式两次求反即得与非式）。 </p>
-<p>第一步： 在卡诺图上圈“１”方格， 求得最简与或式；</p>
-<p>第二步： 将最简与或式两次求反， 用求反律展开一次，得到与非表示式； </p>
-<p>或与逻辑形式的卡诺图化简步骤 </p>
-<p> 首先从卡诺图上求其反函数，其方法是圈“０”方格， 然后再取反用反演法则（或摩根定理）即得原函数的或与式。 </p>
-<p>n</p>
-<p> 5</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>无关项及无关项的应用 </p>
-<p>逻辑问题分完全描述和非完全描述两种。 </p>
-<p>对应于变量的每一组取值，函数都有定义，即在每一组变量取值下， 函数 F都有确定的值，不是“１”就是“０”， 逻辑函数与每个最小项均有关，这类问题称为完全描述问题。 </p>
-<p> 在实际的逻辑问题中，变量的某些取值组合不允许出现， 或者是变量之</p>
-<p>间具有一定的制约关系。我们将这类问题称为非完全描述，该函数只与部分最小项有关，而与另一些最小项无关，我们用或者用φ表示。 </p>
-<p>两种表示法：  </p>
-<p>F(1,5,8,12)d(3,7,10,11,14,15)。</p>
-<p>或： FABCABC</p>
-<p>__</p>
-<p>__</p>
-<p></p>
-<p>约束条件为ABACBC0（满足约束关系式的输入变量取值为“合法”取值， 不满足约束关系式的输入变量取值为“非法”取值——无关项×） </p>
-<p>有利于逻辑函数的化简时可以利用相应的无关项。 </p>
-<p>逻辑函数的描述方法常用的有： </p>
-<p>真值表法、布尔代数法、卡诺图法、逻辑图法、波形(时序)图法 （其中 布尔代数法、逻辑图法 具有“多样性”） </p>
-<p>真值表  逻辑函数（最小项标准）式 （原函数，反函数） 卡诺图       </p>
-<p>6</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>第四章 组合逻辑电路 </p>
-<p>组合逻辑电路的定义  </p>
-<p>组合逻辑电路的分析过程： </p>
-<p>​    (1)由给定的逻辑电路图， 写出输出端（关于输入）的逻辑表达式；   (2)列出真值表 </p>
-<p>​    (3)从真值表概括出逻辑功能 </p>
-<p>​    (4)对原电路进行改进设计，寻找最佳方案(这一步不一定都要进行)。 </p>
-<p>组合逻辑电路的设计步骤： </p>
-<p>  (1)将文字描述的逻辑命题变换为真值表，这是十分重要的一步。 </p>
-<p>作出真值表前要仔细分析解决逻辑问题的条件，作出输入、输出变量的 逻辑规定 </p>
-<p>  (2)进行函数化简， 化简形式应依据选择什么门而定。   (3)根据化简结果和选定的门电路， 画出逻辑电路图。 </p>
-<p>常用中规模组合逻辑部件的原理和应用 </p>
-<p>以掌握原理和器件的外部特性（逻辑关系）为主，内部电路的细节不必深究！ </p>
-<p>半加器与全加器的定义（理解掌握全加器真值表） </p>
-<p>全加器的应用（了解） </p>
-<p>编码器 优先编码器 </p>
-<p>译码器及其应用 </p>
-<p>集成电路译码器的特点：     ① 为了减轻信号的负载，故集成电路输入一般都采用缓冲级，这样外界</p>
-<p>信号只驱动一个门。 </p>
-<p>​    ② 为了降低功率损耗，译码器的输出端常常是反码输出，即输出低电位</p>
-<p>有效。 </p>
-<p>​    ③ 为了便于扩大功能，增加了一些功能端，如使能端等。 </p>
-<p>译码器的应用：译码器除了用来驱动各种显示器件外，还可实现存储系统 和其它数字系统的地址译码、组成脉冲分配器、程序计数器、代码转换和</p>
-<p>​     由变量译码器可知，它的输出端就表示一项最小项（集成电路译码器</p>
-<p>7</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>输出端就表示一项最小项的“非”），而逻辑函数可以用最小项表示，利用这个特点，可以实现组合逻辑电路的设计，而不需要经过化简过程。 </p>
-<p>数据选择器及其应用 </p>
-<p>数字比较器（集成数字比较器）（了解） </p>
-<p>组合逻辑电路中的竞争与冒险 竞争冒险的概念及其产生原理 </p>
-<p>由于各路径逻辑门电路传输时间的不同，造成输入端的信号到达终点的时间有先有后，这种现象称为竞争。 由于竞争的存在，在某些特定情况下，会令输出出现短暂的“误动作”——出现不应出现的正脉冲（偏“0”冒险）或负脉冲（偏“1”冒险）。 消除竞争冒险的方法（了解） </p>
-<p> （1）修改逻辑设计（增加多余项）。  （2）利用滤波电路。  （3）增加选通电路。            </p>
-<p>8</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>第五章 触 发 器 </p>
-<p>时序逻辑电路的特点：在任何时刻电路产生的稳定输出信号不仅与该时刻电路的输入信号有关，而且还与电路过去的状态有关。由于它与过去的状态有关，所以电路中必须具有“记忆”功能的器件（触发器），记住电路过去的状态，并与输入信号共同决定电路的现时输出。 </p>
-<p>时序电路分类： </p>
-<p>同步时序电路和异步时序电路。（有无统一的CP脉冲） </p>
-<p>米里(Mealy)型和莫尔(Moore)型。（按输出变量的依从关系来分） 米里型电路的输出是输入变量及现态的函数； 莫尔型电路的输出只与电路状态的现态有关 </p>
-<p>触发器的基本性质是： </p>
-<p>(1)具有两个稳定的状态，分别表示二进制数码的“1”和“0” </p>
-<p>(2)由一个稳态到另一稳态，必须有外界信号的触发。否则它将长期稳定在某</p>
-<p>个状态，即长期保持所记忆的信息； </p>
-<p>(3)具有两个输出端：原码输出 Q和反码输出 Q。一般用 Q 的状态表明触</p>
-<p>发器的状态。如外界信号使 Q=Q， 则破坏了触发器的状态，这种情况在实际运用中是不允许出现的。</p>
-<p>触发器（Flip Flop）台湾译作正反器， </p>
-<p>学名“双稳态多谐振荡器”（Bistable Multivibrator）。 </p>
-<p>基本RS触发器 </p>
-<p>时钟控制的RS触发器 </p>
-<p>D触发器 特征方程：Qn+1=D </p>
-<p>T触发器 </p>
-<p>’n1nn</p>
-<p>JK触发器 特征方程： （JK触发器可构造T触发器、D触发器） QJQKQ </p>
-<p>集成触发器 ——为解决触发器的空翻和振荡现象而设计的边沿触发的实用器件。 常采用的电路结构：维持阻塞触发器、边沿触发器、主从触发器 </p>
-<p>触发器的直接置位（Sd  Pr）端 和 直接复位（Rd Clear）端 </p>
-<p>触发器的逻辑符号（具有多输入控制端的集成触发器——各信号相“与”） </p>
-<p>9</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>第六章 时序逻辑电路 </p>
-<p>时序电路的分析步骤 （同步、异步）  1.看清电路 </p>
-<p>2.写出方程(激励方程、次态方程、输出方程)3.列出状态迁移（真值）表 4.作出状态转换图 5.功能描述 </p>
-<p>同步时序电路的设计步骤（不同问题步骤不一定相同） 1.根据设计要求建立原始状态图（或已有指定）</p>
-<p>2.状态化简*、状态分配（要考虑能否自启动，必要时修改设计） 3.根据状态转换图 确立状态迁移（真值）表 5.选择（或按要求使用指定的）触发器类型 6.根据状态真值表确定 激励方程和 输出方程 </p>
-<p>7.有利用无关项化简时有时要检查自启动情况必要时修改设计* 8.画出逻辑图 </p>
-<p>*注：有时无此步骤 </p>
-<p>计 数 器 计数器的分类</p>
-<p>1.按进位模数来分  (1)模2 计数器：进位模数为 2n 的计数器均称为模2计数器。其中n为触</p>
-<p>发器级数。 </p>
-<p>(2)非模2计数器：进位模数非2n,用得较多的如十进制计数器。 2. </p>
-<p>(1)同步计数器：计数脉冲引至所有触发器的CP端，使应翻转的触发器同</p>
-<p>(2)异步计数器：计数脉冲并不引至所有触发器的CP端，有的触发器的CP</p>
-<p>端，是其它触发器的输出，因此触发器不是同时动作。 3.按计数增减趋势分 </p>
-<p>(1)递增计数器：每来一个计数脉冲，触发器组成的状态就按二进制代码</p>
-<p>(2)递减计数器：每来一个计数脉冲，触发器组成的状态，按二进制代码</p>
-<p>规律减少。有时又称为减法计数器。 </p>
-<p>(3)双向计数器：又称可逆计数器，计数规律可按递增规律，也可按递减</p>
-<p>规律，由控制端决定。 </p>
-<p>10</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>4.按电路集成度分 </p>
-<p>(1)小规模集成计数器：由若干个集成触发器和门电路， 经外部连线，构</p>
-<p>成具有计数功能的逻辑电路。 </p>
-<p>(2)中规模集成计数器：一般用4个集成触发器和若干个门电路，经内部</p>
-<p>连接集成在一块硅片上，它是计数功能比较完善，并能进行功能扩展的逻辑部件。由于计数器是时序电路，故它的分析与设计与时序电路的分析、 设计完全一样。</p>
-<p>2n进制计数器组成规律 J0K01 </p>
-<p>n</p>
-<p>JKQ110 </p>
-<p>nn J2K2Q0Q1</p>
-<p> nnnn</p>
-<p>J3K3Q0Q1Q2J2Q2</p>
-<p>nnnnn</p>
-<p>J4K4Q0Q1Q2Q3J3Q3 </p>
-<p> ： ：</p>
-<p>​    </p>
-<p>“1”</p>
-<p>1JC11K</p>
-<p>Q0</p>
-<p>nnnnn</p>
-<p>JmKmQ0Q1QmQJQ2m1m1m1 </p>
-<p>CP</p>
-<p>1J</p>
-<p>C11K</p>
-<p>Q1</p>
-<p>&amp;</p>
-<p>1JC11K</p>
-<p>Q2</p>
-<p>&amp;</p>
-<p>1JC11K</p>
-<p>Q3</p>
-<p>同步四位二进制加法计数器 </p>
-<p>2n进制同步减法计数器 </p>
-<p> J0K01 </p>
-<hr>
-<p> J1K1Q0n _____</p>
-<p>J2K2Q0nQ1n </p>
-<p><strong><strong>____</strong></strong> nnn</p>
-<p>J3K3Q0Q1Q2J2Q2n</p>
-<p><strong><strong>__</strong></strong>nnnn J4K4Q0Q1Q2Q3J3Q3n</p>
-<hr>
-<p>nnnnn</p>
-<p> JmKmQ0Q1Qm2Qm1Jm1Qm1</p>
-<p>11</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>2n进制异步加法计数器    </p>
-<p>三位二进制异步加法计数器的逻辑图和波形图(下降沿)      </p>
-<p>三位二进制异步加法计数器的逻辑图和波形图(上升沿)  </p>
-<p>2n进制异步减法计数器  CP “1”“1”Q0“1” Q0</p>
-<p>Q0Q1Q2</p>
-<p> 1J1J1J</p>
-<p>CP2CP0CP1</p>
-<p>CPC1C1C1 Q1</p>
-<p>Q0Q1Q2</p>
-<p>1K1K1KQ1 </p>
-<p>(a)</p>
-<p> Q2</p>
-<p>(b) </p>
-<p>三位二进制异步减法计数器的逻辑图和波形图(下降沿)  </p>
-<p>12</p>
-<p>CP1</p>
-<p>CP2</p>
-<p>数字电子技术（江晓安）第三版 </p>
-<p>​    </p>
-<p>三位二进制异步减法计数器的逻辑图和波形图(上升沿)</p>
-<p>集成计数器功能分析及其应用 </p>
-<p>异步清零端。当清零控制端Cr=0，立即清零，与CP无关。 </p>
-<p> 同步预置端。当预置端 LD = 0,而Cr=1 时，在置数输入端预置某个数据， </p>
-<p>在CP上升沿的时刻，才将数据送入计数器。必须在CP作用下</p>
-<p>寄存器与移位寄存器 </p>
-<p>寄存器  </p>
-<p> 锁存器是由电平触发器完成的，N个电平触发器的时钟端连在一起，</p>
-<p>在CP作用下能接受 N位二进制信息。 Q1Q2Q3Q4 D1D2D3D4</p>
-<p>1D1D1D1D</p>
-<p> F1F2F3F4</p>
-<p>Q1Q2Q3Q4</p>
-<p> C1C1C1C1 CP</p>
-<p>四位锁存器的逻辑图 </p>
-<p>基本寄存器 </p>
-<p>移位寄存器及应用（串行/并行转换、组成移位型计数器） </p>
-<p>两种常用的移位型计数器：即环型计数器和扭环型计数器（约翰逊计数器） </p>
-<p>13</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%931/" class="post-title-link" itemprop="url">数字逻辑知识点汇总1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-03 18:07:08 / 修改时间：18:08:04" itemprop="dateCreated datePublished" datetime="2021-01-03T18:07:08+08:00">2021-01-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>数字逻辑知识点总结 </p>
-<p>第一章 数制与编码 </p>
-<p>1.1十进制与二进制数的表示 </p>
-<p>1、十进制（D）：基数为10，十个独立的符号（0-9），满十进一。 推广：N进制：N个独立的符号（0-N），满N进一。 </p>
-<p>2、在一个采用进位计数制表示的数中，不同数位上的固定常数称为“权”。例如十进制数632.45，从左至右各位的权分别是：</p>
-<p>10</p>
-<p>2</p>
-<p>，</p>
-<p>10,10,10,10。 </p>
-<p> 位置计数表示法：632.453、表示方法 按权展开表示法： </p>
-<p>632.456<em>103</em>102<em>104</em>105*10 </p>
-<p>2</p>
-<p>1</p>
-<p>0</p>
-<p>1</p>
-<p>2</p>
-<p>1012</p>
-<p>4、二进制运算：加法（1+1=0），减法，乘法，除法</p>
-<p>5、十六进制（H）：数码：0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F.</p>
-<p>6、不同进位计数制的各种数码： 十进制数（r=10） 二进制数（r=2） 00000100012001030011401005010160110701118100091001101010111011121100131101141110151111</p>
-<p>八进制数（r=8） </p>
-<p>00010203040506071011121314151617</p>
-<p>十六进制数（r=16） 0123456789ABCDEF</p>
-<p>1 / 5</p>
-<p>1.2二进制与十进制的转换 </p>
-<p>1、二进制转十进制：将二进制数写成按权展开式，并将式中各乘积项的积算出来，然后各项相加，即可得到相对应的十进制数。 2、十进制转二进制： 整数部分：除二取余，将余数倒序排列。          小数部分：“乘二取整”，先将十进制小数部分乘以2，取其整数1或0作为二进制小数的最高位，然后将乘积的小数部分再乘以2，并再取整数作为次高位。重复上述过程，直到小数部分为0或达到所要求的精度。(0.625)10(0.101)2。 例题：将(58.625)10转换成二进制数 解</p>
-<p>(58.625)=(58)(0.625)(111010)(0.101)(111010.101) </p>
-<p>10</p>
-<p>10</p>
-<p>10</p>
-<p>2</p>
-<p>2</p>
-<p>2</p>
-<p>3、八进制数、十六进制数与二进制数的转换 </p>
-<p> 二进制数            八进制数或十六进制数  的 </p>
-<p>方法：从小数点开始，分别向左、右按3位（转换成八进制）或4位（转换成十六进制）分组，最后不满3位或4位的则需加0。将每组以对应的八进制或十六进制数代替，即为等值的八进制数和十六进制数。</p>
-<p>八进制：      2 5 7 . 0  5 5  4二进制：     0 1 0 1 0 1 1 1 1 . 0 0 0 1 0 1 1 0 1 1 0 0十六进制：      A  F   1  6  C </p>
-<p>2 / 5</p>
-<p>1.3带符号数的代码表示 </p>
-<p>1、真值：直接用正号和负号来表示带符号的二进制数 </p>
-<p>2、原码：第一位为符号位（0：正数，1：负数），其余各位表示数制部分 3、反码（对1的补救）：第一位为符号位（0：正数，1：负数）。对于负数，反码的数制是将原码数制按位求反，即原码某位为1，反码的相应位就为0，或者原码的某位为0，反码的相应位就为1。对于正数，原码和反码相同。 4、补码（对2的补救）：正数的表示同原码与反码的表示一样。对于负数，其符号位为1，数值位是将原码按位取反，再在最低位加1。 5、机器数   原码        反码        补码 负数： </p>
-<p>​     符号位     按位取反      加1</p>
-<p> -010101011011110</p>
-<p>真值      原码      反码      补码     正数： </p>
-<p>​     符号位     按位取反      加1</p>
-<p> +010001000100010</p>
-<p>真值      原码      反码      补码   6、表示范围： 表示位数 4位 8位 16位 N位  </p>
-<p>3 / 5</p>
-<p>范围 0000-111100000000-11111111 </p>
-<p>(2</p>
-<p>N1</p>
-<p>个数 </p>
-<p>2=16个 2=256个 2</p>
-<p>168</p>
-<p>4</p>
-<p>个 个 </p>
-<p>1)~(2) </p>
-<p>N1</p>
-<p>2</p>
-<p>N</p>
-<p>1.3.2机器数的加减法 </p>
-<p>1、原码运算：原码中的符号位仅用于表示数的正负，不参与运算，进行运算的只是数值部分。原码运算首先比较两个数的符号，若两数的符号不同，就需要进一步比较两数值的相对大小，两数相加是将数值较大的数减去数值较小的数，结构的符号与数值较大的数的符号相同。</p>
-<p>2、补码运算：运算时，符号位和数值位一样参加运算，如果符号位产生进位，则需将此进位“丢掉”。运算结果符号位为0时，说明是正数的补码，为1时，说明是负数的补码。 </p>
-<p>例如：已知真值N1=-0.1100，N2=-0.0010，求（N1+N2）补，（N1-N2）补。 </p>
-<p>解：（N1+N2）补=1.0100+1.1110=1.0010（符号相同），（N1-N2）补 （N1-N2）补=1.0100-1.1110=1.0100+0.0010=1.0110</p>
-<p>3、反码运算：运算时，符号位和数制位一样参加运算，如果符号位产生了进位，则此进位应与运算结果的最低位求和，称之为“循环进位”。 </p>
-<p>例如：已知真值N1=0.1001，N2=0.0011，求（N1+N2）反，（N1-N2）反。 </p>
-<p>解：（N1+N2）反=0.1001+0.0011=0.1100</p>
-<p>  （N1-N2）反=（N1）反+（-N1）反=0.1001+1.1100=（10.0101）=0.0101+1=0.0110（循环进位） </p>
-<p>4 / 5</p>
-<p>1.4数的定点表示和浮点表示 </p>
-<p>1、数的定点表示： 带符号的数：一般以左边最高位表示符号位。          不带符号的数：一般表示逻辑量或某些特征值，逻辑运算时按位进行的。 +10101100</p>
-<p>1</p>
-<p>0</p>
-<p>1</p>
-<p>0</p>
-<p>1</p>
-<p>1</p>
-<p>0</p>
-<p>.</p>
-<p>-0.11011011</p>
-<p>.</p>
-<p>1</p>
-<p>1</p>
-<p>0</p>
-<p>1</p>
-<p>1</p>
-<p>0</p>
-<p>1</p>
-<p>符号 小数点  </p>
-<p>​                 数值部分 2、数的浮点表示：N码的基数）  0</p>
-<p>1</p>
-<p>2</p>
-<p>j</p>
-<p>*s（S：尾数，J：阶码，2：阶</p>
-<p>2</p>
-<p>10</p>
-<p>*0.101 0</p>
-<p>001010</p>
-<p>阶符     阶码J   尾符       尾数S</p>
-<p>1.5数码和字符的代码表示 </p>
-<p>1、余3码=8421码+0011十进制数码 5</p>
-<p>8421BCD码 0101</p>
-<p>2421码 1011</p>
-<p>余3码 1000</p>
-<p>2、可靠性编码 格雷码        奇偶校验码 </p>
-<p>5 / 5</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/" class="post-title-link" itemprop="url">数字逻辑复习题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-03 12:11:28 / 修改时间：12:12:04" itemprop="dateCreated datePublished" datetime="2021-01-03T12:11:28+08:00">2021-01-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>685</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一、单选题</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image002.jpg" alt="img"></p>
-<p>答案A</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image004.jpg" alt="img"></p>
-<p>答案B（锁存器是时序逻辑电路）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image006.jpg" alt="img"></p>
-<p>答案C（八路输入需要三位地址信息）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image008.jpg" alt="img"></p>
-<p>答案C（化简）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image010.jpg" alt="img"></p>
-<p>答案 C（反演律）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image012.jpg" alt="img"></p>
-<p>答案D（触发器应用，二分频电路）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image014.jpg" alt="img"></p>
-<p>答案 a b c e</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image016.jpg" alt="img"></p>
-<p>答案C</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image018.jpg" alt="img"></p>
-<p>答案C（相同得0 ，不同为1，是异或逻辑）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image020.jpg" alt="img"></p>
-<p>答案B（计数器模M≤2n,n为触发器个数）</p>
-<p>二、填空题</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image022.jpg" alt="img"></p>
-<p>答案0 1</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image024.jpg" alt="img"></p>
-<p>答案 1110101 75</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image026.jpg" alt="img"></p>
-<p>答案 该时刻的输入信号</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image028.jpg" alt="img"></p>
-<p>答案 时序</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image030.jpg" alt="img"></p>
-<p>答案 11101111</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image032.jpg" alt="img"></p>
-<p>答案 门电路 触发器</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image034.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image036.jpg" alt="img"></p>
-<p>答案 同步 异步</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image038.jpg" alt="img"></p>
-<p>答案 1001（25个脉冲，16+9）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image040.jpg" alt="img"></p>
-<p>答案 寄存器 n</p>
-<p>三、分析题</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image042.jpg" alt="img"></p>
-<p>答案 （自己复习带无关项卡诺图的化简）</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image044.jpg" alt="img"></p>
-<p>2.分析图示电路功能。</p>
-<p> <img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image046.jpg" alt="img"></p>
-<p>答案 </p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image048.jpg" alt="img"></p>
-<p>\3. 分析图所示同步计数电路，作出状态表和状态图。计数器是几进制计数器?能否自启动? </p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image050.jpg" alt="img"></p>
-<p>答案</p>
-<p>方程组等自写</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image052.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image054.jpg" alt="img">为一个5进制计数器，可以自启动</p>
-<p>\4. 已知下降沿触发的边沿JK信号如图所示，画出其输出波形。设触发器初始状态为0。</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image056.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image058.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image060.jpg" alt="img"></p>
-<p>答案 七进制计数器（计数器初始状态为0011，计到1001是6个脉冲，此时LD等于0，再加一个脉冲置数回到0011，）</p>
-<p>四、设计题</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image062.jpg" alt="img"></p>
-<p>答案</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image064.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image066.jpg" alt="img"></p>
-<p>\2. 同步中规模二进制计数器74161的符号如图所示，采用该计数器设计M=12的计数器，使用尽可能少的外接门电路，画出连接图及状态转换图。</p>
-<p>答案 （自己再利用清零法做）</p>
-<p>  <img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image068.jpg" alt="img"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image070.jpg" alt="img"></p>
-<p>答案</p>
-<p>设化学A，生物B，几何C，代数D，及格1，不及格0</p>
-<p>设F毕业1，否则0</p>
-<p> 其他略</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image072.jpg" alt="img">扩展题</p>
-<p>参考答案</p>
-<p>用置数法设计计数器。当M=0，时，Q3Q2Q1Q0=0100，此时LD应等于0；M=1时 Q3Q2Q1Q0=1110，此时LD应等于0。可利用或非门“见1为0”的特点，见图</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image074.jpg" alt="img"></p>
-<p>5、选做题：设计一个8个灯依次亮灭的流水灯电路。</p>
-<p>参考答案</p>
-<p>​      <img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E9%A2%98/clip_image076.jpg" alt="img"></p>
-<p>注意：做大题（分析题、设计题）一定要写完整、清楚的步骤！否则扣分。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/" class="post-title-link" itemprop="url">数字逻辑习题汇总1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-03 10:59:08 / 修改时间：11:03:26" itemprop="dateCreated datePublished" datetime="2021-01-03T10:59:08+08:00">2021-01-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1、填空题<br><strong>1） 计数进位制转换</strong></p>
-<blockquote>
-<p><em>高进制转低进制：除k取余法</em><br><em>低进制转高进制：乘k取整法</em></p>
-</blockquote>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165508289.png" alt="img"></p>
-<p><strong>2） 符号数的编码表示</strong></p>
-<blockquote>
-<p><em>正数原，反，补一样</em><br><em>负数反码为原发除符号取反，补码为反码在最低位加1</em><br><em>最高位0表示正，1表示负</em><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112359223.png" alt="img"></p>
-<p>校验法： （1） 奇偶校验码：可以验证传输过程是否产生了错误 1） 奇校验：为二进制添加一位校验码，使1的数量为奇数<br>2） 偶校验：为二进制添加一位校验码，使1的数量为偶数 （2） 海明码：传输过程中错一位概率大，通过海明码可以验证是哪位错了<br>在2的k次方位数上放校验码，例如传输三位的时候，在第一位和第二位放校验码，第三位存信息，利用第一位和第二位和第三位进行偶校验，若产生两位验证位为00，则正确，01是第1位错了，10是第二位错了，11是三位都错了，拓展海明码位数就能增加信息位位数，增强实用性<br>二进制按顺序排列第k位校验位管理对应二进制第k位为1的信息位</p>
-</blockquote>
-<p>2.可靠性编码设计：设计一种含3位校验位的海明码方案，1）信息位与校验位的排列关系与交叉校验的编组表，2）校验位及校验和的生成函数。</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105152605757.jfif" alt="img"></p>
-<p>3.可靠性编码设计：设计一种含7位信息位的奇校验编码方案，1）说明检错的原理，2）写出校验位及校验和的生成函数。</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153318050.jfif" alt="img"></p>
-<p>4.可靠性编码设计：设计一种含7位信息位的偶校验编码方案，1）说明检错的原理，2）写出校验位及校验和的生成函数。</p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106112557455.jfif" alt="img"><br>5.用公式法化简函数并表示为与或式。</p>
-<blockquote>
-<p>与或式：先与后或<br>或与式：先或后与<br>与非式：只有与非，无或</p>
-</blockquote>
-<p>常用公式：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153510432.jfif" alt="img"></p>
-<p>5-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153600370.jfif" alt="5-1"><br>5-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153625626.jfif" alt="5-2"><br>5-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153643134.jfif" alt="5-3"><br>5-4<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153654712.jfif" alt="5-4"><br>5-5<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153705525.jfif" alt="5-5"><br>5-6<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105153719452.jfif" alt="5-6"></p>
-<p>6.利用卡诺图法化简逻辑函数</p>
-<blockquote>
-<p>最小项用m表示，最大项用M，d或D表示任意值 卡诺图中1表示最小项中的A，则表示最大项中的~A（A非）</p>
-</blockquote>
-<p>1）表示为最简与或式<br>2）写出对应的最大项表达式，化简并表示为最简或与式<br>6-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162642215.jfif" alt="6-1"><br>6-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162656600.jfif" alt="6-2"><br>6-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180106162715243.jfif" alt="6-3"></p>
-<p>7.逻辑函数变换</p>
-<blockquote>
-<p>转与非方法：加两个非号不影响值，打开里面的非号</p>
-</blockquote>
-<p>7-1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154057026.jfif" alt="7-1"><br>7-2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154114396.jfif" alt="7-2"></p>
-<blockquote>
-<p>转或非方法：（1）加法分配律转化为或与式，再加双非号，打开内部非号 （2）转发为与非式后利用最大项最小项特点化为或与式，再加两个非号，打开内部非号</p>
-</blockquote>
-<p>7-3<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154206272.jfif" alt="7-3"><br>7-4<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154227651.jfif" alt="7-4"></p>
-<blockquote>
-<p>验证传化成的最大项与最小项答案可通过卡诺图，需注意最小项中A表示1，<del>A表示0，最大项中A表示0，</del>A表示1<br>转化为最小项方法：补项</p>
-</blockquote>
-<p>7-5<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154314172.jfif" alt="7-5"></p>
-<blockquote>
-<p>转化为最大项方法：加法分配率加补项<br>7-6</p>
-</blockquote>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154403178.jfif" alt="7-6"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155520963.png" alt="8"><br><strong>二进制全加器设计</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154637610.jfif" alt="8"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155539695.png" alt="9"><br><strong>二进制全减器设计</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154716326.jfif" alt="9"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155550776.png" alt="10"><br><strong>设计一种2-4译码器，并拓展为3-8译码器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105154743858.jfif" alt="10"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155606673.png" alt="11"><br><strong>设计一种2-4译码器，并拓展为4-16译码器</strong></p>
-<p>第一问用10题图中（1）（2）（3）可解<br>第二问<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105155630200.jfif" alt="11"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165901034.png" alt="12"></p>
-<p><strong>利用3-8译码器实现逻辑函数</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114170734446.jfif" alt="12"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165908611.png" alt="13"><br><strong>利用3-8译码器实现逻辑函数</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170125645.jfif" alt="13"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165918092.png" alt="14"><br><strong>利用一种4-16译码器实现逻辑函数</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170140428.jfif" alt="14"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165928137.png" alt="15"><br><strong>利用一种2-4译码器实现4选1的多路选择器，并扩展为8选1的多路选择器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170202484.jfif" alt="15"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165938178.png" alt="16"><br><strong>利用一种4选1的多路选择器实现逻辑函数</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170218574.jfif" alt="16"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165946254.png" alt="17"><br><strong>利用一种2-4译码器实现4路的多路分配器,并扩展为8路分配器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170231039.jfif" alt="17"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105165959377.png" alt="18"><br><strong>利用D型触发器设计同步检测器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170243330.jfif" alt="18"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180114150538747.png" alt="19"><br><strong>利用D型触发器设计一个2位的二进制同步可逆计数器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170255315.jfif" alt="19-1"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170306846.jfif" alt="19-2"></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105170018284.png" alt="20"><br><strong>多功能同步移位寄存器</strong></p>
-<p><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB1/20180105171850125.jfif" alt="20"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/" class="post-title-link" itemprop="url">数字逻辑复习汇总1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-03 10:56:15 / 修改时间：11:06:22" itemprop="dateCreated datePublished" datetime="2021-01-03T10:56:15+08:00">2021-01-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">数字逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="第一章-数字逻辑基础"><a href="#第一章-数字逻辑基础" class="headerlink" title="第一章 数字逻辑基础"></a>第一章 数字逻辑基础</h1><h2 id="二进制、八进制、十进制和十六进制之间的转换"><a href="#二进制、八进制、十进制和十六进制之间的转换" class="headerlink" title="二进制、八进制、十进制和十六进制之间的转换"></a>二进制、八进制、十进制和十六进制之间的转换</h2><ol>
-<li>十进制和二进制、八进制、十六进制相互转换<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524125621755.png" alt="在这里插入图片描述"></li>
-</ol>
-<ul>
-<li>例1.<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052412570242.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>二进制和八进制、十六进制相互转换<br>例1.<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524125759693.png" alt="在这里插入图片描述"><br>例2.<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524125815883.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="8421BCD码与十进制之间的转换"><a href="#8421BCD码与十进制之间的转换" class="headerlink" title="8421BCD码与十进制之间的转换"></a>8421BCD码与十进制之间的转换</h2><p>例1.<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/201905241259077.png" alt="在这里插入图片描述"></p>
-<h2 id="十进制与原码、反码、补码之间的转换"><a href="#十进制与原码、反码、补码之间的转换" class="headerlink" title="十进制与原码、反码、补码之间的转换"></a>十进制与原码、反码、补码之间的转换</h2><ol>
-<li>正数</li>
-</ol>
-<ul>
-<li>原码<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524125954519.png" alt="在这里插入图片描述"></li>
-<li>反码、补码与原码相同</li>
-</ul>
-<ol>
-<li>负数</li>
-</ol>
-<ul>
-<li>原码：符号位为1+对应二进制数</li>
-<li>反码：原码符号位不变，其余取反</li>
-<li>补码：反码最低有效位加1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524130055945.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第二章-逻辑门电路"><a href="#第二章-逻辑门电路" class="headerlink" title="第二章 逻辑门电路"></a>第二章 逻辑门电路</h1><h2 id="逻辑门"><a href="#逻辑门" class="headerlink" title="逻辑门"></a>逻辑门</h2><ol>
-<li>与门</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142450218.png" alt="在这里插入图片描述"></li>
-<li>表达式<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142516260.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>或门</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142538549.png" alt="在这里插入图片描述"></li>
-<li>表达式：F=A+B</li>
-</ul>
-<ol>
-<li>非门</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142615458.png" alt="在这里插入图片描述"></li>
-<li>表达式<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142634125.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>复合逻辑门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142646364.png" alt="在这里插入图片描述"></li>
-<li>异或门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142702131.png" alt="在这里插入图片描述"></li>
-<li>同或门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142715410.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="TTL与非门"><a href="#TTL与非门" class="headerlink" title="TTL与非门"></a>TTL与非门</h2><ol>
-<li>电压传输特性<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052414280935.png" alt="在这里插入图片描述"></li>
-<li>输入/输出特性<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142821296.png" alt="在这里插入图片描述"></li>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524142846691.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="MOS逻辑电路"><a href="#MOS逻辑电路" class="headerlink" title="MOS逻辑电路"></a>MOS逻辑电路</h2><ol>
-<li>NMOS门电路</li>
-</ol>
-<ul>
-<li>非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143055724.png" alt="在这里插入图片描述"></li>
-<li>与非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143113760.png" alt="在这里插入图片描述"></li>
-<li>或非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143123310.png" alt="在这里插入图片描述"></li>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143145216.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>CMOS门电路</li>
-</ol>
-<ul>
-<li>非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143159417.png" alt="在这里插入图片描述"></li>
-<li>与非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143209902.png" alt="在这里插入图片描述"></li>
-<li>或非门<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143219826.png" alt="在这里插入图片描述"></li>
-<li>例题1：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143338724.png" alt="在这里插入图片描述"></li>
-<li>例题 2：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190524143356888.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第三章-逻辑代数"><a href="#第三章-逻辑代数" class="headerlink" title="第三章 逻辑代数"></a>第三章 逻辑代数</h1><h2 id="逻辑代数运算法则"><a href="#逻辑代数运算法则" class="headerlink" title="逻辑代数运算法则"></a>逻辑代数运算法则</h2><ol>
-<li>逻辑代数的基本定律<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525182917379.png" alt="在这里插入图片描述"></li>
-<li>基本规则</li>
-</ol>
-<ul>
-<li>反演规则<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525182947631.png" alt="在这里插入图片描述"></li>
-<li>对偶规则<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183007742.png" alt="在这里插入图片描述"></li>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052518302445.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>常用公式<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052518310916.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183120109.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183128362.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183137275.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183146578.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="逻辑函数标准形式"><a href="#逻辑函数标准形式" class="headerlink" title="逻辑函数标准形式"></a>逻辑函数标准形式</h2><ol>
-<li>最小项及标准与或式</li>
-</ol>
-<ul>
-<li>m表示。1：原变量，0：反变量</li>
-<li>任意两最小项之积为0</li>
-<li>全体最小项之和为1</li>
-<li>标准与或式<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183318996.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>最大项及标准或与式</li>
-</ol>
-<ul>
-<li>M表示。0：原变量，1：反变量</li>
-<li>任意两最大项之和为1</li>
-<li>全体最大项之积为0</li>
-<li>标准或与式<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183441513.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>两种标准式间的关系</li>
-</ol>
-<ul>
-<li>最大项与最小项互为反函数</li>
-<li>如果不在最小项中出现的编码，一定出现在最大项的编号中。</li>
-</ul>
-<h2 id="逻辑函数的公式化简法"><a href="#逻辑函数的公式化简法" class="headerlink" title="逻辑函数的公式化简法"></a>逻辑函数的公式化简法</h2><ol>
-<li>例1：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183650313.png" alt="在这里插入图片描述"></li>
-<li>例2：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183703158.png" alt="在这里插入图片描述"></li>
-<li>例3：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183713644.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="逻辑函数的卡诺图化简法"><a href="#逻辑函数的卡诺图化简法" class="headerlink" title="逻辑函数的卡诺图化简法"></a>逻辑函数的卡诺图化简法</h2><ol>
-<li>4个变量的卡诺图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052518383868.png" alt="在这里插入图片描述"></li>
-<li>最小项时，F为1；最大项时，F为0</li>
-<li>求最简与或式</li>
-</ol>
-<ul>
-<li>方法：圈相邻格中的1, 合并最小项</li>
-<li>根据下面规则将含有 1 的相邻格圈在一起：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183850568.png" alt="在这里插入图片描述"></li>
-<li>例：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183913313.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>求最简或与式（圈0）</li>
-<li>具有随意项的逻辑函数的化简<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183939171.png" alt="在这里插入图片描述"></li>
-</ol>
-<ul>
-<li>例：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525183955673.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第四章-组合逻辑电路"><a href="#第四章-组合逻辑电路" class="headerlink" title="第四章 组合逻辑电路"></a>第四章 组合逻辑电路</h1><h2 id="组合逻辑电路分析"><a href="#组合逻辑电路分析" class="headerlink" title="组合逻辑电路分析"></a>组合逻辑电路分析</h2><ol>
-<li>步骤</li>
-</ol>
-<ul>
-<li>根据输入逐级写出输出内容</li>
-<li>化简逻辑功能</li>
-<li>列出真值表</li>
-<li>讨论功能</li>
-</ul>
-<ol>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525193954456.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194005823.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194016315.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="组合逻辑电路设计"><a href="#组合逻辑电路设计" class="headerlink" title="组合逻辑电路设计"></a>组合逻辑电路设计</h2><ol>
-<li>步骤</li>
-</ol>
-<ul>
-<li>确定输入、输出以及它们之间的关系</li>
-<li>列出真值表</li>
-<li>化简</li>
-<li>画出逻辑电路图</li>
-</ul>
-<ol>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194111535.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052519412059.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="译码器"><a href="#译码器" class="headerlink" title="译码器"></a>译码器</h2><ol>
-<li>二进制译码器</li>
-</ol>
-<ul>
-<li>低电平有效3-8译码器：集成芯片74138<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194231838.png" alt="在这里插入图片描述"></li>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194222408.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>使用译码器实现逻辑功能<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019052519430756.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194317490.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194327100.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194336429.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="多路选择器"><a href="#多路选择器" class="headerlink" title="多路选择器"></a>多路选择器</h2><ol>
-<li>四选一多路选择器：集成芯片74153，使能端：低电平有效</li>
-<li>八选一多路选择器：集成芯片74151，使能端：低电平有效</li>
-<li>例题：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190525194419998.png" alt="在这里插入图片描述"></li>
-</ol>
-<h1 id="第五章-触发器"><a href="#第五章-触发器" class="headerlink" title="第五章 触发器"></a>第五章 触发器</h1><h2 id="基本RS触发器"><a href="#基本RS触发器" class="headerlink" title="基本RS触发器"></a>基本RS触发器</h2><ol>
-<li>电路图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203045303.png" alt="在这里插入图片描述"></li>
-<li>状态图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203057641.png" alt="在这里插入图片描述"></li>
-<li>特征方程<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203133579.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203144183.png" alt="在这里插入图片描述"></li>
-<li>状态转移图和激励表<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203154879.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019053020320428.png" alt="在这里插入图片描述"></li>
-<li>时序图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203216333.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="时钟触发器"><a href="#时钟触发器" class="headerlink" title="时钟触发器"></a>时钟触发器</h2><ol>
-<li>时钟RS触发器</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203400318.png" alt="在这里插入图片描述"></li>
-<li>特征方程<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203422421.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>时钟D触发器</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203453876.png" alt="在这里插入图片描述"></li>
-<li>特征方程<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203504806.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>时钟JK触发器</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203528748.png" alt="在这里插入图片描述"></li>
-<li>特征方程<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/201905302035422.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>时钟T触发器</li>
-</ol>
-<ul>
-<li>符号<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203605319.png" alt="在这里插入图片描述"></li>
-<li>特征方程<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203617546.png" alt="在这里插入图片描述"></li>
-</ul>
-<h2 id="主从触发器"><a href="#主从触发器" class="headerlink" title="主从触发器"></a>主从触发器</h2><ol>
-<li>作用：克服触发器空翻</li>
-<li>下边沿触发</li>
-<li>符号（以JK触发器为例）：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203843676.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="正边沿触发器"><a href="#正边沿触发器" class="headerlink" title="正边沿触发器"></a>正边沿触发器</h2><ol>
-<li>上边沿触发</li>
-<li>符号（以JK触发器为例）：<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530203952172.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="触发器间的相互转换"><a href="#触发器间的相互转换" class="headerlink" title="触发器间的相互转换"></a>触发器间的相互转换</h2><ol>
-<li>JK触发器转换为D触发器<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204042180.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204052836.png" alt="在这里插入图片描述"></li>
-<li>JK触发器转换为T触发器<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019053020410360.png" alt="在这里插入图片描述"></li>
-<li>T触发器转换为D触发器<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204111665.png" alt="在这里插入图片描述"></li>
-</ol>
-<h1 id="第六章-时序逻辑电路"><a href="#第六章-时序逻辑电路" class="headerlink" title="第六章 时序逻辑电路"></a>第六章 时序逻辑电路</h1><h2 id="同步时序电路分析"><a href="#同步时序电路分析" class="headerlink" title="同步时序电路分析"></a>同步时序电路分析</h2><ol>
-<li>写出输出方程、激励方程、状态方程</li>
-<li>画出状态表和状态图</li>
-<li>分析电路功能</li>
-</ol>
-<ul>
-<li>例题<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204520830.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204531235.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204538273.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204546688.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530204553254.png" alt="在这里插入图片描述"></li>
-</ul>
-<h2 id="同步时序电路设计"><a href="#同步时序电路设计" class="headerlink" title="同步时序电路设计"></a>同步时序电路设计</h2><ol>
-<li>画出状态转换图</li>
-<li>状态化简</li>
-<li>状态分配，列出状态转换编码表</li>
-<li>选择触发器类型</li>
-<li>求状态方程、驱动方程、输出方程</li>
-<li>画电路图</li>
-<li>检查电路能否自启动</li>
-</ol>
-<ul>
-<li>例：设计模五计数器<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530205257460.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530205315501.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530205323746.png" alt="在这里插入图片描述"></li>
-</ul>
-<h2 id="计数器（74161）"><a href="#计数器（74161）" class="headerlink" title="计数器（74161）"></a>计数器（74161）</h2><ol>
-<li>符号：（计数时，ENT=1；进位时，RCO=1，其他时刻，RCO=0）<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019053020544326.png" alt="在这里插入图片描述"></li>
-</ol>
-<ul>
-<li>例1<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/2019053022592645.png" alt="在这里插入图片描述"></li>
-<li>例2<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530225934636.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第七章-脉冲波形的产生与变换"><a href="#第七章-脉冲波形的产生与变换" class="headerlink" title="第七章 脉冲波形的产生与变换"></a>第七章 脉冲波形的产生与变换</h1><h2 id="555定时器"><a href="#555定时器" class="headerlink" title="555定时器"></a>555定时器</h2><ul>
-<li>管脚图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230604393.png" alt="在这里插入图片描述"></li>
-</ul>
-<h2 id="施密特触发器"><a href="#施密特触发器" class="headerlink" title="施密特触发器"></a>施密特触发器</h2><ol>
-<li>电压特性</li>
-</ol>
-<ul>
-<li>正向阈值电压Vt+=2/3Vcc</li>
-<li>负向阈值电压Vt-=1/3Vcc</li>
-<li>回差电压△V=（Vt+）-（Vt-）</li>
-</ul>
-<ol>
-<li>波形变化<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230711289.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="单稳态触发器"><a href="#单稳态触发器" class="headerlink" title="单稳态触发器"></a>单稳态触发器</h2><ol>
-<li>暂稳态持续时间Tw=1.1RC</li>
-<li>Vc，Vo波形图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230752260.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="多谐振荡器"><a href="#多谐振荡器" class="headerlink" title="多谐振荡器"></a>多谐振荡器</h2><ul>
-<li>电路图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230902563.png" alt="在这里插入图片描述"></li>
-<li>性质<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231012710.png" alt="在这里插入图片描述"></li>
-<li>例题<img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230918486.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530230945533.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第九章-数模与模数转换"><a href="#第九章-数模与模数转换" class="headerlink" title="第九章 数模与模数转换"></a>第九章 数模与模数转换</h1><h2 id="数模转换电路（DAC）"><a href="#数模转换电路（DAC）" class="headerlink" title="数模转换电路（DAC）"></a>数模转换电路（DAC）</h2><ol>
-<li>全电阻网络DAC<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231458683.png" alt="在这里插入图片描述"></li>
-<li>R-2R 梯形电阻网络DAC<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231510886.png" alt="在这里插入图片描述"></li>
-<li>R-2R 倒梯形电阻DAC<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231556942.png" alt="在这里插入图片描述"></li>
-</ol>
-<h2 id="模数转换电路（ADC）"><a href="#模数转换电路（ADC）" class="headerlink" title="模数转换电路（ADC）"></a>模数转换电路（ADC）</h2><ol>
-<li>有舍有入并行比较<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231642528.png" alt="在这里插入图片描述"></li>
-<li>只舍不入并行比较<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231651738.png" alt="在这里插入图片描述"></li>
-<li>并/串型ADC</li>
-</ol>
-<ul>
-<li>高4位只舍不入，低4位有舍有入</li>
-<li>例题<img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530231710729.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="第十章-半导体存储器"><a href="#第十章-半导体存储器" class="headerlink" title="第十章 半导体存储器"></a>第十章 半导体存储器</h1><h2 id="随机存储器（RAM）"><a href="#随机存储器（RAM）" class="headerlink" title="随机存储器（RAM）"></a>随机存储器（RAM）</h2><h3 id="RAM扩展"><a href="#RAM扩展" class="headerlink" title="RAM扩展"></a>RAM扩展</h3><ol>
-<li>位扩展</li>
-</ol>
-<ul>
-<li>方法：相同RAM并行连接；共用：地址线，R/W，CS</li>
-<li><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232014448.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>字扩展</li>
-</ol>
-<ul>
-<li>方法：增加地址线；使用CS扩展字；共用：原始地址线，R/W，数据线<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232025827.png" alt="在这里插入图片描述"></li>
-</ul>
-<ol>
-<li>字长和地址扩展</li>
-</ol>
-<ul>
-<li>先扩位，后扩字<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232036871.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232045687.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232056388.png" alt="在这里插入图片描述"></li>
-</ul>
-<h2 id="只读存储器（ROM）"><a href="#只读存储器（ROM）" class="headerlink" title="只读存储器（ROM）"></a>只读存储器（ROM）</h2><ul>
-<li>ROM存储矩阵节点连接图<br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232309911.png" alt="在这里插入图片描述"><br><img src="/2021/01/03/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E5%A4%8D%E4%B9%A0%E6%B1%87%E6%80%BB1/20190530232123385.png" alt="在这里插入图片描述"></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3309,7 +2794,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">233</span>
+          <span class="site-state-item-count">238</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -3363,7 +2848,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">28:26</span>
+    <span title="站点阅读时长">29:11</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
