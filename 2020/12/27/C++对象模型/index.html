@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/20140216210542500">
 <meta property="article:published_time" content="2020-12-27T07:07:17.811Z">
-<meta property="article:modified_time" content="2020-12-27T07:09:47.635Z">
+<meta property="article:modified_time" content="2021-03-21T15:26:13.098Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="C++进阶学习">
 <meta name="twitter:card" content="summary">
@@ -189,10 +189,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-27 15:07:17 / 修改时间：15:09:47" itemprop="dateCreated datePublished" datetime="2020-12-27T15:07:17+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:07:17" itemprop="dateCreated datePublished" datetime="2020-12-27T15:07:17+08:00">2020-12-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-21 23:26:13" itemprop="dateModified" datetime="2021-03-21T23:26:13+08:00">2021-03-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -228,7 +234,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在C++对象模型中，Nonstatic data members 被配置于每一个 class object 之内，static data members 则被存放在个别 class object 之外。Static 和nonstatic function members 也被放在个别的class object 之外。存在 virtual function 时，每个class 会产生出一堆指向 virtual function 的指针，这些指针存放在一个表中，称之为虚函数表 virtual table。其实质就是一个函数指针数组，里面存放的是虚函数指针。每一个 class object 被安插一个虚表指针 vptr，指向相关的 virtual table，虚表指针通常置于 class object 的第一位置。另外，当子类虚继承父类时，子类对象中还会安插虚基类指针。注意此处 class 和 class object 的区别。如此说来一个类实例当中存放的就是 nonstatic data member，虚表指针（存在虚函数时或父类中含有虚函数），虚基类指针（虚拟继承时）。类继承时体积会变大，但在虚拟继承的情况下，基类永远只存在一个实例。</p>
+        <p>在C++对象模型中，Nonstatic data members 被配置于每一个 class object 之内，static data members 则被存放在个别 class object 之外。Static 和nonstatic function members 也被放在个别的class object 之外。存在 virtual function 时，每个class 会产生出一堆指向 virtual function 的指针，这些指针存放在一个表中，称之为虚函数表 virtual table。其实质就是一个函数指针数组，里面存放的是虚函数指针。每一个 class object 被安插一个虚表指针 vptr，指向相关的 virtual table，虚表指针通常置于 class object 的第一位置。另外，当子类虚继承父类时，子类对象中还会安插虚基类指针。注意此处 class 和 class object 的区别。如此说来一个类实例当中存放的就是 nonstatic data member，虚表指针（存在虚函数时或父类中含有虚函数），虚基类指针（虚拟继承时）。类继承时体积会变大，但在虚拟继承的情况下，基类永远只存在一个实例。<a id="more"></a></p>
 <p>每一个 static data member 只有一个实例，存放在程序的 data segment 之中，视作是全局变量，static成员独立于任何对象而存在，不是类类型对象的组成部分，(非const类型)必须在类定义体的外部定义，不同于普通数据成员，static成员不是通过类构造函数进行初始化。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>   //测试</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//virtual void prin()&#123; return ; &#125;</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> x;  <span class="comment">//编译时不分配内存</span></span><br><span class="line">	<span class="keyword">int</span> y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Base::x = <span class="number">0</span>;  <span class="comment">//此时分配内存</span></span><br><span class="line">                  <span class="comment">//将此语句注释，程序出错</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; &amp;Base::x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -412,7 +418,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:11</span>
+    <span title="站点阅读时长">29:06</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
