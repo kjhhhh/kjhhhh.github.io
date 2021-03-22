@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:12:25" itemprop="dateModified" datetime="2020-12-23T23:12:25+08:00">2020-12-23</time>
+                <time title="修改时间：2021-03-22 21:10:50" itemprop="dateModified" datetime="2021-03-22T21:10:50+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.4k</span>
+              <span>9.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -230,264 +230,17 @@
 
       
           <p>今日内容介绍<br>1、转换流<br>2、缓冲流</p>
-<p>=======================第一节课开始=============================================</p>
 <p>###01转换流概述<br>    * A: 转换流概述<br>        * a: 转换流概述<br>            * OutputStreamWriter 是字符流通向字节流的桥梁：可使用指定的字符编码表，将要写入流中的字符编码成字节<br>            * 将字符串按照指定的编码表转成字节，在使用字节流将这些字节写出去</p>
 <p>​<br>###02转换流_字符转字节的过程<br>    * A: 转换流_字符转字节的过程<br>        * a.图解<br>            * 详见day24_source/转换流.JPG图片</p>
-<p>​<br>###03OutputStreamWriter写文本文件<br>    * A: OutputStreamWriter写文本文件<br>        * a: OutputStreamWriter<br>            * java.io.OutputStreamWriter 继承Writer类<br>            * 就是一个字符输出流，写文本文件<br>            * write()字符，字符数组，字符串<br>            * 字符通向字节的桥梁，将字符流转字节流<br>            * OutputStreamWriter 使用方式<br>                * 构造方法：<br>                    * OutputStreamWriter(OuputStream out)接收所有的字节输出流<br>                    * 字节输出流：  FileOutputStream<br>                    * OutputStreamWriter(OutputStream out, String charsetName)<br>                    * String charsetName 传递编码表名字 GBK  UTF-8<br>            * OutputStreamWriter 有个子类，  FileWriter<br>        * b: 案例代码</p>
-<pre><code>public class OutputStreamWriterDemo {
-    public static void main(String[] args)throws IOException {
-//        writeGBK();
-        writeUTF();
-    }
-    /*
-     * 转换流对象OutputStreamWriter写文本
-     * 采用UTF-8编码表写入
-     */
-    public static void writeUTF()throws IOException{
-        //创建字节输出流，绑定文件
-        FileOutputStream fos = new FileOutputStream(&quot;c:\\utf.txt&quot;);
-        //创建转换流对象，构造方法保证字节输出流，并指定编码表是UTF-8
-        OutputStreamWriter osw = new OutputStreamWriter(fos,&quot;UTF-8&quot;);
-        osw.write(&quot;你好&quot;);
-        osw.close();
-    }
-
-    /*
-     * 转换流对象 OutputStreamWriter写文本
-     * 文本采用GBK的形式写入
-     */
-    public static void writeGBK()throws IOException{
-        //创建字节输出流，绑定数据文件
-        FileOutputStream fos = new FileOutputStream(&quot;c:\\gbk.txt&quot;);
-        //创建转换流对象，构造方法，绑定字节输出流，使用GBK编码表
-        OutputStreamWriter osw = new OutputStreamWriter(fos);
-        //转换流写数据
-        osw.write(&quot;你好&quot;);
-
-        osw.close();
-    }
-}</code></pre><p>###04转换流_字节转字符流过程<br>    * A: 转换流_字节转字符流过程<br>        * a: InputStreamReader<br>            * java.io.InputStreamReader 继承 Reader<br>            * 字符输入流，读取文本文件<br>            * 字节流向字符的敲了，将字节流转字符流<br>            * 读取的方法:<br>                * read() 读取1个字符，读取字符数组<br>            * 技巧<br>                * OuputStreamWriter写了文件<br>                * InputStreamReader读取文件<br>            * OutputStreamWriter(OutputStream out)所有字节输出流<br>            * InputStreamReader(InputStream in) 接收所有的字节输入流<br>            * 可以传递的字节输入流： FileInputStream<br>            * InputStreamReader(InputStream in,String charsetName) 传递编码表的名字<br>        * b: 图解<br>            * 详见day24_source/转换流.JPG图片</p>
-<p>###05InputSteamReader读取文本文件<br>    * A: InputSteamReader读取文本文件<br>        * a: 案例代码<br>            public class InputStreamReaderDemo {<br>                public static void main(String[] args) throws IOException {<br>            //        readGBK();<br>                    readUTF();<br>                }<br>                /*<br>                 *  转换流,InputSteamReader读取文本<br>                 *  采用UTF-8编码表,读取文件utf<br>                 <em>/<br>                public static void readUTF()throws IOException{<br>                    //创建自己输入流,传递文本文件<br>                    FileInputStream fis = new FileInputStream(“c:\utf.txt”);<br>                    //创建转换流对象,构造方法中,包装字节输入流,同时写编码表名<br>                    InputStreamReader isr = new InputStreamReader(fis,”UTF-8”);<br>                    char[] ch = new char[1024];<br>                    int len = isr.read(ch);<br>                    System.out.println(new String(ch,0,len));<br>                    isr.close();<br>                }<br>                /</em><br>                 *  转换流,InputSteamReader读取文本<br>                 *  采用系统默认编码表,读取GBK文件<br>                 */<br>                public static void readGBK()throws IOException{<br>                    //创建自己输入流,传递文本文件<br>                    FileInputStream fis = new FileInputStream(“c:\gbk.txt”);<br>                    //创建转换流对象,构造方法,包装字节输入流<br>                    InputStreamReader isr = new InputStreamReader(fis);<br>                    char[] ch = new char[1024];<br>                    int len = isr.read(ch);<br>                    System.out.println(new String(ch,0,len));</p>
-<pre><code>        isr.close();
-    }
-}</code></pre><p>​<br>###06转换流子类父类的区别<br>    * A: 转换流子类父类的区别<br>        * a: 继承关系<br>            OutputStreamWriter:<br>                |–FileWriter:<br>            InputStreamReader:<br>                |–FileReader;<br>        * b: 区别<br>            * OutputStreamWriter和InputStreamReader是字符和字节的桥梁：也可以称之为字符转换流。字符转换流原理：字节流+编码表。<br>            * FileWriter和FileReader：作为子类，仅作为操作字符文件的便捷类存在。<br>                当操作的字符文件，使用的是默认编码表时可以不用父类，而直接用子类就完成操作了，简化了代码。<br>            * 以下三句话功能相同<br>                * InputStreamReader isr = new InputStreamReader(new FileInputStream(“a.txt”));//默认字符集。<br>                * InputStreamReader isr = new InputStreamReader(new FileInputStream(“a.txt”),”GBK”);//指定GBK字符集。<br>                * FileReader fr = new FileReader(“a.txt”);</p>
-<p>###07缓冲流概述<br>    * A: 缓冲流概述<br>        * a: 概述<br>            * 可提高IO流的读写速度<br>            * 分为字节缓冲流与字符缓冲流 </p>
-<p>​<br>###08字节输出流缓冲流BufferedOutputStream<br>    * A: 字节输出流缓冲流BufferedOutputStream<br>        * a: BufferedOutputStream<br>            * 字节输出流的缓冲流<br>            * java.io.BufferedOuputStream 作用: 提高原有输出流的写入效率<br>            * BufferedOuputStream 继承 OutputStream<br>            * 方法,写入 write 字节,字节数组<br>            * 构造方法:<br>                * BufferedOuputStream(OuputStream out)<br>                * 可以传递任意的字节输出流, 传递的是哪个字节流,就对哪个字节流提高效率  </p>
-<pre><code>* b: 案例代码
-    public class BufferedOutputStreamDemo {
-        public static void main(String[] args)throws IOException {
-            //创建字节输出流,绑定文件
-            //FileOutputStream fos = new FileOutputStream(&quot;c:\\buffer.txt&quot;);
-            //创建字节输出流缓冲流的对象,构造方法中,传递字节输出流
-            BufferedOutputStream bos = new
-                    BufferedOutputStream(new FileOutputStream(&quot;c:\\buffer.txt&quot;));
-
-            bos.write(55);
-
-            byte[] bytes = &quot;HelloWorld&quot;.getBytes();
-
-            bos.write(bytes);
-
-            bos.write(bytes, 3, 2);
-
-            bos.close();
-        }
-    }</code></pre><p>###09字节输入流缓冲流BufferedInputStream<br>    * A: 字节输入流缓冲流BufferedInputStream<br>        * a: BufferedInputStream<br>            * 字节输入流的缓冲流<br>            * 继承InputStream,标准的字节输入流<br>            * 读取方法  read() 单个字节,字节数组<br>            * 构造方法:<br>                * BufferedInputStream(InputStream in)<br>                * 可以传递任意的字节输入流,传递是谁,就提高谁的效率<br>                * 可以传递的字节输入流 FileInputStream<br>        * b: 案例代码<br>            public class BufferedInputStreamDemo {<br>                public static void main(String[] args) throws IOException{<br>                    //创建字节输入流的缓冲流对象,构造方法中包装字节输入流,包装文件<br>                    BufferedInputStream bis = new<br>                            BufferedInputStream(new FileInputStream(“c:\buffer.txt”));<br>                    byte[] bytes = new byte[10];<br>                    int len = 0 ;<br>                    while((len = bis.read(bytes))!=-1){<br>                        System.out.print(new String(bytes,0,len));<br>                    }<br>                    bis.close();<br>                }<br>            }</p>
-<p>​<br>###10四种文件复制方式的效率比较<br>    * A：四种文件复制方式的效率比较<br>        * a: 四中复制方式<br>            * 字节流读写单个字节                    125250 毫秒<br>            * 字节流读写字节数组                    193    毫秒  OK<br>            * 字节流缓冲区流读写单个字节            1210   毫秒<br>            * 字节流缓冲区流读写字节数组            73     毫秒  OK        </p>
-<pre><code>* b: 案例代码
-
-    public class Copy {
-        public static void main(String[] args)throws IOException {
-            long s = System.currentTimeMillis();
-            copy_4(new File(&quot;c:\\q.exe&quot;), new File(&quot;d:\\q.exe&quot;));
-            long e = System.currentTimeMillis();
-            System.out.println(e-s);
-        }
-        /*
-         * 方法,实现文件复制
-         *  4. 字节流缓冲区流读写字节数组
-         */
-        public static void copy_4(File src,File desc)throws IOException{
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(src));
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desc));
-            int len = 0 ;
-            byte[] bytes = new byte[1024];
-            while((len = bis.read(bytes))!=-1){
-                bos.write(bytes,0,len);
-            }
-            bos.close();
-            bis.close();
-        }
-        /*
-         * 方法,实现文件复制
-         *  3. 字节流缓冲区流读写单个字节
-         */
-        public static void copy_3(File src,File desc)throws IOException{
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(src));
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desc));
-            int len = 0 ;
-            while((len = bis.read())!=-1){
-                bos.write(len);
-            }
-            bos.close();
-            bis.close();
-        }
-
-        /*
-         * 方法,实现文件复制
-         *  2. 字节流读写字节数组
-         */
-        public static void copy_2(File src,File desc)throws IOException{
-            FileInputStream fis = new FileInputStream(src);
-            FileOutputStream fos = new FileOutputStream(desc);
-            int len = 0 ;
-            byte[] bytes = new byte[1024];
-            while((len = fis.read(bytes))!=-1){
-                fos.write(bytes,0,len);
-            }
-            fos.close();
-            fis.close();
-        }
-
-        /*
-         * 方法,实现文件复制
-         *  1. 字节流读写单个字节
-         */
-        public static void copy_1(File src,File desc)throws IOException{
-            FileInputStream fis = new FileInputStream(src);
-            FileOutputStream fos = new FileOutputStream(desc);
-            int len = 0 ;
-            while((len = fis.read())!=-1){
-                fos.write(len);
-            }
-            fos.close();
-            fis.close();
-        }
-    }</code></pre><p>​<br>###11字符输出流缓冲流BufferedWriter<br>    * A: 字符输出流缓冲流BufferedWriter<br>        * a: BufferedWriter<br>            * 字符输出流缓冲区流<br>            * java.io.BufferedWriter 继承 Writer<br>            * 写入方法 write () 单个字符,字符数组,字符串</p>
-<pre><code>    * 构造方法:
-        * BufferedWriter(Writer w)传递任意字符输出流
-        * 传递谁,就高效谁
-        * 能传递的字符输出流 FileWriter, OutputStreamWriter
-* b: 案例代码
-    public class BufferedWrierDemo {
-        public static void main(String[] args) throws IOException{
-            //创建字符输出流,封装文件
-            FileWriter fw = new FileWriter(&quot;c:\\buffer.txt&quot;);
-            BufferedWriter bfw = new BufferedWriter(fw);
-
-            bfw.write(100);
-            bfw.flush();
-            bfw.write(&quot;你好&quot;.toCharArray());
-            bfw.flush();</code></pre><p>​<br>                    bfw.write(“你好”);</p>
-<pre><code>bfw.flush();</code></pre><p>​<br>                    bfw.write(“我好好”);</p>
-<pre><code>        bfw.flush();
-
-        bfw.write(&quot;大家都好&quot;);
-        bfw.flush();
-
-        bfw.close();
-
-    }
-}</code></pre><p>###12字符输出流缓冲流BufferedWriter特有方法newLine<br>    * A: 字符输出流缓冲流BufferedWriter特有方法newLine<br>        * a: 方法介绍<br>            * void  newLine() 写换行</p>
-<pre><code>    * newLine()文本中换行, \r\n也是文本换行
-    * 方法具有平台无关性
-    * Windows  \r\n
-    * Linux    \n
-
-    * newLine()运行结果,和操作系统是相互关系
-    * JVM: 安装的是Windows版本,newLine()写的就是\r\n
-    * 安装的是Linux版本,newLine()写的就是\n
-    /*
-     *  将数据源 c:\\a.txt
-     *  复制到 d:\\a.txt  数据目的
-     *  字节输入流,绑定数据源
-     *  字节输出流,绑定数据目的
-     *  
-     *  输入,读取1个字节
-     *  输出,写1个字节
-     */
-* b: 案例代码
-    public class BufferedWrierDemo {
-        public static void main(String[] args) throws IOException{
-            //创建字符输出流,封装文件
-            FileWriter fw = new FileWriter(&quot;c:\\buffer.txt&quot;);
-            BufferedWriter bfw = new BufferedWriter(fw);
-
-            bfw.write(100);
-            bfw.flush();
-            bfw.write(&quot;你好&quot;.toCharArray());
-            bfw.flush();
-
-            bfw.write(&quot;你好&quot;);
-            bfw.newLine();
-            bfw.flush();</code></pre><p>​<br>                    bfw.write(“我好好”);<br>                    bfw.newLine();<br>                    bfw.flush();</p>
-<pre><code>        bfw.write(&quot;大家都好&quot;);
-        bfw.flush();
-
-        bfw.close();
-
-    }
-}</code></pre><p>###13字符输入流缓冲流BufferedReader<br>    * A: 字符输入流缓冲流BufferedReader<br>        * a: 概述<br>            * 从字符输入流中读取文本，缓冲各个字符，从而实现字符、数组和行的高效读取<br>            * public String readLine() 读取一个文本行，包含该行内容的字符串，不包含任何行终止符，如果已到达流末尾，则返回 null</p>
-<p>###14字符输入流缓冲流BufferedReader读取文本行<br>    * A: 字符输入流缓冲流BufferedReader读取文本行<br>        * a: BufferedReader<br>            * 字符输入流缓冲流<br>            * java.io.BufferedReader 继承 Reader<br>            * 读取功能 read() 单个字符,字符数组<br>            * 构造方法:<br>                * BufferedReader(Reader r)<br>                * 可以任意的字符输入流<br>                   FileReader  InputStreamReader<br>            * BufferedReader自己的功能<br>                * String readLine() 读取文本行 \r\n<br>                    * 方法读取到流末尾,返回null<br>        * b: 小特点<br>             * 获取内容的方法一般都有返回值<br>             * int 没有返回的都是负数<br>             * 引用类型 找不到返回null<br>             * boolean 找不到返回false</p>
-<pre><code>* c: 案例代码
-    public class BufferedReaderDemo {
-        public static void main(String[] args) throws IOException {
-            int lineNumber = 0;
-            //创建字符输入流缓冲流对象,构造方法传递字符输入流,包装数据源文件
-            BufferedReader bfr = new BufferedReader(new FileReader(&quot;c:\\a.txt&quot;));
-            //调用缓冲流的方法 readLine()读取文本行
-            //循环读取文本行, 结束条件 readLine()返回null
-            String line = null;
-            while((line = bfr.readLine())!=null){
-                lineNumber++;
-                System.out.println(lineNumber+&quot;  &quot;+line);
-            }
-            bfr.close();
-        }
-    }
-
-    /*
-     * String line = bfr.readLine();
-            System.out.println(line);
-
-            line = bfr.readLine();
-            System.out.println(line);
-
-            line = bfr.readLine();
-            System.out.println(line);
-
-            line = bfr.readLine();
-            System.out.println(line);
-
-            line = bfr.readLine();
-            System.out.println(line);
-     */</code></pre><p>###15字符流缓冲区流复制文本文件<br>    * A: 字符流缓冲区流复制文本文件<br>        * a: 案例代码<br>            /*<br>             *  使用缓冲区流对象,复制文本文件<br>             *  数据源  BufferedReader+FileReader 读取<br>             *  数据目的 BufferedWriter+FileWriter 写入<br>             *  读取文本行, 读一行,写一行,写换行<br>             */<br>            public class Copy_1 {<br>                public static void main(String[] args) throws IOException{<br>                    BufferedReader bfr = new BufferedReader(new FileReader(“c:\w.log”));<br>                    BufferedWriter bfw = new BufferedWriter(new FileWriter(“d:\w.log”));<br>                    //读取文本行, 读一行,写一行,写换行<br>                    String line = null;<br>                    while((line = bfr.readLine())!=null){<br>                        bfw.write(line);<br>                        bfw.newLine();<br>                        bfw.flush();<br>                    }<br>                    bfw.close();<br>                    bfr.close();<br>                }<br>            }</p>
-<p>​<br>###16IO流对象的操作规律<br>    * A: IO流对象的操作规律<br>        * a: 明确一：要操作的数据是数据源还是数据目的。<br>            * 源：InputStream    Reader<br>            * 目的：OutputStream Writer<br>            * 先根据需求明确要读，还是要写。</p>
-<pre><code>* b: 明确二：要操作的数据是字节还是文本呢？
-    * 源：
-        * 字节：InputStream
-        * 文本：Reader
-    * 目的：
-        * 字节：OutputStream
-        * 文本：Writer
-* c: 明确三：明确数据所在的具体设备。
-    * 源设备：
-        * 硬盘：文件  File开头。
-        * 内存：数组，字符串。
-        * 键盘：System.in;
-        * 网络：Socket
-    * 目的设备：
-        * 硬盘：文件  File开头。
-        * 内存：数组，字符串。
-        * 屏幕：System.out
-        * 网络：Socket
-        * 完全可以明确具体要使用哪个流对象。
-* d: 明确四：是否需要额外功能呢？
-    * 额外功能：
-        * 转换吗？转换流。InputStreamReader OutputStreamWriter
-        * 高效吗？缓冲区对象。BufferedXXX
-        * 已经明确到了具体的体系上。</code></pre><p>###17总结<br>    * 把今天的知识点总结一遍。</p>
-
+<p>​<br>###03OutputStreamWriter写文本文件</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/22/day24%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1059,7 +812,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:05</span>
+    <span title="站点阅读时长">29:04</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

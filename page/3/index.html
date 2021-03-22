@@ -184,10 +184,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 18:13:32 / 修改时间：22:28:11" itemprop="dateCreated datePublished" datetime="2021-03-20T18:13:32+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 18:13:32" itemprop="dateCreated datePublished" datetime="2021-03-20T18:13:32+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:26:15" itemprop="dateModified" datetime="2021-03-22T21:26:15+08:00">2021-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -255,399 +261,14 @@
 <p>总之，无论你何时使用到了取余操作符，都要考虑到操作数和结果的符号。该操</p>
 <p>作符的行为在其操作数非负时是一目了然的，但是当一个或两个操作数都是负数</p>
 <p>时，它的行为就不那么显而易见了。</p>
-<h2 id="谜题-2：找零时刻"><a href="#谜题-2：找零时刻" class="headerlink" title="谜题 2：找零时刻"></a>谜题 2：找零时刻</h2><p>请考虑下面这段话所描述的问题： </p>
-<p>Tom 在一家汽车配件商店购买了一个价值$1.10 的火花塞，但是他钱包中都是两</p>
-<p>美元一张的钞票。如果他用一张两美元的钞票支付这个火花塞，那么应该找给他</p>
-<p>多少零钱呢？ </p>
-<p>下面是一个试图解决上述问题的程序，它会打印出什么呢？ </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Change</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(<span class="number">2.00</span> - <span class="number">1.10</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>你可能会很天真地期望该程序能够打印出 0.90，但是它如何才能知道你想要打</p>
-<p>印小数点后两位小数呢？ </p>
-<p>如果你对在 Double.toString 文档中所设定的将 double 类型的值转换为字符串</p>
-<p>的规则有所了解，你就会知道该程序打印出来的小数，是足以将 double 类型的</p>
-<p>值与最靠近它的临近值区分出来的最短的小数，它在小数点之前和之后都至少有</p>
-<p>一位。因此，看起来，该程序应该打印 0.9 是合理的。 </p>
-<p>这么分析可能显得很合理，但是并不正确。如果你运行该程序，你就会发现它打</p>
-<p>印的是 0.8999999999999999。 </p>
-<p>问题在于 1.1 这个数字不能被精确表示成为一个 double，因此它被表示成为最</p>
-<p>接近它的 double 值。该程序从 2 中减去的就是这个值。遗憾的是，这个计算的</p>
-<p>结果并不是最接近 0.9 的 double 值。表示结果的 double 值的最短表示就是你所</p>
-<p>看到的打印出来的那个可恶的数字。 </p>
-<p>更一般地说，问题在于并不是所有的小数都可以用二进制浮点数来精确表示的。 </p>
-<p>如果你正在用的是 JDK 5.0 或更新的版本，那么你可能会受其诱惑，通过使用</p>
-<p>printf 工具来设置输出精度的方订正该程序： </p>
-<p>//拙劣的解决方案——仍旧是使用二进制浮点数</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">System</span><span class="selector-class">.out</span><span class="selector-class">.printf</span>("%<span class="selector-class">.2f</span>%<span class="selector-tag">n</span>",2<span class="selector-class">.00</span> <span class="selector-tag">-</span> 1<span class="selector-class">.10</span>);</span><br></pre></td></tr></table></figure>
-
-<p>这条语句打印的是正确的结果，但是这并不表示它就是对底层问题的通用解决方</p>
-<p>案：它使用的仍旧是二进制浮点数的 double 运算。浮点运算在一个范围很广的</p>
-<p>值域上提供了很好的近似，但是它通常不能产生精确的结果。二进制浮点对于货</p>
-<p>币计算是非常不适合的，因为它不可能将 0.1——或者 10 的其它任何次负幂——</p>
-<p>精确表示为一个长度有限的二进制小数 </p>
-<p>解决该问题的一种方式是使用某种整数类型，例如 int 或 long，并且以分为单</p>
-<p>位来执行计算。如果你采纳了此路线，请确保该整数类型大到足够表示在程序中</p>
-<p>你将要用到的所有值。对这里举例的谜题来说，int 就足够了。下面是我们用 int</p>
-<p>类型来以分为单位表示货币值后重写的 println 语句。这个版本将打印出正确答</p>
-<p>案 90 分： </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.println((<span class="number">200</span> - <span class="number">110</span>) + <span class="string">"cents"</span>);</span><br></pre></td></tr></table></figure>
-
-<p>解决该问题的另一种方式是使用执行精确小数运算的 BigDecimal。它还可以通</p>
-<p>过 JDBC 与 SQL DECIMAL 类型进行互操作。这里要告诫你一点： 一定要用</p>
-<p>BigDecimal(String)构造器，而千万不要用 BigDecimal(double)。后一个构造</p>
-<p>器将用它的参数的“精确”值来创建一个实例：new BigDecimal(.1)将返回一个</p>
-<p>表示 0.100000000000000055511151231257827021181583404541015625 的</p>
-<p>BigDecimal。通过正确使用 BigDecimal，程序就可以打印出我们所期望的结果</p>
-<p>0.90： </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Change1</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="keyword">new</span> BigDecimal(<span class="string">"2.00"</span>). </span><br><span class="line"></span><br><span class="line"> subtract(<span class="keyword">new</span> BigDecimal(<span class="string">"1.10"</span>))); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个版本并不是十分地完美，因为 Java 并没有为 BigDecimal 提供任何语言上的</p>
-<p>支持。使用 BigDecimal 的计算很有可能比那些使用原始类型的计算要慢一些，</p>
-<p>对某些大量使用小数计算的程序来说，这可能会成为问题，而对大多数程序来说，</p>
-<p>这显得一点也不重要。 </p>
-<p>总之， 在需要精确答案的地方，要避免使用 float 和 double；对于货币计算，</p>
-<p>要使用 int、long 或 BigDecimal。对于语言设计者来说，应该考虑对小数运算</p>
-<p>提供语言支持。一种方式是提供对操作符重载的有限支持，以使得运算符可以被</p>
-<p>塑造为能够对数值引用类型起作用，例如 BigDecimal。另一种方式是提供原始</p>
-<p>的小数类型，就像 COBOL 与 PL/I 所作的一样。 </p>
-<h2 id="谜题-3：长整除"><a href="#谜题-3：长整除" class="headerlink" title="谜题 3：长整除"></a>谜题 3：长整除</h2><p>这个谜题之所以被称为长整除是因为它所涉及的程序是有关两个 long 型数值整</p>
-<p>除的。被除数表示的是一天里的微秒数；而除数表示的是一天里的毫秒数。这个</p>
-<p>程序会打印出什么呢？ </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">LongDivision</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[])&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MICROS_PER_DAY = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> long MILLIS_PER_DAY = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(MICROS_PER_DAY/MILLIS_PER_DAY);</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个谜题看起来相当直观。每天的毫秒数和每天的微秒数都是常量。为清楚起见，</p>
-<p>它们都被表示成积的形式。每天的微秒数是（24 小时/天<em>60 分钟/小时</em>60 秒/</p>
-<p>分钟<em>1000 毫秒/秒</em>1000 微秒/毫秒）。而每天的毫秒数的不同之处只是少了最</p>
-<p>后一个因子 1000。 </p>
-<p>当你用每天的毫秒数来整除每天的微秒数时，除数中所有的因子都被约掉了，只</p>
-<p>剩下 1000，这正是每毫秒包含的微秒数。 </p>
-<p>除数和被除数都是 long 类型的，long 类型大到了可以很容易地保存这两个乘积</p>
-<p>而不产生溢出。因此，看起来程序打印的必定是 1000。 </p>
-<p>遗憾的是，它打印的是 5。这里到底发生了什么呢？ </p>
-<p>问题在于常数 MICROS_PER_DAY 的计算“确实”溢出了。尽管计算的结果适合放</p>
-<p>入 long 中，并且其空间还有富余，但是这个结果并不适合放入 int 中。这个计</p>
-<p>算完全是以 int 运算来执行的，并且只有在运算完成之后，其结果才被提升到</p>
-<p>long，而此时已经太迟了：计算已经溢出了，它返回的是一个小了 200 倍的数值。</p>
-<p>从 int提升到long是一种拓宽原始类型转换（widening primitive conversion），</p>
-<p>它保留了（不正确的）数值。这个值之后被 MILLIS_PER_DAY 整除，而</p>
-<p>MILLIS_PER_DAY 的计算是正确的，因为它适合 int 运算。这样整除的结果就得</p>
-<p>到了 5。 </p>
-<p>那么为什么计算会是以 int 运算来执行的呢？因为所有乘在一起的因子都是 int</p>
-<p>数值。当你将两个 int 数值相乘时，你将得到另一个 int 数值。Java 不具有目</p>
-<p>标确定类型的特性，这是一种语言特性，其含义是指存储结果的变量的类型会影</p>
-<p>响到计算所使用的类型。 </p>
-<p>通过使用 long 常量来替代 int 常量作为每一个乘积的第一个因子，我们就可以</p>
-<p>很容易地订正这个程序。这样做可以强制表达式中所有的后续计算都用 long 运</p>
-<p>作来完成。尽管这么做只在 MICROS_PER_DAY 表达式中是必需的，但是在两个乘</p>
-<p>积中都这么做是一种很好的方式。相似地，使用 long 作为乘积的“第一个”数</p>
-<p>值也并不总是必需的，但是这么做也是一种很好的形式。在两个计算中都以 long</p>
-<p>数值开始可以很清楚地表明它们都不会溢出。下面的程序将打印出我们所期望的</p>
-<p>1000： </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">LongDivision</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[ ])&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MICROS_PER_DAY = <span class="number">24</span>L * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">final</span> long MILLIS_PER_DAY = <span class="number">24</span>L * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(MICROS_PER_DAY/MILLIS_PER_DAY);</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个教训很简单：当你在操作很大的数字时，千万要提防溢出——它可是一个缄</p>
-<p>默杀手。即使用来保存结果的变量已显得足够大，也并不意味着要产生结果的计</p>
-<p>算具有正确的类型。当你拿不准时，就使用 long 运算来执行整个计算。 </p>
-<p>语言设计者从中可以吸取的教训是：也许降低缄默溢出产生的可能性确实是值得</p>
-<p>做的一件事。这可以通过对不会产生缄默溢出的运算提供支持来实现。程序可以</p>
-<p>抛出一个异常而不是直接溢出，就像 Ada 所作的那样，或者它们可以在需要的时</p>
-<p>候自动地切换到一个更大的内部表示上以防止溢出，就像 Lisp 所作的那样。这</p>
-<p>两种方式都可能会遭受与其相关的性能方面的损失。降低缄默溢出的另一种方式</p>
-<p>是支持目标确定类型，但是这么做会显著地增加类型系统的复杂度 </p>
-<h2 id="谜题-4：初级问题"><a href="#谜题-4：初级问题" class="headerlink" title="谜题 4：初级问题"></a>谜题 4：初级问题</h2><p>得啦，前面那个谜题是有点棘手，但它是有关整除的，每个人都知道整除是很麻</p>
-<p>烦的。那么下面的程序只涉及加法，它又会打印出什么呢？ </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Elementary</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println(<span class="number">12345</span>+<span class="number">5432</span>l); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>从表面上看，这像是一个很简单的谜题——简单到不需要纸和笔你就可以解决</p>
-<p>它。加号的左操作数的各个位是从 1 到 5 升序排列的，而右操作数是降序排列的。</p>
-<p>因此，相应各位的和仍然是常数，程序必定打印 66666。对于这样的分析，只有</p>
-<p>一个问题：当你运行该程序时，它打印出的是 17777。难道是 Java 对打印这样</p>
-<p>的非常数字抱有偏见吗？不知怎么的，这看起来并不像是一个合理的解释。 </p>
-<p>事物往往有别于它的表象。就以这个问题为例，它并没有打印出我们想要的输出。</p>
-<p>请仔细观察 + 操作符的两个操作数，我们是将一个 int 类型的 12345 加到了</p>
-<p>long 类型的 5432l 上。请注意左操作数开头的数字 1 和右操作数结尾的小写字</p>
-<p>母 l 之间的细微差异。数字 1 的水平笔划（称为“臂（arm）”）和垂直笔划（称</p>
-<p>为“茎（stem）”）之间是一个锐角，而与此相对照的是，小写字母 l 的臂和茎</p>
-<p>之间是一个直角。 </p>
-<p>在你大喊“恶心！”之前，你应该注意到这个问题确实已经引起了混乱，这里确</p>
-<p>实有一个教训：在 long 型字面常量中，一定要用大写的 L，千万不要用小写的 l。</p>
-<p>这样就可以完全掐断这个谜题所产生的混乱的源头。 </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">out</span>.println(<span class="number">12345</span>+<span class="number">5432</span>L);</span><br></pre></td></tr></table></figure>
-
-<p>相类似的，要避免使用单独的一个 l 字母作为变量名。例如，我们很难通过观察</p>
-<p>下面的代码段来判断它到底是打印出列表 l 还是数字 1。 </p>
-<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不良代码-使用了 l 作为变量名</span></span><br><span class="line"></span><br><span class="line">List l = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">String</span>&gt;(); </span><br><span class="line"></span><br><span class="line">l.<span class="built_in">add</span>(<span class="string">"Foo"</span>); </span><br><span class="line"></span><br><span class="line">System.out.<span class="built_in">println</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-
-<p>总之，小写字母 l 和数字 1 在大多数打字机字体中都是几乎一样的。为避免你的</p>
-<p>程序的读者对二者产生混淆，千万不要使用小写的 l 来作为 long 型字面常量的</p>
-<p>结尾或是作为变量名。Java 从 C 编程语言中继承良多，包括 long 型字面常量的</p>
-<p>语法。也许当初允许用小写的 l 来编写 long 型字面常量本身就是一个错误。 </p>
-<h2 id="谜题-5：十六进制的趣事-十六进制的趣事"><a href="#谜题-5：十六进制的趣事-十六进制的趣事" class="headerlink" title="谜题 5：十六进制的趣事 十六进制的趣事"></a>谜题 5：十六进制的趣事 十六进制的趣事</h2><p>下面的程序是对两个十六进制（hex）字面常量进行相加，然后打印出十六进制</p>
-<p>的结果。这个程序会打印出什么呢？ </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">JoyOfHex</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println( </span><br><span class="line"></span><br><span class="line"> Long.toHexString(<span class="number">0x100000000</span>L + <span class="number">0xcafebabe</span>)); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>看起来很明显，该程序应该打印出 1cafebabe。毕竟，这确实就是十六进制数字</p>
-<p>10000000016 与 cafebabe16 的和。该程序使用的是 long 型运算，它可以支持 16</p>
-<p>位十六进制数，因此运算溢出是不可能的。 </p>
-<p>然而，如果你运行该程序，你就会发现它打印出来的是 cafebabe，并没有任何</p>
-<p>前导的 1。这个输出表示的是正确结果的低 32 位，但是不知何故，第 33 位丢失</p>
-<p>了。 </p>
-<p>看起来程序好像执行的是 int 型运算而不是 long 型运算，或者是忘了加第一个</p>
-<p>操作数。这里到底发生了什么呢？ </p>
-<p>十进制字面常量具有一个很好的属性，即所有的十进制字面常量都是正的，而十</p>
-<p>六进制或是八进制字面常量并不具备这个属性。要想书写一个负的十进制常量，</p>
-<p>可以使用一元取反操作符（-）连接一个十进制字面常量。以这种方式，你可以</p>
-<p>用十进制来书写任何 int 或 long 型的数值，不管它是正的还是负的，并且负的</p>
-<p>十进制常数可以很明确地用一个减号符号来标识。但是十六进制和八进制字面常</p>
-<p>量并不是这么回事，它们可以具有正的以及负的数值。如果十六进制和八进制字</p>
-<p>面常量的最高位被置位了，那么它们就是负数。在这个程序中，数字 0xcafebabe</p>
-<p>是一个 int 常量，它的最高位被置位了，所以它是一个负数。它等于十进制数值</p>
-<p>-889275714。 </p>
-<p>该程序执行的这个加法是一种“混合类型的计算（mixed-type computation）:</p>
-<p>左操作数是 long 类型的，而右操作数是 int 类型的。为了执行该计算，Java 将</p>
-<p>int 类型的数值用拓宽原始类型转换提升为一个 long 类型，然后对两个 long 类</p>
-<p>型数值相加。因为 int 是一个有符号的整数类型，所以这个转换执行的是符合扩</p>
-<p>展：它将负的 int 类型的数值提升为一个在数值上相等的 long 类型数值。 </p>
-<p>这个加法的右操作数 0xcafebabe 被提升为了 long 类型的数值</p>
-<p>0xffffffffcafebabeL。这个数值之后被加到了左操作数 0x100000000L 上。当作</p>
-<p>为 int 类型来被审视时，经过符号扩展之后的右操作数的高 32 位是-1，而左操</p>
-<p>作数的高 32 位是 1，将这两个数值相加就得到了 0，这也就解释了为什么在程序</p>
-<p>输出中前导 1 丢失了。下面所示是用手写的加法实现。（在加法上面的数字是进</p>
-<p>位。） </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1111111</span> </span><br><span class="line"></span><br><span class="line"> <span class="number">0xffffffffcafebabe</span>L</span><br><span class="line"></span><br><span class="line">\+ <span class="number">0x0000000100000000</span>L</span><br><span class="line"></span><br><span class="line">\--------------------- </span><br><span class="line"></span><br><span class="line"> <span class="number">0x00000000cafebabe</span>L</span><br></pre></td></tr></table></figure>
-
-<p>订正该程序非常简单，只需用一个 long 十六进制字面常量来表示右操作数即可。</p>
-<p>这就可以避免了具有破坏力的符号扩展，并且程序也就可以打印出我们所期望的</p>
-<p>结果 1cafebabe： </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">JoyOfHex</span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args)&#123; </span><br><span class="line"></span><br><span class="line"> System.<span class="keyword">out</span>.println( </span><br><span class="line"></span><br><span class="line"> Long.toHexString(<span class="number">0x100000000</span>L + <span class="number">0xcafebabe</span>L));</span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个谜题给我们的教训是：混合类型的计算可能会产生混淆，尤其是十六进制和</p>
-<p>八进制字面常量无需显式的减号符号就可以表示负的数值。为了避免这种窘境，</p>
-<p>通常最好是避免混合类型的计算。对于语言的设计者们来说，应该考虑支持无符</p>
-<p>号的整数类型，从而根除符号扩展的可能性。可能会有这样的争辩：负的十六进</p>
-<p>制和八进制字面常量应该被禁用，但是这可能会挫伤程序员，他们经常使用十六</p>
-<p>进制字面常量来表示那些符号没有任何重要含义的数值。 </p>
-<h2 id="谜题-6：多重转型"><a href="#谜题-6：多重转型" class="headerlink" title="谜题 6：多重转型"></a>谜题 6：多重转型</h2><p>转型被用来将一个数值从一种类型转换到另一种类型。下面的程序连续使用了三</p>
-<p>个转型。那么它到底会打印出什么呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Multicast</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>((<span class="keyword">int</span>)(<span class="keyword">char</span>)(<span class="keyword">byte</span>) <span class="number">-1</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>无论你怎样分析这个程序，都会感到很迷惑。它以 int 数值-1 开始，然后从 int</p>
-<p>转型为 byte，之后转型为 char，最后转型回 int。第一个转型将数值从 32 位窄</p>
-<p>化到了 8 位，第二个转型将数值从 8 位拓宽到了 16 位，最后一个转型又将数值</p>
-<p>从 16 位拓宽回了 32 位。这个数值最终是回到了起点吗？如果你运行该程序，你</p>
-<p>就会发现不是。它打印出来的是 65535，但是这是为什么呢？ </p>
-<p>该程序的行为紧密依赖于转型的符号扩展行为。Java 使用了基于 2 的补码的二</p>
-<p>进制运算，因此 int 类型的数值-1 的所有 32 位都是置位的。从 int 到 byte 的</p>
-<p>转型是很简单的，它执行了一个窄化原始类型转化（narrowing primitive </p>
-<p>conversion），直接将除低 8 位之外的所有位全部砍掉。这样做留下的是一个 8</p>
-<p>位都被置位了的 byte，它仍旧表示-1。 </p>
-<p>从 byte 到 char 的转型稍微麻烦一点，因为 byte 是一个有符号类型，而 char</p>
-<p>是一个无符号类型。在将一个整数类型转换成另一个宽度更宽的整数类型时，通</p>
-<p>常是可以保持其数值的，但是却不可能将一个负的 byte 数值表示成一个 char。</p>
-<p>因此，从 byte 到 char 的转换被认为不是一个拓宽原始类型的转换，而是一个拓</p>
-<p>宽并窄化原始类型的转换（widening and narrowing primitive conversion）：</p>
-<p>byte 被转换成了 int，而这个 int 又被转换成了 char。 </p>
-<p>所有这些听起来有点复杂，幸运的是，有一条很简单的规则能够描述从较窄的整</p>
-<p>型转换成较宽的整型时的符号扩展行为：如果最初的数值类型是有符号的，那么</p>
-<p>就执行符号扩展；如果它是 char，那么不管它将要被转换成什么类型，都执行</p>
-<p>零扩展。了解这条规则可以使我们很容易地解决这个谜题。</p>
-<p>因为 byte 是一个有符号的类型，所以在将 byte 数值-1 转换成 char 时，会发生</p>
-<p>符号扩展。作为结果的 char 数值的 16 个位就都被置位了，因此它等于 216-1，</p>
-<p>即 65535。从 char 到 int 的转型也是一个拓宽原始类型转换，所以这条规则告</p>
-<p>诉我们，它将执行零扩展而不是符号扩展。作为结果的 int 数值也就成了 65535，</p>
-<p>这正是程序打印出的结果。 </p>
-<p>尽管这条简单的规则描述了在有符号和无符号整型之间进行拓宽原始类型时的</p>
-<p>符号扩展行为，你最好还是不要编写出依赖于它的程序。如果你正在执行一个转</p>
-<p>型到 char 或从 char 转型的拓宽原始类型转换，并且这个 char 是仅有的无符号</p>
-<p>整型，那么你最好将你的意图明确地表达出来。 </p>
-<p>如果你在将一个 char 数值 c 转型为一个宽度更宽的类型，并且你不希望有符号</p>
-<p>扩展，那么为清晰表达意图，可以考虑使用一个位掩码，即使它并不是必需的： </p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> i = c &amp; <span class="number">0xffff</span>;</span><br></pre></td></tr></table></figure>
-
-<p>或者，书写一句注释来描述转换的行为： </p>
-<p>int i = c; //不会执行符号扩展</p>
-<p>如果你在将一个 char 数值 c 转型为一个宽度更宽的整型，并且你希望有符号扩</p>
-<p>展，那么就先将 char 转型为一个 short，它与 char 具有同样的宽度，但是它是</p>
-<p>有符号的。在给出了这种细微的代码之后，你应该也为它书写一句注释： </p>
-<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = (<span class="keyword">short</span>) c; <span class="comment">//转型将引起符号扩展</span></span><br></pre></td></tr></table></figure>
-
-<p>如果你在将一个 byte 数值 b 转型为一个 char，并且你不希望有符号扩展，那么</p>
-<p>你必须使用一个位掩码来限制它。这是一种通用做法，所以不需要任何注释： </p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char c = (<span class="name">char</span>) (<span class="name">b</span> &amp; <span class="number">0</span>xff)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-
-<p>这个教训很简单：如果你通过观察不能确定程序将要做什么，那么它做的就很有</p>
-<p>可能不是你想要的。要为明白清晰地表达你的意图而努力。尽管有这么一条简单</p>
-<p>的规则，描述了涉及有符号和无符号整型拓宽转换的符号扩展行为，但是大多数</p>
-<p>程序员都不知道它。如果你的程序依赖于它，那么你就应该把你的意图表达清楚。 </p>
-<h2 id="谜题-7：互换内容"><a href="#谜题-7：互换内容" class="headerlink" title="谜题 7：互换内容"></a>谜题 7：互换内容</h2><p>下面的程序使用了复合的异或赋值操作符，它所展示的技术是一种编程习俗。那</p>
-<p>么它会打印出什么呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CleverSwap</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> x = <span class="number">1984</span>; <span class="comment">// (0x7c0) </span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> y = <span class="number">2001</span>; <span class="comment">// (0x7d1) </span></span><br><span class="line"></span><br><span class="line"> x^= y^= x^= y; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"x= "</span> + x + <span class="string">"; y= "</span> + y); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>就像其名称所暗示的，这个程序应该交换变量 x 和 y 的值。如果你运行它，就会</p>
-<p>发现很悲惨，它失败了，打印的是</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = <span class="number">0</span><span class="comment">; y = 1984。</span></span><br></pre></td></tr></table></figure>
-
-<p>交换两个变量的最显而易见的方式是使用一个临时变量： </p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">int tmp</span> = x; </span><br><span class="line"></span><br><span class="line"><span class="attribute">x</span> = y; </span><br><span class="line"></span><br><span class="line"><span class="attribute">y</span> = tmp;</span><br></pre></td></tr></table></figure>
-
-<p>很久以前，当中央处理器只有少数寄存器时，人们发现可以通过利用异或操作符</p>
-<p>（^）的属性(x ^ y ^ x) == y 来避免使用临时变量： </p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> = <span class="symbol">x</span> ^ <span class="symbol">y</span>; </span><br><span class="line"></span><br><span class="line"><span class="symbol">y</span> = <span class="symbol">y</span> ^ <span class="symbol">x</span>; </span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = <span class="symbol">y</span> ^ <span class="symbol">x</span>;</span><br></pre></td></tr></table></figure>
-
-<p>这个惯用法曾经在 C 编程语言中被使用过，并进一步被构建到了 C++中，但是它</p>
-<p>并不保证在二者中都可以正确运行。但是有一点是肯定的，那就是它在 Java 中</p>
-<p>肯定是不能正确运行的。 </p>
-<p>Java 语言规范描述到：操作符的操作数是从左向右求值的。为了求表达式 x ^= </p>
-<p>expr 的值，x 的值是在计算 expr 之前被提取的，并且这两个值的异或结果被赋</p>
-<p>给变量 x。在 CleverSwap 程序中，变量 x 的值被提取了两次——每次在表达式</p>
-<p>中出现时都提取一次——但是两次提取都发生在所有的赋值操作之前。 </p>
-<p>下面的代码段详细地描述了将互换惯用法分解开之后的行为，并且解释了为什么</p>
-<p>产生的是我们所看到的输出： </p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 中 x^= y^= x^= y 的实际行为</span></span><br><span class="line"></span><br><span class="line">int tmp1 = <span class="symbol">x</span> ; <span class="comment">// x 在表达式中第一次出现</span></span><br><span class="line"></span><br><span class="line">int tmp2 = <span class="symbol">y</span> ; <span class="comment">// y 的第一次出现</span></span><br><span class="line"></span><br><span class="line">int tmp3 = <span class="symbol">x</span> ^ <span class="symbol">y</span> ; <span class="comment">// 计算 x ^ y</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = tmp3 ; <span class="comment">// 最后一个赋值：存储 x ^ y 到 x</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">y</span> = tmp2 ^ tmp3 ; <span class="comment">// 第二个赋值：存储最初的 x 值到 y 中 </span></span><br><span class="line"></span><br><span class="line"><span class="symbol">x</span> = tmp1 ^ <span class="symbol">y</span> ; <span class="comment">// 第一个赋值：存储 0 到 x 中</span></span><br></pre></td></tr></table></figure>
-
-<p>在 C 和 C++中，并没有指定表达式的计算顺序。当编译表达式 x ^= expr 时，许</p>
-<p>多 C 和 C++编译器都是在计算 expr 之后才提取 x 的值的，这就使得上述的惯用</p>
-<p>法可以正常运转。尽管它可以正常运转，但是它仍然违背了 C/C++有关不能在两</p>
-<p>个连续的序列点之间重复修改变量的规则。因此，这个惯用法的行为在 C 和 C++</p>
-<p>中也没有明确定义。 </p>
-<p>为了看重其价值，我们还是可以写出不用临时变量就可以互换两个变量内容的</p>
-<p>Java 表达式的。但是它同样是丑陋而无用的： </p>
-<p>// 杀鸡用牛刀的做法，千万不要这么做！</p>
-<p>y = (x^= (y^= x))^ y ; </p>
-<p>这个教训很简单：在单个的表达式中不要对相同的变量赋值两次。表达式如果包</p>
-<p>含对相同变量的多次赋值，就会引起混乱，并且很少能够执行你希望的操作。即</p>
-<p>使对多个变量进行赋值也很容易出错。更一般地讲，要避免所谓聪明的编程技巧。</p>
-<p>它们都是易于产生 bug 的，很难以维护，并且运行速度经常是比它们所替代掉的</p>
-<p>简单直观的代码要慢。 </p>
-<p>语言设计者可能会考虑禁止在一个表达式中对相同的变量多次赋值，但是在一般</p>
-<p>的情况下，强制执行这条禁令会因为别名机制的存在而显得很不灵活。例如，请</p>
-<p>考虑表达式 x = a[i]++ - a[j]++，它是否递增了相同的变量两次呢？这取决于</p>
-<p>在表达式被计算时 i 和 j 的值，并且编译器通常是无法确定这一点。 </p>
-<h2 id="谜题-8：Dos-Equis-Dos-Equis-Dos-Equis"><a href="#谜题-8：Dos-Equis-Dos-Equis-Dos-Equis" class="headerlink" title="谜题 8：Dos Equis Dos Equis Dos Equis"></a>谜题 8：Dos Equis Dos Equis Dos Equis</h2><p>这个谜题将测试你对条件操作符的掌握程度，这个操作符有一个更广为人知的名</p>
-<p>字：问号冒号操作符。下面的程序将会打印出什么呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DosEquis</span>&#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">char</span> x = <span class="string">'X'</span>; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">int</span> i = <span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="literal">true</span> ? x : <span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="literal">false</span> ? i : x); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个程序由两个变量声明和两个 print 语句构成。第一个 print 语句计算条件表</p>
-<p>达式(true ? x : 0)并打印出结果，这个结果是 char 类型变量 x 的值’X’。而</p>
-<p>第二个 print 语句计算表达式(false ? i : x)并打印出结果，这个结果还是依</p>
-<p>旧是’X’的 x，因此这个程序应该打印 XX。然而，如果你运行该程序，你就会</p>
-<p>发现它打印出来的是 X88。这种行为看起来挺怪的。第一个 print 语句打印的是</p>
-<p>X，而第二个打印的却是 88。它们的不同行为说明了什么呢？ </p>
-<p>答案就在规范有关条件表达式部分的一个阴暗的角落里。请注意在这两个表达式</p>
-<p>中，每一个表达式的第二个和第三个操作数的类型都不相同：x 是 char 类型的，</p>
-<p>而 0 和 i 都是 int 类型的。就像在谜题 5 的解答中提到的，混合类型的计算会引</p>
-<p>起混乱，而这一点比在条件表达式中比在其它任何地方都表现得更明显。你可能</p>
-<p>考虑过，这个程序中两个条件表达式的结果类型是相同的，就像它们的操作数类</p>
-<p>型是相同的一样，尽管操作数的顺序颠倒了一下，但是实际情况并非如此。 </p>
-<p>确定条件表达式结果类型的规则过于冗长和复杂，很难完全记住它们，但是其核</p>
-<p>心就是一下三点： </p>
-<p>• 如果第二个和第三个操作数具有相同的类型，那么它就是条件表达式的类</p>
-<p>型。换句话说，你可以通过绕过混合类型的计算来避免大麻烦。 </p>
-<p>• 如果一个操作数的类型是 T，T 表示 byte、short 或 char，而另一个操作</p>
-<p>数是一个 int 类型的常量表达式，它的值是可以用类型 T 表示的，那么条</p>
-<p>件表达式的类型就是 T。 </p>
-<p>• 否则，将对操作数类型运用二进制数字提升，而条件表达式的类型就是第</p>
-<p>二个和第三个操作数被提升之后的类型。 </p>
-<p>2、3 两点对本谜题是关键。在程序的两个条件表达式中，一个操作数的类型是</p>
-<p>char，另一个的类型是 int。在两个表达式中，int 操作数都是 0，它可以被表</p>
-<p>示成一个 char。然而，只有第一个表达式中的 int 操作数是常量（0），而第二</p>
-<p>个表达式中的 int 操作数是变量（i）。因此，第 2 点被应用到了第一个表达式</p>
-<p>上，它返回的类型是 char，而第 3 点被应用到了第二个表达式上，其返回的类</p>
-<p>型是对 int 和 char 运用了二进制数字提升之后的类型，即 int。 </p>
-<p>条件表达式的类型将确定哪一个重载的 print 方法将被调用。对第一个表达式来</p>
-<p>说，PrintStream.print(char)将被调用，而对第二个表达式来说，</p>
-<p>PrintStream.print(int)将被调用。前一个重载方法将变量 x 的值作为 Unicode</p>
-<p>字符（X）来打印，而后一个重载方法将其作为一个十进制整数（88）来打印。</p>
-<p>至此，谜题被解开了。 </p>
-<p>总之，通常最好是在条件表达式中使用类型相同的第二和第三操作数。否则，你</p>
-<p>和你的程序的读者必须要彻底理解这些表达式行为的复杂规范。 </p>
-<p>对语言设计者来说，也许可以设计一个牺牲掉了部分灵活性，但是增加了简洁性</p>
-<p>的条件操作符。例如，要求第二和第三操作数必须就有相同的类型，这看起来就</p>
-<p>很合理。或者，条件操作符可以被定义为对常量没有任何特殊处理。为了让这些</p>
-<p>选择对程序员来说更加容易接受，可以提供用来表示所有原始类型字面常量的语</p>
-<p>法。这也许确实是一个好注意，因为它增加了语言的一致性和完备性，同时又减</p>
-<p>少了对转型的需求。 </p>
-<h2 id="谜题-9：半斤"><a href="#谜题-9：半斤" class="headerlink" title="谜题 9：半斤"></a>谜题 9：半斤</h2><p>现在该轮到你来写些代码了，好消息是，你只需为这个谜题编写两行代码，并为</p>
-<p>下一个谜题也编写两行代码。这有什么难的呢？我们给出一个对变量 x 和 i 的声</p>
-<p>明即可，它肯定是一个合法的语句： </p>
-<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
-
-<p>但是，它并不是： </p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-
-<p>许多程序员都会认为该迷题中的第一个表达式（x += i）只是第二个表达式（x = </p>
-<p>x + i）的简写方式。但是这并不十分准确。这两个表达式都被称为赋值表达式。</p>
-<p>第二条语句使用的是简单赋值操作符（=），而第一条语句使用的是复合赋值操</p>
-<p>作符。（复合赋值操作符包括 +=、-=、*=、/=、%=、&lt;&lt;=、&gt;&gt;=、&gt;&gt;&gt;=、&amp;=、^=</p>
-<p>和|=）Java 语言规范中讲到，复合赋值 E1 op= E2 等价于简单赋值 E1 = </p>
-<p>(T)((E1)op(E2))，其中 T 是 E1 的类型，除非 E1 只被计算一次。 </p>
-<p>换句话说，复合赋值表达式自动地将它们所执行的计算的结果转型为其左侧变量</p>
-<p>的类型。如果结果的类型与该变量的类型相同，那么这个转型不会造成任何影响。</p>
-<p>然而，如果结果的类型比该变量的类型要宽，那么复合赋值操作符将悄悄地执行</p>
-<p>一个窄化原始类型转换。因此，我们有很好的理由去解释为什么在尝试着执行等</p>
-<p>价的简单赋值可能会产生一个编译错误。 </p>
-<p>为了说得具体一些，并提供一个解决方案给这个谜题，假设我们在该谜题的两个</p>
-<p>赋值表达式之前有下面这些声明： </p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">short x</span> = 0; </span><br><span class="line"></span><br><span class="line"><span class="attribute">int i</span> = 123456;</span><br></pre></td></tr></table></figure>
-
-<p>复合赋值编译将不会产生任何错误： </p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> += i; <span class="comment">// 包含了一个隐藏的转型！</span></span><br></pre></td></tr></table></figure>
-
-<p>你可能期望 x 的值在这条语句执行之后是 123,456，但是并非如此 l，它的值是</p>
-<p>-7,616。int 类型的数值 123456 对于 short 来说太大了。自动产生的转型悄悄</p>
-<p>地把 int 数值的高两位给截掉了。这也许就不是你想要的了。 </p>
-<p>相对应的简单赋值是非法的，因为它试图将 int 数值赋值给 short 变量，它需要</p>
-<p>一个显式的转型： </p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">x</span> = <span class="symbol">x</span> + i; <span class="comment">// 不要编译——“可能会丢掉精度”</span></span><br></pre></td></tr></table></figure>
-
-<p>这应该是明显的，复合赋值表达式可能是很危险的。为了避免这种令人不快的突</p>
-<p>袭，请不要将复合赋值操作符作用于 byte、short 或 char 类型的变量上。在将</p>
-<p>复合赋值操作符作用于 int 类型的变量上时，要确保表达式右侧不是 long、float</p>
-<p>或 double 类型。在将复合赋值操作符作用于 float 类型的变量上时，要确保表</p>
-<p>达式右侧不是 double 类型。这些规则足以防止编译器产生危险的窄化转型。 </p>
-<p>总之，复合赋值操作符会悄悄地产生一个转型。如果计算结果的类型宽于变量的</p>
-<p>类型，那么所产生的转型就是一个危险的窄化转型。这样的转型可能会悄悄地丢</p>
-<p>弃掉精度或数量值。对语言设计者来说，也许让复合赋值操作符产生一个不可见</p>
-<p>的转型本身就是一个错误；对于在复合赋值中的变量类型比计算结果窄的情况，</p>
-<p>也许应该让其非法才对。</p>
-<h2 id="谜题-10：八两"><a href="#谜题-10：八两" class="headerlink" title="谜题 10：八两"></a>谜题 10：八两</h2><p>与上面的例子相反，如果我们给出的关于变量 x 和 i 的声明是如下的合法语句： </p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-
-<p>但是，它并不是： </p>
-<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
-
-<p>乍一看，这个谜题可能看起来与前面一个谜题相同。但是请放心，它们并不一样。</p>
-<p>这两个谜题在哪一条语句必是合法的，以及哪一条语句必是不合法的方面，正好</p>
-<p>相反。 </p>
-<p>就像前面的谜题一样，这个谜题也依赖于有关复合赋值操作符的规范中的细节。</p>
-<p>二者的相似之处就此打住。基于前面的谜题，你可能会想：符合赋值操作符比简</p>
-<p>单赋值操作符的限制要少一些。在一般情况下，这是对的，但是有这么一个领域，</p>
-<p>在其中简单赋值操作符会显得更宽松一些。 </p>
-<p>复合赋值操作符要求两个操作数都是原始类型的，例如 int，或包装了的原始类</p>
-<p>型，例如 Integer，但是有一个例外：如果在+=操作符左侧的操作数是 String</p>
-<p>类型的，那么它允许右侧的操作数是任意类型，在这种情况下，该操作符执行的</p>
-<p>是字符串连接操作。简单赋值操作符（=）允许其左侧的是对象引用类型，这就</p>
-<p>显得要宽松许多了：你可以使用它们来表示任何你想要表示的内容，只要表达式</p>
-<p>的右侧与左侧的变量是赋值兼容的即可。 </p>
-<p>你可以利用这一差异来解决该谜题。要想用 += 操作符来执行字符串连接操作，</p>
-<p>你就必须将左侧的变量声明为 String 类型。通过使用直接赋值操作符，字符串</p>
-<p>连接的结果可以存放到一个 Object 类型的变量中。 </p>
-<p>为了说得具体一些，并提供一个解决方案给这个谜题，假设我们在该谜题的两个</p>
-<p>赋值表达式之前有下面这些声明： </p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Object x</span> = <span class="string">"Buy "</span>; </span><br><span class="line"></span><br><span class="line"><span class="attribute">String i</span> = <span class="string">"Effective Java!"</span>;</span><br></pre></td></tr></table></figure>
-
-<p>简单赋值是合法的，因为 x + i 是 String 类型的，而 String 类型又是与 Object</p>
-<p>赋值兼容的： </p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x</span> = x + i<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-
-<p>复合赋值是非法的，因为左侧是一个 Object 引用类型，而右侧是一个 String</p>
-<p>类型： </p>
-<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">x +</span>=<span class="string"> i;</span></span><br></pre></td></tr></table></figure>
-
-<p>这个谜题对程序员来说几乎算不上什么教训。对语言设计者来说，加法的复合赋</p>
-<p>值操作符应该在右侧是 String 类型的情况下，允许左侧是 Object 类型。这项修</p>
-<p>改将根除这个谜题所展示的违背直觉的行为。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%B0%9C%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -689,10 +310,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 16:45:32 / 修改时间：16:55:10" itemprop="dateCreated datePublished" datetime="2021-03-20T16:45:32+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:45:32" itemprop="dateCreated datePublished" datetime="2021-03-20T16:45:32+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:30:08" itemprop="dateModified" datetime="2021-03-22T21:30:08+08:00">2021-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -741,254 +368,15 @@
 <ul>
 <li><strong>检查性异常：</strong>最具代表的检查性异常是用户错误或问题引起的异常，这是程序员无法预见的。例如要打开一个不存在文件时，一个异常就发生了，这些异常在编译时不能被简单地忽略。</li>
 <li><strong>运行时异常：</strong> 运行时异常是可能被程序员避免的异常。与检查性异常相反，运行时异常可以在编译时被忽略。</li>
-<li><strong>错误：</strong> 错误不是异常，而是脱离程序员控制的问题。错误在代码中通常被忽略。例如，当栈溢出时，一个错误就发生了，它们在编译也检查不到的。</li>
-</ul>
-<hr>
-<h2 id="Exception-类的层次"><a href="#Exception-类的层次" class="headerlink" title="Exception 类的层次"></a>Exception 类的层次</h2><p>所有的异常类是从 java.lang.Exception 类继承的子类。</p>
-<p>Exception 类是 Throwable 类的子类。除了Exception类外，Throwable还有一个子类Error 。</p>
-<p>Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。</p>
-<p>Error 用来指示运行时环境发生的错误。</p>
-<p>例如，JVM 内存溢出。一般地，程序不会从错误中恢复。</p>
-<p>异常类有两个主要的子类：IOException 类和 RuntimeException 类。</p>
-<p><img src="/2021/03/20/java%E5%BC%82%E5%B8%B8/12-130Q1234I6223.jpg" alt="img"></p>
-<p>在 Java 内置类中(接下来会说明)，有大部分常用检查性和非检查性异常。</p>
-<hr>
-<h2 id="Java-内置异常类"><a href="#Java-内置异常类" class="headerlink" title="Java 内置异常类"></a>Java 内置异常类</h2><p>Java 语言定义了一些异常类在 java.lang 标准包中。</p>
-<p>标准运行时异常类的子类是最常见的异常类。由于 java.lang 包是默认加载到所有的 Java 程序的，所以大部分从运行时异常类继承而来的异常都可以直接使用。</p>
-<p>Java 根据各个类库也定义了一些其他的异常，下面的表中列出了 Java 的非检查性异常。</p>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>异常</strong></th>
-<th align="left"><strong>描述</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ArithmeticException</td>
-<td align="left">当出现异常的运算条件时，抛出此异常。例如，一个整数”除以零”时，抛出此类的一个实例。</td>
-</tr>
-<tr>
-<td align="left">ArrayIndexOutOfBoundsException</td>
-<td align="left">用非法索引访问数组时抛出的异常。如果索引为负或大于等于数组大小，则该索引为非法索引。</td>
-</tr>
-<tr>
-<td align="left">ArrayStoreException</td>
-<td align="left">试图将错误类型的对象存储到一个对象数组时抛出的异常。</td>
-</tr>
-<tr>
-<td align="left">ClassCastException</td>
-<td align="left">当试图将对象强制转换为不是实例的子类时，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">IllegalArgumentException</td>
-<td align="left">抛出的异常表明向方法传递了一个不合法或不正确的参数。</td>
-</tr>
-<tr>
-<td align="left">IllegalMonitorStateException</td>
-<td align="left">抛出的异常表明某一线程已经试图等待对象的监视器，或者试图通知其他正在等待对象的监视器而本身没有指定监视器的线程。</td>
-</tr>
-<tr>
-<td align="left">IllegalStateException</td>
-<td align="left">在非法或不适当的时间调用方法时产生的信号。换句话说，即 Java 环境或 Java 应用程序没有处于请求操作所要求的适当状态下。</td>
-</tr>
-<tr>
-<td align="left">IllegalThreadStateException</td>
-<td align="left">线程没有处于请求操作所要求的适当状态时抛出的异常。</td>
-</tr>
-<tr>
-<td align="left">IndexOutOfBoundsException</td>
-<td align="left">指示某排序索引（例如对数组、字符串或向量的排序）超出范围时抛出。</td>
-</tr>
-<tr>
-<td align="left">NegativeArraySizeException</td>
-<td align="left">如果应用程序试图创建大小为负的数组，则抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">NullPointerException</td>
-<td align="left">当应用程序试图在需要对象的地方使用 <code>null</code> 时，抛出该异常</td>
-</tr>
-<tr>
-<td align="left">NumberFormatException</td>
-<td align="left">当应用程序试图将字符串转换成一种数值类型，但该字符串不能转换为适当格式时，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">SecurityException</td>
-<td align="left">由安全管理器抛出的异常，指示存在安全侵犯。</td>
-</tr>
-<tr>
-<td align="left">StringIndexOutOfBoundsException</td>
-<td align="left">此异常由 <code>String</code> 方法抛出，指示索引或者为负，或者超出字符串的大小。</td>
-</tr>
-<tr>
-<td align="left">UnsupportedOperationException</td>
-<td align="left">当不支持请求的操作时，抛出该异常。</td>
-</tr>
-</tbody></table>
-<p>下面的表中列出了 Java 定义在 java.lang 包中的检查性异常类。</p>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>异常</strong></th>
-<th align="left"><strong>描述</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ClassNotFoundException</td>
-<td align="left">应用程序试图加载类时，找不到相应的类，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">CloneNotSupportedException</td>
-<td align="left">当调用 <code>Object</code> 类中的 <code>clone</code> 方法克隆对象，但该对象的类无法实现 <code>Cloneable</code> 接口时，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">IllegalAccessException</td>
-<td align="left">拒绝访问一个类的时候，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">InstantiationException</td>
-<td align="left">当试图使用 <code>Class</code> 类中的 <code>newInstance</code> 方法创建一个类的实例，而指定的类对象因为是一个接口或是一个抽象类而无法实例化时，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">InterruptedException</td>
-<td align="left">一个线程被另一个线程中断，抛出该异常。</td>
-</tr>
-<tr>
-<td align="left">NoSuchFieldException</td>
-<td align="left">请求的变量不存在</td>
-</tr>
-<tr>
-<td align="left">NoSuchMethodException</td>
-<td align="left">请求的方法不存在</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="异常方法"><a href="#异常方法" class="headerlink" title="异常方法"></a>异常方法</h2><p>下面的列表是 Throwable 类的主要方法:</p>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>序号</strong></th>
-<th align="left"><strong>方法及说明</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">1</td>
-<td align="left"><strong>public String getMessage()</strong> 返回关于发生的异常的详细信息。这个消息在Throwable 类的构造函数中初始化了。</td>
-</tr>
-<tr>
-<td align="left">2</td>
-<td align="left"><strong>public Throwable getCause()</strong> 返回一个Throwable 对象代表异常原因。</td>
-</tr>
-<tr>
-<td align="left">3</td>
-<td align="left"><strong>public String toString()</strong> 使用getMessage()的结果返回类的串级名字。</td>
-</tr>
-<tr>
-<td align="left">4</td>
-<td align="left"><strong>public void printStackTrace()</strong> 打印toString()结果和栈层次到System.err，即错误输出流。</td>
-</tr>
-<tr>
-<td align="left">5</td>
-<td align="left"><strong>public StackTraceElement [] getStackTrace()</strong> 返回一个包含堆栈层次的数组。下标为0的元素代表栈顶，最后一个元素代表方法调用堆栈的栈底。</td>
-</tr>
-<tr>
-<td align="left">6</td>
-<td align="left"><strong>public Throwable fillInStackTrace()</strong> 用当前的调用栈层次填充Throwable 对象栈层次，添加到栈层次任何先前信息中。</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h2><p>使用 try 和 catch 关键字可以捕获异常。try/catch 代码块放在异常可能发生的地方。</p>
-<p>try/catch代码块中的代码称为保护代码，使用 try/catch 的语法如下：</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(ExceptionName e1)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//Catch 块</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Catch 语句包含要捕获异常类型的声明。当保护代码块中发生一个异常时，try 后面的 catch 块就会被检查。</p>
-<p>如果发生的异常包含在 catch 块中，异常会被传递到该 catch 块，这和传递一个参数到方法是一样。</p>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面的例子中声明有两个元素的一个数组，当代码试图访问数组的第三个元素的时候就会抛出一个异常。</p>
-<h2 id="ExcepTest-java-文件代码："><a href="#ExcepTest-java-文件代码：" class="headerlink" title="ExcepTest.java 文件代码："></a>ExcepTest.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件名 : ExcepTest.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExcepTest</span>&#123;</span></span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123;</span><br><span class="line">      <span class="keyword">try</span>&#123;</span><br><span class="line">         <span class="keyword">int</span> a[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"Access element three :"</span> + a[<span class="number">3</span>]);</span><br><span class="line">      &#125;<span class="keyword">catch</span>(ArrayIndexOutOfBoundsException e)&#123;</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"Exception thrown  :"</span> + e);</span><br><span class="line">      &#125;</span><br><span class="line">      System.out.<span class="built_in">println</span>(<span class="string">"Out of the block"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上代码编译运行输出结果如下：</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Exception</span> thrown  :java.lang.ArrayIndexOutOfBoundsException: <span class="number">3</span></span><br><span class="line"><span class="keyword">Out</span> <span class="keyword">of</span> the block</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="多重捕获块"><a href="#多重捕获块" class="headerlink" title="多重捕获块"></a>多重捕获块</h2><p>一个 try 代码块后面跟随多个 catch 代码块的情况就叫多重捕获。</p>
-<p>多重捕获块的语法如下所示：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">   <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">1</span> 异常的变量名<span class="number">1</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">2</span> 异常的变量名<span class="number">2</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">3</span> 异常的变量名<span class="number">3</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的代码段包含了 3 个 catch块。</p>
-<p>可以在 try 语句后面添加任意数量的 catch 块。</p>
-<p>如果保护代码中发生异常，异常被抛给第一个 catch 块。</p>
-<p>如果抛出异常的数据类型与 ExceptionType1 匹配，它在这里就会被捕获。</p>
-<p>如果不匹配，它会被传递给第二个 catch 块。</p>
-<p>如此，直到异常被捕获或者通过所有的 catch 块。</p>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>该实例展示了怎么使用多重 try/catch。</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">file</span> = <span class="keyword">new</span> FileInputStream(fileName);</span><br><span class="line">    x = (<span class="keyword">byte</span>) <span class="keyword">file</span>.<span class="keyword">read</span>();</span><br><span class="line">&#125; <span class="keyword">catch</span>(FileNotFoundException f) &#123; <span class="comment">// Not valid!</span></span><br><span class="line">    f.printStackTrace();</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span>(IOException i) &#123;</span><br><span class="line">    i.printStackTrace();</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h2 id="throws-throw-关键字："><a href="#throws-throw-关键字：" class="headerlink" title="throws/throw 关键字："></a>throws/throw 关键字：</h2><p>如果一个方法没有捕获到一个检查性异常，那么该方法必须使用 throws 关键字来声明。throws 关键字放在方法签名的尾部。</p>
-<p>也可以使用 throw 关键字抛出一个异常，无论它是新实例化的还是刚捕获到的。</p>
-<p>下面方法的声明抛出一个 RemoteException 异常：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">className</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deposit</span><span class="params">(<span class="keyword">double</span> amount)</span> <span class="keyword">throws</span> RemoteException</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="comment">// Method implementation</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RemoteException();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//Remainder of class definition</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>一个方法可以声明抛出多个异常，多个异常之间用逗号隔开。</p>
-<p>例如，下面的方法声明抛出 RemoteException 和 InsufficientFundsException：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">className</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(<span class="keyword">double</span> amount)</span> <span class="keyword">throws</span> RemoteException,</span></span><br><span class="line"><span class="function">                              InsufficientFundsException</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="comment">// Method implementation</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//Remainder of class definition</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h2 id="finally关键字"><a href="#finally关键字" class="headerlink" title="finally关键字"></a>finally关键字</h2><p>finally 关键字用来创建在 try 代码块后面执行的代码块。</p>
-<p>无论是否发生异常，finally 代码块中的代码总会被执行。</p>
-<p>在 finally 代码块中，可以运行清理类型等收尾善后性质的语句。</p>
-<p>finally 代码块出现在 catch 代码块最后，语法如下：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">1</span> 异常的变量名<span class="number">1</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类型<span class="number">2</span> 异常的变量名<span class="number">2</span>)&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;finally&#123;</span><br><span class="line">  <span class="comment">// 程序代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><h2 id="ExcepTest-java-文件代码：-1"><a href="#ExcepTest-java-文件代码：-1" class="headerlink" title="ExcepTest.java 文件代码："></a>ExcepTest.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExcepTest</span>&#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">"Access element three :"</span> + a[<span class="number">3</span>]);</span><br><span class="line">    &#125;<span class="keyword">catch</span>(ArrayIndexOutOfBoundsException e)&#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">"Exception thrown  :"</span> + e);</span><br><span class="line">    &#125;</span><br><span class="line">    finally&#123;</span><br><span class="line">       a[<span class="number">0</span>] = <span class="number">6</span>;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">"First element value: "</span> +a[<span class="number">0</span>]);</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">"The finally statement is executed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Exception <span class="string">thrown  :</span>java.lang.<span class="string">ArrayIndexOutOfBoundsException:</span> <span class="number">3</span></span><br><span class="line">First element <span class="string">value:</span> <span class="number">6</span></span><br><span class="line">The <span class="keyword">finally</span> statement is executed</span><br></pre></td></tr></table></figure>
-
-<p>注意下面事项：</p>
-<ul>
-<li>catch 不能独立于 try 存在。</li>
-<li>在 try/catch 后面添加 finally 块并非强制性要求的。</li>
-<li>try 代码后不能既没 catch 块也没 finally 块。</li>
-<li>try, catch, finally 块之间不能添加任何代码。</li>
-</ul>
-<hr>
-<h2 id="声明自定义异常"><a href="#声明自定义异常" class="headerlink" title="声明自定义异常"></a>声明自定义异常</h2><p>在 Java 中你可以自定义异常。编写自己的异常类时需要记住下面的几点。</p>
-<ul>
-<li>所有异常都必须是 Throwable 的子类。</li>
-<li>如果希望写一个检查性异常类，则需要继承 Exception 类。</li>
-<li>如果你想写一个运行时异常类，那么需要继承 RuntimeException 类。</li>
-</ul>
-<p>可以像下面这样定义自己的异常类：</p>
-<p>class MyException extends Exception{ }</p>
-<p>只继承Exception 类来创建的异常类是检查性异常类。</p>
-<p>下面的 InsufficientFundsException 类是用户定义的异常类，它继承自 Exception。</p>
-<p>一个异常类和其它任何类一样，包含有变量和方法。</p>
-<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p>以下实例是一个银行账户的模拟，通过银行卡的号码完成识别，可以进行存钱和取钱的操作。</p>
-<h2 id="InsufficientFundsException-java-文件代码："><a href="#InsufficientFundsException-java-文件代码：" class="headerlink" title="InsufficientFundsException.java 文件代码："></a>InsufficientFundsException.java 文件代码：</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件名InsufficientFundsException.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//自定义异常类，继承Exception类</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">InsufficientFundsException</span> <span class="keyword">extends</span> <span class="title">Exception</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="comment">//此处的amount用来储存当出现异常（取出钱多于余额时）所缺乏的钱</span></span><br><span class="line">  <span class="keyword">private</span> double amount;</span><br><span class="line">  public <span class="type">InsufficientFundsException</span>(double amount)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">this</span>.amount = amount;</span><br><span class="line">  &#125; </span><br><span class="line">  public double getAmount()</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span> amount;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>为了展示如何使用我们自定义的异常类，</p>
-<p>在下面的 CheckingAccount 类中包含一个 withdraw() 方法抛出一个 InsufficientFundsException 异常。</p>
-<h2 id="CheckingAccount-java-文件代码："><a href="#CheckingAccount-java-文件代码：" class="headerlink" title="CheckingAccount.java 文件代码："></a>CheckingAccount.java 文件代码：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件名称 CheckingAccount.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//此类模拟银行账户</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CheckingAccount</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="comment">//balance为余额，number为卡号</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">double</span> balance;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">CheckingAccount</span><span class="params">(<span class="keyword">int</span> number)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.number = number;</span><br><span class="line">   &#125;</span><br><span class="line">  <span class="comment">//方法：存钱</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deposit</span><span class="params">(<span class="keyword">double</span> amount)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      balance += amount;</span><br><span class="line">   &#125;</span><br><span class="line">  <span class="comment">//方法：取钱</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(<span class="keyword">double</span> amount)</span> <span class="keyword">throws</span></span></span><br><span class="line"><span class="function">                              InsufficientFundsException</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(amount &lt;= balance)</span><br><span class="line">      &#123;</span><br><span class="line">         balance -= amount;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">double</span> needs = amount - balance;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> InsufficientFundsException(needs);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  <span class="comment">//方法：返回余额</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getBalance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> balance;</span><br><span class="line">   &#125;</span><br><span class="line">  <span class="comment">//方法：返回卡号</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumber</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> number;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面的 BankDemo 程序示范了如何调用 CheckingAccount 类的 deposit() 和 withdraw() 方法。</p>
-<h2 id="BankDemo-java-文件代码："><a href="#BankDemo-java-文件代码：" class="headerlink" title="BankDemo.java 文件代码："></a>BankDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件名称 BankDemo.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BankDemo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> [] args)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      CheckingAccount c = <span class="keyword">new</span> CheckingAccount(<span class="number">101</span>);</span><br><span class="line">      System.out.<span class="built_in">println</span>(<span class="string">"Depositing $500..."</span>);</span><br><span class="line">      c.deposit(<span class="number">500.00</span>);</span><br><span class="line">      <span class="keyword">try</span></span><br><span class="line">      &#123;</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"\nWithdrawing $100..."</span>);</span><br><span class="line">         c.withdraw(<span class="number">100.00</span>);</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"\nWithdrawing $600..."</span>);</span><br><span class="line">         c.withdraw(<span class="number">600.00</span>);</span><br><span class="line">      &#125;<span class="keyword">catch</span>(InsufficientFundsException e)</span><br><span class="line">      &#123;</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"Sorry, but you are short $"</span></span><br><span class="line">                                  + e.getAmount());</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译上面三个文件，并运行程序 BankDemo，得到结果如下所示：</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">Depositing</span></span> <span class="symbol">$</span><span class="number">500.</span>..</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">Withdrawing</span></span> <span class="symbol">$</span><span class="number">100.</span>..</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">Withdrawing</span></span> <span class="symbol">$</span><span class="number">600.</span>..</span><br><span class="line">Sorry, but you are short <span class="symbol">$</span><span class="number">200.0</span></span><br><span class="line">InsufficientFundsException</span><br><span class="line">        at CheckingAccount.withdraw(CheckingAccount.java:<span class="number">25</span>)</span><br><span class="line">        at BankDemo.main(BankDemo.java:<span class="number">13</span>)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="通用异常"><a href="#通用异常" class="headerlink" title="通用异常"></a>通用异常</h2><p>在Java中定义了两种类型的异常和错误。</p>
-<ul>
-<li><strong>JVM(Java**</strong>虚拟机<strong>**)</strong> <strong>异常：</strong>由 JVM 抛出的异常或错误。例如：NullPointerException 类，ArrayIndexOutOfBoundsException 类，ClassCastException 类。</li>
-<li><strong>程序级异常：</strong>由程序或者API程序抛出的异常。例如 IllegalArgumentException 类，IllegalStateException 类。</li>
-</ul>
-
+<li><strong>错误：</strong> 错误不是异常，而是脱离程序员控制的问题。错误在代码中通常被忽略。例如，当栈溢出时，一个错误就发生了，它们在编译也检查不到的。</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E5%BC%82%E5%B8%B8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1030,10 +418,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 16:43:26 / 修改时间：16:45:14" itemprop="dateCreated datePublished" datetime="2021-03-20T16:43:26+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:43:26" itemprop="dateCreated datePublished" datetime="2021-03-20T16:43:26+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:25:28" itemprop="dateModified" datetime="2021-03-22T21:25:28+08:00">2021-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1074,44 +468,15 @@
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scanner s = <span class="keyword">new</span> <span class="constructor">Scanner(System.<span class="params">in</span>)</span>;</span><br></pre></td></tr></table></figure>
 
 <p>接下来我们演示一个最简单的数据输入，并通过 Scanner 类的 next() 与 nextLine() 方法获取输入的字符串，在读取前我们一般需要 使用 hasNext 与 hasNextLine 判断是否还有输入的数据：</p>
-<h3 id="使用-next-方法："><a href="#使用-next-方法：" class="headerlink" title="使用 next 方法："></a>使用 next 方法：</h3><h2 id="ScannerDemo-java-文件代码："><a href="#ScannerDemo-java-文件代码：" class="headerlink" title="ScannerDemo.java 文件代码："></a>ScannerDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner; </span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScannerDemo</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Scanner scan = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="comment">// 从键盘接收数据</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">// next方式接收字符串</span></span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"next方式接收："</span>);</span><br><span class="line">        <span class="comment">// 判断是否还有输入</span></span><br><span class="line">        <span class="keyword">if</span> (scan.hasNext()) &#123;</span><br><span class="line">            <span class="keyword">String</span> str1 = scan.next();</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"输入的数据为："</span> + str1);</span><br><span class="line">        &#125;</span><br><span class="line">        scan.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行以上程序输出结果为：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">javac </span><span class="keyword">ScannerDemo.java</span></span><br><span class="line"><span class="keyword">$ </span><span class="keyword">java </span><span class="keyword">ScannerDemo</span></span><br><span class="line"><span class="keyword">next方式接收：</span></span><br><span class="line"><span class="keyword">runoob </span>com</span><br><span class="line">输入的数据为：runoob</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 com 字符串并未输出，接下来我们看 nextLine。</p>
-<h3 id="使用-nextLine-方法："><a href="#使用-nextLine-方法：" class="headerlink" title="使用 nextLine 方法："></a>使用 nextLine 方法：</h3><h2 id="ScannerDemo-java-文件代码：-1"><a href="#ScannerDemo-java-文件代码：-1" class="headerlink" title="ScannerDemo.java 文件代码："></a>ScannerDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScannerDemo</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Scanner scan = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="comment">// 从键盘接收数据</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">// nextLine方式接收字符串</span></span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"nextLine方式接收："</span>);</span><br><span class="line">        <span class="comment">// 判断是否还有输入</span></span><br><span class="line">        <span class="keyword">if</span> (scan.hasNextLine()) &#123;</span><br><span class="line">            <span class="keyword">String</span> str2 = scan.nextLine();</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"输入的数据为："</span> + str2);</span><br><span class="line">        &#125;</span><br><span class="line">        scan.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行以上程序输出结果为：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">javac </span><span class="keyword">ScannerDemo.java</span></span><br><span class="line"><span class="keyword">$ </span><span class="keyword">java </span><span class="keyword">ScannerDemo</span></span><br><span class="line"><span class="keyword">nextLine方式接收：</span></span><br><span class="line"><span class="keyword">runoob </span>com</span><br><span class="line">输入的数据为：runoob com</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 com 字符串输出。</p>
-<h3 id="next-与-nextLine-区别"><a href="#next-与-nextLine-区别" class="headerlink" title="next() 与 nextLine() 区别"></a>next() 与 nextLine() 区别</h3><p>next():</p>
-<ul>
-<li>1、一定要读取到有效字符后才可以结束输入。</li>
-<li>2、对输入有效字符之前遇到的空白，next() 方法会自动将其去掉。</li>
-<li>3、只有输入有效字符后才将其后面输入的空白作为分隔符或者结束符。</li>
-<li>next() 不能得到带有空格的字符串。</li>
-</ul>
-<p>nextLine()：</p>
-<ul>
-<li>1、以Enter为结束符,也就是说 nextLine()方法返回的是输入回车之前的所有字符。</li>
-<li>2、可以获得空白。</li>
-</ul>
-<p>如果要输入 int 或 float 类型的数据，在 Scanner 类中也有支持，但是在输入之前最好先使用 hasNextXxx() 方法进行验证，再使用 nextXxx() 来读取：</p>
-<h2 id="ScannerDemo-java-文件代码：-2"><a href="#ScannerDemo-java-文件代码：-2" class="headerlink" title="ScannerDemo.java 文件代码："></a>ScannerDemo.java 文件代码：</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Scanner;</span><br><span class="line"> </span><br><span class="line">public <span class="keyword">class</span> ScannerDemo &#123;</span><br><span class="line">    public static void main(String<span class="literal">[]</span> args) &#123;</span><br><span class="line">        Scanner scan = <span class="keyword">new</span> <span class="constructor">Scanner(System.<span class="params">in</span>)</span>;</span><br><span class="line">        <span class="comment">// 从键盘接收数据</span></span><br><span class="line">        <span class="built_in">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">float</span> f = <span class="number">0.0</span>f;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.print(<span class="string">"输入整数："</span>);</span><br><span class="line">        <span class="keyword">if</span> (scan.has<span class="constructor">NextInt()</span>) &#123;</span><br><span class="line">            <span class="comment">// 判断输入的是否是整数</span></span><br><span class="line">            i = scan.next<span class="constructor">Int()</span>;</span><br><span class="line">            <span class="comment">// 接收整数</span></span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"整数数据："</span> + i);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 输入错误的信息</span></span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"输入的不是整数！"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.print(<span class="string">"输入小数："</span>);</span><br><span class="line">        <span class="keyword">if</span> (scan.has<span class="constructor">NextFloat()</span>) &#123;</span><br><span class="line">            <span class="comment">// 判断输入的是否是小数</span></span><br><span class="line">            f = scan.next<span class="constructor">Float()</span>;</span><br><span class="line">            <span class="comment">// 接收小数</span></span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"小数数据："</span> + f);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 输入错误的信息</span></span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"输入的不是小数！"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        scan.close<span class="literal">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行以上程序输出结果为：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ javac ScannerDemo.java</span><br><span class="line">$ java ScannerDemo</span><br><span class="line">输入整数：<span class="number">12</span></span><br><span class="line">整数数据：<span class="number">12</span></span><br><span class="line">输入小数：<span class="number">1.2</span></span><br><span class="line">小数数据：<span class="number">1.2</span></span><br></pre></td></tr></table></figure>
-
-<p>以下实例我们可以输入多个数字，并求其总和与平均数，每输入一个数字用回车确认，通过输入非数字来结束输入并输出执行结果：</p>
-<h2 id="ScannerDemo-java-文件代码：-3"><a href="#ScannerDemo-java-文件代码：-3" class="headerlink" title="ScannerDemo.java 文件代码："></a>ScannerDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RunoobTest</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"请输入数字："</span>);</span><br><span class="line">        Scanner scan = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">double</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">while</span> (scan.hasNextDouble()) &#123;</span><br><span class="line">            <span class="keyword">double</span> x = scan.nextDouble();</span><br><span class="line">            m = m + <span class="number">1</span>;</span><br><span class="line">            sum = sum + x;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        System.out.<span class="built_in">println</span>(m + <span class="string">"个数的和为"</span> + sum);</span><br><span class="line">        System.out.<span class="built_in">println</span>(m + <span class="string">"个数的平均值是"</span> + (sum / m));</span><br><span class="line">        scan.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行以上程序输出结果为（输入非数字来结束输入）：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ javac ScannerDemo.java</span><br><span class="line">$ java ScannerDemo</span><br><span class="line">请输入数字：</span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">23</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">21.4</span></span><br><span class="line">end</span><br><span class="line"><span class="number">4</span>个数的和为<span class="number">71.4</span></span><br><span class="line"><span class="number">4</span>个数的平均值是<span class="number">17.85</span></span><br></pre></td></tr></table></figure>
-
-<p>更多内容可以参考 API 文档：<a href="https://www.runoob.com/manual/jdk11api/java.base/java/util/Scanner.html。" target="_blank" rel="noopener">https://www.runoob.com/manual/jdk11api/java.base/java/util/Scanner.html。</a></p>
-
+<h3 id="使用-next-方法："><a href="#使用-next-方法：" class="headerlink" title="使用 next 方法："></a>使用 next 方法：</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/javaScanner%E7%B1%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1153,10 +518,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 16:37:43 / 修改时间：16:43:10" itemprop="dateCreated datePublished" datetime="2021-03-20T16:37:43+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:37:43" itemprop="dateCreated datePublished" datetime="2021-03-20T16:37:43+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:27:38" itemprop="dateModified" datetime="2021-03-22T21:27:38+08:00">2021-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1200,182 +571,14 @@
 <hr>
 <h2 id="读取控制台输入"><a href="#读取控制台输入" class="headerlink" title="读取控制台输入"></a>读取控制台输入</h2><p>Java 的控制台输入由 System.in 完成。</p>
 <p>为了获得一个绑定到控制台的字符流，你可以把 System.in 包装在一个 BufferedReader 对象中来创建一个字符流。</p>
-<p>下面是创建 BufferedReader 的基本语法：</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader br = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span>                       <span class="type">InputStreamReader</span>(System.<span class="keyword">in</span>));</span><br></pre></td></tr></table></figure>
-
-<p>BufferedReader 对象创建后，我们便可以使用 read() 方法从控制台读取一个字符，或者用 readLine() 方法读取一个字符串。</p>
-<hr>
-<h2 id="从控制台读取多字符输入"><a href="#从控制台读取多字符输入" class="headerlink" title="从控制台读取多字符输入"></a>从控制台读取多字符输入</h2><p>从 BufferedReader 对象读取一个字符要使用 read() 方法，它的语法如下：</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="keyword">read</span>( ) <span class="keyword">throws</span> IOException</span><br></pre></td></tr></table></figure>
-
-<p>每次调用 read() 方法，它从输入流读取一个字符并把该字符作为整数值返回。 当流结束的时候返回 -1。该方法抛出 IOException。</p>
-<p>下面的程序示范了用 read() 方法从控制台不断读取字符直到用户输入 <strong>q</strong>。</p>
-<h2 id="BRRead-java-文件代码："><a href="#BRRead-java-文件代码：" class="headerlink" title="BRRead.java 文件代码："></a>BRRead.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 BufferedReader 在控制台读取字符</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BRRead</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> c;</span><br><span class="line">        <span class="comment">// 使用 System.in 创建 BufferedReader</span></span><br><span class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"输入字符, 按下 'q' 键退出。"</span>);</span><br><span class="line">        <span class="comment">// 读取字符</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            c = (<span class="keyword">char</span>) br.<span class="built_in">read</span>();</span><br><span class="line">            System.out.<span class="built_in">println</span>(c);</span><br><span class="line">        &#125; <span class="keyword">while</span> (c != <span class="string">'q'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下:</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">输入字符, 按下 <span class="string">'q'</span> 键退出。</span><br><span class="line">runoob</span><br><span class="line">r</span><br><span class="line">u</span><br><span class="line">n</span><br><span class="line">o</span><br><span class="line">o</span><br><span class="line">b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q</span><br><span class="line">q</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="从控制台读取字符串"><a href="#从控制台读取字符串" class="headerlink" title="从控制台读取字符串"></a>从控制台读取字符串</h2><p>从标准输入读取一个字符串需要使用 BufferedReader 的 readLine() 方法。</p>
-<p>它的一般格式是：</p>
-<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> readLine( ) <span class="keyword">throws</span> IOException</span><br></pre></td></tr></table></figure>
-
-<p>下面的程序读取和显示字符行直到你输入了单词”end”。</p>
-<h2 id="BRReadLines-java-文件代码："><a href="#BRReadLines-java-文件代码：" class="headerlink" title="BRReadLines.java 文件代码："></a>BRReadLines.java 文件代码：</h2><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 BufferedReader 在控制台读取字符</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> class BRReadLines &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 使用 System.in 创建 BufferedReader</span></span><br><span class="line">        <span class="keyword">BufferedReader</span> br = <span class="keyword">new</span> <span class="keyword">BufferedReader</span>(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">        <span class="keyword">String</span> <span class="built_in">str</span>;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Enter lines of text."</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Enter 'end' to quit."</span>);</span><br><span class="line">        do &#123;</span><br><span class="line">            <span class="built_in">str</span> = br.readLine();</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="built_in">str</span>);</span><br><span class="line">        &#125; <span class="keyword">while</span> (!<span class="built_in">str</span>.equals(<span class="string">"end"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下:</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Enter <span class="keyword">lines</span> <span class="keyword">of</span> <span class="keyword">text</span>.</span><br><span class="line">Enter <span class="string">'end'</span> <span class="built_in">to</span> quit.</span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">one</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">one</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">two</span></span><br><span class="line">This is <span class="built_in">line</span> <span class="literal">two</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>JDK 5 后的版本我们也可以使用 <a href="https://www.runoob.com/java/java-scanner-class.html" target="_blank" rel="noopener">Java Scanner</a> 类来获取控制台的输入。</p>
-</blockquote>
-<h2 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h2><p>在此前已经介绍过，控制台的输出由 print( ) 和 println() 完成。这些方法都由类 PrintStream 定义，System.out 是该类对象的一个引用。</p>
-<p>PrintStream 继承了 OutputStream类，并且实现了方法 write()。这样，write() 也可以用来往控制台写操作。</p>
-<p>PrintStream 定义 write() 的最简单格式如下所示：</p>
-<p>void write(int byteval)</p>
-<p>该方法将 byteval 的低八位字节写到流中。</p>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面的例子用 write() 把字符 “A” 和紧跟着的换行符输出到屏幕：</p>
-<h2 id="WriteDemo-java-文件代码："><a href="#WriteDemo-java-文件代码：" class="headerlink" title="WriteDemo.java 文件代码："></a>WriteDemo.java 文件代码：</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line">//演示 <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>().</span><br><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> WriteDemo &#123;</span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line">        <span class="type">int</span> b;</span><br><span class="line">        b = <span class="string">'A'</span>;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>(b);</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.<span class="keyword">write</span>(<span class="string">'\n'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>System.out.write(‘\n’);    } }</p>
-<p>运行以上实例在输出窗口输出 “A” 字符</p>
-<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">A</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>write() 方法不经常使用，因为 print() 和 println() 方法用起来更为方便。</p>
-<hr>
-<h2 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h2><p>如前所述，一个流被定义为一个数据序列。输入流用于从源读取数据，输出流用于向目标写数据。</p>
-<p>下图是一个描述输入流和输出流的类层次图。</p>
-<p><img src="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/iostream2xx.png" alt="img"></p>
-<p>下面将要讨论的两个重要的流是 FileInputStream 和 FileOutputStream：</p>
-<hr>
-<h2 id="FileInputStream"><a href="#FileInputStream" class="headerlink" title="FileInputStream"></a>FileInputStream</h2><p>该流用于从文件读取数据，它的对象可以用关键字 new 来创建。</p>
-<p>有多种构造方法可用来创建对象。</p>
-<p>可以使用字符串类型的文件名来创建一个输入流对象来读取文件：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">InputStream f</span> = new FileInputStream(<span class="string">"C:/java/hello"</span>);</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用一个文件对象来创建一个输入流对象来读取文件。我们首先得使用 File() 方法来创建一个文件对象：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File f = <span class="keyword">new</span> <span class="constructor">File(<span class="string">"C:/java/hello"</span>)</span>; </span><br><span class="line">InputStream out = <span class="keyword">new</span> <span class="constructor">FileInputStream(<span class="params">f</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>创建了InputStream对象，就可以使用下面的方法来读取流或者进行其他的流操作。</p>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>序号</strong></th>
-<th align="left"><strong>方法及描述</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">1</td>
-<td align="left"><strong>public void close() throws IOException{}</strong> 关闭此文件输入流并释放与此流有关的所有系统资源。抛出IOException异常。</td>
-</tr>
-<tr>
-<td align="left">2</td>
-<td align="left"><strong>protected void finalize()throws IOException {}</strong> 这个方法清除与该文件的连接。确保在不再引用文件输入流时调用其 close 方法。抛出IOException异常。</td>
-</tr>
-<tr>
-<td align="left">3</td>
-<td align="left"><strong>public int read(int r)throws IOException{}</strong> 这个方法从 InputStream 对象读取指定字节的数据。返回为整数值。返回下一字节数据，如果已经到结尾则返回-1。</td>
-</tr>
-<tr>
-<td align="left">4</td>
-<td align="left"><strong>public int read(byte[] r) throws IOException{}</strong> 这个方法从输入流读取r.length长度的字节。返回读取的字节数。如果是文件结尾则返回-1。</td>
-</tr>
-<tr>
-<td align="left">5</td>
-<td align="left"><strong>public int available() throws IOException{}</strong> 返回下一次对此输入流调用的方法可以不受阻塞地从此输入流读取的字节数。返回一个整数值。</td>
-</tr>
-</tbody></table>
-<p>除了 InputStream 外，还有一些其他的输入流，更多的细节参考下面链接：</p>
-<ul>
-<li><a href="https://www.runoob.com/java/java-bytearrayinputstream.html" target="_blank" rel="noopener">ByteArrayInputStream</a></li>
-<li><a href="https://www.runoob.com/java/java-datainputstream.html" target="_blank" rel="noopener">DataInputStream</a></li>
-</ul>
-<hr>
-<h2 id="FileOutputStream"><a href="#FileOutputStream" class="headerlink" title="FileOutputStream"></a>FileOutputStream</h2><p>该类用来创建一个文件并向文件中写数据。</p>
-<p>如果该流在打开文件进行输出前，目标文件不存在，那么该流会创建该文件。</p>
-<p>有两个构造方法可以用来创建 FileOutputStream 对象。</p>
-<p>使用字符串类型的文件名来创建一个输出流对象：</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream f = <span class="keyword">new</span> <span class="type">FileOutputStream</span>(<span class="string">"C:/java/hello"</span>)</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用一个文件对象来创建一个输出流来写文件。我们首先得使用File()方法来创建一个文件对象：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File f = <span class="keyword">new</span> <span class="constructor">File(<span class="string">"C:/java/hello"</span>)</span>; </span><br><span class="line">OutputStream f = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="params">f</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>创建OutputStream 对象完成后，就可以使用下面的方法来写入流或者进行其他的流操作。</p>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>序号</strong></th>
-<th align="left"><strong>方法及描述</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">1</td>
-<td align="left"><strong>public void close() throws IOException{}</strong> 关闭此文件输入流并释放与此流有关的所有系统资源。抛出IOException异常。</td>
-</tr>
-<tr>
-<td align="left">2</td>
-<td align="left"><strong>protected void finalize()throws IOException {}</strong> 这个方法清除与该文件的连接。确保在不再引用文件输入流时调用其 close 方法。抛出IOException异常。</td>
-</tr>
-<tr>
-<td align="left">3</td>
-<td align="left"><strong>public void write(int w)throws IOException{}</strong> 这个方法把指定的字节写到输出流中。</td>
-</tr>
-<tr>
-<td align="left">4</td>
-<td align="left"><strong>public void write(byte[] w)</strong> 把指定数组中w.length长度的字节写到OutputStream中。</td>
-</tr>
-</tbody></table>
-<p>除了OutputStream外，还有一些其他的输出流，更多的细节参考下面链接：</p>
-<ul>
-<li><a href="https://www.runoob.com/java/java-bytearrayoutputstream.html" target="_blank" rel="noopener">ByteArrayOutputStream</a></li>
-<li><a href="https://www.runoob.com/java/java-dataoutputstream.html" target="_blank" rel="noopener">DataOutputStream</a></li>
-</ul>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>下面是一个演示 InputStream 和 OutputStream 用法的例子：</p>
-<h2 id="fileStreamTest-java-文件代码："><a href="#fileStreamTest-java-文件代码：" class="headerlink" title="fileStreamTest.java 文件代码："></a>fileStreamTest.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">fileStreamTest</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">byte</span> bWrite[] = &#123; <span class="number">11</span>, <span class="number">21</span>, <span class="number">3</span>, <span class="number">40</span>, <span class="number">5</span> &#125;;</span><br><span class="line">            OutputStream os = <span class="keyword">new</span> FileOutputStream(<span class="string">"test.txt"</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; bWrite.length; x++) &#123;</span><br><span class="line">                os.<span class="built_in">write</span>(bWrite[x]); <span class="comment">// writes the bytes</span></span><br><span class="line">            &#125;</span><br><span class="line">            os.<span class="built_in">close</span>();</span><br><span class="line"> </span><br><span class="line">            InputStream is = <span class="keyword">new</span> FileInputStream(<span class="string">"test.txt"</span>);</span><br><span class="line">            <span class="keyword">int</span> <span class="built_in">size</span> = is.<span class="built_in">available</span>();</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">size</span>; i++) &#123;</span><br><span class="line">                System.out.<span class="built_in">print</span>((<span class="keyword">char</span>) is.<span class="built_in">read</span>() + <span class="string">"  "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            is.<span class="built_in">close</span>();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            System.out.<span class="built_in">print</span>(<span class="string">"Exception"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的程序首先创建文件test.txt，并把给定的数字以二进制形式写进该文件，同时输出到控制台上。</p>
-<p>以上代码由于是二进制写入，可能存在乱码，你可以使用以下代码实例来解决乱码问题：</p>
-<h2 id="fileStreamTest2-java-文件代码："><a href="#fileStreamTest2-java-文件代码：" class="headerlink" title="fileStreamTest2.java 文件代码："></a>fileStreamTest2.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件名 :fileStreamTest2.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">fileStreamTest2</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line"> </span><br><span class="line">        <span class="built_in">File</span> f = <span class="keyword">new</span> <span class="built_in">File</span>(<span class="string">"a.txt"</span>);</span><br><span class="line">        FileOutputStream fop = <span class="keyword">new</span> FileOutputStream(f);</span><br><span class="line">        <span class="comment">// 构建FileOutputStream对象,文件不存在会自动新建</span></span><br><span class="line"> </span><br><span class="line">        OutputStreamWriter writer = <span class="keyword">new</span> OutputStreamWriter(fop, <span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="comment">// 构建OutputStreamWriter对象,参数可以指定编码,默认为操作系统默认编码,windows上是gbk</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"中文输入"</span>);</span><br><span class="line">        <span class="comment">// 写入到缓冲区</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"\r\n"</span>);</span><br><span class="line">        <span class="comment">// 换行</span></span><br><span class="line"> </span><br><span class="line">        writer.append(<span class="string">"English"</span>);</span><br><span class="line">        <span class="comment">// 刷新缓存冲,写入到文件,如果下面已经没有写入的内容了,直接close也会写入</span></span><br><span class="line"> </span><br><span class="line">        writer.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭写入流,同时会把缓冲区内容写入文件,所以上面的注释掉</span></span><br><span class="line"> </span><br><span class="line">        fop.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭输出流,释放系统资源</span></span><br><span class="line"> </span><br><span class="line">        FileInputStream fip = <span class="keyword">new</span> FileInputStream(f);</span><br><span class="line">        <span class="comment">// 构建FileInputStream对象</span></span><br><span class="line"> </span><br><span class="line">        InputStreamReader reader = <span class="keyword">new</span> InputStreamReader(fip, <span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="comment">// 构建InputStreamReader对象,编码与写入相同</span></span><br><span class="line"> </span><br><span class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">while</span> (reader.<span class="built_in">ready</span>()) &#123;</span><br><span class="line">            sb.append((<span class="keyword">char</span>) reader.<span class="built_in">read</span>());</span><br><span class="line">            <span class="comment">// 转成char加到StringBuffer对象中</span></span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(sb.toString());</span><br><span class="line">        reader.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭读取流</span></span><br><span class="line"> </span><br><span class="line">        fip.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 关闭输入流,释放系统资源</span></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h2 id="文件和I-O"><a href="#文件和I-O" class="headerlink" title="文件和I/O"></a>文件和I/O</h2><p>还有一些关于文件和I/O的类，我们也需要知道：</p>
-<ul>
-<li><a href="https://www.runoob.com/java/java-file.html" target="_blank" rel="noopener">File Class(类)</a></li>
-<li><a href="https://www.runoob.com/java/java-filereader.html" target="_blank" rel="noopener">FileReader Class(类)</a></li>
-<li><a href="https://www.runoob.com/java/java-filewriter.html" target="_blank" rel="noopener">FileWriter Class(类)</a></li>
-</ul>
-<hr>
-<h2 id="Java中的目录"><a href="#Java中的目录" class="headerlink" title="Java中的目录"></a>Java中的目录</h2><h3 id="创建目录："><a href="#创建目录：" class="headerlink" title="创建目录："></a>创建目录：</h3><p>File类中有两个方法可以用来创建文件夹：</p>
-<ul>
-<li><strong>mkdir( )</strong>方法创建一个文件夹，成功则返回true，失败则返回false。失败表明File对象指定的路径已经存在，或者由于整个路径还不存在，该文件夹不能被创建。</li>
-<li><strong>mkdirs()</strong>方法创建一个文件夹和它的所有父文件夹。</li>
-</ul>
-<p>下面的例子创建 “/tmp/user/java/bin”文件夹：</p>
-<h2 id="CreateDir-java-文件代码："><a href="#CreateDir-java-文件代码：" class="headerlink" title="CreateDir.java 文件代码："></a>CreateDir.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CreateDir</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">String</span> dirname = <span class="string">"/tmp/user/java/bin"</span>;</span><br><span class="line">        <span class="built_in">File</span> d = <span class="keyword">new</span> <span class="built_in">File</span>(dirname);</span><br><span class="line">        <span class="comment">// 现在创建目录</span></span><br><span class="line">        d.mkdirs();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译并执行上面代码来创建目录 “/tmp/user/java/bin”。</p>
-<p><strong>注意：</strong> Java 在 UNIX 和 Windows 自动按约定分辨文件路径分隔符。如果你在 Windows 版本的 Java 中使用分隔符 (/) ，路径依然能够被正确解析。</p>
-<hr>
-<h2 id="读取目录"><a href="#读取目录" class="headerlink" title="读取目录"></a>读取目录</h2><p>一个目录其实就是一个 File 对象，它包含其他文件和文件夹。</p>
-<p>如果创建一个 File 对象并且它是一个目录，那么调用 isDirectory() 方法会返回 true。</p>
-<p>可以通过调用该对象上的 list() 方法，来提取它包含的文件和文件夹的列表。</p>
-<p>下面展示的例子说明如何使用 list() 方法来检查一个文件夹中包含的内容：</p>
-<h2 id="DirList-java-文件代码："><a href="#DirList-java-文件代码：" class="headerlink" title="DirList.java 文件代码："></a>DirList.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DirList</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">String</span> dirname = <span class="string">"/tmp"</span>;</span><br><span class="line">        <span class="built_in">File</span> f1 = <span class="keyword">new</span> <span class="built_in">File</span>(dirname);</span><br><span class="line">        <span class="keyword">if</span> (f1.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"目录 "</span> + dirname);</span><br><span class="line">            <span class="keyword">String</span> s[] = f1.<span class="built_in">list</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length; i++) &#123;</span><br><span class="line">                <span class="built_in">File</span> f = <span class="keyword">new</span> <span class="built_in">File</span>(dirname + <span class="string">"/"</span> + s[i]);</span><br><span class="line">                <span class="keyword">if</span> (f.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">                    System.out.<span class="built_in">println</span>(s[i] + <span class="string">" 是一个目录"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.<span class="built_in">println</span>(s[i] + <span class="string">" 是一个文件"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(dirname + <span class="string">" 不是一个目录"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">目录 /tmp</span><br><span class="line">bin 是一个目录</span><br><span class="line"><span class="class"><span class="keyword">lib</span> 是一个目录</span></span><br><span class="line">demo 是一个目录</span><br><span class="line">test.txt 是一个文件</span><br><span class="line">README 是一个文件</span><br><span class="line">index.html 是一个文件</span><br><span class="line"><span class="keyword">include</span> 是一个目录</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="删除目录或文件"><a href="#删除目录或文件" class="headerlink" title="删除目录或文件"></a>删除目录或文件</h2><p>删除文件可以使用 <strong>java.io.File.delete()</strong> 方法。</p>
-<p>以下代码会删除目录 <strong>/tmp/java/</strong>，需要注意的是当删除某一目录时，必须保证该目录下没有其他文件才能正确删除，否则将删除失败。</p>
-<p>测试目录结构：</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/java/</span><br><span class="line"><span class="string">|-- 1.log</span></span><br><span class="line"><span class="string">|-- test</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="DeleteFileDemo-java-文件代码："><a href="#DeleteFileDemo-java-文件代码：" class="headerlink" title="DeleteFileDemo.java 文件代码："></a>DeleteFileDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="built_in">File</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeleteFileDemo</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里修改为自己的测试目录</span></span><br><span class="line">        <span class="built_in">File</span> folder = <span class="keyword">new</span> <span class="built_in">File</span>(<span class="string">"/tmp/java/"</span>);</span><br><span class="line">        deleteFolder(folder);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 删除文件及目录</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleteFolder</span><span class="params">(<span class="built_in">File</span> folder)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">File</span>[] files = folder.listFiles();</span><br><span class="line">        <span class="keyword">if</span> (files != null) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">File</span> f : files) &#123;</span><br><span class="line">                <span class="keyword">if</span> (f.<span class="built_in">isDirectory</span>()) &#123;</span><br><span class="line">                    deleteFolder(f);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    f.<span class="keyword">delete</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        folder.<span class="keyword">delete</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1417,10 +620,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 16:24:04 / 修改时间：16:27:56" itemprop="dateCreated datePublished" datetime="2021-03-20T16:24:04+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:24:04" itemprop="dateCreated datePublished" datetime="2021-03-20T16:24:04+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:26:27" itemprop="dateModified" datetime="2021-03-22T21:26:27+08:00">2021-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1477,154 +686,15 @@
 </ul>
 <h3 id="方法的命名规则"><a href="#方法的命名规则" class="headerlink" title="方法的命名规则"></a>方法的命名规则</h3><ul>
 <li>1.方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头写，不使用连接符。例如：<strong>addPerson</strong>。</li>
-<li>2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：<strong>test<MethodUnderTest>_<state></state></MethodUnderTest></strong>，例如 <strong>testPop_emptyStack</strong>。</li>
-</ul>
-<hr>
-<h2 id="方法的定义"><a href="#方法的定义" class="headerlink" title="方法的定义"></a>方法的定义</h2><p>一般情况下，定义一个方法包含以下语法：</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">修饰符 返回值类型 方法名(参数类型 参数名)&#123;</span><br><span class="line">    <span class="params">...</span></span><br><span class="line">    方法体</span><br><span class="line">    <span class="params">...</span></span><br><span class="line">    <span class="keyword">return</span> 返回值;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>方法包含一个方法头和一个方法体。下面是一个方法的所有部分：</p>
-<ul>
-<li><strong>修饰符：</strong>修饰符，这是可选的，告诉编译器如何调用该方法。定义了该方法的访问类型。</li>
-<li><strong>返回值类型 ：</strong>方法可能会返回值。returnValueType 是方法返回值的数据类型。有些方法执行所需的操作，但没有返回值。在这种情况下，returnValueType 是关键字<strong>void</strong>。</li>
-<li><strong>方法名：</strong>是方法的实际名称。方法名和参数表共同构成方法签名。</li>
-<li><strong>参数类型：</strong>参数像是一个占位符。当方法被调用时，传递值给参数。这个值被称为实参或变量。参数列表是指方法的参数类型、顺序和参数的个数。参数是可选的，方法可以不包含任何参数。</li>
-<li><strong>方法体：</strong>方法体包含具体的语句，定义该方法的功能。</li>
-</ul>
-<p><img src="/2021/03/20/java%E6%96%B9%E6%B3%95/D53C92B3-9643-4871-8A72-33D491299653.jpg" alt="img"></p>
-<p>如：</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">int</span> age(<span class="built_in">int</span> birthday)<span class="meta">&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>参数可以有多个：</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">float</span> interest(<span class="built_in">float</span> principal, <span class="built_in">int</span> year)<span class="meta">&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong> 在一些其它语言中方法指过程和函数。一个返回非void类型返回值的方法称为函数；一个返回void类型返回值的方法叫做过程。</p>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面的方法包含 2 个参数 num1 和 num2，它返回这两个参数的最大值。</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/** 返回两个整型变量数据的较大值 */</span><br><span class="line">public <span class="keyword">static</span> <span class="built_in">int</span> max(<span class="built_in">int</span> num1, <span class="built_in">int</span> num2) &#123;</span><br><span class="line">   <span class="built_in">int</span> <span class="literal">result</span>;</span><br><span class="line">   <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">      <span class="literal">result</span> = num1;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      <span class="literal">result</span> = num2;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">result</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>更简略的写法（三元运算符）：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 &gt; num2 ? num1 : num2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><p>Java 支持两种调用方法的方式，根据方法是否返回值来选择。</p>
-<p>当程序调用一个方法时，程序的控制权交给了被调用的方法。当被调用方法的返回语句执行或者到达方法体闭括号时候交还控制权给程序。</p>
-<p>当方法返回一个值的时候，方法调用通常被当做一个值。例如：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> larger = max(<span class="number">30</span>, <span class="number">40</span>);</span><br></pre></td></tr></table></figure>
-
-<p>如果方法返回值是void，方法调用一定是一条语句。例如，方法println返回void。下面的调用是个语句：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println("欢迎访问本博客！");</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>下面的例子演示了如何定义一个方法，以及如何调用它：</p>
-<h2 id="TestMax-java-文件代码："><a href="#TestMax-java-文件代码：" class="headerlink" title="TestMax.java 文件代码："></a>TestMax.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMax</span> &#123;</span></span><br><span class="line">   <span class="comment">/** 主方法 */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> i = <span class="number">5</span>;</span><br><span class="line">      <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">      <span class="keyword">int</span> k = <span class="built_in">max</span>(i, j);</span><br><span class="line">      System.out.<span class="built_in">println</span>( i + <span class="string">" 和 "</span> + j + <span class="string">" 比较，最大值是："</span> + k);</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">/** 返回两个整数变量较大的值 */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> result;</span><br><span class="line">      <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">         result = num1;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">         result = num2;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">return</span> result; </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">5 </span>和 <span class="number">2</span> 比较，最大值是：<span class="number">5</span></span><br></pre></td></tr></table></figure>
-
-<p>这个程序包含 main 方法和 max 方法。main 方法是被 JVM 调用的，除此之外，main 方法和其它方法没什么区别。</p>
-<p>main 方法的头部是不变的，如例子所示，带修饰符 public 和 static,返回 void 类型值，方法名字是 main,此外带个一个 String[] 类型参数。String[] 表明参数是字符串数组。</p>
-<hr>
-<h2 id="void-关键字"><a href="#void-关键字" class="headerlink" title="void 关键字"></a>void 关键字</h2><p>本节说明如何声明和调用一个 void 方法。</p>
-<p>下面的例子声明了一个名为 printGrade 的方法，并且调用它来打印给定的分数。</p>
-<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><h2 id="TestVoidMethod-java-文件代码："><a href="#TestVoidMethod-java-文件代码：" class="headerlink" title="TestVoidMethod.java 文件代码："></a>TestVoidMethod.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestVoidMethod</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    printGrade(<span class="number">78.5</span>);</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printGrade</span><span class="params">(<span class="keyword">double</span> score)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (score &gt;= <span class="number">90.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'A'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">80.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'B'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">70.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'C'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (score &gt;= <span class="number">60.0</span>) &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'D'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">       System.out.<span class="built_in">println</span>(<span class="string">'F'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">C</span></span><br></pre></td></tr></table></figure>
-
-<p>这里printGrade方法是一个void类型方法，它不返回值。</p>
-<p>一个void方法的调用一定是一个语句。 所以，它被在main方法第三行以语句形式调用。就像任何以分号结束的语句一样。</p>
-<hr>
-<h2 id="通过值传递参数"><a href="#通过值传递参数" class="headerlink" title="通过值传递参数"></a>通过值传递参数</h2><p>调用一个方法时候需要提供参数，你必须按照参数列表指定的顺序提供。</p>
-<p>例如，下面的方法连续n次打印一个消息：</p>
-<h2 id="TestVoidMethod-java-文件代码：-1"><a href="#TestVoidMethod-java-文件代码：-1" class="headerlink" title="TestVoidMethod.java 文件代码："></a>TestVoidMethod.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">nPrintln</span><span class="params">(<span class="keyword">String</span> message, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    System.out.<span class="built_in">println</span>(message);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><p>下面的例子演示按值传递的效果。</p>
-<p>该程序创建一个方法，该方法用于交换两个变量。</p>
-<h2 id="TestPassByValue-java-文件代码："><a href="#TestPassByValue-java-文件代码：" class="headerlink" title="TestPassByValue.java 文件代码："></a>TestPassByValue.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPassByValue</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> num2 = <span class="number">2</span>;</span><br><span class="line"> </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"交换前 num1 的值为："</span> +</span><br><span class="line">                        num1 + <span class="string">" ，num2 的值为："</span> + num2);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 调用swap方法</span></span><br><span class="line">    swap(num1, num2);</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"交换后 num1 的值为："</span> +</span><br><span class="line">                       num1 + <span class="string">" ，num2 的值为："</span> + num2);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** 交换两个变量的方法 */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> n1, <span class="keyword">int</span> n2)</span> </span>&#123;</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t进入 swap 方法"</span>);</span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t\t交换前 n1 的值为："</span> + n1</span><br><span class="line">                         + <span class="string">"，n2 的值："</span> + n2);</span><br><span class="line">    <span class="comment">// 交换 n1 与 n2的值</span></span><br><span class="line">    <span class="keyword">int</span> temp = n1;</span><br><span class="line">    n1 = n2;</span><br><span class="line">    n2 = temp;</span><br><span class="line"> </span><br><span class="line">    System.out.<span class="built_in">println</span>(<span class="string">"\t\t交换后 n1 的值为 "</span> + n1</span><br><span class="line">                         + <span class="string">"，n2 的值："</span> + n2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">交换前 num1 的值为：<span class="number">1</span> ，num2 的值为：<span class="number">2</span></span><br><span class="line">    进入 swap 方法</span><br><span class="line">        交换前 n1 的值为：<span class="number">1</span>，n2 的值：<span class="number">2</span></span><br><span class="line">        交换后 n1 的值为 <span class="number">2</span>，n2 的值：<span class="number">1</span></span><br><span class="line">交换后 num1 的值为：<span class="number">1</span> ，num2 的值为：<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<p>传递两个参数调用swap方法。有趣的是，方法被调用后，实参的值并没有改变。</p>
-<hr>
-<h2 id="方法的重载"><a href="#方法的重载" class="headerlink" title="方法的重载"></a>方法的重载</h2><p>上面使用的max方法仅仅适用于int型数据。但如果你想得到两个浮点类型数据的最大值呢？</p>
-<p>解决方法是创建另一个有相同名字但参数不同的方法，如下面代码所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">max</span><span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (num1 &gt; num2)</span><br><span class="line">    <span class="keyword">return</span> num1;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> num2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果你调用max方法时传递的是int型参数，则 int型参数的max方法就会被调用；</p>
-<p>如果传递的是double型参数，则double类型的max方法体会被调用，这叫做方法重载；</p>
-<p>就是说一个类的两个方法拥有相同的名字，但是有不同的参数列表。</p>
-<p>Java编译器根据方法签名判断哪个方法应该被调用。</p>
-<p>方法重载可以让程序更清晰易读。执行密切相关任务的方法应该使用相同的名字。</p>
-<p>重载的方法必须拥有不同的参数列表。你不能仅仅依据修饰符或者返回类型的不同来重载方法。</p>
-<hr>
-<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>变量的范围是程序中该变量可以被引用的部分。</p>
-<p>方法内定义的变量被称为局部变量。</p>
-<p>局部变量的作用范围从声明开始，直到包含它的块结束。</p>
-<p>局部变量必须声明才可以使用。</p>
-<p>方法的参数范围涵盖整个方法。参数实际上是一个局部变量。</p>
-<p>for循环的初始化部分声明的变量，其作用范围在整个循环。</p>
-<p>但循环体内声明的变量其适用范围是从它声明到循环体结束。它包含如下所示的变量声明：</p>
-<p><img src="/2021/03/20/java%E6%96%B9%E6%B3%95/12-130Q1221013F0.jpg" alt="img"></p>
-<p>你可以在一个方法里，不同的非嵌套块中多次声明一个具有相同的名称局部变量，但你不能在嵌套块内两次声明局部变量。</p>
-<h2 id="命令行参数的使用"><a href="#命令行参数的使用" class="headerlink" title="命令行参数的使用"></a>命令行参数的使用</h2><p>有时候你希望运行一个程序时候再传递给它消息。这要靠传递命令行参数给main()函数实现。</p>
-<p>命令行参数是在执行程序时候紧跟在程序名字后面的信息。</p>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>下面的程序打印所有的命令行参数：</p>
-<h2 id="CommandLine-java-文件代码："><a href="#CommandLine-java-文件代码：" class="headerlink" title="CommandLine.java 文件代码："></a>CommandLine.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandLine</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span></span>&#123; </span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;args.length; i++)&#123;</span><br><span class="line">         System.out.<span class="built_in">println</span>(<span class="string">"args["</span> + i + <span class="string">"]: "</span> + args[i]);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如下所示，运行这个程序：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ javac CommandLine.java </span><br><span class="line">$ java CommandLine <span class="keyword">this</span> <span class="keyword">is</span> a command line <span class="number">200</span> <span class="number">-100</span></span><br><span class="line">args[<span class="number">0</span>]: <span class="keyword">this</span></span><br><span class="line">args[<span class="number">1</span>]: <span class="keyword">is</span></span><br><span class="line">args[<span class="number">2</span>]: a</span><br><span class="line">args[<span class="number">3</span>]: command</span><br><span class="line">args[<span class="number">4</span>]: line</span><br><span class="line">args[<span class="number">5</span>]: <span class="number">200</span></span><br><span class="line">args[<span class="number">6</span>]: <span class="number">-100</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>当一个对象被创建时候，构造方法用来初始化该对象。构造方法和它所在类的名字相同，但构造方法没有返回值。</p>
-<p>通常会使用构造方法给一个类的实例变量赋初值，或者执行其它必要的步骤来创建一个完整的对象。</p>
-<p>不管你是否自定义构造方法，所有的类都有构造方法，因为 Java 自动提供了一个默认构造方法，默认构造方法的访问修饰符和类的访问修饰符相同(类为 public，构造函数也为 public；类改为 protected，构造函数也改为 protected)。</p>
-<p>一旦你定义了自己的构造方法，默认构造方法就会失效。</p>
-<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>下面是一个使用构造方法的例子：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的构造函数</span></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">MyClass</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> x;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 以下是构造函数</span></span><br><span class="line">  MyClass() &#123;</span><br><span class="line">    x = <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>你可以像下面这样调用构造方法来初始化一个对象：</p>
-<h2 id="ConsDemo-java-文件代码："><a href="#ConsDemo-java-文件代码：" class="headerlink" title="ConsDemo.java 文件代码："></a>ConsDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsDemo</span> &#123;</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">      MyClass t1 = <span class="keyword">new</span> MyClass();</span><br><span class="line">      MyClass t2 = <span class="keyword">new</span> MyClass();</span><br><span class="line">      System.out.<span class="built_in">println</span>(t1.x + <span class="string">" "</span> + t2.x);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>大多时候需要一个有参数的构造方法。</p>
-<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p>下面是一个使用构造方法的例子：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的构造函数</span></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">MyClass</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> x;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 以下是构造函数</span></span><br><span class="line">  MyClass(<span class="built_in">int</span> i ) &#123;</span><br><span class="line">    x = i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>你可以像下面这样调用构造方法来初始化一个对象：</p>
-<h2 id="ConsDemo-java-文件代码：-1"><a href="#ConsDemo-java-文件代码：-1" class="headerlink" title="ConsDemo.java 文件代码："></a>ConsDemo.java 文件代码：</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsDemo</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span> args[])</span> </span>&#123;</span><br><span class="line">    MyClass t1 = <span class="keyword">new</span> MyClass( <span class="number">10</span> );</span><br><span class="line">    MyClass t2 = <span class="keyword">new</span> MyClass( <span class="number">20</span> );</span><br><span class="line">    System.out.<span class="built_in">println</span>(t1.x + <span class="string">" "</span> + t2.x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行结果如下：</p>
-<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">10 </span><span class="number">20</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>JDK 1.5 开始，Java支持传递同类型的可变参数给一个方法。</p>
-<p>方法的可变参数的声明如下所示：</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">typeName</span></span>... parameterName</span><br></pre></td></tr></table></figure>
-
-<p>在方法声明中，在指定参数类型后加一个省略号(…) 。</p>
-<p>一个方法中只能指定一个可变参数，它必须是方法的最后一个参数。任何普通的参数必须在它之前声明。</p>
-<h3 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h3><h2 id="VarargsDemo-java-文件代码："><a href="#VarargsDemo-java-文件代码：" class="headerlink" title="VarargsDemo.java 文件代码："></a>VarargsDemo.java 文件代码：</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">VarargsDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> main(String args[]) &#123;</span><br><span class="line">        <span class="comment">// 调用可变参数的方法</span></span><br><span class="line">        printMax(<span class="number">34</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">56.5</span>);</span><br><span class="line">        printMax(new <span class="built_in">double</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> printMax( <span class="built_in">double</span>... numbers) &#123;</span><br><span class="line">        <span class="keyword">if</span> (numbers.length == <span class="number">0</span>) &#123;</span><br><span class="line">            System.<span class="keyword">out</span>.println(<span class="string">"No argument passed"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="built_in">double</span> result = numbers[<span class="number">0</span>];</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt;  numbers.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (numbers[i] &gt;  result) &#123;</span><br><span class="line">                result = numbers[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"The max value is "</span> + result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上实例编译运行结果如下：</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The<span class="built_in"> max</span> <span class="keyword">value</span> <span class="literal">is</span> <span class="number">56.5</span></span><br><span class="line">The<span class="built_in"> max</span> <span class="keyword">value</span> <span class="literal">is</span> <span class="number">3.0</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="finalize-方法"><a href="#finalize-方法" class="headerlink" title="finalize() 方法"></a>finalize() 方法</h2><p>Java 允许定义这样的方法，它在对象被垃圾收集器析构(回收)之前调用，这个方法叫做 finalize( )，它用来清除回收对象。</p>
-<p>例如，你可以使用 finalize() 来确保一个对象打开的文件被关闭了。</p>
-<p>在 finalize() 方法里，你必须指定在对象销毁时候要执行的操作。</p>
-<p>finalize() 一般格式是：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// 在这里终结代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>关键字 protected 是一个限定符，它确保 finalize() 方法不会被该类以外的代码调用。</p>
-<p>当然，Java 的内存回收可以由 JVM 来自动完成。如果你手动使用，则可以使用上面的方法。</p>
-<h3 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h3><h2 id="FinalizationDemo-java-文件代码："><a href="#FinalizationDemo-java-文件代码：" class="headerlink" title="FinalizationDemo.java 文件代码："></a>FinalizationDemo.java 文件代码：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizationDemo</span> </span>&#123;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">    Cake c1 = <span class="keyword">new</span> Cake(<span class="number">1</span>);  </span><br><span class="line">    Cake c2 = <span class="keyword">new</span> Cake(<span class="number">2</span>);  </span><br><span class="line">    Cake c3 = <span class="keyword">new</span> Cake(<span class="number">3</span>);  </span><br><span class="line">      </span><br><span class="line">    c2 = c3 = <span class="keyword">null</span>;  </span><br><span class="line">    System.gc(); <span class="comment">//调用Java垃圾收集器</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cake</span> <span class="keyword">extends</span> <span class="title">Object</span> </span>&#123;  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> id;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Cake</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">this</span>.id = id;  </span><br><span class="line">    System.out.println(<span class="string">"Cake Object "</span> + id + <span class="string">"is created"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> java.lang.Throwable </span>&#123;  </span><br><span class="line">    <span class="keyword">super</span>.finalize();  </span><br><span class="line">    System.out.println(<span class="string">"Cake Object "</span> + id + <span class="string">"is disposed"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行以上代码，输出结果如下：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ javac FinalizationDemo.java </span><br><span class="line">$ java FinalizationDemo</span><br><span class="line">Cake Object <span class="number">1</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">2</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">3</span><span class="keyword">is</span> created</span><br><span class="line">Cake Object <span class="number">3</span><span class="keyword">is</span> disposed</span><br><span class="line">Cake Object <span class="number">2</span><span class="keyword">is</span> disposed</span><br></pre></td></tr></table></figure>
+<li>2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：<strong>test<MethodUnderTest>_<state></state></MethodUnderTest></strong>，例如 <strong>testPop_emptyStack</strong>。</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E6%96%B9%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1762,7 +832,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:05</span>
+    <span title="站点阅读时长">29:04</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

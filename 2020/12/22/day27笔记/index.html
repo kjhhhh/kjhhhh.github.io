@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今日内容介绍1、多线程安全问题2、等待唤醒机制 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一节课开始&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01线程操作共享数据的安全问题  *A:线程操作共享数据的安全问题    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。    程序每次运行结果和单线程运行的结果是一样的，而且其他的">
+  <meta name="description" content="今日内容介绍1、多线程安全问题2、等待唤醒机制 ###01线程操作共享数据的安全问题  *A:线程操作共享数据的安全问题    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。    程序每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。 ###02售票的案例 A:售票的案例     &#x2F;      * 多线程并发访问同一个数据资源">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java学习笔记27">
 <meta property="og:url" content="http://yoursite.com/2020/12/22/day27%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="KJHの博客">
-<meta property="og:description" content="今日内容介绍1、多线程安全问题2、等待唤醒机制 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;第一节课开始&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; ###01线程操作共享数据的安全问题  *A:线程操作共享数据的安全问题    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。    程序每次运行结果和单线程运行的结果是一样的，而且其他的">
+<meta property="og:description" content="今日内容介绍1、多线程安全问题2、等待唤醒机制 ###01线程操作共享数据的安全问题  *A:线程操作共享数据的安全问题    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。    程序每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。 ###02售票的案例 A:售票的案例     &#x2F;      * 多线程并发访问同一个数据资源">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T11:21:13.971Z">
-<meta property="article:modified_time" content="2020-12-23T15:12:58.416Z">
+<meta property="article:modified_time" content="2021-03-22T13:15:21.329Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="java基础学习">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:12:58" itemprop="dateModified" datetime="2020-12-23T23:12:58+08:00">2020-12-23</time>
+                <time title="修改时间：2021-03-22 21:15:21" itemprop="dateModified" datetime="2021-03-22T21:15:21+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,7 +213,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>8.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -233,7 +233,6 @@
 
       
         <p>今日内容介绍<br>1、多线程安全问题<br>2、等待唤醒机制</p>
-<p>=======================第一节课开始=============================================</p>
 <p>###01线程操作共享数据的安全问题<br>  *A:线程操作共享数据的安全问题<br>    如果有多个线程在同时运行，而这些线程可能会同时运行这段代码。<br>    程序每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。</p>
 <p>###02售票的案例<br> <em>A:售票的案例<br>     /</em><br>      * 多线程并发访问同一个数据资源<br>      * 3个线程,对一个票资源,出售<br>      */<br>     public class ThreadDemo {<br>      public static void main(String[] args) {<br>        //创建Runnable接口实现类对象<br>        Tickets t = new Tickets();<br>        //创建3个Thread类对象,传递Runnable接口实现类<br>        Thread t0 = new Thread(t);<br>        Thread t1 = new Thread(t);<br>        Thread t2 = new Thread(t);</p>
 <pre><code>   t0.start();
@@ -259,7 +258,7 @@ public class Tickets implements Runnable{
 
    }
  }
-}</code></pre><p>###03线程安全问题引发<br> <em>A:线程安全问题引发<br>    /</em><br>     * 多线程并发访问同一个数据资源<br>     * 3个线程,对一个票资源,出售<br>     */<br>    public class ThreadDemo {<br>     public static void main(String[] args) {<br>       //创建Runnable接口实现类对象<br>       Tickets t = new Tickets();<br>       //创建3个Thread类对象,传递Runnable接口实现类<br>       Thread t0 = new Thread(t);<br>       Thread t1 = new Thread(t);<br>       Thread t2 = new Thread(t);</p>
+}</code></pre><p>###03线程安全问题引发<br> <em>A:线程安全问题引发<a id="more"></a><br>    /</em><br>     * 多线程并发访问同一个数据资源<br>     * 3个线程,对一个票资源,出售<br>     */<br>    public class ThreadDemo {<br>     public static void main(String[] args) {<br>       //创建Runnable接口实现类对象<br>       Tickets t = new Tickets();<br>       //创建3个Thread类对象,传递Runnable接口实现类<br>       Thread t0 = new Thread(t);<br>       Thread t1 = new Thread(t);<br>       Thread t2 = new Thread(t);</p>
 <pre><code>   t0.start();
    t1.start();
    t2.start();
@@ -324,12 +323,13 @@ public class Tickets implements Runnable{
    }
  }
 }</code></pre><p>###05同步代码块的执行原理<br>   A:同步代码块的执行原理<br>     同步代码块: 在代码块声明上 加上synchronized<br>     synchronized (锁对象) {<br>       可能会产生线程安全问题的代码<br>     }<br>     同步代码块中的锁对象可以是任意的对象；但多个线程时，要使用同一个锁对象才能够保证线程安全。</p>
-<p>=======================第二节课开始=============================================<br>###06同步的上厕所原理<br>  *A:同步的上厕所原理<br>    a:不使用同步:线程在执行的过程中会被打扰<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>      第一个人正在上厕所,上到一半,被另外一个人拉出来<br>    b:使用同步:<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>       锁比喻成厕所门<br>      第一个人上厕所,会锁门<br>      第二个人上厕所,看到门锁上了,等待第一个人上完再去上厕所</p>
+<p>###06同步的上厕所原理<br>  *A:同步的上厕所原理<br>    a:不使用同步:线程在执行的过程中会被打扰<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>      第一个人正在上厕所,上到一半,被另外一个人拉出来<br>    b:使用同步:<br>       线程比喻成人<br>       线程执行代码就是上一个厕所<br>       锁比喻成厕所门<br>      第一个人上厕所,会锁门<br>      第二个人上厕所,看到门锁上了,等待第一个人上完再去上厕所</p>
 <p>###07同步方法<br>  <em>A:同步方法:<br>  /</em></p>
 <ul>
 <li><p>多线程并发访问同一个数据资源</p>
 </li>
-<li><p>3个线程,对一个票资源,出售<br> */<br>public class ThreadDemo {</p>
+<li><p>3个线程,对一个票资源,出售<br> */</p>
+<p>public class ThreadDemo {</p>
 <p>public static void main(String[] args) {<br> //创建Runnable接口实现类对象<br> Tickets t = new Tickets();<br> //创建3个Thread类对象,传递Runnable接口实现类<br> Thread t0 = new Thread(t);<br> Thread t1 = new Thread(t);<br> Thread t2 = new Thread(t);</p>
 <p> t0.start();<br> t1.start();<br> t2.start();</p>
 <p>}<br>}</p>
@@ -407,7 +407,7 @@ public class Tickets implements Runnable{
         }
     }
   }
-}</code></pre><p>=======================第三节课开始=============================================<br>###10线程的死锁原理<br>   *A:线程的死锁原理<br>     当线程任务中出现了多个同步(多个锁)  时，如果同步中嵌套了其他的同步。这时容易引发一种现象：程序出现无限等待，这种现象我们称为死锁。这种情况能避免就避免掉。<br>        synchronzied(A锁){<br>            synchronized(B锁){</p>
+}</code></pre><p>###10线程的死锁原理<br>   *A:线程的死锁原理<br>     当线程任务中出现了多个同步(多个锁)  时，如果同步中嵌套了其他的同步。这时容易引发一种现象：程序出现无限等待，这种现象我们称为死锁。这种情况能避免就避免掉。<br>        synchronzied(A锁){<br>            synchronized(B锁){</p>
 <pre><code>    }
 }</code></pre><p>###11线程的死锁代码实现<br>   *A:线程的死锁代码实现<br>       public class DeadLock implements Runnable{<br>        private int i = 0;<br>        public void run(){<br>          while(true){<br>            if(i%2==0){<br>              //先进入A同步,再进入B同步<br>              synchronized(LockA.locka){<br>                System.out.println(“if…locka”);<br>                synchronized(LockB.lockb){<br>                  System.out.println(“if…lockb”);<br>                }<br>              }<br>            }else{<br>              //先进入B同步,再进入A同步<br>              synchronized(LockB.lockb){<br>                System.out.println(“else…lockb”);<br>                synchronized(LockA.locka){<br>                  System.out.println(“else…locka”);<br>                }<br>              }<br>            }<br>            i++;<br>          }<br>        }<br>       }</p>
 <pre><code>public class DeadLockDemo {
@@ -425,9 +425,8 @@ public class LockA {
   private LockA(){}
 
   public  static final LockA locka = new LockA();
-}</code></pre><p>​<br>      public class LockB {<br>        private LockB(){}</p>
-<pre><code>  public static final LockB lockb = new LockB();
-}</code></pre><p> ###12线程等待与唤醒案例介绍<br>   *A:线程等待与唤醒案例介绍<br>     等待唤醒机制所涉及到的方法：<br>         wait（） :等待，将正在执行的线程释放其执行资格 和 执行权，并存储到线程池中。<br>         notify（）：唤醒，唤醒线程池中被wait（）的线程，一次唤醒一个，而且是任意的。<br>         notifyAll（）： 唤醒全部：可以将线程池中的所有wait() 线程都唤醒。<br>       其实，所谓唤醒的意思就是让 线程池中的线程具备执行资格。必须注意的是，这些方法都是在 同步中才有效。同时这些方法在使用时必须标明所属锁，这样才可以明确出这些方法操作的到底是哪个锁上的线程。</p>
+}</code></pre><p>​<br>​      public class LockB {<br>​        private LockB(){}<br>​<br>        public static final LockB lockb = new LockB();<br>      }</p>
+<p> ###12线程等待与唤醒案例介绍<br>   *A:线程等待与唤醒案例介绍<br>     等待唤醒机制所涉及到的方法：<br>         wait（） :等待，将正在执行的线程释放其执行资格 和 执行权，并存储到线程池中。<br>         notify（）：唤醒，唤醒线程池中被wait（）的线程，一次唤醒一个，而且是任意的。<br>         notifyAll（）： 唤醒全部：可以将线程池中的所有wait() 线程都唤醒。<br>       其实，所谓唤醒的意思就是让 线程池中的线程具备执行资格。必须注意的是，这些方法都是在 同步中才有效。同时这些方法在使用时必须标明所属锁，这样才可以明确出这些方法操作的到底是哪个锁上的线程。</p>
 <p>###13线程等待与唤醒案例资源类编写<br>  <em>A:线程等待与唤醒案例资源类编写<br>    /</em><br>     *  定义资源类,有2个成员变量<br>     *  name,sex<br>     *  同时有2个线程,对资源中的变量操作<br>     *  1个对name,age赋值<br>     *  2个对name,age做变量的输出打印<br>     */<br>    public class Resource {<br>      public String name;<br>      public String sex;<br>    }</p>
 <p>###14线程等待与唤醒案例输入和输出线程<br>   A:线程等待与唤醒案例输入和输出线程<br>     /*<br>       *  输入的线程,对资源对象Resource中成员变量赋值<br>       *  一次赋值 张三,男<br>       *  下一次赋值 lisi,nv<br>     */<br>      public class Input implements Runnable {<br>        private Resource r=new Resource();</p>
 <pre><code>  public void run() {
@@ -456,7 +455,7 @@ public class Output implements Runnable {
        System.out.println(r.name+&quot;...&quot;+r.sex); 
       }
     }
-}</code></pre><p>=================================第四节课=========================================<br>###15线程等待与唤醒案例测试类<br>   A:线程等待与唤醒案例测试类<br>      /*<br>       *  开启输入线程和输出线程,实现赋值和打印值<br>       */<br>      public class ThreadDemo{<br>        public static void main(String[] args) {</p>
+}</code></pre><p>###15线程等待与唤醒案例测试类<br>   A:线程等待与唤醒案例测试类<br>      /*<br>       *  开启输入线程和输出线程,实现赋值和打印值<br>       */<br>      public class ThreadDemo{<br>        public static void main(String[] args) {</p>
 <pre><code>    Resource r = new Resource();
 
     Input in = new Input();
@@ -666,8 +665,7 @@ public class ThreadDemo{
    tin.start();
    tout.start();
  }
-}</code></pre><p>###20eclipse问题<br>   A:eclipse问题</p>
-
+}</code></pre>
     </div>
 
     
@@ -817,7 +815,7 @@ public class ThreadDemo{
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:05</span>
+    <span title="站点阅读时长">29:04</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="今日内容介绍1、管家婆项目 ###01项目训练目标    * A: 项目训练目标        * a: 项目目标            * 综合运用前面所学习的知识点            * 熟练View层、Service层、Dao层之间的方法相互调用操作、            * 熟练dbutils操作数据库表完成增删改查            * 了解公司项目开发的流程，充分的掌握项目需">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T11:21:13.991Z">
-<meta property="article:modified_time" content="2020-12-23T15:14:20.249Z">
+<meta property="article:modified_time" content="2021-03-22T13:20:05.795Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="java基础学习">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 23:14:20" itemprop="dateModified" datetime="2020-12-23T23:14:20+08:00">2020-12-23</time>
+                <time title="修改时间：2021-03-22 21:20:05" itemprop="dateModified" datetime="2021-03-22T21:20:05+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,7 +237,7 @@
 <p>###02项目中的功能模块<br>    * A: 项目中的功能模块<br>        * a: 五大模块<br>            * 查询账务<br>            * 多条件组合查询账务<br>            * 添加账务<br>            * 编辑账务<br>            * 删除账务</p>
 <p>###03技术的选择和相关jar包<br>    * A: 技术的选择和相关jar包<br>        * a: apache的commons组件：<br>            * commons-dbutils-1.4.jar：封装并简化了JDBC；<br>            * commons-dbcp-1.4.jar：apache commons提供的数据库连接池组件，命名为DBCP；<br>        * b: commons.pool-1.3.jar：DBCP连接池依赖该jar包；<br>            * mysql-connector-java-5.1.28-bin.jar：MySQL的JDBC驱动包，用JDBC连接MySQL数据库必须使用该JAR包。</p>
 <p>###04项目中的工具类<br>    * A: 项目中的工具类<br>        * a: 工具类的介绍<br>            * 每个项目中都会有很多个工具类，不要求每个工具类对能独立写出来，但是要会使用工具类<br>            * JDBCUtils：用来创建数据库连接池对象</p>
-<p>###05数据表的设计<br>    * A: 数据表的设计<br>        * a: 数据表的设计(详见：day34_source/表关系.JPG)<br>            * 表与表之间是有关系的<br>            * 主表和从表的关系<br>            * 主表中的主键作为从表中的外键</p>
+<p>###05数据表的设计<a id="more"></a><br>    * A: 数据表的设计<br>        * a: 数据表的设计(详见：day34_source/表关系.JPG)<br>            * 表与表之间是有关系的<br>            * 主表和从表的关系<br>            * 主表中的主键作为从表中的外键</p>
 <p>​<br>###06创建数据库数据表写入测试数据<br>    * A: 创建数据库数据表写入测试数据<br>        * a: 创建数据库数据表<br>            /*<br>              创建管家婆的数据库<br>              名字 gjp<br>            */<br>            CREATE DATABASE gjp;</p>
 <pre><code>    USE gjp;
 
@@ -402,7 +402,7 @@ private void print(List&lt;ZhangWu&gt; list) {
 <p>###25添加账务功能view层实现<br>    * A: 添加账务功能view层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类addZhangWu方法<br>                public void addZhangWu() {<br>                    System.out.println(“选择的添加账务功能，请输入以下内容”);<br>                    Scanner sc = new Scanner(System.in);<br>                    System.out.println(“输入分类名称”);<br>                    String flname = sc.next();<br>                    System.out.println(“输入金额”);<br>                    double money = sc.nextDouble();<br>                    System.out.println(“输入账户”);<br>                    String zhanghu = sc.next();<br>                    System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                    String createtime = sc.next();<br>                    System.out.println(“输入具体描述”);<br>                    String description = sc.next();<br>                    //将接收到的数据，调用controller层的方法，传递参数，实现数据添加<br>                    //将用户输入的所有参数，封装成ZhangWu对象<br>                    ZhangWu zw = new ZhangWu(0, flname, money, zhanghu, createtime, description);<br>                    controller.addZhangWu(zw);<br>                    System.out.println(“恭喜添加账务成功”);<br>                }</p>
 <p>​<br>###26编辑账务功能分析<br>    * A: 编辑账务功能分析<br>        * a: 编写MainView类中editZhangWu方法<br>            * 键盘输入要编辑的账务信息ID号<br>            * 键盘输入要修改的账务信息内容<br>            * 调用ZhangWuService类中editZhangWu方法，用来将指定的账务信息进行更新<br>            * 更新完毕后，使用输出语句，提示 “编辑账务成功！”<br>        * b: 编写ZhangWuService类中editZhangWu方法<br>            * 调用ZhangWuDao类中editZhangWu方法，用来将指定的账务信息进行更新<br>        * c: 编写ZhangWuDao类中editZhangWu方法<br>            * 通过QueryRunner对象，调用update方法更新数据库表gjp_zhangwu，完成数据库表中指定账务更新操作</p>
 <p>###27编辑账务功能功能之前实现查询所有<br>    * A: 编辑账务功能功能之前实现查询所有<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                public void editZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是编辑功能，请输入数据”);</p>
-<p>​<br>                }</p>
+<p>​<br>​                }</p>
 <p>###28编辑账务功能菜单实现<br>    * A: 编辑账务功能菜单实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.view包中建立MainView类editZhangWu方法<br>                public void editZhangWu() {<br>                    //调用查询所有账务数据的功能，显示出来<br>                    //看到所有数据，从中选择一项，进行修改<br>                    selectAll();<br>                    System.out.println(“选择的是编辑功能，请输入数据”);<br>                    Scanner sc = new Scanner(System.in);<br>                    System.out.print(“请输入ID”);<br>                    int zwid = sc.nextInt();<br>                    System.out.println(“输入分类名称”);<br>                    String flname = sc.next();<br>                    System.out.println(“输入金额”);<br>                    double money = sc.nextDouble();<br>                    System.out.println(“输入账户”);<br>                    String zhanghu = sc.next();<br>                    System.out.println(“输入日期：格式XXXX-XX-xx”);<br>                    String createtime = sc.next();<br>                    System.out.println(“输入具体描述”);<br>                    String description = sc.next();<br>                    //将用户输入的数据，封装到ZhangWu对象中<br>                    //用户输入的ID，必须封装到到对象中<br>                    ZhangWu zw = new ZhangWu(zwid, flname, money, zhanghu, createtime, description);<br>                    //调用controller层中的方法，实现编辑账务<br>                }            </p>
 <p>###29编辑账务功能控制层,业务层实现<br>    * A: 编辑账务功能控制层,业务层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.controller包中的ZhangWuController类editZhangWu方法<br>                /*<br>                 * 定义方法，实现编辑账务功能<br>                 * 由视图层调用，传递参数，也是ZhangWu对象<br>                 * 调用service层的方法，也是ZhangWu对象<br>                 <em>/<br>                public void editZhangWu(ZhangWu zw) {<br>                    service.editZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.service包中的ZhangWuService类editZhangWu方法<br>                /</em><br>                 * 定义方法，实现编辑账务<br>                 * 由控制层调用，传递ZhangWu对象<br>                 * 调用dao层的方法，传递ZhangWu对象<br>                 */<br>                public void editZhangWu(ZhangWu zw) {<br>                    dao.editZhangWu(zw);<br>                }<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类editZhangWu方法<br>                public void editZhangWu(ZhangWu zw) {<br>                    // TODO Auto-generated method stub</p>
 <pre><code>}</code></pre><p>###30编辑账务功能dao层实现<br>    * A：编辑账务功能dao层实现<br>        * a: 案例核心代码<br>            * cn.itcast.gjp.dao包中的ZhangWuDao类editZhangWu方法<br>                /*<br>                 * 定义方法，实现编辑功能<br>                 * 由业务层调用，传递ZhangWu对象<br>                 * 将对象中的数据，更新到数据表<br>                 */<br>                public void editZhangWu(ZhangWu zw) {<br>                    try {<br>                        //更新数据的SQL<br>                        String sql = “UPDATE zhangwu SET flname=?,money=?,zhanghu=?,createtime=?,description=? WHERE zwid=?”;<br>                        //定义对象数组，封装所有数据<br>                        Object[] params = {zw.getFlname(),zw.getMoney(),zw.getZhanghu(),zw.getCreatetime(),zw.getDescription(),zw.getZwid()};<br>                        //调用qr对象方法update执行更新<br>                        qr.update(sql, params);<br>                    } catch (SQLException ex) {<br>                        System.out.println(ex);<br>                        throw new RuntimeException(“编辑账务失败”);<br>                    }</p>
@@ -564,7 +564,7 @@ private void print(List&lt;ZhangWu&gt; list) {
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:05</span>
+    <span title="站点阅读时长">29:04</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
