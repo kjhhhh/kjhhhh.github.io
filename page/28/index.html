@@ -184,10 +184,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:23:07" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:33:23" itemprop="dateModified" datetime="2021-03-23T10:33:23+08:00">2021-03-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -232,107 +238,15 @@
 <li>游戏启动后，<strong>背景图像</strong> 会 <strong>连续不断地</strong> <strong>向下方</strong> 移动</li>
 <li>在 <strong>视觉上</strong> 产生英雄的飞机不断向上方飞行的 <strong>错觉</strong> —— 在很多跑酷类游戏中常用的套路<ul>
 <li><strong>游戏的背景</strong> 不断变化</li>
-<li><strong>游戏的主角</strong> 位置保持不变</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-1-实现思路分析"><a href="#1-1-实现思路分析" class="headerlink" title="1.1 实现思路分析"></a>1.1 实现思路分析</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/013_%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E4%BA%A4%E6%9B%BF%E6%BB%9A%E5%8A%A8.png" alt></p>
-<p><strong>解决办法</strong></p>
-<ol>
-<li>创建两张背景图像精灵<ul>
-<li>第 <code>1</code> 张 <strong>完全和屏幕重合</strong></li>
-<li>第 <code>2</code> 张在 <strong>屏幕的正上方</strong></li>
-</ul>
-</li>
-<li>两张图像 <strong>一起向下方运动</strong><ul>
-<li><code>self.rect.y += self.speed</code></li>
-</ul>
-</li>
-<li>当 <strong>任意背景精灵</strong> 的 <code>rect.y &gt;= 屏幕的高度</code> 说明已经 <strong>移动到屏幕下方</strong></li>
-<li>将 <strong>移动到屏幕下方的这张图像</strong> 设置到 <strong>屏幕的正上方</strong><ul>
-<li><code>rect.y = -rect.height</code>  </li>
-</ul>
-</li>
-</ol>
-<h3 id="1-2-设计背景类"><a href="#1-2-设计背景类" class="headerlink" title="1.2 设计背景类"></a>1.2 设计背景类</h3><p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
-<ul>
-<li><strong>初始化方法</strong><ul>
-<li>直接指定 <strong>背景图片</strong></li>
-<li><code>is_alt</code> 判断是否是另一张图像<ul>
-<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
-<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>update()</strong> 方法<ul>
-<li>判断 <strong>是否移动出屏幕</strong>，如果是，将图像设置到 <strong>屏幕的正上方</strong>，从而实现 <strong>交替滚动</strong></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p><strong>继承</strong> 如果父类提供的方法，不能满足子类的需求：</p>
-<ul>
-<li>派生一个子类</li>
-<li>在子类中针对特有的需求，重写父类方法，并且进行扩展</li>
-</ul>
-</blockquote>
-<h2 id="02-显示游戏背景"><a href="#02-显示游戏背景" class="headerlink" title="02. 显示游戏背景"></a>02. 显示游戏背景</h2><h3 id="2-1-背景精灵的基本实现"><a href="#2-1-背景精灵的基本实现" class="headerlink" title="2.1 背景精灵的基本实现"></a>2.1 背景精灵的基本实现</h3><ul>
-<li>在 <code>plane_sprites</code> 新建 <code>Background</code> 继承自 <code>GameSprite</code></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Background</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""游戏背景精灵"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1. 调用父类的方法实现</span></span><br><span class="line">        super().update()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 判断是否移出屏幕，如果移出屏幕，将图像设置到屏幕的上方</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.y &gt;= SCREEN_RECT.height:</span><br><span class="line">            self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-在-plane-main-py-中显示背景精灵"><a href="#2-2-在-plane-main-py-中显示背景精灵" class="headerlink" title="2.2 在 plane_main.py 中显示背景精灵"></a>2.2 在 <code>plane_main.py</code> 中显示背景精灵</h3><ol>
-<li>在 <code>__create_sprites</code> 方法中创建 <strong>精灵</strong> 和 <strong>精灵组</strong></li>
-<li>在 <code>__update_sprites</code> 方法中，让 <strong>精灵组</strong> 调用 <code>update()</code> 和 <code>draw()</code> 方法</li>
-</ol>
-<blockquote>
-<p><code>__create_sprites</code> 方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__create_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">    bg1 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2 = Background(<span class="string">"./images/background.png"</span>)</span><br><span class="line">    bg2.rect.y = -bg2.rect.height</span><br><span class="line">    </span><br><span class="line">    self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><code>__update_sprites</code> 方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__update_sprites</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    self.back_group.update()</span><br><span class="line">    self.back_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-利用初始化方法，简化背景精灵创建"><a href="#2-3-利用初始化方法，简化背景精灵创建" class="headerlink" title="2.3 利用初始化方法，简化背景精灵创建"></a>2.3 利用初始化方法，简化背景精灵创建</h3><blockquote>
-<p>思考 —— 上一小结完成的代码存在什么样的问题？能否简化？</p>
-</blockquote>
-<ul>
-<li>在主程序中，创建的<strong>两个背景精灵</strong>，<strong>传入了相同的图像文件路径</strong></li>
-<li>创建 <strong>第二个 背景精灵</strong> 时，<strong>在主程序中</strong>，设置背景精灵的图像位置</li>
-</ul>
-<blockquote>
-<p>思考 —— 精灵 <strong>初始位置</strong> 的设置，应该 <strong>由主程序负责</strong>？还是 <strong>由精灵自己负责</strong>？</p>
-</blockquote>
-<p><strong>答案</strong> —— <strong>由精灵自己负责</strong></p>
-<ul>
-<li>根据面向对象设计原则，应该将对象的职责，封装到类的代码内部</li>
-<li>尽量简化程序调用一方的代码调用</li>
-</ul>
-<p><img src="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/012_%E6%B4%BE%E7%94%9FBackground%E5%AD%90%E7%B1%BB.png" alt></p>
-<ul>
-<li><strong>初始化方法</strong><ul>
-<li>直接指定 <strong>背景图片</strong></li>
-<li><code>is_alt</code> 判断是否是另一张图像<ul>
-<li><code>False</code> 表示 <strong>第一张图像</strong>，需要与屏幕重合</li>
-<li><code>True</code> 表示 <strong>另一张图像</strong>，在屏幕的正上方</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>在 <code>plane_sprites.py</code> 中实现 <code>Background</code> 的 <strong>初始化方法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, is_alt=False)</span>:</span></span><br><span class="line"></span><br><span class="line">    image_name = <span class="string">"./images/background.png"</span></span><br><span class="line">    super().__init__(image_name)</span><br><span class="line">       </span><br><span class="line">    <span class="comment"># 判断是否交替图片，如果是，将图片设置到屏幕顶部</span></span><br><span class="line">    <span class="keyword">if</span> is_alt:</span><br><span class="line">        self.rect.y = -self.rect.height</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 <code>plane_main</code> 的 <code>__create_sprites</code> 方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建背景精灵和精灵组</span></span><br><span class="line">bg1 = Background()</span><br><span class="line">bg2 = Background(<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">self.back_group = pygame.sprite.Group(bg1, bg2)</span><br></pre></td></tr></table></figure>
-
-
-
+<li><strong>游戏的主角</strong> 位置保持不变</li></ul></li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -374,10 +288,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:57" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:32:55" itemprop="dateModified" datetime="2021-03-23T10:32:55+08:00">2021-03-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -420,223 +340,15 @@
 </ul>
 <h2 id="01-设计-英雄-和-子弹-类"><a href="#01-设计-英雄-和-子弹-类" class="headerlink" title="01. 设计 英雄 和 子弹 类"></a>01. 设计 <strong>英雄</strong> 和 <strong>子弹</strong> 类</h2><h3 id="英雄需求"><a href="#英雄需求" class="headerlink" title="英雄需求"></a>英雄需求</h3><ol>
 <li>游戏启动后，<strong>英雄</strong> 出现在屏幕的 <strong>水平中间</strong> 位置，距离 <strong>屏幕底部</strong> <code>120</code> <strong>像素</strong></li>
-<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li>
-<li><strong>英雄</strong> 默认不会移动，需要通过 <strong>左/右</strong> 方向键，控制 <strong>英雄</strong> 在水平方向移动</li>
-</ol>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AE.png" alt></p>
-<h3 id="子弹需求"><a href="#子弹需求" class="headerlink" title="子弹需求"></a>子弹需求</h3><ol>
-<li><strong>子弹</strong> 从 <strong>英雄</strong> 的正上方发射 <strong>沿直线</strong> 向 <strong>上方</strong> 飞行</li>
-<li><strong>飞出屏幕后</strong>，需要从 <strong>精灵组</strong> 中删除</li>
-</ol>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/016_%E6%B4%BE%E7%94%9F%E8%8B%B1%E9%9B%84%E5%92%8C%E5%AD%90%E5%BC%B9%E5%AD%90%E7%B1%BB.png" alt></p>
-<h3 id="Hero-——-英雄"><a href="#Hero-——-英雄" class="headerlink" title="Hero —— 英雄"></a>Hero —— 英雄</h3><ul>
-<li><strong>初始化方法</strong><ul>
-<li>指定 <strong>英雄图片</strong></li>
-<li><strong>初始速度 = 0</strong> —— 英雄默认静止不动</li>
-<li>定义 <code>bullets</code> <strong>子弹精灵组</strong> 保存子弹精灵</li>
-</ul>
-</li>
-<li>重写 <strong>update()</strong> 方法<ul>
-<li>英雄需要 <strong>水平移动</strong></li>
-<li>并且需要保证不能 <strong>移出屏幕</strong></li>
-</ul>
-</li>
-<li>增加 <code>bullets</code> 属性，记录所有 <strong>子弹精灵</strong></li>
-<li>增加 <code>fire</code> 方法，用于发射子弹</li>
-</ul>
-<h3 id="Bullet-——-子弹"><a href="#Bullet-——-子弹" class="headerlink" title="Bullet —— 子弹"></a>Bullet —— 子弹</h3><ul>
-<li><strong>初始化方法</strong><ul>
-<li>指定 <strong>子弹图片</strong></li>
-<li><strong>初始速度 = -2</strong> —— 子弹需要向上方飞行</li>
-</ul>
-</li>
-<li>重写 <strong>update()</strong> 方法<ul>
-<li>判断 <strong>是否飞出屏幕</strong>，如果是，从 <strong>精灵组</strong> 删除</li>
-</ul>
-</li>
-</ul>
-<h2 id="02-创建英雄"><a href="#02-创建英雄" class="headerlink" title="02. 创建英雄"></a>02. 创建英雄</h2><h3 id="2-1-准备英雄类"><a href="#2-1-准备英雄类" class="headerlink" title="2.1 准备英雄类"></a>2.1 准备英雄类</h3><ul>
-<li>在 <code>plane_sprites</code> 新建 <code>Hero</code> 类</li>
-<li>重写 <strong>初始化方法</strong>，直接指定 <strong>图片名称</strong>，并且将初始速度设置为 <code>0</code></li>
-<li>设置 <strong>英雄的初始位置</strong></li>
-</ul>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/003_pygame.Rect.png" alt></p>
-<ul>
-<li><code>centerx = x + 0.5 * width</code></li>
-<li><code>centery = y + 0.5 * height</code></li>
-<li><code>bottom = y + height</code></li>
-</ul>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AE.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hero</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""英雄精灵"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        super().__init__(<span class="string">"./images/me1.png"</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置初始位置</span></span><br><span class="line">        self.rect.centerx = SCREEN_RECT.centerx</span><br><span class="line">        self.rect.bottom = SCREEN_RECT.bottom - <span class="number">120</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-绘制英雄"><a href="#2-2-绘制英雄" class="headerlink" title="2.2 绘制英雄"></a>2.2 绘制英雄</h3><ol>
-<li>在 <code>__create_sprites</code>，添加 <strong>英雄精灵</strong> 和 <strong>英雄精灵组</strong><ul>
-<li>后续要针对 <strong>英雄</strong> 做 <strong>碰撞检测</strong> 以及 <strong>发射子弹</strong></li>
-<li>所以 <strong>英雄</strong> 需要 <strong>单独定义成属性</strong></li>
-</ul>
-</li>
-<li>在 <code>__update_sprites</code>，让 <strong>英雄精灵组</strong> 调用 <code>update</code> 和 <code>draw</code> 方法</li>
-</ol>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
-<li>修改 <code>__create_sprites</code> 方法如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 英雄组</span></span><br><span class="line">self.hero = Hero()</span><br><span class="line">self.hero_group = pygame.sprite.Group(self.hero)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 <code>__update_sprites</code> 方法如下：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.hero_group.update()</span><br><span class="line">self.hero_group.draw(self.screen)</span><br></pre></td></tr></table></figure>
-
-<h2 id="03-移动英雄位置"><a href="#03-移动英雄位置" class="headerlink" title="03. 移动英雄位置"></a>03. 移动英雄位置</h2><blockquote>
-<p>在 <code>pygame</code> 中针对 <strong>键盘按键的捕获</strong>，有 <strong>两种</strong> 方式</p>
-</blockquote>
-<ul>
-<li><strong>第一种方式</strong> 判断 <code>event.type == pygame.KEYDOWN</code></li>
-<li><strong>第二种方式</strong> <ol>
-<li>首先使用 <code>pygame.key.get_pressed()</code> 返回 <strong>所有按键元组</strong></li>
-<li>通过 <strong>键盘常量</strong>，判断元组中 <strong>某一个键是否被按下</strong> —— 如果被按下，对应数值为 <code>1</code></li>
-</ol>
-</li>
-</ul>
-<p><strong>提问</strong> 这两种方式之间有什么区别呢？</p>
-<ul>
-<li>第一种方式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> event.type == pygame.KEYDOWN <span class="keyword">and</span> event.key == pygame.K_RIGHT:</span><br><span class="line">    print(<span class="string">"向右移动..."</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>第二种方式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回所有按键的元组，如果某个键被按下，对应的值会是1</span></span><br><span class="line">keys_pressed = pygame.key.get_pressed()</span><br><span class="line"><span class="comment"># 判断是否按下了方向键</span></span><br><span class="line"><span class="keyword">if</span> keys_pressed[pygame.K_RIGHT]:</span><br><span class="line">    print(<span class="string">"向右移动..."</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>结论</strong></p>
-<ul>
-<li><strong>第一种方式</strong> <code>event.type</code> 用户 <strong>必须要抬起按键</strong> 才算一次 <strong>按键事件</strong>，<strong>操作灵活性会大打折扣</strong></li>
-<li><strong>第二种方式</strong> 用户可以按住方向键不放，就能够实现持续向某一个方向移动了，<strong>操作灵活性更好</strong></li>
-</ul>
-<h3 id="3-1-移动英雄位置"><a href="#3-1-移动英雄位置" class="headerlink" title="3.1 移动英雄位置"></a>3.1 移动英雄位置</h3><p><strong>演练步骤</strong></p>
-<ol>
-<li>在 <code>Hero</code> 类中重写 <code>update</code> 方法<ul>
-<li>用 <strong>速度</strong> <code>speed</code> 和 <strong>英雄</strong> <code>rect.x</code> 进行叠加</li>
-<li><strong>不需要调用父类方法</strong> —— 父类方法只是实现了单纯的垂直运动</li>
-</ul>
-</li>
-<li>在 <code>__event_handler</code> 方法中根据 <strong>左右方向键</strong> 设置英雄的 <strong>速度</strong><ul>
-<li><strong>向右</strong> =&gt; <code>speed = 2</code></li>
-<li><strong>向左</strong> =&gt; <code>speed = -2</code></li>
-<li><strong>其他</strong> =&gt; <code>speed = 0</code></li>
-</ul>
-</li>
-</ol>
-<p><strong>代码演练</strong></p>
-<ul>
-<li>在 <code>Hero</code> 类，重写 <code>update()</code> 方法，<strong>根据速度水平移动</strong> 英雄的飞机</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 飞机水平移动</span></span><br><span class="line">    self.rect.x += self.speed</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>调整键盘按键代码</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取用户按键</span></span><br><span class="line">keys_pressed = pygame.key.get_pressed()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> keys_pressed[pygame.K_RIGHT]:</span><br><span class="line">    self.hero.speed = <span class="number">2</span></span><br><span class="line"><span class="keyword">elif</span> keys_pressed[pygame.K_LEFT]:</span><br><span class="line">    self.hero.speed = <span class="number">-2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    self.hero.speed = <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2-控制英雄运动边界"><a href="#3-2-控制英雄运动边界" class="headerlink" title="3.2 控制英雄运动边界"></a>3.2 控制英雄运动边界</h3><ul>
-<li>在 <code>Hero</code> 类的 <code>update()</code> 方法判断 <strong>英雄</strong> 是否超出 <strong>屏幕边界</strong></li>
-</ul>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/003_pygame.Rect.png" alt></p>
-<ul>
-<li><code>right = x + width</code> 利用 <code>right</code> 属性可以非常容易的针对右侧设置精灵位置</li>
-</ul>
-<p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AEII.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 飞机水平移动</span></span><br><span class="line">    self.rect.x += self.speed</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 判断屏幕边界</span></span><br><span class="line">    <span class="keyword">if</span> self.rect.left &lt; <span class="number">0</span>:</span><br><span class="line">        self.rect.left = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> self.rect.right &gt; SCREEN_RECT.right:</span><br><span class="line">        self.rect.right = SCREEN_RECT.right</span><br></pre></td></tr></table></figure>
-
-<h2 id="04-发射子弹"><a href="#04-发射子弹" class="headerlink" title="04. 发射子弹"></a>04. 发射子弹</h2><h3 id="需求回顾-——-英雄需求"><a href="#需求回顾-——-英雄需求" class="headerlink" title="需求回顾 —— 英雄需求"></a>需求回顾 —— 英雄需求</h3><ol>
-<li>游戏启动后，<strong>英雄</strong> 出现在屏幕的 <strong>水平中间</strong> 位置，距离 <strong>屏幕底部</strong> <code>120</code> <strong>像素</strong></li>
-<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li>
-<li><strong>英雄</strong> 默认不会移动，需要通过 <strong>左/右</strong> 方向键，控制 <strong>英雄</strong> 在水平方向移动</li>
-</ol>
-<h3 id="4-1-添加发射子弹事件"><a href="#4-1-添加发射子弹事件" class="headerlink" title="4.1 添加发射子弹事件"></a>4.1 添加发射子弹事件</h3><p><code>pygame</code> 的 <strong>定时器</strong> 使用套路非常固定：</p>
-<ol>
-<li>定义 <strong>定时器常量</strong> —— <code>eventid</code></li>
-<li>在 <strong>初始化方法</strong> 中，调用 <code>set_timer</code> 方法 <strong>设置定时器事件</strong></li>
-<li>在 <strong>游戏循环</strong> 中，<strong>监听定时器事件</strong></li>
-</ol>
-<p><strong>代码实现</strong></p>
-<ul>
-<li>在 <code>Hero</code> 中定义 <code>fire</code> 方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">"发射子弹..."</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在 <code>plane_main.py</code> 的顶部定义 <strong>发射子弹</strong> 事件常量</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 英雄发射子弹事件</span></span><br><span class="line">HERO_FIRE_EVENT = pygame.USEREVENT + <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在 <code>__init__</code> 方法末尾中添加 <strong>发射子弹</strong> 事件</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每隔 0.5 秒发射一次子弹</span></span><br><span class="line">pygame.time.set_timer(HERO_FIRE_EVENT, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在 <code>__event_handler</code> 方法中让英雄发射子弹</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> event.type == HERO_FIRE_EVENT:</span><br><span class="line">    self.hero.fire()</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-2-定义子弹类"><a href="#4-2-定义子弹类" class="headerlink" title="4.2 定义子弹类"></a>4.2 定义子弹类</h3><h4 id="需求回顾-——-子弹需求"><a href="#需求回顾-——-子弹需求" class="headerlink" title="需求回顾 —— 子弹需求"></a>需求回顾 —— 子弹需求</h4><ol>
-<li><strong>子弹</strong> 从 <strong>英雄</strong> 的正上方发射 <strong>沿直线</strong> 向 <strong>上方</strong> 飞行</li>
-<li><strong>飞出屏幕后</strong>，需要从 <strong>精灵组</strong> 中删除</li>
-</ol>
-<h4 id="Bullet-——-子弹-1"><a href="#Bullet-——-子弹-1" class="headerlink" title="Bullet —— 子弹"></a>Bullet —— 子弹</h4><ul>
-<li><strong>初始化方法</strong><ul>
-<li>指定 <strong>子弹图片</strong></li>
-<li><strong>初始速度 = -2</strong> —— 子弹需要向上方飞行</li>
-</ul>
-</li>
-<li>重写 <strong>update()</strong> 方法<ul>
-<li>判断 <strong>是否飞出屏幕</strong>，如果是，从 <strong>精灵组</strong> 删除</li>
-</ul>
-</li>
-</ul>
-<h4 id="定义子弹类"><a href="#定义子弹类" class="headerlink" title="定义子弹类"></a>定义子弹类</h4><ul>
-<li>在 <code>plane_sprites</code> 新建 <code>Bullet</code> 继承自 <code>GameSprite</code></li>
-<li>重写 <strong>初始化方法</strong>，直接指定 <strong>图片名称</strong>，并且设置 <strong>初始速度</strong></li>
-<li>重写 <code>update()</code> 方法，判断子弹 <strong>飞出屏幕从精灵组删除</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bullet</span><span class="params">(GameSprite)</span>:</span></span><br><span class="line">    <span class="string">"""子弹精灵"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        super().__init__(<span class="string">"./images/bullet1.png"</span>, <span class="number">-2</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    </span><br><span class="line">        super().update()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 判断是否超出屏幕，如果是，从精灵组删除</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.bottom &lt; <span class="number">0</span>:</span><br><span class="line">            self.kill()</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-发射子弹"><a href="#4-3-发射子弹" class="headerlink" title="4.3 发射子弹"></a>4.3 发射子弹</h3><p><strong>演练步骤</strong></p>
-<ol>
-<li>在 <code>Hero</code> 的 <strong>初始化方法</strong> 中创建 <strong>子弹精灵组</strong> 属性</li>
-<li>修改 <code>plane_main.py</code> 的 <code>__update_sprites</code> 方法，让 <strong>子弹精灵组</strong> 调用 <code>update</code> 和 <code>draw</code> 方法</li>
-<li>实现 <code>fire()</code> 方法<ul>
-<li>创建子弹精灵</li>
-<li>设置初始位置 —— 在 <strong>英雄的正上方</strong></li>
-<li>将 <strong>子弹</strong> 添加到精灵组</li>
-</ul>
-</li>
-</ol>
-<p><strong>代码实现</strong></p>
-<ul>
-<li>初始化方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建子弹的精灵组</span></span><br><span class="line">self.bullets = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 <code>fire()</code> 方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 创建子弹精灵</span></span><br><span class="line">    bullet = Bullet()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 设置精灵的位置</span></span><br><span class="line">    bullet.rect.bottom = self.rect.y - <span class="number">20</span></span><br><span class="line">    bullet.rect.centerx = self.rect.centerx</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 将精灵添加到精灵组</span></span><br><span class="line">    self.bullets.add(bullet)</span><br></pre></td></tr></table></figure>
-
-<h4 id="一次发射三枚子弹"><a href="#一次发射三枚子弹" class="headerlink" title="一次发射三枚子弹"></a>一次发射三枚子弹</h4><p><img src="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/017_%E8%8B%B1%E9%9B%84%E4%BD%8D%E7%BD%AEIII.png" alt></p>
-<ul>
-<li>修改 <code>fire()</code> 方法，一次发射三枚子弹</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fire</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>):</span><br><span class="line">        <span class="comment"># 1. 创建子弹精灵</span></span><br><span class="line">        bullet = Bullet()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 设置精灵的位置</span></span><br><span class="line">        bullet.rect.bottom = self.rect.y - i * <span class="number">20</span></span><br><span class="line">        bullet.rect.centerx = self.rect.centerx</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 将精灵添加到精灵组</span></span><br><span class="line">        self.bullets.add(bullet)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
+<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li></ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -678,10 +390,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-24 23:04:50 / 修改时间：23:22:48" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:32:15" itemprop="dateModified" datetime="2021-03-23T10:32:15+08:00">2021-03-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -723,37 +441,15 @@
 </ul>
 <h2 id="实战步骤"><a href="#实战步骤" class="headerlink" title="实战步骤"></a>实战步骤</h2><ol>
 <li><code>pygame</code> 快速体验</li>
-<li><strong>飞机大战</strong> 实战</li>
-</ol>
-<h2 id="确认模块-——-pygame"><a href="#确认模块-——-pygame" class="headerlink" title="确认模块 —— pygame"></a>确认模块 —— pygame</h2><ul>
-<li><code>pygame</code> 就是一个 Python 模块，专为电子游戏设计</li>
-<li>官方网站：<a href="https://www.pygame.org/" target="_blank" rel="noopener">https://www.pygame.org/</a><ul>
-<li><strong>提示</strong>：要学习第三方模块，通常最好的参考资料就在官方网站</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>网站栏目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GettingStarted</code></td>
-<td>在各平台安装模块的说明</td>
-</tr>
-<tr>
-<td><code>Docs</code></td>
-<td><code>pygame</code> 模块所有 <strong>类</strong> 和 <strong>子类</strong> 的参考手册</td>
-</tr>
-</tbody></table>
-<h3 id="安装-pygame"><a href="#安装-pygame" class="headerlink" title="安装 pygame"></a>安装 pygame</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip3 install pygame</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m pygame.examples.aliens</span><br></pre></td></tr></table></figure>
-
-
-
+<li><strong>飞机大战</strong> 实战</li></ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1139,7 +835,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:04</span>
+    <span title="站点阅读时长">29:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。 简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。 12345678910&#x2F;*假定字符">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-29T13:54:19.367Z">
-<meta property="article:modified_time" content="2021-03-07T03:12:24.729Z">
+<meta property="article:modified_time" content="2021-03-23T02:25:26.097Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="数据结构基础学习">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-07 11:12:24" itemprop="dateModified" datetime="2021-03-07T11:12:24+08:00">2021-03-07</time>
+                <time title="修改时间：2021-03-23 10:25:26" itemprop="dateModified" datetime="2021-03-23T10:25:26+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,7 +237,7 @@
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">假定字符串在数组中：char S[n]，</span></span><br><span class="line"><span class="comment">模式串在另一数组中：char T[m]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">for (int i = <span class="number">0</span>; <span class="symbol">S</span>[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j = <span class="number">0</span>; <span class="symbol">S</span>[i + j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">T</span>[j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">S</span>[i + j] == <span class="symbol">T</span>[j]; ++j);</span><br><span class="line">	if (<span class="string">'\0'</span> == <span class="symbol">T</span>[j])</span><br><span class="line">		//found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况 </p>
+<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况 <a id="more"></a></p>
 <p>S[5] 与 T[5] 失配，然后下一轮匹配就从 T[0] 与 S[1] 开始。也就是说当这样一个失配发生时，T 下标必须回溯到开始，S 下标回溯的长度与 T 回溯的长度相同，然后 S 下标增 1，然后再次比较。直到最后匹配完毕，或匹配成功。<br>事实上上面这种情况，对于字串 T，由于 T[5] 的前面两个字符与 T 的开始两个字符相同，并且 T[5] 的字符与开始的两个字符后面的那个字符（开始的第三个字符）不同（后面解释），如下图</p>
 <p>结合上面，这样下一轮匹配完全可以从，S[5] 和 T[2] 开始匹配。因为 S[5] 前面的几个（视与T匹配的程度）字符都是与 T 匹配过的，也就是 T 失配位置的前面几个（视程度）和 S 失配位置前同样个数的字符相同的，如果 T 开始位置恰巧和 T 失配位置前几个字符相同，就可以跳过这几个字符的匹配。回到前面，为什么必须T[5] 的字符与开始的两个字符后面的那个字符（开始的第三个字符）不同呢？很简单，T[5] 恰好是失配字符，如果与开始的第三个字符相同，那也必然是失配的情况。<br>上面已经出现了KMP算法的影子了，KMP 算法的核心思想是利用已经得到的部分匹配信息来进行后面的匹配过程。</p>
 <p>在本文前面列举的那个原始匹配算法，通过算法里面的内循环我们可以获知许多关于字符串的信息，凡是匹配，就说明母串中的该字符或该段字符与子串相同，这样我们可以转到子串去分析，构造一个 next 数组：next [i] = j；表示字符模式子串 T[0 ~ i-1] 中前缀和后缀字符相同的长度为 j（最大长度），即 T[0 ~ j-1] == T[i-j ~ i-1]。当模式中，子串第 k 个字符与主串中相应字符失配时，在模式中子串需要重新和主串中该字符进行比较的字符的位置为 next[k]。</p>
@@ -428,7 +428,7 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:04</span>
+    <span title="站点阅读时长">29:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

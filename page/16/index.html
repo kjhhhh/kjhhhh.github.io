@@ -622,7 +622,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-07 11:12:24" itemprop="dateModified" datetime="2021-03-07T11:12:24+08:00">2021-03-07</time>
+                <time title="修改时间：2021-03-23 10:25:26" itemprop="dateModified" datetime="2021-03-23T10:25:26+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -664,48 +664,15 @@
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">假定字符串在数组中：char S[n]，</span></span><br><span class="line"><span class="comment">模式串在另一数组中：char T[m]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">for (int i = <span class="number">0</span>; <span class="symbol">S</span>[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j = <span class="number">0</span>; <span class="symbol">S</span>[i + j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">T</span>[j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">S</span>[i + j] == <span class="symbol">T</span>[j]; ++j);</span><br><span class="line">	if (<span class="string">'\0'</span> == <span class="symbol">T</span>[j])</span><br><span class="line">		//found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况 </p>
-<p>S[5] 与 T[5] 失配，然后下一轮匹配就从 T[0] 与 S[1] 开始。也就是说当这样一个失配发生时，T 下标必须回溯到开始，S 下标回溯的长度与 T 回溯的长度相同，然后 S 下标增 1，然后再次比较。直到最后匹配完毕，或匹配成功。<br>事实上上面这种情况，对于字串 T，由于 T[5] 的前面两个字符与 T 的开始两个字符相同，并且 T[5] 的字符与开始的两个字符后面的那个字符（开始的第三个字符）不同（后面解释），如下图</p>
-<p>结合上面，这样下一轮匹配完全可以从，S[5] 和 T[2] 开始匹配。因为 S[5] 前面的几个（视与T匹配的程度）字符都是与 T 匹配过的，也就是 T 失配位置的前面几个（视程度）和 S 失配位置前同样个数的字符相同的，如果 T 开始位置恰巧和 T 失配位置前几个字符相同，就可以跳过这几个字符的匹配。回到前面，为什么必须T[5] 的字符与开始的两个字符后面的那个字符（开始的第三个字符）不同呢？很简单，T[5] 恰好是失配字符，如果与开始的第三个字符相同，那也必然是失配的情况。<br>上面已经出现了KMP算法的影子了，KMP 算法的核心思想是利用已经得到的部分匹配信息来进行后面的匹配过程。</p>
-<p>在本文前面列举的那个原始匹配算法，通过算法里面的内循环我们可以获知许多关于字符串的信息，凡是匹配，就说明母串中的该字符或该段字符与子串相同，这样我们可以转到子串去分析，构造一个 next 数组：next [i] = j；表示字符模式子串 T[0 ~ i-1] 中前缀和后缀字符相同的长度为 j（最大长度），即 T[0 ~ j-1] == T[i-j ~ i-1]。当模式中，子串第 k 个字符与主串中相应字符失配时，在模式中子串需要重新和主串中该字符进行比较的字符的位置为 next[k]。</p>
-<p>尤其需要注意的是：上面说的 T[0 ~ i-1] 中前缀和后缀字符相同，指的是以子串 T 的每个子部分为目标的前缀和后缀字符相同，然后慢慢向后移，扩大子部分。就是T[0<del>1]，T[0</del>2]，T[0<del>3]，……T[0</del>i-1] 的前缀和后缀字符相同的个数记录在next 数组中。</p>
-<p>就是说，当子串与母串发生失配时，母串并不需要回溯，依旧将失配位置字符与字串的某个位置的字符进行匹配，至于是与字串的哪个位置的字串进行匹配，就是后面讨论的重点了。从前面的分析可以看出一些端倪，当发生失配时，子串重新匹配的字符位置取决于子串失配位置（假定失配字符为T[i]）前部分 T[0~i-1] 中的前缀与后缀的相等部分的最大长度。因为既然匹配到了 T[i]，表明 T[0 ~ i-1] 与母串是匹配的，如果 T[0 ~ j-1] == T[i-j ~ i-1]，那么完全可以从 T[j] 开始与母串失配位置开始匹配，前面部分肯定是匹配的。<br>通过上面分析，关键点就落在了求 next 数组上。next 数组记录每次失配时，子串需要重新和主串中该失配字符进行比较的字符的位置。</p>
-<p> 这里参照 Knuth-Morris-Pratt 于1996 年发表在ICS上的论文，next 数组的起始位置定为-1，结合上面的分析，我们先来看一个子串模式，这里再次说明是失配字符位置的前面部分字符为目标。得出 next 数组，实质就是得出当 T[i] （第 i 个字符）失配时（i = 1,2,……），下一次将匹配的位置为 next[i]。</p>
-<p>示例一：<br>char *T = “abcabdabcaaacccc”;<br>next[0] = -1; i = 0，第 1 个字符前面没有字符，所以为-1；<br>next[1] = 0; i = 1，第 2 个字符前只有 a，肯定为0；</p>
-<p>next[2] = 0; i = 2，第 3 个字符前有 ab，前缀为a，后缀为b，不相等，也为0；</p>
-<p>……</p>
-<p>next[4] = 1; i = 4，第 5 个字符前面有 abca，前缀与后缀相等的最大长度为1</p>
-<p>next[5] = 2; i = 5，第 6 个字符前面有 abcab，前缀与后缀相等的最大长度为 2（ab，abc != cab）</p>
-<p>next[6] = 0; i = 6，第 7 个字符前面有 abcabd，虽然有ab == ab，但是 abc != abd，即必须保证第 i-1 个字符是匹配（模式子串本身前后缀匹配）的，否则，呵呵，前面再怎么匹配也白费，照旧为 0。<br>…… 以此类推，最后得出 next[] = {-1,0,0,0,1,2,0,1,2,3,4,1,1,0,0,0}<br>去掉 next[0] = -1，后面共有15个元素，恰好是模式子串长度 i 减1。失配字符前面的前后缀最大相等长度。</p>
-<p>示例二：</p>
-<p>示例一没有给出失配情况下，next 数组的求值，这里为方便演示，修改一下模式子串</p>
-<p>char *T = “abcabac”;</p>
-<p>next[0 ~ 5] = {-1, 0, 0, 0, 1, 2}; //next[i] = j 表示子串前面 i 个字符构成的字符串前后缀相等的最大长度为 j。abcab最大相等为 2</p>
-<p>到了第6个字符就出现失配了，abcaba 中 abc != aba，那么 next[6] 该为多少呢？</p>
-<p>根据前面匹配信息来，next[5] = 2，表示前面5个字符前后缀有两个字符相等，即前面5个字符构成的字符串首两个字符与第6个字符的前两个字符是匹配的，那么我们就跳转到首两个字符，去获取首两个字符单独的匹配情况。如果首两个字符匹配（相同字符，next[2] = 1），那么就只需拿第 2 个（T[1]）字符与第 6 个字符匹配，如果不匹配（next[2] = 0），那么第 6 个字符就只能同第 1（T[0]） 个字符比较匹配了。总的说来就是T[6] 与T[next[next[5]]] 去比较匹配。</p>
-<p>对于模式子串（求next数组该子串既是母串又是子串），即使起始字符与最后字符不相等，其最大长度也不一定为0，如next[5]，所以求解next数组不能简单的由后往前推求最大相等长度，而需要借助之前结果的递推求解。比如 next[4] = 1，我们就知道前面四个字符最大前后缀相等长度为1，或者 next[i] &gt; 0，我们就知道前面 i 个字符存在前后缀相等（长度为 next[i]）的字符，我们就可以直接去匹配第 i+1 个字符与第 next[i]+1 个字符。比如上面 next[4] = 1，那么下一步就是那第5个字符去匹配第2个字符。这个字符串同数组一样是从0位置开始的。<br>上面是求 next 数组的大致思路，得到 next 数组只是 KMP 中的一部分，但是是最关键的一部分。下面根据上面分析给出程序实现：</p>
-<pre><code>int index = 0;
-next[0] = -1;
-for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
-{
-    index = next[i] + 1;
-    next[i + 1] = index;   //匹配时，next[i+1]递增
-
-    /*在前面存在匹配，但后面出现失配时*/
-    while (index &gt; 0 &amp;&amp; pattern[i] != pattern[index - 1]) //index-1 == next[i]
-    {
-        index = next[index - 1] + 1;      //index = next[next[i]] + 1，加1是为了符合循环
-        next[i + 1] = index;              //失配时更新next[i+1]
-    }
-}</code></pre><p>可针对上面进行优化（KMP论文）</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">​	<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; pattern[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">​	&#123;</span><br><span class="line">​		next[i + <span class="number">1</span>] = next[i] + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​	<span class="keyword">while</span> (next[i + <span class="number">1</span>] &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[next[i + <span class="number">1</span>] - <span class="number">1</span>] <span class="comment">/*patter[next[i]]*/</span>)</span><br><span class="line">​		next[i + <span class="number">1</span>] = next[next[i + <span class="number">1</span>] - <span class="number">1</span>]<span class="comment">/*next[next[i]]*/</span> + <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>得到 next 数组，子串与母串匹配时，next 数组中的数值意义表示：</p>
-<p>next[i] = -1，表示母串 S[m] 已经和 T[0] 比较过了且不相等，下一轮比较 S[m+1] 和 T[0]<br>next[i] = 0，表示比较过程中产生了不相等，下一轮比较 S[m+1] 和 T[0]<br>next[i] = j &gt; 0，表示 S[m] 的前 j 个字符与 T 中的开始 j 个字符相等，下一轮比较 S[m] 和 T[j]<br>下面根据上面分析，给出 KMP 算法完整程序：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> kmp_search(<span class="keyword">const</span> char *target, <span class="keyword">const</span> char *pattern)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">int</span> target_len = strlen(target);</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">int</span> pattern_len = strlen(pattern);</span><br><span class="line">	<span class="built_in">int</span> *next = new <span class="built_in">int</span>[pattern_len];</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*Get next array*/</span></span><br><span class="line">	next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; pattern[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		next[i + <span class="number">1</span>] = next[i] + <span class="number">1</span>;</span><br><span class="line">	 </span><br><span class="line">		<span class="keyword">while</span> (next[i + <span class="number">1</span>] &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[next[i + <span class="number">1</span>] - <span class="number">1</span>])</span><br><span class="line">			next[i + <span class="number">1</span>] = next[next[i + <span class="number">1</span>] - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">/*search*/</span></span><br><span class="line">	<span class="built_in">int</span> target_index = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">int</span> pattern_index = <span class="number">0</span>;</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">while</span> (target_index &lt; target_len &amp;&amp; pattern_index &lt; pattern_len)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pattern[pattern_index] == target[target_index])  <span class="comment">//匹配</span></span><br><span class="line">		&#123;</span><br><span class="line">			++pattern_index;</span><br><span class="line">			++target_index;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>  <span class="comment">/*失配时*/</span></span><br><span class="line">		&#123;</span><br><span class="line">			pattern_index = next[pattern_index];   <span class="comment">//更新模式子串待匹配位置</span></span><br><span class="line">			<span class="keyword">if</span> (<span class="number">-1</span> == pattern_index)  <span class="comment">//-1表示target[target_index]和pattern[0]已经比较过了</span></span><br><span class="line">			&#123;                         <span class="comment">//只有next[0] == -1</span></span><br><span class="line">				pattern_index = <span class="number">0</span>;    <span class="comment">//下一轮直接比较pattern[0]和target[target+1]</span></span><br><span class="line">				++target_index;       </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">/*return position*/</span></span><br><span class="line">	<span class="keyword">if</span> (pattern_index == pattern_len)</span><br><span class="line">		<span class="keyword">return</span> target_index - pattern_index;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度分析：<br>从上面程序可以看出，KMP 的时间复杂度主要由两部分组成，一个是 next 数组的计算，一个是子串与母串的比较。前一个的时间复杂度为O(m)，后一个的时间复杂度为O(n)，所以KMP 算法总的时间复杂度为O(n+m)。</p>
-
+<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -843,7 +810,7 @@ for (int i = 0; pattern[i] != &apos;\0&apos;; ++i)
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">29:04</span>
+    <span title="站点阅读时长">29:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
