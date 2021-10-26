@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今日内容1. JDBC基本概念 2. 快速入门 3. 对JDBC中各个接口和类详解JDBC：1. 概念：Java DataBase Connectivity  Java 数据库连接， Java语言操作数据库     * JDBC本质：其实是官方（sun公司）定义的一套操作所有关系型数据库的规则，即接口。各个数据库厂商去实现这套接口，提供数据库驱动jar包。我们可以使用这套接口（JDBC）编程，真正">
+  <meta name="description" content="今日内容1. JDBC基本概念 2. 快速入门 3. 对JDBC中各个接口和类详解JDBC：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDBC入门">
 <meta property="og:url" content="http://yoursite.com/2021/10/26/JDBC%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="KJHの博客">
-<meta property="og:description" content="今日内容1. JDBC基本概念 2. 快速入门 3. 对JDBC中各个接口和类详解JDBC：1. 概念：Java DataBase Connectivity  Java 数据库连接， Java语言操作数据库     * JDBC本质：其实是官方（sun公司）定义的一套操作所有关系型数据库的规则，即接口。各个数据库厂商去实现这套接口，提供数据库驱动jar包。我们可以使用这套接口（JDBC）编程，真正">
+<meta property="og:description" content="今日内容1. JDBC基本概念 2. 快速入门 3. 对JDBC中各个接口和类详解JDBC：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-26T13:21:52.228Z">
-<meta property="article:modified_time" content="2021-10-26T12:30:32.422Z">
+<meta property="article:modified_time" content="2021-10-26T13:50:04.588Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="Web基础学习">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:30:32" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:50:04" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,7 +207,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.3k</span>
+              <span>8.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -228,7 +228,7 @@
       
         <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. JDBC基本概念
 2. 快速入门
-3. 对JDBC中各个接口和类详解</code></pre><h2 id="JDBC："><a href="#JDBC：" class="headerlink" title="JDBC："></a>JDBC：</h2><pre><code>1. 概念：Java DataBase Connectivity  Java 数据库连接， Java语言操作数据库
+3. 对JDBC中各个接口和类详解</code></pre><h2 id="JDBC："><a href="#JDBC：" class="headerlink" title="JDBC："></a>JDBC：<a id="more"></a></h2><pre><code>1. 概念：Java DataBase Connectivity  Java 数据库连接， Java语言操作数据库
     * JDBC本质：其实是官方（sun公司）定义的一套操作所有关系型数据库的规则，即接口。各个数据库厂商去实现这套接口，提供数据库驱动jar包。我们可以使用这套接口（JDBC）编程，真正执行的代码是驱动jar包中的实现类。
 
 2. 快速入门：
@@ -460,11 +460,8 @@
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }</code></pre><p>​<br>        /**<br>         * 获取连接<br>         * @return 连接对象<br>         */<br>        public static Connection getConnection() throws SQLException {</p>
-<pre><code>    return DriverManager.getConnection(url, user, password);
-}
-
-/**
+    }</code></pre><p>​<br>​        /**<br>​         * 获取连接<br>​         * @return 连接对象<br>​         */<br>​        public static Connection getConnection() throws SQLException {<br>​<br>            return DriverManager.getConnection(url, user, password);<br>        }</p>
+<pre><code>/**
  * 释放资源
  * @param stmt
  * @param conn
@@ -485,16 +482,8 @@ public static void close(Statement stmt,Connection conn){
             e.printStackTrace();
         }
     }
-}</code></pre><p>​<br>        /**<br>         * 释放资源<br>         * @param stmt<br>         * @param conn<br>         */<br>        public static void close(ResultSet rs,Statement stmt, Connection conn){<br>            if( rs != null){<br>                try {<br>                    rs.close();<br>                } catch (SQLException e) {<br>                    e.printStackTrace();<br>                }<br>            }</p>
-<pre><code>        if( stmt != null){
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if( conn != null){
+}</code></pre><p>​<br>​        /**<br>​         * 释放资源<br>​         * @param stmt<br>​         * @param conn<br>​         */<br>​        public static void close(ResultSet rs,Statement stmt, Connection conn){<br>​            if( rs != null){<br>​                try {<br>​                    rs.close();<br>​                } catch (SQLException e) {<br>​                    e.printStackTrace();<br>​                }<br>​            }<br>​<br>            if( stmt != null){<br>                try {<br>                    stmt.close();<br>                } catch (SQLException e) {<br>                    e.printStackTrace();<br>                }<br>            }</p>
+<pre><code>        if( conn != null){
             try {
                 conn.close();
             } catch (SQLException e) {
@@ -542,13 +531,9 @@ public static void close(Statement stmt,Connection conn){
                         System.out.println(&quot;登录成功！&quot;);
                     }else{
                         System.out.println(&quot;用户名或密码错误！&quot;);
-                    }</code></pre><p>​<br>                    }</p>
-<p>​<br>​<br>                    /<em>*<br>                     * 登录方法<br>                     */<br>                    public boolean login(String username ,String password){<br>                        if(username == null || password == null){<br>                            return false;<br>                        }<br>                        //连接数据库判断是否登录成功<br>                        Connection conn = null;<br>                        Statement stmt =  null;<br>                        ResultSet rs = null;<br>                        //1.获取连接<br>                        try {<br>                            conn =  JDBCUtils.getConnection();<br>                            //2.定义sql<br>                            String sql = “select * from user where username = ‘“+username+”‘ and password = ‘“+password+”‘ “;<br>                            //3.获取执行sql的对象<br>                            stmt = conn.createStatement();<br>                            //4.执行查询<br>                            rs = stmt.executeQuery(sql);<br>                            //5.判断<br>                           /</em> if(rs.next()){//如果有下一行，则返回true<br>                                return true;<br>                            }else{<br>                                return false;<br>                            }*/<br>                           return rs.next();//如果有下一行，则返回true</p>
-<pre><code>} catch (SQLException e) {
-    e.printStackTrace();
-}finally {
-    JDBCUtils.close(rs,stmt,conn);
-}</code></pre><p>​<br>                        return false;<br>                    }<br>                }</p>
+                    }</code></pre><p>​<br>​                    }</p>
+<p>​<br>​<br>​                    /<em>*<br>​                     * 登录方法<br>​                     */<br>​                    public boolean login(String username ,String password){<br>​                        if(username == null || password == null){<br>​                            return false;<br>​                        }<br>​                        //连接数据库判断是否登录成功<br>​                        Connection conn = null;<br>​                        Statement stmt =  null;<br>​                        ResultSet rs = null;<br>​                        //1.获取连接<br>​                        try {<br>​                            conn =  JDBCUtils.getConnection();<br>​                            //2.定义sql<br>​                            String sql = “select * from user where username = ‘“+username+”‘ and password = ‘“+password+”‘ “;<br>​                            //3.获取执行sql的对象<br>​                            stmt = conn.createStatement();<br>​                            //4.执行查询<br>​                            rs = stmt.executeQuery(sql);<br>​                            //5.判断<br>​                           /</em> if(rs.next()){//如果有下一行，则返回true<br>​                                return true;<br>​                            }else{<br>​                                return false;<br>​                            }*/<br>​                           return rs.next();//如果有下一行，则返回true<br>​<br>                        } catch (SQLException e) {<br>                            e.printStackTrace();<br>                        }finally {<br>                            JDBCUtils.close(rs,stmt,conn);<br>                        }</p>
+<p>​<br>​                        return false;<br>​                    }<br>​                }</p>
 <h2 id="JDBC控制事务："><a href="#JDBC控制事务：" class="headerlink" title="JDBC控制事务："></a>JDBC控制事务：</h2><pre><code>1. 事务：一个包含多个步骤的业务操作。如果这个业务操作被事务管理，则这多个步骤要么同时成功，要么同时失败。
 2. 操作：
     1. 开启事务
@@ -611,8 +596,8 @@ public static void close(Statement stmt,Connection conn){
             }finally {
                 JDBCUtils.close(pstmt1,conn);
                 JDBCUtils.close(pstmt2,null);
-            }</code></pre><p>​<br>            }</p>
-<pre><code>}</code></pre><p>​            </p>
+            }</code></pre><p>​<br>​            }<br>​<br>        }</p>
+<p>​            </p>
 
     </div>
 
@@ -764,7 +749,7 @@ public static void close(Statement stmt,Connection conn){
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:09</span>
+    <span title="站点阅读时长">35:08</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

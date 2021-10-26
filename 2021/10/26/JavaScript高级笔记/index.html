@@ -28,7 +28,7 @@
 <meta property="og:description" content="今日内容：1. JavaScript：     1. ECMAScript：     2. BOM：     3. DOM：         1. 事件DOM简单学习：为了满足案例要求* 功能：控制html文档的内容 * 获取页面标签(元素)对象：Element     * document.getElementById(&quot;id值&quot;):通过元素的id获取元素对象  * 操作El">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-26T13:22:00.477Z">
-<meta property="article:modified_time" content="2021-10-26T12:31:41.521Z">
+<meta property="article:modified_time" content="2021-10-26T13:49:31.293Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="Web基础学习">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：20:31:41" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:49:31" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,7 +207,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
+              <span>4.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
     2. 修改标签体内容：
         * 属性：innerHTML
         1. 获取元素对象
-        2. 使用innerHTML属性修改标签体内容</code></pre><h2 id="事件简单学习"><a href="#事件简单学习" class="headerlink" title="事件简单学习"></a>事件简单学习</h2><pre><code>* 功能： 某些组件被执行了某些操作后，触发某些代码的执行。
+        2. 使用innerHTML属性修改标签体内容</code></pre><h2 id="事件简单学习"><a href="#事件简单学习" class="headerlink" title="事件简单学习"></a>事件简单学习<a id="more"></a></h2><pre><code>* 功能： 某些组件被执行了某些操作后，触发某些代码的执行。
     * 造句：  xxx被xxx,我就xxx
         * 我方水晶被摧毁后，我就责备对友。
         * 敌方水晶被摧毁后，我就夸奖自己。
@@ -270,52 +270,43 @@
                 //1.获取light2对象
                 var light2 = document.getElementById(&quot;light2&quot;);
                 //2.绑定事件
-                light2.onclick = fun2;</code></pre><p>​<br>                <br>            <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></p>
-<pre><code>* 案例1：电灯开关
-    &lt;!DOCTYPE html&gt;
-    &lt;html lang=&quot;en&quot;&gt;
-    &lt;head&gt;
-        &lt;meta charset=&quot;UTF-8&quot;&gt;
-        &lt;title&gt;电灯开关&lt;/title&gt;
+                light2.onclick = fun2;</code></pre><p>​<br>​                <br>​            <br>​<br>    * 案例1：电灯开关<br>        <!DOCTYPE html><br>        <html lang="en"><br>        <head><br>            <meta charset="UTF-8"><br>            <title>电灯开关</title></head></html></p>
+<pre><code>&lt;/head&gt;
+&lt;body&gt;
 
-    &lt;/head&gt;
-    &lt;body&gt;
+&lt;img id=&quot;light&quot; src=&quot;img/off.gif&quot;&gt;
 
-    &lt;img id=&quot;light&quot; src=&quot;img/off.gif&quot;&gt;
+&lt;script&gt;
+    /*
+        分析：
+            1.获取图片对象
+            2.绑定单击事件
+            3.每次点击切换图片
+                * 规则：
+                    * 如果灯是开的 on,切换图片为 off
+                    * 如果灯是关的 off,切换图片为 on
+                * 使用标记flag来完成
 
-    &lt;script&gt;
-        /*
-            分析：
-                1.获取图片对象
-                2.绑定单击事件
-                3.每次点击切换图片
-                    * 规则：
-                        * 如果灯是开的 on,切换图片为 off
-                        * 如果灯是关的 off,切换图片为 on
-                    * 使用标记flag来完成
+     */
 
-         */
+    //1.获取图片对象
+    var light = document.getElementById(&quot;light&quot;);
 
-        //1.获取图片对象
-        var light = document.getElementById(&quot;light&quot;);
+    var flag = false;//代表灯是灭的。 off图片
 
-        var flag = false;//代表灯是灭的。 off图片
+    //2.绑定单击事件
+    light.onclick = function(){
+        if(flag){//判断如果灯是开的，则灭掉
+            light.src = &quot;img/off.gif&quot;;
+            flag = false;
 
-        //2.绑定单击事件
-        light.onclick = function(){
-            if(flag){//判断如果灯是开的，则灭掉
-                light.src = &quot;img/off.gif&quot;;
-                flag = false;
+        }else{
+            //如果灯是灭的，则打开
 
-            }else{
-                //如果灯是灭的，则打开
-
-                light.src = &quot;img/on.gif&quot;;
-                flag = true;
-            }</code></pre><p>​<br>            }</p>
-<pre><code>&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre><h1 id="BOM"><a href="#BOM" class="headerlink" title="BOM:"></a>BOM:</h1><pre><code>1. 概念：Browser Object Model 浏览器对象模型
+            light.src = &quot;img/on.gif&quot;;
+            flag = true;
+        }</code></pre><p>​<br>​            }<br>​<br>        <br>        <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><br>        </p>
+<h1 id="BOM"><a href="#BOM" class="headerlink" title="BOM:"></a>BOM:</h1><pre><code>1. 概念：Browser Object Model 浏览器对象模型
     * 将浏览器的各个组成部分封装成对象。
 
 2. 组成：
@@ -475,12 +466,8 @@
         2. onmouseup    鼠标按键被松开。
         3. onmousemove    鼠标被移动。
         4. onmouseover    鼠标移到某元素之上。
-        5. onmouseout    鼠标从某元素移开。</code></pre><p>​<br>        5. 键盘事件：<br>            1. onkeydown    某个键盘按键被按下。<br>            2. onkeyup        某个键盘按键被松开。<br>            3. onkeypress    某个键盘按键被按下并松开。</p>
-<pre><code>6. 选择和改变
-    1. onchange    域的内容被改变。
-    2. onselect    文本被选中。
-
-7. 表单事件：
+        5. onmouseout    鼠标从某元素移开。</code></pre><p>​<br>​        5. 键盘事件：<br>​            1. onkeydown    某个键盘按键被按下。<br>​            2. onkeyup        某个键盘按键被松开。<br>​            3. onkeypress    某个键盘按键被按下并松开。<br>​<br>        6. 选择和改变<br>            1. onchange    域的内容被改变。<br>            2. onselect    文本被选中。</p>
+<pre><code>7. 表单事件：
     1. onsubmit    确认按钮被点击。
     2. onreset    重置按钮被点击。</code></pre>
     </div>
@@ -633,7 +620,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:09</span>
+    <span title="站点阅读时长">35:08</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

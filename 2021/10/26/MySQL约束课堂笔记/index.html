@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今日内容1. DQL:查询语句     1. 排序查询     2. 聚合函数     3. 分组查询     4. 分页查询  2. 约束 3. 多表之间的关系 4. 范式 5. 数据库的备份和还原DQL:查询语句1. 排序查询     * 语法：order by 子句         * order by 排序字段1 排序方式1 ，  排序字段2 排序方式2...      * 排序方式：">
+  <meta name="description" content="今日内容1. DQL:查询语句     1. 排序查询     2. 聚合函数     3. 分组查询     4. 分页查询  2. 约束 3. 多表之间的关系 4. 范式 5. 数据库的备份和还原DQL:查询语句">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL约束">
 <meta property="og:url" content="http://yoursite.com/2021/10/26/MySQL%E7%BA%A6%E6%9D%9F%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="KJHの博客">
-<meta property="og:description" content="今日内容1. DQL:查询语句     1. 排序查询     2. 聚合函数     3. 分组查询     4. 分页查询  2. 约束 3. 多表之间的关系 4. 范式 5. 数据库的备份和还原DQL:查询语句1. 排序查询     * 语法：order by 子句         * order by 排序字段1 排序方式1 ，  排序字段2 排序方式2...      * 排序方式：">
+<meta property="og:description" content="今日内容1. DQL:查询语句     1. 排序查询     2. 聚合函数     3. 分组查询     4. 分页查询  2. 约束 3. 多表之间的关系 4. 范式 5. 数据库的备份和还原DQL:查询语句">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-26T13:21:52.240Z">
-<meta property="article:modified_time" content="2021-10-26T12:27:27.650Z">
+<meta property="article:modified_time" content="2021-10-26T13:53:28.383Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="Web基础学习">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:27:27" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:53:28" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,7 +207,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -235,7 +235,7 @@
 2. 约束
 3. 多表之间的关系
 4. 范式
-5. 数据库的备份和还原</code></pre><h1 id="DQL-查询语句"><a href="#DQL-查询语句" class="headerlink" title="DQL:查询语句"></a>DQL:查询语句</h1><pre><code>1. 排序查询
+5. 数据库的备份和还原</code></pre><h1 id="DQL-查询语句"><a href="#DQL-查询语句" class="headerlink" title="DQL:查询语句"></a>DQL:查询语句<a id="more"></a></h1><pre><code>1. 排序查询
     * 语法：order by 子句
         * order by 排序字段1 排序方式1 ，  排序字段2 排序方式2...
 
@@ -284,10 +284,8 @@
         --  按照性别分组。分别查询男、女同学的平均分,人数 要求：分数低于70分的人，不参与分组,分组之后。人数要大于2个人
         SELECT sex , AVG(math),COUNT(id) FROM student WHERE math &gt; 70 GROUP BY sex HAVING COUNT(id) &gt; 2;
 
-        SELECT sex , AVG(math),COUNT(id) 人数 FROM student WHERE math &gt; 70 GROUP BY sex HAVING 人数 &gt; 2;</code></pre><p>​<br>    4. 分页查询<br>        1. 语法：limit 开始的索引,每页查询的条数;<br>        2. 公式：开始的索引 = （当前的页码 - 1） * 每页显示的条数<br>            – 每页显示3条记录 </p>
-<pre><code>    SELECT * FROM student LIMIT 0,3; -- 第1页
-
-    SELECT * FROM student LIMIT 3,3; -- 第2页
+        SELECT sex , AVG(math),COUNT(id) 人数 FROM student WHERE math &gt; 70 GROUP BY sex HAVING 人数 &gt; 2;</code></pre><p>​<br>​    4. 分页查询<br>​        1. 语法：limit 开始的索引,每页查询的条数;<br>​        2. 公式：开始的索引 = （当前的页码 - 1） * 每页显示的条数<br>​            – 每页显示3条记录<br>​<br>            SELECT * FROM student LIMIT 0,3; – 第1页</p>
+<pre><code>    SELECT * FROM student LIMIT 3,3; -- 第2页
 
     SELECT * FROM student LIMIT 6,3; -- 第3页
 
@@ -349,7 +347,7 @@
         create table stu(
             id int primary key auto_increment,-- 给id添加主键约束
             name varchar(20)
-        );</code></pre><p>​<br>            3. 删除自动增长<br>            ALTER TABLE stu MODIFY id INT;<br>            4. 添加自动增长<br>            ALTER TABLE stu MODIFY id INT AUTO_INCREMENT;</p>
+        );</code></pre><p>​<br>​            3. 删除自动增长<br>​            ALTER TABLE stu MODIFY id INT;<br>​            4. 添加自动增长<br>​            ALTER TABLE stu MODIFY id INT AUTO_INCREMENT;</p>
 <pre><code>* 外键约束：foreign key,让表于表产生关系，从而保证数据的正确性。
     1. 在创建表时，可以添加外键
         * 语法：
@@ -363,7 +361,7 @@
         ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
 
     3. 创建表之后，添加外键
-        ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名称) REFERENCES 主表名称(主表列名称);</code></pre><p>​<br>        4. 级联操作<br>            1. 添加级联操作<br>                语法：ALTER TABLE 表名 ADD CONSTRAINT 外键名称<br>                        FOREIGN KEY (外键字段名称) REFERENCES 主表名称(主表列名称) ON UPDATE CASCADE ON DELETE CASCADE  ;<br>            2. 分类：<br>                1. 级联更新：ON UPDATE CASCADE<br>                2. 级联删除：ON DELETE CASCADE </p>
+        ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名称) REFERENCES 主表名称(主表列名称);</code></pre><p>​<br>​        4. 级联操作<br>​            1. 添加级联操作<br>​                语法：ALTER TABLE 表名 ADD CONSTRAINT 外键名称<br>​                        FOREIGN KEY (外键字段名称) REFERENCES 主表名称(主表列名称) ON UPDATE CASCADE ON DELETE CASCADE  ;<br>​            2. 分类：<br>​                1. 级联更新：ON UPDATE CASCADE<br>​                2. 级联删除：ON DELETE CASCADE </p>
 <h2 id="数据库的设计"><a href="#数据库的设计" class="headerlink" title="数据库的设计"></a>数据库的设计</h2><pre><code>1. 多表之间的关系
     1. 分类：
         1. 一对一(了解)：
@@ -448,11 +446,8 @@
             PRIMARY KEY(rid,uid), -- 联合主键
             FOREIGN KEY (rid) REFERENCES tab_route(rid),
             FOREIGN KEY(uid) REFERENCES tab_user(uid)
-        );</code></pre><p>​<br>    2. 数据库设计的范式<br>        * 概念：设计数据库时，需要遵循的一些规范。要遵循后边的范式要求，必须先遵循前边的所有范式要求</p>
-<pre><code>    设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越小。
-    目前关系数据库有六种范式：第一范式（1NF）、第二范式（2NF）、第三范式（3NF）、巴斯-科德范式（BCNF）、第四范式(4NF）和第五范式（5NF，又称完美范式）。
-
-* 分类：
+        );</code></pre><p>​<br>​    2. 数据库设计的范式<br>​        * 概念：设计数据库时，需要遵循的一些规范。要遵循后边的范式要求，必须先遵循前边的所有范式要求<br>​<br>            设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越小。<br>            目前关系数据库有六种范式：第一范式（1NF）、第二范式（2NF）、第三范式（3NF）、巴斯-科德范式（BCNF）、第四范式(4NF）和第五范式（5NF，又称完美范式）。</p>
+<pre><code>* 分类：
     1. 第一范式（1NF）：每一列都是不可分割的原子数据项
     2. 第二范式（2NF）：在1NF的基础上，非码属性必须完全依赖于码（在1NF基础上消除非主属性对主码的部分函数依赖）
         * 几个概念：
@@ -628,7 +623,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:09</span>
+    <span title="站点阅读时长">35:08</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今日内容：1. Servlet 2. HTTP协议 3. RequestServlet：1. 概念 2. 步骤 3. 执行原理 4. 生命周期 5. Servlet3.0 注解配置 6. Servlet的体系结构         Servlet -- 接口         |     GenericServlet -- 抽象类         |     HttpServlet  -- 抽象类">
+  <meta name="description" content="今日内容：1. Servlet 2. HTTP协议 3. RequestServlet：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Servlet|HTTP协议|Request对象">
 <meta property="og:url" content="http://yoursite.com/2021/10/26/Servlet&HTTP&Request%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="KJHの博客">
-<meta property="og:description" content="今日内容：1. Servlet 2. HTTP协议 3. RequestServlet：1. 概念 2. 步骤 3. 执行原理 4. 生命周期 5. Servlet3.0 注解配置 6. Servlet的体系结构         Servlet -- 接口         |     GenericServlet -- 抽象类         |     HttpServlet  -- 抽象类">
+<meta property="og:description" content="今日内容：1. Servlet 2. HTTP协议 3. RequestServlet：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-26T13:21:52.246Z">
-<meta property="article:modified_time" content="2021-10-26T12:25:01.253Z">
+<meta property="article:modified_time" content="2021-10-26T13:53:48.844Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="Web基础学习">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:25:01" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:53:48" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,7 +228,7 @@
       
         <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. Servlet
 2. HTTP协议
-3. Request</code></pre><h2 id="Servlet："><a href="#Servlet：" class="headerlink" title="Servlet："></a>Servlet：</h2><pre><code>1. 概念
+3. Request</code></pre><h2 id="Servlet："><a href="#Servlet：" class="headerlink" title="Servlet："></a>Servlet：<a id="more"></a></h2><pre><code>1. 概念
 2. 步骤
 3. 执行原理
 4. 生命周期
@@ -360,18 +360,9 @@
                     *  ServletInputStream getInputStream()：获取字节输入流，可以操作所有类型数据
                         * 在文件上传知识点后讲解
 
-                2. 再从流对象中拿数据</code></pre><p>​<br>        2. 其他功能：<br>            1. 获取请求参数通用方式：不论get还是post请求方式都可以使用下列方法来获取请求参数<br>                1. String getParameter(String name):根据参数名称获取参数值    username=zs&amp;password=123<br>                2. String[] getParameterValues(String name):根据参数名称获取参数值的数组  hobby=xx&amp;hobby=game<br>                3. Enumeration<String> getParameterNames():获取所有请求的参数名称<br>                4. Map&lt;String,String[]&gt; getParameterMap():获取所有参数的map集合</String></p>
-<pre><code>* 中文乱码问题：
-    * get方式：tomcat 8 已经将get方式乱码问题解决了
-    * post方式：会乱码
-        * 解决：在获取参数前，设置request的编码request.setCharacterEncoding(&quot;utf-8&quot;);</code></pre><p>​<br>            2. 请求转发：一种在服务器内部的资源跳转方式<br>                1. 步骤：<br>                    1. 通过request对象获取请求转发器对象：RequestDispatcher getRequestDispatcher(String path)<br>                    2. 使用RequestDispatcher对象来进行转发：forward(ServletRequest request, ServletResponse response) </p>
-<pre><code>    2. 特点：
-        1. 浏览器地址栏路径不发生变化
-        2. 只能转发到当前服务器内部资源中。
-        3. 转发是一次请求
-
-
-3. 共享数据：
+                2. 再从流对象中拿数据</code></pre><p>​<br>​        2. 其他功能：<br>​            1. 获取请求参数通用方式：不论get还是post请求方式都可以使用下列方法来获取请求参数<br>​                1. String getParameter(String name):根据参数名称获取参数值    username=zs&amp;password=123<br>​                2. String[] getParameterValues(String name):根据参数名称获取参数值的数组  hobby=xx&amp;hobby=game<br>​                3. Enumeration<String> getParameterNames():获取所有请求的参数名称<br>​                4. Map&lt;String,String[]&gt; getParameterMap():获取所有参数的map集合<br>​<br>                * 中文乱码问题：<br>                    * get方式：tomcat 8 已经将get方式乱码问题解决了<br>                    * post方式：会乱码<br>                        * 解决：在获取参数前，设置request的编码request.setCharacterEncoding(“utf-8”);</String></p>
+<p>​<br>​            2. 请求转发：一种在服务器内部的资源跳转方式<br>​                1. 步骤：<br>​                    1. 通过request对象获取请求转发器对象：RequestDispatcher getRequestDispatcher(String path)<br>​                    2. 使用RequestDispatcher对象来进行转发：forward(ServletRequest request, ServletResponse response)<br>​<br>                2. 特点：<br>                    1. 浏览器地址栏路径不发生变化<br>                    2. 只能转发到当前服务器内部资源中。<br>                    3. 转发是一次请求</p>
+<pre><code>3. 共享数据：
     * 域对象：一个有作用范围的对象，可以在范围内共享数据
     * request域：代表一次请求的范围，一般用于请求转发的多个资源中共享数据
     * 方法：
@@ -412,12 +403,8 @@
 
             private int id;
             private String username;
-            private String password;</code></pre><p>​<br>                public int getId() {<br>                    return id;<br>                }</p>
-<pre><code>        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getUsername() {
+            private String password;</code></pre><p>​<br>​                public int getId() {<br>​                    return id;<br>​                }<br>​<br>                public void setId(int id) {<br>                    this.id = id;<br>                }</p>
+<pre><code>        public String getUsername() {
             return username;
         }
 
@@ -486,10 +473,8 @@
          */
         public static DataSource getDataSource(){
             return ds;
-        }</code></pre><p>​<br>                /**<br>                 * 获取连接Connection对象<br>                 */<br>                public static Connection getConnection() throws SQLException {<br>                    return  ds.getConnection();<br>                }<br>            }<br>        5. 创建包cn.itcast.dao,创建类UserDao,提供login方法</p>
-<pre><code>package cn.itcast.dao;
-
-import cn.itcast.domain.User;
+        }</code></pre><p>​<br>​                /**<br>​                 * 获取连接Connection对象<br>​                 */<br>​                public static Connection getConnection() throws SQLException {<br>​                    return  ds.getConnection();<br>​                }<br>​            }<br>​        5. 创建包cn.itcast.dao,创建类UserDao,提供login方法<br>​<br>            package cn.itcast.dao;</p>
+<pre><code>import cn.itcast.domain.User;
 import cn.itcast.util.JDBCUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -515,25 +500,18 @@ public class UserDao {
             //2.调用query方法
             User user = template.queryForObject(sql,
                     new BeanPropertyRowMapper&lt;User&gt;(User.class),
-                    loginUser.getUsername(), loginUser.getPassword());</code></pre><p>​<br>                        return user;<br>                    } catch (DataAccessException e) {<br>                        e.printStackTrace();//记录日志<br>                        return null;<br>                    }<br>                }<br>            }</p>
-<pre><code>6. 编写cn.itcast.web.servlet.LoginServlet类
-    package cn.itcast.web.servlet;
+                    loginUser.getUsername(), loginUser.getPassword());</code></pre><p>​<br>​                        return user;<br>​                    } catch (DataAccessException e) {<br>​                        e.printStackTrace();//记录日志<br>​                        return null;<br>​                    }<br>​                }<br>​            }<br>​<br>        6. 编写cn.itcast.web.servlet.LoginServlet类<br>            package cn.itcast.web.servlet;</p>
+<pre><code>import cn.itcast.dao.UserDao;
+import cn.itcast.domain.User;
 
-    import cn.itcast.dao.UserDao;
-    import cn.itcast.domain.User;
-
-    import javax.servlet.ServletException;
-    import javax.servlet.annotation.WebServlet;
-    import javax.servlet.http.HttpServlet;
-    import javax.servlet.http.HttpServletRequest;
-    import javax.servlet.http.HttpServletResponse;
-    import java.io.IOException;</code></pre><p>​<br>            @WebServlet(“/loginServlet”)<br>            public class LoginServlet extends HttpServlet {</p>
-<p>​<br>                @Override<br>                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {<br>                    //1.设置编码<br>                    req.setCharacterEncoding(“utf-8”);<br>                    //2.获取请求参数<br>                    String username = req.getParameter(“username”);<br>                    String password = req.getParameter(“password”);<br>                    //3.封装user对象<br>                    User loginUser = new User();<br>                    loginUser.setUsername(username);<br>                    loginUser.setPassword(password);</p>
-<pre><code>            //4.调用UserDao的login方法
-            UserDao dao = new UserDao();
-            User user = dao.login(loginUser);
-
-            //5.判断user
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;</code></pre><p>​<br>​            @WebServlet(“/loginServlet”)<br>​            public class LoginServlet extends HttpServlet {</p>
+<p>​<br>​                @Override<br>​                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {<br>​                    //1.设置编码<br>​                    req.setCharacterEncoding(“utf-8”);<br>​                    //2.获取请求参数<br>​                    String username = req.getParameter(“username”);<br>​                    String password = req.getParameter(“password”);<br>​                    //3.封装user对象<br>​                    User loginUser = new User();<br>​                    loginUser.setUsername(username);<br>​                    loginUser.setPassword(password);<br>​<br>                    //4.调用UserDao的login方法<br>                    UserDao dao = new UserDao();<br>                    User user = dao.login(loginUser);</p>
+<pre><code>            //5.判断user
             if(user == null){
                 //登录失败
                 req.getRequestDispatcher(&quot;/failServlet&quot;).forward(req,resp);
@@ -567,7 +545,7 @@ public class UserDao {
                 response.setContentType(&quot;text/html;charset=utf-8&quot;);
                 //输出
                 response.getWriter().write(&quot;登录成功！&quot;+user.getUsername()+&quot;,欢迎您&quot;);
-            }</code></pre><p>​<br>                }        </p>
+            }</code></pre><p>​<br>​                }        </p>
 <pre><code>    @WebServlet(&quot;/failServlet&quot;)
     public class FailServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -761,7 +739,7 @@ public class UserDao {
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:09</span>
+    <span title="站点阅读时长">35:08</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

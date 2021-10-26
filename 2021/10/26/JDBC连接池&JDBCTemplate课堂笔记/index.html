@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今日内容1. 数据库连接池  2. Spring JDBC : JDBC Template数据库连接池1. 概念：其实就是一个容器(集合)，存放数据库连接的容器。         当系统初始化好后，容器被创建，容器中会申请一些连接对象，当用户来访问数据库时，从容器中获取连接对象，用户访问完之后，会将连接对象归还给容器。  2. 好处：     1. 节约资源     2. 用户访问高效  3. 实">
+  <meta name="description" content="今日内容1. 数据库连接池  2. Spring JDBC : JDBC Template数据库连接池">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDBC连接池|JDBCTemplate">
 <meta property="og:url" content="http://yoursite.com/2021/10/26/JDBC%E8%BF%9E%E6%8E%A5%E6%B1%A0&JDBCTemplate%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="KJHの博客">
-<meta property="og:description" content="今日内容1. 数据库连接池  2. Spring JDBC : JDBC Template数据库连接池1. 概念：其实就是一个容器(集合)，存放数据库连接的容器。         当系统初始化好后，容器被创建，容器中会申请一些连接对象，当用户来访问数据库时，从容器中获取连接对象，用户访问完之后，会将连接对象归还给容器。  2. 好处：     1. 节约资源     2. 用户访问高效  3. 实">
+<meta property="og:description" content="今日内容1. 数据库连接池  2. Spring JDBC : JDBC Template数据库连接池">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-26T13:21:52.231Z">
-<meta property="article:modified_time" content="2021-10-26T12:29:45.217Z">
+<meta property="article:modified_time" content="2021-10-26T13:50:14.624Z">
 <meta property="article:author" content="匡俊桦">
 <meta property="article:tag" content="Web基础学习">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:29:45" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:50:14" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,7 +228,7 @@
       
         <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 数据库连接池
 
-2. Spring JDBC : JDBC Template</code></pre><h2 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h2><pre><code>1. 概念：其实就是一个容器(集合)，存放数据库连接的容器。
+2. Spring JDBC : JDBC Template</code></pre><h2 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池<a id="more"></a></h2><pre><code>1. 概念：其实就是一个容器(集合)，存放数据库连接的容器。
         当系统初始化好后，容器被创建，容器中会申请一些连接对象，当用户来访问数据库时，从容器中获取连接对象，用户访问完之后，会将连接对象归还给容器。
 
 2. 好处：
@@ -336,19 +336,10 @@
                 }*/
 
                close(null,stmt,conn);
-            }</code></pre><p>​<br>                public static void close(ResultSet rs , Statement stmt, Connection conn){</p>
-<p>​<br>                    if(rs != null){<br>                        try {<br>                            rs.close();<br>                        } catch (SQLException e) {<br>                            e.printStackTrace();<br>                        }<br>                    }</p>
-<p>​<br>                    if(stmt != null){<br>                        try {<br>                            stmt.close();<br>                        } catch (SQLException e) {<br>                            e.printStackTrace();<br>                        }<br>                    }</p>
-<pre><code>        if(conn != null){
-            try {
-                conn.close();//归还连接
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
+            }</code></pre><p>​<br>​                public static void close(ResultSet rs , Statement stmt, Connection conn){</p>
+<p>​<br>​                    if(rs != null){<br>​                        try {<br>​                            rs.close();<br>​                        } catch (SQLException e) {<br>​                            e.printStackTrace();<br>​                        }<br>​                    }</p>
+<p>​<br>​                    if(stmt != null){<br>​                        try {<br>​                            stmt.close();<br>​                        } catch (SQLException e) {<br>​                            e.printStackTrace();<br>​                        }<br>​                    }<br>​<br>                    if(conn != null){<br>                        try {<br>                            conn.close();//归还连接<br>                        } catch (SQLException e) {<br>                            e.printStackTrace();<br>                        }<br>                    }<br>                }</p>
+<pre><code>    /**
      * 获取连接池方法
      */
 
@@ -402,15 +393,8 @@
 
             public class JdbcTemplateDemo2 {
 
-                //Junit单元测试，可以让方法独立执行</code></pre><p>​<br>                    //1. 获取JDBCTemplate对象<br>                    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());<br>                    /**<br>                     * 1. 修改1号数据的 salary 为 10000<br>                     */<br>                    @Test<br>                    public void test1(){</p>
-<pre><code>    //2. 定义sql
-    String sql = &quot;update emp set salary = 10000 where id = 1001&quot;;
-    //3. 执行sql
-    int count = template.update(sql);
-    System.out.println(count);
-}
-
-/**
+                //Junit单元测试，可以让方法独立执行</code></pre><p>​<br>​                    //1. 获取JDBCTemplate对象<br>​                    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());<br>​                    /**<br>​                     * 1. 修改1号数据的 salary 为 10000<br>​                     */<br>​                    @Test<br>​                    public void test1(){<br>​<br>                        //2. 定义sql<br>                        String sql = “update emp set salary = 10000 where id = 1001”;<br>                        //3. 执行sql<br>                        int count = template.update(sql);<br>                        System.out.println(count);<br>                    }</p>
+<pre><code>/**
  * 2. 添加一条记录
  */
 @Test
@@ -489,12 +473,8 @@ public void test6(){
 
             return emp;
         }
-    });</code></pre><p>​<br>                        for (Emp emp : list) {<br>                            System.out.println(emp);<br>                        }<br>                    }</p>
-<pre><code>    /**
-     * 6. 查询所有记录，将其封装为Emp对象的List集合
-     */
-
-    @Test
+    });</code></pre><p>​<br>​                        for (Emp emp : list) {<br>​                            System.out.println(emp);<br>​                        }<br>​                    }<br>​<br>                    /**<br>                     * 6. 查询所有记录，将其封装为Emp对象的List集合<br>                     */</p>
+<pre><code>    @Test
     public void test6_2(){
         String sql = &quot;select * from emp&quot;;
         List&lt;Emp&gt; list = template.query(sql, new BeanPropertyRowMapper&lt;Emp&gt;(Emp.class));
@@ -665,7 +645,7 @@ public void test6(){
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:09</span>
+    <span title="站点阅读时长">35:08</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
