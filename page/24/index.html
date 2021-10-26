@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/31/%E6%B1%87%E7%BC%96ASIIC%E7%A0%81%E5%B8%B8%E8%A7%81%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">STLvector内部机制</a>
+            <a href="/2020/12/31/%E6%B1%87%E7%BC%96ASIIC%E7%A0%81%E5%B8%B8%E8%A7%81%E5%80%BC/" class="post-title-link" itemprop="url">汇编ASCII码常见值</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:33:10" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:10+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-31 17:07:03" itemprop="dateCreated datePublished" datetime="2020-12-31T17:07:03+08:00">2020-12-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:37:13" itemprop="dateModified" datetime="2021-03-22T21:37:13+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:50:02" itemprop="dateModified" datetime="2021-03-22T21:50:02+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
                 </span>
             </span>
 
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7k</span>
+              <span>93</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -229,17 +229,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>先了解几个必要成员及函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对源码略作调整</span></span><br><span class="line">iterator _M_start;                  <span class="comment">//表示目前使用空间的头</span></span><br><span class="line">iterator _M_finish;                 <span class="comment">//表示目前使用空间的尾（尾：最后一个元素的下一个位置）</span></span><br><span class="line">iterator _M_end_of_storage;         <span class="comment">//表示目前可用空间的尾</span></span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _M_start; &#125;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span>   </span>&#123; <span class="keyword">return</span> _M_finish; &#125;</span><br><span class="line"><span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span>                  <span class="comment">//目前空间元素的个数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(end() - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">max_size</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(<span class="number">-1</span>) / <span class="keyword">sizeof</span>(_Tp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span>              <span class="comment">//容量</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(_M_end_of_storage - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> begin() == end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>这里先学习 insert() 函数（后面介绍另一个版本的 insert()：插入n个指定元素）：关于 construc() 函数的介绍可以参见其它博客</p>
+          <h2 id="1、进制尾号"><a href="#1、进制尾号" class="headerlink" title="1、进制尾号"></a>1、进制尾号</h2><p>二进制B</p>
+<p>八进制O</p>
+<p>十进制D，一般省略为十进制</p>
+<p>十六进制H</p>
+<h2 id="2、常见ascii码"><a href="#2、常见ascii码" class="headerlink" title="2、常见ascii码"></a>2、常见ascii码</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/#more" rel="contents">
+              <a class="btn" href="/2020/12/31/%E6%B1%87%E7%BC%96ASIIC%E7%A0%81%E5%B8%B8%E8%A7%81%E5%80%BC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -263,7 +260,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/31/%E6%B1%87%E7%BC%96%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8Flag/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -277,7 +274,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">STL内存基本处理</a>
+            <a href="/2020/12/31/%E6%B1%87%E7%BC%96%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8Flag/" class="post-title-link" itemprop="url">汇编标志寄存器</a>
         </h2>
 
         <div class="post-meta">
@@ -287,14 +284,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:32:41" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:41+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-31 16:15:33" itemprop="dateCreated datePublished" datetime="2020-12-31T16:15:33+08:00">2020-12-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:40:49" itemprop="dateModified" datetime="2021-03-22T21:40:49+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:51:55" itemprop="dateModified" datetime="2021-03-22T21:51:55+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +299,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
                 </span>
             </span>
 
@@ -312,14 +309,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7k</span>
+              <span>575</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -331,14 +328,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这里继续学习基于配置器之上的一些内存基本处理工具。主要剖析 SGI STL 源码（<a href="https://blog.csdn.net/wenqian1991/article/details/http" target="_blank" rel="noopener">http ://www.sgi.com/tech/stl/download.html</a> v3.3）中的几个内存处理函数(由函数名可知，是对未初始化空间的初始化操作，即通过复制或赋值的方式初始化未初始化的空间)：<br>uninitialized_copy()，uninitialized_copy_n()，uninitialized_fill()，uninitialized_fill_n()。</p>
-<p>先学习 uninitiated_copy()</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//stl source code（v3.3）</span></span><br><span class="line"><span class="comment">//defined in &lt;stl_uninitialized.h&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">char</span>* <span class="title">uninitialized_copy</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* __first, <span class="keyword">const</span> <span class="keyword">char</span>* __last, <span class="keyword">char</span>* __result)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	memmove(__result, __first, __last - __first);</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);  <span class="comment">//返回该连续区域的末尾</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">wchar_t</span>*   <span class="comment">// typedef unsigned short wchar_t;</span></span><br><span class="line">uninitialized_copy(<span class="keyword">const</span> <span class="keyword">wchar_t</span>* __first, <span class="keyword">const</span> <span class="keyword">wchar_t</span>* __last, <span class="keyword">wchar_t</span>* __result)</span><br><span class="line">&#123;</span><br><span class="line">	memmove(__result, __first, <span class="keyword">sizeof</span>(<span class="keyword">wchar_t</span>)* (__last - __first));</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);</span><br></pre></td></tr></table></figure>
-
-<p>上面两个是对两种特化类型的处理，下面为泛化版本 </p>
+          <h2 id="1、标志寄存器Flag"><a href="#1、标志寄存器Flag" class="headerlink" title="1、标志寄存器Flag"></a>1、标志寄存器Flag</h2><p>Flag是16位的寄存器，有9个标志位，其中6个状态标志位，3个控制标志位</p>
+<p>CPAZSO 对应为0 2 4 6 7 11</p>
+<h2 id="2、6个状态标志位"><a href="#2、6个状态标志位" class="headerlink" title="2、6个状态标志位"></a>2、6个状态标志位</h2><p>CF：进位或者借位 <strong>D7</strong>或者<strong>D15</strong>有进位或者借位时CF=1，并且debug显示为CY </p>
+<p>否则CF=0，debug显示为NC</p>
+<p>PF：奇偶标志位 运算结果<strong>低8位</strong>（AL AH等） 化为2进制 为奇数个1时PF=0 debug显示 PO</p>
+<p>否则 偶数个1时PF=1 debug显示PE</p>
+<p>AF:辅助进位标志 运算结果的<strong>低4位</strong>向前1位有进位或者借位时 AF=1，debug显示AC</p>
+<p>否则无进位和借位时AF=0,debug显示NA</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2020/12/31/%E6%B1%87%E7%BC%96%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8Flag/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -362,7 +362,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -376,7 +376,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第二级配置器</a>
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">数据结构详解KMP算法</a>
         </h2>
 
         <div class="post-meta">
@@ -386,14 +386,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:32:21" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:21+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 21:54:19" itemprop="dateCreated datePublished" datetime="2020-12-29T21:54:19+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:38:01" itemprop="dateModified" datetime="2021-03-22T21:38:01+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-23 10:25:26" itemprop="dateModified" datetime="2021-03-23T10:25:26+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -401,7 +401,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
                 </span>
             </span>
 
@@ -411,110 +411,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>考虑到小型区块所可能造成的内存破碎问题，SGI 设计了双层级配置器，这里则学习第二级配置器，第二级配置器的设计思想为：</p>
-<ol>
-<li>如果配置区块超过128 bytes，则移交给第一级配置器处理；</li>
-<li>如果配置区块小于128 bytes，则采用内存池管理（memory pool）。每次配置一大块内存，则维护对应的自由链表（free-list），下次若再有相同大小的内存需求，就直接从 free-list 中拨出（没有就继续配置内存，具体后面讲述），如果客端释换小额区块，就有配置器回收到 free-list 中。</li>
-</ol>
-<p>需要说明的是：本系列引用的STL源码版本为 v3.3，对比版本 v2.03 风格上有了些许变化，但设计思想还是不变的。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* part of stl source code v3.3 */</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _ALIGN = <span class="number">8</span> &#125;;                <span class="comment">//小型区块的上调边界</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _MAX_BYTES = <span class="number">128</span> &#125;;          <span class="comment">//小型区块的上限</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _NFREELISTS = <span class="number">16</span> &#125;; <span class="comment">// _MAX_BYTES/_ALIGN   //free-list 编号数</span></span><br><span class="line"><span class="comment">//配置内存后，维护对应内存块的空闲链表节点结构</span></span><br><span class="line"><span class="keyword">union</span> _Obj &#123;</span><br><span class="line">	<span class="keyword">union</span> _Obj* _M_free_list_link;   <span class="comment">//空闲链表</span></span><br><span class="line">	<span class="keyword">char</span> _M_client_data[<span class="number">1</span>];    <span class="comment">/* The client sees this. 用户使用的*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>考虑内存对其等因素，SGI 第二级配置器会主动将任何小额区块的内存需求量上调至 8 的倍数。并维护 16 个 free-list，各自管理大小分别为 8，16，24，32，40，48，56，64，72，80，88，96，104，112，120，128 bytes 的小额区块。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第一级配置器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:31:55" itemprop="dateCreated datePublished" datetime="2020-12-27T15:31:55+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:37:54" itemprop="dateModified" datetime="2021-03-22T21:37:54+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
+              <span>4.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -533,17 +430,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>我们再来学习内存的配置与释放（定义在头文件 &lt;stl_alloc.h&gt; 中）。其设计思想为：</p>
-<ul>
-<li>向 system heap 要求空间；</li>
-<li>考虑多线程 (multi-threads) 状态；</li>
-<li>考虑内存不足时的应变措施；</li>
-<li>考虑过多 “小型区块” 可能造成的内存碎片 (fragment) 问题。</li>
-</ul>
-<p>我们后面将通过分析源码来了解这设计思想是如何在设计中体现的。SGI 设计了双层级配置器，第一级配置器直接使用 malloc() 和 free()，第二级则视情况采用不同策略，并采用了复杂的内存池(memory pool) 整理方式。<br>整个设计究竟只开放第一级配置器，或是同时开放第二级配置器，取决于宏 __USE_MALLOC 是否被定义。</p>
+          <p>KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。</p>
+<p>简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">假定字符串在数组中：char S[n]，</span></span><br><span class="line"><span class="comment">模式串在另一数组中：char T[m]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">for (int i = <span class="number">0</span>; <span class="symbol">S</span>[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j = <span class="number">0</span>; <span class="symbol">S</span>[i + j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">T</span>[j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">S</span>[i + j] == <span class="symbol">T</span>[j]; ++j);</span><br><span class="line">	if (<span class="string">'\0'</span> == <span class="symbol">T</span>[j])</span><br><span class="line">		//found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -567,7 +462,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -581,7 +476,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" class="post-title-link" itemprop="url">STL构造和析构</a>
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">数据结构八大排序对比总结</a>
         </h2>
 
         <div class="post-meta">
@@ -591,14 +486,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:31:31" itemprop="dateCreated datePublished" datetime="2020-12-27T15:31:31+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 21:54:01" itemprop="dateCreated datePublished" datetime="2020-12-29T21:54:01+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:40:56" itemprop="dateModified" datetime="2021-03-22T21:40:56+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 23:30:18" itemprop="dateModified" datetime="2021-03-22T23:30:18+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -606,7 +501,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
                 </span>
             </span>
 
@@ -616,14 +511,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -635,15 +530,115 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>以STL运用的角度而言，空间配置器总是隐藏在一切组件的背后，但就STL 的实现角度而言，我们需要了解空间配置器，因为整个STL 的操作对象(所有数值，“value”语意)都存放在容器之内，而容器一定需要配置空间以置放数据。</p>
-<p>一般而言，我们所习惯的C++ 内存配置操作和释放操作是这样的</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span> ... &#125;;</span><br><span class="line">Foo* pObj = <span class="keyword">new</span> Foo;</span><br><span class="line"><span class="keyword">delete</span> pObj;</span><br></pre></td></tr></table></figure>
+          <p>针对前面讨论的八大经典排序算法：冒泡排序、插入排序、选择排序、堆排序、归并排序、快速排序、希尔排序、桶排序。</p>
+<p>关于各种什么时间复杂度，空间复杂度的对比总结，网上一大堆，别人也总结的很好，这里就不赘述了，这里主要通过对大量数据进行排序测试，测试各排序算法的运行时间，来比较各排序之间优劣（时间上）。</p>
+<p>先贴出测试程序：最后会给出各数据量的情况下，各算法的运行时间。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*SortFun)</span><span class="params">(<span class="keyword">int</span> Arr[], <span class="keyword">int</span> length)</span></span>;  <span class="comment">//函数指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">SortTest</span><span class="params">(SortFun fp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> Arr[LENGTH];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; LENGTH; ++i)</span><br><span class="line">		Arr[i] = rand() % MAXNUM;</span><br><span class="line">	<span class="keyword">clock_t</span> beginTime = clock();</span><br><span class="line">	fp(Arr, LENGTH);</span><br><span class="line">	<span class="keyword">double</span> diffTime = <span class="keyword">double</span>(clock() - beginTime) / CLOCKS_PER_SEC;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> diffTime;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>其中new 运算包含两阶段操作：1. 调用 ::operator new 配置内存，2. 调用构造函数 Foo() 构造对象。 delete 运算也包含两个阶段：1. 调用析构函数 ~Foo() 将对象析构， 2. 调用 ::operator delete 释放内存。</p>
-<p>STL 为了提高效率则把二者分开，对象的构造和析构由::construct() 和::destory() 完成，内存的配置则是由 std::alloc 完成。<br>先介绍构造和析构基本工具：construct() 和 destroy()    下载源码：<a href="http://www.sgi.com/tech/stl/download.html" target="_blank" rel="noopener">http://www.sgi.com/tech/stl/download.html</a></p>
+<p>上面的 LENGTH 和 MAXNUM 宏定义在另外一个头文件中（因为桶排序中需要用到 MAXNUM），LENGTH 为待排数据的量，MAXNUM 为待排数据数值的最大值。<br>为了方便调用函数指针，这里在原排序程序的基础上添加了一个通用的函数接口。为方便理解，这里重新贴出各排序程序</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构桶排序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:53:44" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:44+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:21:41" itemprop="dateModified" datetime="2021-03-23T10:21:41+08:00">2021-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>桶排序假设待排序的一组数统一的分布在一个范围中，然后设定对应数据数量的桶，待排序的一组数，分别对应算式处理归入这些子桶，并将桶中的数据进行排序，最后将各个桶中的数据有序的合并起来。</p>
+<p>通俗的说，就是通过某个公式将待排序的一组数分为几个子范围，然后归入到对应的子桶，这样必然会有不一样的数据经过算式处理后对应同一个桶，我们可通过简单比较将对应同一个桶的不同数据排序，最后各个数据处理完后，有的桶为空，有的桶有多个数据（已排序好），这样我们就可以逐个的遍历桶，然后将数据依次放入原数组中，这样就完成了排序。</p>
+<p>​                                             </p>
+<p>上面模型和哈希表的分离链接法很相似。这里不同数据对应同一个桶的插入是通过链表来存储的。</p>
+<p>这里给出一个演示：Bucket Sort Visualization</p>
+<p>根据上面算法模型和演示，给出代码：上面的图示模型和演示链表是带有表头的，这样是为了方便执行删除操作，但是我们这里仅作为排序，无需删除操作，所以链表是不带有表头的，这样既简化了问题又节省了空间。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -666,7 +661,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -732,7 +727,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">276</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -781,12 +776,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.1m</span>
+    <span title="站点总字数">2.3m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:49</span>
+    <span title="站点阅读时长">35:09</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

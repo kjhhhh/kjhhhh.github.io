@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="100 条经典C语言笔试题目 题目来源：1、中兴、华为、慧通、英华达、微软亚洲技术中心等中外企业面试题目；2、C 语言面试宝典(林锐《高质量编程第三版》)。说明：1、部分C 语言面试题中可能会参杂部分和C++ 相关的知识，为了保持题目的灵活性故保留，但选题最终还是会以C 语言题目为主体；2、以上公司的面试题目已成为国内中小型企业公司出题模板；3、由于本人的能力有限加上时间仓促，本课件肯定存在 不足">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言面试100题">
+<meta property="og:url" content="http://yoursite.com/2021/04/22/C%E8%AF%AD%E8%A8%80%E9%9D%A2%E8%AF%95100%E9%A2%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="100 条经典C语言笔试题目 题目来源：1、中兴、华为、慧通、英华达、微软亚洲技术中心等中外企业面试题目；2、C 语言面试宝典(林锐《高质量编程第三版》)。说明：1、部分C 语言面试题中可能会参杂部分和C++ 相关的知识，为了保持题目的灵活性故保留，但选题最终还是会以C 语言题目为主体；2、以上公司的面试题目已成为国内中小型企业公司出题模板；3、由于本人的能力有限加上时间仓促，本课件肯定存在 不足">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-22T11:32:35.078Z">
+<meta property="article:modified_time" content="2021-10-26T13:36:17.684Z">
+<meta property="article:author" content="匡俊桦">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/04/22/C%E8%AF%AD%E8%A8%80%E9%9D%A2%E8%AF%95100%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C语言面试100题 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/22/C%E8%AF%AD%E8%A8%80%E9%9D%A2%E8%AF%95100%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言面试100题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-22 19:32:35" itemprop="dateCreated datePublished" datetime="2021-04-22T19:32:35+08:00">2021-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-26 21:36:17" itemprop="dateModified" datetime="2021-10-26T21:36:17+08:00">2021-10-26</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>18k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>100 条经典C语言笔试题目</p>
+<p>题目来源：<br>1、中兴、华为、慧通、英华达、微软亚洲技术中心等中<br>外企业面试题目；<br>2、C 语言面试宝典(林锐《高质量编程第三版》)。<br>说明：<br>1、部分C 语言面试题中可能会参杂部分和C++ 相关的知<br>识，为了保持题目的灵活性故保留，但选题最终还是<br>会以C 语言题目为主体；<br>2、以上公司的面试题目已成为国内中小型企业公司出题<br>模板；<br>3、由于本人的能力有限加上时间仓促，本课件肯定存在</p>
+<p>不足之处，恳请各位同学批评指正。</p>
+<p>1、请填写bool , float,  指针变量 与“零值”比较的if<br>语句。<br>提示：这里“零值”可以是0, 0.0 , FALSE  或者“空指针”<br>。例如int 变量n  与“零值”比较的if  语句为：<br>if ( n == 0 )<br>if ( n != 0 )<br>以此类推。</p>
+<p>（1）请写出bool flag  与“零值”比较的if  语句：<br>【标准答案】if ( flag )   if ( !flag )<br>100 条经典 C语言笔试题目<br>（2）请写出float  x  与“零值”比较的if  语句：<br>【标准答案】 const float EPSINON = 0.00001;<br>if ((x &gt;= - EPSINON) &amp;&amp; (x &lt;= EPSINON)<br>不可将浮点变量用“==” 或“！=” 与数字比较，应该设法<br>转化成“&gt;=” 或“&lt;=” 此类形式。<br>100 条经典 C语言笔试题目<br>（3）请写出char  *p  与“零值”比较的if  语句<br>【标准答案】 if (p == NULL)   if (p != NULL) </p>
+<p>2、以下为Linux下的32 位C 程序，请计算sizeof 的<br>值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>  str[] = “Hello” ;                </span><br><span class="line"><span class="keyword">char</span>  *p = str ;                    </span><br><span class="line"><span class="keyword">int</span>   n = <span class="number">10</span>;                           </span><br><span class="line">请计算</span><br><span class="line">（<span class="number">1</span>）<span class="keyword">sizeof</span> (str ) =          （<span class="number">2</span>）<span class="keyword">sizeof</span> ( p ) =         </span><br><span class="line">（<span class="number">3</span>）<span class="keyword">sizeof</span> ( n ) =</span><br></pre></td></tr></table></figure>
+
+<p>【标准答案】</p>
+<p>（1）6、（2）4 、（3 ）4</p>
+<p>（4）void Func ( char str[100])<br>{<br>…… ;<br>}<br>请计算sizeof( str ) =<br>（5）void * p = malloc( 100 );<br>请计算sizeof ( p ) =<br>【标准答案】（4）4、（5）4</p>
+<p>4、用变量a 给出下面的定义<br>e) 一个有10个指针的数组，该指针是指向一个整型数<br>的;<br>f)  一个指向有10个整型数数组的指针;<br>g) 一个指向函数的指针，该函数有一个整型参数并返<br>回一个整型数;<br>h) 一个有10个指针的数组，该指针指向一个函数，该<br>函数有一个整型参数并返回一个整型数;<br>【标准答案】e)int *  a[10];    f)int (<em>a)[10]<br>g)int (</em>a)(int);  h) int (*a[10])(int)</p>
+<p>5、设有以下说明和定义：<br>typedef u nion {long i; int k[5]; char c;} DATE;<br>struct data { int cat; DATE cow; double dog;} too;<br>DATE max;<br>则语句printf(“%d”,sizeof(struct date)+sizeof(max)); 的<br>执行结果是：_____<br>【标准答案】DATE是一个union, 变量公用空间.  里面最<br>大的变量类型是int[5],  占用20个字节.  所以它的大小是<br>20<br>data 是一个struct,  每个变量分开占用空间.  依次为int4 +<br>DATE20 + double8 = 32.<br>所以结果是20 + 32 = 52.<br>当然… 在某些16位编辑器下, int 可能是2字节,那么结果<br>是int2 + DATE10 + double8 = 20</p>
+<p>6、请问以下代码有什么问题：<br>int main()<br>{<br>char a;<br>char *str=&a;<br>strcpy(str,”hello”);<br>printf(str);<br>return 0;<br>}<br>【标准答案】没有为str分配内存空间，将会发生异常<br>问题出在将一个字符串复制进一个字符变量指针所指<br>地址。虽然可以正确输出结果，但因为越界进行内在<br>读写而导致程序崩溃。</p>
+<p>7、请问以下代码有什么问题：<br>char* s=”AAA”;<br>printf(“%s”,s);<br>s[0]=’B’;<br>printf(“%s”,s);<br>有什么错？<br>【标准答案】”AAA” 是字符串常量。s是指针，指向这个<br>字符串常量，所以声明s的时候就有问题。<br>cosnt char* s=”AAA”;<br>然后又因为是常量，所以对是s[0] 的赋值操作是不合法<br>的。</p>
+<p>8、int (<em>s[10])(int)  表示的是什么啊<br>【标准答案】int (</em>s[10])(int)  函数指针数组，每个指针<br>指向一个int func(intp aram) 的函数。</p>
+<p>9、c和c++ 中的struct有什么不同？<br>【标准答案】c和c++ 中struct的主要区别是c中的struct<br>不可以含有成员函数，而c++ 中的struct可以。c++ 中<br>struct和class的主要区别在于默认的存取权限不同，<br>struct默认为public ，而class默认为private</p>
+<p>10、void getmemory(char *p)<br>{<br>p=(char *) malloc(100);<br>strcpy(p,“hello world”);<br>}<br>int main( )<br>{<br>char *str=NULL;<br>getmemory(str);<br>printf(“%s/n”,str);<br>free(str);<br>return 0;<br>} 会出现什么问题？<br>【标准答案】程序崩溃，getmemory中的malloc 不能返回<br>动态内存，free （）对str操作很危险。</p>
+<p>11、char szstr[10];<br>strcpy(szstr,”0123456789”);<br>产生什么结果？为什么？<br>【标准答案】长度不一样，出现段错误。<br>100 条经典 C语言笔试题目<br>12、数组和链表的区别？<br>【标准答案】数组：数据顺序存储，固定大小；</p>
+<p>链表：数据可以随机存储，大小可动态改变</p>
+<p>13、void main()<br>{<br>char aa[10];<br>printf(“%d”,strlen(aa));<br>}<br>会出现什么问题？打印结果是是多少？<br>【标准答案】sizeof()和初不初始化，没有关系，<br>strlen()和初始化有关，打印结果值未知。</p>
+<p>14、给定结构struct A<br>{<br>char t:4;<br>char k:4;<br>unsigned short i:8;<br>unsigned long m;<br>}; 问sizeof(A) = ?<br>【标准答案】8</p>
+<p>15、struct name1{<br>char str;<br>short x;<br>int num;<br>} ；求sizeof(name1)?<br>【标准答案】8</p>
+<p>16、struct name2{<br>char str;<br>int num;<br>short x;<br>}; 求sizeof(name2)？<br>【标准答案】12</p>
+<p>17、程序哪里有错误<br>wap( int* p1,int* p2 )<br>{<br>int * p;<br>*p = *p1;<br>*p1 = *p2;<br>*p2 = *p;<br>}</p>
+<p>【标准答案】p 为野指针（指向一个已删除的对象或未申请访问受限内存区域的指针）</p>
+<p>19、(void <em>)ptr 和(</em>(void<strong>))ptr 的结果是否相同？其<br>中ptr为同一个指针。<br>【标准答案】(void <em>)ptr 和(</em>(void</strong>))ptr 值是相同的</p>
+<p>20、要对绝对地址0x100000赋值，我们可以用<br>(unsigned int<em>)0x100000 = 1234;<br>那么要是想让程序跳转到绝对地址是0x100000去执行<br>，应该怎么做？<br>【标准答案】</em>((void (<em>)( ))0x100000 ) ( );<br>首先要将0x100000强制转换成函数指针,即:<br>(void (</em>)())0x100000<br>然后再调用它:<br><em>((void (</em>)())0x100000)();</p>
+<p>22、关于内存的思考题（1）你能看出有什么问题？</p>
+<p>23、关于内存的思考题（2）你能看出有什么问题？</p>
+<p>25、关于内存的思考题（3）你能看出有什么问题？</p>
+<p>26、关于内存的思考题（4）你能看出有什么问题？</p>
+<p>27、关键字volatile有什么含意? 并给出三个不同的例<br>子。<br>【参考答案】一个定义为volatile的变量是说这变量可<br>能会被意想不到地改变，这样，编译器就不会去假设<br>这个变量的值了。精确地说就是，优化器在用到这个<br>变量时必须每次都小心地重新读取这个变量的值，而<br>不是使用保存在寄存器里的备份。下面是volatile变量<br>的几个例子：<br>1). 并行设备的硬件寄存器（如：状态寄存器）<br>2). 一个中断服务子程序中会访问到的非自动变量<br>(Non-automatic variables)<br>3). 多线程应用中被几个任务共享的变量</p>
+<p>28、嵌入式系统经常具有要求程序员去访问某特定的<br>内存位置的特点。在某工程中，要求设置一绝对地址<br>为0x67a9的整型变量的值为0xaa66。编译器是一个纯<br>粹的ANSI编译器。写代码去完成这一任务。<br>【参考答案】这一问题测试你是否知道为了访问一绝对<br>地址把一个整型数强制转换（typecast ）为一指针是合<br>法的。这一问题的实现方式随着个人风格不同而不同<br>。典型的类似代码如下：<br>int * ptr;<br>ptr=  (int *)0x67a9;<br>*ptr = 0xaa55;</p>
+<p>29、头文件中的ifndef/define/endif 干什么用？<br>【标准答案】防止该头文件被重复引用。</p>
+<p>30、#include  &lt;filename.h&gt;   和#include<br>“filename.h” 有什么区别？<br>【标准答案】对于#include  &lt;filename.h&gt;  ，编译器从<br>标准库路径开始搜索filename.h ;<br>对于#include  “filename.h” ，编译器从用户的工作路<br>径开始搜索filename.h 。</p>
+<p>31、const  有什么用途？（请至少说明两种）<br>【标准答案】： （1）可以定义const  常量<br>（2）const  可以修饰函数的参数、返回值，甚至函数<br>的定义体。被const  修饰的东西都受到强制保护，可<br>以预防意外的变动，能提高程序的健壮性。</p>
+<p>32、static有什么用途？（请至少说明两种）<br>【标准答案】<br>\1. 限制变量的作用域（static全局变量）；<br>\2. 设置变量的存储域（static局部变量）。</p>
+<p>33、堆栈溢出一般是由什么原因导致的？<br>【标准答案】没有回收垃圾资源。</p>
+<p>34、如何引用一个已经定义过的全局变量？<br>【标准答案】可以用引用头文件的方式，也可以用<br>extern 关键字，如果用引用头文件方式来引用某个在<br>头文件中声明的全局变理，假定你将那个变量写错了<br>，那么在编译期间会报错，如果你用extern 方式引用<br>时，假定你犯了同样的错误，那么在编译期间不会报<br>错，而在连接期间报错。</p>
+<p>35、全局变量可不可以定义在可被多个.C 文件包含的<br>头文件中？为什么？<br>【标准答案】可以，在不同的C 文件中以static形式来声<br>明同名全局变量。可以在不同的C文件中声明同名的全<br>局变量，前提是其中只能有一个C文件中对此变量赋初<br>值，此时连接不会出错。</p>
+<p>36、队列和栈有什么区别？<br>【标准答案】队列先进先出，栈后进先出。</p>
+<p>37、Heap与stack的差别。<br>【标准答案】Heap是堆，stack是栈。<br>Stack的空间由操作系统自动分配/释放，Heap上的空<br>间手动分配/释放。<br>Stack空间有限，Heap是很大的自由存储区<br>C 中的malloc 函数分配的内存空间即在堆上,C++中对<br>应的是new 操作符。<br>程序在编译期对变量和函数分配内存都在栈上进行,且<br>程序运行过程中函数调用时参数的传递也在栈上进行。</p>
+<p>38、用宏定义写出swap（x，y），即交换两数。<br>【标准答案】<br>#define swap(x, y) (x)=(x)+(y);(y)=(x)–(y);(x)=(x)–(y);</p>
+<p>39、写一个“标准”宏，这个宏输入两个参数并返回较<br>小的一个。<br>【标准答案】#define Min(X, Y) ((X)&gt;(Y)?(Y):(X))// 结尾没有 ;</p>
+<p>40、带参宏与带参函数的区别(至少说出5点)？<br>【标准答案】<br>           带参宏         带参函数<br>处理时间       编译时         运行时<br>参数类型         无         需定义<br>程序长度         变长         不变<br>占用存储空间      否           是<br>运行时间      不占运行时间    调用和返回时占</p>
+<p>41、关键字volatile有什么含意？<br>【标准答案】提示编译器对象的值可能在编译器未监测<br>到的情况下改变。</p>
+<p>42、int main()<br>{<br>int x=3;<br>printf(“%d”,x);<br>return 1;<br>}<br>问函数既然不会被其它函数调用，为什么要返回1？<br>【标准答案】mian中，c标准认为0表示成功，非0表示<br>错误。具体的值是某中具体出错信息。</p>
+<p>43、已知一个数组tabl e ，用一个宏定义，求出数据的<br>元素个数。<br>【标准答案】<br>#define NTBL(table) (sizeof(table)/sizeof(table[0]))</p>
+<p>44、A.c 和B.c两个c文件中使用了两个相同名字的<br>static变量,编译的时候会不会有问题?这两个static变量<br>会保存到哪里（栈还是堆或者其他的）?<br>【标准答案】static的全局变量，表明这个变量仅在本<br>模块中有意义，不会影响其他模块。<br>他们都放在静态数据区，但是编译器对他们的命名是<br>不同的。<br>如果要使变量在其他模块也有意义的话，需要使用<br>extern 关键字。</p>
+<p>45、static全局变量与普通的全局变量有什么区别？<br>【标准答案】 static全局变量只初使化一次，防止在其<br>他文件单元中被引用;</p>
+<p>46、static局部变量和普通局部变量有什么区别<br>【标准答案】static局部变量只被初始化一次，下一次<br>依据上一次结果值；</p>
+<p>47、static函数与普通函数有什么区别？<br>【标准答案】static函数在内存中只有一份，普通函数在<br>每个被调用中维持一份拷贝</p>
+<p>关于45-47 的参考文章<br>全局变量(外部变量)的说明之前再冠以static 就构成了静态的全局变量<br>。全局变量本身就是静态存储方式，静态全局变量当然也是静态存储方<br>式。这两者在存储方式上并无不同。这两者的区别虽在于非静态全局变<br>量的作用域是整个源程序，当一个源程序由多个源文件组成时，非静态<br>的全局变量在各个源文件中都是有效的。而静态全局变量则限制了其作<br>用域，即只在定义该变量的源文件内有效，在同一源程序的其它源文<br>件中不能使用它。由于静态全局变量的作用域局限于一个源文件内，只<br>能为该源文件内的函数公用，因此可以避免在其它源文件中引起错误。<br>从以上分析可以看出，把局部变量改变为静态变量后是改变了它的存储<br>方式即改变了它的生存期。把全局变量改变为静态变量后是改变了它的<br>作用域，限制了它的使用范围。<br>static函数与普通函数作用域不同。仅在本文件。只在当前源文件中使<br>用的函数应该说明为内部函数(static)，内部函数应该在当前源文件中<br>说明和定义。对于可在当前源文件以外使用的函数，应该在一个头文件<br>中说明，要使用这些函数的源文件要包含这个头文件。</p>
+<p>48、程序的局部变量存在于<strong>_ 中，全局变量存在于<br>__</strong>中，动态申请数据存在于___ 中。<br>【标准答案】程序的局部变量存在于栈(stack) 中，全局<br>变量存在于静态数据区中，动态申请数据存在于堆（<br>heap）中。</p>
+<p>49、什么是预编译，何时需要预编译：<br>【标准答案】１、总是使用不经常改动的大型代码体<br>。<br>２、程序由多个模块组成，所有模块都使用一组标准<br>的包含文件和相同的编译选项。在这种情况下，可以<br>将所有包含文件预编译为一个预编译头。</p>
+<p>50、用两个栈实现一个队列的功能？要求给出算法和<br>思路！<br>【参考答案】设2个栈为A,B, 一开始均为空.<br>入队:<br>将新元素push入栈A;<br>出队:<br>(1)判断栈B 是否为空；<br>(2)如果不为空，则将栈A中所有元素依次pop 出并<br>push到栈B；<br>(3)将栈B 的栈顶元素pop 出；</p>
+<p>51、对于一个频繁使用的短小函数,在C 语言中应用什<br>么实现,在C++ 中应用什么实现?<br>【标准答案】c用宏定义，c++ 用inline</p>
+<p>52、1. 用预处理指令#define  声明一个常数，用以表<br>明1年中有多少秒（忽略闰年问题）<br>【参考答案】#define SECONDS_PER_YEAR (60 * 60<br>* 24 * 365)UL</p>
+<p>53、Typedef 在C 语言中频繁用以声明一个已经存在的<br>数据类型的同义字。也可以用预处理器做类似的事。例<br>如，思考一下下面的例子：<br>#define dPS struct s *<br>typedef struct s * tPS;<br>以上两种情况的意图都是要定义dPS 和tPS 作为一个<br>指向结构s指针。哪种方法更好呢？（如果有的话）为<br>什么？<br>【参考答案】这是一个非常微妙的问题，任何人答对这个问题（正当的原<br>因）是应当被恭喜的。答案是：typedef 更好。思考下面的例子：<br>dPS p 1,p2;<br>tPS p3,p4;<br>第一个扩展为<br>struct s * p1, p2;<br>上面的代码定义p1为一个指向结构的指，p2为一个实际的结构，这也许<br>不是你想要的。第二个例子正确地定义了p3 和p4 两个指针。</p>
+<p>54、在C++  程序中调用被C 编译器编译后的函数，<br>为什么要加extern “C”？<br>【标准答案】C++ 语言支持函数重载，C 语言不支持函<br>数重载。函数被C++ 编译后在库中的名字与 C 语言的<br>不同。假设某个函数的原型为：void foo(int x, int y);<br>该函数被C 编译器编译后在库中的名字为_foo ，而<br>C++ 编译器则会产生像_foo_int_int之类的名字。 C++<br>提供了C 连接交换指定符号extern“C”来解决名字匹配<br>问题。</p>
+<p>55、请简述以下两个for  循环的优缺点。</p>
+<p>【标准答案】</p>
+<p>56、语句for(  ；1  ；) 有什么问题？它是什么意思？<br>【标准答案】死循环，和while(1)相同。</p>
+<p>57、do……while和while……do有什么区别？<br>【标准答案】前一个循环一遍再判断，后一个判断以后<br>再循环。</p>
+<p>58、请写出下列代码的输出内容<br>#include &lt;stdio.h&gt;<br>int main()<br>{<br>int a,b,c,d;<br>a=10;<br>b=a++;<br>c=++a;<br>d=10*a++;<br>printf(“b，c ，d：%d，%d，%d”，b，c，d ）;<br>return 0;<br>}<br>【标准答案】10，12，120</p>
+<p>59、unsigned char *p1;<br>unsigned long *p2;<br>p1=(unsigned char *)0x801000;<br>p2=(unsigned long *)0x810000;<br>请问p1+5= ;<br>p2+5= ;<br>【标准答案】0x801005、0x810020</p>
+<p>60、main()<br>{<br>int a[5]={1,2,3,4,5};<br>int * ptr=(int<em>)(&amp;a+1);<br>printf(“%d，%d”,</em>(a+1),*(ptr-1));<br>}<br>请问输出：<br>【标准答案】2,5</p>
+<p>61、请问下面程序有什么错误?<br>int a[60][250][1000],i,j,k;<br>for(k=0;k&lt;=1000;k++)<br>for(j=0;j&lt;250;j++)<br>for(i=0;i&lt;60;i++)<br>a[i][j][k]=0;<br>【标准答案】把循环语句内外换一下。</p>
+<p>62、以下是求一个数的平方的程序,请找出错误:<br>#define SQUARE(a)((a)*(a))<br>int a=5;<br>int b;<br>b=SQUARE(a++);<br>【标准答案】宏在预编译时会以替换的形式展开，仅仅<br>会替换。涉及到宏的地方，不要用++– ，标准中对此<br>没有规定，因此最终结果将会依赖于不同的编译器。<br>执行程序的答案可能是25、也有可能是36。</p>
+<p>63、#define Max_CB 500<br>void LmiQueryCSmd(StructMSgCB * pmsg)<br>{<br>unsigned char ucCmdNum;<br>……<br>for(ucCmdNum=0;ucCmdNum&lt;Max_CB;ucCmdN<br>um++)<br>{<br>……;<br>}<br>} 这段代码执行有什么问题？<br>【标准答案】死循环<br>unsigned char //无符号字符型表示范围0<del>255<br>char // 有符号字符型 表示范围-128</del>127</p>
+<p>64、嵌入式系统中经常要用到无限循环，你怎么用C<br>编写死循环。<br>【标准答案】while(1){}或者for(;;)<br>100 条经典 C语言笔试题目<br>65、程序输出结果是？<br>【标准答案】8 ，10，12，14，16</p>
+<p>66、<br>【标准答案】16</p>
+<p>67、int modifyvalue()<br>{<br>return(x+=10);<br>}<br>int c hangevalue(int x )<br>{<br>return(x+=1);<br>}<br>void m ain()<br>{<br>int x =10;<br>x++;<br>changevalue(x);<br>x++;<br>modifyvalue();<br>printf(“First output:%dn”,x);<br>x++;<br>changevalue(x);<br>printf(“Second output:%dn”,x);<br>modifyvalue();<br>printf(“Thirdoutput:%dn”,x);<br>}输出?<br>【标准答案】12、13、13</p>
+<p>68、不能做switch()的参数类型是：<br>【标准答案】switch 的参数不能为实型。</p>
+<p>69、请写出下列代码的输出内容<br>＃i nclude&lt;stdio.h&gt;<br>main()<br>{<br>int a,b,c,d;<br>a=10;<br>b=a++;<br>c=++a;<br>d=10*a++;<br>printf(“b，c ，d：%d，%d，%d”，b，c，d ）;<br>return 0;<br>}<br>【标准答案】10，12，120</p>
+<p>70、找出程序的错误。<br>【标准答案】</p>
+<p>71、一语句实现x是否为2 的若干次幂的判断。<br>【参考答案】 void mai n()<br>{<br>i nt a;<br>scanf(“%d”,&amp;a);<br>printf(“%c”,(a)&amp;(a-1)?’n’:’y’); //  若是打印y，否则n<br>}</p>
+<p>72、中断是嵌入式系统中重要的组成部分，这导致了很多编译开发商提<br>供一种扩展—让标准C 支持中断。具代表事实是，产生了一个新的关键字<br><strong>interrupt 。下面的代码就使用了</strong>interrupt 关键字去定义了一个中断服<br>务子程序(ISR)，请评论一下这段代码的。<br>__interrupt double compute_area (double radius)<br>{<br>double area = PI * radius * radius;<br>printf(“ Area = %f”, area);<br>return area;<br>}<br>【参考答案】这个函数有太多的错误了，以至让人不知从何说起了：<br>1). ISR 不能返回一个值。如果你不懂这个，那么你不会被雇用的。<br>2). ISR 不能传递参数。如果你没有看到这一点，你被雇用的机会等同第<br>一项。<br>3). 在许多的处理器/编译器中，浮点一般都是不可重入的。有些处理器/编<br>译器需要让额处的寄存器入栈，有些处理器/编译器就是不允许在ISR 中做<br>浮点运算。此外，ISR 应该是短而有效率的，在ISR 中做浮点运算是不明<br>智的。<br>4). 与第三点一脉相承，printf() 经常有重入和性能上的问题。如果你丢掉<br>了第三和第四点，我不会太为难你的。不用说，如果你能得到后两点，那<br>么你的被雇用前景越来越光明了。</p>
+<p>73、下面的代码输出是什么，为什么？<br>void foo(void)<br>{<br>unsigned int a = 6;<br>int b = -20;<br>(a+b&gt; 6)? puts(“&gt; 6”) : puts(“&lt;= 6”);<br>}<br>【参考答案】这个问题测试你是否懂得C 语言中的整数自动转换原则，<br>我发现有些开发者懂得极少这些东西。不管如何，这无符号整型问题的答<br>案是输出是“&gt;6” 。原因是当表达式中存在有符号类型和无符号类型时所有<br>的数都自动转换为无符号类型。因此-20 变成了一个非常大的正整数，所<br>以该表达式计算出的结果大于6 。这一点对于应当频繁用到无符号数据类<br>型的嵌入式系统来说是丰常重要的。如果你答错了这个问题，你也就到了<br>得不到这份工作的边缘。</p>
+<p>74、评价下面的代码片断：<br>unsigned int zero = 0;<br>unsigned int compzero =  0xFFFF;<br>/*1‘s complement of zero */<br>【参考答案】对于一个int型不是16位的处理器为说，上面的代码是不正<br>确的。应编写如下：<br>unsigned int compzero = ~0;<br>这一问题真正能揭露出应试者是否懂得处理器字长的重要性。在我的经<br>验里，好的嵌入式程序员非常准确地明白硬件的细节和它的局限，然而<br>PC机程序往往把硬件作为一个无法避免的烦恼。<br>到了这个阶段，应试者或者完全垂头丧气了或者信心满满志在必得。如<br>果显然应试者不是很好，那么这个测试就在这里结束了。但如果显然应<br>试者做得不错，那么我就扔出下面的追加问题，这些问题是比较难的，<br>我想仅仅非常优秀的应试者能做得不错。提出这些问题，我希望更多看<br>到应试者应付问题的方法，而不是答案。不管如何，你就当是这个娱乐<br>吧…</p>
+<p>75、下面的代码片段的输出是什么，为什么？<br>char *ptr;<br>if ((ptr = (char *)malloc(0)) == NULL)<br>puts(“Gota null pointer”);<br>else<br>puts(“Gota valid pointer”);<br>【参考答案】这个你可以先大胆猜测下，然后再用你的<br>编译器尝试着编译下~~<br>100 条经典 C语言笔试题目<br>欢迎进入C语言程序笔试面试，编写程序代码单元。</p>
+<p>76、编写strcpy 函数<br>已知strcpy 函数的原型是 char *strcpy(char *strDest,<br>const char *strSrc);其中strDest是目的字符串，<br>strSrc 是源字符串。<br>（1）不调用C++/C 的字符串库函数，请编写函数<br>strcpy 。<br>（2）strcpy 能把 strSrc 的内容复制到strDest，为什<br>么还要char *  类型的返回值？</p>
+<p>77、写出二分查找的代码。<br>【参考答案】 int b inary_search(int* arr, int k ey, int n)<br>{<br>int low =  0;<br>int h igh = n - 1 ;<br>int m id;<br>while (low &lt;= high)<br>{<br>mid = (high + low) / 2;<br>if (arr[mid] &gt; k)<br>high = mid -1 ;<br>else if (arr[mid] &lt; k)<br>low = mid + 1;<br>else<br>return mid;<br>}<br>return -1;<br>}</p>
+<p>78、请编写一个C 函数，该函数给出一个字节中被置<br>1  的位的个数。<br>【参考答案】<br>unsigned int T estAsOne0(char log)<br>{<br>int i;<br>unsigned int num=0, val;<br>for(i=0; i&lt;8; i++)<br>{<br>va l =  log &gt;&gt;  i;  // 移位<br>val &amp; = 0x01;  // 与1 相与<br>if(val)<br>num++;<br>}<br>return num;<br>} </p>
+<p>79、请编写一个C 函数，该函数将给定的一个字符串<br>转换成整数。<br>【参考答案】<br>int Invert(char* str)<br>{<br>int num =0;<br>while(<em>str!=’\0’)<br>{<br>int d igital=</em>str-48;<br>num=num*10+digital;<br>str=str+1;<br>}<br>return num;<br>} </p>
+<p>80、请编写一个C 函数，该函数将给定的一个整数转<br>换成字符串。<br>【参考答案】<br>void IntToCharChange(int num,  char* pval)<br>{<br>char strval[100];<br>int i , j;<br>int val0 = 0;<br>int val1 = 0;<br>val0 = num;<br>for(i=0; i&lt;100; i++)<br>{<br>val1 = val0 % 10; //取余<br>val0 = val0 / 10; // 取整<br>strval[i] = val1 + 48;  // 数字—字符<br>if(val0 &lt; 10)<br>{<br>i++;<br>strval[i] = val0 + 48;<br>break;<br>}<br>}<br>for(j=0; j&lt;=i; j++)  // 倒置<br>pval[j] = strval[i-j];<br>pval[j] = ‘\0’;<br>}</p>
+<p>81、实现strcmp 函数。<br>【参考答案】<br>int m ystrcmp(const c har* str1, const char* str2)<br>{<br>assert((str1 != NULL) &amp;&amp; (str2 != NULL));<br>int r et = 0;<br>while (!(ret = <em>(unsigned char</em>)str1 - * (unsigned char*)str2) &amp;&amp; *str2)<br>{<br>str1++;<br>str2++;<br>}<br>if (ret &gt; 0)<br>ret = 1;<br>else if (ret &lt; 0)<br>ret = -1;<br>return ret;<br>}</p>
+<p>82、请编写一个C 函数，该函数将一个字符串逆序。<br>【参考答案】<br>void AntitoneValue(cha r* father, char* child)<br>{<br>int i ;<br>char source[100];<br>int j = 0;<br>while(father[j]) //放入source ，[j] 为长度<br>{<br>source[j] = father[j];<br>j++;<br>if(j &gt; 99)<br>return;<br>}<br>source[j] = ‘\0’;<br>for(i=0; i&lt;j; i++)<br>child[i] = source[j-i-1];  // 反序<br>child[i] = ‘\0’;<br>} </p>
+<p>83、请编写一个C 函数，该函数在给定的内存区域搜<br>索给定的字符，并返回该字符所在位置索引值。<br>【参考答案】<br>int s earch(char* cpSource, intn , char ch)  // 起始地址，搜索长度，目标字符<br>{<br>int i;<br>for(i=0; i&lt;n &amp;&amp; *(cpSource+i) != ch; ++i);<br>return i;<br>}</p>
+<p>84、请编写一个C 函数，该函数在一个字符串中找到<br>可能的最长的子字符串，该字符串是由同一字符组成<br>的。<br>【参考答案】</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> C hildString(char*p)   <span class="comment">// 自己写</span></span><br><span class="line">&#123;  </span><br><span class="line"></span><br><span class="line">char *q =p;</span><br><span class="line"><span class="built_in">int</span> s tringlen=<span class="number">0</span>, i=<span class="number">0</span>,j=<span class="number">1</span>,len=<span class="number">0</span>,maxlen=<span class="number">1</span>;* </span><br><span class="line"><span class="keyword">while</span>(*q!=’\<span class="number">0</span>’)      <span class="comment">//不能用strlen, 求得长度stringlen</span></span><br><span class="line">&#123;</span><br><span class="line">Stringlen++;</span><br><span class="line">q++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>( i&lt;  String len )  </span><br><span class="line"></span><br><span class="line">&#123;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(*(p+i)==*(p+j)&amp; &amp; j&lt; St ri ngle n ) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;  </span><br><span class="line"></span><br><span class="line">len++;           <span class="comment">// 统计子串长度</span></span><br><span class="line">i++;</span><br><span class="line">j++;  </span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>  </span><br><span class="line"></span><br><span class="line">&#123;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(len&gt;maxlen)      <span class="comment">// 统计最大子串长度</span></span><br><span class="line">&#123;  </span><br><span class="line"></span><br><span class="line">maxlen=len+<span class="number">1</span>;  </span><br><span class="line"></span><br><span class="line">len=<span class="number">0</span>;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">len=<span class="number">0</span>;</span><br><span class="line">i++;</span><br><span class="line">j++;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">retu rn  ma xlen;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>85、华为面试题：怎么判断链表中是否有环？<br>【参考答案】答：用两个指针来遍历这个单向链表，第<br>一个指针p1，每次走一步；第二个指针p2，每次走两<br>步；当p2 指针追上p1的时候，就表明链表当中有环<br>路了。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int testLinkRing(Link *head)</span><br><span class="line">&#123;</span><br><span class="line">Link *t1=head,*t2=head;</span><br><span class="line"><span class="keyword">while</span>( t1-&gt;<span class="keyword">next</span> &amp;&amp; t2-&gt;<span class="keyword">next</span>)</span><br><span class="line">&#123;</span><br><span class="line">t1 = t1-&gt;<span class="keyword">next</span>;</span><br><span class="line">if (NULL == (t2 = t2-&gt;<span class="keyword">next</span>-&gt;<span class="keyword">next</span>))</span><br><span class="line"><span class="keyword">return</span> 0; <span class="regexp">//</span> 无环</span><br><span class="line">if (t1 == t2)</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>86、有一浮点型数组A, 用C 语言写一函数实现对浮点<br>数组A进行降序排序,并输出结果,要求要以数组A 作为<br>函数的入口.( 建议用冒泡排序法)<br>【参考答案】</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> BubbleSort(<span class="built_in">double</span> a rr[], <span class="built_in">int</span> n) </span><br><span class="line">&#123; </span><br><span class="line"><span class="built_in">int</span> i，j ；</span><br><span class="line"><span class="built_in">int</span> e xchange = <span class="number">1</span> ；<span class="comment">// 交换标志</span></span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">&#123; <span class="comment">// 最多做n-1趟排序</span></span><br><span class="line">exchange=<span class="number">0</span> ；<span class="comment">// 本趟排序开始前，交换标志应为假</span></span><br><span class="line"><span class="keyword">for</span>(j=n<span class="number">-1</span>;j&gt;=i ；j--) <span class="comment">//对当前无序区R[i..n]自下向上扫描</span></span><br><span class="line"><span class="keyword">if</span>(arr[j+<span class="number">1</span>] &gt; arr [ j])</span><br><span class="line">&#123;<span class="comment">// 交换记录</span></span><br><span class="line">arr[<span class="number">0</span>]=arr[j+<span class="number">1</span>]；<span class="comment">//R[0]不是哨兵，仅做暂存单元</span></span><br><span class="line">arr[j+<span class="number">1</span>]=arr[j]；</span><br><span class="line">arr[j]=arr[<span class="number">0</span>]；</span><br><span class="line">exchange=<span class="number">1</span> ；<span class="comment">// 发生了交换，故将交换标志置为真</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">if</span>(!exchange) <span class="comment">// 本趟排序未发生交换，提前终止算法</span></span><br><span class="line"><span class="keyword">return</span> ；</span><br><span class="line">&#125; <span class="comment">//endfor(外循环) </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>87、实现双向链表删除一个节点P，在节点P 后插入一<br>个节点，写出这两个函数。<br>【参考答案】</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除操作</span></span><br><span class="line">Status ListDelete_DuL(DuLinkList &amp;L,inti,Ele mType &amp;e)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(!(p=G e tElemP_DuL(L,i))) return ERROR;</span><br><span class="line"><span class="function"><span class="title">e</span>=p-&gt;</span><span class="keyword">data</span>;</span><br><span class="line"><span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">prior</span>-&gt;</span><span class="function"><span class="title">next</span>=p-&gt;</span>next;</span><br><span class="line"><span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">next</span>-&gt;</span><span class="function"><span class="title">prior</span>=p-&gt;</span>pror;</span><br><span class="line">free(p);</span><br><span class="line">return OK;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 插入操作</span></span><br><span class="line">Status ListInsert_DuL(DuLinkList &amp;L,inti,ElemType &amp;e)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(!(p=G e tElemP_DuL(L,i)))</span><br><span class="line">return ERROR;</span><br><span class="line"><span class="keyword">if</span>(!(s=(DuLinkList)malloc(sizeof(DuLNode))))</span><br><span class="line">return ERROR;</span><br><span class="line"><span class="function"><span class="title">s</span>-&gt;</span><span class="keyword">data</span>=e;</span><br><span class="line"><span class="function"><span class="title">s</span>-&gt;</span>pri <span class="built_in">or</span> =p;</span><br><span class="line"><span class="function"><span class="title">p</span>-&gt;</span> <span class="function"><span class="title">next</span> -&gt;</span> prior =s;</span><br><span class="line"><span class="function"><span class="title">p</span>-&gt;</span>next=s;</span><br><span class="line"><span class="function"><span class="title">s</span>-&gt;</span><span class="function"><span class="title">next</span>=p-&gt;</span><span class="function"><span class="title">next</span>-&gt;</span>next;</span><br><span class="line">return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>88、把一个链表反向。<br>【参考答案】从第一个元素开始，ps指向他，将他（<br>ps）指向头节点(ps-&gt;next = head) ，将ps设为头节点<br>（head = ps; ）操作下一个元素（ps= pe-&gt;next;）等<br>于是依次将每个元素翻到原头节点前面。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void reverse(test* head)</span><br><span class="line">&#123;</span><br><span class="line">test* pe = head;</span><br><span class="line">test* ps = head-&gt;<span class="keyword">next</span>;</span><br><span class="line"><span class="keyword">while</span>(ps)</span><br><span class="line">&#123; </span><br><span class="line">pe-&gt;<span class="keyword">next</span> = ps-&gt;<span class="keyword">next</span>;</span><br><span class="line">ps-&gt;<span class="keyword">next</span> = head;</span><br><span class="line">head = ps;</span><br><span class="line">ps =  pe-&gt;<span class="keyword">next</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>89、将二维数组行列元素互换，存到另一个数组中。<br>【参考答案】</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">\#include &lt;stdio.h&gt;</span><br><span class="line">main()</span><br><span class="line">&#123;  int a [<span class="number">2</span>][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br><span class="line">int b[<span class="number">3</span>][<span class="number">2</span>],i,j;</span><br><span class="line">printf(<span class="string">"array a :<span class="subst">\n</span>"</span>);</span><br><span class="line">for(i=<span class="number">0</span>;i&lt;=<span class="number">1</span>;i++)</span><br><span class="line">&#123;  for(j=<span class="number">0</span>;j&lt;=<span class="number">2</span>;j++)</span><br><span class="line">&#123;  printf(<span class="string">"%5d"</span>,a[i][j]);</span><br><span class="line">b[j][i]=a[i][j];</span><br><span class="line">&#125;</span><br><span class="line">printf(<span class="string">"<span class="subst">\n</span>"</span>);</span><br><span class="line">&#125;   </span><br><span class="line">printf(<span class="string">"array b :<span class="subst">\n</span>"</span>);</span><br><span class="line">for(i=<span class="number">0</span>;i&lt;=<span class="number">2</span>;i++)</span><br><span class="line">&#123;  for(j=<span class="number">0</span>;j&lt;=<span class="number">1</span>;j++)</span><br><span class="line">printf(<span class="string">"%5d"</span>,b[i][j]);</span><br><span class="line">printf(<span class="string">"<span class="subst">\n</span>"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>90、输入一行字符，统计其中有多少个单词。<br>【参考答案】</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">char</span> str i ng[<span class="number">81</span>];</span><br><span class="line"><span class="keyword">int</span> i,num=<span class="number">0</span>,<span class="keyword">word</span>=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line">gets(<span class="built_in">string</span>);</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;(c=<span class="built_in">string</span>[i])!=<span class="string">'\0'</span>;i++)</span><br><span class="line"><span class="keyword">if</span>(c==<span class="string">' '</span>)  </span><br><span class="line"><span class="keyword">word</span>=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">word</span>==<span class="number">0</span>)</span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">word</span>=<span class="number">1</span>;  num++;  &#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"There are %d word s in the line\n"</span>,num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>91、写一个内存拷贝函数,不用任何库函数.就是前些时<br>候本版讨论的那个问题。<br>【参考答案】</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>* m e <span class="title">mcpy</span><span class="params">(<span class="keyword">void</span>* pvTo, <span class="keyword">const</span> <span class="keyword">void</span>* pvFrom, <span class="keyword">size_t</span> <span class="built_in">size</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">assert((pvTo != <span class="literal">NULL</span>) &amp;&amp; (pvFrom ! = <span class="literal">NULL</span>));</span><br><span class="line"><span class="keyword">byte</span>* pbTo= pvTo;</span><br><span class="line"><span class="keyword">byte</span>* pbFrom = pbFrom;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">size</span>-- &gt;  <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">*pbTo++ = *pbFrom++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> pvTo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>92、有1、2、3 、4个数字，能组成多少个互不相同且<br>无重复数字的三位数？都是多少？<br>【参考答案】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#inc lude  <span class="meta-string">"stdio.h"</span></span></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"conio.h"</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> i,j,k;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">5</span>;i++) <span class="comment">/* 以下为三重循环*/</span></span><br><span class="line"><span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;<span class="number">5</span>;j++)</span><br><span class="line"><span class="keyword">for</span> (k=<span class="number">1</span>;k&lt;<span class="number">5</span>;k++)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (i!=k&amp;&amp;i!=j&amp;&amp;j!=k) <span class="comment">/* 确保i、j、k三位互不相同*/</span></span><br><span class="line"><span class="function">pr <span class="title">intf</span><span class="params">(<span class="string">"%d,%d,%d\n"</span>,i,j,k)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>93、取一个整数a从右端开始的4～7位。<br>【参考答案】</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">unsigned a,b,c,d;</span><br><span class="line">scanf(<span class="string">"%o"</span>,&amp;a);</span><br><span class="line"><span class="attribute">b</span>=a&gt;&gt;4;</span><br><span class="line"><span class="attribute">c</span>=~(~0&lt;&lt;4);</span><br><span class="line"><span class="attribute">d</span>=b&amp;c;</span><br><span class="line">printf(<span class="string">"%o\n%o\n"</span>,a,d);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>94、打印出杨辉三角形（要求打印出10行如下图）。<br>【参考答案】</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">int <span class="built_in">i</span>,<span class="built_in">j</span>;</span><br><span class="line">int a [<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line">printf(<span class="string">"\n"</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;<span class="built_in">i</span>&lt;<span class="number">10</span>;<span class="built_in">i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">a[<span class="built_in">i</span>][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">a[<span class="built_in">i</span>][<span class="built_in">i</span>]=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">2</span>;<span class="built_in">i</span>&lt;<span class="number">10</span>;<span class="built_in">i</span>++)</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">j</span>=<span class="number">1</span>;<span class="built_in">j</span>&lt;<span class="built_in">i</span>;<span class="built_in">j</span>++)</span><br><span class="line">a[<span class="built_in">i</span>][<span class="built_in">j</span>]=a[<span class="built_in">i</span><span class="number">-1</span>][<span class="built_in">j</span><span class="number">-1</span>]+a[<span class="built_in">i</span><span class="number">-1</span>][<span class="built_in">j</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;<span class="built_in">i</span>&lt;<span class="number">10</span>;<span class="built_in">i</span>++)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">j</span>=<span class="number">0</span>;<span class="built_in">j</span>&lt;=<span class="built_in">i</span>;<span class="built_in">j</span>++)</span><br><span class="line">printf(<span class="string">"%5d"</span>,a[<span class="built_in">i</span>][<span class="built_in">j</span>]);</span><br><span class="line">printf(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line">getch(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>95、实现strcmp 函数。<br>100 条经典 C语言笔试题目<br>96、写一个函数，求一个字符串的长度，在main函数<br>中输入字符串，并输出其长度。<br>【参考答案】</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line">intlen;</span><br><span class="line">char *<span class="keyword">s</span> <span class="keyword">tr</span>[<span class="number">20</span>];</span><br><span class="line"><span class="keyword">printf</span>(<span class="string">"please input a string:\n"</span>);</span><br><span class="line">scanf(<span class="string">"%s"</span>,str);</span><br><span class="line">len=<span class="keyword">length</span>(str);</span><br><span class="line"><span class="keyword">printf</span>(<span class="string">"the s tring has %d characters."</span>,len);</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">length</span>(p)</span><br><span class="line">char *p;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> n ;</span><br><span class="line">n=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(*p!=<span class="string">'\0'</span>)</span><br><span class="line">&#123;</span><br><span class="line">n++;</span><br><span class="line">p++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>97、809<em>??=800</em>??+9<em>??+1  其中??代表的两位数<br>,8</em>?? 的结果为两位数，9<em>??的结果为3位数。求??代<br>表的两位数，及809</em>??后的结果。<br>【参考答案】</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">output(long b,long <span class="built_in">i</span>)</span><br><span class="line">&#123;</span><br><span class="line">printf(<span class="string">"\n%ld/%ld=809*%ld+%ld"</span>,b,<span class="built_in">i</span>,<span class="built_in">i</span>,b<span class="comment">%i);</span></span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">long int a ,b,<span class="built_in">i</span>;</span><br><span class="line">a=<span class="number">809</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">10</span>;<span class="built_in">i</span>&lt;<span class="number">100</span>;<span class="built_in">i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">b=<span class="built_in">i</span>*a+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span>(b&gt;=<span class="number">1000</span>&amp;&amp;b&lt;=<span class="number">10000</span>&amp;&amp;<span class="number">8</span>*<span class="built_in">i</span>&lt;<span class="number">100</span>&amp;&amp;<span class="number">9</span>*<span class="built_in">i</span>&gt;=<span class="number">100</span>)</span><br><span class="line">output(b,<span class="built_in">i</span>);</span><br><span class="line">&#125;</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>98、某个公司采用公用电话传递数据，数据是四位的整数，在<br>传递过程中是加密的，加密规则如下：每位数字都加上5, 然后<br>用和除以10的余数代替该数字，再将第一位和第四位交换，第<br>二位和第三位交换。<br>【参考答案】</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">int</span> a ,i,aa[<span class="number">4</span>],t;</span><br><span class="line">scanf( <span class="string">" % d "</span> ,&amp;a) ;</span><br><span class="line">aa[<span class="number">0</span>]=a %<span class="number">10</span>;</span><br><span class="line">aa[<span class="number">1</span>]=a %<span class="number">100</span>/<span class="number">10</span>;</span><br><span class="line">aa[<span class="number">2</span>]=a %<span class="number">1000</span>/<span class="number">100</span>;</span><br><span class="line">aa[<span class="number">3</span>]=a /<span class="number">1000</span>;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span> ; i&lt;=<span class="number">3</span> ;i++)</span><br><span class="line">&#123;</span><br><span class="line">aa [i]+=<span class="number">5</span>;</span><br><span class="line">aa[i] %=<span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">3</span>/<span class="number">2</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">t=aa[i];</span><br><span class="line">aa[i]= aa[<span class="number">3</span>- i];</span><br><span class="line">aa[<span class="number">3</span>- i]= t ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">3</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">prin tf(<span class="string">"% d "</span>, a [i]);</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>99、计算字符串中子串出现的次数。<br>【参考答案】</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">char str1[20],str2[20],*p1,*p2;</span><br><span class="line">int <span class="attribute">sum</span>=0;</span><br><span class="line">printf(<span class="string">"please input two strings\n"</span>);</span><br><span class="line">scanf(<span class="string">"%s%s"</span>,str1,str2);</span><br><span class="line"><span class="attribute">p1</span>=str1;p2=str2;</span><br><span class="line"><span class="keyword">while</span>(*p1!=<span class="string">'\0'</span>)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(*<span class="attribute">p1</span>==*p2)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">while</span>(*<span class="attribute">p1</span>==*p2&amp;&amp;*p2!='\0')</span><br><span class="line">&#123;</span><br><span class="line">p1++;</span><br><span class="line">p2++;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">p1++;</span><br><span class="line"><span class="keyword">if</span>(*<span class="attribute">p2</span>=='\0')</span><br><span class="line">sum++;</span><br><span class="line"><span class="attribute">p2</span>=str2;</span><br><span class="line">&#125;</span><br><span class="line">printf(<span class="string">"%d"</span>,sum);</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>100 、有两个磁盘文件A和B, 各存放一行字母，要求把<br>这两个文件中的信息合并（按字母顺序排列），输出<br>到一个新文件C 中。<br>【参考答案】<br>100 条经典 C语言笔试题目</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">FILE *fp;</span><br><span class="line">in t <span class="built_in">i</span>,<span class="built_in">j</span>,n,ni;</span><br><span class="line">char c[<span class="number">160</span>],t,ch;</span><br><span class="line"><span class="keyword">if</span>((fp=fopen(<span class="string">"A"</span>,<span class="string">"r "</span>))==NULL)</span><br><span class="line">&#123;</span><br><span class="line">printf(<span class="string">"file A cannot  be opened\n"</span>);exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line">printf(<span class="string">"\nA contents are :\n"</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;(ch=fgetc(fp))!=EOF ; <span class="built_in">i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">c[<span class="built_in">i</span>]=ch;pu tchar(c[<span class="built_in">i</span>]);</span><br><span class="line">&#125;</span><br><span class="line">fclose(fp);</span><br><span class="line">ni=<span class="built_in">i</span>;</span><br><span class="line"><span class="keyword">if</span>((fp=fopen(<span class="string">"B"</span>,<span class="string">"r "</span>))==NULL)</span><br><span class="line">&#123;</span><br><span class="line">printf(<span class="string">"file B cannot  be opened\n"</span>);exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line">printf(<span class="string">"\nB contents are :\n"</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;(ch=fgetc(fp))!=EOF ; <span class="built_in">i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">c[<span class="built_in">i</span>]=ch;pu tchar(c[<span class="built_in">i</span>]);</span><br><span class="line">&#125;</span><br><span class="line">fclose(fp);</span><br><span class="line">n=<span class="built_in">i</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;<span class="built_in">i</span>&lt;n;<span class="built_in">i</span>++)</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">j</span>=<span class="built_in">i</span>+<span class="number">1</span>;<span class="built_in">j</span>&lt;n;<span class="built_in">j</span>++)</span><br><span class="line"><span class="keyword">if</span>(c[<span class="built_in">i</span>]&gt;c[<span class="built_in">j</span>])&#123;t=c[<span class="built_in">i</span> ];c[<span class="built_in">i</span>]=c[<span class="built_in">j</span>];c[<span class="built_in">j</span>]=t;&#125;</span><br><span class="line">printf(<span class="string">"\nC file is:\n"</span>);</span><br><span class="line">fp =f open(<span class="string">"C"</span>,<span class="string">"w"</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>;<span class="built_in">i</span>&lt;n;<span class="built_in">i</span>++)&#123;putc(c[<span class="built_in">i</span> ],fp);putchar(c[<span class="built_in">i</span>]);&#125;</span><br><span class="line">fclose(fp);</span><br><span class="line">getch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/java%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="prev" title="java知识总结">
+      <i class="fa fa-chevron-left"></i> java知识总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/25/javaweb/%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA%E7%AC%94%E8%AE%B0/" rel="next" title="Juint单元测试">
+      Juint单元测试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35:09</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

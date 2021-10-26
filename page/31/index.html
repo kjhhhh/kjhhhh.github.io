@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E5%8D%95%E4%BE%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/%E5%8D%95%E4%BE%8B/" class="post-title-link" itemprop="url">单例</a>
+            <a href="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/" class="post-title-link" itemprop="url">STL哈希表</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-27 15:33:51" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:51+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:44:20" itemprop="dateModified" datetime="2021-03-22T21:44:20+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:36:27" itemprop="dateModified" datetime="2021-03-22T21:36:27+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>15 分钟</span>
             </span>
 
         </div>
@@ -229,25 +229,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>单例设计模式</li>
-<li><code>__new__</code> 方法</li>
-<li>Python 中的单例</li>
-</ul>
-<h2 id="01-单例设计模式"><a href="#01-单例设计模式" class="headerlink" title="01. 单例设计模式"></a>01. 单例设计模式</h2><ul>
-<li><p>设计模式</p>
-<ul>
-<li><strong>设计模式</strong> 是 <strong>前人工作的总结和提炼</strong>，通常，被人们广泛流传的设计模式都是针对 <strong>某一特定问题</strong> 的成熟的解决方案</li>
-<li>使用 <strong>设计模式</strong> 是为了可重用代码、让代码更容易被他人理解、保证代码可靠性</li>
-</ul>
-</li>
-<li><p>单例设计模式</p>
-<ul>
-<li><strong>目的</strong> —— 让 <strong>类</strong> 创建的对象，在系统中 <strong>只有</strong> <strong>唯一的一个实例</strong></li>
-<li>每一次执行 <code>类名()</code> 返回的对象，<strong>内存地址是相同的</strong></li></ul></li></ul>
+          <p>哈希表是一个很重要的数据结构，在各大场合均有应用，比如在内核网络栈中的 sock_array 的结构。</p>
+<p>之前也学习过<a href="http://blog.csdn.net/wenqian1991/article/details/22754171" target="_blank" rel="noopener">哈希表</a> ，建议看此文之前，先看前面用C++实现的简洁的哈希表。这里通过剖析SGI STL 中的hashtable 来进一步探索hashtable。</p>
+<p>SGI STL 中哈希表采用链接法解决冲突。结构中维护了一个 vector，vector 中每一个元素称为一个桶（bucket），它包含的是一个链表的第一个节点。</p>
+<p>哈希表的思想这里就不赘述了，直接通过STL 的源码来剖心其内部实现。</p>
+<p><strong>一、 hash table 的节点定义：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">hashtable_node</span></span></span><br><span class="line"><span class="class">  __<span class="title">hashtable_node</span>* <span class="title">next</span>;</span> <span class="comment">//下一个节点</span></span><br><span class="line">  Value val; <span class="comment">//键值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>bucket 所维护的正是上述的 hash table node。</p>
+<p>​               <img src="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/20140621204518781" alt="img"></p>
+<p>从上图可知，buckets vector 中存放的是bucket，然后每个bucket 存放链表（如果有的话）。通俗的说bucket 就是动态array 中的一个元素。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/%E5%8D%95%E4%BE%8B/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -271,7 +265,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -285,7 +279,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">私有属性和私有方法</a>
+            <a href="/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">STLlist内部机制</a>
         </h2>
 
         <div class="post-meta">
@@ -295,14 +289,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-27 15:33:31" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:31+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:22:32" itemprop="dateModified" datetime="2021-03-21T23:22:32+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:36:34" itemprop="dateModified" datetime="2021-03-22T21:36:34+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,7 +304,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -320,14 +314,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>592</span>
+              <span>14k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -339,23 +333,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="私有属性和私有方法"><a href="#私有属性和私有方法" class="headerlink" title="私有属性和私有方法"></a>私有属性和私有方法</h1><h2 id="01-应用场景及定义方式"><a href="#01-应用场景及定义方式" class="headerlink" title="01. 应用场景及定义方式"></a>01. 应用场景及定义方式</h2><p><strong>应用场景</strong></p>
-<ul>
-<li>在实际开发中，<strong>对象</strong> 的 <strong>某些属性或方法</strong> 可能只希望 <strong>在对象的内部被使用</strong>，而 <strong>不希望在外部被访问到</strong></li>
-<li><strong>私有属性</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>属性</strong></li>
-<li><strong>私有方法</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>方法</strong></li>
-</ul>
-<p><strong>定义方式</strong></p>
-<ul>
-<li>在 <strong>定义属性或方法时</strong>，在 <strong>属性名或者方法名前</strong> 增加 <strong>两个下划线</strong>，定义的就是 <strong>私有</strong> 属性或方法</li>
-</ul>
-<p><img src="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/010_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Women</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># 不要问女生的年龄</span></span><br><span class="line">        self.__age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__secret</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"我的年龄是 %d"</span> % self.__age)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaofang = Women(<span class="string">"小芳"</span>)</span><br><span class="line"><span class="comment"># 私有属性，外部不能直接访问</span></span><br><span class="line"><span class="comment"># print(xiaofang.__age)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 私有方法，外部不能直接调用</span></span><br><span class="line"><span class="comment"># xiaofang.__secret()</span></span><br></pre></td></tr></table></figure>
+          <p>List 就是链表，这个我们在很久之前就学习过了<a href="http://blog.csdn.net/wenqian1991/article/details/17764165" target="_blank" rel="noopener">单向链表</a>，<a href="http://blog.csdn.net/wenqian1991/article/details/17969861" target="_blank" rel="noopener">双向链表</a>。之前对STL有过大概的剖析，但没涉及到链表，早几天使用到了STL中的<list>，对其中的有些细节不明了，特意重新阅读了下源码，对STL中的List 加深一下理解。。。。论指针（地址）的重要性。</list></p>
+<p>附带说一句，阅读源码，建议使用Source Insight，非常好的源码阅读工具，没有其二。</p>
+<p><strong>1、List 概述</strong></p>
+<p>list 和 <a href="http://blog.csdn.net/wenqian1991/article/details/19540385" target="_blank" rel="noopener">vector</a> 是两个最常用的容器（序列式容器）。二者最显著的区别自然就是vector是连续线性空间，list则是不连续线性空间，相比于vector（动态数组），它的好处是每次插入和删除一个元素，只需配置或释放一个元素空间，对于任何位置的元素插入或元素移除，list永远是常数时间。尺有所长，寸有所短，list 寻址某一元素也没有vector（常数时间）方便。那么什么时机下最适合使用哪一种容器呢？必须视元素的多寡，元素的构造复杂度，元素存取行为的特定而定。</p>
+<p><strong>2、list 的节点</strong></p>
+<p>侯捷先生剖析的是STL203版的源码，我们这里紧跟下时尚，来剖析最新的STL源码<a href="http://www.sgi.com/tech/stl/download.html" target="_blank" rel="noopener">http://www.sgi.com/tech/stl/download.html </a></p>
+<p>以下是STL list的节点结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">List_node_base</span> &#123;</span></span><br><span class="line">  _List_node_base* _M_next;</span><br><span class="line">  _List_node_base* _M_prev;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">Tp</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> _<span class="title">List_node</span> :</span> <span class="keyword">public</span> _List_node_base &#123;</span><br><span class="line">  _Tp _M_data;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h2 id="02-伪私有属性和私有方法（科普）"><a href="#02-伪私有属性和私有方法（科普）" class="headerlink" title="02. 伪私有属性和私有方法（科普）"></a>02. 伪私有属性和私有方法（科普）</h2>
+<p>显然这是一个双向链表，链表节点的数据部分单独的放在一个结构体中，然后通过继承来获得链表的先后指针。node_base中仅含指针，这赶脚有点类似于linux内核中的list。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -379,7 +369,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -393,7 +383,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/" class="post-title-link" itemprop="url">面向对象封装案例 II</a>
+            <a href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">STLvector内部机制</a>
         </h2>
 
         <div class="post-meta">
@@ -403,14 +393,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-27 15:33:10" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:10+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:22:08" itemprop="dateModified" datetime="2021-03-21T23:22:08+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:37:13" itemprop="dateModified" datetime="2021-03-22T21:37:13+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -418,7 +408,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -428,14 +418,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -447,223 +437,219 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="面向对象封装案例-II"><a href="#面向对象封装案例-II" class="headerlink" title="面向对象封装案例 II"></a>面向对象封装案例 II</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>士兵突击案例</li>
-<li>身份运算符</li>
-</ul>
-<p><strong>封装</strong></p>
+          <p>先了解几个必要成员及函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对源码略作调整</span></span><br><span class="line">iterator _M_start;                  <span class="comment">//表示目前使用空间的头</span></span><br><span class="line">iterator _M_finish;                 <span class="comment">//表示目前使用空间的尾（尾：最后一个元素的下一个位置）</span></span><br><span class="line">iterator _M_end_of_storage;         <span class="comment">//表示目前可用空间的尾</span></span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _M_start; &#125;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span>   </span>&#123; <span class="keyword">return</span> _M_finish; &#125;</span><br><span class="line"><span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span>                  <span class="comment">//目前空间元素的个数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(end() - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">max_size</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(<span class="number">-1</span>) / <span class="keyword">sizeof</span>(_Tp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span>              <span class="comment">//容量</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(_M_end_of_storage - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> begin() == end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>这里先学习 insert() 函数（后面介绍另一个版本的 insert()：插入n个指定元素）：关于 construc() 函数的介绍可以参见其它博客</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">STL内存基本处理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:32:41" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:41+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:40:49" itemprop="dateModified" datetime="2021-03-22T21:40:49+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里继续学习基于配置器之上的一些内存基本处理工具。主要剖析 SGI STL 源码（<a href="https://blog.csdn.net/wenqian1991/article/details/http" target="_blank" rel="noopener">http ://www.sgi.com/tech/stl/download.html</a> v3.3）中的几个内存处理函数(由函数名可知，是对未初始化空间的初始化操作，即通过复制或赋值的方式初始化未初始化的空间)：<br>uninitialized_copy()，uninitialized_copy_n()，uninitialized_fill()，uninitialized_fill_n()。</p>
+<p>先学习 uninitiated_copy()</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//stl source code（v3.3）</span></span><br><span class="line"><span class="comment">//defined in &lt;stl_uninitialized.h&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">char</span>* <span class="title">uninitialized_copy</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* __first, <span class="keyword">const</span> <span class="keyword">char</span>* __last, <span class="keyword">char</span>* __result)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	memmove(__result, __first, __last - __first);</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);  <span class="comment">//返回该连续区域的末尾</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">wchar_t</span>*   <span class="comment">// typedef unsigned short wchar_t;</span></span><br><span class="line">uninitialized_copy(<span class="keyword">const</span> <span class="keyword">wchar_t</span>* __first, <span class="keyword">const</span> <span class="keyword">wchar_t</span>* __last, <span class="keyword">wchar_t</span>* __result)</span><br><span class="line">&#123;</span><br><span class="line">	memmove(__result, __first, <span class="keyword">sizeof</span>(<span class="keyword">wchar_t</span>)* (__last - __first));</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);</span><br></pre></td></tr></table></figure>
+
+<p>上面两个是对两种特化类型的处理，下面为泛化版本 </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第二级配置器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:32:21" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:21+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:38:01" itemprop="dateModified" datetime="2021-03-22T21:38:01+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>考虑到小型区块所可能造成的内存破碎问题，SGI 设计了双层级配置器，这里则学习第二级配置器，第二级配置器的设计思想为：</p>
 <ol>
-<li><strong>封装</strong> 是面向对象编程的一大特点</li>
-<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
-<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li></ol>
+<li>如果配置区块超过128 bytes，则移交给第一级配置器处理；</li>
+<li>如果配置区块小于128 bytes，则采用内存池管理（memory pool）。每次配置一大块内存，则维护对应的自由链表（free-list），下次若再有相同大小的内存需求，就直接从 free-list 中拨出（没有就继续配置内存，具体后面讲述），如果客端释换小额区块，就有配置器回收到 free-list 中。</li>
+</ol>
+<p>需要说明的是：本系列引用的STL源码版本为 v3.3，对比版本 v2.03 风格上有了些许变化，但设计思想还是不变的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* part of stl source code v3.3 */</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _ALIGN = <span class="number">8</span> &#125;;                <span class="comment">//小型区块的上调边界</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _MAX_BYTES = <span class="number">128</span> &#125;;          <span class="comment">//小型区块的上限</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _NFREELISTS = <span class="number">16</span> &#125;; <span class="comment">// _MAX_BYTES/_ALIGN   //free-list 编号数</span></span><br><span class="line"><span class="comment">//配置内存后，维护对应内存块的空闲链表节点结构</span></span><br><span class="line"><span class="keyword">union</span> _Obj &#123;</span><br><span class="line">	<span class="keyword">union</span> _Obj* _M_free_list_link;   <span class="comment">//空闲链表</span></span><br><span class="line">	<span class="keyword">char</span> _M_client_data[<span class="number">1</span>];    <span class="comment">/* The client sees this. 用户使用的*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>考虑内存对其等因素，SGI 第二级配置器会主动将任何小额区块的内存需求量上调至 8 的倍数。并维护 16 个 free-list，各自管理大小分别为 8，16，24，32，40，48，56，64，72，80，88，96，104，112，120，128 bytes 的小额区块。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/" class="post-title-link" itemprop="url">面向对象封装案例</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:21:59" itemprop="dateModified" datetime="2021-03-21T23:21:59+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="面向对象封装案例"><a href="#面向对象封装案例" class="headerlink" title="面向对象封装案例"></a>面向对象封装案例</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>封装</li>
-<li>小明爱跑步</li>
-<li>存放家具</li>
-</ul>
-<h3 id="01-封装"><a href="#01-封装" class="headerlink" title="01. 封装"></a>01. 封装</h3><ol>
-<li><strong>封装</strong> 是面向对象编程的一大特点</li>
-<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
-<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li></ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">面相对象基础语法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:14:01" itemprop="dateModified" datetime="2021-03-21T23:14:01+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="面相对象基础语法"><a href="#面相对象基础语法" class="headerlink" title="面相对象基础语法"></a>面相对象基础语法</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li><code>dir</code> 内置函数</li>
-<li>定义简单的类（只包含方法）</li>
-<li>方法中的 <code>self</code> 参数</li>
-<li>初始化方法</li>
-<li>内置方法和属性</li></ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -686,7 +672,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -752,7 +738,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">276</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -801,12 +787,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.1m</span>
+    <span title="站点总字数">2.3m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:49</span>
+    <span title="站点阅读时长">35:09</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

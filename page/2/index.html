@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/Cookie&Session%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">计算机组成原理简要知识</a>
+            <a href="/2021/10/26/Cookie&Session%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">会话技术Cookie、Session|JSP</a>
         </h2>
 
         <div class="post-meta">
@@ -186,7 +186,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-21 19:47:55 / 修改时间：22:07:32" itemprop="dateCreated datePublished" datetime="2021-03-21T19:47:55+08:00">2021-03-21</time>
+              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：20:35:16" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -194,7 +194,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">计组</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -204,14 +204,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.5k</span>
+              <span>5.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -223,16 +223,217 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、计算机系统概论"><a href="#一、计算机系统概论" class="headerlink" title="一、计算机系统概论"></a><strong>一、计算机系统概论</strong></h2><p><strong>1. 冯诺依曼计算机组成</strong></p>
-<p>主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 会话技术
+    1. Cookie
+    2. Session
+2. JSP：入门学习</code></pre><h2 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h2><pre><code>1. 会话：一次会话中包含多次请求和响应。
+    * 一次会话：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止
+2. 功能：在一次会话的范围内的多次请求间，共享数据
+3. 方式：
+    1. 客户端会话技术：Cookie
+    2. 服务器端会话技术：Session</code></pre><h2 id="Cookie："><a href="#Cookie：" class="headerlink" title="Cookie："></a>Cookie：</h2><pre><code>1. 概念：客户端会话技术，将数据保存到客户端
+
+2. 快速入门：
+    * 使用步骤：
+        1. 创建Cookie对象，绑定数据
+            * new Cookie(String name, String value) 
+        2. 发送Cookie对象
+            * response.addCookie(Cookie cookie) 
+        3. 获取Cookie，拿到数据
+            * Cookie[]  request.getCookies()  
+
+
+3. 实现原理
+    * 基于响应头set-cookie和请求头cookie实现
+
+4. cookie的细节
+    1. 一次可不可以发送多个cookie?
+        * 可以
+        * 可以创建多个Cookie对象，使用response调用多次addCookie方法发送cookie即可。
+    2. cookie在浏览器中保存多长时间？
+        1. 默认情况下，当浏览器关闭后，Cookie数据被销毁
+        2. 持久化存储：
+            * setMaxAge(int seconds)
+                1. 正数：将Cookie数据写到硬盘的文件中。持久化存储。并指定cookie存活时间，时间到后，cookie文件自动失效
+                2. 负数：默认值
+                3. 零：删除cookie信息
+    3. cookie能不能存中文？
+        * 在tomcat 8 之前 cookie中不能直接存储中文数据。
+            * 需要将中文数据转码---一般采用URL编码(%E3)
+        * 在tomcat 8 之后，cookie支持中文数据。特殊字符还是不支持，建议使用URL编码存储，URL解码解析
+    4. cookie共享问题？
+        1. 假设在一个tomcat服务器中，部署了多个web项目，那么在这些web项目中cookie能不能共享？
+            * 默认情况下cookie不能共享
+
+            * setPath(String path):设置cookie的获取范围。默认情况下，设置当前的虚拟目录
+                * 如果要共享，则可以将path设置为&quot;/&quot;</code></pre><p>​<br>            2. 不同的tomcat服务器间cookie共享问题？<br>                * setDomain(String path):如果设置一级域名相同，那么多个服务器之间cookie可以共享<br>                    * setDomain(“.baidu.com”),那么tieba.baidu.com和news.baidu.com中cookie可以共享</p>
+<pre><code>5. Cookie的特点和作用
+    1. cookie存储数据在客户端浏览器
+    2. 浏览器对于单个cookie 的大小有限制(4kb) 以及 对同一个域名下的总cookie数量也有限制(20个)
+
+    * 作用：
+        1. cookie一般用于存出少量的不太敏感的数据
+        2. 在不登录的情况下，完成服务器对客户端的身份识别
+
+6. 案例：记住上一次访问时间
+    1. 需求：
+        1. 访问一个Servlet，如果是第一次访问，则提示：您好，欢迎您首次访问。
+        2. 如果不是第一次访问，则提示：欢迎回来，您上次访问时间为:显示时间字符串
+
+    2. 分析：
+        1. 可以采用Cookie来完成
+        2. 在服务器中的Servlet判断是否有一个名为lastTime的cookie
+            1. 有：不是第一次访问
+                1. 响应数据：欢迎回来，您上次访问时间为:2018年6月10日11:50:20
+                2. 写回Cookie：lastTime=2018年6月10日11:50:01
+            2. 没有：是第一次访问
+                1. 响应数据：您好，欢迎您首次访问
+                2. 写回Cookie：lastTime=2018年6月10日11:50:01
+
+    3. 代码实现：
+        package cn.itcast.cookie;
+
+        import javax.servlet.ServletException;
+        import javax.servlet.annotation.WebServlet;
+        import javax.servlet.http.Cookie;
+        import javax.servlet.http.HttpServlet;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.io.IOException;
+        import java.net.URLDecoder;
+        import java.net.URLEncoder;
+        import java.text.SimpleDateFormat;
+        import java.util.Date;
+
+
+    @WebServlet(&quot;/cookieTest&quot;)
+    public class CookieTest extends HttpServlet {
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            //设置响应的消息体的数据格式以及编码
+            response.setContentType(&quot;text/html;charset=utf-8&quot;);
+
+            //1.获取所有Cookie
+            Cookie[] cookies = request.getCookies();
+            boolean flag = false;//没有cookie为lastTime
+            //2.遍历cookie数组
+            if(cookies != null &amp;&amp; cookies.length &gt; 0){
+                for (Cookie cookie : cookies) {
+                    //3.获取cookie的名称
+                    String name = cookie.getName();
+                    //4.判断名称是否是：lastTime
+                    if(&quot;lastTime&quot;.equals(name)){
+                        //有该Cookie，不是第一次访问
+
+                        flag = true;//有lastTime的cookie
+
+                        //设置Cookie的value
+                        //获取当前时间的字符串，重新设置Cookie的值，重新发送cookie
+                        Date date  = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy年MM月dd日 HH:mm:ss&quot;);
+                        String str_date = sdf.format(date);
+                        System.out.println(&quot;编码前：&quot;+str_date);
+                        //URL编码
+                        str_date = URLEncoder.encode(str_date,&quot;utf-8&quot;);
+                        System.out.println(&quot;编码后：&quot;+str_date);
+                        cookie.setValue(str_date);
+                        //设置cookie的存活时间
+                        cookie.setMaxAge(60 * 60 * 24 * 30);//一个月
+                        response.addCookie(cookie);</code></pre><p>​<br>                            //响应数据<br>                            //获取Cookie的value，时间<br>                            String value = cookie.getValue();<br>                            System.out.println(“解码前：”+value);<br>                            //URL解码：<br>                            value = URLDecoder.decode(value,”utf-8”);<br>                            System.out.println(“解码后：”+value);<br>                            response.getWriter().write(“</p><h1>欢迎回来，您上次访问时间为:”+value+”</h1>“);<p></p>
+<pre><code>            break;
+
+        }
+    }
+}</code></pre><p>​<br>                if(cookies == null || cookies.length == 0 || flag == false){<br>                    //没有，第一次访问</p>
+<pre><code>    //设置Cookie的value
+    //获取当前时间的字符串，重新设置Cookie的值，重新发送cookie
+    Date date  = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy年MM月dd日 HH:mm:ss&quot;);
+    String str_date = sdf.format(date);
+    System.out.println(&quot;编码前：&quot;+str_date);
+    //URL编码
+    str_date = URLEncoder.encode(str_date,&quot;utf-8&quot;);
+    System.out.println(&quot;编码后：&quot;+str_date);
+
+    Cookie cookie = new Cookie(&quot;lastTime&quot;,str_date);
+    //设置cookie的存活时间
+    cookie.setMaxAge(60 * 60 * 24 * 30);//一个月
+    response.addCookie(cookie);
+
+    response.getWriter().write(&quot;&lt;h1&gt;您好，欢迎您首次访问&lt;/h1&gt;&quot;);
+}</code></pre><p>​<br>            }</p>
+<pre><code>    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.doPost(request, response);
+    }
+}</code></pre><h2 id="JSP：入门学习"><a href="#JSP：入门学习" class="headerlink" title="JSP：入门学习"></a>JSP：入门学习</h2><pre><code>1. 概念：
+    * Java Server Pages： java服务器端页面
+        * 可以理解为：一个特殊的页面，其中既可以指定定义html标签，又可以定义java代码
+        * 用于简化书写！！！
+
+
+2. 原理
+    * JSP本质上就是一个Servlet
+
+3. JSP的脚本：JSP定义Java代码的方式
+    1. &lt;%  代码 %&gt;：定义的java代码，在service方法中。service方法中可以定义什么，该脚本中就可以定义什么。
+    2. &lt;%! 代码 %&gt;：定义的java代码，在jsp转换后的java类的成员位置。
+    3. &lt;%= 代码 %&gt;：定义的java代码，会输出到页面上。输出语句中可以定义什么，该脚本中就可以定义什么。
+
+
+4. JSP的内置对象：
+    * 在jsp页面中不需要获取和创建，可以直接使用的对象
+    * jsp一共有9个内置对象。
+    * 今天学习3个：
+        * request
+        * response
+        * out：字符输出流对象。可以将数据输出到页面上。和response.getWriter()类似
+            * response.getWriter()和out.write()的区别：
+                * 在tomcat服务器真正给客户端做出响应之前，会先找response缓冲区数据，再找out缓冲区数据。
+                * response.getWriter()数据输出永远在out.write()之前
+
+5. 案例:改造Cookie案例</code></pre><h2 id="Session：主菜"><a href="#Session：主菜" class="headerlink" title="Session：主菜"></a>Session：主菜</h2><pre><code>1. 概念：服务器端会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端的对象中。HttpSession
+2. 快速入门：
+    1. 获取HttpSession对象：
+        HttpSession session = request.getSession();
+    2. 使用HttpSession对象：
+        Object getAttribute(String name)  
+        void setAttribute(String name, Object value)
+        void removeAttribute(String name)  
+
+3. 原理
+    * Session的实现是依赖于Cookie的。</code></pre><p>​<br>    4. 细节：<br>        1. 当客户端关闭后，服务器不关闭，两次获取session是否为同一个？<br>            * 默认情况下。不是。<br>            * 如果需要相同，则可以创建Cookie,键为JSESSIONID，设置最大存活时间，让cookie持久化保存。<br>                 Cookie c = new Cookie(“JSESSIONID”,session.getId());<br>                 c.setMaxAge(60*60);<br>                 response.addCookie(c);</p>
+<pre><code>   2. 客户端不关闭，服务器关闭后，两次获取的session是同一个吗？
+       * 不是同一个，但是要确保数据不丢失。tomcat自动完成以下工作
+           * session的钝化：
+               * 在服务器正常关闭之前，将session对象系列化到硬盘上
+           * session的活化：
+               * 在服务器启动后，将session文件转化为内存中的session对象即可。
+
+   3. session什么时候被销毁？
+       1. 服务器关闭
+       2. session对象调用invalidate() 。
+       3. session默认失效时间 30分钟
+           选择性配置修改    
+           &lt;session-config&gt;
+               &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+           &lt;/session-config&gt;
+
+5. session的特点
+    1. session用于存储一次会话的多次请求的数据，存在服务器端
+    2. session可以存储任意类型，任意大小的数据
+
+   * session与Cookie的区别：
+       1. session存储数据在服务器端，Cookie在客户端
+       2. session没有数据大小限制，Cookie有
+       3. session数据安全，Cookie相对于不安全</code></pre><h2 id="案例：验证码"><a href="#案例：验证码" class="headerlink" title="案例：验证码"></a>案例：验证码</h2><pre><code>1. 案例需求：
+    1. 访问带有验证码的登录页面login.jsp
+    2. 用户输入用户名，密码以及验证码。
+        * 如果用户名和密码输入有误，跳转登录页面，提示:用户名或密码错误
+        * 如果验证码输入有误，跳转登录页面，提示：验证码错误
+        * 如果全部输入正确，则跳转到主页success.jsp，显示：用户名,欢迎您
+
+
+2. 分析：</code></pre><p>​    </p>
+
       
     </div>
 
@@ -251,7 +452,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/BootStrap%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -265,7 +466,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java类谜题</a>
+            <a href="/2021/10/26/BootStrap%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Bootsrap</a>
         </h2>
 
         <div class="post-meta">
@@ -274,23 +475,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:41:03" itemprop="dateCreated datePublished" datetime="2021-03-20T22:41:03+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：20:36:28" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 22:37:47" itemprop="dateModified" datetime="2021-03-21T22:37:47+08:00">2021-03-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -300,14 +495,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>21k</span>
+              <span>9.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>19 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -319,18 +514,277 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-5——类谜题"><a href="#Java-谜题-Java-谜题-5——类谜题" class="headerlink" title="Java 谜题 Java 谜题 5——类谜题"></a>Java 谜题 Java 谜题 5——类谜题</h1><h2 id="谜题-46：令人混淆的构造器案例-令人混淆的构造器案例"><a href="#谜题-46：令人混淆的构造器案例-令人混淆的构造器案例" class="headerlink" title="谜题 46：令人混淆的构造器案例 令人混淆的构造器案例"></a>谜题 46：令人混淆的构造器案例 令人混淆的构造器案例</h2><p>本谜题呈现给你了两个容易令人混淆的构造器。main 方法调用了一个构造器，</p>
-<p>但是它调用的到底是哪一个呢？该程序的输出取决于这个问题的答案。那么它到</p>
-<p>底会打印出什么呢？甚至它是否是合法的呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Confusing</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(Object o)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Object"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(<span class="keyword">double</span>[] dArray)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"double array"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> Confusing(null); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. Bootstrap</code></pre><h2 id="Bootstrap："><a href="#Bootstrap：" class="headerlink" title="Bootstrap："></a>Bootstrap：</h2><pre><code>1. 概念： 一个前端开发的框架，Bootstrap，来自 Twitter，是目前很受欢迎的前端框架。Bootstrap 是基于 HTML、CSS、JavaScript 的，它简洁灵活，使得 Web 开发更加快捷。
+    * 框架:一个半成品软件，开发人员可以在框架基础上，在进行开发，简化编码。
+    * 好处：
+        1. 定义了很多的css样式和js插件。我们开发人员直接可以使用这些样式和插件得到丰富的页面效果。
+        2. 响应式布局。
+            * 同一套页面可以兼容不同分辨率的设备。
+
+
+2. 快速入门
+    1. 下载Bootstrap
+    2. 在项目中将这三个文件夹复制
+    3. 创建html页面，引入必要的资源文件
+
+
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang=&quot;zh-CN&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        &lt;!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ --&gt;
+        &lt;title&gt;Bootstrap HelloWorld&lt;/title&gt;
+
+        &lt;!-- Bootstrap --&gt;
+        &lt;link href=&quot;css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;</code></pre><p>​<br>            <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) --><br>            <script src="js/jquery-3.2.1.min.js"></script><br>            <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 --><br>            <script src="js/bootstrap.min.js"></script><br>        <br>        <body><br>        <h1>你好，世界！</h1></body></p>
+<pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre><h2 id="响应式布局"><a href="#响应式布局" class="headerlink" title="响应式布局"></a>响应式布局</h2><pre><code>* 同一套页面可以兼容不同分辨率的设备。
+* 实现：依赖于栅格系统：将一行平均分成12个格子，可以指定元素占几个格子
+* 步骤：
+    1. 定义容器。相当于之前的table、
+        * 容器分类：
+            1. container：两边留白
+            2. container-fluid：每一种设备都是100%宽度
+    2. 定义行。相当于之前的tr   样式：row
+    3. 定义元素。指定该元素在不同的设备上，所占的格子数目。样式：col-设备代号-格子数目
+        * 设备代号：
+            1. xs：超小屏幕 手机 (&lt;768px)：col-xs-12
+            2. sm：小屏幕 平板 (≥768px)
+            3. md：中等屏幕 桌面显示器 (≥992px)
+            4. lg：大屏幕 大桌面显示器 (≥1200px)
+
+    * 注意：
+        1. 一行中如果格子数目超过12，则超出部分自动换行。
+        2. 栅格类属性可以向上兼容。栅格类适用于与屏幕宽度大于或等于分界点大小的设备。
+        3. 如果真实设备宽度小于了设置栅格类属性的设备代码的最小值，会一个元素沾满一整行。</code></pre><h2 id="CSS样式和JS插件"><a href="#CSS样式和JS插件" class="headerlink" title="CSS样式和JS插件"></a>CSS样式和JS插件</h2><pre><code>1. 全局CSS样式：
+    * 按钮：class=&quot;btn btn-default&quot;
+    * 图片：
+        *  class=&quot;img-responsive&quot;：图片在任意尺寸都占100%
+        *  图片形状
+            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-rounded&quot;&gt;：方形
+            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-circle&quot;&gt; ： 圆形
+            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-thumbnail&quot;&gt; ：相框
+    * 表格
+        * table
+        * table-bordered
+        * table-hover
+    * 表单
+        * 给表单项添加：class=&quot;form-control&quot; 
+2. 组件：
+    * 导航条
+    * 分页条
+3. 插件：
+    * 轮播图</code></pre><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ --&gt;
+    &lt;title&gt;Bootstrap HelloWorld&lt;/title&gt;
+
+    &lt;!-- Bootstrap --&gt;
+    &lt;link href=&quot;css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;</code></pre><p>​<br>        <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) --><br>        <script src="js/jquery-3.2.1.min.js"></script><br>        <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 --><br>        <script src="js/bootstrap.min.js"></script><br>        <style><br>            .paddtop{<br>                padding-top: 10px;<br>            }<br>            .search-btn{<br>                float: left;<br>                border:1px solid #ffc900;<br>                width: 90px;<br>                height: 35px;<br>                background-color:#ffc900 ;<br>                text-align: center;<br>                line-height: 35px;<br>                margin-top: 15px;<br>            }</p>
+<pre><code>        .search-input{
+            float: left;
+            border:2px solid #ffc900;
+            width: 400px;
+            height: 35px;
+            padding-left: 5px;
+            margin-top: 15px;
+        }
+        .jx{
+            border-bottom: 2px solid #ffc900;
+            padding: 5px;
+        }
+        .company{
+            height: 40px;
+            background-color: #ffc900;
+            text-align: center;
+            line-height:40px ;
+            font-size: 8px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+   &lt;!-- 1.页眉部分--&gt;
+   &lt;header class=&quot;container-fluid&quot;&gt;
+       &lt;div class=&quot;row&quot;&gt;
+           &lt;img src=&quot;img/top_banner.jpg&quot; class=&quot;img-responsive&quot;&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;row paddtop&quot;&gt;
+           &lt;div class=&quot;col-md-3&quot;&gt;
+               &lt;img src=&quot;img/logo.jpg&quot; class=&quot;img-responsive&quot;&gt;
+           &lt;/div&gt;
+           &lt;div class=&quot;col-md-5&quot;&gt;
+               &lt;input class=&quot;search-input&quot; placeholder=&quot;请输入线路名称&quot;&gt;
+               &lt;a class=&quot;search-btn&quot; href=&quot;#&quot;&gt;搜索&lt;/a&gt;
+           &lt;/div&gt;
+           &lt;div class=&quot;col-md-4&quot;&gt;
+               &lt;img src=&quot;img/hotel_tel.png&quot; class=&quot;img-responsive&quot;&gt;
+           &lt;/div&gt;
+
+       &lt;/div&gt;
+       &lt;!--导航栏--&gt;
+       &lt;div class=&quot;row&quot;&gt;
+           &lt;nav class=&quot;navbar navbar-default&quot;&gt;
+               &lt;div class=&quot;container-fluid&quot;&gt;
+                   &lt;!-- Brand and toggle get grouped for better mobile display --&gt;
+                   &lt;div class=&quot;navbar-header&quot;&gt;
+                       &lt;!-- 定义汉堡按钮 --&gt;
+                       &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#bs-example-navbar-collapse-1&quot; aria-expanded=&quot;false&quot;&gt;
+                           &lt;span class=&quot;sr-only&quot;&gt;Toggle navigation&lt;/span&gt;
+                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
+                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
+                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
+                       &lt;/button&gt;
+                       &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;首页&lt;/a&gt;
+                   &lt;/div&gt;
+
+                   &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+                   &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;bs-example-navbar-collapse-1&quot;&gt;
+                       &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+                           &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;#&quot;&gt;Link &lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
+                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
+                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
+                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
+                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
+
+                       &lt;/ul&gt;
+                   &lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
+               &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
+           &lt;/nav&gt;
+
+       &lt;/div&gt;
+
+       &lt;!--轮播图--&gt;
+       &lt;div class=&quot;row&quot;&gt;
+           &lt;div id=&quot;carousel-example-generic&quot; class=&quot;carousel slide&quot; data-ride=&quot;carousel&quot;&gt;
+               &lt;!-- Indicators --&gt;
+               &lt;ol class=&quot;carousel-indicators&quot;&gt;
+                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;0&quot; class=&quot;active&quot;&gt;&lt;/li&gt;
+                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;1&quot;&gt;&lt;/li&gt;
+                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;2&quot;&gt;&lt;/li&gt;
+               &lt;/ol&gt;
+
+               &lt;!-- Wrapper for slides --&gt;
+               &lt;div class=&quot;carousel-inner&quot; role=&quot;listbox&quot;&gt;
+                   &lt;div class=&quot;item active&quot;&gt;
+                       &lt;img src=&quot;img/banner_1.jpg&quot; alt=&quot;...&quot;&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;item&quot;&gt;
+                       &lt;img src=&quot;img/banner_2.jpg&quot; alt=&quot;...&quot;&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;item&quot;&gt;
+                       &lt;img src=&quot;img/banner_3.jpg&quot; alt=&quot;...&quot;&gt;
+                   &lt;/div&gt;
+
+               &lt;/div&gt;
+
+               &lt;!-- Controls --&gt;
+               &lt;a class=&quot;left carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;prev&quot;&gt;
+                   &lt;span class=&quot;glyphicon glyphicon-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                   &lt;span class=&quot;sr-only&quot;&gt;Previous&lt;/span&gt;
+               &lt;/a&gt;
+               &lt;a class=&quot;right carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;next&quot;&gt;
+                   &lt;span class=&quot;glyphicon glyphicon-chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                   &lt;span class=&quot;sr-only&quot;&gt;Next&lt;/span&gt;
+               &lt;/a&gt;
+           &lt;/div&gt;</code></pre><p>​<br>​<br>           </div></p>
+<pre><code>&lt;/header&gt;
+&lt;!-- 2.主体部分--&gt;
+&lt;div class=&quot;container&quot;&gt;
+     &lt;div class=&quot;row jx&quot;&gt;
+         &lt;img src=&quot;img/icon_5.jpg&quot;&gt;
+         &lt;span&gt;黑马精选&lt;/span&gt;
+     &lt;/div&gt;
+
+    &lt;div class=&quot;row paddtop&quot;&gt;
+        &lt;div class=&quot;col-md-3&quot;&gt;
+             &lt;div class=&quot;thumbnail&quot;&gt;
+                 &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                 &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+                 &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+             &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-3&quot;&gt;
+            &lt;div class=&quot;thumbnail&quot;&gt;
+                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-3&quot;&gt;
+
+            &lt;div class=&quot;thumbnail&quot;&gt;
+                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-3&quot;&gt;
+
+            &lt;div class=&quot;thumbnail&quot;&gt;
+                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;</code></pre><p>​<br>           </div><br>           <div class="row jx"><br>               <img src="img/icon_6.jpg"><br>               <span>国内游</span><br>           </div><br>           <div class="row paddtop"><br>               <div class="col-md-4"><br>                   <img src="img/guonei_1.jpg"><br>               </div><br>               <div class="col-md-8"><br>                   <div class="row"><br>                       <div class="col-md-4"><br>                           <div class="thumbnail"><br>                               <img src="img/jiangxuan_3.jpg" alt=""><br>                               <p>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</p><br>                               <font color="red">&yen; 699</font><br>                           </div><br>                       </div><br>                       <div class="col-md-4"><br>                           <div class="thumbnail"><br>                               <img src="img/jiangxuan_3.jpg" alt=""><br>                               <p>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</p><br>                               <font color="red">&yen; 699</font><br>                           </div></p>
+<pre><code>    &lt;/div&gt;
+    &lt;div class=&quot;col-md-4&quot;&gt;
+
+        &lt;div class=&quot;thumbnail&quot;&gt;
+            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-md-4&quot;&gt;
+        &lt;div class=&quot;thumbnail&quot;&gt;
+            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-md-4&quot;&gt;
+        &lt;div class=&quot;thumbnail&quot;&gt;
+            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;div class=&quot;col-md-4&quot;&gt;
+
+        &lt;div class=&quot;thumbnail&quot;&gt;
+            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
+            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;</code></pre><p>​<br>                   </div></p>
+<pre><code>        &lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- 3.页脚部分--&gt;
+&lt;footer class=&quot;container-fluid&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;img src=&quot;img/footer_service.png&quot; class=&quot;img-responsive&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row company&quot;&gt;
+        江苏传智播客教育科技股份有限公司 版权所有Copyright 2006-2018, All Rights Reserved 苏ICP备16007882
+    &lt;/div&gt;
+
+&lt;/footer&gt;</code></pre><p>​<br>    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body><br>    </html></p>
+</style></p>
       
     </div>
 
@@ -349,7 +803,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -363,7 +817,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java异常谜题</a>
+            <a href="/2021/10/26/%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">综合练习需求</a>
         </h2>
 
         <div class="post-meta">
@@ -372,23 +826,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:36:01" itemprop="dateCreated datePublished" datetime="2021-03-20T22:36:01+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:46:03" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 22:38:17" itemprop="dateModified" datetime="2021-03-21T22:38:17+08:00">2021-03-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -398,14 +846,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>22k</span>
+              <span>112</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>20 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -417,18 +865,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-4——异常谜题"><a href="#Java-谜题-Java-谜题-4——异常谜题" class="headerlink" title="Java 谜题 Java 谜题 4——异常谜题"></a>Java 谜题 Java 谜题 4——异常谜题</h1><h2 id="谜题-36：优柔寡断"><a href="#谜题-36：优柔寡断" class="headerlink" title="谜题 36：优柔寡断"></a>谜题 36：优柔寡断</h2><p>下面这个可怜的小程序并不能很好地做出其自己的决定。它的 decision 方法将</p>
-<p>返回 true，但是它还返回了 false。那么，它到底打印的是什么呢？甚至，它是</p>
-<p>合法的吗？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Indecisive</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(decision()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">decision</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">try</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line"></span><br><span class="line"> &#125; finally &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 综合练习
+    1. 简单功能
+        1. 列表查询
+        2. 登录
+        3. 添加
+        4. 删除
+        5. 修改
+
+    2. 复杂功能
+        1. 删除选中
+        2. 分页查询
+            * 好处：
+                1. 减轻服务器内存的开销
+                2. 提升用户体验
+        3. 复杂条件查询</code></pre><h2 id="2-登录"><a href="#2-登录" class="headerlink" title="2. 登录"></a>2. 登录</h2><pre><code>1. 调整页面，加入验证码功能
+2. 代码实现</code></pre>
       
     </div>
 
@@ -447,7 +899,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -461,7 +913,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java循环谜题</a>
+            <a href="/2021/10/26/%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Juint单元测试</a>
         </h2>
 
         <div class="post-meta">
@@ -470,23 +922,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:27:03" itemprop="dateCreated datePublished" datetime="2021-03-20T22:27:03+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：19:29:20" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:07:06" itemprop="dateModified" datetime="2021-03-22T23:07:06+08:00">2021-03-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -496,14 +942,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>17k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -515,21 +961,193 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-3——循环谜题"><a href="#Java-谜题-Java-谜题-3——循环谜题" class="headerlink" title="Java 谜题 Java 谜题 3——循环谜题"></a>Java 谜题 Java 谜题 3——循环谜题</h1><h2 id="谜题-24：尽情享受每一个字节-尽情享受每一个字节"><a href="#谜题-24：尽情享受每一个字节-尽情享受每一个字节" class="headerlink" title="谜题 24：尽情享受每一个字节 尽情享受每一个字节"></a>谜题 24：尽情享受每一个字节 尽情享受每一个字节</h2><p>下面的程序循环遍历 byte 数值，以查找某个特定值。这个程序会打印出什么呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BigDelight</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">byte</span> b = Byte.MIN_VALUE; b &lt; Byte.MAX_VALUE; b++) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (b == <span class="number">0x90</span>) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"Joy!"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. Junit单元测试
+2. 反射
+3. 注解</code></pre><h2 id="Junit单元测试："><a href="#Junit单元测试：" class="headerlink" title="Junit单元测试："></a>Junit单元测试：</h2><pre><code>* 测试分类：
+    1. 黑盒测试：不需要写代码，给输入值，看程序是否能够输出期望的值。
+    2. 白盒测试：需要写代码的。关注程序具体的执行流程。
 
-<p>这个循环在除了 Byte.MAX_VALUE 之外所有的 byte 数值中进行迭代，以查找</p>
-<p>0x90。这个数值适合用 byte 表示，并且不等于 Byte.MAX_VALUE，因此你可能会</p>
-<p>想这个循环在该迭代会找到它一次，并将打印出 Joy!。但是，所见为虚。如果</p>
-<p>你运行该程序，就会发现它没有打印任何东西。怎么回事？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+* Junit使用：白盒测试
+    * 步骤：
+        1. 定义一个测试类(测试用例)
+            * 建议：
+                * 测试类名：被测试的类名Test        CalculatorTest
+                * 包名：xxx.xxx.xx.test        cn.itcast.test
+
+        2. 定义测试方法：可以独立运行
+            * 建议：
+                * 方法名：test测试的方法名        testAdd()  
+                * 返回值：void
+                * 参数列表：空参
+
+        3. 给方法加@Test
+        4. 导入junit依赖环境
+
+    * 判定结果：
+        * 红色：失败
+        * 绿色：成功
+        * 一般我们会使用断言操作来处理结果
+            * Assert.assertEquals(期望的结果,运算的结果);
+
+    * 补充：
+        * @Before:
+            * 修饰的方法会在测试方法之前被自动执行
+        * @After:
+            * 修饰的方法会在测试方法执行之后自动被执行</code></pre><h2 id="反射：框架设计的灵魂"><a href="#反射：框架设计的灵魂" class="headerlink" title="反射：框架设计的灵魂"></a>反射：框架设计的灵魂</h2><pre><code>* 框架：半成品软件。可以在框架的基础上进行软件开发，简化编码
+* 反射：将类的各个组成部分封装为其他对象，这就是反射机制
+    * 好处：
+        1. 可以在程序运行过程中，操作这些对象。
+        2. 可以解耦，提高程序的可扩展性。
+
+
+* 获取Class对象的方式：
+    1. Class.forName(&quot;全类名&quot;)：将字节码文件加载进内存，返回Class对象
+        * 多用于配置文件，将类名定义在配置文件中。读取文件，加载类
+    2. 类名.class：通过类名的属性class获取
+        * 多用于参数的传递
+    3. 对象.getClass()：getClass()方法在Object类中定义着。
+        * 多用于对象的获取字节码的方式
+
+    * 结论：
+        同一个字节码文件(*.class)在一次程序运行过程中，只会被加载一次，不论通过哪一种方式获取的Class对象都是同一个。
+
+
+* Class对象功能：
+    * 获取功能：
+        1. 获取成员变量们
+            * Field[] getFields() ：获取所有public修饰的成员变量
+            * Field getField(String name)   获取指定名称的 public修饰的成员变量
+
+            * Field[] getDeclaredFields()  获取所有的成员变量，不考虑修饰符
+            * Field getDeclaredField(String name)  
+        2. 获取构造方法们
+            * Constructor&lt;?&gt;[] getConstructors()  
+            * Constructor&lt;T&gt; getConstructor(类&lt;?&gt;... parameterTypes)  
+
+            * Constructor&lt;T&gt; getDeclaredConstructor(类&lt;?&gt;... parameterTypes)  
+            * Constructor&lt;?&gt;[] getDeclaredConstructors()  
+        3. 获取成员方法们：
+            * Method[] getMethods()  
+            * Method getMethod(String name, 类&lt;?&gt;... parameterTypes)  
+
+            * Method[] getDeclaredMethods()  
+            * Method getDeclaredMethod(String name, 类&lt;?&gt;... parameterTypes)  
+
+        4. 获取全类名    
+            * String getName()  
+
+
+* Field：成员变量
+    * 操作：
+        1. 设置值
+            * void set(Object obj, Object value)  
+        2. 获取值
+            * get(Object obj) 
+
+        3. 忽略访问权限修饰符的安全检查
+            * setAccessible(true):暴力反射
+
+
+
+* Constructor:构造方法
+    * 创建对象：
+        * T newInstance(Object... initargs)  
+
+        * 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
+
+
+* Method：方法对象
+    * 执行方法：
+        * Object invoke(Object obj, Object... args)  
+
+    * 获取方法名称：
+        * String getName:获取方法名
+
+
+* 案例：
+    * 需求：写一个&quot;框架&quot;，不能改变该类的任何代码的前提下，可以帮我们创建任意类的对象，并且执行其中任意方法
+        * 实现：
+            1. 配置文件
+            2. 反射
+        * 步骤：
+            1. 将需要创建的对象的全类名和需要执行的方法定义在配置文件中
+            2. 在程序中加载读取配置文件
+            3. 使用反射技术来加载类文件进内存
+            4. 创建对象
+            5. 执行方法</code></pre><h2 id="注解："><a href="#注解：" class="headerlink" title="注解："></a>注解：</h2><pre><code>* 概念：说明程序的。给计算机看的
+* 注释：用文字描述程序的。给程序员看的
+
+* 定义：注解（Annotation），也叫元数据。一种代码级别的说明。它是JDK1.5及以后版本引入的一个特性，与类、接口、枚举是在同一个层次。它可以声明在包、类、字段、方法、局部变量、方法参数等的前面，用来对这些元素进行说明，注释。
+* 概念描述：
+    * JDK1.5之后的新特性
+    * 说明程序的
+    * 使用注解：@注解名称</code></pre><p>​<br>    * 作用分类：<br>        ①编写文档：通过代码里标识的注解生成文档【生成文档doc文档】<br>        ②代码分析：通过代码里标识的注解对代码进行分析【使用反射】<br>        ③编译检查：通过代码里标识的注解让编译器能够实现基本的编译检查【Override】</p>
+<pre><code>* JDK中预定义的一些注解
+    * @Override    ：检测被该注解标注的方法是否是继承自父类(接口)的
+    * @Deprecated：该注解标注的内容，表示已过时
+    * @SuppressWarnings：压制警告
+        * 一般传递参数all  @SuppressWarnings(&quot;all&quot;)
+
+* 自定义注解
+    * 格式：
+        元注解
+        public @interface 注解名称{
+            属性列表;
+        }
+
+    * 本质：注解本质上就是一个接口，该接口默认继承Annotation接口
+        * public interface MyAnno extends java.lang.annotation.Annotation {}
+
+    * 属性：接口中的抽象方法
+        * 要求：
+            1. 属性的返回值类型有下列取值
+                * 基本数据类型
+                * String
+                * 枚举
+                * 注解
+                * 以上类型的数组
+
+            2. 定义了属性，在使用时需要给属性赋值
+                1. 如果定义属性时，使用default关键字给属性默认初始化值，则使用注解时，可以不进行属性的赋值。
+                2. 如果只有一个属性需要赋值，并且属性的名称是value，则value可以省略，直接定义值即可。
+                3. 数组赋值时，值使用{}包裹。如果数组中只有一个值，则{}可以省略
+
+    * 元注解：用于描述注解的注解
+        * @Target：描述注解能够作用的位置
+            * ElementType取值：
+                * TYPE：可以作用于类上
+                * METHOD：可以作用于方法上
+                * FIELD：可以作用于成员变量上
+        * @Retention：描述注解被保留的阶段
+            * @Retention(RetentionPolicy.RUNTIME)：当前被描述的注解，会保留到class字节码文件中，并被JVM读取到
+        * @Documented：描述注解是否被抽取到api文档中
+        * @Inherited：描述注解是否被子类继承
+
+
+* 在程序使用(解析)注解：获取注解中定义的属性值
+    1. 获取注解定义的位置的对象  （Class，Method,Field）
+    2. 获取指定的注解
+        * getAnnotation(Class)
+        //其实就是在内存中生成了一个该注解接口的子类实现对象
+
+                public class ProImpl implements Pro{
+                    public String className(){
+                        return &quot;cn.itcast.annotation.Demo1&quot;;
+                    }
+                    public String methodName(){
+                        return &quot;show&quot;;
+                    }
+                }
+    3. 调用注解中的抽象方法获取配置的属性值
+
+
+* 案例：简单的测试框架
+* 小结：
+    1. 以后大多数时候，我们会使用注解，而不是自定义注解
+    2. 注解给谁用？
+        1. 编译器
+        2. 给解析程序用
+    3. 注解不是程序的一部分，可以理解为注解就是一个标签</code></pre>
       
     </div>
 
@@ -548,7 +1166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E4%B8%AD%E7%BA%A7%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/xml%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -562,7 +1180,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E4%B8%AD%E7%BA%A7%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">java中级知识点</a>
+            <a href="/2021/10/26/xml%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">XML</a>
         </h2>
 
         <div class="post-meta">
@@ -571,23 +1189,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 19:29:16" itemprop="dateCreated datePublished" datetime="2021-03-20T19:29:16+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：20:24:04" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:30:46" itemprop="dateModified" datetime="2021-03-22T21:30:46+08:00">2021-03-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -597,14 +1209,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>91k</span>
+              <span>5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1:23</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -616,30 +1228,181 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h1><h2 id="Java-基本类型哪些，所占字节"><a href="#Java-基本类型哪些，所占字节" class="headerlink" title="Java 基本类型哪些，所占字节"></a>Java 基本类型哪些，所占字节</h2><p>byte ：1 个字节</p>
-<p>short ：2 个字节</p>
-<p>char ：2 个字节</p>
-<p>int ：4 个字节</p>
-<p>long ：8 个字节</p>
-<p>float ：4 个字节</p>
-<p>double ：8 个字节</p>
-<h2 id="java-集合以及底层原理"><a href="#java-集合以及底层原理" class="headerlink" title="java 集合以及底层原理"></a>java 集合以及底层原理</h2><p>Java 集合框架的根接口有 Collection 和 Map。Collection 根接口包含 List 和 Set 二个子接口。</p>
-<h3 id="List-接口"><a href="#List-接口" class="headerlink" title="List 接口"></a>List 接口</h3><p>它的特点是：元素有序、且可重复，主要包含三个实现类：ArrayList，vector，LinkedList</p>
-<p>ArrayList 的特点：底层是数组，线程不安全，查找快，增删慢（数组的特点）。</p>
-<p>ArrayList 的底层实现原理：通过 ArrrayList 空参构造器创建对象。</p>
-<p>底层创建一个长度为 10 的数组，当我们向数组中添加 11 个元素时，底层会进行扩容，扩容为原来的 1.5 倍</p>
-<p>(创建一个新的数组，长度为原数组长度的 1.5 倍，将原数组复制到新数组中)。</p>
-<p>vector 的特点：古老的实现类,底层是数组,线程安全的,JDK1.0 就有了,Vector 总是比 ArrayList 慢,所以尽量</p>
-<p>避免使用。</p>
-<p>LinkedList 的特点：底层是使用双向链表。增删快，查找慢。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E4%B8%AD%E7%BA%A7%E7%9F%A5%E8%AF%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. XML
+    1. 概念
+    2. 语法
+    3. 解析</code></pre><h2 id="XML："><a href="#XML：" class="headerlink" title="XML："></a>XML：</h2><pre><code>1. 概念：Extensible Markup Language 可扩展标记语言
+    * 可扩展：标签都是自定义的。 &lt;user&gt;  &lt;student&gt;
+
+    * 功能
+        * 存储数据
+            1. 配置文件
+            2. 在网络中传输
+    * xml与html的区别
+        1. xml标签都是自定义的，html标签是预定义。
+        2. xml的语法严格，html语法松散
+        3. xml是存储数据的，html是展示数据
+
+    * w3c:万维网联盟
+
+2. 语法：
+    * 基本语法：
+        1. xml文档的后缀名 .xml
+        2. xml第一行必须定义为文档声明
+        3. xml文档中有且仅有一个根标签
+        4. 属性值必须使用引号(单双都可)引起来
+        5. 标签必须正确关闭
+        6. xml标签名称区分大小写
+    * 快速入门：
+        &lt;?xml version=&apos;1.0&apos; ?&gt;
+        &lt;users&gt;
+            &lt;user id=&apos;1&apos;&gt;
+                &lt;name&gt;zhangsan&lt;/name&gt;
+                &lt;age&gt;23&lt;/age&gt;
+                &lt;gender&gt;male&lt;/gender&gt;
+                &lt;br/&gt;
+            &lt;/user&gt;
+
+            &lt;user id=&apos;2&apos;&gt;
+                &lt;name&gt;lisi&lt;/name&gt;
+                &lt;age&gt;24&lt;/age&gt;
+                &lt;gender&gt;female&lt;/gender&gt;
+            &lt;/user&gt;
+        &lt;/users&gt;
+
+    * 组成部分：
+        1. 文档声明
+            1. 格式：&lt;?xml 属性列表 ?&gt;
+            2. 属性列表：
+                * version：版本号，必须的属性
+                * encoding：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1
+                * standalone：是否独立
+                    * 取值：
+                        * yes：不依赖其他文件
+                        * no：依赖其他文件
+        2. 指令(了解)：结合css的
+            * &lt;?xml-stylesheet type=&quot;text/css&quot; href=&quot;a.css&quot; ?&gt;
+        3. 标签：标签名称自定义的
+            * 规则：
+                * 名称可以包含字母、数字以及其他的字符 
+                * 名称不能以数字或者标点符号开始 
+                * 名称不能以字母 xml（或者 XML、Xml 等等）开始 
+                * 名称不能包含空格 
+
+        4. 属性：
+            id属性值唯一
+        5. 文本：
+            * CDATA区：在该区域中的数据会被原样展示
+                * 格式：  &lt;![CDATA[ 数据 ]]&gt;</code></pre><p>​<br>​        * 约束：规定xml文档的书写规则<br>​            * 作为框架的使用者(程序员)：<br>​                1. 能够在xml中引入约束文档<br>​                2. 能够简单的读懂约束文档<br>​<br>            * 分类：<br>                1. DTD:一种简单的约束技术<br>                2. Schema:一种复杂的约束技术</p>
+<pre><code>* DTD：
+    * 引入dtd文档到xml文档中
+        * 内部dtd：将约束规则定义在xml文档中
+        * 外部dtd：将约束的规则定义在外部的dtd文件中
+            * 本地：&lt;!DOCTYPE 根标签名 SYSTEM &quot;dtd文件的位置&quot;&gt;
+            * 网络：&lt;!DOCTYPE 根标签名 PUBLIC &quot;dtd文件名字&quot; &quot;dtd文件的位置URL&quot;&gt;
+
+
+* Schema:
+    * 引入：
+        1.填写xml文档的根元素
+        2.引入xsi前缀.  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        3.引入xsd文件命名空间.  xsi:schemaLocation=&quot;http://www.itcast.cn/xml  student.xsd&quot;
+        4.为每一个xsd约束声明一个前缀,作为标识  xmlns=&quot;http://www.itcast.cn/xml&quot; 
+
+    &lt;students   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xmlns=&quot;http://www.itcast.cn/xml&quot;
+        xsi:schemaLocation=&quot;http://www.itcast.cn/xml  student.xsd&quot;&gt;</code></pre><p>​    </p>
+<pre><code>3. 解析：操作xml文档，将文档中的数据读取到内存中
+    * 操作xml文档
+        1. 解析(读取)：将文档中的数据读取到内存中
+        2. 写入：将内存中的数据保存到xml文档中。持久化的存储
+
+    * 解析xml的方式：
+        1. DOM：将标记语言文档一次性加载进内存，在内存中形成一颗dom树
+            * 优点：操作方便，可以对文档进行CRUD的所有操作
+            * 缺点：占内存
+        2. SAX：逐行读取，基于事件驱动的。
+            * 优点：不占内存。
+            * 缺点：只能读取，不能增删改</code></pre><p>​<br>​        * xml常见的解析器：<br>​            1. JAXP：sun公司提供的解析器，支持dom和sax两种思想<br>​            2. DOM4J：一款非常优秀的解析器<br>​            3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。<br>​            4. PULL：Android操作系统内置的解析器，sax方式的。</p>
+<pre><code>* Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
+    * 快速入门：
+        * 步骤：
+            1. 导入jar包
+            2. 获取Document对象
+            3. 获取对应的标签Element对象
+            4. 获取数据
+
+    * 代码：
+         //2.1获取student.xml的path
+        String path = JsoupDemo1.class.getClassLoader().getResource(&quot;student.xml&quot;).getPath();
+        //2.2解析xml文档，加载文档进内存，获取dom树---&gt;Document
+        Document document = Jsoup.parse(new File(path), &quot;utf-8&quot;);
+        //3.获取元素对象 Element
+        Elements elements = document.getElementsByTag(&quot;name&quot;);
+
+        System.out.println(elements.size());
+        //3.1获取第一个name的Element对象
+        Element element = elements.get(0);
+        //3.2获取数据
+        String name = element.text();
+        System.out.println(name);
+
+* 对象的使用：
+    1. Jsoup：工具类，可以解析html或xml文档，返回Document
+        * parse：解析html或xml文档，返回Document
+            * parse​(File in, String charsetName)：解析xml或html文件的。
+            * parse​(String html)：解析xml或html字符串
+            * parse​(URL url, int timeoutMillis)：通过网络路径获取指定的html或xml的文档对象
+    2. Document：文档对象。代表内存中的dom树
+        * 获取Element对象
+            * getElementById​(String id)：根据id属性值获取唯一的element对象
+            * getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
+            * getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
+            * getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+    3. Elements：元素Element对象的集合。可以当做 ArrayList&lt;Element&gt;来使用
+    4. Element：元素对象
+        1. 获取子元素对象
+            * getElementById​(String id)：根据id属性值获取唯一的element对象
+            * getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
+            * getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
+            * getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+
+        2. 获取属性值
+            * String attr(String key)：根据属性名称获取属性值
+        3. 获取文本内容
+            * String text():获取文本内容
+            * String html():获取标签体的所有内容(包括字标签的字符串内容)
+    5. Node：节点对象
+        * 是Document和Element的父类</code></pre><p>​<br>​        * 快捷查询方式：<br>​            1. selector:选择器<br>​                * 使用的方法：Elements    select​(String cssQuery)<br>​                    * 语法：参考Selector类中定义的语法<br>​            2. XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言<br>​                * 使用Jsoup的Xpath需要额外导入jar包。<br>​                * 查询w3cshool参考手册，使用xpath的语法完成查询<br>​                * 代码：<br>​                    //1.获取student.xml的path<br>​                    String path = JsoupDemo6.class.getClassLoader().getResource(“student.xml”).getPath();<br>​                    //2.获取Document对象<br>​                    Document document = Jsoup.parse(new File(path), “utf-8”);<br>​<br>                    //3.根据document对象，创建JXDocument对象<br>                    JXDocument jxDocument = new JXDocument(document);</p>
+<pre><code>//4.结合xpath语法查询
+//4.1查询所有student标签
+List&lt;JXNode&gt; jxNodes = jxDocument.selN(&quot;//student&quot;);
+for (JXNode jxNode : jxNodes) {
+    System.out.println(jxNode);
+}
+
+System.out.println(&quot;--------------------&quot;);
+
+//4.2查询所有student标签下的name标签
+List&lt;JXNode&gt; jxNodes2 = jxDocument.selN(&quot;//student/name&quot;);
+for (JXNode jxNode : jxNodes2) {
+    System.out.println(jxNode);
+}
+
+System.out.println(&quot;--------------------&quot;);
+
+//4.3查询student标签下带有id属性的name标签
+List&lt;JXNode&gt; jxNodes3 = jxDocument.selN(&quot;//student/name[@id]&quot;);
+for (JXNode jxNode : jxNodes3) {
+    System.out.println(jxNode);
+}
+System.out.println(&quot;--------------------&quot;);
+//4.4查询student标签下带有id属性的name标签 并且id属性值为itcast
+
+List&lt;JXNode&gt; jxNodes4 = jxDocument.selN(&quot;//student/name[@id=&apos;itcast&apos;]&quot;);
+for (JXNode jxNode : jxNodes4) {
+    System.out.println(jxNode);
+}</code></pre>
       
     </div>
 
@@ -657,7 +1420,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -723,7 +1486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">276</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -772,12 +1535,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.1m</span>
+    <span title="站点总字数">2.3m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:49</span>
+    <span title="站点阅读时长">35:09</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

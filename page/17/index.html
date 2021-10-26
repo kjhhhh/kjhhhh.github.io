@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">数据结构详解KMP算法</a>
+            <a href="/2021/03/07/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">python字符串和正则表达式</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 21:54:19" itemprop="dateCreated datePublished" datetime="2020-12-29T21:54:19+08:00">2020-12-29</time>
+              <time title="创建时间：2021-03-07 22:03:52" itemprop="dateCreated datePublished" datetime="2021-03-07T22:03:52+08:00">2021-03-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 10:25:26" itemprop="dateModified" datetime="2021-03-23T10:25:26+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-22 21:36:05" itemprop="dateModified" datetime="2021-03-22T21:36:05+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -210,7 +210,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -229,15 +229,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>KMP算法是通过分析模式字符串，预先计算每个位置发生不匹配的时候，所需GOTO的下一个比较位置，整理出来一个next数组，然后在上面的算法中使用。</p>
-<p>简单的说来，原始的字符串匹配算法是将子串中的字符一个一个的同母串进行比较，如果相同则向前推移比较下一位，如果遇到不相同的，则将字串的第一个字符同上次字串与母串比较位置的下一个位置字符进行比较。时间复杂度为O(nm)。</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">假定字符串在数组中：char S[n]，</span></span><br><span class="line"><span class="comment">模式串在另一数组中：char T[m]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">for (int i = <span class="number">0</span>; <span class="symbol">S</span>[i] != <span class="string">'\0'</span>; ++i)</span><br><span class="line">&#123;</span><br><span class="line">	for (int j = <span class="number">0</span>; <span class="symbol">S</span>[i + j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">T</span>[j] != <span class="string">'\0'</span> &amp;&amp; <span class="symbol">S</span>[i + j] == <span class="symbol">T</span>[j]; ++j);</span><br><span class="line">	if (<span class="string">'\0'</span> == <span class="symbol">T</span>[j])</span><br><span class="line">		//found a match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>即失配时，子串要回溯要起点，母串也要回溯与子串相等的长度，然后对下一个位置开始进行匹配。下面这样一种情况</p>
+          <h2 id="使用正则表达式"><a href="#使用正则表达式" class="headerlink" title="使用正则表达式"></a>使用正则表达式</h2><h3 id="正则表达式相关知识"><a href="#正则表达式相关知识" class="headerlink" title="正则表达式相关知识"></a>正则表达式相关知识</h3><p>在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要，正则表达式就是用于描述这些规则的工具，换句话说正则表达式是一种工具，它定义了字符串的匹配模式（如何检查一个字符串是否有跟某种模式匹配的部分或者从一个字符串中将与模式匹配的部分提取出来或者替换掉）。如果你在Windows操作系统中使用过文件查找并且在指定文件名时使用过通配符（*和?），那么正则表达式也是与之类似的用来进行文本匹配的工具，只不过比起通配符正则表达式更强大，它能更精确地描述你的需求（当然你付出的代价是书写一个正则表达式比打出一个通配符要复杂得多，要知道任何给你带来好处的东西都是有代价的，就如同学习一门编程语言一样），比如你可以编写一个正则表达式，用来查找所有以0开头，后面跟着2-3个数字，然后是一个连字号“-”，最后是7或8位数字的字符串（像028-12345678或0813-7654321），这不就是国内的座机号码吗。最初计算机是为了做数学运算而诞生的，处理的信息基本上都是数值，而今天我们在日常工作中处理的信息基本上都是文本数据，我们希望计算机能够识别和处理符合某些模式的文本，正则表达式就显得非常重要了。今天几乎所有的编程语言都提供了对正则表达式操作的支持，Python通过标准库中的re模块来支持正则表达式操作。</p>
+<p>我们可以考虑下面一个问题：我们从某个地方（可能是一个文本文件，也可能是网络上的一则新闻）获得了一个字符串，希望在字符串中找出手机号和座机号。当然我们可以设定手机号是11位的数字（注意并不是随机的11位数字，因为你没有见过“25012345678”这样的手机号吧）而座机号跟上一段中描述的模式相同，如果不使用正则表达式要完成这个任务就会很麻烦。</p>
+<p>关于正则表达式的相关知识，大家可以阅读一篇非常有名的博客叫<a href="https://deerchao.net/tutorials/regex/regex.htm" target="_blank" rel="noopener">《正则表达式30分钟入门教程》</a>，读完这篇文章后你就可以看懂下面的表格，这是我们对正则表达式中的一些基本符号进行的扼要总结。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3%20KMP%20%E7%AE%97%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2021/03/07/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -261,7 +258,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -275,7 +272,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">数据结构八大排序对比总结</a>
+            <a href="/2021/03/07/python%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="post-title-link" itemprop="url">python文件和异常</a>
         </h2>
 
         <div class="post-meta">
@@ -285,14 +282,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 21:54:01" itemprop="dateCreated datePublished" datetime="2020-12-29T21:54:01+08:00">2020-12-29</time>
+              <time title="创建时间：2021-03-07 22:02:55" itemprop="dateCreated datePublished" datetime="2021-03-07T22:02:55+08:00">2021-03-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:30:18" itemprop="dateModified" datetime="2021-03-22T23:30:18+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:35:23" itemprop="dateModified" datetime="2021-03-22T21:35:23+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +297,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -310,7 +307,142 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.2k</span>
+              <span>5.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="文件和异常"><a href="#文件和异常" class="headerlink" title="文件和异常"></a>文件和异常</h2><p>实际开发中常常会遇到对数据进行<a href="https://baike.baidu.com/item/数据持久化" target="_blank" rel="noopener">持久化</a>操作的场景，而实现数据持久化最直接简单的方式就是将数据保存到文件中。说到“文件”这个词，可能需要先科普一下关于<a href="https://zh.wikipedia.org/wiki/文件系统" target="_blank" rel="noopener">文件系统</a>的知识，但是这里我们并不浪费笔墨介绍这个概念，请大家自行通过维基百科进行了解。</p>
+<p>在Python中实现文件的读写操作其实非常简单，通过Python内置的<code>open</code>函数，我们可以指定文件名、操作模式、编码信息等来获得操作文件的对象，接下来就可以对文件进行读写操作了。这里所说的操作模式是指要打开什么样的文件（字符文件还是二进制文件）以及做什么样的操作（读、写还是追加），具体的如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>操作模式</th>
+<th>具体含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&#39;r&#39;</code></td>
+<td>读取 （默认）</td>
+</tr>
+<tr>
+<td><code>&#39;w&#39;</code></td>
+<td>写入（会先截断之前的内容）</td>
+</tr>
+<tr>
+<td><code>&#39;x&#39;</code></td>
+<td>写入，如果文件已经存在会产生异常</td>
+</tr>
+<tr>
+<td><code>&#39;a&#39;</code></td>
+<td>追加，将内容写入到已有文件的末尾</td>
+</tr>
+<tr>
+<td><code>&#39;b&#39;</code></td>
+<td>二进制模式</td>
+</tr>
+<tr>
+<td><code>&#39;t&#39;</code></td>
+<td>文本模式（默认）</td>
+</tr>
+<tr>
+<td><code>&#39;+&#39;</code></td>
+<td>更新（既可以读又可以写）</td>
+</tr>
+</tbody></table>
+<p>下面这张图来自于<a href="http://www.runoob.com/" target="_blank" rel="noopener">菜鸟教程</a>网站，它展示了如果根据应用程序的需要来设置操作模式。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/file-open-mode.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/file-open-mode.png" alt="img"></a></p>
+<h3 id="读写文本文件"><a href="#读写文本文件" class="headerlink" title="读写文本文件"></a>读写文本文件</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/07/python%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/" class="post-title-link" itemprop="url">python图像用户界面和游戏开发</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-07 22:02:07" itemprop="dateCreated datePublished" datetime="2021-03-07T22:02:07+08:00">2021-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:34:46" itemprop="dateModified" datetime="2021-03-22T21:34:46+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -329,229 +461,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>针对前面讨论的八大经典排序算法：冒泡排序、插入排序、选择排序、堆排序、归并排序、快速排序、希尔排序、桶排序。</p>
-<p>关于各种什么时间复杂度，空间复杂度的对比总结，网上一大堆，别人也总结的很好，这里就不赘述了，这里主要通过对大量数据进行排序测试，测试各排序算法的运行时间，来比较各排序之间优劣（时间上）。</p>
-<p>先贴出测试程序：最后会给出各数据量的情况下，各算法的运行时间。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*SortFun)</span><span class="params">(<span class="keyword">int</span> Arr[], <span class="keyword">int</span> length)</span></span>;  <span class="comment">//函数指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">SortTest</span><span class="params">(SortFun fp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> Arr[LENGTH];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; LENGTH; ++i)</span><br><span class="line">		Arr[i] = rand() % MAXNUM;</span><br><span class="line">	<span class="keyword">clock_t</span> beginTime = clock();</span><br><span class="line">	fp(Arr, LENGTH);</span><br><span class="line">	<span class="keyword">double</span> diffTime = <span class="keyword">double</span>(clock() - beginTime) / CLOCKS_PER_SEC;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> diffTime;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的 LENGTH 和 MAXNUM 宏定义在另外一个头文件中（因为桶排序中需要用到 MAXNUM），LENGTH 为待排数据的量，MAXNUM 为待排数据数值的最大值。<br>为了方便调用函数指针，这里在原排序程序的基础上添加了一个通用的函数接口。为方便理解，这里重新贴出各排序程序</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构桶排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:53:44" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:44+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 10:21:41" itemprop="dateModified" datetime="2021-03-23T10:21:41+08:00">2021-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>桶排序假设待排序的一组数统一的分布在一个范围中，然后设定对应数据数量的桶，待排序的一组数，分别对应算式处理归入这些子桶，并将桶中的数据进行排序，最后将各个桶中的数据有序的合并起来。</p>
-<p>通俗的说，就是通过某个公式将待排序的一组数分为几个子范围，然后归入到对应的子桶，这样必然会有不一样的数据经过算式处理后对应同一个桶，我们可通过简单比较将对应同一个桶的不同数据排序，最后各个数据处理完后，有的桶为空，有的桶有多个数据（已排序好），这样我们就可以逐个的遍历桶，然后将数据依次放入原数组中，这样就完成了排序。</p>
-<p>​                                             </p>
-<p>上面模型和哈希表的分离链接法很相似。这里不同数据对应同一个桶的插入是通过链表来存储的。</p>
-<p>这里给出一个演示：Bucket Sort Visualization</p>
-<p>根据上面算法模型和演示，给出代码：上面的图示模型和演示链表是带有表头的，这样是为了方便执行删除操作，但是我们这里仅作为排序，无需删除操作，所以链表是不带有表头的，这样既简化了问题又节省了空间。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A1%B6%E6%8E%92%E5%BA%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构快速排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:53:28" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:28+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:34:44" itemprop="dateModified" datetime="2021-03-22T23:34:44+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>快速排序也是采用分治法，将问题化整归零来处理。</p>
-<p>步骤为：</p>
+          <h2 id="图形用户界面和游戏开发"><a href="#图形用户界面和游戏开发" class="headerlink" title="图形用户界面和游戏开发"></a>图形用户界面和游戏开发</h2><h3 id="基于tkinter模块的GUI"><a href="#基于tkinter模块的GUI" class="headerlink" title="基于tkinter模块的GUI"></a>基于tkinter模块的GUI</h3><p>GUI是图形用户界面的缩写，图形化的用户界面对使用过计算机的人来说应该都不陌生，在此也无需进行赘述。Python默认的GUI开发模块是tkinter（在Python 3以前的版本中名为Tkinter），从这个名字就可以看出它是基于Tk的，Tk是一个工具包，最初是为Tcl设计的，后来被移植到很多其他的脚本语言中，它提供了跨平台的GUI控件。当然Tk并不是最新和最好的选择，也没有功能特别强大的GUI控件，事实上，开发GUI应用并不是Python最擅长的工作，如果真的需要使用Python开发GUI应用，wxPython、PyQt、PyGTK等模块都是不错的选择。</p>
+<p>基本上使用tkinter来开发GUI应用需要以下5个步骤：</p>
 <ol>
-<li><p>从数列中调出一个元素，称为 “基准”（pivot）；</p>
-</li>
-<li><p>重新排序数列，排序规则就是将数列中比基准值大的放在基准的后面，将比基准值小的放在基准的前面，在这个分区退出之后，该基准就处于数列的中间位置（非绝对中间位置），这个称为分区操作；</p>
-</li>
-<li><p>递归地把小于基准值元素的子数列和大于基准值元素的子序列排序。递归的终止条件就是数列的大小是零或一，也就是都已经被排序好了。</p>
-</li>
+<li>导入tkinter模块中我们需要的东西。</li>
+<li>创建一个顶层窗口对象并用它来承载整个GUI应用。</li>
+<li>在顶层窗口对象上添加GUI组件。</li>
+<li>通过代码将这些GUI组件的功能组织起来。</li>
+<li>进入主事件循环(main loop)。</li>
 </ol>
-<p>通俗点说就是，</p>
-<ol>
-<li><p>先从数列中取出一个数作为基准；</p>
-</li>
-<li><p>分区过程，将比这个数大的数全部放到它的右边，小于或等于它的数全放到它的左边；</p>
-</li>
-<li><p>对左右分区重复第 2 步，直到各分区只有一个数或没有数据。</p>
-</li>
-</ol>
-<p>具体流程参见下图（这里以数列的首元素作为基准）：</p>
+<p>下面的代码演示了如何使用tkinter做一个简单的GUI应用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter</span><br><span class="line"><span class="keyword">import</span> tkinter.messagebox</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    flag = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 修改标签上的文字</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change_label_text</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> flag</span><br><span class="line">        flag = <span class="keyword">not</span> flag</span><br><span class="line">        color, msg = (<span class="string">'red'</span>, <span class="string">'Hello, world!'</span>)\</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">else</span> (<span class="string">'blue'</span>, <span class="string">'Goodbye, world!'</span>)</span><br><span class="line">        label.config(text=msg, fg=color)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确认退出</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">confirm_to_quit</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">if</span> tkinter.messagebox.askokcancel(<span class="string">'温馨提示'</span>, <span class="string">'确定要退出吗?'</span>):</span><br><span class="line">            top.quit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建顶层窗口</span></span><br><span class="line">    top = tkinter.Tk()</span><br><span class="line">    <span class="comment"># 设置窗口大小</span></span><br><span class="line">    top.geometry(<span class="string">'240x160'</span>)</span><br><span class="line">    <span class="comment"># 设置窗口标题</span></span><br><span class="line">    top.title(<span class="string">'小游戏'</span>)</span><br><span class="line">    <span class="comment"># 创建标签对象并添加到顶层窗口</span></span><br><span class="line">    label = tkinter.Label(top, text=<span class="string">'Hello, world!'</span>, font=<span class="string">'Arial -32'</span>, fg=<span class="string">'red'</span>)</span><br><span class="line">    label.pack(expand=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 创建一个装按钮的容器</span></span><br><span class="line">    panel = tkinter.Frame(top)</span><br><span class="line">    <span class="comment"># 创建按钮对象 指定添加到哪个容器中 通过command参数绑定事件回调函数</span></span><br><span class="line">    button1 = tkinter.Button(panel, text=<span class="string">'修改'</span>, command=change_label_text)</span><br><span class="line">    button1.pack(side=<span class="string">'left'</span>)</span><br><span class="line">    button2 = tkinter.Button(panel, text=<span class="string">'退出'</span>, command=confirm_to_quit)</span><br><span class="line">    button2.pack(side=<span class="string">'right'</span>)</span><br><span class="line">    panel.pack(side=<span class="string">'bottom'</span>)</span><br><span class="line">    <span class="comment"># 开启主事件循环</span></span><br><span class="line">    tkinter.mainloop()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是，GUI应用通常是事件驱动式的，之所以要进入主事件循环就是要监听鼠标、键盘等各种事件的发生并执行对应的代码对事件进行处理，因为事件会持续的发生，所以需要这样的一个循环一直运行着等待下一个事件的发生。另一方面，Tk为控件的摆放提供了三种布局管理器，通过布局管理器可以对控件进行定位，这三种布局管理器分别是：Placer（开发者提供控件的大小和摆放位置）、Packer（自动将控件填充到合适的位置）和Grid（基于网格坐标来摆放控件），此处不进行赘述。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/#more" rel="contents">
+              <a class="btn" href="/2021/03/07/python%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E5%92%8C%E6%B8%B8%E6%88%8F%E7%95%8C%E9%9D%A2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -575,7 +500,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -589,7 +514,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构归并排序</a>
+            <a href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="post-title-link" itemprop="url">python面向对象进阶</a>
         </h2>
 
         <div class="post-meta">
@@ -599,14 +524,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 21:53:14" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:14+08:00">2020-12-29</time>
+              <time title="创建时间：2021-03-07 22:01:20" itemprop="dateCreated datePublished" datetime="2021-03-07T22:01:20+08:00">2021-03-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:34:29" itemprop="dateModified" datetime="2021-03-22T23:34:29+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:34:39" itemprop="dateModified" datetime="2021-03-22T21:34:39+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -614,7 +539,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -624,14 +549,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>13k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -643,14 +568,119 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>归并排序是建立在归并操作上的一种有效的排序算法，将两个（或两个以上）有序表合并成一个新的有序表。采用分治法，分而治之：分就是将待排序序列分为若干个有序的子序列，每个子序列是有序；合就是把有序的子序列合并为整体有序序列。</p>
-<p>这个算法的基本操作是合并两个已排序的表，因为这两个表是已排序的，所以若将输出放到第三个表中时，则该算法可以通过对输入数据一趟排序来完成。将两个有序表合并成一个有序表，成为2-路归并。可知归的前提是子序列是排序好的，我们可以把整体序列递归地分割成一个一个的子序列，当子序列中仅有一个元素时，该子序列自然就是已排序好，然后再不断的进行2-路归并，最终得到整体有序序列。</p>
-<p>下面用图演示这一过程</p>
-<p>需要说明的是，上面的分割是意识形态的，和前面介绍的堆排序类似，并不是实际的分割，分割过程中，元素在序列中的位置不变，我们仍可以通过数组索引定位元素。</p>
-<p>从上面的图解很容易得知，“2-路分割”和 2-路合并，首先需要将整体无序序列进行递归“2-路分割”，直至分割达到有序状态即子序列仅一个元素（这也是递归的终止条件），然后就是合并，将子序列从小到大放入额外暂存单元中，全部归并完毕，这个暂存单元中的元素就是有序的。</p>
+          <h2 id="面向对象进阶"><a href="#面向对象进阶" class="headerlink" title="面向对象进阶"></a>面向对象进阶</h2><p>在前面的章节我们已经了解了面向对象的入门知识，知道了如何定义类，如何创建对象以及如何给对象发消息。为了能够更好的使用面向对象编程思想进行程序开发，我们还需要对Python中的面向对象编程进行更为深入的了解。</p>
+<h3 id="property装饰器"><a href="#property装饰器" class="headerlink" title="@property装饰器"></a>@property装饰器</h3><p>之前我们讨论过Python中属性和方法访问权限的问题，虽然我们不建议将属性设置为私有的，但是如果直接将属性暴露给外界也是有问题的，比如我们没有办法检查赋给属性的值是否有效。我们之前的建议是将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外界直接访问，那么如果想访问属性可以通过属性的getter（访问器）和setter（修改器）方法进行对应的操作。如果要做到这点，就可以考虑使用@property包装器来包装getter和setter方法，使得对属性的访问既安全又方便，代码如下所示。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="title">object</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>, name, age)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">self</span>._name = name</span><br><span class="line">        <span class="keyword">self</span>._age = age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 访问器 - getter方法</span></span><br><span class="line">    @property</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(<span class="keyword">self</span>)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>._name</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 访问器 - getter方法</span></span><br><span class="line">    @property</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(<span class="keyword">self</span>)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>._age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 修改器 - setter方法</span></span><br><span class="line">    @age.setter</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(<span class="keyword">self</span>, age)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">self</span>._age = age</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span><span class="params">(<span class="keyword">self</span>)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>._age &lt;= <span class="number">16</span><span class="symbol">:</span></span><br><span class="line">            print(<span class="string">'%s正在玩飞行棋.'</span> % <span class="keyword">self</span>._name)</span><br><span class="line">        <span class="symbol">else:</span></span><br><span class="line">            print(<span class="string">'%s正在玩斗地主.'</span> % <span class="keyword">self</span>._name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span></span><span class="symbol">:</span></span><br><span class="line">    person = Person(<span class="string">'王大锤'</span>, <span class="number">12</span>)</span><br><span class="line">    person.play()</span><br><span class="line">    person.age = <span class="number">22</span></span><br><span class="line">    person.play()</span><br><span class="line">    <span class="comment"># person.name = '白元芳'  # AttributeError: can't set attribute</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">'__main__'</span><span class="symbol">:</span></span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h3 id="slots魔法"><a href="#slots魔法" class="headerlink" title="slots魔法"></a><strong>slots</strong>魔法</h3>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/#more" rel="contents">
+              <a class="btn" href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">python面向对象编程基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-07 22:00:12" itemprop="dateCreated datePublished" datetime="2021-03-07T22:00:12+08:00">2021-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:34:23" itemprop="dateModified" datetime="2021-03-22T21:34:23+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="面向对象编程基础"><a href="#面向对象编程基础" class="headerlink" title="面向对象编程基础"></a>面向对象编程基础</h2><p>活在当下的程序员应该都听过”面向对象编程”一词，也经常有人问能不能用一句话解释下什么是”面向对象编程”，我们先来看看比较正式的说法。</p>
+<p>“把一组数据结构和处理它们的方法组成对象（object），把相同行为的对象归纳为类（class），通过类的封装（encapsulation）隐藏内部细节，通过继承（inheritance）实现类的特化（specialization）和泛化（generalization），通过多态（polymorphism）实现基于对象类型的动态分派。”</p>
+<p>这样一说是不是更不明白了。所以我们还是看看更通俗易懂的说法，下面这段内容来自于<a href="https://www.zhihu.com/" target="_blank" rel="noopener">知乎</a>。</p>
+<p><a href="https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/res/oop-zhihu.png" target="_blank" rel="noopener"><img src="https://github.com/jackfrued/Python-100-Days/raw/master/Day01-15/res/oop-zhihu.png" alt="img"></a></p>
+<blockquote>
+<p><strong>说明：</strong> 以上的内容来自于网络，不代表作者本人的观点和看法，与作者本人立场无关，相关责任不由作者承担。</p>
+</blockquote>
+<p>之前我们说过”<strong>程序是指令的集合</strong>“，我们在程序中书写的语句在执行时会变成一条或多条指令然后由CPU去执行。当然为了简化程序的设计，我们引入了函数的概念，把相对独立且经常重复使用的代码放置到函数中，在需要使用这些功能的时候只要调用函数即可；如果一个函数的功能过于复杂和臃肿，我们又可以进一步将函数继续切分为子函数来降低系统的复杂性。但是说了这么多，不知道大家是否发现，所谓编程就是程序员按照计算机的工作方式控制计算机完成各种任务。但是，计算机的工作方式与正常人类的思维模式是不同的，如果编程就必须得抛弃人类正常的思维方式去迎合计算机，编程的乐趣就少了很多，”每个人都应该学习编程”这样的豪言壮语就只能说说而已。当然，这些还不是最重要的，最重要的是当我们需要开发一个复杂的系统时，代码的复杂性会让开发和维护工作都变得举步维艰，所以在上世纪60年代末期，”<a href="https://zh.wikipedia.org/wiki/软件危机" target="_blank" rel="noopener">软件危机</a>“、”<a href="https://zh.wikipedia.org/wiki/软件工程" target="_blank" rel="noopener">软件工程</a>“等一系列的概念开始在行业中出现。</p>
+<p>当然，程序员圈子内的人都知道，现实中并没有解决上面所说的这些问题的”<a href="https://zh.wikipedia.org/wiki/没有银弹" target="_blank" rel="noopener">银弹</a>“，真正让软件开发者看到希望的是上世纪70年代诞生的<a href="https://zh.wikipedia.org/wiki/Smalltalk" target="_blank" rel="noopener">Smalltalk</a>编程语言中引入的面向对象的编程思想（面向对象编程的雏形可以追溯到更早期的<a href="https://zh.wikipedia.org/wiki/Simula" target="_blank" rel="noopener">Simula</a>语言）。按照这种编程理念，程序中的数据和操作数据的函数是一个逻辑上的整体，我们称之为“对象”，而我们解决问题的方式就是创建出需要的对象并向对象发出各种各样的消息，多个对象的协同工作最终可以让我们构造出复杂的系统来解决现实中的问题。</p>
+<blockquote>
+<p><strong>说明：</strong> 当然面向对象也不是解决软件开发中所有问题的最后的“银弹”，所以今天的高级程序设计语言几乎都提供了对多种编程范式的支持，Python也不例外。</p></blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/07/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -673,7 +703,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -739,7 +769,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">276</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -788,12 +818,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.1m</span>
+    <span title="站点总字数">2.3m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:49</span>
+    <span title="站点阅读时长">35:09</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

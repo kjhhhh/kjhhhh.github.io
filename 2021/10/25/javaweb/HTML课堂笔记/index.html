@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容1. web概念概述 2. HTMLweb概念概述* JavaWeb：     * 使用Java语言开发基于互联网的项目  * 软件架构：     1. C&#x2F;S: Client&#x2F;Server 客户端&#x2F;服务器端         * 在用户本地有一个客户端程序，在远程有一个服务器端程序         * 如：QQ，迅雷...         * 优点：             1. 用户体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web概述|HTML">
+<meta property="og:url" content="http://yoursite.com/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="今日内容1. web概念概述 2. HTMLweb概念概述* JavaWeb：     * 使用Java语言开发基于互联网的项目  * 软件架构：     1. C&#x2F;S: Client&#x2F;Server 客户端&#x2F;服务器端         * 在用户本地有一个客户端程序，在远程有一个服务器端程序         * 如：QQ，迅雷...         * 优点：             1. 用户体验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/footer_service.png">
+<meta property="article:published_time" content="2021-10-25T07:06:17.656Z">
+<meta property="article:modified_time" content="2021-10-26T12:32:41.663Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="Web基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/footer_service.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Web概述|HTML | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web概述|HTML
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-25 15:06:17" itemprop="dateCreated datePublished" datetime="2021-10-25T15:06:17+08:00">2021-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-26 20:32:41" itemprop="dateModified" datetime="2021-10-26T20:32:41+08:00">2021-10-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. web概念概述
+2. HTML</code></pre><h2 id="web概念概述"><a href="#web概念概述" class="headerlink" title="web概念概述"></a>web概念概述</h2><pre><code>* JavaWeb：
+    * 使用Java语言开发基于互联网的项目
+
+* 软件架构：
+    1. C/S: Client/Server 客户端/服务器端
+        * 在用户本地有一个客户端程序，在远程有一个服务器端程序
+        * 如：QQ，迅雷...
+        * 优点：
+            1. 用户体验好
+        * 缺点：
+            1. 开发、安装，部署，维护 麻烦
+    2. B/S: Browser/Server 浏览器/服务器端
+        * 只需要一个浏览器，用户通过不同的网址(URL)，客户访问不同的服务器端程序
+        * 优点：
+            1. 开发、安装，部署，维护 简单
+        * 缺点：
+            1. 如果应用过大，用户的体验可能会受到影响
+            2. 对硬件要求过高
+
+* B/S架构详解
+    * 资源分类：
+        1. 静态资源：
+            * 使用静态网页开发技术发布的资源。
+            * 特点：
+                * 所有用户访问，得到的结果是一样的。
+                * 如：文本，图片，音频、视频, HTML,CSS,JavaScript
+                * 如果用户请求的是静态资源，那么服务器会直接将静态资源发送给浏览器。浏览器中内置了静态资源的解析引擎，可以展示静态资源
+        2. 动态资源：
+            * 使用动态网页及时发布的资源。
+            * 特点：
+                * 所有用户访问，得到的结果可能不一样。
+                * 如：jsp/servlet,php,asp...
+                * 如果用户请求的是动态资源，那么服务器会执行动态资源，转换为静态资源，再发送给浏览器
+
+
+    * 我们要学习动态资源，必须先学习静态资源！
+
+    * 静态资源：
+        * HTML：用于搭建基础网页，展示页面的内容
+        * CSS：用于美化页面，布局页面
+        * JavaScript：控制页面的元素，让页面有一些动态的效果</code></pre><h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><pre><code>1. 概念：是最基础的网页开发语言
+    * Hyper Text Markup Language 超文本标记语言
+        * 超文本:
+            * 超文本是用超链接的方法，将各种不同空间的文字信息组织在一起的网状文本.
+        * 标记语言:
+            * 由标签构成的语言。&lt;标签名称&gt; 如 html，xml
+            * 标记语言不是编程语言
+
+2. 快速入门：
+    * 语法：
+        1. html文档后缀名 .html 或者 .htm
+        2. 标签分为
+            1. 围堵标签：有开始标签和结束标签。如 &lt;html&gt; &lt;/html&gt;
+            2. 自闭和标签：开始标签和结束标签在一起。如 &lt;br/&gt;
+
+        3. 标签可以嵌套：
+            需要正确嵌套，不能你中有我，我中有你
+            错误：&lt;a&gt;&lt;b&gt;&lt;/a&gt;&lt;/b&gt;
+            正确：&lt;a&gt;&lt;b&gt;&lt;/b&gt;&lt;/a&gt;
+
+        4. 在开始标签中可以定义属性。属性是由键值对构成，值需要用引号(单双都可)引起来
+        5. html的标签不区分大小写，但是建议使用小写。
+
+    * 代码：
+        &lt;html&gt;
+
+            &lt;head&gt;
+                &lt;title&gt;title&lt;/title&gt;
+            &lt;/head&gt;
+
+            &lt;body&gt;
+                &lt;FONT color=&apos;red&apos;&gt;Hello World&lt;/font&gt;&lt;br/&gt;
+
+                &lt;font color=&apos;green&apos;&gt;Hello World&lt;/font&gt;
+
+            &lt;/body&gt;
+
+        &lt;/html&gt;
+
+3. 标签学习：
+    1. 文件标签：构成html最基本的标签
+        * html:html文档的根标签
+        * head：头标签。用于指定html文档的一些属性。引入外部的资源
+        * title：标题标签。
+        * body：体标签
+        * &lt;!DOCTYPE html&gt;：html5中定义该文档是html文档
+    2. 文本标签：和文本有关的标签
+        * 注释：&lt;!-- 注释内容 --&gt;
+        * &lt;h1&gt; to &lt;h6&gt;：标题标签
+            * h1~h6:字体大小逐渐递减
+        * &lt;p&gt;：段落标签
+        * &lt;br&gt;：换行标签
+        * &lt;hr&gt;：展示一条水平线
+            * 属性：
+                * color：颜色
+                * width：宽度
+                * size：高度
+                * align：对其方式
+                    * center：居中
+                    * left：左对齐
+                    * right：右对齐
+        * &lt;b&gt;：字体加粗
+        * &lt;i&gt;：字体斜体
+        * &lt;font&gt;:字体标签
+        * &lt;center&gt;:文本居中
+            * 属性：
+                * color：颜色
+                * size：大小
+                * face：字体
+
+        * 属性定义：
+            * color：
+                1. 英文单词：red,green,blue
+                2. rgb(值1，值2，值3)：值的范围：0~255  如  rgb(0,0,255)
+                3. #值1值2值3：值的范围：00~FF之间。如： #FF00FF
+            * width：
+                1. 数值：width=&apos;20&apos; ,数值的单位，默认是 px(像素)
+                2. 数值%：占比相对于父元素的比例
+
+        * 案例：公司简介
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang=&quot;ch&quot;&gt;
+            &lt;head&gt;
+                &lt;meta charset=&quot;UTF-8&quot;&gt;
+                &lt;title&gt;黑马程序员简介&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+
+            &lt;h1&gt;
+                公司简介
+            &lt;/h1&gt;
+            &lt;hr color=&quot;#ffd700&quot;&gt;
+
+            &lt;p&gt;
+            &lt;font color=&quot;#FF0000&quot;&gt;&quot;中关村黑马程序员训练营&quot;&lt;/font&gt;是由&lt;b&gt;&lt;i&gt;传智播客&lt;/i&gt;&lt;/b&gt;联合中关村软件园、CSDN， 并委托传智播客进行教学实施的软件开发高端培训机构，致力于服务各大软件企业，解决当前软件开发技术飞速发展， 而企业招不到优秀人才的困扰。
+            &lt;/p&gt;
+
+            &lt;p&gt;
+            目前，“中关村黑马程序员训练营”已成长为行业“学员质量好、课程内容深、企业满意”的移动开发高端训练基地， 并被评为中关村软件园重点扶持人才企业。
+            &lt;/p&gt;
+
+            &lt;p&gt;
+
+            黑马程序员的学员多为大学毕业后，有理想、有梦想，想从事IT行业，而没有环境和机遇改变自己命运的年轻人。 黑马程序员的学员筛选制度，远比现在90%以上的企业招聘流程更为严格。任何一名学员想成功入学“黑马程序员”， 必须经历长达2个月的面试流程，这些流程中不仅包括严格的技术测试、自学能力测试，还包括性格测试、压力测试、 品德测试等等测试。毫不夸张地说，黑马程序员训练营所有学员都是精挑细选出来的。百里挑一的残酷筛选制度确 保学员质量，并降低企业的用人风险。
+            中关村黑马程序员训练营不仅着重培养学员的基础理论知识，更注重培养项目实施管理能力，并密切关注技术革新， 不断引入先进的技术，研发更新技术课程，确保学员进入企业后不仅能独立从事开发工作，更能给企业带来新的技术体系和理念。
+            &lt;/p&gt;
+
+            &lt;p&gt;
+
+            一直以来，黑马程序员以技术视角关注IT产业发展，以深度分享推进产业技术成长，致力于弘扬技术创新，倡导分享、 开放和协作，努力打造高质量的IT人才服务平台。
+            &lt;/p&gt;
+
+            &lt;hr color=&quot;#ffd700&quot;&gt;
+
+            &lt;font color=&quot;gray&quot; size=&quot;2&quot;&gt;
+                &lt;center&gt;
+                    江苏传智播客教育科技股份有限公司&lt;br&gt;
+                    版权所有Copyright 2006-2018&amp;copy;, All Rights Reserved 苏ICP备16007882
+                &lt;/center&gt;
+            &lt;/font&gt;</code></pre><p>​<br>​<br>                <br>                </p>
+<pre><code>3. 图片标签：
+    * img：展示图片
+        * 属性：
+            * src：指定图片的位置
+
+    * 代码：
+         &lt;!--展示一张图片 img--&gt;
+
+        &lt;img src=&quot;image/jingxuan_2.jpg&quot; align=&quot;right&quot; alt=&quot;古镇&quot; width=&quot;500&quot; height=&quot;500&quot;/&gt;
+
+        &lt;!--
+            相对路径
+                * 以.开头的路径
+                    * ./：代表当前目录  ./image/1.jpg
+                    * ../:代表上一级目录
+         --&gt;
+
+        &lt;img src=&quot;./image/jiangwai_1.jpg&quot;&gt;
+
+        &lt;img src=&quot;../image/jiangwai_1.jpg&quot;&gt;
+4. 列表标签：
+    * 有序列表：
+        * ol:
+        * li:
+    * 无序列表：
+        * ul:
+        * li:
+5. 链接标签：
+    * a:定义一个超链接
+        * 属性：
+            * href：指定访问资源的URL(统一资源定位符)
+            * target：指定打开资源的方式
+                * _self:默认值，在当前页面打开
+                * _blank：在空白页面打开
+
+    * 代码：
+         &lt;!--超链接  a--&gt;
+
+        &lt;a href=&quot;http://www.itcast.cn&quot;&gt;点我&lt;/a&gt;
+        &lt;br&gt;
+
+        &lt;a href=&quot;http://www.itcast.cn&quot; target=&quot;_self&quot;&gt;点我&lt;/a&gt;
+        &lt;br&gt;
+        &lt;a href=&quot;http://www.itcast.cn&quot; target=&quot;_blank&quot;&gt;点我&lt;/a&gt;
+
+        &lt;br&gt;
+
+        &lt;a href=&quot;./5_列表标签.html&quot;&gt;列表标签&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;mailto:itcast@itcast.cn&quot;&gt;联系我们&lt;/a&gt;
+
+        &lt;br&gt;
+        &lt;a href=&quot;http://www.itcast.cn&quot;&gt;&lt;img src=&quot;image/jiangwai_1.jpg&quot;&gt;&lt;/a&gt;
+6. div和span：
+    * div:每一个div占满一整行。块级标签
+    * span：文本信息在一行展示，行内标签 内联标签
+
+7. 语义化标签：html5中为了提高程序的可读性，提供了一些标签。
+    1. &lt;header&gt;：页眉
+    2. &lt;footer&gt;：页脚
+
+
+8. 表格标签：
+    * table：定义表格
+        * width：宽度
+        * border：边框
+        * cellpadding：定义内容和单元格的距离
+        * cellspacing：定义单元格之间的距离。如果指定为0，则单元格的线会合为一条、
+        * bgcolor：背景色
+        * align：对齐方式
+    * tr：定义行
+        * bgcolor：背景色
+        * align：对齐方式
+    * td：定义单元格
+        * colspan：合并列
+        * rowspan：合并行
+    * th：定义表头单元格
+    * &lt;caption&gt;：表格标题
+    * &lt;thead&gt;：表示表格的头部分
+    * &lt;tbody&gt;：表示表格的体部分
+    * &lt;tfoot&gt;：表示表格的脚部分</code></pre><h2 id="案例：旅游网站首页"><a href="#案例：旅游网站首页" class="headerlink" title="案例：旅游网站首页"></a>案例：旅游网站首页</h2><pre><code>1. 确定使用table来完成布局    
+2. 如果某一行只有一个单元格，则使用&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+3. 如果某一行有多个单元格，则使用
+    &lt;tr&gt;
+        &lt;td&gt;
+            &lt;table&gt;&lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+
+4. 代码实现
+
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;黑马旅游网&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+
+        &lt;!--采用table来完成布局--&gt;
+        &lt;!--最外层的table，用于整个页面的布局--&gt;
+        &lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+           &lt;!-- 第1行 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;img src=&quot;image/top_banner.jpg&quot; width=&quot;100%&quot; alt=&quot;&quot;&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第2行 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;img src=&quot;image/logo.jpg&quot; alt=&quot;&quot;&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;img src=&quot;image/search.png&quot; alt=&quot;&quot;&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;img src=&quot;image/hotel_tel.png&quot; alt=&quot;&quot;&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/table&gt;
+
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第3行 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+                        &lt;tr bgcolor=&quot;#ffd700&quot; align=&quot;center&quot; height=&quot;45&quot; &gt;
+                            &lt;td&gt;
+                                &lt;a href=&quot;&quot;&gt;首页&lt;/a&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+                                门票
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/table&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第4行 轮播图 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;img src=&quot;image/banner_3.jpg&quot; alt=&quot;&quot; width=&quot;100%&quot;&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第5行 黑马精选--&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;img src=&quot;image/icon_5.jpg&quot; alt=&quot;&quot;&gt;
+                    黑马精选
+                    &lt;hr  color=&quot;#ffd700&quot; &gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第6行 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;table align=&quot;center&quot; width=&quot;95%&quot;&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_1.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 899&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_1.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 899&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_1.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 899&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_1.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 899&lt;/font&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/table&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第7行 国内游 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;img src=&quot;image/icon_6.jpg&quot; alt=&quot;&quot;&gt;
+                    国内游
+                    &lt;hr  color=&quot;#ffd700&quot; &gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;!-- 第8行 --&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;table align=&quot;center&quot; width=&quot;95%&quot;&gt;
+                        &lt;tr&gt;
+                            &lt;td rowspan=&quot;2&quot;&gt;
+                                &lt;img src=&quot;image/guonei_1.jpg&quot; alt=&quot;&quot;&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot; height=&quot;100%&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+
+                        &lt;tr&gt;
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;
+
+                            &lt;td&gt;
+
+                                &lt;img src=&quot;image/jiangxuan_2.jpg&quot; alt=&quot;&quot;&gt;
+                                &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                            &lt;/td&gt;</code></pre><p>​<br>                            <br>                        <br>                    <br>                </p>
+<pre><code>&lt;!-- 第9行 境外游 --&gt;
+&lt;tr&gt;
+    &lt;td&gt;
+        &lt;img src=&quot;image/icon_7.jpg&quot; alt=&quot;&quot;&gt;
+        境外游
+        &lt;hr  color=&quot;#ffd700&quot; &gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;!-- 第10行 --&gt;
+&lt;tr&gt;
+    &lt;td&gt;
+        &lt;table align=&quot;center&quot; width=&quot;95%&quot;&gt;
+            &lt;tr&gt;
+                &lt;td rowspan=&quot;2&quot;&gt;
+                    &lt;img src=&quot;image/jiangwai_1.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;/td&gt;
+
+                &lt;td&gt;
+
+                    &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot; height=&quot;100%&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;
+
+                &lt;td&gt;
+
+                   &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;
+
+                &lt;td&gt;
+
+                   &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;tr&gt;
+                &lt;td&gt;
+
+                   &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;
+
+                &lt;td&gt;
+
+                   &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;
+
+                &lt;td&gt;
+
+                   &lt;img src=&quot;image/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;p&gt;上海飞三亚五天4晚自由行(春节销售+亲子+蜜月+自由行)&lt;/p&gt;
+                    &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                &lt;/td&gt;</code></pre><p>​<br>                            <br>                        <br>                    <br>                <br>                <!-- 第11行 --><br>                <tr><br>                    <td><br>                        <img src="/2021/10/25/javaweb/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/footer_service.png" alt width="100%"><br>                    </td><br>                </tr></p>
+<pre><code>    &lt;!-- 第12行 --&gt;
+    &lt;tr&gt;
+        &lt;td align=&quot;center&quot; bgcolor=&quot;#ffd700&quot; height=&quot;40&quot;&gt;
+            &lt;font color=&quot;gray&quot; size=&quot;2&quot;&gt;
+            江苏传智播客教育科技股份有限公司
+            版权所有Copyright 2006-2018&amp;copy;, All Rights Reserved 苏ICP备16007882
+            &lt;/font&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+
+&lt;/table&gt;</code></pre><p>​<br>        <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><br>        </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># Web基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/25/javaweb/JDBC%E8%BF%9E%E6%8E%A5%E6%B1%A0&JDBCTemplate%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" rel="prev" title="JDBC连接池|JDBCTemplate">
+      <i class="fa fa-chevron-left"></i> JDBC连接池|JDBCTemplate
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/25/javaweb/HTML&CSS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" rel="next" title="HTML|CSS">
+      HTML|CSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#今日内容"><span class="nav-number">1.</span> <span class="nav-text">今日内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web概念概述"><span class="nav-number">1.1.</span> <span class="nav-text">web概念概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML"><span class="nav-number">1.2.</span> <span class="nav-text">HTML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例：旅游网站首页"><span class="nav-number">1.3.</span> <span class="nav-text">案例：旅游网站首页</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35:09</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
