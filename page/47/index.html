@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day26%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/22/day26%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记26</a>
+            <a href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">私有属性和私有方法</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:13:27" itemprop="dateModified" datetime="2021-03-22T21:13:27+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:22:32" itemprop="dateModified" datetime="2021-03-21T23:22:32+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.3k</span>
+              <span>592</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -229,13 +229,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今日内容介绍<br>1、多线程<br>2、线程池</p>
-<p>###01进程概念<br>*A:进程概念<br>   *a:进程：进程指正在运行的程序。确切的来说，当一个程序进入内存运行，<br>        即变成一个进程，进程是处于运行过程中的程序，并且具有一定独立功能。</p>
-<p>###02线程的概念<br> *A:线程的概念<br>   *a:线程：线程是进程中的一个执行单元(执行路径)，负责当前进程中程序的执行，<br>          一个进程中至少有一个线程。一个进程中是可以有多个线程的，<br>          这个应用程序也可以称之为多线程程序。<br>    简而言之：一个程序运行后至少有一个进程，一个进程中可以包含多个线程</p>
-<p>###03深入线程的概念<br>  A:深入线程的概念<br>    什么是多线程呢？<br>     即就是一个程序中有多个线程在同时执行。<br>     一个核心的CPU在多个线程之间进行着随即切换动作,由于切换时间很短(毫秒甚至是纳秒级别),导致我们感觉不出来</p>
+          <h1 id="私有属性和私有方法"><a href="#私有属性和私有方法" class="headerlink" title="私有属性和私有方法"></a>私有属性和私有方法</h1><h2 id="01-应用场景及定义方式"><a href="#01-应用场景及定义方式" class="headerlink" title="01. 应用场景及定义方式"></a>01. 应用场景及定义方式</h2><p><strong>应用场景</strong></p>
+<ul>
+<li>在实际开发中，<strong>对象</strong> 的 <strong>某些属性或方法</strong> 可能只希望 <strong>在对象的内部被使用</strong>，而 <strong>不希望在外部被访问到</strong></li>
+<li><strong>私有属性</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>属性</strong></li>
+<li><strong>私有方法</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>方法</strong></li>
+</ul>
+<p><strong>定义方式</strong></p>
+<ul>
+<li>在 <strong>定义属性或方法时</strong>，在 <strong>属性名或者方法名前</strong> 增加 <strong>两个下划线</strong>，定义的就是 <strong>私有</strong> 属性或方法</li>
+</ul>
+<p><img src="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/010_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Women</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># 不要问女生的年龄</span></span><br><span class="line">        self.__age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__secret</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"我的年龄是 %d"</span> % self.__age)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaofang = Women(<span class="string">"小芳"</span>)</span><br><span class="line"><span class="comment"># 私有属性，外部不能直接访问</span></span><br><span class="line"><span class="comment"># print(xiaofang.__age)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 私有方法，外部不能直接调用</span></span><br><span class="line"><span class="comment"># xiaofang.__secret()</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="02-伪私有属性和私有方法（科普）"><a href="#02-伪私有属性和私有方法（科普）" class="headerlink" title="02. 伪私有属性和私有方法（科普）"></a>02. 伪私有属性和私有方法（科普）</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/22/day26%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -259,7 +269,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day25%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -273,7 +283,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/22/day25%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记25</a>
+            <a href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/" class="post-title-link" itemprop="url">面向对象封装案例 II</a>
         </h2>
 
         <div class="post-meta">
@@ -283,14 +293,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:12:21" itemprop="dateModified" datetime="2021-03-22T21:12:21+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:22:08" itemprop="dateModified" datetime="2021-03-21T23:22:08+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,7 +308,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -308,14 +318,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -327,12 +337,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今日内容介绍<br>1、Properties集合<br>2、序列化流与反序列化流<br>3、打印流<br>4、commons-IO</p>
-<p>###01Properties集合的特点<br>    * A: Properties集合的特点<br>        * a: Properties类介绍<br>            * Properties 类表示了一个持久的属性集。Properties 可保存在流中或从流中加载。属性列表中每个键及其对应值都是一个字符串<br>        * b: 特点<br>            * Hashtable的子类，map集合中的方法都可以用。<br>            * 该集合没有泛型。键值都是字符串。<br>            * 它是一个可以持久化的属性集。键值可以存储到集合中，也可以存储到持久化的设备(硬盘、U盘、光盘)上。键值的来源也可以是持久化的设备。<br>            * 有和流技术相结合的方法。<br>        * c: 方法介绍<br>            * load(InputStream inputStream)  把指定流所对应的文件中的数据，读取出来，保存到Propertie集合中<br>            * load(Reader reader) 按简单的面向行的格式从输入字符流中读取属性列表（键和元素对）<br>            * store(OutputStream outputStream,String commonts) 把集合中的数据，保存到指定的流所对应的文件中，参数commonts代表对描述信息<br>            * stroe(Writer writer,String comments) 以适合使用 load(Reader) 方法的格式，将此 Properties 表中的属性列表（键和元素对）写入输出字符</p>
-<p>​<br>​<br>###02Properties集合存储键值对</p>
+          <h1 id="面向对象封装案例-II"><a href="#面向对象封装案例-II" class="headerlink" title="面向对象封装案例 II"></a>面向对象封装案例 II</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>士兵突击案例</li>
+<li>身份运算符</li>
+</ul>
+<p><strong>封装</strong></p>
+<ol>
+<li><strong>封装</strong> 是面向对象编程的一大特点</li>
+<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
+<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
+<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/22/day25%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -356,7 +373,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day24%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -370,7 +387,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/22/day24%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记24</a>
+            <a href="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/" class="post-title-link" itemprop="url">面向对象封装案例</a>
         </h2>
 
         <div class="post-meta">
@@ -380,14 +397,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:10:50" itemprop="dateModified" datetime="2021-03-22T21:10:50+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:21:59" itemprop="dateModified" datetime="2021-03-21T23:21:59+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -395,7 +412,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -405,14 +422,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.3k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -424,13 +441,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今日内容介绍<br>1、转换流<br>2、缓冲流</p>
-<p>###01转换流概述<br>    * A: 转换流概述<br>        * a: 转换流概述<br>            * OutputStreamWriter 是字符流通向字节流的桥梁：可使用指定的字符编码表，将要写入流中的字符编码成字节<br>            * 将字符串按照指定的编码表转成字节，在使用字节流将这些字节写出去</p>
-<p>​<br>###02转换流_字符转字节的过程<br>    * A: 转换流_字符转字节的过程<br>        * a.图解<br>            * 详见day24_source/转换流.JPG图片</p>
-<p>​<br>###03OutputStreamWriter写文本文件</p>
+          <h1 id="面向对象封装案例"><a href="#面向对象封装案例" class="headerlink" title="面向对象封装案例"></a>面向对象封装案例</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>封装</li>
+<li>小明爱跑步</li>
+<li>存放家具</li>
+</ul>
+<h3 id="01-封装"><a href="#01-封装" class="headerlink" title="01. 封装"></a>01. 封装</h3><ol>
+<li><strong>封装</strong> 是面向对象编程的一大特点</li>
+<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
+<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
+<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/22/day24%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/04_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -454,7 +477,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day23%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -468,7 +491,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/22/day23%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记23</a>
+            <a href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">面相对象基础语法</a>
         </h2>
 
         <div class="post-meta">
@@ -478,14 +501,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 17:31:12" itemprop="dateModified" datetime="2021-03-22T17:31:12+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:14:01" itemprop="dateModified" datetime="2021-03-21T23:14:01+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -493,7 +516,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -503,14 +526,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -522,23 +545,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今日内容介绍<br>1、字节流<br>2、字符流</p>
-<p>###01输入和输出</p>
-<pre><code>* A:输入和输出
-    * a: 参照物
-        * 到底是输入还是输出，都是以Java程序为参照
-    * b: Output
-        * 把内存中的数据存储到持久化设备上这个动作称为输出（写）Output操作
-        * 程序到文件称为输出
-    * c: Input
-        * 把持久设备上的数据读取到内存中的这个动作称为输入（读）Input操作
-        * 文件到程序称为输入
-    * d: IO操作
-        * 把上面的这种输入和输出动作称为IO操作</code></pre><p>###02字节输出流OutputStream<br>    * A: 字节输出流OutputStream<br>        * a.概念<br>            * IO流用来处理设备之间的数据传输<br>            * Java对数据的操作是通过流的方式<br>            * Java用于操作流的类都在IO包中<br>            * 流按流向分为两种：输入流，输出流。<br>            * 流按操作类型分为两种：<br>                * 字节流 : 字节流可以操作任何数据,因为在计算机中任何数据都是以字节的形式存储的<br>                * 字符流 : 字符流只能操作纯字符数据，比较方便。<br>        * b.IO流常用父类<br>            * 字节流的抽象父类：<br>                * InputStream<br>                * OutputStream<br>            * 字符流的抽象父类：<br>                * Reader<br>                * Writer<br>        * c.IO程序书写<br>            * 使用前，导入IO包中的类<br>            * 使用时，进行IO异常处理<br>            * 使用后，释放资源<br>        * d: 方法介绍<br>            *  void close(): 关闭此输出流并释放与此流有关的所有系统资源。<br>            *  void write(byte[] b)： 将 b.length 个字节从指定的 byte 数组写入此输出流<br>            *  void write(byte[] b, int off, int len) ：将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此输出流。<br>            * abstract  void write(int b) ： 将指定的字节写入此输出流。</p>
-<p>​<br>​<br>###03字节输出流FileOutputStream写字节</p>
+          <h1 id="面相对象基础语法"><a href="#面相对象基础语法" class="headerlink" title="面相对象基础语法"></a>面相对象基础语法</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li><code>dir</code> 内置函数</li>
+<li>定义简单的类（只包含方法）</li>
+<li>方法中的 <code>self</code> 参数</li>
+<li>初始化方法</li>
+<li>内置方法和属性</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/22/day23%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/03_%E9%9D%A2%E7%9B%B8%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -562,7 +577,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/day22%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -576,7 +591,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/22/day22%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">java学习笔记22</a>
+            <a href="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">类和对象</a>
         </h2>
 
         <div class="post-meta">
@@ -586,14 +601,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-22 19:21:13" itemprop="dateCreated datePublished" datetime="2020-12-22T19:21:13+08:00">2020-12-22</time>
+              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 17:30:39" itemprop="dateModified" datetime="2021-03-22T17:30:39+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:13:43" itemprop="dateModified" datetime="2021-03-21T23:13:43+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -601,7 +616,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -611,14 +626,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.7k</span>
+              <span>688</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -630,37 +645,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今日内容介绍<br>1、File<br>2、递归</p>
-<p>###01IO技术概述.avi（02:49）<br>    * A:IO技术概述<br>        * a: Output<br>            * 把内存中的数据存储到持久化设备上这个动作称为输出（写）Output操作<br>        * b: Input<br>            * 把持久设备上的数据读取到内存中的这个动作称为输入（读）Input操作<br>        * c: IO操作<br>            * 把上面的这种输入和输出动作称为IO操作</p>
-<p>###02File类的概述和作用<br>    * A:File类的概述和作用<br>        * a: File的概念<br>            * File类是文件和目录路径名的抽象表示形式<br>            * Java中把文件或者目录（文件夹）都封装成File对象<br>            * 我们要去操作硬盘上的文件，或者文件夹只要找到File这个类即可</p>
-<p>###03File类静态的成员变量<br>    * A:File类静态的成员变量<br>        * a: pathSeparator<br>            * 与系统有关的路径分隔符，为了方便，它被表示为一个字符串<br>        * b: separator<br>            * 与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串</p>
-<pre><code>* c: 案例代码
-
-    /*
-     *  java.io.File
-     *    将操作系统中的,文件,目录(文件夹),路径,封装成File对象
-     *    提供方法,操作系统中的内容
-     *    File与系统无关的类
-     *    文件 file
-     *    目录 directory
-     *    路径 path
-     */
-    public class FileDemo {
-        public static void main(String[] args) {
-            //File类静态成员变量
-            //与系统有关的路径分隔符
-            String separator = File.pathSeparator;
-            System.out.println(separator);// 是一个分号,目录的分割(window中环境变量配置各个路径用分号分割，表示一个完整的路径结束)  Linux中是冒号 :
-
-            //与系统有关的默认名称分隔符
-            separator = File.separator;
-            System.out.println(separator);// 向右 \  目录名称分割  Linux / 
-        }
-    }</code></pre><p>​    </p>
-<p>###04File类构造方法_1</p>
+          <h1 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>类和对象的概念</li>
+<li>类和对象的关系</li>
+<li>类的设计</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/22/day22%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/23/02_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -683,7 +674,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/46/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/48/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/46/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/48/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -749,20 +740,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-count">318</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -803,7 +794,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:52</span>
+    <span title="站点阅读时长">36:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

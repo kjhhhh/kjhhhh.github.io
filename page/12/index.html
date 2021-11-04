@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/21/C%E8%AF%AD%E8%A8%80%E6%B5%8B%E8%AF%95cpu%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/MySQL%E7%BA%A6%E6%9D%9F%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,96 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/21/C%E8%AF%AD%E8%A8%80%E6%B5%8B%E8%AF%95cpu%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF/" class="post-title-link" itemprop="url">C语言测试CPU大端小端模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-21 19:53:32" itemprop="dateCreated datePublished" datetime="2021-03-21T19:53:32+08:00">2021-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:44:06" itemprop="dateModified" datetime="2021-03-22T08:44:06+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">计组</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>520</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test1</span> &#123;</span></span><br><span class="line">	<span class="comment">//cpu中内存对齐分配</span></span><br><span class="line">	<span class="keyword">char</span> a;<span class="comment">//4个字节 </span></span><br><span class="line">	<span class="keyword">int</span> b;<span class="comment">//4个字节 </span></span><br><span class="line">	<span class="keyword">char</span> c;<span class="comment">//4个字节 </span></span><br><span class="line">&#125;;&lt;!--more--&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test2</span> &#123;</span></span><br><span class="line">	<span class="comment">//cpu中内存对齐分配 </span></span><br><span class="line">	<span class="keyword">char</span> a;<span class="comment">//2个字节 </span></span><br><span class="line">	<span class="keyword">char</span> b;<span class="comment">//2个字节 </span></span><br><span class="line">	<span class="keyword">int</span> c;<span class="comment">//4个字节 </span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">union</span> &#123;</span><br><span class="line">	<span class="keyword">char</span> a;</span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line">&#125; test3;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	test1 a;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(a)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	test2 b;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(b)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	test3.b=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(test3.a==<span class="number">1</span>)</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"小端模式"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="string">"大端模式"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">计算机组成原理简要知识</a>
+            <a href="/2021/10/26/MySQL%E7%BA%A6%E6%9D%9F%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">MySQL约束</a>
         </h2>
 
         <div class="post-meta">
@@ -275,7 +186,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-21 19:47:55 / 修改时间：22:07:32" itemprop="dateCreated datePublished" datetime="2021-03-21T19:47:55+08:00">2021-03-21</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:53:28" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,7 +194,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">计组</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -293,14 +204,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.5k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -312,11 +223,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、计算机系统概论"><a href="#一、计算机系统概论" class="headerlink" title="一、计算机系统概论"></a><strong>一、计算机系统概论</strong></h2><p><strong>1. 冯诺依曼计算机组成</strong></p>
-<p>主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）</p>
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. DQL:查询语句
+    1. 排序查询
+    2. 聚合函数
+    3. 分组查询
+    4. 分页查询
+
+2. 约束
+3. 多表之间的关系
+4. 范式
+5. 数据库的备份和还原</code></pre><h1 id="DQL-查询语句"><a href="#DQL-查询语句" class="headerlink" title="DQL:查询语句"></a>DQL:查询语句</h1>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/21/%E8%AE%A1%E7%BB%84%E7%AE%80%E8%A6%81%E7%9F%A5%E8%AF%86/#more" rel="contents">
+              <a class="btn" href="/2021/10/26/MySQL%E7%BA%A6%E6%9D%9F%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -340,7 +259,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/MySQL%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -354,7 +273,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java类谜题</a>
+            <a href="/2021/10/26/MySQL%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">MySQL基础知识</a>
         </h2>
 
         <div class="post-meta">
@@ -363,23 +282,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:41:03" itemprop="dateCreated datePublished" datetime="2021-03-20T22:41:03+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:51:16" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 22:37:47" itemprop="dateModified" datetime="2021-03-21T22:37:47+08:00">2021-03-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -389,14 +302,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>21k</span>
+              <span>4.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>19 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -408,13 +321,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-5——类谜题"><a href="#Java-谜题-Java-谜题-5——类谜题" class="headerlink" title="Java 谜题 Java 谜题 5——类谜题"></a>Java 谜题 Java 谜题 5——类谜题</h1><h2 id="谜题-46：令人混淆的构造器案例-令人混淆的构造器案例"><a href="#谜题-46：令人混淆的构造器案例-令人混淆的构造器案例" class="headerlink" title="谜题 46：令人混淆的构造器案例 令人混淆的构造器案例"></a>谜题 46：令人混淆的构造器案例 令人混淆的构造器案例</h2><p>本谜题呈现给你了两个容易令人混淆的构造器。main 方法调用了一个构造器，</p>
-<p>但是它调用的到底是哪一个呢？该程序的输出取决于这个问题的答案。那么它到</p>
-<p>底会打印出什么呢？甚至它是否是合法的呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Confusing</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(Object o)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"Object"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="title">Confusing</span><span class="params">(<span class="keyword">double</span>[] dArray)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(<span class="string">"double array"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> Confusing(null); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><ol>
+<li>数据库的基本概念</li>
+</ol>
+<ol start="2">
+<li><p>MySQL数据库软件</p>
+<ol>
+<li>安装</li>
+<li>卸载</li>
+<li>配置</li>
+</ol>
+</li>
+<li><p>SQL</p>
+</li>
+</ol>
+<h2 id="数据库的基本概念"><a href="#数据库的基本概念" class="headerlink" title="数据库的基本概念"></a>数据库的基本概念</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E7%B1%BB%E8%B0%9C%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2021/10/26/MySQL%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -438,7 +362,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/MySQL%E5%A4%9A%E8%A1%A8&%E4%BA%8B%E5%8A%A1%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -452,7 +376,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java异常谜题</a>
+            <a href="/2021/10/26/MySQL%E5%A4%9A%E8%A1%A8&%E4%BA%8B%E5%8A%A1%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">查询|事务|DCL</a>
         </h2>
 
         <div class="post-meta">
@@ -461,23 +385,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:36:01" itemprop="dateCreated datePublished" datetime="2021-03-20T22:36:01+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:50:32" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 22:38:17" itemprop="dateModified" datetime="2021-03-21T22:38:17+08:00">2021-03-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -487,14 +405,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>22k</span>
+              <span>9.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>20 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -506,13 +424,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-4——异常谜题"><a href="#Java-谜题-Java-谜题-4——异常谜题" class="headerlink" title="Java 谜题 Java 谜题 4——异常谜题"></a>Java 谜题 Java 谜题 4——异常谜题</h1><h2 id="谜题-36：优柔寡断"><a href="#谜题-36：优柔寡断" class="headerlink" title="谜题 36：优柔寡断"></a>谜题 36：优柔寡断</h2><p>下面这个可怜的小程序并不能很好地做出其自己的决定。它的 decision 方法将</p>
-<p>返回 true，但是它还返回了 false。那么，它到底打印的是什么呢？甚至，它是</p>
-<p>合法的吗？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Indecisive</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">println</span>(decision()); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">decision</span><span class="params">()</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">try</span> &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line"></span><br><span class="line"> &#125; finally &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 多表查询
+
+2. 事务
+
+3. DCL</code></pre><h2 id="多表查询："><a href="#多表查询：" class="headerlink" title="多表查询："></a>多表查询：</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%BC%82%E5%B8%B8%E8%B0%9C%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2021/10/26/MySQL%E5%A4%9A%E8%A1%A8&%E4%BA%8B%E5%8A%A1%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -536,7 +455,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/JDBC%E8%BF%9E%E6%8E%A5%E6%B1%A0&JDBCTemplate%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -550,7 +469,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/" class="post-title-link" itemprop="url">java循环谜题</a>
+            <a href="/2021/10/26/JDBC%E8%BF%9E%E6%8E%A5%E6%B1%A0&JDBCTemplate%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JDBC连接池|JDBCTemplate</a>
         </h2>
 
         <div class="post-meta">
@@ -559,23 +478,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-20 22:27:03" itemprop="dateCreated datePublished" datetime="2021-03-20T22:27:03+08:00">2021-03-20</time>
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:50:14" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:07:06" itemprop="dateModified" datetime="2021-03-22T23:07:06+08:00">2021-03-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
                 </span>
             </span>
 
@@ -585,14 +498,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>17k</span>
+              <span>5.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -604,16 +517,103 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-谜题-Java-谜题-3——循环谜题"><a href="#Java-谜题-Java-谜题-3——循环谜题" class="headerlink" title="Java 谜题 Java 谜题 3——循环谜题"></a>Java 谜题 Java 谜题 3——循环谜题</h1><h2 id="谜题-24：尽情享受每一个字节-尽情享受每一个字节"><a href="#谜题-24：尽情享受每一个字节-尽情享受每一个字节" class="headerlink" title="谜题 24：尽情享受每一个字节 尽情享受每一个字节"></a>谜题 24：尽情享受每一个字节 尽情享受每一个字节</h2><p>下面的程序循环遍历 byte 数值，以查找某个特定值。这个程序会打印出什么呢？ </p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BigDelight</span> &#123;</span> </span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">byte</span> b = Byte.MIN_VALUE; b &lt; Byte.MAX_VALUE; b++) &#123; </span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (b == <span class="number">0x90</span>) </span><br><span class="line"></span><br><span class="line"> System.out.<span class="built_in">print</span>(<span class="string">"Joy!"</span>); </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 数据库连接池
 
-<p>这个循环在除了 Byte.MAX_VALUE 之外所有的 byte 数值中进行迭代，以查找</p>
-<p>0x90。这个数值适合用 byte 表示，并且不等于 Byte.MAX_VALUE，因此你可能会</p>
-<p>想这个循环在该迭代会找到它一次，并将打印出 Joy!。但是，所见为虚。如果</p>
-<p>你运行该程序，就会发现它没有打印任何东西。怎么回事？</p>
+2. Spring JDBC : JDBC Template</code></pre><h2 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%BE%AA%E7%8E%AF%E8%B0%9C%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2021/10/26/JDBC%E8%BF%9E%E6%8E%A5%E6%B1%A0&JDBCTemplate%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/JDBC%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/26/JDBC%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JDBC入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-26 21:21:52 / 修改时间：21:50:04" itemprop="dateCreated datePublished" datetime="2021-10-26T21:21:52+08:00">2021-10-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. JDBC基本概念
+2. 快速入门
+3. 对JDBC中各个接口和类详解</code></pre><h2 id="JDBC："><a href="#JDBC：" class="headerlink" title="JDBC："></a>JDBC：</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/26/JDBC%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -636,7 +636,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -702,20 +702,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-count">318</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -756,7 +756,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:52</span>
+    <span title="站点阅读时长">36:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

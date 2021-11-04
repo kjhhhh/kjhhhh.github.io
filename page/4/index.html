@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/JavaScript%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/ThreadLocal%E6%9C%89%E5%93%AA%E4%BA%9B%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/26/JavaScript%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">ECMAScipt|BOM|DOM</a>
+            <a href="/2021/11/04/ThreadLocal%E6%9C%89%E5%93%AA%E4%BA%9B%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D/" class="post-title-link" itemprop="url">ThreadLocal有哪些内存泄露问题，如何避免?</a>
         </h2>
 
         <div class="post-meta">
@@ -186,7 +186,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:49:31" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-11-04 22:30:09 / 修改时间：20:41:40" itemprop="dateCreated datePublished" datetime="2021-11-04T22:30:09+08:00">2021-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -194,7 +194,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
                 </span>
             </span>
 
@@ -204,14 +204,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>682</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -223,25 +223,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. JavaScript：
-    1. ECMAScript：
-    2. BOM：
-    3. DOM：
-        1. 事件</code></pre><h2 id="DOM简单学习：为了满足案例要求"><a href="#DOM简单学习：为了满足案例要求" class="headerlink" title="DOM简单学习：为了满足案例要求"></a>DOM简单学习：为了满足案例要求</h2><pre><code>* 功能：控制html文档的内容
-* 获取页面标签(元素)对象：Element
-    * document.getElementById(&quot;id值&quot;):通过元素的id获取元素对象
-
-* 操作Element对象：
-    1. 修改属性值：
-        1. 明确获取的对象是哪一个？
-        2. 查看API文档，找其中有哪些属性可以设置
-    2. 修改标签体内容：
-        * 属性：innerHTML
-        1. 获取元素对象
-        2. 使用innerHTML属性修改标签体内容</code></pre><h2 id="事件简单学习"><a href="#事件简单学习" class="headerlink" title="事件简单学习"></a>事件简单学习</h2>
+          <h2 id="ThreadLocal有哪些内存泄露问题，如何避免"><a href="#ThreadLocal有哪些内存泄露问题，如何避免" class="headerlink" title="ThreadLocal有哪些内存泄露问题，如何避免"></a>ThreadLocal有哪些内存泄露问题，如何避免</h2><p>每个Thread都有一个ThreadLocal.ThreadLocalMap的map，该map的key为ThreadLocal实例，它为一个弱引用，我们知道弱引用有利于GC回收。当ThreadLocal的key == null时，GC就会回收这部分空间，但是value却不一定能够被回收，因为他还与Current Thread存在一个强引用关系，如下</p>
+<p><img src="images/1621414292593-0b7cfa25-1c6e-46af-9e67-55ae73904a02.png" alt="image">由于存在这个强引用关系，会导致value无法回收。如果这个线程对象不会销毁那么这个强引用关系则会一直存在，就会出现内存泄漏情况。所以说只要这个线程对象能够及时被GC回收，就不会出现内存泄漏。如果碰到线程池，那就更坑了。 那么要怎么避免这个问题呢？ 在前面提过，在</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/26/JavaScript%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/11/04/ThreadLocal%E6%9C%89%E5%93%AA%E4%BA%9B%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -265,7 +251,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/ThreadLocal%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -279,7 +265,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/26/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Web概述|HTML</a>
+            <a href="/2021/11/04/ThreadLocal%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B/" class="post-title-link" itemprop="url">ThreadLocal的原理</a>
         </h2>
 
         <div class="post-meta">
@@ -290,7 +276,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:49:16" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-11-04 22:30:02 / 修改时间：20:40:56" itemprop="dateCreated datePublished" datetime="2021-11-04T22:30:02+08:00">2021-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,7 +284,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
                 </span>
             </span>
 
@@ -308,14 +294,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -327,51 +313,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. web概念概述
-2. HTML</code></pre><h2 id="web概念概述"><a href="#web概念概述" class="headerlink" title="web概念概述"></a>web概念概述</h2><pre><code>* JavaWeb：
-    * 使用Java语言开发基于互联网的项目
+          <h2 id="ThreadLocal的原理是什么，使用场景有哪些"><a href="#ThreadLocal的原理是什么，使用场景有哪些" class="headerlink" title="ThreadLocal的原理是什么，使用场景有哪些"></a>ThreadLocal的原理是什么，使用场景有哪些</h2><p>Thread类中有两个变量threadLocals和inheritableThreadLocals，二者都是ThreadLocal内部类ThreadLocalMap类型的变量，我们通过查看内部内ThreadLocalMap可以发现实际上它类似于一个HashMap。在默认情况下，每个线程中的这两个变量都为null:</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap <span class="attr">threadLocals</span> = <span class="literal">null</span>;</span><br><span class="line">ThreadLocal.ThreadLocalMap <span class="attr">inheritableThreadLocals</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
 
-* 软件架构：
-    1. C/S: Client/Server 客户端/服务器端
-        * 在用户本地有一个客户端程序，在远程有一个服务器端程序
-        * 如：QQ，迅雷...
-        * 优点：
-            1. 用户体验好
-        * 缺点：
-            1. 开发、安装，部署，维护 麻烦
-    2. B/S: Browser/Server 浏览器/服务器端
-        * 只需要一个浏览器，用户通过不同的网址(URL)，客户访问不同的服务器端程序
-        * 优点：
-            1. 开发、安装，部署，维护 简单
-        * 缺点：
-            1. 如果应用过大，用户的体验可能会受到影响
-            2. 对硬件要求过高
-
-* B/S架构详解
-    * 资源分类：
-        1. 静态资源：
-            * 使用静态网页开发技术发布的资源。
-            * 特点：
-                * 所有用户访问，得到的结果是一样的。
-                * 如：文本，图片，音频、视频, HTML,CSS,JavaScript
-                * 如果用户请求的是静态资源，那么服务器会直接将静态资源发送给浏览器。浏览器中内置了静态资源的解析引擎，可以展示静态资源
-        2. 动态资源：
-            * 使用动态网页及时发布的资源。
-            * 特点：
-                * 所有用户访问，得到的结果可能不一样。
-                * 如：jsp/servlet,php,asp...
-                * 如果用户请求的是动态资源，那么服务器会执行动态资源，转换为静态资源，再发送给浏览器
-
-
-    * 我们要学习动态资源，必须先学习静态资源！
-
-    * 静态资源：
-        * HTML：用于搭建基础网页，展示页面的内容
-        * CSS：用于美化页面，布局页面
-        * JavaScript：控制页面的元素，让页面有一些动态的效果</code></pre><h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2>
+<p>只有当线程第一次调用ThreadLocal的set或者get方法的时候才会创建他们。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/26/HTML%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/11/04/ThreadLocal%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -395,7 +343,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/HTML&CSS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/synchronized%E5%92%8Clock%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -409,7 +357,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/26/HTML&CSS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">HTML|CSS</a>
+            <a href="/2021/11/04/synchronized%E5%92%8Clock%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%20/" class="post-title-link" itemprop="url">synchronized和lock有哪些区别</a>
         </h2>
 
         <div class="post-meta">
@@ -420,7 +368,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:49:03" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-11-04 22:29:58 / 修改时间：20:39:23" itemprop="dateCreated datePublished" datetime="2021-11-04T22:29:58+08:00">2021-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -428,7 +376,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
                 </span>
             </span>
 
@@ -438,14 +386,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.3k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -457,28 +405,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. HTML标签：表单标签
-
-2. CSS：</code></pre><h2 id="HTML标签：表单标签"><a href="#HTML标签：表单标签" class="headerlink" title="HTML标签：表单标签"></a>HTML标签：表单标签</h2><pre><code>* 表单：
-    * 概念：用于采集用户输入的数据的。用于和服务器进行交互。
-    * form：用于定义表单的。可以定义一个范围，范围代表采集用户数据的范围
-        * 属性：
-            * action：指定提交数据的URL
-            * method:指定提交方式
-                * 分类：一共7种，2种比较常用
-                   * get：
-                        1. 请求参数会在地址栏中显示。会封装到请求行中(HTTP协议后讲解)。
-                        2. 请求参数大小是有限制的。
-                        3. 不太安全。
-                   * post：
-                        2. 请求参数不会再地址栏中显示。会封装在请求体中(HTTP协议后讲解)
-                        2. 请求参数的大小没有限制。
-                        3. 较为安全。
-
-        * 表单项中的数据要想被提交：必须指定其name属性</code></pre><p>​<br>​        * 表单项标签：</p>
+          <h2 id="synchronized和lock有哪些区别"><a href="#synchronized和lock有哪些区别" class="headerlink" title="synchronized和lock有哪些区别"></a>synchronized和lock有哪些区别</h2><ol>
+<li>来源：<br>lock是一个接口，而synchronized是java的一个关键字，synchronized是内置的语言实现；</li>
+<li>异常是否释放锁：<br>synchronized在发生异常时候会自动释放占有的锁，因此不会出现死锁；而lock发生异常时候，不会主动释放占有的锁，必须手动unlock来释放锁，可能引起死锁的发生。（所以最好将同步代码块用try catch包起来，finally中写入unlock，避免死锁的发生。）</li>
+<li>是否响应中断<br>lock等待锁过程中可以用interrupt来中断等待，而synchronized只能等待锁的释放，不能响应中断；</li>
+<li>是否知道获取锁</li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/26/HTML&CSS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/11/04/synchronized%E5%92%8Clock%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%20/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -502,7 +436,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/EL&JSTL%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/jvm%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%8C%E5%AE%9E%E9%99%85%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -516,7 +450,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/26/EL&JSTL%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JSP|MVC|EL|JSTL|三层架构</a>
+            <a href="/2021/11/04/jvm%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%8C%E5%AE%9E%E9%99%85%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%20/" class="post-title-link" itemprop="url">jvm有哪些垃圾回收器?</a>
         </h2>
 
         <div class="post-meta">
@@ -527,7 +461,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:48:53" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-11-04 22:29:52 / 修改时间：20:38:59" itemprop="dateCreated datePublished" datetime="2021-11-04T22:29:52+08:00">2021-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -535,7 +469,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
                 </span>
             </span>
 
@@ -545,7 +479,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -564,18 +498,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. JSP:
-    1. 指令
-    2. 注释
-    3. 内置对象
-
-2. MVC开发模式
-3. EL表达式
-4. JSTL标签
-5. 三层架构</code></pre><h2 id="JSP"><a href="#JSP" class="headerlink" title="JSP:"></a>JSP:</h2>
+          <h2 id="jvm有哪些垃圾回收器，实际中如何选择"><a href="#jvm有哪些垃圾回收器，实际中如何选择" class="headerlink" title="jvm有哪些垃圾回收器，实际中如何选择 ?"></a>jvm有哪些垃圾回收器，实际中如何选择 ?</h2><p><img src="./images/gcollector.png" alt><br>图中展示了7种作用于不同分代的收集器，如果两个收集器之间存在连线，则说明它们可以搭配使用。虚拟机所处的区域则表示它是属于新生代还是老年代收集器。<br>新生代收集器（全部的都是复制算法）：Serial、ParNew、Parallel Scavenge<br>老年代收集器：CMS（标记-清理）、Serial Old（标记-整理）、Parallel Old（标记整理）<br>整堆收集器： G1（一个Region中是标记-清除算法，2个Region之间是复制算法）<br>同时，先解释几个名词：<br>1，<strong>并行（Parallel）</strong>：多个垃圾收集线程并行工作，此时用户线程处于等待状态<br>2，<strong>并发（Concurrent）</strong>：用户线程和垃圾收集线程同时执行<br>3，<strong>吞吐量</strong>：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/26/EL&JSTL%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/11/04/jvm%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%8C%E5%AE%9E%E9%99%85%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%20/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -599,7 +525,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/26/Cookie&Session%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -613,7 +539,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/26/Cookie&Session%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">会话技术Cookie、Session|JSP</a>
+            <a href="/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">JVM性能调优实战</a>
         </h2>
 
         <div class="post-meta">
@@ -624,7 +550,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-26 21:22:00 / 修改时间：21:54:52" itemprop="dateCreated datePublished" datetime="2021-10-26T21:22:00+08:00">2021-10-26</time>
+              <time title="创建时间：2021-11-04 22:29:44 / 修改时间：20:38:25" itemprop="dateCreated datePublished" datetime="2021-11-04T22:29:44+08:00">2021-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -632,7 +558,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
                 </span>
             </span>
 
@@ -642,7 +568,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.6k</span>
+              <span>5.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -661,18 +587,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. 会话技术
-    1. Cookie
-    2. Session
-2. JSP：入门学习</code></pre><h2 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h2><pre><code>1. 会话：一次会话中包含多次请求和响应。
-    * 一次会话：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止
-2. 功能：在一次会话的范围内的多次请求间，共享数据
-3. 方式：
-    1. 客户端会话技术：Cookie
-    2. 服务器端会话技术：Session</code></pre><h2 id="Cookie："><a href="#Cookie：" class="headerlink" title="Cookie："></a>Cookie：</h2>
+          <h1 id="JVM性能调优实战"><a href="#JVM性能调优实战" class="headerlink" title="JVM性能调优实战"></a>JVM性能调优实战</h1><h3 id="调优的一些原则"><a href="#调优的一些原则" class="headerlink" title="调优的一些原则"></a>调优的一些原则</h3><ol>
+<li>多数的Java应用不需要在服务器上进行GC优化，虚拟机内部已有很多优化来保证应用的稳定运行，所以不要为了调优而调优，不当的调优可能适得其反</li>
+<li>在应用上线之前，先考虑将机器的JVM参数设置到最优（适合）</li>
+<li>在进行GC优化之前，需要确认项目的架构和代码等已经没有优化空间。我们不能指望一个系统架构有缺陷或者代码层次优化没有穷尽的应用，通过GC优化令其性能达到一个质的飞跃</li>
+<li>GC优化是一个系统而复杂的工作，没有万能的调优策略可以满足所有的性能指标。GC优化必须建立在我们深入理解各种垃圾回收器的基础上，才能有事半功倍的效果</li>
+<li>处理吞吐量和延迟问题时，垃圾处理器能使用的内存越大，即java堆空间越大垃圾收集效果越好，应用运行也越流畅。这称之为GC内存最大化原则</li>
+<li>在这三个属性（吞吐量、延迟、内存）中选择其中两个进行jvm调优，称之为GC调优3选2</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/26/Cookie&Session%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -695,7 +620,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -761,20 +686,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-count">318</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -815,7 +740,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:52</span>
+    <span title="站点阅读时长">36:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

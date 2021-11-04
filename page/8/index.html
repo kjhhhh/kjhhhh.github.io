@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Response%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/hashmap%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/25/javaweb/Response%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">响应消息|Response对象|ServletContext对象</a>
+            <a href="/2021/11/04/hashmap%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">hashmap线程安全的方式？</a>
         </h2>
 
         <div class="post-meta">
@@ -184,23 +184,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-25 15:07:32" itemprop="dateCreated datePublished" datetime="2021-10-25T15:07:32+08:00">2021-10-25</time>
+              <time title="创建时间：2021-11-04 19:20:39 / 修改时间：19:21:10" itemprop="dateCreated datePublished" datetime="2021-11-04T19:20:39+08:00">2021-11-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:26:41" itemprop="dateModified" datetime="2021-10-26T20:26:41+08:00">2021-10-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
                 </span>
             </span>
 
@@ -210,14 +204,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.1k</span>
+              <span>797</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -229,175 +223,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. HTTP协议：响应消息
-2. Response对象
-3. ServletContext对象</code></pre><h2 id="HTTP协议："><a href="#HTTP协议：" class="headerlink" title="HTTP协议："></a>HTTP协议：</h2><pre><code>1. 请求消息：客户端发送给服务器端的数据
-    * 数据格式：
-        1. 请求行
-        2. 请求头
-        3. 请求空行
-        4. 请求体
-2. 响应消息：服务器端发送给客户端的数据
-    * 数据格式：
-        1. 响应行
-            1. 组成：协议/版本 响应状态码 状态码描述
-            2. 响应状态码：服务器告诉客户端浏览器本次请求和响应的一个状态。
-                1. 状态码都是3位数字 
-                2. 分类：
-                    1. 1xx：服务器就收客户端消息，但没有接受完成，等待一段时间后，发送1xx多状态码
-                    2. 2xx：成功。代表：200
-                    3. 3xx：重定向。代表：302(重定向)，304(访问缓存)
-                    4. 4xx：客户端错误。
-                        * 代表：
-                            * 404（请求路径没有对应的资源） 
-                            * 405：请求方式没有对应的doXxx方法
-                    5. 5xx：服务器端错误。代表：500(服务器内部出现异常)</code></pre><p>​<br>            2. 响应头：<br>                1. 格式：头名称： 值<br>                2. 常见的响应头：<br>                    1. Content-Type：服务器告诉客户端本次响应体数据格式以及编码格式<br>                    2. Content-disposition：服务器告诉客户端以什么格式打开响应体数据<br>                        * 值：<br>                            * in-line:默认值,在当前页面内打开<br>                            * attachment;filename=xxx：以附件形式打开响应体。文件下载<br>            3. 响应空行<br>            4. 响应体:传输的数据</p>
-<pre><code>* 响应字符串格式
-    HTTP/1.1 200 OK
-    Content-Type: text/html;charset=UTF-8
-    Content-Length: 101
-    Date: Wed, 06 Jun 2018 07:08:42 GMT
-
-    &lt;html&gt;
-      &lt;head&gt;
-        &lt;title&gt;$Title$&lt;/title&gt;
-      &lt;/head&gt;
-      &lt;body&gt;
-      hello , response
-      &lt;/body&gt;
-    &lt;/html&gt;</code></pre><h2 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h2><pre><code>* 功能：设置响应消息
-    1. 设置响应行
-        1. 格式：HTTP/1.1 200 ok
-        2. 设置状态码：setStatus(int sc) 
-    2. 设置响应头：setHeader(String name, String value) 
-
-    3. 设置响应体：
-        * 使用步骤：
-            1. 获取输出流
-                * 字符输出流：PrintWriter getWriter()
-
-                * 字节输出流：ServletOutputStream getOutputStream()
-
-            2. 使用输出流，将数据输出到客户端浏览器
-
-
-* 案例：
-    1. 完成重定向
-        * 重定向：资源跳转的方式
-        * 代码实现：
-            //1. 设置状态码为302
-            response.setStatus(302);
-            //2.设置响应头location
-            response.setHeader(&quot;location&quot;,&quot;/day15/responseDemo2&quot;);
-
-
-            //简单的重定向方法
-            response.sendRedirect(&quot;/day15/responseDemo2&quot;);
-
-        * 重定向的特点:redirect
-            1. 地址栏发生变化
-            2. 重定向可以访问其他站点(服务器)的资源
-            3. 重定向是两次请求。不能使用request对象来共享数据
-        * 转发的特点：forward
-            1. 转发地址栏路径不变
-            2. 转发只能访问当前服务器下的资源
-            3. 转发是一次请求，可以使用request对象来共享数据
-
-        * forward 和  redirect 区别
-
-        * 路径写法：
-            1. 路径分类
-                1. 相对路径：通过相对路径不可以确定唯一资源
-                    * 如：./index.html
-                    * 不以/开头，以.开头路径
-
-                    * 规则：找到当前资源和目标资源之间的相对位置关系
-                        * ./：当前目录
-                        * ../:后退一级目录
-                2. 绝对路径：通过绝对路径可以确定唯一资源
-                    * 如：http://localhost/day15/responseDemo2        /day15/responseDemo2
-                    * 以/开头的路径
-
-                    * 规则：判断定义的路径是给谁用的？判断请求将来从哪儿发出
-                        * 给客户端浏览器使用：需要加虚拟目录(项目的访问路径)
-                            * 建议虚拟目录动态获取：request.getContextPath()
-                            * &lt;a&gt; , &lt;form&gt; 重定向...
-                        * 给服务器使用：不需要加虚拟目录
-                            * 转发路径</code></pre><p>​<br>​                        </p>
-<pre><code>2. 服务器输出字符数据到浏览器
-    * 步骤：
-        1. 获取字符输出流
-        2. 输出数据
-
-    * 注意：
-        * 乱码问题：
-            1. PrintWriter pw = response.getWriter();获取的流的默认编码是ISO-8859-1
-            2. 设置该流的默认编码
-            3. 告诉浏览器响应体使用的编码
-
-            //简单的形式，设置编码，是在获取流之前设置
-            response.setContentType(&quot;text/html;charset=utf-8&quot;);
-3. 服务器输出字节数据到浏览器
-    * 步骤：
-        1. 获取字节输出流
-        2. 输出数据
-
-4. 验证码
-    1. 本质：图片
-    2. 目的：防止恶意表单注册</code></pre><h2 id="ServletContext对象："><a href="#ServletContext对象：" class="headerlink" title="ServletContext对象："></a>ServletContext对象：</h2><pre><code>1. 概念：代表整个web应用，可以和程序的容器(服务器)来通信
-2. 获取：
-    1. 通过request对象获取
-        request.getServletContext();
-    2. 通过HttpServlet获取
-        this.getServletContext();
-3. 功能：
-    1. 获取MIME类型：
-        * MIME类型:在互联网通信过程中定义的一种文件数据类型
-            * 格式： 大类型/小类型   text/html        image/jpeg
-
-        * 获取：String getMimeType(String file)  
-    2. 域对象：共享数据
-        1. setAttribute(String name,Object value)
-        2. getAttribute(String name)
-        3. removeAttribute(String name)
-
-        * ServletContext对象范围：所有用户所有请求的数据
-    3. 获取文件的真实(服务器)路径
-        1. 方法：String getRealPath(String path)  
-             String b = context.getRealPath(&quot;/b.txt&quot;);//web目录下资源访问
-             System.out.println(b);
-
-            String c = context.getRealPath(&quot;/WEB-INF/c.txt&quot;);//WEB-INF目录下的资源访问
-            System.out.println(c);
-
-            String a = context.getRealPath(&quot;/WEB-INF/classes/a.txt&quot;);//src目录下的资源访问
-            System.out.println(a);</code></pre><h2 id="案例："><a href="#案例：" class="headerlink" title="案例："></a>案例：</h2><pre><code>* 文件下载需求：
-    1. 页面显示超链接
-    2. 点击超链接后弹出下载提示框
-    3. 完成图片文件下载
-
-
-* 分析：
-    1. 超链接指向的资源如果能够被浏览器解析，则在浏览器中展示，如果不能解析，则弹出下载提示框。不满足需求
-    2. 任何资源都必须弹出下载提示框
-    3. 使用响应头设置资源的打开方式：
-        * content-disposition:attachment;filename=xxx
-
-
-* 步骤：
-    1. 定义页面，编辑超链接href属性，指向Servlet，传递资源名称filename
-    2. 定义Servlet
-        1. 获取文件名称
-        2. 使用字节输入流加载文件进内存
-        3. 指定response的响应头： content-disposition:attachment;filename=xxx
-        4. 将数据写出到response输出流
-
-
-* 问题：
-    * 中文文件问题
-        * 解决思路：
-            1. 获取客户端使用的浏览器版本信息
-            2. 根据不同的版本信息，设置filename的编码方式不同</code></pre>
+          <h1 id="hashmap线程安全的方式？"><a href="#hashmap线程安全的方式？" class="headerlink" title="hashmap线程安全的方式？"></a><strong>hashmap线程安全的方式？</strong></h1><p>HashMap不是线程安全的,往往在写程序时需要通过一些方法来回避.其实JDK原生的提供了2种方法让HashMap支持线程安全.</p>
+<p><strong>方法一</strong>:通过Collections.synchronizedMap()返回一个新的Map,这个新的map就是线程安全的. 这个要求大家习惯基于接口编程,因为返回的并不是HashMap,而是一个Map的实现.</p>
+<p><strong>方法二</strong>:重新改写了HashMap,具体的可以查看java.util.concurrent.ConcurrentHashMap. 这个方法比方法一有了很大的改进.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/04/hashmap%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -416,7 +252,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Servlet&HTTP&Request%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/equals()%E5%92%8C==%E5%8C%BA%E5%88%AB%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E5%86%99equal%E8%A6%81%E9%87%8D%E5%86%99hashcode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -430,7 +266,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/25/javaweb/Servlet&HTTP&Request%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Servlet|HTTP协议|Request对象</a>
+            <a href="/2021/11/04/equals()%E5%92%8C==%E5%8C%BA%E5%88%AB%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E5%86%99equal%E8%A6%81%E9%87%8D%E5%86%99hashcode/" class="post-title-link" itemprop="url">equals()和==区别</a>
         </h2>
 
         <div class="post-meta">
@@ -439,23 +275,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-25 15:07:25" itemprop="dateCreated datePublished" datetime="2021-10-25T15:07:25+08:00">2021-10-25</time>
+              <time title="创建时间：2021-11-04 19:18:37 / 修改时间：19:19:08" itemprop="dateCreated datePublished" datetime="2021-11-04T19:18:37+08:00">2021-11-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:25:01" itemprop="dateModified" datetime="2021-10-26T20:25:01+08:00">2021-10-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
                 </span>
             </span>
 
@@ -465,14 +295,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.6k</span>
+              <span>436</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -484,391 +314,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. Servlet
-2. HTTP协议
-3. Request</code></pre><h2 id="Servlet："><a href="#Servlet：" class="headerlink" title="Servlet："></a>Servlet：</h2><pre><code>1. 概念
-2. 步骤
-3. 执行原理
-4. 生命周期
-5. Servlet3.0 注解配置
-6. Servlet的体系结构    
-    Servlet -- 接口
-        |
-    GenericServlet -- 抽象类
-        |
-    HttpServlet  -- 抽象类
-
-    * GenericServlet：将Servlet接口中其他的方法做了默认空实现，只将service()方法作为抽象
-        * 将来定义Servlet类时，可以继承GenericServlet，实现service()方法即可
-
-    * HttpServlet：对http协议的一种封装，简化操作
-        1. 定义类继承HttpServlet
-        2. 复写doGet/doPost方法
-
-7. Servlet相关配置
-    1. urlpartten:Servlet访问路径
-        1. 一个Servlet可以定义多个访问路径 ： @WebServlet({&quot;/d4&quot;,&quot;/dd4&quot;,&quot;/ddd4&quot;})
-        2. 路径定义规则：
-            1. /xxx：路径匹配
-            2. /xxx/xxx:多层路径，目录结构
-            3. *.do：扩展名匹配</code></pre><h2 id="HTTP："><a href="#HTTP：" class="headerlink" title="HTTP："></a>HTTP：</h2><pre><code>* 概念：Hyper Text Transfer Protocol 超文本传输协议
-    * 传输协议：定义了，客户端和服务器端通信时，发送数据的格式
-    * 特点：
-        1. 基于TCP/IP的高级协议
-        2. 默认端口号:80
-        3. 基于请求/响应模型的:一次请求对应一次响应
-        4. 无状态的：每次请求之间相互独立，不能交互数据
-
-    * 历史版本：
-        * 1.0：每一次请求响应都会建立新的连接
-        * 1.1：复用连接
-
-* 请求消息数据格式
-    1. 请求行
-        请求方式 请求url 请求协议/版本
-        GET /login.html    HTTP/1.1
-
-        * 请求方式：
-            * HTTP协议有7中请求方式，常用的有2种
-                * GET：
-                    1. 请求参数在请求行中，在url后。
-                    2. 请求的url长度有限制的
-                    3. 不太安全
-                * POST：
-                    1. 请求参数在请求体中
-                    2. 请求的url长度没有限制的
-                    3. 相对安全
-    2. 请求头：客户端浏览器告诉服务器一些信息
-        请求头名称: 请求头值
-        * 常见的请求头：
-            1. User-Agent：浏览器告诉服务器，我访问你使用的浏览器版本信息
-                * 可以在服务器端获取该头的信息，解决浏览器的兼容性问题
-
-            2. Referer：http://localhost/login.html
-                * 告诉服务器，我(当前请求)从哪里来？
-                    * 作用：
-                        1. 防盗链：
-                        2. 统计工作：
-    3. 请求空行
-        空行，就是用于分割POST请求的请求头，和请求体的。
-    4. 请求体(正文)：
-        * 封装POST请求消息的请求参数的
-
-    * 字符串格式：
-        POST /login.html    HTTP/1.1
-        Host: localhost
-        User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0
-        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-        Accept-Encoding: gzip, deflate
-        Referer: http://localhost/login.html
-        Connection: keep-alive
-        Upgrade-Insecure-Requests: 1
-
-        username=zhangsan    
-
-
-* 响应消息数据格式</code></pre><h2 id="Request："><a href="#Request：" class="headerlink" title="Request："></a>Request：</h2><pre><code>1. request对象和response对象的原理
-    1. request和response对象是由服务器创建的。我们来使用它们
-    2. request对象是来获取请求消息，response对象是来设置响应消息
-
-2. request对象继承体系结构：    
-    ServletRequest        --    接口
-        |    继承
-    HttpServletRequest    -- 接口
-        |    实现
-    org.apache.catalina.connector.RequestFacade 类(tomcat)
-
-3. request功能：
-    1. 获取请求消息数据
-        1. 获取请求行数据
-            * GET /day14/demo1?name=zhangsan HTTP/1.1
-            * 方法：
-                1. 获取请求方式 ：GET
-                    * String getMethod()  
-                2. (*)获取虚拟目录：/day14
-                    * String getContextPath()
-                3. 获取Servlet路径: /demo1
-                    * String getServletPath()
-                4. 获取get方式请求参数：name=zhangsan
-                    * String getQueryString()
-                5. (*)获取请求URI：/day14/demo1
-                    * String getRequestURI():        /day14/demo1
-                    * StringBuffer getRequestURL()  :http://localhost/day14/demo1
-
-                    * URL:统一资源定位符 ： http://localhost/day14/demo1    中华人民共和国
-                    * URI：统一资源标识符 : /day14/demo1                    共和国
-
-                6. 获取协议及版本：HTTP/1.1
-                    * String getProtocol()
-
-                7. 获取客户机的IP地址：
-                    * String getRemoteAddr()
-
-        2. 获取请求头数据
-            * 方法：
-                * (*)String getHeader(String name):通过请求头的名称获取请求头的值
-                * Enumeration&lt;String&gt; getHeaderNames():获取所有的请求头名称
-
-        3. 获取请求体数据:
-            * 请求体：只有POST请求方式，才有请求体，在请求体中封装了POST请求的请求参数
-            * 步骤：
-                1. 获取流对象
-                    *  BufferedReader getReader()：获取字符输入流，只能操作字符数据
-                    *  ServletInputStream getInputStream()：获取字节输入流，可以操作所有类型数据
-                        * 在文件上传知识点后讲解
-
-                2. 再从流对象中拿数据</code></pre><p>​<br>        2. 其他功能：<br>            1. 获取请求参数通用方式：不论get还是post请求方式都可以使用下列方法来获取请求参数<br>                1. String getParameter(String name):根据参数名称获取参数值    username=zs&amp;password=123<br>                2. String[] getParameterValues(String name):根据参数名称获取参数值的数组  hobby=xx&amp;hobby=game<br>                3. Enumeration<String> getParameterNames():获取所有请求的参数名称<br>                4. Map&lt;String,String[]&gt; getParameterMap():获取所有参数的map集合</String></p>
-<pre><code>* 中文乱码问题：
-    * get方式：tomcat 8 已经将get方式乱码问题解决了
-    * post方式：会乱码
-        * 解决：在获取参数前，设置request的编码request.setCharacterEncoding(&quot;utf-8&quot;);</code></pre><p>​<br>            2. 请求转发：一种在服务器内部的资源跳转方式<br>                1. 步骤：<br>                    1. 通过request对象获取请求转发器对象：RequestDispatcher getRequestDispatcher(String path)<br>                    2. 使用RequestDispatcher对象来进行转发：forward(ServletRequest request, ServletResponse response) </p>
-<pre><code>    2. 特点：
-        1. 浏览器地址栏路径不发生变化
-        2. 只能转发到当前服务器内部资源中。
-        3. 转发是一次请求
-
-
-3. 共享数据：
-    * 域对象：一个有作用范围的对象，可以在范围内共享数据
-    * request域：代表一次请求的范围，一般用于请求转发的多个资源中共享数据
-    * 方法：
-        1. void setAttribute(String name,Object obj):存储数据
-        2. Object getAttitude(String name):通过键获取值
-        3. void removeAttribute(String name):通过键移除键值对
-
-4. 获取ServletContext：
-    * ServletContext getServletContext()</code></pre><h2 id="案例：用户登录"><a href="#案例：用户登录" class="headerlink" title="案例：用户登录"></a>案例：用户登录</h2><pre><code>* 用户登录案例需求：
-    1.编写login.html登录页面
-        username &amp; password 两个输入框
-    2.使用Druid数据库连接池技术,操作mysql，day14数据库中user表
-    3.使用JdbcTemplate技术封装JDBC
-    4.登录成功跳转到SuccessServlet展示：登录成功！用户名,欢迎您
-    5.登录失败跳转到FailServlet展示：登录失败，用户名或密码错误
-
-
-* 分析
-
-* 开发步骤
-    1. 创建项目，导入html页面，配置文件，jar包
-    2. 创建数据库环境
-        CREATE DATABASE day14;
-        USE day14;
-        CREATE TABLE USER(
-
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            username VARCHAR(32) UNIQUE NOT NULL,
-            PASSWORD VARCHAR(32) NOT NULL
-        );
-
-    3. 创建包cn.itcast.domain,创建类User
-        package cn.itcast.domain;
-        /**
-         * 用户的实体类
-         */
-        public class User {
-
-            private int id;
-            private String username;
-            private String password;</code></pre><p>​<br>                public int getId() {<br>                    return id;<br>                }</p>
-<pre><code>        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        @Override
-        public String toString() {
-            return &quot;User{&quot; +
-                    &quot;id=&quot; + id +
-                    &quot;, username=&apos;&quot; + username + &apos;\&apos;&apos; +
-                    &quot;, password=&apos;&quot; + password + &apos;\&apos;&apos; +
-                    &apos;}&apos;;
-        }
-    }
-4. 创建包cn.itcast.util,编写工具类JDBCUtils
-    package cn.itcast.util;
-
-    import com.alibaba.druid.pool.DruidDataSourceFactory;
-
-    import javax.sql.DataSource;
-    import javax.xml.crypto.Data;
-    import java.io.IOException;
-    import java.io.InputStream;
-    import java.sql.Connection;
-    import java.sql.SQLException;
-    import java.util.Properties;
-
-    /**
-     * JDBC工具类 使用Durid连接池
-     */
-    public class JDBCUtils {
-
-        private static DataSource ds ;
-
-        static {
-
-            try {
-                //1.加载配置文件
-                Properties pro = new Properties();
-                //使用ClassLoader加载配置文件，获取字节输入流
-                InputStream is = JDBCUtils.class.getClassLoader().getResourceAsStream(&quot;druid.properties&quot;);
-                pro.load(is);
-
-                //2.初始化连接池对象
-                ds = DruidDataSourceFactory.createDataSource(pro);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        /**
-         * 获取连接池对象
-         */
-        public static DataSource getDataSource(){
-            return ds;
-        }</code></pre><p>​<br>                /**<br>                 * 获取连接Connection对象<br>                 */<br>                public static Connection getConnection() throws SQLException {<br>                    return  ds.getConnection();<br>                }<br>            }<br>        5. 创建包cn.itcast.dao,创建类UserDao,提供login方法</p>
-<pre><code>package cn.itcast.dao;
-
-import cn.itcast.domain.User;
-import cn.itcast.util.JDBCUtils;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-/**
- * 操作数据库中User表的类
- */
-public class UserDao {
-
-    //声明JDBCTemplate对象共用
-    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
-
-    /**
-     * 登录方法
-     * @param loginUser 只有用户名和密码
-     * @return user包含用户全部数据,没有查询到，返回null
-     */
-    public User login(User loginUser){
-        try {
-            //1.编写sql
-            String sql = &quot;select * from user where username = ? and password = ?&quot;;
-            //2.调用query方法
-            User user = template.queryForObject(sql,
-                    new BeanPropertyRowMapper&lt;User&gt;(User.class),
-                    loginUser.getUsername(), loginUser.getPassword());</code></pre><p>​<br>                        return user;<br>                    } catch (DataAccessException e) {<br>                        e.printStackTrace();//记录日志<br>                        return null;<br>                    }<br>                }<br>            }</p>
-<pre><code>6. 编写cn.itcast.web.servlet.LoginServlet类
-    package cn.itcast.web.servlet;
-
-    import cn.itcast.dao.UserDao;
-    import cn.itcast.domain.User;
-
-    import javax.servlet.ServletException;
-    import javax.servlet.annotation.WebServlet;
-    import javax.servlet.http.HttpServlet;
-    import javax.servlet.http.HttpServletRequest;
-    import javax.servlet.http.HttpServletResponse;
-    import java.io.IOException;</code></pre><p>​<br>            @WebServlet(“/loginServlet”)<br>            public class LoginServlet extends HttpServlet {</p>
-<p>​<br>                @Override<br>                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {<br>                    //1.设置编码<br>                    req.setCharacterEncoding(“utf-8”);<br>                    //2.获取请求参数<br>                    String username = req.getParameter(“username”);<br>                    String password = req.getParameter(“password”);<br>                    //3.封装user对象<br>                    User loginUser = new User();<br>                    loginUser.setUsername(username);<br>                    loginUser.setPassword(password);</p>
-<pre><code>            //4.调用UserDao的login方法
-            UserDao dao = new UserDao();
-            User user = dao.login(loginUser);
-
-            //5.判断user
-            if(user == null){
-                //登录失败
-                req.getRequestDispatcher(&quot;/failServlet&quot;).forward(req,resp);
-            }else{
-                //登录成功
-                //存储数据
-                req.setAttribute(&quot;user&quot;,user);
-                //转发
-                req.getRequestDispatcher(&quot;/successServlet&quot;).forward(req,resp);
-            }
-
-        }
-
-        @Override
-        protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            this.doGet(req,resp);
-        }
-    }
-
-7. 编写FailServlet和SuccessServlet类
-    @WebServlet(&quot;/successServlet&quot;)
-    public class SuccessServlet extends HttpServlet {
-        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            //获取request域中共享的user对象
-            User user = (User) request.getAttribute(&quot;user&quot;);
-
-            if(user != null){
-                //给页面写一句话
-
-                //设置编码
-                response.setContentType(&quot;text/html;charset=utf-8&quot;);
-                //输出
-                response.getWriter().write(&quot;登录成功！&quot;+user.getUsername()+&quot;,欢迎您&quot;);
-            }</code></pre><p>​<br>                }        </p>
-<pre><code>    @WebServlet(&quot;/failServlet&quot;)
-    public class FailServlet extends HttpServlet {
-        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            //给页面写一句话
-
-            //设置编码
-            response.setContentType(&quot;text/html;charset=utf-8&quot;);
-            //输出
-            response.getWriter().write(&quot;登录失败，用户名或密码错误&quot;);
-
-        }
-
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            this.doPost(request,response);
-        }
-    }
-
-
-
-8. login.html中form表单的action路径的写法
-    * 虚拟目录+Servlet的资源路径
-
-9. BeanUtils工具类，简化数据封装
-    * 用于封装JavaBean的
-    1. JavaBean：标准的Java类
-        1. 要求：
-            1. 类必须被public修饰
-            2. 必须提供空参的构造器
-            3. 成员变量必须使用private修饰
-            4. 提供公共setter和getter方法
-        2. 功能：封装数据
-
-
-    2. 概念：
-        成员变量：
-        属性：setter和getter方法截取后的产物
-            例如：getUsername() --&gt; Username--&gt; username
-
-
-    3. 方法：
-        1. setProperty()
-        2. getProperty()
-        3. populate(Object obj , Map map):将map集合的键值对信息，封装到对应的JavaBean对象中</code></pre>
+          <h1 id="equals-和-区别，为什么重写equal要重写hashcode"><a href="#equals-和-区别，为什么重写equal要重写hashcode" class="headerlink" title="equals()和==区别，为什么重写equal要重写hashcode?"></a>equals()和==区别，为什么重写equal要重写hashcode?</h1><p>==是运算符  equals()是一个来自于Object的方法</p>
+<p>==可以用于基本数据类型和引用</p>
+<p>equals只能用于引用类型</p>
+<p>== 两端如果是基本数据类型，就是判断值是否相等</p>
+<p>equals()再重写之后就是判断两个对象的属性值是否相等</p>
+<p>equals如果不重写就是 == </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/04/equals()%E5%92%8C==%E5%8C%BA%E5%88%AB%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E5%86%99equal%E8%A6%81%E9%87%8D%E5%86%99hashcode/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -887,7 +346,7 @@ public class UserDao {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Tomcat&Servlet%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/Condition%20%E7%B1%BB%E5%92%8CObject%20%E7%B1%BB%E9%94%81%E6%96%B9%E6%B3%95%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -901,7 +360,7 @@ public class UserDao {
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/25/javaweb/Tomcat&Servlet%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Tomcat了解和Servlet入门</a>
+            <a href="/2021/11/04/Condition%20%E7%B1%BB%E5%92%8CObject%20%E7%B1%BB%E9%94%81%E6%96%B9%E6%B3%95%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">Condition 类和Object 类锁方法区别</a>
         </h2>
 
         <div class="post-meta">
@@ -910,16 +369,95 @@ public class UserDao {
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-25 15:07:03" itemprop="dateCreated datePublished" datetime="2021-10-25T15:07:03+08:00">2021-10-25</time>
+              <time title="创建时间：2021-11-04 19:17:46 / 修改时间：19:18:25" itemprop="dateCreated datePublished" datetime="2021-11-04T19:17:46+08:00">2021-11-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:24:33" itemprop="dateModified" datetime="2021-10-26T20:24:33+08:00">2021-10-26</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>192</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Condition-类和Object-类锁方法区别"><a href="#Condition-类和Object-类锁方法区别" class="headerlink" title="Condition 类和Object 类锁方法区别"></a>Condition 类和Object 类锁方法区别</h1><p>\1.  Condition 类的 awiat 方法和 Object 类的 wait 方法等效 </p>
+<p>\2.  Condition 类的 signal 方法和 Object 类的 notify 方法等效 </p>
+<p>\3.  Condition 类的 signalAll 方法和 Object 类的 notifyAll 方法等效 </p>
+<p>\4.  ReentrantLock 类可以唤醒指定条件的线程，而 object 的唤醒是随机的 </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JQuery高级笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 19:16:24 / 修改时间：19:17:12" itemprop="dateCreated datePublished" datetime="2021-11-04T19:16:24+08:00">2021-11-04</time>
+            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -936,7 +474,7 @@ public class UserDao {
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4k</span>
+              <span>4.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -955,812 +493,309 @@ public class UserDao {
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. web相关概念回顾
-2. web服务器软件：Tomcat
-3. Servlet入门学习</code></pre><h2 id="web相关概念回顾"><a href="#web相关概念回顾" class="headerlink" title="web相关概念回顾"></a>web相关概念回顾</h2><pre><code>1. 软件架构
-    1. C/S：客户端/服务器端
-    2. B/S：浏览器/服务器端
-
-2. 资源分类
-    1. 静态资源：所有用户访问后，得到的结果都是一样的，称为静态资源.静态资源可以直接被浏览器解析
-        * 如： html,css,JavaScript
-    2. 动态资源:每个用户访问相同资源后，得到的结果可能不一样。称为动态资源。动态资源被访问后，需要先转换为静态资源，在返回给浏览器
-        * 如：servlet/jsp,php,asp....
-
-
-3. 网络通信三要素
-    1. IP：电子设备(计算机)在网络中的唯一标识。
-    2. 端口：应用程序在计算机中的唯一标识。 0~65536
-    3. 传输协议：规定了数据传输的规则
-        1. 基础协议：
-            1. tcp:安全协议，三次握手。 速度稍慢
-            2. udp：不安全协议。 速度快</code></pre><h2 id="web服务器软件："><a href="#web服务器软件：" class="headerlink" title="web服务器软件："></a>web服务器软件：</h2><pre><code>* 服务器：安装了服务器软件的计算机
-* 服务器软件：接收用户的请求，处理请求，做出响应
-* web服务器软件：接收用户的请求，处理请求，做出响应。
-    * 在web服务器软件中，可以部署web项目，让用户通过浏览器来访问这些项目
-    * web容器
-
-
-* 常见的java相关的web服务器软件：
-    * webLogic：oracle公司，大型的JavaEE服务器，支持所有的JavaEE规范，收费的。
-    * webSphere：IBM公司，大型的JavaEE服务器，支持所有的JavaEE规范，收费的。
-    * JBOSS：JBOSS公司的，大型的JavaEE服务器，支持所有的JavaEE规范，收费的。
-    * Tomcat：Apache基金组织，中小型的JavaEE服务器，仅仅支持少量的JavaEE规范servlet/jsp。开源的，免费的。
-
-
-* JavaEE：Java语言在企业级开发中使用的技术规范的总和，一共规定了13项大的规范
-
-* Tomcat：web服务器软件
-    1. 下载：http://tomcat.apache.org/
-    2. 安装：解压压缩包即可。
-        * 注意：安装目录建议不要有中文和空格
-    3. 卸载：删除目录就行了
-    4. 启动：
-        * bin/startup.bat ,双击运行该文件即可
-        * 访问：浏览器输入：http://localhost:8080 回车访问自己
-                          http://别人的ip:8080 访问别人
-
-        * 可能遇到的问题：
-            1. 黑窗口一闪而过：
-                * 原因： 没有正确配置JAVA_HOME环境变量
-                * 解决方案：正确配置JAVA_HOME环境变量
-
-            2. 启动报错：
-                1. 暴力：找到占用的端口号，并且找到对应的进程，杀死该进程
-                    * netstat -ano
-                2. 温柔：修改自身的端口号
-                    * conf/server.xml
-                    * &lt;Connector port=&quot;8888&quot; protocol=&quot;HTTP/1.1&quot;
-                       connectionTimeout=&quot;20000&quot;
-                       redirectPort=&quot;8445&quot; /&gt;
-                    * 一般会将tomcat的默认端口号修改为80。80端口号是http协议的默认端口号。
-                        * 好处：在访问时，就不用输入端口号
-    5. 关闭：
-        1. 正常关闭：
-            * bin/shutdown.bat
-            * ctrl+c
-        2. 强制关闭：
-            * 点击启动窗口的×
-    6. 配置:
-        * 部署项目的方式：
-            1. 直接将项目放到webapps目录下即可。
-                * /hello：项目的访问路径--&gt;虚拟目录
-                * 简化部署：将项目打成一个war包，再将war包放置到webapps目录下。
-                    * war包会自动解压缩
-
-            2. 配置conf/server.xml文件
-                在&lt;Host&gt;标签体中配置
-                &lt;Context docBase=&quot;D:\hello&quot; path=&quot;/hehe&quot; /&gt;
-                * docBase:项目存放的路径
-                * path：虚拟目录
-
-            3. 在conf\Catalina\localhost创建任意名称的xml文件。在文件中编写
-                &lt;Context docBase=&quot;D:\hello&quot; /&gt;
-                * 虚拟目录：xml文件的名称
-
-        * 静态项目和动态项目：
-            * 目录结构
-                * java动态项目的目录结构：
-                    -- 项目的根目录
-                        -- WEB-INF目录：
-                            -- web.xml：web项目的核心配置文件
-                            -- classes目录：放置字节码文件的目录
-                            -- lib目录：放置依赖的jar包
-
-
-        * 将Tomcat集成到IDEA中，并且创建JavaEE的项目，部署项目。</code></pre><h2 id="Servlet：-server-applet"><a href="#Servlet：-server-applet" class="headerlink" title="Servlet：  server applet"></a>Servlet：  server applet</h2><pre><code>* 概念：运行在服务器端的小程序
-    * Servlet就是一个接口，定义了Java类被浏览器访问到(tomcat识别)的规则。
-    * 将来我们自定义一个类，实现Servlet接口，复写方法。
-
-
-* 快速入门：
-    1. 创建JavaEE项目
-    2. 定义一个类，实现Servlet接口
-        * public class ServletDemo1 implements Servlet
-    3. 实现接口中的抽象方法
-    4. 配置Servlet
-         在web.xml中配置：
-        &lt;!--配置Servlet --&gt;
-        &lt;servlet&gt;
-            &lt;servlet-name&gt;demo1&lt;/servlet-name&gt;
-            &lt;servlet-class&gt;cn.itcast.web.servlet.ServletDemo1&lt;/servlet-class&gt;
-        &lt;/servlet&gt;
-
-        &lt;servlet-mapping&gt;
-            &lt;servlet-name&gt;demo1&lt;/servlet-name&gt;
-            &lt;url-pattern&gt;/demo1&lt;/url-pattern&gt;
-        &lt;/servlet-mapping&gt;
-
-* 执行原理：
-    1. 当服务器接受到客户端浏览器的请求后，会解析请求URL路径，获取访问的Servlet的资源路径
-    2. 查找web.xml文件，是否有对应的&lt;url-pattern&gt;标签体内容。
-    3. 如果有，则在找到对应的&lt;servlet-class&gt;全类名
-    4. tomcat会将字节码文件加载进内存，并且创建其对象
-    5. 调用其方法
-
-* Servlet中的生命周期方法：
-    1. 被创建：执行init方法，只执行一次
-        * Servlet什么时候被创建？
-            * 默认情况下，第一次被访问时，Servlet被创建
-            * 可以配置执行Servlet的创建时机。
-                * 在&lt;servlet&gt;标签下配置
-                    1. 第一次被访问时，创建
-                        * &lt;load-on-startup&gt;的值为负数
-                    2. 在服务器启动时，创建
-                        * &lt;load-on-startup&gt;的值为0或正整数
-
-
-        * Servlet的init方法，只执行一次，说明一个Servlet在内存中只存在一个对象，Servlet是单例的
-            * 多个用户同时访问时，可能存在线程安全问题。
-            * 解决：尽量不要在Servlet中定义成员变量。即使定义了成员变量，也不要对修改值
-
-    2. 提供服务：执行service方法，执行多次
-        * 每次访问Servlet时，Service方法都会被调用一次。
-    3. 被销毁：执行destroy方法，只执行一次
-        * Servlet被销毁时执行。服务器关闭时，Servlet被销毁
-        * 只有服务器正常关闭时，才会执行destroy方法。
-        * destroy方法在Servlet被销毁之前执行，一般用于释放资源
-
-* Servlet3.0：
-    * 好处：
-        * 支持注解配置。可以不需要web.xml了。
-
-    * 步骤：
-        1. 创建JavaEE项目，选择Servlet的版本3.0以上，可以不创建web.xml
-        2. 定义一个类，实现Servlet接口
-        3. 复写方法
-        4. 在类上使用@WebServlet注解，进行配置
-            * @WebServlet(&quot;资源路径&quot;)
-
-
-            @Target({ElementType.TYPE})
-            @Retention(RetentionPolicy.RUNTIME)
-            @Documented
-            public @interface WebServlet {
-                String name() default &quot;&quot;;//相当于&lt;Servlet-name&gt;
-
-                String[] value() default {};//代表urlPatterns()属性配置
-
-                String[] urlPatterns() default {};//相当于&lt;url-pattern&gt;
-
-                int loadOnStartup() default -1;//相当于&lt;load-on-startup&gt;
-
-                WebInitParam[] initParams() default {};
-
-                boolean asyncSupported() default false;
-
-                String smallIcon() default &quot;&quot;;
-
-                String largeIcon() default &quot;&quot;;
-
-                String description() default &quot;&quot;;
-
-                String displayName() default &quot;&quot;;
-            }</code></pre><h2 id="IDEA与tomcat的相关配置"><a href="#IDEA与tomcat的相关配置" class="headerlink" title="IDEA与tomcat的相关配置"></a>IDEA与tomcat的相关配置</h2><pre><code>1. IDEA会为每一个tomcat部署的项目单独建立一份配置文件
-    * 查看控制台的log：Using CATALINA_BASE:   &quot;C:\Users\fqy\.IntelliJIdea2018.1\system\tomcat\_itcast&quot;
-
-2. 工作空间项目    和     tomcat部署的web项目
-    * tomcat真正访问的是“tomcat部署的web项目”，&quot;tomcat部署的web项目&quot;对应着&quot;工作空间项目&quot; 的web目录下的所有资源
-    * WEB-INF目录下的资源不能被浏览器直接访问。
-3. 断点调试：使用&quot;小虫子&quot;启动 dubug 启动</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/xml%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/25/javaweb/xml%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">XML</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-25 15:06:56" itemprop="dateCreated datePublished" datetime="2021-10-25T15:06:56+08:00">2021-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:24:04" itemprop="dateModified" datetime="2021-10-26T20:24:04+08:00">2021-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. XML
-    1. 概念
-    2. 语法
-    3. 解析</code></pre><h2 id="XML："><a href="#XML：" class="headerlink" title="XML："></a>XML：</h2><pre><code>1. 概念：Extensible Markup Language 可扩展标记语言
-    * 可扩展：标签都是自定义的。 &lt;user&gt;  &lt;student&gt;
-
-    * 功能
-        * 存储数据
-            1. 配置文件
-            2. 在网络中传输
-    * xml与html的区别
-        1. xml标签都是自定义的，html标签是预定义。
-        2. xml的语法严格，html语法松散
-        3. xml是存储数据的，html是展示数据
-
-    * w3c:万维网联盟
-
-2. 语法：
-    * 基本语法：
-        1. xml文档的后缀名 .xml
-        2. xml第一行必须定义为文档声明
-        3. xml文档中有且仅有一个根标签
-        4. 属性值必须使用引号(单双都可)引起来
-        5. 标签必须正确关闭
-        6. xml标签名称区分大小写
-    * 快速入门：
-        &lt;?xml version=&apos;1.0&apos; ?&gt;
-        &lt;users&gt;
-            &lt;user id=&apos;1&apos;&gt;
-                &lt;name&gt;zhangsan&lt;/name&gt;
-                &lt;age&gt;23&lt;/age&gt;
-                &lt;gender&gt;male&lt;/gender&gt;
-                &lt;br/&gt;
-            &lt;/user&gt;
-
-            &lt;user id=&apos;2&apos;&gt;
-                &lt;name&gt;lisi&lt;/name&gt;
-                &lt;age&gt;24&lt;/age&gt;
-                &lt;gender&gt;female&lt;/gender&gt;
-            &lt;/user&gt;
-        &lt;/users&gt;
-
-    * 组成部分：
-        1. 文档声明
-            1. 格式：&lt;?xml 属性列表 ?&gt;
-            2. 属性列表：
-                * version：版本号，必须的属性
-                * encoding：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1
-                * standalone：是否独立
-                    * 取值：
-                        * yes：不依赖其他文件
-                        * no：依赖其他文件
-        2. 指令(了解)：结合css的
-            * &lt;?xml-stylesheet type=&quot;text/css&quot; href=&quot;a.css&quot; ?&gt;
-        3. 标签：标签名称自定义的
-            * 规则：
-                * 名称可以包含字母、数字以及其他的字符 
-                * 名称不能以数字或者标点符号开始 
-                * 名称不能以字母 xml（或者 XML、Xml 等等）开始 
-                * 名称不能包含空格 
-
-        4. 属性：
-            id属性值唯一
-        5. 文本：
-            * CDATA区：在该区域中的数据会被原样展示
-                * 格式：  &lt;![CDATA[ 数据 ]]&gt;</code></pre><p>​<br>​        * 约束：规定xml文档的书写规则<br>​            * 作为框架的使用者(程序员)：<br>​                1. 能够在xml中引入约束文档<br>​                2. 能够简单的读懂约束文档<br>​<br>            * 分类：<br>                1. DTD:一种简单的约束技术<br>                2. Schema:一种复杂的约束技术</p>
-<pre><code>* DTD：
-    * 引入dtd文档到xml文档中
-        * 内部dtd：将约束规则定义在xml文档中
-        * 外部dtd：将约束的规则定义在外部的dtd文件中
-            * 本地：&lt;!DOCTYPE 根标签名 SYSTEM &quot;dtd文件的位置&quot;&gt;
-            * 网络：&lt;!DOCTYPE 根标签名 PUBLIC &quot;dtd文件名字&quot; &quot;dtd文件的位置URL&quot;&gt;
-
-
-* Schema:
-    * 引入：
-        1.填写xml文档的根元素
-        2.引入xsi前缀.  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-        3.引入xsd文件命名空间.  xsi:schemaLocation=&quot;http://www.itcast.cn/xml  student.xsd&quot;
-        4.为每一个xsd约束声明一个前缀,作为标识  xmlns=&quot;http://www.itcast.cn/xml&quot; 
-
-    &lt;students   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-        xmlns=&quot;http://www.itcast.cn/xml&quot;
-        xsi:schemaLocation=&quot;http://www.itcast.cn/xml  student.xsd&quot;&gt;</code></pre><p>​    </p>
-<pre><code>3. 解析：操作xml文档，将文档中的数据读取到内存中
-    * 操作xml文档
-        1. 解析(读取)：将文档中的数据读取到内存中
-        2. 写入：将内存中的数据保存到xml文档中。持久化的存储
-
-    * 解析xml的方式：
-        1. DOM：将标记语言文档一次性加载进内存，在内存中形成一颗dom树
-            * 优点：操作方便，可以对文档进行CRUD的所有操作
-            * 缺点：占内存
-        2. SAX：逐行读取，基于事件驱动的。
-            * 优点：不占内存。
-            * 缺点：只能读取，不能增删改</code></pre><p>​<br>​        * xml常见的解析器：<br>​            1. JAXP：sun公司提供的解析器，支持dom和sax两种思想<br>​            2. DOM4J：一款非常优秀的解析器<br>​            3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。<br>​            4. PULL：Android操作系统内置的解析器，sax方式的。</p>
-<pre><code>* Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
-    * 快速入门：
-        * 步骤：
-            1. 导入jar包
-            2. 获取Document对象
-            3. 获取对应的标签Element对象
-            4. 获取数据
-
-    * 代码：
-         //2.1获取student.xml的path
-        String path = JsoupDemo1.class.getClassLoader().getResource(&quot;student.xml&quot;).getPath();
-        //2.2解析xml文档，加载文档进内存，获取dom树---&gt;Document
-        Document document = Jsoup.parse(new File(path), &quot;utf-8&quot;);
-        //3.获取元素对象 Element
-        Elements elements = document.getElementsByTag(&quot;name&quot;);
-
-        System.out.println(elements.size());
-        //3.1获取第一个name的Element对象
-        Element element = elements.get(0);
-        //3.2获取数据
-        String name = element.text();
-        System.out.println(name);
-
-* 对象的使用：
-    1. Jsoup：工具类，可以解析html或xml文档，返回Document
-        * parse：解析html或xml文档，返回Document
-            * parse​(File in, String charsetName)：解析xml或html文件的。
-            * parse​(String html)：解析xml或html字符串
-            * parse​(URL url, int timeoutMillis)：通过网络路径获取指定的html或xml的文档对象
-    2. Document：文档对象。代表内存中的dom树
-        * 获取Element对象
-            * getElementById​(String id)：根据id属性值获取唯一的element对象
-            * getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
-            * getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
-            * getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
-    3. Elements：元素Element对象的集合。可以当做 ArrayList&lt;Element&gt;来使用
-    4. Element：元素对象
-        1. 获取子元素对象
-            * getElementById​(String id)：根据id属性值获取唯一的element对象
-            * getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
-            * getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
-            * getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
-
-        2. 获取属性值
-            * String attr(String key)：根据属性名称获取属性值
-        3. 获取文本内容
-            * String text():获取文本内容
-            * String html():获取标签体的所有内容(包括字标签的字符串内容)
-    5. Node：节点对象
-        * 是Document和Element的父类</code></pre><p>​<br>​        * 快捷查询方式：<br>​            1. selector:选择器<br>​                * 使用的方法：Elements    select​(String cssQuery)<br>​                    * 语法：参考Selector类中定义的语法<br>​            2. XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言<br>​                * 使用Jsoup的Xpath需要额外导入jar包。<br>​                * 查询w3cshool参考手册，使用xpath的语法完成查询<br>​                * 代码：<br>​                    //1.获取student.xml的path<br>​                    String path = JsoupDemo6.class.getClassLoader().getResource(“student.xml”).getPath();<br>​                    //2.获取Document对象<br>​                    Document document = Jsoup.parse(new File(path), “utf-8”);<br>​<br>                    //3.根据document对象，创建JXDocument对象<br>                    JXDocument jxDocument = new JXDocument(document);</p>
-<pre><code>//4.结合xpath语法查询
-//4.1查询所有student标签
-List&lt;JXNode&gt; jxNodes = jxDocument.selN(&quot;//student&quot;);
-for (JXNode jxNode : jxNodes) {
-    System.out.println(jxNode);
-}
-
-System.out.println(&quot;--------------------&quot;);
-
-//4.2查询所有student标签下的name标签
-List&lt;JXNode&gt; jxNodes2 = jxDocument.selN(&quot;//student/name&quot;);
-for (JXNode jxNode : jxNodes2) {
-    System.out.println(jxNode);
-}
-
-System.out.println(&quot;--------------------&quot;);
-
-//4.3查询student标签下带有id属性的name标签
-List&lt;JXNode&gt; jxNodes3 = jxDocument.selN(&quot;//student/name[@id]&quot;);
-for (JXNode jxNode : jxNodes3) {
-    System.out.println(jxNode);
-}
-System.out.println(&quot;--------------------&quot;);
-//4.4查询student标签下带有id属性的name标签 并且id属性值为itcast
-
-List&lt;JXNode&gt; jxNodes4 = jxDocument.selN(&quot;//student/name[@id=&apos;itcast&apos;]&quot;);
-for (JXNode jxNode : jxNodes4) {
-    System.out.println(jxNode);
-}</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/BootStrap%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/25/javaweb/BootStrap%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Bootsrap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-25 15:06:48" itemprop="dateCreated datePublished" datetime="2021-10-25T15:06:48+08:00">2021-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:36:28" itemprop="dateModified" datetime="2021-10-26T20:36:28+08:00">2021-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>9.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. Bootstrap</code></pre><h2 id="Bootstrap："><a href="#Bootstrap：" class="headerlink" title="Bootstrap："></a>Bootstrap：</h2><pre><code>1. 概念： 一个前端开发的框架，Bootstrap，来自 Twitter，是目前很受欢迎的前端框架。Bootstrap 是基于 HTML、CSS、JavaScript 的，它简洁灵活，使得 Web 开发更加快捷。
-    * 框架:一个半成品软件，开发人员可以在框架基础上，在进行开发，简化编码。
-    * 好处：
-        1. 定义了很多的css样式和js插件。我们开发人员直接可以使用这些样式和插件得到丰富的页面效果。
-        2. 响应式布局。
-            * 同一套页面可以兼容不同分辨率的设备。
-
-
-2. 快速入门
-    1. 下载Bootstrap
-    2. 在项目中将这三个文件夹复制
-    3. 创建html页面，引入必要的资源文件
-
-
+          <h2 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h2><pre><code>1. JQuery 高级
+    1. 动画
+    2. 遍历
+    3. 事件绑定
+    4. 案例
+    5. 插件</code></pre><h2 id="JQuery-高级"><a href="#JQuery-高级" class="headerlink" title="JQuery 高级"></a>JQuery 高级</h2><pre><code>1. 动画
+    1. 三种方式显示和隐藏元素
+        1. 默认显示和隐藏方式
+            1. show([speed,[easing],[fn]])
+                1. 参数：
+                    1. speed：动画的速度。三个预定义的值(&quot;slow&quot;,&quot;normal&quot;, &quot;fast&quot;)或表示动画时长的毫秒数值(如：1000)
+                    2. easing：用来指定切换效果，默认是&quot;swing&quot;，可用参数&quot;linear&quot;
+                        * swing：动画执行时效果是 先慢，中间快，最后又慢
+                        * linear：动画执行时速度是匀速的
+                    3. fn：在动画完成时执行的函数，每个元素执行一次。
+
+            2. hide([speed,[easing],[fn]])
+            3. toggle([speed],[easing],[fn])
+
+        2. 滑动显示和隐藏方式
+            1. slideDown([speed],[easing],[fn])
+            2. slideUp([speed,[easing],[fn]])
+            3. slideToggle([speed],[easing],[fn])
+
+        3. 淡入淡出显示和隐藏方式
+            1. fadeIn([speed],[easing],[fn])
+            2. fadeOut([speed],[easing],[fn])
+            3. fadeToggle([speed,[easing],[fn]])
+
+2. 遍历
+    1. js的遍历方式
+        * for(初始化值;循环结束条件;步长)
+    2. jq的遍历方式
+        1. jq对象.each(callback)
+            1. 语法：
+                jquery对象.each(function(index,element){});
+                    * index:就是元素在集合中的索引
+                    * element：就是集合中的每一个元素对象
+
+                    * this：集合中的每一个元素对象
+            2. 回调函数返回值：
+                * true:如果当前function返回为false，则结束循环(break)。
+                * false:如果当前function返回为true，则结束本次循环，继续下次循环(continue)
+        2. $.each(object, [callback])
+        3. for..of: jquery 3.0 版本之后提供的方式
+            for(元素对象 of 容器对象)
+
+3. 事件绑定
+    1. jquery标准的绑定方式
+        * jq对象.事件方法(回调函数)；
+        * 注：如果调用事件方法，不传递回调函数，则会触发浏览器默认行为。
+            * 表单对象.submit();//让表单提交
+    2. on绑定事件/off解除绑定
+        * jq对象.on(&quot;事件名称&quot;,回调函数)
+        * jq对象.off(&quot;事件名称&quot;)
+            * 如果off方法不传递任何参数，则将组件上的所有事件全部解绑
+    3. 事件切换：toggle
+        * jq对象.toggle(fn1,fn2...)
+            * 当单击jq对象对应的组件后，会执行fn1.第二次点击会执行fn2.....
+
+        * 注意：1.9版本 .toggle() 方法删除,jQuery Migrate（迁移）插件可以恢复此功能。
+             &lt;script src=&quot;../js/jquery-migrate-1.0.0.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+4. 案例
+    1. 广告显示和隐藏
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+            &lt;meta charset=&quot;UTF-8&quot;&gt;
+            &lt;title&gt;广告的自动显示与隐藏&lt;/title&gt;
+            &lt;style&gt;
+                #content{width:100%;height:500px;background:#999}
+            &lt;/style&gt;
+
+            &lt;!--引入jquery--&gt;
+            &lt;script type=&quot;text/javascript&quot; src=&quot;../js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;
+            &lt;script&gt;
+                /*
+                    需求：
+                        1. 当页面加载完，3秒后。自动显示广告
+                        2. 广告显示5秒后，自动消失。
+
+                    分析：
+                        1. 使用定时器来完成。setTimeout (执行一次定时器)
+                        2. 分析发现JQuery的显示和隐藏动画效果其实就是控制display
+                        3. 使用  show/hide方法来完成广告的显示
+                 */
+
+                //入口函数，在页面加载完成之后，定义定时器，调用这两个方法
+                $(function () {
+                   //定义定时器，调用adShow方法 3秒后执行一次
+                   setTimeout(adShow,3000);
+                   //定义定时器，调用adHide方法，8秒后执行一次
+                    setTimeout(adHide,8000);
+                });
+                //显示广告
+                function adShow() {
+                    //获取广告div，调用显示方法
+                    $(&quot;#ad&quot;).show(&quot;slow&quot;);
+                }
+                //隐藏广告
+                function adHide() {
+                    //获取广告div，调用隐藏方法
+                    $(&quot;#ad&quot;).hide(&quot;slow&quot;);
+                }</code></pre><p>​<br>​                <br>​            <br>​            <body><br>​            <!-- 整体的DIV --><br>​            <div><br>​                <!-- 广告DIV --><br>​                <div id="ad" style="display: none;"><br>​                    <img style="width:100%" src="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/adv.jpg"><br>​                </div><br>​<br>​                <!-- 下方正文部分 --><br>​                <div id="content"><br>​                    正文部分<br>​                </div><br>​            </div><br>​            <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body><br>​            </p>
+<pre><code>2. 抽奖
     &lt;!DOCTYPE html&gt;
-    &lt;html lang=&quot;zh-CN&quot;&gt;
+    &lt;html&gt;
     &lt;head&gt;
-        &lt;meta charset=&quot;utf-8&quot;&gt;
-        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        &lt;!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ --&gt;
-        &lt;title&gt;Bootstrap HelloWorld&lt;/title&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;jquery案例之抽奖&lt;/title&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;
 
-        &lt;!-- Bootstrap --&gt;
-        &lt;link href=&quot;css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;</code></pre><p>​<br>            <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) --><br>            <script src="js/jquery-3.2.1.min.js"></script><br>            <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 --><br>            <script src="js/bootstrap.min.js"></script><br>        <br>        <body><br>        <h1>你好，世界！</h1></body></p>
-<pre><code>&lt;/body&gt;
-&lt;/html&gt;</code></pre><h2 id="响应式布局"><a href="#响应式布局" class="headerlink" title="响应式布局"></a>响应式布局</h2><pre><code>* 同一套页面可以兼容不同分辨率的设备。
-* 实现：依赖于栅格系统：将一行平均分成12个格子，可以指定元素占几个格子
-* 步骤：
-    1. 定义容器。相当于之前的table、
-        * 容器分类：
-            1. container：两边留白
-            2. container-fluid：每一种设备都是100%宽度
-    2. 定义行。相当于之前的tr   样式：row
-    3. 定义元素。指定该元素在不同的设备上，所占的格子数目。样式：col-设备代号-格子数目
-        * 设备代号：
-            1. xs：超小屏幕 手机 (&lt;768px)：col-xs-12
-            2. sm：小屏幕 平板 (≥768px)
-            3. md：中等屏幕 桌面显示器 (≥992px)
-            4. lg：大屏幕 大桌面显示器 (≥1200px)
+        &lt;script language=&apos;javascript&apos; type=&apos;text/javascript&apos;&gt;
 
-    * 注意：
-        1. 一行中如果格子数目超过12，则超出部分自动换行。
-        2. 栅格类属性可以向上兼容。栅格类适用于与屏幕宽度大于或等于分界点大小的设备。
-        3. 如果真实设备宽度小于了设置栅格类属性的设备代码的最小值，会一个元素沾满一整行。</code></pre><h2 id="CSS样式和JS插件"><a href="#CSS样式和JS插件" class="headerlink" title="CSS样式和JS插件"></a>CSS样式和JS插件</h2><pre><code>1. 全局CSS样式：
-    * 按钮：class=&quot;btn btn-default&quot;
-    * 图片：
-        *  class=&quot;img-responsive&quot;：图片在任意尺寸都占100%
-        *  图片形状
-            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-rounded&quot;&gt;：方形
-            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-circle&quot;&gt; ： 圆形
-            *  &lt;img src=&quot;...&quot; alt=&quot;...&quot; class=&quot;img-thumbnail&quot;&gt; ：相框
-    * 表格
-        * table
-        * table-bordered
-        * table-hover
-    * 表单
-        * 给表单项添加：class=&quot;form-control&quot; 
-2. 组件：
-    * 导航条
-    * 分页条
-3. 插件：
-    * 轮播图</code></pre><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;zh-CN&quot;&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-    &lt;!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ --&gt;
-    &lt;title&gt;Bootstrap HelloWorld&lt;/title&gt;
+            /*
+                分析：
+                    1. 给开始按钮绑定单击事件
+                        1.1 定义循环定时器
+                        1.2 切换小相框的src属性
+                            * 定义数组，存放图片资源路径
+                            * 生成随机数。数组索引
 
-    &lt;!-- Bootstrap --&gt;
-    &lt;link href=&quot;css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;</code></pre><p>​<br>        <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) --><br>        <script src="js/jquery-3.2.1.min.js"></script><br>        <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 --><br>        <script src="js/bootstrap.min.js"></script><br>        <style><br>            .paddtop{<br>                padding-top: 10px;<br>            }<br>            .search-btn{<br>                float: left;<br>                border:1px solid #ffc900;<br>                width: 90px;<br>                height: 35px;<br>                background-color:#ffc900 ;<br>                text-align: center;<br>                line-height: 35px;<br>                margin-top: 15px;<br>            }</p>
-<pre><code>        .search-input{
-            float: left;
-            border:2px solid #ffc900;
-            width: 400px;
-            height: 35px;
-            padding-left: 5px;
-            margin-top: 15px;
-        }
-        .jx{
-            border-bottom: 2px solid #ffc900;
-            padding: 5px;
-        }
-        .company{
-            height: 40px;
-            background-color: #ffc900;
-            text-align: center;
-            line-height:40px ;
-            font-size: 8px;
-        }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
 
-   &lt;!-- 1.页眉部分--&gt;
-   &lt;header class=&quot;container-fluid&quot;&gt;
-       &lt;div class=&quot;row&quot;&gt;
-           &lt;img src=&quot;img/top_banner.jpg&quot; class=&quot;img-responsive&quot;&gt;
-       &lt;/div&gt;
-       &lt;div class=&quot;row paddtop&quot;&gt;
-           &lt;div class=&quot;col-md-3&quot;&gt;
-               &lt;img src=&quot;img/logo.jpg&quot; class=&quot;img-responsive&quot;&gt;
-           &lt;/div&gt;
-           &lt;div class=&quot;col-md-5&quot;&gt;
-               &lt;input class=&quot;search-input&quot; placeholder=&quot;请输入线路名称&quot;&gt;
-               &lt;a class=&quot;search-btn&quot; href=&quot;#&quot;&gt;搜索&lt;/a&gt;
-           &lt;/div&gt;
-           &lt;div class=&quot;col-md-4&quot;&gt;
-               &lt;img src=&quot;img/hotel_tel.png&quot; class=&quot;img-responsive&quot;&gt;
-           &lt;/div&gt;
+                    2. 给结束按钮绑定单击事件
+                        1.1 停止定时器
+                        1.2 给大相框设置src属性
 
-       &lt;/div&gt;
-       &lt;!--导航栏--&gt;
-       &lt;div class=&quot;row&quot;&gt;
-           &lt;nav class=&quot;navbar navbar-default&quot;&gt;
-               &lt;div class=&quot;container-fluid&quot;&gt;
-                   &lt;!-- Brand and toggle get grouped for better mobile display --&gt;
-                   &lt;div class=&quot;navbar-header&quot;&gt;
-                       &lt;!-- 定义汉堡按钮 --&gt;
-                       &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#bs-example-navbar-collapse-1&quot; aria-expanded=&quot;false&quot;&gt;
-                           &lt;span class=&quot;sr-only&quot;&gt;Toggle navigation&lt;/span&gt;
-                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
-                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
-                           &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
-                       &lt;/button&gt;
-                       &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;首页&lt;/a&gt;
-                   &lt;/div&gt;
+             */
+            var imgs = [&quot;../img/man00.jpg&quot;,
+                        &quot;../img/man01.jpg&quot;,
+                        &quot;../img/man02.jpg&quot;,
+                        &quot;../img/man03.jpg&quot;,
+                        &quot;../img/man04.jpg&quot;,
+                        &quot;../img/man05.jpg&quot;,
+                        &quot;../img/man06.jpg&quot;,
+                        ];
+            var startId;//开始定时器的id
+            var index;//随机角标
+            $(function () {
+                //处理按钮是否可以使用的效果
+                $(&quot;#startID&quot;).prop(&quot;disabled&quot;,false);
+                $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,true);
 
-                   &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
-                   &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;bs-example-navbar-collapse-1&quot;&gt;
-                       &lt;ul class=&quot;nav navbar-nav&quot;&gt;
-                           &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;#&quot;&gt;Link &lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
-                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
-                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
-                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
-                           &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/li&gt;
 
-                       &lt;/ul&gt;
-                   &lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
-               &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
-           &lt;/nav&gt;
+               //1. 给开始按钮绑定单击事件
+                $(&quot;#startID&quot;).click(function () {
+                    // 1.1 定义循环定时器 20毫秒执行一次
+                    startId = setInterval(function () {
+                        //处理按钮是否可以使用的效果
+                        $(&quot;#startID&quot;).prop(&quot;disabled&quot;,true);
+                        $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,false);
 
-       &lt;/div&gt;
 
-       &lt;!--轮播图--&gt;
-       &lt;div class=&quot;row&quot;&gt;
-           &lt;div id=&quot;carousel-example-generic&quot; class=&quot;carousel slide&quot; data-ride=&quot;carousel&quot;&gt;
-               &lt;!-- Indicators --&gt;
-               &lt;ol class=&quot;carousel-indicators&quot;&gt;
-                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;0&quot; class=&quot;active&quot;&gt;&lt;/li&gt;
-                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;1&quot;&gt;&lt;/li&gt;
-                   &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;2&quot;&gt;&lt;/li&gt;
-               &lt;/ol&gt;
+                        //1.2生成随机角标 0-6
+                        index = Math.floor(Math.random() * 7);//0.000--0.999 --&gt; * 7 --&gt; 0.0-----6.9999
+                        //1.3设置小相框的src属性
+                        $(&quot;#img1ID&quot;).prop(&quot;src&quot;,imgs[index]);
 
-               &lt;!-- Wrapper for slides --&gt;
-               &lt;div class=&quot;carousel-inner&quot; role=&quot;listbox&quot;&gt;
-                   &lt;div class=&quot;item active&quot;&gt;
-                       &lt;img src=&quot;img/banner_1.jpg&quot; alt=&quot;...&quot;&gt;
-                   &lt;/div&gt;
-                   &lt;div class=&quot;item&quot;&gt;
-                       &lt;img src=&quot;img/banner_2.jpg&quot; alt=&quot;...&quot;&gt;
-                   &lt;/div&gt;
-                   &lt;div class=&quot;item&quot;&gt;
-                       &lt;img src=&quot;img/banner_3.jpg&quot; alt=&quot;...&quot;&gt;
-                   &lt;/div&gt;
+                    },20);
+                });
 
-               &lt;/div&gt;
 
-               &lt;!-- Controls --&gt;
-               &lt;a class=&quot;left carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;prev&quot;&gt;
-                   &lt;span class=&quot;glyphicon glyphicon-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
-                   &lt;span class=&quot;sr-only&quot;&gt;Previous&lt;/span&gt;
-               &lt;/a&gt;
-               &lt;a class=&quot;right carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;next&quot;&gt;
-                   &lt;span class=&quot;glyphicon glyphicon-chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
-                   &lt;span class=&quot;sr-only&quot;&gt;Next&lt;/span&gt;
-               &lt;/a&gt;
-           &lt;/div&gt;</code></pre><p>​<br>​<br>           </div></p>
-<pre><code>&lt;/header&gt;
-&lt;!-- 2.主体部分--&gt;
-&lt;div class=&quot;container&quot;&gt;
-     &lt;div class=&quot;row jx&quot;&gt;
-         &lt;img src=&quot;img/icon_5.jpg&quot;&gt;
-         &lt;span&gt;黑马精选&lt;/span&gt;
-     &lt;/div&gt;
+                //2. 给结束按钮绑定单击事件
+                $(&quot;#stopID&quot;).click(function () {
+                    //处理按钮是否可以使用的效果
+                    $(&quot;#startID&quot;).prop(&quot;disabled&quot;,false);
+                    $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,true);
 
-    &lt;div class=&quot;row paddtop&quot;&gt;
-        &lt;div class=&quot;col-md-3&quot;&gt;
-             &lt;div class=&quot;thumbnail&quot;&gt;
-                 &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-                 &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-                 &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-             &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;col-md-3&quot;&gt;
-            &lt;div class=&quot;thumbnail&quot;&gt;
-                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-            &lt;/div&gt;
 
-        &lt;/div&gt;
-        &lt;div class=&quot;col-md-3&quot;&gt;
-
-            &lt;div class=&quot;thumbnail&quot;&gt;
-                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;col-md-3&quot;&gt;
-
-            &lt;div class=&quot;thumbnail&quot;&gt;
-                &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-                &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-                &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;</code></pre><p>​<br>           </div><br>           <div class="row jx"><br>               <img src="img/icon_6.jpg"><br>               <span>国内游</span><br>           </div><br>           <div class="row paddtop"><br>               <div class="col-md-4"><br>                   <img src="img/guonei_1.jpg"><br>               </div><br>               <div class="col-md-8"><br>                   <div class="row"><br>                       <div class="col-md-4"><br>                           <div class="thumbnail"><br>                               <img src="img/jiangxuan_3.jpg" alt=""><br>                               <p>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</p><br>                               <font color="red">&yen; 699</font><br>                           </div><br>                       </div><br>                       <div class="col-md-4"><br>                           <div class="thumbnail"><br>                               <img src="img/jiangxuan_3.jpg" alt=""><br>                               <p>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</p><br>                               <font color="red">&yen; 699</font><br>                           </div></p>
-<pre><code>    &lt;/div&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
-
-        &lt;div class=&quot;thumbnail&quot;&gt;
-            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class=&quot;row&quot;&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
-        &lt;div class=&quot;thumbnail&quot;&gt;
-            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
-        &lt;div class=&quot;thumbnail&quot;&gt;
-            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
+                   // 1.1 停止定时器
+                    clearInterval(startId);
+                   // 1.2 给大相框设置src属性
+                    $(&quot;#img2ID&quot;).prop(&quot;src&quot;,imgs[index]).hide();
+                    //显示1秒之后
+                    $(&quot;#img2ID&quot;).show(1000);
+                });
+            });</code></pre><p>​<br>​<br>​                <br>​<br>​            <br>​            <body><br>​<br>            <!-- 小像框 --><br>            <div style="border-style:dotted;width:160px;height:100px"><br>                <img id="img1ID" src="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/man00.jpg" style="width:160px;height:100px"><br>            </div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></p>
+<pre><code>        &lt;!-- 大像框 --&gt;
+        &lt;div
+                style=&quot;border-style:double;width:800px;height:500px;position:absolute;left:500px;top:10px&quot;&gt;
+            &lt;img id=&quot;img2ID&quot; src=&quot;../img/man00.jpg&quot; width=&quot;800px&quot; height=&quot;500px&quot;/&gt;
         &lt;/div&gt;
 
-    &lt;/div&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
+        &lt;!-- 开始按钮 --&gt;
+        &lt;input
+                id=&quot;startID&quot;
+                type=&quot;button&quot;
+                value=&quot;点击开始&quot;
+                style=&quot;width:150px;height:150px;font-size:22px&quot;&gt;
 
-        &lt;div class=&quot;thumbnail&quot;&gt;
-            &lt;img src=&quot;img/jiangxuan_3.jpg&quot; alt=&quot;&quot;&gt;
-            &lt;p&gt;上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)&lt;/p&gt;
-            &lt;font color=&quot;red&quot;&gt;&amp;yen; 699&lt;/font&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;</code></pre><p>​<br>                   </div></p>
-<pre><code>        &lt;/div&gt;
+        &lt;!-- 停止按钮 --&gt;
+        &lt;input
+                id=&quot;stopID&quot;
+                type=&quot;button&quot;
+                value=&quot;点击停止&quot;
+                style=&quot;width:150px;height:150px;font-size:22px&quot;&gt;
 
-    &lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- 3.页脚部分--&gt;
-&lt;footer class=&quot;container-fluid&quot;&gt;
-    &lt;div class=&quot;row&quot;&gt;
-        &lt;img src=&quot;img/footer_service.png&quot; class=&quot;img-responsive&quot;&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;row company&quot;&gt;
-        江苏传智播客教育科技股份有限公司 版权所有Copyright 2006-2018, All Rights Reserved 苏ICP备16007882
-    &lt;/div&gt;
 
-&lt;/footer&gt;</code></pre><p>​<br>    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body><br>    </html></p>
-</style></p>
+        &lt;/body&gt;
+        &lt;/html&gt;
+
+5. 插件：增强JQuery的功能
+    1. 实现方式：
+        1. $.fn.extend(object) 
+            * 增强通过Jquery获取的对象的功能  $(&quot;#id&quot;)
+        2. $.extend(object)
+            * 增强JQeury对象自身的功能  $/jQuery</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JQuery初级笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 19:15:48 / 修改时间：19:16:56" itemprop="dateCreated datePublished" datetime="2021-11-04T19:15:48+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h2><pre><code>1. JQuery 基础：
+    1. 概念
+    2. 快速入门
+    3. JQuery对象和JS对象区别与转换
+    4. 选择器
+    5. DOM操作
+    6. 案例</code></pre><h1 id="JQuery-基础："><a href="#JQuery-基础：" class="headerlink" title="JQuery 基础："></a>JQuery 基础：</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1778,7 +813,7 @@ for (JXNode jxNode : jxNodes4) {
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1844,20 +879,20 @@ for (JXNode jxNode : jxNodes4) {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-count">318</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1898,7 +933,7 @@ for (JXNode jxNode : jxNodes4) {
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:52</span>
+    <span title="站点阅读时长">36:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="JVM性能调优实战调优的一些原则 多数的Java应用不需要在服务器上进行GC优化，虚拟机内部已有很多优化来保证应用的稳定运行，所以不要为了调优而调优，不当的调优可能适得其反 在应用上线之前，先考虑将机器的JVM参数设置到最优（适合） 在进行GC优化之前，需要确认项目的架构和代码等已经没有优化空间。我们不能指望一个系统架构有缺陷或者代码层次优化没有穷尽的应用，通过GC优化令其性能达到一个质的飞跃 G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM性能调优实战">
+<meta property="og:url" content="http://yoursite.com/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="JVM性能调优实战调优的一些原则 多数的Java应用不需要在服务器上进行GC优化，虚拟机内部已有很多优化来保证应用的稳定运行，所以不要为了调优而调优，不当的调优可能适得其反 在应用上线之前，先考虑将机器的JVM参数设置到最优（适合） 在进行GC优化之前，需要确认项目的架构和代码等已经没有优化空间。我们不能指望一个系统架构有缺陷或者代码层次优化没有穷尽的应用，通过GC优化令其性能达到一个质的飞跃 G">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-04T14:29:44.537Z">
+<meta property="article:modified_time" content="2021-11-04T12:38:25.648Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="jvm&amp;线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM性能调优实战 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM性能调优实战
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 22:29:44 / 修改时间：20:38:25" itemprop="dateCreated datePublished" datetime="2021-11-04T22:29:44+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JVM性能调优实战"><a href="#JVM性能调优实战" class="headerlink" title="JVM性能调优实战"></a>JVM性能调优实战</h1><h3 id="调优的一些原则"><a href="#调优的一些原则" class="headerlink" title="调优的一些原则"></a>调优的一些原则</h3><ol>
+<li>多数的Java应用不需要在服务器上进行GC优化，虚拟机内部已有很多优化来保证应用的稳定运行，所以不要为了调优而调优，不当的调优可能适得其反</li>
+<li>在应用上线之前，先考虑将机器的JVM参数设置到最优（适合）</li>
+<li>在进行GC优化之前，需要确认项目的架构和代码等已经没有优化空间。我们不能指望一个系统架构有缺陷或者代码层次优化没有穷尽的应用，通过GC优化令其性能达到一个质的飞跃</li>
+<li>GC优化是一个系统而复杂的工作，没有万能的调优策略可以满足所有的性能指标。GC优化必须建立在我们深入理解各种垃圾回收器的基础上，才能有事半功倍的效果</li>
+<li>处理吞吐量和延迟问题时，垃圾处理器能使用的内存越大，即java堆空间越大垃圾收集效果越好，应用运行也越流畅。这称之为GC内存最大化原则</li>
+<li>在这三个属性（吞吐量、延迟、内存）中选择其中两个进行jvm调优，称之为GC调优3选2</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="什么情况下需要调优"><a href="#什么情况下需要调优" class="headerlink" title="什么情况下需要调优"></a>什么情况下需要调优</h3><ul>
+<li>Heap内存（老年代）持续上涨达到设置的最大内存值</li>
+<li>Full GC 次数频繁</li>
+<li>GC 停顿（Stop World）时间过长（超过1秒，具体值按应用场景而定）</li>
+<li>应用出现OutOfMemory 等内存异常</li>
+<li>应用出现OutOfDirectMemoryError等内存异常（ failed to allocate 16777216 byte(s) of direct memory (used: 1056964615, max: 1073741824)）</li>
+<li>应用中有使用本地缓存且占用大量内存空间</li>
+<li>系统吞吐量与响应性能不高或下降</li>
+<li>应用的CPU占用过高不下或内存占用过高不下</li>
+</ul>
+<h3 id="调优前需知的一些概念"><a href="#调优前需知的一些概念" class="headerlink" title="调优前需知的一些概念"></a>调优前需知的一些概念</h3><ol>
+<li><strong>吞吐量：</strong>用户代码时间 / （用户代码执行时间 + 垃圾回收时间）。是评价垃圾收集器能力的重要指标之一，是不考虑垃圾收集引起的停顿时间或内存消耗，垃圾收集器能支撑应用程序达到的最高性能指标。吞吐量越高算法越好。</li>
+<li><strong>低延迟：</strong>STW越短，响应时间越好。评价垃圾收集器能力的重要指标，度量标准是缩短由于垃圾收集引起的停顿时间或完全消除因垃圾收集所引起的停顿，避免应用程序运行时发生抖动。暂停时间越短算法越好</li>
+<li>在设计（或使用）GC 算法时，我们必须确定我们的目标：一个 GC 算法只可能针对两个目标之一（即只专注于最大吞吐量或最小暂停时间），或尝试找到一个二者的折中</li>
+<li>MinorGC尽可能多的收集垃圾对象。我们把这个称作MinorGC原则，遵守这一原则可以降低应用程序FullGC 的发生频率。FullGC 较耗时，是应用程序无法达到延迟要求或吞吐量的罪魁祸首</li>
+<li>堆大小调整的着手点、分析点：<ol>
+<li>统计Minor GC 持续时间</li>
+<li>统计Minor GC 的次数</li>
+<li>统计Full GC的最长持续时间</li>
+<li>统计最差情况下Full GC频率</li>
+<li>统计GC持续时间和频率对优化堆的大小是主要着手点</li>
+<li>我们按照业务系统对延迟和吞吐量的需求，在按照这些分析我们可以进行各个区大小的调整</li>
+</ol>
+</li>
+<li>一般来说吞吐量优先的垃圾回收器：-XX:+UseParallelGC  -XX:+UseParallelOldGC，即常规的（PS/PO）</li>
+<li>响应时间优先的垃圾回收器：CMS、G1</li>
+</ol>
+<h3 id="JVM常用参数解读"><a href="#JVM常用参数解读" class="headerlink" title="JVM常用参数解读"></a>JVM常用参数解读</h3><ol>
+<li><strong>Xms</strong> 是指设定程序启动时占用内存大小。一般来讲，大点，程序会启动的快一点，但是也可能会导致机器暂时变慢</li>
+<li><strong>Xmx</strong> 是指设定程序运行期间最大可占用的内存大小。如果程序运行需要占用更多的内存，超出了这个设置值，就会抛出OutOfMemory异常</li>
+<li><strong>Xss</strong> 是指设定每个线程的堆栈大小。这个就要依据你的程序，看一个线程大约需要占用多少内存，可能会有多少线程同时运行等</li>
+<li>*<em>-Xmn、-XX:NewSize/-XX:MaxNewSize、-XX:NewRatio *</em><ol>
+<li>高优先级：-XX:NewSize/-XX:MaxNewSize </li>
+<li>中优先级：-Xmn（默认等效 -Xmn=-XX:NewSize=-XX:MaxNewSize=?） </li>
+<li>低优先级：-XX:NewRatio </li>
+</ol>
+</li>
+<li>如果想在日志中追踪类加载与类卸载的情况，可以使用启动参数  *<em>-XX:TraceClassLoading -XX:TraceClassUnloading *</em></li>
+</ol>
+<h3 id="常用性能调优工具"><a href="#常用性能调优工具" class="headerlink" title="常用性能调优工具"></a>常用性能调优工具</h3><ol>
+<li><p>MAT</p>
+<ul>
+<li>提示可能的内存泄露的点</li>
+</ul>
+</li>
+<li><p>jvisualvm</p>
+</li>
+<li><p>jconsole</p>
+</li>
+<li><p>Arthas</p>
+</li>
+<li><p>show-busy-java-threads</p>
+<ol>
+<li><p><a href="https://github.com/oldratlee/useful-scripts/blob/master/docs/java.md#-show-busy-java-threads" target="_blank" rel="noopener">https://github.com/oldratlee/useful-scripts/blob/master/docs/java.md#-show-busy-java-threads</a>​</p>
+<h4 id><a href="#" class="headerlink" title></a></h4></li>
+</ol>
+</li>
+</ol>
+<h3 id="线上排查问题的一般流程"><a href="#线上排查问题的一般流程" class="headerlink" title="线上排查问题的一般流程"></a>线上排查问题的一般流程</h3><ol>
+<li>CPU占用过高排查流程<ol>
+<li>利用 top 命令可以查出占 CPU 最高的的进程pid ，如果pid为 9876</li>
+<li>然后查看该进程下占用最高的线程id【top -Hp 9876】</li>
+<li>假设占用率最高的线程 ID 为 6900，将其转换为 16 进制形式 (因为 java native 线程以 16 进制形式输出) 【printf ‘%x\n’ 6900】</li>
+<li>利用 jstack 打印出 java 线程调用栈信息【jstack 9876 | grep ‘0x1af4’ -A 50 –color】，这样就可以更好定位问题</li>
+</ol>
+</li>
+<li>内存占用过高排查流程<ol>
+<li>查找进程id: 【top -d 2 -c】</li>
+<li>查看JVM堆内存分配情况：jmap -heap pid</li>
+<li>查看占用内存比较多的对象 jmap -histo pid | head -n 100</li>
+<li>查看占用内存比较多的存活对象 jmap -histo:live pid | head -n 100</li>
+</ol>
+</li>
+</ol>
+<h3 id="OOM内存泄露分析"><a href="#OOM内存泄露分析" class="headerlink" title="OOM内存泄露分析"></a>OOM内存泄露分析</h3><h3 id="什么情况下，会抛出OOM呢？"><a href="#什么情况下，会抛出OOM呢？" class="headerlink" title="什么情况下，会抛出OOM呢？"></a><strong>什么情况下，会抛出OOM呢？</strong></h3><ul>
+<li>JVM98%的时间都花费在内存回收</li>
+<li>每次回收的内存小于2%</li>
+</ul>
+<p>满足这两个条件将触发OutOfMemoryException，这将会留给系统一个微小的间隙以做一些Down之前的操作，比如手动打印Heap Dump。并不是内存被耗空的时候才抛出<br><strong>​</strong></p>
+<h3 id="系统OOM之前的一些现象"><a href="#系统OOM之前的一些现象" class="headerlink" title="系统OOM之前的一些现象"></a><strong>系统OOM之前的一些现象</strong></h3><ul>
+<li>每次垃圾回收的时间越来越长，由之前的10ms延长到50ms左右，FullGC的时间也有之前的0.5s延长到4、5s</li>
+<li>FullGC的次数越来越多，最频繁时隔不到1分钟就进行一次FullGC</li>
+<li>老年代的内存越来越大并且每次FullGC后，老年代只有少量的内存被释放掉</li>
+</ul>
+<h3 id="堆Dump文件分析"><a href="#堆Dump文件分析" class="headerlink" title="堆Dump文件分析"></a><strong>堆Dump文件分析</strong></h3><p>可以通过指定启动参数 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/app/data/dump/heapdump.hpro 在发生OOM的时候自动导出Dump文件<br>​</p>
+<h3 id="GC日志分析"><a href="#GC日志分析" class="headerlink" title="GC日志分析"></a><strong>GC日志分析</strong></h3><p>为了方便分析GC日志信息，可以指定启动参数 【-Xloggc: app-gc.log  -XX:+PrintGCDetails -XX:+PrintGCDateStamps】,方便详细地查看GC日志信息</p>
+<ol>
+<li>使用 【jinfo pid】查看当前JVM堆的相关参数</li>
+<li>继续使用 【jstat -gcutil 2315 1s 10】查看10s内当前堆的占用情况</li>
+<li>也可以使用【jmap -heap pid】查看当前JVM堆的情况</li>
+<li>我们可以继续使用 【jmap -F -histo pid | head -n 20】，查看前20行打印，即查看当前top20的大对象，一般从这里可以发现一些异常的大对象，如果没有，那么可以继续排名前50的大对象，分析</li>
+<li>最后使用【jmap -F -dump:file=a.bin pid】，如果dump文件很大，可以压缩一下【tar -czvf a.tar.gz a.bin】</li>
+<li>再之后，就是对dump文件进行分析了，使用MAT分析内存泄露</li>
+<li>参考案例： <a href="https://www.lagou.com/lgeduarticle/142372.html" target="_blank" rel="noopener">https://www.lagou.com/lgeduarticle/142372.html</a></li>
+</ol>
+<h3 id="线上死锁排查"><a href="#线上死锁排查" class="headerlink" title="线上死锁排查"></a>线上死锁排查</h3><ol>
+<li>jps 查找一个可能有问题的<strong>进程id</strong></li>
+<li>然后执行 【jstack -F <strong>进程id</strong>】</li>
+<li>如果环境允许远程连接JVM，可以使用jconsole或者jvisualvm，图形化界面检测是否存在死锁</li>
+</ol>
+<h3 id="线上YGC耗时过长优化"><a href="#线上YGC耗时过长优化" class="headerlink" title="线上YGC耗时过长优化"></a>线上YGC耗时过长优化</h3><ol>
+<li>如果生命周期过长的对象越来越多（比如全局变量或者静态变量等），会导致标注和复制过程的耗时增加</li>
+<li>对存活对象标注时间过长：比如重载了Object类的Finalize方法，导致标注Final Reference耗时过长；或者String.intern方法使用不当，导致YGC扫描StringTable时间过长。可以通过以下参数显示GC处理Reference的耗时-XX:+PrintReferenceGC</li>
+<li>长周期对象积累过多：比如本地缓存使用不当，积累了太多存活对象；或者锁竞争严重导致线程阻塞，局部变量的生命周期变长</li>
+<li>案例参考： <a href="https://my.oschina.net/lishangzhi/blog/4703942" target="_blank" rel="noopener">https://my.oschina.net/lishangzhi/blog/4703942</a></li>
+</ol>
+<h3 id="线上频繁FullGC优化"><a href="#线上频繁FullGC优化" class="headerlink" title="线上频繁FullGC优化"></a>线上频繁FullGC优化</h3><ol>
+<li><p>线上频繁FullGC一般会有这么几个特征：</p>
+<ol>
+<li>线上多个线程的CPU都超过了100%，通过jstack命令可以看到这些线程主要是垃圾回收线程</li>
+<li>通过jstat命令监控GC情况，可以看到Full GC次数非常多，并且次数在不断增加</li>
+</ol>
+</li>
+<li><p>排查流程：</p>
+<ol>
+<li>top找到cpu占用最高的一个 <strong>进程id</strong></li>
+<li>然后 【top -Hp 进程id】，找到cpu占用最高的 <strong>线程id</strong></li>
+<li>【printf “%x\n” <strong>线程id 】</strong>，假设16进制结果为 a</li>
+<li>jstack 线程id | grep ‘0xa’ -A 50 –color</li>
+<li>如果是正常的用户线程， 则通过该线程的堆栈信息查看其具体是在哪处用户代码处运行比较消耗CPU</li>
+<li>如果该线程是 VMThread，则通过 jstat-gcutil命令监控当前系统的GC状况，然后通过 jmapdump:format=b,file=导出系统当前的内存数据。导出之后将内存情况放到eclipse的mat工具中进行分析即可得出内存中主要是什么对象比较消耗内存，进而可以处理相关代码；正常情况下会发现VM Thread指的就是垃圾回收的线程</li>
+<li>再执行【jstat -gcutil  *<em>进程id】, *</em>看到结果，如果FGC的数量很高，且在不断增长，那么可以定位是由于内存溢出导致FullGC频繁，系统缓慢</li>
+<li>然后就可以Dump出内存日志，然后使用MAT的工具分析哪些对象占用内存较大，然后找到对象的创建位置，处理即可</li>
+</ol>
+</li>
+<li><p>参考案例：<a href="https://mp.weixin.qq.com/s/g8KJhOtiBHWb6wNFrCcLVg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/g8KJhOtiBHWb6wNFrCcLVg</a></p>
+<h4 id="-1"><a href="#-1" class="headerlink" title></a></h4></li>
+</ol>
+<h3 id="线上堆外内存泄漏分析（Netty尤其居多）"><a href="#线上堆外内存泄漏分析（Netty尤其居多）" class="headerlink" title="线上堆外内存泄漏分析（Netty尤其居多）"></a>线上堆外内存泄漏分析（Netty尤其居多）</h3><ol>
+<li>JVM的堆外内存泄露的定位一直是个比较棘手的问题</li>
+<li>对外内存的泄漏分析一般都是先从堆内内存分析的过程中衍生出来的。有可能我们分析堆内内存泄露过程中发现，我们计算出来的JVM堆内存竟然大于了整个JVM的<strong>Xmx</strong>的大小，那说明多出来的是堆外内存</li>
+<li>如果使用了 Netty 堆外内存，那么可以自行监控堆外内存的使用情况，不需要借助第三方工具，我们是使用的“反射”拿到的堆外内存的情况</li>
+<li>逐渐缩小范围，直到 Bug 被找到。当我们确认某个线程的执行带来 Bug 时，可单步执行，可二分执行，定位到某行代码之后，跟到这段代码，然后继续单步执行或者二分的方式来定位最终出 Bug 的代码。这个方法屡试不爽，最后总能找到想要的 Bug</li>
+<li>熟练掌握 idea 的调试，让我们的“捉虫”速度快如闪电（“闪电侠”就是这么来的）。这里，最常见的调试方式是<strong>预执行表达式</strong>，以及通过<strong>线程调用栈</strong>，死盯某个对象，就能够掌握这个对象的定义、赋值之类</li>
+<li>在使用直接内存的项目中，最好建议配置 -XX:MaxDirectMemorySize，设定一个系统实际可达的最大的直接内存的值，默认的最大直接内存大小等于 -Xmx的值</li>
+<li>排查堆外泄露，建议指定启动参数： -XX:NativeMemoryTracking=summary - Dio.netty.leakDetection.targetRecords=100-Dio.netty.leakDetection.level=PARANOID，后面两个参数是Netty的相关内存泄露检测的级别与采样级别</li>
+<li>参考案例： <a href="https://tech.meituan.com/2018/10/18/netty-direct-memory-screening.html" target="_blank" rel="noopener">https://tech.meituan.com/2018/10/18/netty-direct-memory-screening.html</a></li>
+</ol>
+<h3 id="线上元空间内存泄露优化"><a href="#线上元空间内存泄露优化" class="headerlink" title="线上元空间内存泄露优化"></a>线上元空间内存泄露优化</h3><ol>
+<li>需要注意的一点是 Java8以及Java8+的JVM已经将永久代废弃了，取而代之的是元空间，且元空间是不是在JVM堆中的，而属于堆外内存，受最大物理内存限制。最佳实践就是我们在启动参数中最好设置上 -XX:MetaspaceSize=1024m -XX:MaxMetaspaceSize=1024m。具体的值根据情况设置。为避免动态申请，可以直接都设置为最大值</li>
+<li>元空间主要存放的是类元数据，而且metaspace判断类元数据是否可以回收，是根据加载这些类元数据的Classloader是否可以回收来判断的，只要Classloader不能回收，通过其加载的类元数据就不会被回收。所以线上有时候会出现一种问题，由于框架中，往往大量采用类似ASM、javassist等工具进行字节码增强，生成代理类。如果项目中由主线程频繁生成动态代理类，那么就会导致元空间迅速占满，无法回收</li>
+<li>具体案例可以参见： [<a href="https://zhuanlan.zhihu.com/p/200802910]" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/200802910]</a>(</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jvm-%E7%BA%BF%E7%A8%8B/" rel="tag"># jvm&线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/" rel="prev" title="JVM内存模型如何分配的">
+      <i class="fa fa-chevron-left"></i> JVM内存模型如何分配的
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/04/jvm%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%8C%E5%AE%9E%E9%99%85%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%20/" rel="next" title="jvm有哪些垃圾回收器?">
+      jvm有哪些垃圾回收器? <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM性能调优实战"><span class="nav-number">1.</span> <span class="nav-text">JVM性能调优实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调优的一些原则"><span class="nav-number">1.0.1.</span> <span class="nav-text">调优的一些原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么情况下需要调优"><span class="nav-number">1.0.2.</span> <span class="nav-text">什么情况下需要调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调优前需知的一些概念"><span class="nav-number">1.0.3.</span> <span class="nav-text">调优前需知的一些概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM常用参数解读"><span class="nav-number">1.0.4.</span> <span class="nav-text">JVM常用参数解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用性能调优工具"><span class="nav-number">1.0.5.</span> <span class="nav-text">常用性能调优工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.0.5.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上排查问题的一般流程"><span class="nav-number">1.0.6.</span> <span class="nav-text">线上排查问题的一般流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OOM内存泄露分析"><span class="nav-number">1.0.7.</span> <span class="nav-text">OOM内存泄露分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么情况下，会抛出OOM呢？"><span class="nav-number">1.0.8.</span> <span class="nav-text">什么情况下，会抛出OOM呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统OOM之前的一些现象"><span class="nav-number">1.0.9.</span> <span class="nav-text">系统OOM之前的一些现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆Dump文件分析"><span class="nav-number">1.0.10.</span> <span class="nav-text">堆Dump文件分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC日志分析"><span class="nav-number">1.0.11.</span> <span class="nav-text">GC日志分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上死锁排查"><span class="nav-number">1.0.12.</span> <span class="nav-text">线上死锁排查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上YGC耗时过长优化"><span class="nav-number">1.0.13.</span> <span class="nav-text">线上YGC耗时过长优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上频繁FullGC优化"><span class="nav-number">1.0.14.</span> <span class="nav-text">线上频繁FullGC优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">1.0.14.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上堆外内存泄漏分析（Netty尤其居多）"><span class="nav-number">1.0.15.</span> <span class="nav-text">线上堆外内存泄漏分析（Netty尤其居多）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上元空间内存泄露优化"><span class="nav-number">1.0.16.</span> <span class="nav-text">线上元空间内存泄露优化</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">318</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">36:33</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

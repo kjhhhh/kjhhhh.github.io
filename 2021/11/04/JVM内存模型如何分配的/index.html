@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="JVM内存模型如何分配的JVM内存模型的划分  由于我们生产环境使用的虚拟机HotSpot 居多，所以下面的描述都是基于HotSpot 虚拟机而言的，对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 可能并不太一样  根据虚拟机规范，JVM的内存分为 堆、虚拟机栈、本地方法栈、程序计数器、本地方法栈5部分 JDK 1.8 同 JDK 1.7 比，最大的差别就是：元数据区取代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM内存模型如何分配的">
+<meta property="og:url" content="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="JVM内存模型如何分配的JVM内存模型的划分  由于我们生产环境使用的虚拟机HotSpot 居多，所以下面的描述都是基于HotSpot 虚拟机而言的，对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 可能并不太一样  根据虚拟机规范，JVM的内存分为 堆、虚拟机栈、本地方法栈、程序计数器、本地方法栈5部分 JDK 1.8 同 JDK 1.7 比，最大的差别就是：元数据区取代">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/20190706155611749.PNG">
+<meta property="og:image" content="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/1460000015398968">
+<meta property="og:image" content="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/javammode.png">
+<meta property="article:published_time" content="2021-11-04T14:29:39.344Z">
+<meta property="article:modified_time" content="2021-11-04T12:38:01.057Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="jvm&amp;线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/20190706155611749.PNG">
+
+<link rel="canonical" href="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM内存模型如何分配的 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM内存模型如何分配的
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 22:29:39 / 修改时间：20:38:01" itemprop="dateCreated datePublished" datetime="2021-11-04T22:29:39+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm-%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">jvm&线程</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JVM内存模型如何分配的"><a href="#JVM内存模型如何分配的" class="headerlink" title="JVM内存模型如何分配的"></a>JVM内存模型如何分配的</h1><h2 id="JVM内存模型的划分"><a href="#JVM内存模型的划分" class="headerlink" title="JVM内存模型的划分"></a>JVM内存模型的划分</h2><blockquote>
+<p> 由于我们生产环境使用的虚拟机HotSpot 居多，所以下面的描述都是基于HotSpot 虚拟机而言的，对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 可能并不太一样</p>
+</blockquote>
+<p>根据虚拟机规范，JVM的内存分为 堆、虚拟机栈、本地方法栈、程序计数器、本地方法栈5部分</p>
+<p>JDK 1.8 同 JDK 1.7 比，最大的差别就是：元数据区取代了永久代。元空间的本质和永久代类似，都是对 JVM 规范中方法区的实现。不过元空间与永久代之间最大的区别在于：元数据空间并不在虚拟机中，而是使用本地内存</p>
+<p><img src="images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/20190706155611749.PNG" alt="在这里插入图片描述"></p>
+<ol>
+<li>虚拟机栈<a id="more"></a><ol>
+<li>每个线程有一个私有的栈，随着线程的创建而创建。栈里面存着的是一种叫“栈帧”的东西，每个方法会创建一个栈帧，栈帧中存放了局部变量表（基本数据类型和对象引用）、操作数栈、方法出口等信息。栈的大小可以固定也可以动态扩展。当栈调用深度大于JVM所允许的范围，会抛出StackOverflowError的错误</li>
+<li>虚拟机栈的特点<ol>
+<li>局部变量表随着栈帧的创建而创建，它的大小在编译时确定，创建时只需分配事先规定的大小即可。在方法运行过程中，局部变量表的大小不会发生改变</li>
+<li>Java 虚拟机栈也是线程私有，随着线程创建而创建，随着线程的结束而销毁</li>
+<li>Java 虚拟机栈会出现两种异常：StackOverFlowError （若 Java 虚拟机栈的大小不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度时，抛出 StackOverFlowError 异常）和 OutOfMemoryError（若允许动态扩展，那么当线程请求栈时内存用完了，无法再动态扩展时，抛出 OutOfMemoryError 异常）</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/1460000015398968" alt="jvm-stack"></p>
+<ol>
+<li>本地方法栈<ol>
+<li>本地方法栈是为 JVM 运行 Native 方法准备的空间，由于很多 Native 方法都是用 C 语言实现的，所以它通常又叫 C 栈。它与 Java 虚拟机栈实现的功能类似，只不过本地方法栈是描述本地方法运行过程的内存模型。本地方法被执行时，在本地方法栈也会创建一块栈帧，用于存放该方法的局部变量表、操作数栈、动态链接、方法出口信息等。方法执行结束后，相应的栈帧也会出栈，并释放内存空间。也会抛出 StackOverFlowError 和 OutOfMemoryError 异常。</li>
+</ol>
+</li>
+<li>PC 寄存器计数器<ol>
+<li>PC 寄存器，也叫程序计数器。JVM支持多个线程同时运行，每个线程都有自己的程序计数器。倘若当前执行的是 JVM 的方法，则该寄存器中保存当前执行指令的地址；倘若执行的是native 方法，则PC寄存器中为空</li>
+</ol>
+</li>
+<li>堆<ol>
+<li>堆内存是 JVM 所有线程共享的部分，在虚拟机启动的时候就已经创建。所有的对象和数组都在堆上进行分配。这部分空间可通过 GC 进行回收。当申请不到空间时会抛出 OutOfMemoryError</li>
+<li>堆的特点：<ol>
+<li>线程共享，整个 Java 虚拟机只有一个堆，所有的线程都访问同一个堆。而程序计数器、Java 虚拟机栈、本地方法栈都是一个线程对应一个</li>
+<li>在虚拟机启动时创建</li>
+<li>垃圾回收的主要场所</li>
+<li>可分为：新生代(Eden区 From Survior To Survivor)、老年代</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>方法区<ol>
+<li>Java 虚拟机规范中定义方法区是堆的一个逻辑部分。</li>
+<li>方法区也是所有线程共享。主要用于存储已经被虚拟机加载的类的信息、常量池、方法数据、方法代码等。方法区逻辑上属于堆的一部分，但是为了与堆进行区分，通常又叫 非堆 。需要注意的是，方法区只是规范上面的一个逻辑概念，并不是真实的物理存储的命名</li>
+</ol>
+</li>
+<li>直接内存（堆外内存）<ol>
+<li>直接内存是除 Java 虚拟机之外的内存，但也可能被 Java 使用，直接内存的大小不受 Java 虚拟机控制，但既然是内存，当内存不足时就会抛出 OutOfMemoryError 异常</li>
+<li>直接内存与堆内存比较：<ol>
+<li>直接内存申请空间耗费更高的性能</li>
+<li>直接内存读取 IO 的性能要优于普通的堆内存</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="JVM内存模型各部分的存储信息"><a href="#JVM内存模型各部分的存储信息" class="headerlink" title="JVM内存模型各部分的存储信息"></a>JVM内存模型各部分的存储信息</h2><h2 id><a href="#" class="headerlink" title></a><img src="images/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E7%9A%84/javammode.png" alt></h2><h2 id="针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明"><a href="#针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明" class="headerlink" title="针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明"></a>针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明</h2><h3 id="对永久代PermGen的说明"><a href="#对永久代PermGen的说明" class="headerlink" title="对永久代PermGen的说明"></a>对永久代PermGen的说明</h3><ul>
+<li>永久代是方法区在hotspot的一个具体实现。通过在<strong>运行时数据区域开辟空间</strong>实现方法区。</li>
+<li>hotspot jdk7 之前的永久代，比较完整</li>
+<li>从jdk7以后方法区就“四分五裂了”，不再是在单一的一个去区域内进行存储</li>
+<li>在jdk8，移除了永久代，被Metsspace取代了，且Metsspace不在JVM堆内，放入了本地内存，元空间也就成了方法区的主要存放位置</li>
+</ul>
+<p>绝大部分 Java 程序员应该都见过 *<em>java.lang.OutOfMemoryError: PermGen space *</em> 这个异常</p>
+<p>这里的 “PermGen space”其实指的就是方法区。不过方法区和“PermGen space”又有着本质的区别。前者是 JVM 的规范，而后者则是 JVM 规范的一种实现，并且<strong>只有 HotSpot 才有 “PermGen space”，而对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 并没有“PermGen space”</strong>。由于方法区主要存储类的相关信息，所以对于动态生成类的情况比较容易出现永久代的内存溢出。最典型的场景就是，在 jsp 页面比较多的情况，容易出现永久代内存溢出</p>
+<h3 id="对Metaspace元空间的说明"><a href="#对Metaspace元空间的说明" class="headerlink" title="对Metaspace元空间的说明"></a>对Metaspace元空间的说明</h3><ol>
+<li>元空间的本质和永久代类似，都是对JVM规范中方法区的实现。元空间通过<strong>在本地内存区域开辟空间实现方法区</strong>。<strong>元空间并不在虚拟机中，而是使用本地内存，所以默认情况下，元空间的大小仅受本地内存限制</strong>，但可以通过以下参数来指定元空间的大小：</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">-XX</span><span class="selector-pseudo">:MetaspaceSize</span>，初始空间大小，达到该值就会触发垃圾收集进行类型卸载，同时<span class="selector-tag">GC</span>会对该值进行调整：如果释放了大量的空间，就适当降低该值；如果释放了很少的空间，那么在不超过<span class="selector-tag">MaxMetaspaceSize</span>时，适当提高该值。</span><br><span class="line"><span class="selector-tag">-XX</span><span class="selector-pseudo">:MaxMetaspaceSize</span>，最大空间，默认是没有限制的。</span><br><span class="line">除了上面两个指定大小的选项以外，还有两个与 <span class="selector-tag">GC</span> 相关的属性：</span><br><span class="line"><span class="selector-tag">-XX</span><span class="selector-pseudo">:MinMetaspaceFreeRatio</span>，在<span class="selector-tag">GC</span>之后，最小的<span class="selector-tag">Metaspace</span>剩余空间容量的百分比，减少为分配空间所导致的垃圾收集</span><br><span class="line"><span class="selector-tag">-XX</span><span class="selector-pseudo">:MaxMetaspaceFreeRatio</span>，在<span class="selector-tag">GC</span>之后，最大的<span class="selector-tag">Metaspace</span>剩余空间容量的百分比，减少为释放空间所导致的垃圾收集</span><br></pre></td></tr></table></figure>
+
+
+
+<p>其实，移除永久代的工作从JDK1.7就开始了，JDK1.7中，存储在永久代的部分数据就已经转移到了Java Heap或者是 Native Heap。但永久代仍存在于JDK1.7中，并没完全移除。</p>
+<p>譬如：</p>
+<p>符号引用(Symbols)转移到了native heap；</p>
+<p>字面量(interned strings)转移到了java heap；</p>
+<p>类的静态变量(class statics)转移到了java heap</p>
+<h3 id="元空间特点"><a href="#元空间特点" class="headerlink" title="元空间特点"></a>元空间特点</h3><ol>
+<li><strong>类及相关的元数据的生命周期与类加载器的一致</strong>，如果GC发现某个类加载器不再存活了，才会把相关的空间整个回收掉</li>
+<li>每个类加载器有专门的存储空间</li>
+<li>只进行线性分配，省掉了GC扫描及压缩的时间</li>
+<li>元空间里的对象的位置是固定的</li>
+</ol>
+<h2 id="JVM内存划分调整的几个原因点分析"><a href="#JVM内存划分调整的几个原因点分析" class="headerlink" title="JVM内存划分调整的几个原因点分析"></a>JVM内存划分调整的几个原因点分析</h2><ol>
+<li>字符串存在永久代中，容易出现性能问题和内存溢出</li>
+<li>类及方法的信息等比较难确定其大小，因此对于永久代的大小指定比较困难，太小容易出现永久代溢出，太大则容易导致老年代溢出</li>
+<li>永久代会为 GC 带来不必要的复杂度，并且回收效率偏低</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jvm-%E7%BA%BF%E7%A8%8B/" rel="tag"># jvm&线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JVM8%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%A2%9E%E5%8A%A0%E5%85%83%E7%A9%BA%E9%97%B4%20/" rel="prev" title="JVM8为什么要增加元空间 ?">
+      <i class="fa fa-chevron-left"></i> JVM8为什么要增加元空间 ?
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98/" rel="next" title="JVM性能调优实战">
+      JVM性能调优实战 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM内存模型如何分配的"><span class="nav-number">1.</span> <span class="nav-text">JVM内存模型如何分配的</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存模型的划分"><span class="nav-number">1.1.</span> <span class="nav-text">JVM内存模型的划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存模型各部分的存储信息"><span class="nav-number">1.2.</span> <span class="nav-text">JVM内存模型各部分的存储信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明"><span class="nav-number">1.4.</span> <span class="nav-text">针对JDK6、JDK7、JDK8三个版本的JVM内存模型调整说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对永久代PermGen的说明"><span class="nav-number">1.4.1.</span> <span class="nav-text">对永久代PermGen的说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对Metaspace元空间的说明"><span class="nav-number">1.4.2.</span> <span class="nav-text">对Metaspace元空间的说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#元空间特点"><span class="nav-number">1.4.3.</span> <span class="nav-text">元空间特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存划分调整的几个原因点分析"><span class="nav-number">1.5.</span> <span class="nav-text">JVM内存划分调整的几个原因点分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">318</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">36:33</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

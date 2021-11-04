@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/" class="post-title-link" itemprop="url">C++类的静态成员和C语言中的static</a>
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">数据结构迪科斯彻算法(Dijkstra)算法</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,428 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:16:30" itemprop="dateCreated datePublished" datetime="2020-12-27T15:16:30+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 21:40:46" itemprop="dateCreated datePublished" datetime="2020-12-29T21:40:46+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:28:34" itemprop="dateModified" datetime="2021-03-21T23:28:34+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 23:30:56" itemprop="dateModified" datetime="2021-03-22T23:30:56+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>迪科斯彻算法(Dijkstra)是有荷兰计算机科学家艾兹格·迪科斯彻（Edsger Wybe Dijkstra）发明的。算法解决的是有向图中单个源点到其他顶点的最短路径问题。</p>
+<p>算法描述</p>
+<p>这个算法是通过为每个顶点 v 保留目前为止所找到的从s到v的最短路径来工作的。初始时，原点 s 的路径长度值被赋为 0 （d[s] = 0），同时把所有其他顶点的路径长度设为无穷大，即表示我们不知道任何通向这些顶点的路径（对于 V 中所有顶点 v 除 s 外d[v] = ∞）。当算法结束时，d[v] 中储存的便是从 s 到 v 的最短路径，或者如果路径不存在的话是无穷大。 Dijkstra 算法的基础操作是边的拓展：如果存在一条从 u 到 v 的边，那么从 s 到 v 的最短路径可以通过将边（u, v）添加到尾部来拓展一条从 s 到 u 的路径。这条路径的长度是 d[u] + w(u, v)。如果这个值比目前已知的 d[v] 的值要小，我们可以用新值来替代当前 d[v] 中的值。拓展边的操作一直执行到所有的 d[v] 都代表从 s 到 v 最短路径的花费。这个算法经过组织因而当 d[u] 达到它最终的值的时候每条边（u, v）都只被拓展一次。</p>
+<p>算法维护两个顶点集 S 和 Q。集合 S 保留了我们已知的所有 d[v] 的值已经是最短路径的值顶点，而集合 Q 则保留其他所有顶点。集合S初始状态为空，而后每一步都有一个顶点从 Q 移动到 S。这个被选择的顶点是 Q 中拥有最小的 d[u] 值的顶点。当一个顶点 u 从 Q 中转移到了 S 中，算法对每条外接边 (u, v) 进行拓展。</p>
+<p>算法实现<br>算法实现起来比较简单，当然这得归功于算法作者。</p>
+<p>一、邻接矩阵实现</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" class="post-title-link" itemprop="url">数据结构的BFS和DFS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:40:26" itemprop="dateCreated datePublished" datetime="2020-12-29T21:40:26+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:24:54" itemprop="dateModified" datetime="2021-03-23T10:24:54+08:00">2021-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>下面的两种搜索算法都是基于 图的邻接表存储 。</p>
+<p>深度优先搜索（DFS）</p>
+<p>深度优先搜索（depth-first search）是对先序遍历（preorder traversal）的推广。我们从某个顶点 v 开始处理 v，然后递归地遍历所有与 v 邻接的顶点。</p>
+<p>实现思想：</p>
+<p>在深度优先搜索中，对于最新发现的顶点，如果它还有以此为起点而未探测到的边，就沿此边继续探测下去，当节点 v 的所有边都已被探寻过，探索将回溯到发现节点 v 有那条边的始节点，这一过程一直进行到已发现从源节点可达的所有节点位置。如果还存在未被发现的节点，则选择其中一个作为源节点并重复以上过程，整个过程反复进行直到所有节点都被发现为止。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">数据结构BFS、DFS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:38:30" itemprop="dateCreated datePublished" datetime="2020-12-29T21:38:30+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:24:47" itemprop="dateModified" datetime="2021-03-23T10:24:47+08:00">2021-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里则介绍图的另外一种存储方式：邻接矩阵。参考资料《大话数据结构》《C算法：卷二》</p>
+<p>一、图的数据结构</p>
+<p>图的邻接矩阵存储方式是用两个数据来表示。一个一维数组存储图中顶点信息，一个二维数组（称为邻接矩阵）存储图中的边的信息。</p>
+<p>见下图：（图片来源于《大话数据结构》）</p>
+<p>​</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/" class="post-title-link" itemprop="url">汇编语言基础学习汇总1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:04:30" itemprop="dateCreated datePublished" datetime="2020-12-29T21:04:30+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 23:04:44" itemprop="dateModified" datetime="2021-03-22T23:04:44+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>32k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>29 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h5 id="汇编语言指令组成"><a href="#汇编语言指令组成" class="headerlink" title="汇编语言指令组成"></a><strong>汇编语言指令组成</strong></h5><ul>
+<li>汇编指令：机器码的助记符，有对应的机器码。</li>
+<li>伪指令：没有对应的机器码，编译器执行，机器不执行。</li>
+<li>其他符号：如±*/有编译器识别，无对应机器码。</li>
+</ul>
+<h5 id="CPU与外部器件交互需要"><a href="#CPU与外部器件交互需要" class="headerlink" title="CPU与外部器件交互需要"></a><strong>CPU与外部器件交互需要</strong></h5><ul>
+<li>存储单元地址（地址信息）</li>
+<li>器件选择，读写命令（控制信息）</li>
+<li>数据（数据信息）</li>
+</ul>
+<h5 id="总线"><a href="#总线" class="headerlink" title="总线"></a><strong>总线</strong></h5><p>总线就是一根根导线的集合，分为</p>
+<ul>
+<li>地址总线，越宽（数量越多）代表可以寻址的范围越大</li>
+<li>数据总线，越宽代表一次性读写的数据越多（8根1字节）</li>
+<li>控制总线，越宽代表对器件控制操作越多</li>
+</ul>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a><strong>小结</strong></h5><p>汇编指令和机器指令一一对应</p>
+<p>每一种cpu都有自己的汇编指令集</p>
+<p>在存储器中指令和数据都是二进制，没有任何区别</p>
+<p>CPU可以直接使用的信息存放在存储器中（内存）</p>
+<h5 id="接口卡"><a href="#接口卡" class="headerlink" title="接口卡"></a><strong>接口卡</strong></h5><p>CPU无法直接控制显示器，键盘等的外围设备，但CPU通过直接控制这些外围设备在主板上的接口卡来控制这些设备。</p>
+<h5 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a><strong>存储器</strong></h5>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">C++编译产生文件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 20:57:56" itemprop="dateCreated datePublished" datetime="2020-12-29T20:57:56+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-21 23:26:04" itemprop="dateModified" datetime="2021-03-21T23:26:04+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,7 +624,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -229,438 +643,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一、C++类的静态成员</p>
-<p>学过C++的都知道，静态成员是属于整个类而不是某个对象的，静态成员变量在内存中只存储一份共所有对象共用，在所有对象中都可以共享它。</p>
-<p>静态成员的定义或声明需要加个关键字 static。因为属于整个类，所以可以通过 &lt;类名&gt;::&lt;静态成员名&gt;来使用。</p>
-<p>比较容易混淆和出错的地方在于类的静态成员变量和静态成员函数的使用，这两者都属于静态成员。</p>
-<p>需要注意的是：静态成员属于整个类，在类对象实例化前，静态成员就已经分配空间了，而非静态成员无需初始化，必须在类实例化对象后才有内存空间，所以就有了个先后顺序：静态成员先于非静态成员存在。</p>
-<p>下面我们来看看如下几个情况： </p>
-<p>1、通过类名调用静态成员函数和非静态成员函数</p>
+          <p>C++编译 （.obj, .lib, .dll, .exe的关系）</p>
+<h2 id="一、总体介绍："><a href="#一、总体介绍：" class="headerlink" title="一、总体介绍："></a>一、总体介绍：</h2><p>c++程序在编译后,在目标路径下会生成多个文件：</p>
+<p>Debug文件夹(<em>.exe,</em>.ilk,<em>.obj,</em>.pch,<em>.pdb,</em>.idb,<em>,pdb),</em>.cpp,<em>.dsp,</em>.ncb,*.plg</p>
+<p>*.exe:是生成的可执行文件</p>
+<p>*.ilk:当选定渐增型编译连接时，连接器自动生成ILK文件，记录连接信息</p>
+<p>*.obj:是目标文件,源程序编译后的产物</p>
+<p>*.pch:全称是PreCompiled Header，就是预先编译好的头文件</p>
+<p>*.idb:文件保存的信息,使编译器在重新编译的时候只重编译最新改动过的函数和只对最新类定义改动过的源文件进行重编译，以提高编译速度</p>
+<p>*.pdb:全称是Program DataBase，即程序数据库文件，用来记录调试信息</p>
+<p>*.dsp:(全称是Developer Studio Project)也是一个配置文件</p>
+<p>*.ncb:(全称No Compile Browser)的缩写，其中存放了供ClassView、WizardBar和Component Gallery使用的信息，由VC开发环境自动生成</p>
+<p>*.plg:实际上是一个超文本文件，可以用Internet Explorer打开，记录了Build的过程</p>
+<p>*.cpp:就是C++源代码文件.</p>
+<h2 id="二、具体介绍："><a href="#二、具体介绍：" class="headerlink" title="二、具体介绍："></a>二、具体介绍：</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">C++深入分析虚函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:14:15" itemprop="dateCreated datePublished" datetime="2020-12-27T15:14:15+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:28:40" itemprop="dateModified" datetime="2021-03-21T23:28:40+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>9.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>前面探索了<a href="http://blog.csdn.net/wenqian1991/article/details/41047957" target="_blank" rel="noopener">C++对象的内存模型</a>，其中简单的涉及到了虚函数，作为C++实现其多态的一个重要机制，这里进一步探索下虚函数机制，以前也看过网络上关于虚函数机制的一些精彩的文章，但现在决定自己再分析这个虚函数机制以加深理解，看与自己动手探索还是有区别的。</p>
-<p><strong><em>\</em>一、异质链表**</strong></p>
-<p>1、“is-a” 原理</p>
-<p>在公有派生方式下，对派生类的对象里的基类子对象的水平访问与基类单独生成的对象的访问是一样的。也就是说，我们完全可以把public 继承方式的派生类的对象当做基类的一个对象来使用。反过来则不行。这就是“is-a”原理</p>
-<p>在公有派生方式下，基于“is-a”原理，我们可以得出以下几点：</p>
-<ol>
-<li>一个派生类的对象可以赋给基类对象；</li>
-<li>派生类对象可以初始化基类对象；</li>
-<li>派生类的对象可以初始化基类的引用；</li>
-<li>派生类的对象的地址可以赋给指向基类对象的指针。</li>
-</ol>
-<p>前面三条都是一个性质，派生类对象赋给基类对象的时候，都是调用基类的赋值构造函数，这样赋值的时候，只会将派生类对象中继承的基类成员赋值给基类对象成员，不会发生内存越界的情况。下面是一段截取的反汇编代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">60</span>: 	base_obj = derived_obj;</span><br><span class="line"><span class="number">00</span>DD442C  lea         eax,[derived_obj]  </span><br><span class="line"><span class="number">00</span>DD442F  push        eax  </span><br><span class="line"><span class="number">00</span>DD4430  lea         ecx,[base_obj]  </span><br><span class="line"><span class="number">00</span>DD4433  call        Base::<span class="keyword">operator</span>= (<span class="number">0</span>DD16AEh)</span><br></pre></td></tr></table></figure>
-
-<p>最重要的是第四条，对于这个基类的不同派生类的对象，我们可以使用指向基类的指针把它们（派生类对象）穿成一个链表，这个链表对于我们实现C++的多态性有很大的价值，被称之为异质链表。</p>
-<p>   <img src="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/20141122122521379" alt="img"></p>
-<p>通过基类指针将这个基类的不同子对象串联起来。一个充分必要条件就是，这几个子类都有一个公共的基类，且都与这个基类有“is-a”关系。</p>
-<p>对于这我们可以这么理解：派生类的对象所占的存储空间要比基类的对象大，因为派生类继承了基类非私有成员函数和数据，再加上本身的成员数据，实例化的对象自然会比基类对象大，自然，派生类指针的寻址空间要比基类指针的寻址空间大。但由于对象的头部分是一样的，所以即使有超出基类指针所寻址的部分也能根据偏移量正确寻址，相反，如果派生类指针指向基类对象，则会把一部分不属于该基类对象的内存也包括进来，那么当派生类指针指向基类对象来使用派生类的函数的时候可能会发生严重的错误。</p>
-<p><strong><em>\</em>二、虚函数机制前奏*</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/" class="post-title-link" itemprop="url">C++对象模型深入探索</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:11:15" itemprop="dateCreated datePublished" datetime="2020-12-27T15:11:15+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:26:21" itemprop="dateModified" datetime="2021-03-21T23:26:21+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>15k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>14 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>前面简单的论述过<a href="http://blog.csdn.net/wenqian1991/article/details/19205505" target="_blank" rel="noopener">C++对象模型</a>，总觉得不够深入，现近闲来进一步挖掘C++对象内存布局情况。主要讨论：单一继承，多重继承，钻石继承的有无虚函数以及虚拟继承的情况。贴出测试程序，并给出测试结论以及对应的类对象的大小计算。（PS：类对象的内存布局取决于编译器，这里的测试都是基于Visual Studio）</p>
-<p><strong><em>\</em>单一的类对象**</strong></p>
-<p>单一的类对象主要考虑有虚函数的情况，前面提及的博文已有介绍，类中定义了虚函数，就会产生一个虚函数表（实质就是一个函数指针数组，虚函数表不在类中，VS编译环境下，虚函数表位于常量段，虚表指针在类对象中），类每定义一个对象，便会在对象的最前面安插一个虚表指针，指向虚函数表，这样该类定义的对象会多出4 Byte（32位）。</p>
-<p>可以在Visual Studio C++ 编译输出中直接看C++内存布局：工程项目——右键“属性”——配置属性——C/C++——命令行——其他选项里添加“/d1reportAllClassLayout ”，即可在编译输出中查看定义的类的内存布局，上面是输出所有定义的类对象，你可以搜索你自己定义的对象。（最好不要把名字定为base，不然一大堆）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">parent</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="comment">//public:</span></span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"parent: fun1"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*virtual void fun2()</span></span><br><span class="line"><span class="comment">	&#123;</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; "parent: fun2" &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	parent obj_b;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面便是定义的类对象内存布局情况：vfptr 即表示虚表指针，static 成员不在类对象中</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class parent	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| b</span><br><span class="line">1&gt;  	+---</span><br></pre></td></tr></table></figure>
-
-
-
-<p>如果类中不定义为虚函数，类对象的大小是4，如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class parent	size(4):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| b</span><br><span class="line">1&gt;  	+---</span><br></pre></td></tr></table></figure>
-
-<p>下面我们来考虑类继承的情况：</p>
-<p><strong><em>\</em>单一继承**</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">C++对象模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:07:17" itemprop="dateCreated datePublished" datetime="2020-12-27T15:07:17+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:26:13" itemprop="dateModified" datetime="2021-03-21T23:26:13+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在C++对象模型中，Nonstatic data members 被配置于每一个 class object 之内，static data members 则被存放在个别 class object 之外。Static 和nonstatic function members 也被放在个别的class object 之外。存在 virtual function 时，每个class 会产生出一堆指向 virtual function 的指针，这些指针存放在一个表中，称之为虚函数表 virtual table。其实质就是一个函数指针数组，里面存放的是虚函数指针。每一个 class object 被安插一个虚表指针 vptr，指向相关的 virtual table，虚表指针通常置于 class object 的第一位置。另外，当子类虚继承父类时，子类对象中还会安插虚基类指针。注意此处 class 和 class object 的区别。如此说来一个类实例当中存放的就是 nonstatic data member，虚表指针（存在虚函数时或父类中含有虚函数），虚基类指针（虚拟继承时）。类继承时体积会变大，但在虚拟继承的情况下，基类永远只存在一个实例。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">C语言指针</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:04:46" itemprop="dateCreated datePublished" datetime="2020-12-27T15:04:46+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:44:23" itemprop="dateModified" datetime="2021-03-22T08:44:23+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>指针是一个特殊的变量，它里面存储的数值被解释成为内存（用户空间的虚拟内存）里的一个地址。</p>
-<h3 id="一、指针的属性"><a href="#一、指针的属性" class="headerlink" title="一、指针的属性"></a><strong>一、指针的属性</strong></h3><p>一个指针包含四个方面的内容：<strong>指针的类型、指针所指向的类型、指针所指向的内存区、指针本身所占据的内存区。</strong></p>
-<p>接下来就下面几个例子作说明：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="built_in">int</span> *p;</span><br><span class="line"><span class="number">2</span>、 char *p；</span><br><span class="line"><span class="number">3</span>、 <span class="built_in">int</span> **p;</span><br><span class="line"><span class="number">4</span>、 <span class="built_in">int</span> (*p)[<span class="number">3</span>];</span><br><span class="line"><span class="number">5</span>、 <span class="built_in">int</span> *(*p)[<span class="number">4</span>];<span class="number">12345</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h4 id="1-1、指针的类型"><a href="#1-1、指针的类型" class="headerlink" title="1.1、指针的类型"></a><strong>1.1、指针的类型</strong></h4><p><strong>从语法的角度，只要把指针声明语句里的指针名字去掉，剩下的部分就是这个指针的类型，即指针本身所具有的类型。</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、 <span class="keyword">int</span> *p;        <span class="comment">//指针的类型是 int*</span></span><br><span class="line"><span class="number">2</span>、 <span class="keyword">char</span> *p；      <span class="comment">//指针的类型是  char*</span></span><br><span class="line"><span class="number">3</span>、 <span class="keyword">int</span> **p;       <span class="comment">//指针的类型是 int**</span></span><br><span class="line"><span class="number">4</span>、 <span class="keyword">int</span> (*p)[<span class="number">3</span>];   <span class="comment">//指针的类型是 int(*)[3]</span></span><br><span class="line"><span class="number">5</span>、 <span class="keyword">int</span> *(*p)[<span class="number">4</span>];  <span class="comment">//指针的类型是 int*(*)[3]12345</span></span><br></pre></td></tr></table></figure>
-
-<p>然后有的人还是不知道怎么读…（后面再说）<br>插播：指针类型说明原则：<strong>从变量名处起，根据运算符优先级结合，一步一步分析。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -683,7 +682,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/36/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><span class="page-number current">37</span><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/38/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/36/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><span class="page-number current">37</span><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/38/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -749,20 +748,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-count">318</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -803,7 +802,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:52</span>
+    <span title="站点阅读时长">36:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
