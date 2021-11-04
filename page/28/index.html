@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E5%90%84%E9%A1%B9%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E5%90%84%E9%A1%B9%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">数据结构的单向链表的各项操作实现</a>
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构归并排序</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 21:42:32" itemprop="dateCreated datePublished" datetime="2020-12-29T21:42:32+08:00">2020-12-29</time>
+              <time title="创建时间：2020-12-29 21:53:14" itemprop="dateCreated datePublished" datetime="2020-12-29T21:53:14+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:30:45" itemprop="dateModified" datetime="2021-03-22T23:30:45+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 23:34:29" itemprop="dateModified" datetime="2021-03-22T23:34:29+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.8k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -229,10 +229,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>着重实现《剑指Offer》上面的单向链表操作。</p>
+          <p>归并排序是建立在归并操作上的一种有效的排序算法，将两个（或两个以上）有序表合并成一个新的有序表。采用分治法，分而治之：分就是将待排序序列分为若干个有序的子序列，每个子序列是有序；合就是把有序的子序列合并为整体有序序列。</p>
+<p>这个算法的基本操作是合并两个已排序的表，因为这两个表是已排序的，所以若将输出放到第三个表中时，则该算法可以通过对输入数据一趟排序来完成。将两个有序表合并成一个有序表，成为2-路归并。可知归的前提是子序列是排序好的，我们可以把整体序列递归地分割成一个一个的子序列，当子序列中仅有一个元素时，该子序列自然就是已排序好，然后再不断的进行2-路归并，最终得到整体有序序列。</p>
+<p>下面用图演示这一过程</p>
+<p>需要说明的是，上面的分割是意识形态的，和前面介绍的堆排序类似，并不是实际的分割，分割过程中，元素在序列中的位置不变，我们仍可以通过数组索引定位元素。</p>
+<p>从上面的图解很容易得知，“2-路分割”和 2-路合并，首先需要将整体无序序列进行递归“2-路分割”，直至分割达到有序状态即子序列仅一个元素（这也是递归的终止条件），然后就是合并，将子序列从小到大放入额外暂存单元中，全部归并完毕，这个暂存单元中的元素就是有序的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E5%90%84%E9%A1%B9%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -256,7 +260,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -270,7 +274,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">数据结构单向链表</a>
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构选择排序、堆排序</a>
         </h2>
 
         <div class="post-meta">
@@ -280,14 +284,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 21:42:08" itemprop="dateCreated datePublished" datetime="2020-12-29T21:42:08+08:00">2020-12-29</time>
+              <time title="创建时间：2020-12-29 21:52:57" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:57+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:30:30" itemprop="dateModified" datetime="2021-03-22T23:30:30+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-23 10:25:31" itemprop="dateModified" datetime="2021-03-23T10:25:31+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,304 +309,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>链表是一个很重要的数据结构，它由一系列不必在内存中连续存储的结构组成。本文讨论单向链表的基本操作，涉及到链表的创建、尾端添加元素、指定位置插入元素、删除指定单个元素节点、删除指定元素所有节点、删除指定位置节点、顺序，逆序打印节点以及统计结点个数等基础操作。</p>
-<p>既然是不连续的内存空间，我们要访问各个元素，就需要通过指针来寻找。链表结构中需要定义数据域和指针域。</p>
-<p>1、单向链表的数据结构</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">typedef struct _Node</span><br><span class="line">&#123;</span><br><span class="line">	int value;</span><br><span class="line">	struct _Node *pnext;</span><br><span class="line">&#125;<span class="keyword">Node</span><span class="title">;</span></span><br><span class="line"><span class="title">2</span>、创建一个不带表头的单向链表</span><br><span class="line">void createList(<span class="keyword">Node</span> <span class="title">**ppListNode</span>, int value)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">Node</span> <span class="title">*pListNode</span> = NULL;</span><br><span class="line">	pListNode = (<span class="keyword">Node</span> <span class="title">*)malloc</span>(sizeof(<span class="keyword">Node</span><span class="title">));</span></span><br><span class="line"><span class="title">	assert</span>(pListNode != NULL);</span><br><span class="line"></span><br><span class="line">	pListNode-&gt;value = value;</span><br><span class="line">	pListNode-&gt;pnext = NULL;</span><br><span class="line">	 </span><br><span class="line">	*ppListNode = pListNode;</span><br><span class="line">	 </span><br><span class="line">	return;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3、往链表尾端添加元素</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%80%E4%B8%BA%E7%BB%8F%E5%85%B8%E7%9A%84%E9%93%BE%E8%A1%A8list/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%80%E4%B8%BA%E7%BB%8F%E5%85%B8%E7%9A%84%E9%93%BE%E8%A1%A8list/" class="post-title-link" itemprop="url">数据结构链表list</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:41:49" itemprop="dateCreated datePublished" datetime="2020-12-29T21:41:49+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 10:25:37" itemprop="dateModified" datetime="2021-03-23T10:25:37+08:00">2021-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>很久之前研读过Linux的内核源码，看到其中的内核数据结构，对链表的实现叹为观止，是迄今为止我见过的最为经典的链表实现（不是数据内嵌到链表中，而是把链表内嵌到数据对象中）。现在再来回顾这个经典的数据结构。</p>
-<p>链表代码在头文件&lt;linux/list.h&gt;中声明（推荐Source Insight，源码版本：Linux-2.6.32.61，早期版本并没有引进这个list），其数据结构很简单有木有，直接就一个前后链表指针，前篇STL中list也有这么个结构</p>
-<p>1、链表的初始化</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%80%E4%B8%BA%E7%BB%8F%E5%85%B8%E7%9A%84%E9%93%BE%E8%A1%A8list/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">数据结构迪科斯彻算法(Dijkstra)算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:40:46" itemprop="dateCreated datePublished" datetime="2020-12-29T21:40:46+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:30:56" itemprop="dateModified" datetime="2021-03-22T23:30:56+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>迪科斯彻算法(Dijkstra)是有荷兰计算机科学家艾兹格·迪科斯彻（Edsger Wybe Dijkstra）发明的。算法解决的是有向图中单个源点到其他顶点的最短路径问题。</p>
-<p>算法描述</p>
-<p>这个算法是通过为每个顶点 v 保留目前为止所找到的从s到v的最短路径来工作的。初始时，原点 s 的路径长度值被赋为 0 （d[s] = 0），同时把所有其他顶点的路径长度设为无穷大，即表示我们不知道任何通向这些顶点的路径（对于 V 中所有顶点 v 除 s 外d[v] = ∞）。当算法结束时，d[v] 中储存的便是从 s 到 v 的最短路径，或者如果路径不存在的话是无穷大。 Dijkstra 算法的基础操作是边的拓展：如果存在一条从 u 到 v 的边，那么从 s 到 v 的最短路径可以通过将边（u, v）添加到尾部来拓展一条从 s 到 u 的路径。这条路径的长度是 d[u] + w(u, v)。如果这个值比目前已知的 d[v] 的值要小，我们可以用新值来替代当前 d[v] 中的值。拓展边的操作一直执行到所有的 d[v] 都代表从 s 到 v 最短路径的花费。这个算法经过组织因而当 d[u] 达到它最终的值的时候每条边（u, v）都只被拓展一次。</p>
-<p>算法维护两个顶点集 S 和 Q。集合 S 保留了我们已知的所有 d[v] 的值已经是最短路径的值顶点，而集合 Q 则保留其他所有顶点。集合S初始状态为空，而后每一步都有一个顶点从 Q 移动到 S。这个被选择的顶点是 Q 中拥有最小的 d[u] 值的顶点。当一个顶点 u 从 Q 中转移到了 S 中，算法对每条外接边 (u, v) 进行拓展。</p>
-<p>算法实现<br>算法实现起来比较简单，当然这得归功于算法作者。</p>
-<p>一、邻接矩阵实现</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%BF%AA%E7%A7%91%E6%96%AF%E5%BD%BB%E7%AE%97%E6%B3%95(Dijkstra)%E7%AE%97%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" class="post-title-link" itemprop="url">数据结构的BFS和DFS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 21:40:26" itemprop="dateCreated datePublished" datetime="2020-12-29T21:40:26+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 10:24:54" itemprop="dateModified" datetime="2021-03-23T10:24:54+08:00">2021-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.8k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -621,14 +328,321 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>下面的两种搜索算法都是基于 图的邻接表存储 。</p>
-<p>深度优先搜索（DFS）</p>
-<p>深度优先搜索（depth-first search）是对先序遍历（preorder traversal）的推广。我们从某个顶点 v 开始处理 v，然后递归地遍历所有与 v 邻接的顶点。</p>
-<p>实现思想：</p>
-<p>在深度优先搜索中，对于最新发现的顶点，如果它还有以此为起点而未探测到的边，就沿此边继续探测下去，当节点 v 的所有边都已被探寻过，探索将回溯到发现节点 v 有那条边的始节点，这一过程一直进行到已发现从源节点可达的所有节点位置。如果还存在未被发现的节点，则选择其中一个作为源节点并重复以上过程，整个过程反复进行直到所有节点都被发现为止。</p>
+          <p>1、选择排序</p>
+<p>实现思想：首先在未排序序列中找到最小（大）元素，存放在排序序列的起始位置，然后再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾，以此类推，直到所有元素均排序完毕。通俗的讲就是从无序区（不同于插入排序，这里的无序区包含所有元素）选一个最小（大）的元素直接放在有序区的最后，即选择一个最小的元素依次放在前面，即选择最小（大）元素就有个逐一比较和交换的过程。</p>
+<p>实现步骤：</p>
+<p>设数组为a[0…n-1]</p>
+<ol>
+<li><p>初始时，数组全为无序区，为a[0…n-1]。令i = 0；</p>
+</li>
+<li><p>在无序区a[i…n-1] 中选取一个最小的元素，将其与 a[i] 交换，交换之后a[0…i+1] 就形成了有序区，无序区为a[i+1…n-1]；</p>
+</li>
+<li><p>i++，并重复第 2 步直到 i==n-1，排序完成。</p>
+</li>
+</ol>
+<p>上面的第 2 步是将数据进行交换，但每次只交换一次数据，选取最小元素，是保存最小的元素的索引值，然后交换无序区第一个元素与该索引指定的元素（无序区的最小值）。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构插入排序、希尔排序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:52:42" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:42+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 23:30:23" itemprop="dateModified" datetime="2021-03-22T23:30:23+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1、直接插入排序</p>
+<p>基本思想：每次将一个待排序的数据，按其大小插入到前面已经排好序的子序列中的适当位置，直到全部数据插入完成为止。换言之，就是将无序区（第一个元素默认有序）的第一个元素（也就是输入数组的第二个元素）通过与有序区的数据进行比较，然后直接插入到有序区的适当位置，形成更大的有序区，这样有序区扩大了一个元素，无序区缩小了一个元素。以此循环遍历，最终，整个数组就构成了有序区，排序也就完成了。上面的插入并不是交换，而是将该数据前面大于的数据依次后移，然后插入合适位置，构成新的有序区。</p>
+<p>设数组为a[0…n-1]。</p>
+<ol>
+<li><p>初始时，a[0] 自成1个有序区，无序区为a[1…n-1]。令i = 1；</p>
+</li>
+<li><p>将a[i]与前面的有序区进行比较，由后往前依次比较，将大于a[i]的数据依次后移，直至遇到小于a[i] 的数据，就把a[i]插入到该数据的后面，或者直至把有序区比较完毕，a[i]最小，就把a[i]插到最前面，构成新的有序区；其实质就是以无序区的第一个元素依次向前比较。</p>
+</li>
+<li><p>i++，循环2,3，直至i = n-1。</p></li></ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">数据结构冒泡排序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:52:28" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:28+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 23:34:51" itemprop="dateModified" datetime="2021-03-22T23:34:51+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>说到算法，不得不提到两个重要的概念：时间复杂度和空间复杂度。时间复杂度跟数据的输入规模 n 密切相关，时间复杂度的计算就是：找到执行次数最多的语句，然后计算语句执行次数的数量级，用大O表示结果。可以把这个输入规模看做是一个变量来理解，如果时间复杂度为O(1)，那个这个 n 就不是一个变量而是一个常量，不管其数值是多少，哪怕是十万级，它的时间复杂度也是O(1)，相反如果这个 n 是一个变量，可能它的最大值就是不过十，那么同样情况下（线性）它的时间复杂度就是O(n)，二次级就是O(n^2)，以此类推。讨论的时间复杂度是最坏情况下的时间复杂度，这就保证了算法的运行时间不会比任何更长。</p>
+<p>空间复杂度是对一个算法在运行过程中临时占用存储空间的量度，当一个算法的空间复杂度为一个常量，即占用的临时存储空间不随被处理数据量n的大小而改变时，可表示为O(1)。</p>
+<p>另外再说下排序算法的稳定性，通俗的讲就是排序前两个相等的数在序列中的前后位置顺序和排序后它们两个的前后位置顺序相同。如果A[i] = A[j]，A[i] 原来在位置前，排序后A[i] 还是在A[j] 位置前，则是稳定的。这里的前后位置顺序是相对位置（不一定是相邻），排序前A[i] 在A[j] 前面，排序后A[i] 还是在A[j] 前面就是稳定的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">数据结构图邻接表的存储实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 21:52:12" itemprop="dateCreated datePublished" datetime="2020-12-29T21:52:12+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:25:03" itemprop="dateModified" datetime="2021-03-23T10:25:03+08:00">2021-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一个图 G = （V，E）由顶点（vertex）集 V 和边（edge）集 E 组成。每一条边就是一个点对（v，w），其中 v，w ∈V。</p>
+<p>图的表示<br>图的存储一般有邻接表和邻接矩阵两种。若图是稠密的，则宜采用邻接矩阵；图是稀疏的，则应改用邻接表。这里我们先讨论图的邻接表存储方式。</p>
+<p>先看下面的无向图（图片来源于网络）</p>
+<p>​                                                                                         </p>
+<p>邻接表形式</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9B%BE%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -651,7 +665,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -717,7 +731,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -766,12 +780,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容1. Filter：过滤器 2. Listener：监听器Filter：过滤器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Filter&amp;Listener">
+<meta property="og:url" content="http://yoursite.com/2021/11/04/Filter&Listener%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="今日内容1. Filter：过滤器 2. Listener：监听器Filter：过滤器">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-04T11:14:40.626Z">
+<meta property="article:modified_time" content="2021-11-04T11:15:32.526Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="Web基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/11/04/Filter&Listener%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Filter&Listener | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/Filter&Listener%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Filter&Listener
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 19:14:40 / 修改时间：19:15:32" itemprop="dateCreated datePublished" datetime="2021-11-04T19:14:40+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h2><pre><code>1. Filter：过滤器
+2. Listener：监听器</code></pre><h1 id="Filter：过滤器"><a href="#Filter：过滤器" class="headerlink" title="Filter：过滤器"></a>Filter：过滤器<a id="more"></a></h1><pre><code>1. 概念：
+    * 生活中的过滤器：净水器,空气净化器，土匪、
+    * web中的过滤器：当访问服务器的资源时，过滤器可以将请求拦截下来，完成一些特殊的功能。
+    * 过滤器的作用：
+        * 一般用于完成通用的操作。如：登录验证、统一编码处理、敏感字符过滤...
+
+2. 快速入门：
+    1. 步骤：
+        1. 定义一个类，实现接口Filter
+        2. 复写方法
+        3. 配置拦截路径
+            1. web.xml
+            2. 注解
+    2. 代码：
+        @WebFilter(&quot;/*&quot;)//访问所有资源之前，都会执行该过滤器
+        public class FilterDemo1 implements Filter {
+            @Override
+            public void init(FilterConfig filterConfig) throws ServletException {
+
+            }
+
+            @Override
+            public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+                System.out.println(&quot;filterDemo1被执行了....&quot;);</code></pre><p>​<br>                    //放行<br>                    filterChain.doFilter(servletRequest,servletResponse);</p>
+<pre><code>            }
+
+            @Override
+            public void destroy() {
+
+            }
+        }
+
+
+3. 过滤器细节：
+    1. web.xml配置    
+        &lt;filter&gt;
+            &lt;filter-name&gt;demo1&lt;/filter-name&gt;
+            &lt;filter-class&gt;cn.itcast.web.filter.FilterDemo1&lt;/filter-class&gt;
+        &lt;/filter&gt;
+        &lt;filter-mapping&gt;
+            &lt;filter-name&gt;demo1&lt;/filter-name&gt;
+            &lt;!-- 拦截路径 --&gt;
+            &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/filter-mapping&gt;
+    2. 过滤器执行流程
+        1. 执行过滤器
+        2. 执行放行后的资源
+        3. 回来执行过滤器放行代码下边的代码
+    3. 过滤器生命周期方法
+        1. init:在服务器启动后，会创建Filter对象，然后调用init方法。只执行一次。用于加载资源
+        2. doFilter:每一次请求被拦截资源时，会执行。执行多次
+        3. destroy:在服务器关闭后，Filter对象被销毁。如果服务器是正常关闭，则会执行destroy方法。只执行一次。用于释放资源
+    4. 过滤器配置详解
+        * 拦截路径配置：
+            1. 具体资源路径： /index.jsp   只有访问index.jsp资源时，过滤器才会被执行
+            2. 拦截目录： /user/*    访问/user下的所有资源时，过滤器都会被执行
+            3. 后缀名拦截： *.jsp        访问所有后缀名为jsp资源时，过滤器都会被执行
+            4. 拦截所有资源：/*        访问所有资源时，过滤器都会被执行
+        * 拦截方式配置：资源被访问的方式
+            * 注解配置：
+                * 设置dispatcherTypes属性
+                    1. REQUEST：默认值。浏览器直接请求资源
+                    2. FORWARD：转发访问资源
+                    3. INCLUDE：包含访问资源
+                    4. ERROR：错误跳转资源
+                    5. ASYNC：异步访问资源
+            * web.xml配置
+                * 设置&lt;dispatcher&gt;&lt;/dispatcher&gt;标签即可
+
+    5. 过滤器链(配置多个过滤器)
+        * 执行顺序：如果有两个过滤器：过滤器1和过滤器2
+            1. 过滤器1
+            2. 过滤器2
+            3. 资源执行
+            4. 过滤器2
+            5. 过滤器1 
+
+        * 过滤器先后顺序问题：
+            1. 注解配置：按照类名的字符串比较规则比较，值小的先执行
+                * 如： AFilter 和 BFilter，AFilter就先执行了。
+            2. web.xml配置： &lt;filter-mapping&gt;谁定义在上边，谁先执行
+4. 案例：
+    1. 案例1_登录验证
+        * 需求：
+            1. 访问day17_case案例的资源。验证其是否登录
+            2. 如果登录了，则直接放行。
+            3. 如果没有登录，则跳转到登录页面，提示&quot;您尚未登录，请先登录&quot;。</code></pre><p>​    </p>
+<pre><code>2. 案例2_敏感词汇过滤
+    * 需求：
+        1. 对day17_case案例录入的数据进行敏感词汇过滤
+        2. 敏感词汇参考《敏感词汇.txt》
+        3. 如果是敏感词汇，替换为 *** 
+
+    * 分析：
+        1. 对request对象进行增强。增强获取参数相关方法
+        2. 放行。传递代理对象
+
+
+    * 增强对象的功能：
+        * 设计模式：一些通用的解决固定问题的方式
+        1. 装饰模式
+        2. 代理模式
+            * 概念：
+                1. 真实对象：被代理的对象
+                2. 代理对象：
+                3. 代理模式：代理对象代理真实对象，达到增强真实对象功能的目的
+             * 实现方式：
+                 1. 静态代理：有一个类文件描述代理模式
+                 2. 动态代理：在内存中形成代理类
+                    * 实现步骤：
+                        1. 代理对象和真实对象实现相同的接口
+                        2. 代理对象 = Proxy.newProxyInstance();
+                        3. 使用代理对象调用方法。
+                        4. 增强方法
+
+                    * 增强方式：
+                        1. 增强参数列表
+                        2. 增强返回值类型
+                        3. 增强方法体执行逻辑    </code></pre><h2 id="Listener：监听器"><a href="#Listener：监听器" class="headerlink" title="Listener：监听器"></a>Listener：监听器</h2><pre><code>* 概念：web的三大组件之一。
+    * 事件监听机制
+        * 事件    ：一件事情
+        * 事件源 ：事件发生的地方
+        * 监听器 ：一个对象
+        * 注册监听：将事件、事件源、监听器绑定在一起。 当事件源上发生某个事件后，执行监听器代码
+
+
+* ServletContextListener:监听ServletContext对象的创建和销毁
+    * 方法：
+        * void contextDestroyed(ServletContextEvent sce) ：ServletContext对象被销毁之前会调用该方法
+        * void contextInitialized(ServletContextEvent sce) ：ServletContext对象创建后会调用该方法
+    * 步骤：
+        1. 定义一个类，实现ServletContextListener接口
+        2. 复写方法
+        3. 配置
+            1. web.xml
+                    &lt;listener&gt;
+                      &lt;listener-class&gt;cn.itcast.web.listener.ContextLoaderListener&lt;/listener-class&gt;
+                    &lt;/listener&gt;
+
+                    * 指定初始化参数&lt;context-param&gt;
+            2. 注解：
+                * @WebListener</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># Web基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/%E7%A9%BF%E8%B6%8A%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%BF%B7%E5%AE%AB/" rel="prev" title="穿越线程的迷宫">
+      <i class="fa fa-chevron-left"></i> 穿越线程的迷宫
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" rel="next" title="JQuery初级笔记">
+      JQuery初级笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#今日内容"><span class="nav-number">1.</span> <span class="nav-text">今日内容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Filter：过滤器"><span class="nav-number"></span> <span class="nav-text">Filter：过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Listener：监听器"><span class="nav-number">1.</span> <span class="nav-text">Listener：监听器</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35:52</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

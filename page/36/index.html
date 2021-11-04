@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/" class="post-title-link" itemprop="url">项目实战 —— 飞机大战</a>
+            <a href="/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">C各类库函数的实现</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-27 15:25:19" itemprop="dateCreated datePublished" datetime="2020-12-27T15:25:19+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 10:32:15" itemprop="dateModified" datetime="2021-03-23T10:32:15+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-22 08:41:33" itemprop="dateModified" datetime="2021-03-22T08:41:33+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
                 </span>
             </span>
 
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>276</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -229,16 +229,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="项目实战-——-飞机大战"><a href="#项目实战-——-飞机大战" class="headerlink" title="项目实战 —— 飞机大战"></a>项目实战 —— 飞机大战</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>强化 <strong>面向对象</strong> 程序设计</li>
-<li>体验使用 <code>pygame</code> 模块进行 <strong>游戏开发</strong></li>
-</ul>
-<h2 id="实战步骤"><a href="#实战步骤" class="headerlink" title="实战步骤"></a>实战步骤</h2><ol>
-<li><code>pygame</code> 快速体验</li>
-<li><strong>飞机大战</strong> 实战</li></ol>
+          <p>这里讨论C语言标准库中各类常用函数，以及它们的高危情况。</p>
+<p><strong>1、atoi 函数</strong></p>
+<p>这个函数是转换输入字符串转换为整型数。</p>
+<p>对于该函数的实现需要考虑以下几个方面：</p>
+<ol>
+<li>输入字符串为NULL；</li>
+<li>输入的字符包含前导的空格；</li>
+<li>输入开始是否包含符号‘+’、‘-’；</li>
+<li>输入的字符是否合法（对于十进制‘0’~‘9’为合法的输入）；</li>
+<li>计算出的数值为 long int，足够判断溢出；</li>
+<li>数据溢出的处理（上溢出时，返回最大正数；下溢出时，返回最大负数）；</li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -262,7 +266,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -276,7 +280,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">碰撞检测</a>
+            <a href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">C++指针与引用的区别</a>
         </h2>
 
         <div class="post-meta">
@@ -286,14 +290,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-27 15:23:56" itemprop="dateCreated datePublished" datetime="2020-12-27T15:23:56+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:15:30" itemprop="dateModified" datetime="2021-03-22T23:15:30+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 08:34:47" itemprop="dateModified" datetime="2021-03-22T08:34:47+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,7 +305,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -311,134 +315,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>756</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>了解碰撞检测方法</li>
-<li>碰撞实现</li>
-</ul>
-<h2 id="01-了解碰撞检测方法"><a href="#01-了解碰撞检测方法" class="headerlink" title="01. 了解碰撞检测方法"></a>01. 了解碰撞检测方法</h2><ul>
-<li><code>pygame</code> 提供了 <strong>两个非常方便</strong> 的方法可以实现碰撞检测：</li>
-</ul>
-<h3 id="pygame-sprite-groupcollide"><a href="#pygame-sprite-groupcollide" class="headerlink" title="pygame.sprite.groupcollide()"></a>pygame.sprite.groupcollide()</h3><ul>
-<li><strong>两个精灵组</strong> 中 <strong>所有的精灵</strong> 的碰撞检测</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupcollide(group1, group2, dokill1, dokill2, collided = None) -&gt; Sprite_dict</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="pygame-sprite-spritecollide"><a href="#pygame-sprite-spritecollide" class="headerlink" title="pygame.sprite.spritecollide()"></a>pygame.sprite.spritecollide()</h3><ul>
-<li>判断 <strong>某个精灵</strong> 和 <strong>指定精灵组</strong> 中的精灵的碰撞</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spritecollide(sprite, group, dokill, collided = None) -&gt; Sprite_list</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>指定精灵组</strong> 中 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-<li>返回 <strong>精灵组</strong> 中跟 <strong>精灵</strong> 发生碰撞的 <strong>精灵列表</strong></li>
-</ul>
-<h2 id="02-碰撞实现"><a href="#02-碰撞实现" class="headerlink" title="02. 碰撞实现"></a>02. 碰撞实现</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/" class="post-title-link" itemprop="url">敌机出场</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:49:22" itemprop="dateModified" datetime="2021-03-22T21:49:22+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -457,36 +334,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="敌机出场"><a href="#敌机出场" class="headerlink" title="敌机出场"></a>敌机出场</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>使用 <strong>定时器</strong> 添加敌机</li>
-<li>设计 <code>Enemy</code> 类</li>
-</ul>
-<h2 id="01-使用定时器添加敌机"><a href="#01-使用定时器添加敌机" class="headerlink" title="01. 使用定时器添加敌机"></a>01. 使用定时器添加敌机</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 敌机的 <strong>出现规律</strong>：</p>
+          <p>先写出两者的3点区别，后面再具体分析：</p>
 <ol>
-<li>游戏启动后，<strong>每隔 1 秒</strong> 会 <strong>出现一架敌机</strong></li>
-<li>每架敌机 <strong>向屏幕下方飞行</strong>，飞行 <strong>速度各不相同</strong></li>
-<li>每架敌机出现的 <strong>水平位置</strong> 也不尽相同</li>
-<li>当敌机 <strong>从屏幕下方飞出</strong>，不会再飞回到屏幕中</li>
+<li>当引用被创建时，它必须被初始化，而指针则可以在任何时候被初始化</li>
+<li>一旦一个引用被初始化为指向一个对象，它就不能被改变为对另一个对象的引用，而指针可以在任何时候指向另一个对象</li>
+<li>不可能有NULL引用，必须确保引用是和一块合法的存储单元关联，而指针可以初始化为NULL</li>
 </ol>
-<h3 id="1-1-定时器"><a href="#1-1-定时器" class="headerlink" title="1.1 定时器"></a>1.1 定时器</h3><ul>
-<li>在 <code>pygame</code> 中可以使用 <code>pygame.time.set_timer()</code> 来添加 <strong>定时器</strong></li>
-<li>所谓 <strong>定时器</strong>，就是 <strong>每隔一段时间</strong>，去 <strong>执行一些动作</strong></li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_timer(eventid, milliseconds) -&gt; None</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>set_timer</code> 可以创建一个 <strong>事件</strong></li>
-<li>可以在 <strong>游戏循环</strong> 的 <strong>事件监听</strong> 方法中捕获到该事件</li>
-<li>第 1 个参数 <strong>事件代号</strong> 需要基于常量 <code>pygame.USEREVENT</code> 来指定<ul>
-<li><code>USEREVENT</code> 是一个整数，再增加的事件可以使用 <code>USEREVENT + 1</code> 指定，依次类推…</li>
-</ul>
-</li>
-<li>第 2 个参数是 <strong>事件触发</strong> 间隔的 <strong>毫秒值</strong></li>
-</ul>
-<p><strong>定时器事件的监听</strong></p>
+<p>从概念上讲，指针(pointers)从本质上讲就是存放变量地址的一个变量，在逻辑上是独立的，它可以被改变，包括其所指向的地址的改变和其指向的地址中所存放的数据的改变，这点后面再详细叙述。</p>
+<p>而引用(references)是一个别名，它在逻辑上不是独立的，它的存在具有依附性，所以引用必须在一开始就被初始化，而且其引用的对象在其整个生命周期中是不能被改变的，自始至终只能依附于同一个变量。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -510,7 +368,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -524,7 +382,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">vi` —— 终端中的编辑器用</a>
+            <a href="/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" class="post-title-link" itemprop="url">C++运算符重载</a>
         </h2>
 
         <div class="post-meta">
@@ -534,14 +392,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-27 15:22:33" itemprop="dateCreated datePublished" datetime="2020-12-27T15:22:33+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:41:19" itemprop="dateModified" datetime="2021-03-22T21:41:19+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 08:34:37" itemprop="dateModified" datetime="2021-03-22T08:34:37+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -549,7 +407,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -559,7 +417,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.2k</span>
+              <span>5.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -578,41 +436,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="vi-——-终端中的编辑器"><a href="#vi-——-终端中的编辑器" class="headerlink" title="vi` —— 终端中的编辑器"></a>vi` —— 终端中的编辑器</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li><code>vi</code> 简介</li>
-<li>打开和新建文件</li>
-<li>三种工作模式</li>
-<li>常用命令</li>
-<li>分屏命令</li>
-<li>常用命令速查图</li>
-</ul>
-<h2 id="01-vi-简介"><a href="#01-vi-简介" class="headerlink" title="01. vi 简介"></a>01. <code>vi</code> 简介</h2><h3 id="1-1-学习-vi-的目的"><a href="#1-1-学习-vi-的目的" class="headerlink" title="1.1 学习 vi 的目的"></a>1.1 学习 <code>vi</code> 的目的</h3><ul>
-<li>在工作中，要对 <strong>服务器</strong> 上的文件进行 <strong>简单</strong> 的修改，可以使用 <code>ssh</code> 远程登录到服务器上，并且使用 <code>vi</code> 进行快速的编辑即可</li>
-<li>常见需要修改的文件包括：<ul>
-<li><strong>源程序</strong></li>
-<li><strong>配置文件</strong>，例如 <code>ssh</code> 的配置文件 <code>~/.ssh/config</code></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<ul>
-<li>在没有图形界面的环境下，要编辑文件，<code>vi</code> 是最佳选择！</li>
-<li>每一个要使用 Linux 的程序员，都应该或多或少的学习一些 <code>vi</code> 的常用命令</li>
-</ul>
-</blockquote>
-<h3 id="1-2-vi-和-vim"><a href="#1-2-vi-和-vim" class="headerlink" title="1.2 vi 和 vim"></a>1.2 vi 和 vim</h3><ul>
-<li>在很多 <code>Linux</code> 发行版中，直接把 <code>vi</code> 做成 <code>vim</code> 的软连接</li>
-</ul>
-<h4 id="vi"><a href="#vi" class="headerlink" title="vi"></a>vi</h4><ul>
-<li><code>vi</code> 是 <code>Visual interface</code> 的简称，是 <code>Linux</code> 中 <strong>最经典</strong> 的文本编辑器</li>
-<li><code>vi</code> 的核心设计思想 —— <strong>让程序员的手指始终保持在键盘的核心区域，就能完成所有的编辑操作</strong></li>
-</ul>
-<p><img src="/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/14993340485745/001_vi%E9%94%AE%E7%9B%98.png" alt="001_vi键盘-w551"></p>
-<ul>
-<li><code>vi</code> 的特点：</li></ul>
+          <p>一、运算符的定义</p>
+<p>运算符重载就是运算符的“一符多用”。重载运算符是具有特殊名称的函数：保留字 operator 后接需定义的操作符符号。像任意其他函数一样，重载操作符具有返回类型和形参表，每个操作符用于内置类型都有关联的定义，当内置操作符和类型上的操作存在逻辑对应关系时，操作符重载最有用，最直观，使用重载操作符并不是创造命名操作。</p>
+<p>二、在哪种情况下使用哪种重载运算符的方式合适？</p>
+<p>C++ 提供了两种重载运算符的方式，在大多数情况下：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/24/vi%E2%80%94%E7%BB%88%E7%AB%AF%E4%B8%AD%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -636,7 +466,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -650,7 +480,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">pygame 快速入门</a>
+            <a href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">C语言内存管理：malloc、calloc、free的实现</a>
         </h2>
 
         <div class="post-meta">
@@ -660,14 +490,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+              <time title="创建时间：2020-12-27 15:20:44" itemprop="dateCreated datePublished" datetime="2020-12-27T15:20:44+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:31:26" itemprop="dateModified" datetime="2021-03-22T21:31:26+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 08:44:15" itemprop="dateModified" datetime="2021-03-22T08:44:15+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -675,7 +505,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
                 </span>
             </span>
 
@@ -685,14 +515,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
+              <span>8.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -704,26 +534,124 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="pygame-快速入门"><a href="#pygame-快速入门" class="headerlink" title="pygame 快速入门"></a>pygame 快速入门</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
-<li>项目准备</li>
-<li>使用 <code>pygame</code> 创建图形窗口</li>
-<li>理解 <strong>图像</strong> 并实现图像绘制</li>
-<li>理解 <strong>游戏循环</strong> 和 <strong>游戏时钟</strong></li>
-<li>理解 <strong>精灵</strong> 和 <strong>精灵组</strong></li>
-</ol>
-<h2 id="项目准备"><a href="#项目准备" class="headerlink" title="项目准备"></a>项目准备</h2><ol>
-<li>新建 <strong>飞机大战</strong> 项目</li>
-<li>新建一个 <code>hm_01_pygame入门.py</code></li>
-<li>导入 <strong>游戏素材图片</strong></li>
-</ol>
-<p><strong>游戏的第一印象</strong></p>
+          <p>任何一个对C稍稍有了解的人都知道malloc、calloc、free。前面两个是用户态在堆上分配一段连续（虚拟地址）的内存空间，然后可以通过free释放，但是，同时也会有很多人对其背后的实现机制不了解。<br>这篇文章则是通过介绍这三个函数，并简单的予以实现，对比现有C的标准库实现（glibc等）相比，并不是特别高效，我们重在阐述背后的基本原理。</p>
+<p><strong>一、C程序的存储空间布局</strong></p>
+<p>图1<br><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/20160103134018703" alt="这里写图片描述"></p>
 <ul>
-<li>把一些 <strong>静止的图像</strong> 绘制到 <strong>游戏窗口</strong> 中</li>
-<li>根据 <strong>用户的交互</strong> 或其他情况，<strong>移动</strong> 这些图像，产生动画效果</li>
-<li>根据 <strong>图像之间</strong> 是否发生重叠，判断 <strong>敌机是否被摧毁</strong> 等其他情况</li></ul>
+<li>text：整个用户空间的最低地址部分，存放的是指令（程序所编译成的可执行机器码）。可共享，即使是频繁操作执行的程序，在存储器中也只需有一个副本，通常是只读的。</li>
+<li>initialized data(data)：存放初始化过的全局变量，包含了程序中需明确地赋初值的变量。</li>
+<li>uninitialized data(bss)：存放的是未初始化过的全局变量，在程序开始执行之前，内核将此段中的数据初始化为0或者NULL。</li>
+<li>heap：堆，自低地址向高地址增长，后面重点剖析</li>
+<li>stack：栈，自高地址向低地址增长，自动变量以及每次函数调用时所需保存的信息都存放在此段中。</li>
+</ul>
+<p><strong>二、Heap 内存模型</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/24/pygame%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">C++拷贝构造函数与赋值函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:18:11" itemprop="dateCreated datePublished" datetime="2020-12-27T15:18:11+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-21 23:28:23" itemprop="dateModified" datetime="2021-03-21T23:28:23+08:00">2021-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里我们用类String 来介绍这两个函数：</p>
+<p>拷贝构造函数是一种特殊构造函数，具有单个形参，该形参（常用const修饰）是对该类类型的引用。当定义一个新对象并用一个同类型的对象对它进行初始化时，将显式使用拷贝构造函数。为啥形参必须是对该类型的引用呢？试想一下，假如形参是该类的一个实例，由于是传值参数，我们把形参复制到实参会调用拷贝构造函数，如果允许拷贝构造函数传值，就会在拷贝构造函数内调用拷贝构造函数，从而形成无休止的递归调用导致栈溢出。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，无返回值</span></span><br></pre></td></tr></table></figure>
+
+<p>赋值函数，也是赋值操作符重载，因为赋值必须作为类成员，那么它的第一个操作数隐式绑定到 this 指针，也就是 this 绑定到指向左操作数的指针。因此，赋值操作符接受单个形参，且该形参是同一类类型的对象。右操作数一般作为const 引用传递。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>&amp;	<span class="keyword">operator</span>=(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，返回对同一类类型(左操作数)的引用</span></span><br></pre></td></tr></table></figure>
+
+
+<p>拷贝构造函数和赋值函数并非每个对象都会使用，另外如果不主动编写的话，编译器将以“位拷贝”的方式自动生成缺省的函数。在类的设计当中，“位拷贝”是应当防止的。倘若类中含有指针变量，那么这两个缺省的函数就会发生错误。这就涉及到深复制和浅复制的问题了。</p>
+<p>拷贝有两种：深拷贝，浅拷贝</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -746,7 +674,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -812,7 +740,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -861,12 +789,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

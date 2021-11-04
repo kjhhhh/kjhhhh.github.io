@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/const%E7%9A%84%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8map%E5%92%8Cmultimap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/const%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">const的使用</a>
+            <a href="/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8map%E5%92%8Cmultimap/" class="post-title-link" itemprop="url">STLset和multiset</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:26:30" itemprop="dateCreated datePublished" datetime="2020-12-27T15:26:30+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:35:08" itemprop="dateCreated datePublished" datetime="2020-12-27T15:35:08+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:36:05" itemprop="dateModified" datetime="2021-03-22T08:36:05+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:37:29" itemprop="dateModified" datetime="2021-03-22T21:37:29+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>7.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -229,15 +229,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>对于const，最为熟悉的就是，它允许你指定一个语义约束，也就是指定一个不该被改动的对象，而编译器会强制实施这项约束。const 修饰的值是只读的变量，而不是常量，其值在编译时不能被使用，因为编译器在编译时不知道其存储的内容。下面程序说明</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .c file , c project</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Size = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arr[Size];  <span class="comment">//编译出错</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <p>map与multimap的区别等同于set 与multiset的区别。</p>
+<p>一、map</p>
+<p>map的特性是，所有元素都会根据元素的键值自动被排序。map中的所有元素都是pair（意味着两个元素），同时拥有实质（value）和键值（key）。pair的第一元素被视为键值，第二元素被视为实质。回忆set，set 中的所有元素都是单个的（实值就是键值，键值就是实值）。map不允许两个元素拥有相同的键值。</p>
+<p>下面是pair的定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">pair</span> &#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> T1 first_type;</span><br><span class="line">	<span class="keyword">typedef</span> T2 second_type;</span><br><span class="line">	T1 first;</span><br><span class="line">	T2 second;</span><br><span class="line">	pair() : first(T1()), second(T2()) &#123;&#125;</span><br><span class="line">	pair(<span class="keyword">const</span> T1&amp; a, <span class="keyword">const</span> T2&amp; b) : first(a), second(b) &#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>C语言中，编译出错，表明 const 修饰的值不是常量(C语言)。但在C++中同样的代码却不会出现编译错误，因为C++扩展了const 的含义，所以C++和C在某些细节上还是有区别的，不过const在C++中更多的是应用在类中，这里主要讨论C++中的const 。</p>
-<p>含指针情况下，const 到底修饰谁？先忽略类型名，const 离谁近，就修饰谁。或者，如果关键字 const 出现在 * 左边，表示被指的对象不可改；如果出现在 * 右边，则表示指针自身不可改，如果两边都有，那就是指针和指针所指的对象不可改。</p>
-<p>下面就重点探讨C++类中的 const。</p>
+<p>从上可以看出，pair 包含两个类型（可以相同，也可以不相同）的公共元素。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/const%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8map%E5%92%8Cmultimap/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -261,7 +262,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8set%E5%92%8Cmultiset/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -275,7 +276,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">C各类库函数的实现</a>
+            <a href="/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8set%E5%92%8Cmultiset/" class="post-title-link" itemprop="url">STLset和multiset</a>
         </h2>
 
         <div class="post-meta">
@@ -285,14 +286,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:25:19" itemprop="dateCreated datePublished" datetime="2020-12-27T15:25:19+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:34:52" itemprop="dateCreated datePublished" datetime="2020-12-27T15:34:52+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:41:33" itemprop="dateModified" datetime="2021-03-22T08:41:33+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:37:40" itemprop="dateModified" datetime="2021-03-22T21:37:40+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +301,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -310,14 +311,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -329,20 +330,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这里讨论C语言标准库中各类常用函数，以及它们的高危情况。</p>
-<p><strong>1、atoi 函数</strong></p>
-<p>这个函数是转换输入字符串转换为整型数。</p>
-<p>对于该函数的实现需要考虑以下几个方面：</p>
-<ol>
-<li>输入字符串为NULL；</li>
-<li>输入的字符包含前导的空格；</li>
-<li>输入开始是否包含符号‘+’、‘-’；</li>
-<li>输入的字符是否合法（对于十进制‘0’~‘9’为合法的输入）；</li>
-<li>计算出的数值为 long int，足够判断溢出；</li>
-<li>数据溢出的处理（上溢出时，返回最大正数；下溢出时，返回最大负数）；</li></ol>
+          <p>标准的STL关联式容器分为set（集合）和map（映射表）两大类，以及两大类的衍生体multiset（多键集合）和multimap（多键映射表）（还有一些不在标准规格之列的关联式容器）。这些容器的底层机制均以<a href="http://blog.csdn.net/wenqian1991/article/details/26621657" target="_blank" rel="noopener">RB-tree（红黑树）</a>完成。</p>
+<p>一、set</p>
+<p>set 的特性是，所有元素都会根据元素的键值自动被排序，set 只拥有一个元素，它的键值就是实值，实值就是键值，并且set 不允许两个元素有相同的键值。</p>
+<p>由于，set 元素值就是其键值，关系到 set 元素的排列规则，所以我们不能通过set 的迭代器来改变set 的元素值。标准的STL set 是以RB-tree 为底层机制，几乎所有的 set 操作行为，都只是转调用 RB-tree 的操作行为而已。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C%E5%90%84%E7%B1%BB%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E5%85%B3%E8%81%94%E5%BC%8F%E5%AE%B9%E5%99%A8set%E5%92%8Cmultiset/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -366,7 +360,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%BA%A2%E9%BB%91%E6%A0%91%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -380,7 +374,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">C++指针与引用的区别</a>
+            <a href="/2020/12/27/STL%E7%BA%A2%E9%BB%91%E6%A0%91%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">STL红黑树</a>
         </h2>
 
         <div class="post-meta">
@@ -390,14 +384,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:23:56" itemprop="dateCreated datePublished" datetime="2020-12-27T15:23:56+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:34:34" itemprop="dateCreated datePublished" datetime="2020-12-27T15:34:34+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:34:47" itemprop="dateModified" datetime="2021-03-22T08:34:47+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:37:49" itemprop="dateModified" datetime="2021-03-22T21:37:49+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -415,14 +409,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -434,17 +428,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>先写出两者的3点区别，后面再具体分析：</p>
+          <p>红黑树概述</p>
+<p>历史上 AVL 树流行的另一变种是红黑树（red-black tree）。对红黑树的操作能保证在最坏情况下动态几何操作的时间为 O(logN) 。之前介绍过<a href="http://blog.csdn.net/wenqian1991/article/details/21889147" target="_blank" rel="noopener">AVL 树</a>，该树都是在进行插入和删除操作时通过特定操作保持二叉查找树的平衡，从而获得较高的查找性能。但 RB-Tree 出来之后，便很少有应用场合用到 AVL 。</p>
+<p>这里在探索STL源码时学习红黑树的，由于STL中的关联式容器默认的底层实现都是红黑树，以及 Linux 内核中包括进程队列等结构也是基于红黑树的。所以有必要掌握红黑树的实现原理和源码实现。</p>
+<p>红黑树是二叉查找树，但在每个节点上增加了一位存储位表示该节点的颜色，具体可以是 RED 或 BLACK。通过对任一条从根到叶子的路径上各节点着色方式的限制，红黑树确保了没有一条路径会比其他路径长到两倍，因而基本上是平衡的。它所追求的的是局部平衡而不是AVL树中的非常严格的平衡。</p>
+<p>红黑树在二叉查找树的基础上还必须满足以下着色规则：</p>
 <ol>
-<li>当引用被创建时，它必须被初始化，而指针则可以在任何时候被初始化</li>
-<li>一旦一个引用被初始化为指向一个对象，它就不能被改变为对另一个对象的引用，而指针可以在任何时候指向另一个对象</li>
-<li>不可能有NULL引用，必须确保引用是和一块合法的存储单元关联，而指针可以初始化为NULL</li>
+<li>每个节点不是红色就是黑色</li>
+<li>根节点为黑色</li>
+<li>如果节点为红，其子节点必须为黑（一条路径上不能出现连续的两个红色节点）</li>
+<li>任一节点至NULL（树尾端）的任何路径，所含之黑节点数必须相同</li>
 </ol>
-<p>从概念上讲，指针(pointers)从本质上讲就是存放变量地址的一个变量，在逻辑上是独立的，它可以被改变，包括其所指向的地址的改变和其指向的地址中所存放的数据的改变，这点后面再详细叙述。</p>
-<p>而引用(references)是一个别名，它在逻辑上不是独立的，它的存在具有依附性，所以引用必须在一开始就被初始化，而且其引用的对象在其整个生命周期中是不能被改变的，自始至终只能依附于同一个变量。</p>
+<p>根据规则4，新增节点必须为红；根据规则3，新增节点之父点必须为黑。当新节点根据二叉查找树的规则（键值大小）到达其插入点，却未能符合上述条件，就必须调整颜色并旋转树形。AVL 树插入节点后如果不满足其平衡条件，需要旋转树形。红黑树并不是基于 AVL 树的，它是在二叉查找树的基础上。</p>
+<p>那么红黑树的基本平衡又是如何保证的呢？红黑树的着色法则，根据上面的规则，一条路径上不能出现连续的两个红色节点，必须有黑色节点间隔开来，然后红黑树的每条路径中所含黑色节点的数目必须相同，这样就限制每条路径之间的高度差，从而达到接近平衡的目的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E7%BA%A2%E9%BB%91%E6%A0%91%E5%88%86%E6%9E%90/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -468,7 +467,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%89%B9%E6%AE%8A%E5%AE%B9%E5%99%A8%20string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -482,7 +481,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" class="post-title-link" itemprop="url">C++运算符重载</a>
+            <a href="/2020/12/27/STL%E7%89%B9%E6%AE%8A%E5%AE%B9%E5%99%A8%20string/" class="post-title-link" itemprop="url">STLstring</a>
         </h2>
 
         <div class="post-meta">
@@ -492,14 +491,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:22:33" itemprop="dateCreated datePublished" datetime="2020-12-27T15:22:33+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:34:09" itemprop="dateCreated datePublished" datetime="2020-12-27T15:34:09+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:34:37" itemprop="dateModified" datetime="2021-03-22T08:34:37+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:41:01" itemprop="dateModified" datetime="2021-03-22T21:41:01+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -517,14 +516,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.6k</span>
+              <span>9.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -536,13 +535,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一、运算符的定义</p>
-<p>运算符重载就是运算符的“一符多用”。重载运算符是具有特殊名称的函数：保留字 operator 后接需定义的操作符符号。像任意其他函数一样，重载操作符具有返回类型和形参表，每个操作符用于内置类型都有关联的定义，当内置操作符和类型上的操作存在逻辑对应关系时，操作符重载最有用，最直观，使用重载操作符并不是创造命名操作。</p>
-<p>二、在哪种情况下使用哪种重载运算符的方式合适？</p>
-<p>C++ 提供了两种重载运算符的方式，在大多数情况下：</p>
+          <p>体会string 的强大。现今世界的数据处理大部分就是字符串处理，作为使用STL的程序员自然应该去了解 string 这个特殊容器。</p>
+<p>这里就不同篇介绍string 了，只给出常用部分函数接口的内部实现。在应用string 的时候，只需要包含头文件<iostream> 就行了</iostream></p>
+<p>C++ 标准中string 类的特性与 vector&lt;&gt; 很相似，有以下几点区别：string 总会在末尾存放NULL 字符；string 需要借助 char_traits&lt;&gt;::assign,char_traits&lt;&gt;::copy 和char_traits&lt;&gt;::move 来复制元素，另外string 还额外提供了一些接口函数。</p>
+<p>string（basic_string）类空间的分配（构造和析构）和vector&lt;&gt; 很相似，这里就不说了。这里只介绍几个重要函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Class basic_string.  </span></span><br><span class="line"><span class="comment">// Class invariants:</span></span><br><span class="line"><span class="comment">// (1) [start, finish) is a valid range.</span></span><br><span class="line"><span class="comment">// (2) Each iterator in [start, finish) points to a valid object</span></span><br><span class="line"><span class="comment">//     of type value_type.</span></span><br><span class="line"><span class="comment">// (3) *finish is a valid object of type value_type; in particular,</span></span><br><span class="line"><span class="comment">//     it is value_type().</span></span><br><span class="line"><span class="comment">// (4) [finish + 1, end_of_storage) is a valid range.</span></span><br><span class="line"><span class="comment">// (5) Each iterator in [finish + 1, end_of_storage) points to </span></span><br><span class="line"><span class="comment">//     unininitialized memory.</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E7%89%B9%E6%AE%8A%E5%AE%B9%E5%99%A8%20string/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -566,7 +566,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -580,7 +580,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">C语言内存管理：malloc、calloc、free的实现</a>
+            <a href="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/" class="post-title-link" itemprop="url">STL哈希表</a>
         </h2>
 
         <div class="post-meta">
@@ -590,14 +590,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:20:44" itemprop="dateCreated datePublished" datetime="2020-12-27T15:20:44+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:33:51" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:51+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:44:15" itemprop="dateModified" datetime="2021-03-22T08:44:15+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:36:27" itemprop="dateModified" datetime="2021-03-22T21:36:27+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -605,7 +605,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -615,14 +615,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.8k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>15 分钟</span>
             </span>
 
         </div>
@@ -634,20 +634,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>任何一个对C稍稍有了解的人都知道malloc、calloc、free。前面两个是用户态在堆上分配一段连续（虚拟地址）的内存空间，然后可以通过free释放，但是，同时也会有很多人对其背后的实现机制不了解。<br>这篇文章则是通过介绍这三个函数，并简单的予以实现，对比现有C的标准库实现（glibc等）相比，并不是特别高效，我们重在阐述背后的基本原理。</p>
-<p><strong>一、C程序的存储空间布局</strong></p>
-<p>图1<br><img src="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/20160103134018703" alt="这里写图片描述"></p>
-<ul>
-<li>text：整个用户空间的最低地址部分，存放的是指令（程序所编译成的可执行机器码）。可共享，即使是频繁操作执行的程序，在存储器中也只需有一个副本，通常是只读的。</li>
-<li>initialized data(data)：存放初始化过的全局变量，包含了程序中需明确地赋初值的变量。</li>
-<li>uninitialized data(bss)：存放的是未初始化过的全局变量，在程序开始执行之前，内核将此段中的数据初始化为0或者NULL。</li>
-<li>heap：堆，自低地址向高地址增长，后面重点剖析</li>
-<li>stack：栈，自高地址向低地址增长，自动变量以及每次函数调用时所需保存的信息都存放在此段中。</li>
-</ul>
-<p><strong>二、Heap 内存模型</strong></p>
+          <p>哈希表是一个很重要的数据结构，在各大场合均有应用，比如在内核网络栈中的 sock_array 的结构。</p>
+<p>之前也学习过<a href="http://blog.csdn.net/wenqian1991/article/details/22754171" target="_blank" rel="noopener">哈希表</a> ，建议看此文之前，先看前面用C++实现的简洁的哈希表。这里通过剖析SGI STL 中的hashtable 来进一步探索hashtable。</p>
+<p>SGI STL 中哈希表采用链接法解决冲突。结构中维护了一个 vector，vector 中每一个元素称为一个桶（bucket），它包含的是一个链表的第一个节点。</p>
+<p>哈希表的思想这里就不赘述了，直接通过STL 的源码来剖心其内部实现。</p>
+<p><strong>一、 hash table 的节点定义：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">hashtable_node</span></span></span><br><span class="line"><span class="class">  __<span class="title">hashtable_node</span>* <span class="title">next</span>;</span> <span class="comment">//下一个节点</span></span><br><span class="line">  Value val; <span class="comment">//键值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>bucket 所维护的正是上述的 hash table node。</p>
+<p>​               <img src="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/20140621204518781" alt="img"></p>
+<p>从上图可知，buckets vector 中存放的是bucket，然后每个bucket 存放链表（如果有的话）。通俗的说bucket 就是动态array 中的一个元素。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9Amalloc%E3%80%81calloc%E3%80%81free%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLhashtable%EF%BC%88%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%89/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -670,7 +669,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/32/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/34/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/32/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/34/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -736,7 +735,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -785,12 +784,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

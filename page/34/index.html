@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">C++拷贝构造函数与赋值函数</a>
+            <a href="/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">STLlist内部机制</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:18:11" itemprop="dateCreated datePublished" datetime="2020-12-27T15:18:11+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:33:31" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:31+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:28:23" itemprop="dateModified" datetime="2021-03-21T23:28:23+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:36:34" itemprop="dateModified" datetime="2021-03-22T21:36:34+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>14k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -229,19 +229,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这里我们用类String 来介绍这两个函数：</p>
-<p>拷贝构造函数是一种特殊构造函数，具有单个形参，该形参（常用const修饰）是对该类类型的引用。当定义一个新对象并用一个同类型的对象对它进行初始化时，将显式使用拷贝构造函数。为啥形参必须是对该类型的引用呢？试想一下，假如形参是该类的一个实例，由于是传值参数，我们把形参复制到实参会调用拷贝构造函数，如果允许拷贝构造函数传值，就会在拷贝构造函数内调用拷贝构造函数，从而形成无休止的递归调用导致栈溢出。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，无返回值</span></span><br></pre></td></tr></table></figure>
+          <p>List 就是链表，这个我们在很久之前就学习过了<a href="http://blog.csdn.net/wenqian1991/article/details/17764165" target="_blank" rel="noopener">单向链表</a>，<a href="http://blog.csdn.net/wenqian1991/article/details/17969861" target="_blank" rel="noopener">双向链表</a>。之前对STL有过大概的剖析，但没涉及到链表，早几天使用到了STL中的<list>，对其中的有些细节不明了，特意重新阅读了下源码，对STL中的List 加深一下理解。。。。论指针（地址）的重要性。</list></p>
+<p>附带说一句，阅读源码，建议使用Source Insight，非常好的源码阅读工具，没有其二。</p>
+<p><strong>1、List 概述</strong></p>
+<p>list 和 <a href="http://blog.csdn.net/wenqian1991/article/details/19540385" target="_blank" rel="noopener">vector</a> 是两个最常用的容器（序列式容器）。二者最显著的区别自然就是vector是连续线性空间，list则是不连续线性空间，相比于vector（动态数组），它的好处是每次插入和删除一个元素，只需配置或释放一个元素空间，对于任何位置的元素插入或元素移除，list永远是常数时间。尺有所长，寸有所短，list 寻址某一元素也没有vector（常数时间）方便。那么什么时机下最适合使用哪一种容器呢？必须视元素的多寡，元素的构造复杂度，元素存取行为的特定而定。</p>
+<p><strong>2、list 的节点</strong></p>
+<p>侯捷先生剖析的是STL203版的源码，我们这里紧跟下时尚，来剖析最新的STL源码<a href="http://www.sgi.com/tech/stl/download.html" target="_blank" rel="noopener">http://www.sgi.com/tech/stl/download.html </a></p>
+<p>以下是STL list的节点结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">List_node_base</span> &#123;</span></span><br><span class="line">  _List_node_base* _M_next;</span><br><span class="line">  _List_node_base* _M_prev;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">Tp</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> _<span class="title">List_node</span> :</span> <span class="keyword">public</span> _List_node_base &#123;</span><br><span class="line">  _Tp _M_data;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>赋值函数，也是赋值操作符重载，因为赋值必须作为类成员，那么它的第一个操作数隐式绑定到 this 指针，也就是 this 绑定到指向左操作数的指针。因此，赋值操作符接受单个形参，且该形参是同一类类型的对象。右操作数一般作为const 引用传递。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>&amp;	<span class="keyword">operator</span>=(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s);</span><br><span class="line"><span class="comment">//类成员，返回对同一类类型(左操作数)的引用</span></span><br></pre></td></tr></table></figure>
-
-
-<p>拷贝构造函数和赋值函数并非每个对象都会使用，另外如果不主动编写的话，编译器将以“位拷贝”的方式自动生成缺省的函数。在类的设计当中，“位拷贝”是应当防止的。倘若类中含有指针变量，那么这两个缺省的函数就会发生错误。这就涉及到深复制和浅复制的问题了。</p>
-<p>拷贝有两种：深拷贝，浅拷贝</p>
+<p>显然这是一个双向链表，链表节点的数据部分单独的放在一个结构体中，然后通过继承来获得链表的先后指针。node_base中仅含指针，这赶脚有点类似于linux内核中的list。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLlist%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -265,7 +265,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -279,7 +279,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/" class="post-title-link" itemprop="url">C++类的静态成员和C语言中的static</a>
+            <a href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">STLvector内部机制</a>
         </h2>
 
         <div class="post-meta">
@@ -289,14 +289,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:16:30" itemprop="dateCreated datePublished" datetime="2020-12-27T15:16:30+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:33:10" itemprop="dateCreated datePublished" datetime="2020-12-27T15:33:10+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:28:34" itemprop="dateModified" datetime="2021-03-21T23:28:34+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:37:13" itemprop="dateModified" datetime="2021-03-22T21:37:13+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -314,14 +314,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -333,16 +333,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一、C++类的静态成员</p>
-<p>学过C++的都知道，静态成员是属于整个类而不是某个对象的，静态成员变量在内存中只存储一份共所有对象共用，在所有对象中都可以共享它。</p>
-<p>静态成员的定义或声明需要加个关键字 static。因为属于整个类，所以可以通过 &lt;类名&gt;::&lt;静态成员名&gt;来使用。</p>
-<p>比较容易混淆和出错的地方在于类的静态成员变量和静态成员函数的使用，这两者都属于静态成员。</p>
-<p>需要注意的是：静态成员属于整个类，在类对象实例化前，静态成员就已经分配空间了，而非静态成员无需初始化，必须在类实例化对象后才有内存空间，所以就有了个先后顺序：静态成员先于非静态成员存在。</p>
-<p>下面我们来看看如下几个情况： </p>
-<p>1、通过类名调用静态成员函数和非静态成员函数</p>
+          <p>先了解几个必要成员及函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对源码略作调整</span></span><br><span class="line">iterator _M_start;                  <span class="comment">//表示目前使用空间的头</span></span><br><span class="line">iterator _M_finish;                 <span class="comment">//表示目前使用空间的尾（尾：最后一个元素的下一个位置）</span></span><br><span class="line">iterator _M_end_of_storage;         <span class="comment">//表示目前可用空间的尾</span></span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _M_start; &#125;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span>   </span>&#123; <span class="keyword">return</span> _M_finish; &#125;</span><br><span class="line"><span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span>                  <span class="comment">//目前空间元素的个数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(end() - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">max_size</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(<span class="number">-1</span>) / <span class="keyword">sizeof</span>(_Tp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span>              <span class="comment">//容量</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> size_type(_M_end_of_storage - begin());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> begin() == end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>这里先学习 insert() 函数（后面介绍另一个版本的 insert()：插入n个指定元素）：关于 construc() 函数的介绍可以参见其它博客</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%92%8CC%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84static/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLvector%20%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -366,7 +367,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -380,7 +381,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">C++深入分析虚函数</a>
+            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">STL内存基本处理</a>
         </h2>
 
         <div class="post-meta">
@@ -390,14 +391,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:14:15" itemprop="dateCreated datePublished" datetime="2020-12-27T15:14:15+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:32:41" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:41+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:28:40" itemprop="dateModified" datetime="2021-03-21T23:28:40+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:40:49" itemprop="dateModified" datetime="2021-03-22T21:40:49+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -415,14 +416,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.6k</span>
+              <span>7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -434,28 +435,117 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>前面探索了<a href="http://blog.csdn.net/wenqian1991/article/details/41047957" target="_blank" rel="noopener">C++对象的内存模型</a>，其中简单的涉及到了虚函数，作为C++实现其多态的一个重要机制，这里进一步探索下虚函数机制，以前也看过网络上关于虚函数机制的一些精彩的文章，但现在决定自己再分析这个虚函数机制以加深理解，看与自己动手探索还是有区别的。</p>
-<p><strong><em>\</em>一、异质链表**</strong></p>
-<p>1、“is-a” 原理</p>
-<p>在公有派生方式下，对派生类的对象里的基类子对象的水平访问与基类单独生成的对象的访问是一样的。也就是说，我们完全可以把public 继承方式的派生类的对象当做基类的一个对象来使用。反过来则不行。这就是“is-a”原理</p>
-<p>在公有派生方式下，基于“is-a”原理，我们可以得出以下几点：</p>
+          <p>这里继续学习基于配置器之上的一些内存基本处理工具。主要剖析 SGI STL 源码（<a href="https://blog.csdn.net/wenqian1991/article/details/http" target="_blank" rel="noopener">http ://www.sgi.com/tech/stl/download.html</a> v3.3）中的几个内存处理函数(由函数名可知，是对未初始化空间的初始化操作，即通过复制或赋值的方式初始化未初始化的空间)：<br>uninitialized_copy()，uninitialized_copy_n()，uninitialized_fill()，uninitialized_fill_n()。</p>
+<p>先学习 uninitiated_copy()</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//stl source code（v3.3）</span></span><br><span class="line"><span class="comment">//defined in &lt;stl_uninitialized.h&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">char</span>* <span class="title">uninitialized_copy</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* __first, <span class="keyword">const</span> <span class="keyword">char</span>* __last, <span class="keyword">char</span>* __result)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	memmove(__result, __first, __last - __first);</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);  <span class="comment">//返回该连续区域的末尾</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">wchar_t</span>*   <span class="comment">// typedef unsigned short wchar_t;</span></span><br><span class="line">uninitialized_copy(<span class="keyword">const</span> <span class="keyword">wchar_t</span>* __first, <span class="keyword">const</span> <span class="keyword">wchar_t</span>* __last, <span class="keyword">wchar_t</span>* __result)</span><br><span class="line">&#123;</span><br><span class="line">	memmove(__result, __first, <span class="keyword">sizeof</span>(<span class="keyword">wchar_t</span>)* (__last - __first));</span><br><span class="line">	<span class="keyword">return</span> __result + (__last - __first);</span><br></pre></td></tr></table></figure>
+
+<p>上面两个是对两种特化类型的处理，下面为泛化版本 </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E5%9B%9B)%20%E5%86%85%E5%AD%98%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第二级配置器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:32:21" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:21+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:38:01" itemprop="dateModified" datetime="2021-03-22T21:38:01+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>考虑到小型区块所可能造成的内存破碎问题，SGI 设计了双层级配置器，这里则学习第二级配置器，第二级配置器的设计思想为：</p>
 <ol>
-<li>一个派生类的对象可以赋给基类对象；</li>
-<li>派生类对象可以初始化基类对象；</li>
-<li>派生类的对象可以初始化基类的引用；</li>
-<li>派生类的对象的地址可以赋给指向基类对象的指针。</li>
+<li>如果配置区块超过128 bytes，则移交给第一级配置器处理；</li>
+<li>如果配置区块小于128 bytes，则采用内存池管理（memory pool）。每次配置一大块内存，则维护对应的自由链表（free-list），下次若再有相同大小的内存需求，就直接从 free-list 中拨出（没有就继续配置内存，具体后面讲述），如果客端释换小额区块，就有配置器回收到 free-list 中。</li>
 </ol>
-<p>前面三条都是一个性质，派生类对象赋给基类对象的时候，都是调用基类的赋值构造函数，这样赋值的时候，只会将派生类对象中继承的基类成员赋值给基类对象成员，不会发生内存越界的情况。下面是一段截取的反汇编代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">60</span>: 	base_obj = derived_obj;</span><br><span class="line"><span class="number">00</span>DD442C  lea         eax,[derived_obj]  </span><br><span class="line"><span class="number">00</span>DD442F  push        eax  </span><br><span class="line"><span class="number">00</span>DD4430  lea         ecx,[base_obj]  </span><br><span class="line"><span class="number">00</span>DD4433  call        Base::<span class="keyword">operator</span>= (<span class="number">0</span>DD16AEh)</span><br></pre></td></tr></table></figure>
+<p>需要说明的是：本系列引用的STL源码版本为 v3.3，对比版本 v2.03 风格上有了些许变化，但设计思想还是不变的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* part of stl source code v3.3 */</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _ALIGN = <span class="number">8</span> &#125;;                <span class="comment">//小型区块的上调边界</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _MAX_BYTES = <span class="number">128</span> &#125;;          <span class="comment">//小型区块的上限</span></span><br><span class="line"><span class="keyword">enum</span> &#123; _NFREELISTS = <span class="number">16</span> &#125;; <span class="comment">// _MAX_BYTES/_ALIGN   //free-list 编号数</span></span><br><span class="line"><span class="comment">//配置内存后，维护对应内存块的空闲链表节点结构</span></span><br><span class="line"><span class="keyword">union</span> _Obj &#123;</span><br><span class="line">	<span class="keyword">union</span> _Obj* _M_free_list_link;   <span class="comment">//空闲链表</span></span><br><span class="line">	<span class="keyword">char</span> _M_client_data[<span class="number">1</span>];    <span class="comment">/* The client sees this. 用户使用的*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>最重要的是第四条，对于这个基类的不同派生类的对象，我们可以使用指向基类的指针把它们（派生类对象）穿成一个链表，这个链表对于我们实现C++的多态性有很大的价值，被称之为异质链表。</p>
-<p>   <img src="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/20141122122521379" alt="img"></p>
-<p>通过基类指针将这个基类的不同子对象串联起来。一个充分必要条件就是，这几个子类都有一个公共的基类，且都与这个基类有“is-a”关系。</p>
-<p>对于这我们可以这么理解：派生类的对象所占的存储空间要比基类的对象大，因为派生类继承了基类非私有成员函数和数据，再加上本身的成员数据，实例化的对象自然会比基类对象大，自然，派生类指针的寻址空间要比基类指针的寻址空间大。但由于对象的头部分是一样的，所以即使有超出基类指针所寻址的部分也能根据偏移量正确寻址，相反，如果派生类指针指向基类对象，则会把一部分不属于该基类对象的内存也包括进来，那么当派生类指针指向基类对象来使用派生类的函数的时候可能会发生严重的错误。</p>
-<p><strong><em>\</em>二、虚函数机制前奏*</strong></p>
+<p>考虑内存对其等因素，SGI 第二级配置器会主动将任何小额区块的内存需求量上调至 8 的倍数。并维护 16 个 free-list，各自管理大小分别为 8，16，24，32，40，48，56，64，72，80，88，96，104，112，120，128 bytes 的小额区块。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%E8%99%9A%E5%87%BD%E6%95%B0/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%89)%20%E7%AC%AC%E4%BA%8C%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -479,7 +569,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -493,7 +583,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/" class="post-title-link" itemprop="url">C++对象模型深入探索</a>
+            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第一级配置器</a>
         </h2>
 
         <div class="post-meta">
@@ -503,14 +593,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:11:15" itemprop="dateCreated datePublished" datetime="2020-12-27T15:11:15+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 15:31:55" itemprop="dateCreated datePublished" datetime="2020-12-27T15:31:55+08:00">2020-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:26:21" itemprop="dateModified" datetime="2021-03-21T23:26:21+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:37:54" itemprop="dateModified" datetime="2021-03-22T21:37:54+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -528,14 +618,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>15k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>14 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -547,120 +637,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>前面简单的论述过<a href="http://blog.csdn.net/wenqian1991/article/details/19205505" target="_blank" rel="noopener">C++对象模型</a>，总觉得不够深入，现近闲来进一步挖掘C++对象内存布局情况。主要讨论：单一继承，多重继承，钻石继承的有无虚函数以及虚拟继承的情况。贴出测试程序，并给出测试结论以及对应的类对象的大小计算。（PS：类对象的内存布局取决于编译器，这里的测试都是基于Visual Studio）</p>
-<p><strong><em>\</em>单一的类对象**</strong></p>
-<p>单一的类对象主要考虑有虚函数的情况，前面提及的博文已有介绍，类中定义了虚函数，就会产生一个虚函数表（实质就是一个函数指针数组，虚函数表不在类中，VS编译环境下，虚函数表位于常量段，虚表指针在类对象中），类每定义一个对象，便会在对象的最前面安插一个虚表指针，指向虚函数表，这样该类定义的对象会多出4 Byte（32位）。</p>
-<p>可以在Visual Studio C++ 编译输出中直接看C++内存布局：工程项目——右键“属性”——配置属性——C/C++——命令行——其他选项里添加“/d1reportAllClassLayout ”，即可在编译输出中查看定义的类的内存布局，上面是输出所有定义的类对象，你可以搜索你自己定义的对象。（最好不要把名字定为base，不然一大堆）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">parent</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="comment">//public:</span></span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"parent: fun1"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*virtual void fun2()</span></span><br><span class="line"><span class="comment">	&#123;</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; "parent: fun2" &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	parent obj_b;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面便是定义的类对象内存布局情况：vfptr 即表示虚表指针，static 成员不在类对象中</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class parent	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| b</span><br><span class="line">1&gt;  	+---</span><br></pre></td></tr></table></figure>
-
-
-
-<p>如果类中不定义为虚函数，类对象的大小是4，如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class parent	size(4):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| b</span><br><span class="line">1&gt;  	+---</span><br></pre></td></tr></table></figure>
-
-<p>下面我们来考虑类继承的情况：</p>
-<p><strong><em>\</em>单一继承**</strong></p>
+          <p>我们再来学习内存的配置与释放（定义在头文件 &lt;stl_alloc.h&gt; 中）。其设计思想为：</p>
+<ul>
+<li>向 system heap 要求空间；</li>
+<li>考虑多线程 (multi-threads) 状态；</li>
+<li>考虑内存不足时的应变措施；</li>
+<li>考虑过多 “小型区块” 可能造成的内存碎片 (fragment) 问题。</li>
+</ul>
+<p>我们后面将通过分析源码来了解这设计思想是如何在设计中体现的。SGI 设计了双层级配置器，第一级配置器直接使用 malloc() 和 free()，第二级则视情况采用不同策略，并采用了复杂的内存池(memory pool) 整理方式。<br>整个设计究竟只开放第一级配置器，或是同时开放第二级配置器，取决于宏 __USE_MALLOC 是否被定义。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">C++对象模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:07:17" itemprop="dateCreated datePublished" datetime="2020-12-27T15:07:17+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:26:13" itemprop="dateModified" datetime="2021-03-21T23:26:13+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在C++对象模型中，Nonstatic data members 被配置于每一个 class object 之内，static data members 则被存放在个别 class object 之外。Static 和nonstatic function members 也被放在个别的class object 之外。存在 virtual function 时，每个class 会产生出一堆指向 virtual function 的指针，这些指针存放在一个表中，称之为虚函数表 virtual table。其实质就是一个函数指针数组，里面存放的是虚函数指针。每一个 class object 被安插一个虚表指针 vptr，指向相关的 virtual table，虚表指针通常置于 class object 的第一位置。另外，当子类虚继承父类时，子类对象中还会安插虚基类指针。注意此处 class 和 class object 的区别。如此说来一个类实例当中存放的就是 nonstatic data member，虚表指针（存在虚函数时或父类中含有虚函数），虚基类指针（虚拟继承时）。类继承时体积会变大，但在虚拟继承的情况下，基类永远只存在一个实例。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/C++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -683,7 +670,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/33/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/35/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/33/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/35/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -749,7 +736,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -798,12 +785,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

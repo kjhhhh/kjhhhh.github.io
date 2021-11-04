@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E4%BF%AE%E9%A5%B0%E7%AC%A6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="post-title-link" itemprop="url">java修饰符</a>
+            <a href="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/" class="post-title-link" itemprop="url">java流(Stream)、文件(File)和IO</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-20 15:40:39" itemprop="dateCreated datePublished" datetime="2021-03-20T15:40:39+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:37:43" itemprop="dateCreated datePublished" datetime="2021-03-20T16:37:43+08:00">2021-03-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:28:06" itemprop="dateModified" datetime="2021-03-22T21:28:06+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:27:38" itemprop="dateModified" datetime="2021-03-22T21:27:38+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.3k</span>
+              <span>7.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -229,26 +229,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-修饰符"><a href="#Java-修饰符" class="headerlink" title="Java 修饰符"></a>Java 修饰符</h1><p>Java语言提供了很多修饰符，主要分为以下两类：</p>
-<ul>
-<li>访问修饰符</li>
-<li>非访问修饰符</li>
-</ul>
-<p>修饰符用来定义类、方法或者变量，通常放在语句的最前端。我们通过下面的例子来说明：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> &#123;</span></span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> myFlag;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> weeks = <span class="number">9.5</span>;</span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BOXWIDTH = <span class="number">42</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] arguments)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 方法体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+          <h1 id="Java-流-Stream-、文件-File-和IO"><a href="#Java-流-Stream-、文件-File-和IO" class="headerlink" title="Java 流(Stream)、文件(File)和IO"></a>Java 流(Stream)、文件(File)和IO</h1><p>Java.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。</p>
+<p>Java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。</p>
+<p>一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。</p>
+<p>Java 为 I/O 提供了强大的而灵活的支持，使其更广泛地应用到文件传输和网络编程中。</p>
+<p>但本节讲述最基本的和流与 I/O 相关的功能。我们将通过一个个例子来学习这些功能。</p>
 <hr>
-<h2 id="访问控制修饰符"><a href="#访问控制修饰符" class="headerlink" title="访问控制修饰符"></a>访问控制修饰符</h2><p>Java中，可以使用访问控制符来保护对类、变量、方法和构造方法的访问。Java 支持 4 种不同的访问权限。</p>
-<ul>
-<li><strong>default</strong> (即默认，什么也不写）: 在同一包内可见，不使用任何修饰符。使用对象：类、接口、变量、方法。</li>
-<li><strong>private</strong> : 在同一类内可见。使用对象：变量、方法。 <strong>注意：不能修饰类（外部类）</strong></li>
-<li><strong>public</strong> : 对所有类可见。使用对象：类、接口、变量、方法</li>
-<li><strong>protected</strong> : 对同一包内的类和所有子类可见。使用对象：变量、方法。 <strong>注意：不能修饰类（外部类）</strong>。</li></ul>
+<h2 id="读取控制台输入"><a href="#读取控制台输入" class="headerlink" title="读取控制台输入"></a>读取控制台输入</h2><p>Java 的控制台输入由 System.in 完成。</p>
+<p>为了获得一个绑定到控制台的字符流，你可以把 System.in 包装在一个 BufferedReader 对象中来创建一个字符流。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E4%BF%AE%E9%A5%B0%E7%AC%A6/#more" rel="contents">
+              <a class="btn" href="/2021/03/20/java%E6%B5%81%E3%80%81%E6%96%87%E4%BB%B6%E5%92%8CIO/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -272,7 +263,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -286,7 +277,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">java变量类型</a>
+            <a href="/2021/03/20/java%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">java方法</a>
         </h2>
 
         <div class="post-meta">
@@ -296,14 +287,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-20 15:35:26" itemprop="dateCreated datePublished" datetime="2021-03-20T15:35:26+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:24:04" itemprop="dateCreated datePublished" datetime="2021-03-20T16:24:04+08:00">2021-03-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:26:06" itemprop="dateModified" datetime="2021-03-22T21:26:06+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:26:27" itemprop="dateModified" datetime="2021-03-22T21:26:27+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -321,14 +312,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -340,21 +331,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-变量类型"><a href="#Java-变量类型" class="headerlink" title="Java 变量类型"></a>Java 变量类型</h1><p>在Java语言中，所有的变量在使用前必须声明。声明变量的基本格式如下：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type identifier [<span class="string"> = value</span>][<span class="symbol">, identifier [= value</span>] ...] ;</span><br></pre></td></tr></table></figure>
-
-<p>格式说明：type为Java数据类型。identifier是变量名。可以使用逗号隔开来声明多个同类型变量。</p>
-<p>以下列出了一些变量的声明实例。注意有些包含了初始化过程。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> a, b, c;</span><br><span class="line">  <span class="comment">// 声明三个int型整数：a、 b、c </span></span><br><span class="line">  <span class="built_in">int</span> d = <span class="number">3</span>, e = <span class="number">4</span>, f = <span class="number">5</span>; <span class="comment">// 声明三个整数并赋予初值 </span></span><br><span class="line">  byte z = <span class="number">22</span>;     <span class="comment">// 声明并初始化 z </span></span><br><span class="line">  String s = <span class="string">"runoob"</span>;  <span class="comment">// 声明并初始化字符串 s </span></span><br><span class="line">  <span class="built_in">double</span> pi = <span class="number">3.14159</span>; <span class="comment">// 声明了双精度浮点型变量 pi </span></span><br><span class="line">  char x = <span class="string">'x'</span>;    <span class="comment">// 声明变量 x 的值是字符 'x'。</span></span><br></pre></td></tr></table></figure>
-
-<p>Java语言支持的变量类型有：</p>
+          <h1 id="Java-方法"><a href="#Java-方法" class="headerlink" title="Java 方法"></a>Java 方法</h1><p>在前面几个章节中我们经常使用到 <strong>System.out.println()</strong>，那么它是什么呢？</p>
 <ul>
-<li>类变量：独立于方法之外的变量，用 static 修饰。</li>
-<li>实例变量：独立于方法之外的变量，不过没有 static 修饰。</li>
-<li>局部变量：类的方法中的变量。</li></ul>
+<li>println() 是一个方法。</li>
+<li>System 是系统类。</li>
+<li>out 是标准输出对象。</li>
+</ul>
+<p>这句话的用法是调用系统类 System 中的标准输出对象 out 中的方法 println()。</p>
+<h3 id="那么什么是方法呢？"><a href="#那么什么是方法呢？" class="headerlink" title="那么什么是方法呢？"></a>那么什么是方法呢？</h3><p>Java方法是语句的集合，它们在一起执行一个功能。</p>
+<ul>
+<li>方法是解决一类问题的步骤的有序组合</li>
+<li>方法包含于类或对象中</li>
+<li>方法在程序中被创建，在其他地方被引用</li>
+</ul>
+<h3 id="方法的优点"><a href="#方法的优点" class="headerlink" title="方法的优点"></a>方法的优点</h3><ul>
+<li>\1. 使程序变得更简短而清晰。</li>
+<li>\2. 有利于程序维护。</li>
+<li>\3. 可以提高程序开发的效率。</li>
+<li>\4. 提高了代码的重用性。</li>
+</ul>
+<h3 id="方法的命名规则"><a href="#方法的命名规则" class="headerlink" title="方法的命名规则"></a>方法的命名规则</h3><ul>
+<li>1.方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头写，不使用连接符。例如：<strong>addPerson</strong>。</li>
+<li>2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：<strong>test<MethodUnderTest>_<state></state></MethodUnderTest></strong>，例如 <strong>testPop_emptyStack</strong>。</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2021/03/20/java%E6%96%B9%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -378,7 +379,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -392,7 +393,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/20/java%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">java类和对象</a>
+            <a href="/2021/03/20/java%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">java正则表达式</a>
         </h2>
 
         <div class="post-meta">
@@ -402,14 +403,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-20 15:26:07" itemprop="dateCreated datePublished" datetime="2021-03-20T15:26:07+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 16:22:03" itemprop="dateCreated datePublished" datetime="2021-03-20T16:22:03+08:00">2021-03-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:12:18" itemprop="dateModified" datetime="2021-03-21T23:12:18+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-22 21:30:27" itemprop="dateModified" datetime="2021-03-22T21:30:27+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -427,7 +428,291 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.5k</span>
+              <span>9.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Java-正则表达式"><a href="#Java-正则表达式" class="headerlink" title="Java 正则表达式"></a>Java 正则表达式</h1><p>正则表达式定义了字符串的模式。</p>
+<p>正则表达式可以用来搜索、编辑或处理文本。</p>
+<p>正则表达式并不仅限于某一种语言，但是在每种语言中有细微的差别。</p>
+<h3 id="正则表达式实例"><a href="#正则表达式实例" class="headerlink" title="正则表达式实例"></a>正则表达式实例</h3><p>一个字符串其实就是一个简单的正则表达式，例如 <strong>Hello World</strong> 正则表达式匹配 “Hello World” 字符串。</p>
+<p><strong>.</strong>（点号）也是一个正则表达式，它匹配任何一个字符如：”a” 或 “1”。</p>
+<p>下表列出了一些正则表达式的实例及描述：</p>
+<table>
+<thead>
+<tr>
+<th align="left">正则表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">this is text</td>
+<td align="left">匹配字符串 “this is text”</td>
+</tr>
+<tr>
+<td align="left">this\s+is\s+text</td>
+<td align="left">注意字符串中的 <strong>\s+</strong>。匹配单词 “this” 后面的 <strong>\s+</strong> 可以匹配多个空格，之后匹配 is 字符串，再之后 <strong>\s+</strong> 匹配多个空格然后再跟上 text 字符串。可以匹配这个实例：this is text</td>
+</tr>
+<tr>
+<td align="left">^\d+(.\d+)?</td>
+<td align="left">^ 定义了以什么开始\d+ 匹配一个或多个数字? 设置括号内的选项是可选的. 匹配 “.”可以匹配的实例：”5”, “1.5” 和 “2.21”。</td>
+</tr>
+</tbody></table>
+<p>Java 正则表达式和 Perl 的是最为相似的。</p>
+<p>java.util.regex 包主要包括以下三个类：</p>
+<ul>
+<li><p>Pattern 类：</p>
+<p>pattern 对象是一个正则表达式的编译表示。Pattern 类没有公共构造方法。要创建一个 Pattern 对象，你必须首先调用其公共静态编译方法，它返回一个 Pattern 对象。该方法接受一个正则表达式作为它的第一个参数。</p>
+</li>
+<li><p>Matcher 类：</p>
+<p>Matcher 对象是对输入字符串进行解释和匹配操作的引擎。与Pattern 类一样，Matcher 也没有公共构造方法。你需要调用 Pattern 对象的 matcher 方法来获得一个 Matcher 对象。</p>
+</li>
+<li><p>PatternSyntaxException：</p>
+<p>PatternSyntaxException 是一个非强制异常类，它表示一个正则表达式模式中的语法错误。</p>
+</li>
+</ul>
+<p>以下实例中使用了正则表达式 <strong>.*runoob.*</strong> 用于查找字符串中是否包了 <strong>runoob</strong> 子串：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/20/java%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" class="post-title-link" itemprop="url">java日期时间</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-20 16:18:36" itemprop="dateCreated datePublished" datetime="2021-03-20T16:18:36+08:00">2021-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:27:52" itemprop="dateModified" datetime="2021-03-22T21:27:52+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Java-日期时间"><a href="#Java-日期时间" class="headerlink" title="Java 日期时间"></a>Java 日期时间</h1><p>java.util 包提供了 Date 类来封装当前的日期和时间。 Date 类提供两个构造函数来实例化 Date 对象。</p>
+<p>第一个构造函数使用当前日期和时间来初始化对象。</p>
+<p>Date( )</p>
+<p>第二个构造函数接收一个参数，该参数是从1970年1月1日起的毫秒数。</p>
+<p>Date(long millisec)</p>
+<p>Date对象创建以后，可以调用下面的方法。</p>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">方法和描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><strong>boolean after(Date date)</strong> 若当调用此方法的Date对象在指定日期之后返回true,否则返回false。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>boolean before(Date date)</strong> 若当调用此方法的Date对象在指定日期之前返回true,否则返回false。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>Object clone( )</strong> 返回此对象的副本。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>int compareTo(Date date)</strong> 比较当调用此方法的Date对象和指定日期。两者相等时候返回0。调用对象在指定日期之前则返回负数。调用对象在指定日期之后则返回正数。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>int compareTo(Object obj)</strong> 若obj是Date类型则操作等同于compareTo(Date) 。否则它抛出ClassCastException。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><strong>boolean equals(Object date)</strong> 当调用此方法的Date对象和指定日期相等时候返回true,否则返回false。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left"><strong>long getTime( )</strong> 返回自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象表示的毫秒数。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><strong>int hashCode( )</strong>  返回此对象的哈希码值。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left"><strong>void setTime(long time)</strong>   用自1970年1月1日00:00:00 GMT以后time毫秒数设置时间和日期。</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left"><strong>String toString( )</strong> 把此 Date 对象转换为以下形式的 String： dow mon dd hh:mm:ss zzz yyyy 其中： dow 是一周中的某一天 (Sun, Mon, Tue, Wed, Thu, Fri, Sat)。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="获取当前日期时间"><a href="#获取当前日期时间" class="headerlink" title="获取当前日期时间"></a>获取当前日期时间</h2><p>Java中获取当前日期和时间很简单，使用 Date 对象的 toString() 方法来打印当前日期和时间，如下所示：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/20/java%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/20/java%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">java数组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-20 16:15:51" itemprop="dateCreated datePublished" datetime="2021-03-20T16:15:51+08:00">2021-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:27:59" itemprop="dateModified" datetime="2021-03-22T21:27:59+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -446,217 +731,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java-对象和类"><a href="#Java-对象和类" class="headerlink" title="Java 对象和类"></a>Java 对象和类</h1><p>Java作为一种面向对象语言。支持以下基本概念：</p>
-<ul>
-<li>多态</li>
-<li>继承</li>
-<li>封装</li>
-<li>抽象</li>
-<li>类</li>
-<li>对象</li>
-<li>实例</li>
-<li>方法</li>
-<li>重载</li>
-</ul>
-<p>本节我们重点研究对象和类的概念。</p>
-<ul>
-<li><strong>对象</strong>：对象是类的一个实例（<strong>对象不是找个女朋友</strong>），有状态和行为。例如，一条狗是一个对象，它的状态有：颜色、名字、品种；行为有：摇尾巴、叫、吃等。</li>
-<li><strong>类</strong>：类是一个模板，它描述一类对象的行为和状态。</li></ul>
+          <h1 id="Java-数组"><a href="#Java-数组" class="headerlink" title="Java 数组"></a>Java 数组</h1><p>数组对于每一门编程语言来说都是重要的数据结构之一，当然不同语言对数组的实现及处理也不尽相同。</p>
+<p>Java 语言中提供的数组是用来存储固定大小的同类型元素。</p>
+<p>你可以声明一个数组变量，如 numbers[100] 来代替直接声明 100 个独立变量 number0，number1，….，number99。</p>
+<p>本教程将为大家介绍 Java 数组的声明、创建和初始化，并给出其对应的代码。</p>
+<hr>
+<h2 id="声明数组变量"><a href="#声明数组变量" class="headerlink" title="声明数组变量"></a>声明数组变量</h2><p>首先必须声明数组变量，才能在程序中使用数组。下面是声明数组变量的语法：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dataType[] <span class="built_in">array</span>RefVar;   <span class="comment">// 首选的方法</span></span><br><span class="line"> </span><br><span class="line">或</span><br><span class="line"> </span><br><span class="line">dataType <span class="built_in">array</span>RefVar[];  <span class="comment">// 效果相同，但不是首选方法</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong> 建议使用 <strong>dataType[] arrayRefVar</strong> 的声明风格声明数组变量。 dataType arrayRefVar[] 风格是来自 C/C++ 语言 ，在Java中采用是为了让 C/C++ 程序员能够快速理解java语言。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/20/java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">java基础语法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-20 15:22:42" itemprop="dateCreated datePublished" datetime="2021-03-20T15:22:42+08:00">2021-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 22:38:00" itemprop="dateModified" datetime="2021-03-21T22:38:00+08:00">2021-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Java-基础语法"><a href="#Java-基础语法" class="headerlink" title="Java 基础语法"></a>Java 基础语法</h1><p>一个 Java 程序可以认为是一系列对象的集合，而这些对象通过调用彼此的方法来协同工作。下面简要介绍下类、对象、方法和实例变量的概念。</p>
-<ul>
-<li><strong>对象</strong>：对象是类的一个实例，有状态和行为。例如，一条狗是一个对象，它的状态有：颜色、名字、品种；行为有：摇尾巴、叫、吃等。</li>
-<li><strong>类</strong>：类是一个模板，它描述一类对象的行为和状态。</li>
-<li><strong>方法</strong>：方法就是行为，一个类可以有很多方法。逻辑运算、数据修改以及所有动作都是在方法中完成的。</li>
-<li><strong>实例变量</strong>：每个对象都有独特的实例变量，对象的状态由这些实例变量的值决定。</li></ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/20/java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/13/JAVAScript%E5%92%8CQuery/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/13/JAVAScript%E5%92%8CQuery/" class="post-title-link" itemprop="url">JAVAScript和Query</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-13 16:55:23" itemprop="dateCreated datePublished" datetime="2021-03-13T16:55:23+08:00">2021-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:25:35" itemprop="dateModified" datetime="2021-03-22T21:25:35+08:00">2021-03-22</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>16k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="JAVAScript和jQuery"><a href="#JAVAScript和jQuery" class="headerlink" title="JAVAScript和jQuery"></a>JAVAScript和jQuery</h1><h2 id="第一章、初识javaScript"><a href="#第一章、初识javaScript" class="headerlink" title="第一章、初识javaScript"></a>第一章、初识javaScript</h2><h3 id="一、了解JavaScript"><a href="#一、了解JavaScript" class="headerlink" title="一、了解JavaScript"></a>一、了解JavaScript</h3><h4 id="1、学习JS的原因"><a href="#1、学习JS的原因" class="headerlink" title="1、学习JS的原因"></a>1、学习JS的原因</h4><p>①客户端表单验证</p>
-<p>②页面的动态效果</p>
-<h4 id="2、JS的简介和组成"><a href="#2、JS的简介和组成" class="headerlink" title="2、JS的简介和组成"></a>2、JS的简介和组成</h4><p>2.1简介：JS是一种描述性语言，也是一种基于对象（Object）和事件驱动（EventDriven）的，具有安全性能的脚本语言</p>
-<p>2.2组成</p>
-<p>①<strong>ECMAScript标准</strong>:规定了语法、变量和数据类型、运算符、逻辑控制语句、关键字/保留字、对象的标准，不与浏览器绑定</p>
-<p>②<strong>BOM：浏览器对象模型</strong>。提高独立于内容和浏览器窗口进行交互的对象，BOM对象可以实现与HTML交互</p>
-<p>③<strong>DOM：文档对象模型</strong>，用来访问和操作HTML文档</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/13/JAVAScript%E5%92%8CQuery/#more" rel="contents">
+              <a class="btn" href="/2021/03/20/java%E6%95%B0%E7%BB%84/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -679,7 +765,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -745,7 +831,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -794,12 +880,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

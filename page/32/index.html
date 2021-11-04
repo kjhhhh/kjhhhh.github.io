@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/" class="post-title-link" itemprop="url">STL第一级配置器</a>
+            <a href="/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/" class="post-title-link" itemprop="url">汇编语言基础学习汇总1</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:31:55" itemprop="dateCreated datePublished" datetime="2020-12-27T15:31:55+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 21:04:30" itemprop="dateCreated datePublished" datetime="2020-12-29T21:04:30+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:37:54" itemprop="dateModified" datetime="2021-03-22T21:37:54+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 23:04:44" itemprop="dateModified" datetime="2021-03-22T23:04:44+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
                 </span>
             </span>
 
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
+              <span>32k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>29 分钟</span>
             </span>
 
         </div>
@@ -229,17 +229,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>我们再来学习内存的配置与释放（定义在头文件 &lt;stl_alloc.h&gt; 中）。其设计思想为：</p>
-<ul>
-<li>向 system heap 要求空间；</li>
-<li>考虑多线程 (multi-threads) 状态；</li>
-<li>考虑内存不足时的应变措施；</li>
-<li>考虑过多 “小型区块” 可能造成的内存碎片 (fragment) 问题。</li>
+          <h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h5 id="汇编语言指令组成"><a href="#汇编语言指令组成" class="headerlink" title="汇编语言指令组成"></a><strong>汇编语言指令组成</strong></h5><ul>
+<li>汇编指令：机器码的助记符，有对应的机器码。</li>
+<li>伪指令：没有对应的机器码，编译器执行，机器不执行。</li>
+<li>其他符号：如±*/有编译器识别，无对应机器码。</li>
 </ul>
-<p>我们后面将通过分析源码来了解这设计思想是如何在设计中体现的。SGI 设计了双层级配置器，第一级配置器直接使用 malloc() 和 free()，第二级则视情况采用不同策略，并采用了复杂的内存池(memory pool) 整理方式。<br>整个设计究竟只开放第一级配置器，或是同时开放第二级配置器，取决于宏 __USE_MALLOC 是否被定义。</p>
+<h5 id="CPU与外部器件交互需要"><a href="#CPU与外部器件交互需要" class="headerlink" title="CPU与外部器件交互需要"></a><strong>CPU与外部器件交互需要</strong></h5><ul>
+<li>存储单元地址（地址信息）</li>
+<li>器件选择，读写命令（控制信息）</li>
+<li>数据（数据信息）</li>
+</ul>
+<h5 id="总线"><a href="#总线" class="headerlink" title="总线"></a><strong>总线</strong></h5><p>总线就是一根根导线的集合，分为</p>
+<ul>
+<li>地址总线，越宽（数量越多）代表可以寻址的范围越大</li>
+<li>数据总线，越宽代表一次性读写的数据越多（8根1字节）</li>
+<li>控制总线，越宽代表对器件控制操作越多</li>
+</ul>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a><strong>小结</strong></h5><p>汇编指令和机器指令一一对应</p>
+<p>每一种cpu都有自己的汇编指令集</p>
+<p>在存储器中指令和数据都是二进制，没有任何区别</p>
+<p>CPU可以直接使用的信息存放在存储器中（内存）</p>
+<h5 id="接口卡"><a href="#接口卡" class="headerlink" title="接口卡"></a><strong>接口卡</strong></h5><p>CPU无法直接控制显示器，键盘等的外围设备，但CPU通过直接控制这些外围设备在主板上的接口卡来控制这些设备。</p>
+<h5 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a><strong>存储器</strong></h5>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%BA%8C)%20%E7%AC%AC%E4%B8%80%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E6%B1%87%E6%80%BB1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -263,7 +277,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -277,7 +291,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/" class="post-title-link" itemprop="url">STL构造和析构</a>
+            <a href="/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">C++编译产生文件</a>
         </h2>
 
         <div class="post-meta">
@@ -287,14 +301,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:31:31" itemprop="dateCreated datePublished" datetime="2020-12-27T15:31:31+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 20:57:56" itemprop="dateCreated datePublished" datetime="2020-12-29T20:57:56+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:40:56" itemprop="dateModified" datetime="2021-03-22T21:40:56+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-21 23:26:04" itemprop="dateModified" datetime="2021-03-21T23:26:04+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -312,107 +326,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>以STL运用的角度而言，空间配置器总是隐藏在一切组件的背后，但就STL 的实现角度而言，我们需要了解空间配置器，因为整个STL 的操作对象(所有数值，“value”语意)都存放在容器之内，而容器一定需要配置空间以置放数据。</p>
-<p>一般而言，我们所习惯的C++ 内存配置操作和释放操作是这样的</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span> ... &#125;;</span><br><span class="line">Foo* pObj = <span class="keyword">new</span> Foo;</span><br><span class="line"><span class="keyword">delete</span> pObj;</span><br></pre></td></tr></table></figure>
-
-<p>其中new 运算包含两阶段操作：1. 调用 ::operator new 配置内存，2. 调用构造函数 Foo() 构造对象。 delete 运算也包含两个阶段：1. 调用析构函数 ~Foo() 将对象析构， 2. 调用 ::operator delete 释放内存。</p>
-<p>STL 为了提高效率则把二者分开，对象的构造和析构由::construct() 和::destory() 完成，内存的配置则是由 std::alloc 完成。<br>先介绍构造和析构基本工具：construct() 和 destroy()    下载源码：<a href="http://www.sgi.com/tech/stl/download.html" target="_blank" rel="noopener">http://www.sgi.com/tech/stl/download.html</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/STL%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8(%E4%B8%80)%20%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/" class="post-title-link" itemprop="url">内联函数是怎么提高效率的</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 15:30:01" itemprop="dateCreated datePublished" datetime="2020-12-27T15:30:01+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:15:25" itemprop="dateModified" datetime="2021-03-22T23:15:25+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -431,12 +345,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>C++和C99均支持内联函数inline，按这个名称的意思应该是“在字里行间展开”，内联函数会在它被调用的位置展开 。</p>
-<p>讨论之前，我们先来看一个故事：实验室搬至六楼，小件器件特别多，一同学正一件一件地往六楼搬，老师借给他一个大袋子，这同学一次就把这些小物件搬上了六楼，虽然增加了一个大袋子的重量，却省去了上下六楼100多趟之苦。这个大袋子就充当了内联函数的功能。</p>
-<p>我们都知道，一个函数的调用要付出时间上的代价，其大致过程为：</p>
+          <p>C++编译 （.obj, .lib, .dll, .exe的关系）</p>
+<h2 id="一、总体介绍："><a href="#一、总体介绍：" class="headerlink" title="一、总体介绍："></a>一、总体介绍：</h2><p>c++程序在编译后,在目标路径下会生成多个文件：</p>
+<p>Debug文件夹(<em>.exe,</em>.ilk,<em>.obj,</em>.pch,<em>.pdb,</em>.idb,<em>,pdb),</em>.cpp,<em>.dsp,</em>.ncb,*.plg</p>
+<p>*.exe:是生成的可执行文件</p>
+<p>*.ilk:当选定渐增型编译连接时，连接器自动生成ILK文件，记录连接信息</p>
+<p>*.obj:是目标文件,源程序编译后的产物</p>
+<p>*.pch:全称是PreCompiled Header，就是预先编译好的头文件</p>
+<p>*.idb:文件保存的信息,使编译器在重新编译的时候只重编译最新改动过的函数和只对最新类定义改动过的源文件进行重编译，以提高编译速度</p>
+<p>*.pdb:全称是Program DataBase，即程序数据库文件，用来记录调试信息</p>
+<p>*.dsp:(全称是Developer Studio Project)也是一个配置文件</p>
+<p>*.ncb:(全称No Compile Browser)的缩写，其中存放了供ClassView、WizardBar和Component Gallery使用的信息，由VC开发环境自动生成</p>
+<p>*.plg:实际上是一个超文本文件，可以用Internet Explorer打开，记录了Build的过程</p>
+<p>*.cpp:就是C++源代码文件.</p>
+<h2 id="二、具体介绍："><a href="#二、具体介绍：" class="headerlink" title="二、具体介绍："></a>二、具体介绍：</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/C++%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -460,7 +385,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/%E6%B1%87%E7%BC%96%E4%B8%8A%E6%9C%BA%E6%B6%89%E5%8F%8A%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -474,7 +399,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">单例设计模式</a>
+            <a href="/2020/12/29/%E6%B1%87%E7%BC%96%E4%B8%8A%E6%9C%BA%E6%B6%89%E5%8F%8A%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">汇编上机涉及文件</a>
         </h2>
 
         <div class="post-meta">
@@ -484,14 +409,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:28:55" itemprop="dateCreated datePublished" datetime="2020-12-27T15:28:55+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-29 20:39:25" itemprop="dateCreated datePublished" datetime="2020-12-29T20:39:25+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:48:48" itemprop="dateModified" datetime="2021-03-22T21:48:48+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 21:52:03" itemprop="dateModified" datetime="2021-03-22T21:52:03+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -499,7 +424,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
                 </span>
             </span>
 
@@ -509,7 +434,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -528,16 +453,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>单例模式（singleton）：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
-<p>如何保证一个类只有一个实例并且这个实例易于被访问呢？一个全局变量使得一个对象可以被访问，但它不能防止你实例化多个对象。一个更好的办法是，让类自身负责保存它的唯一实例，这个类可以保证没有其他实例可以被创建，并且它可以提供一个访问该实例的方法，这就是 Singleton 模式。</p>
-<p>Singleton 类UML图</p>
-<p>​                        <img src="/2020/12/27/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/20150720215641458" alt="img"></p>
-<p>Singleton 类，定义一个 GetInstance 操作，允许客户访问它的唯一实例。GetInstance 是一个静态方法，主要负责创建自己的唯一实例。</p>
-<p>Singleton 模式使得这个唯一实例是类的一般实例，但该类被写成只有一个实例能被创建。做到这一点的一个常用方法是将创建这个实例的操作隐藏在一个类操作（即一个静态成员函数或者一个类方法）后面，由它保证只有一个实例被创建。这个操作可以访问保存唯一实例的变量，而且它可以保证这个变量在返回值之前用这个唯一实例初始化。</p>
-<p><strong>懒汉模式</strong>：单例模式处理方式要在第一次被引用时，才会将自己实例化，其返回值直到被第一次访问时才创建和保存。</p>
+          <p>ASM是汇编语言源程序的扩展名，汇编语言(Assembly Language)是面向机器的程序设计bai语言。汇编语言是一种功能很强的程序设计语言，是利用计算机所有硬件特性并能直接控制硬件的语言。打开asm文件有两种方法即笔记本和MasmEdit软件。</p>
+<p>在汇编语言中，用助记符(Memoni)代替操作码，用地址符号(Symbol)或标号(Label)代替地址码。这样用符号代替机器语言的二进制码，就把机器语言变成了汇编语言。因此汇编语言亦称为符号语言。</p>
+<p>使用汇编语言编写的程序，机器不能直接识别，要由一种程序将汇编语言翻译成机器语言，这种起翻译作用的程序叫汇编程序，汇编程序是系统软件中语言处理系统软件。汇编程序把汇编语言翻译成机器语言的过程称为汇编。</p>
+<p>汇编语言比机器语言易于读写、调试和修改，同时具有机器语言全部优点。但在编写复杂程序时，相对高级语言代码量较大，而且汇编语言依赖于具体的处理器体系结构，不能通用，因此不能直接在不同处理器体系结构之间移植。</p>
+<p>汇编语言的特点</p>
+<p>1、面向机器的低级语言，通常是为特定的计算机或系列计算机专门设计的。</p>
+<p>2、保持了机器语言的优点，具有直接和简捷的特点。</p>
+<p>3、可有效地访问、控制计算机的各种硬件设备，如磁盘、存储器、CPU、I/O端口等。</p>
+<p>4、目标代码简短，占用内存少，执行速度快，是高效的程序设计语言。</p>
+<p>5、经常与高级语言配合使用，应用十分广泛。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/%E6%B1%87%E7%BC%96%E4%B8%8A%E6%9C%BA%E6%B6%89%E5%8F%8A%E6%96%87%E4%BB%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -561,7 +489,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/C%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLvector%E7%9A%84%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -575,7 +503,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B01/" class="post-title-link" itemprop="url">C语言笔记1</a>
+            <a href="/2020/12/27/STLvector%E7%9A%84%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">STLvector的应用</a>
         </h2>
 
         <div class="post-meta">
@@ -585,23 +513,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-27 15:27:33" itemprop="dateCreated datePublished" datetime="2020-12-27T15:27:33+08:00">2020-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 08:43:53" itemprop="dateModified" datetime="2021-03-22T08:43:53+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
-                </span>
+              <time title="创建时间：2020-12-27 15:35:55" itemprop="dateCreated datePublished" datetime="2020-12-27T15:35:55+08:00">2020-12-27</time>
             </span>
 
           <br>
@@ -610,14 +522,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
+              <span>0</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -629,12 +541,101 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>1、定义申明最重要的区别：定义创建了对象并为这个对象分配了内存，声明没有分配内存。</p>
-<p>即一个需要建立存储空间，如 int i; 这是定义；而 extern int i; 是声明，并没有建立存储空间，只是告诉编译器该变量已经在别处定义过了。对于函数的定义和声明也同样如此，这就为什么内联 inline 函数只能在放在函数定义的前面，而不能放在声明之前。</p>
-<p>2、在 union 中所有的数据成员共用一个空间，同一时间只能存储其中一个数据成员，所有的数据成员具有相同的起始地址。可以根据这一特性来测试电脑存储模式（大端OR小端），参见代码：</p>
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/STLtraits%20%E7%BC%96%E7%A8%8B%E6%8A%80%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/STLtraits%20%E7%BC%96%E7%A8%8B%E6%8A%80%E6%B3%95/" class="post-title-link" itemprop="url">STLtraits编程技法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 15:35:27" itemprop="dateCreated datePublished" datetime="2020-12-27T15:35:27+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 21:36:43" itemprop="dateModified" datetime="2021-03-22T21:36:43+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>迭代器是一种抽象的设计概念，定义为：提供一种方法，使之能够依序巡访某个容器所含的各个元素，而又无需暴露该容器的内部表达式。迭代器是一种类似指针的对象，具有遍历复杂数据结构的能力，其下层运行机制取决于其所遍历的数据结构，因此，每一种容器型别都必须提供自己的迭代器。事实上每种容器都将其迭代器以嵌套方式定义于内部。</p>
+<p>迭代器相应型别</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&lt;stl_iterator_base.h&gt;, stl source code v3.3</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iterator</span> &#123;</span></span><br><span class="line">    <span class="keyword">typedef</span> _Category  iterator_category;</span><br><span class="line">	<span class="keyword">typedef</span> _Tp        value_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Distance  difference_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Pointer   pointer;</span><br><span class="line">	<span class="keyword">typedef</span> _Reference reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>value_type 是指迭代器所指对象的型别，任何一个打算与 STL 算法有完美搭配的 class，都应该定义自己的 value type 内嵌型别；</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/C%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B01/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/STLtraits%20%E7%BC%96%E7%A8%8B%E6%8A%80%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -657,7 +658,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -723,7 +724,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -772,12 +773,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

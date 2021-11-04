@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容：1. JQuery 高级     1. 动画     2. 遍历     3. 事件绑定     4. 案例     5. 插件JQuery 高级1. 动画     1. 三种方式显示和隐藏元素         1. 默认显示和隐藏方式             1. show([speed,[easing],[fn]])                 1. 参数：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JQuery高级笔记">
+<meta property="og:url" content="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="今日内容：1. JQuery 高级     1. 动画     2. 遍历     3. 事件绑定     4. 案例     5. 插件JQuery 高级1. 动画     1. 三种方式显示和隐藏元素         1. 默认显示和隐藏方式             1. show([speed,[easing],[fn]])                 1. 参数：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/adv.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/man00.jpg">
+<meta property="article:published_time" content="2021-11-04T11:16:24.995Z">
+<meta property="article:modified_time" content="2021-11-04T11:17:12.771Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="Web基础学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/adv.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JQuery高级笔记 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JQuery高级笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 19:16:24 / 修改时间：19:17:12" itemprop="dateCreated datePublished" datetime="2021-11-04T19:16:24+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h2><pre><code>1. JQuery 高级
+    1. 动画
+    2. 遍历
+    3. 事件绑定
+    4. 案例
+    5. 插件</code></pre><h2 id="JQuery-高级"><a href="#JQuery-高级" class="headerlink" title="JQuery 高级"></a>JQuery 高级</h2><pre><code>1. 动画
+    1. 三种方式显示和隐藏元素
+        1. 默认显示和隐藏方式
+            1. show([speed,[easing],[fn]])
+                1. 参数：
+                    1. speed：动画的速度。三个预定义的值(&quot;slow&quot;,&quot;normal&quot;, &quot;fast&quot;)或表示动画时长的毫秒数值(如：1000)
+                    2. easing：用来指定切换效果，默认是&quot;swing&quot;，可用参数&quot;linear&quot;
+                        * swing：动画执行时效果是 先慢，中间快，最后又慢
+                        * linear：动画执行时速度是匀速的
+                    3. fn：在动画完成时执行的函数，每个元素执行一次。
+
+            2. hide([speed,[easing],[fn]])
+            3. toggle([speed],[easing],[fn])
+
+        2. 滑动显示和隐藏方式
+            1. slideDown([speed],[easing],[fn])
+            2. slideUp([speed,[easing],[fn]])
+            3. slideToggle([speed],[easing],[fn])
+
+        3. 淡入淡出显示和隐藏方式
+            1. fadeIn([speed],[easing],[fn])
+            2. fadeOut([speed],[easing],[fn])
+            3. fadeToggle([speed,[easing],[fn]])
+
+2. 遍历
+    1. js的遍历方式
+        * for(初始化值;循环结束条件;步长)
+    2. jq的遍历方式
+        1. jq对象.each(callback)
+            1. 语法：
+                jquery对象.each(function(index,element){});
+                    * index:就是元素在集合中的索引
+                    * element：就是集合中的每一个元素对象
+
+                    * this：集合中的每一个元素对象
+            2. 回调函数返回值：
+                * true:如果当前function返回为false，则结束循环(break)。
+                * false:如果当前function返回为true，则结束本次循环，继续下次循环(continue)
+        2. $.each(object, [callback])
+        3. for..of: jquery 3.0 版本之后提供的方式
+            for(元素对象 of 容器对象)
+
+3. 事件绑定
+    1. jquery标准的绑定方式
+        * jq对象.事件方法(回调函数)；
+        * 注：如果调用事件方法，不传递回调函数，则会触发浏览器默认行为。
+            * 表单对象.submit();//让表单提交
+    2. on绑定事件/off解除绑定
+        * jq对象.on(&quot;事件名称&quot;,回调函数)
+        * jq对象.off(&quot;事件名称&quot;)
+            * 如果off方法不传递任何参数，则将组件上的所有事件全部解绑
+    3. 事件切换：toggle
+        * jq对象.toggle(fn1,fn2...)
+            * 当单击jq对象对应的组件后，会执行fn1.第二次点击会执行fn2.....
+
+        * 注意：1.9版本 .toggle() 方法删除,jQuery Migrate（迁移）插件可以恢复此功能。
+             &lt;script src=&quot;../js/jquery-migrate-1.0.0.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+4. 案例
+    1. 广告显示和隐藏
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+            &lt;meta charset=&quot;UTF-8&quot;&gt;
+            &lt;title&gt;广告的自动显示与隐藏&lt;/title&gt;
+            &lt;style&gt;
+                #content{width:100%;height:500px;background:#999}
+            &lt;/style&gt;
+
+            &lt;!--引入jquery--&gt;
+            &lt;script type=&quot;text/javascript&quot; src=&quot;../js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;
+            &lt;script&gt;
+                /*
+                    需求：
+                        1. 当页面加载完，3秒后。自动显示广告
+                        2. 广告显示5秒后，自动消失。
+
+                    分析：
+                        1. 使用定时器来完成。setTimeout (执行一次定时器)
+                        2. 分析发现JQuery的显示和隐藏动画效果其实就是控制display
+                        3. 使用  show/hide方法来完成广告的显示
+                 */
+
+                //入口函数，在页面加载完成之后，定义定时器，调用这两个方法
+                $(function () {
+                   //定义定时器，调用adShow方法 3秒后执行一次
+                   setTimeout(adShow,3000);
+                   //定义定时器，调用adHide方法，8秒后执行一次
+                    setTimeout(adHide,8000);
+                });
+                //显示广告
+                function adShow() {
+                    //获取广告div，调用显示方法
+                    $(&quot;#ad&quot;).show(&quot;slow&quot;);
+                }
+                //隐藏广告
+                function adHide() {
+                    //获取广告div，调用隐藏方法
+                    $(&quot;#ad&quot;).hide(&quot;slow&quot;);
+                }</code></pre><p>​<br>​                <br>​            <br>​            <body><br>​            <!-- 整体的DIV --><br>​            <div><br>​                <!-- 广告DIV --><br>​                <div id="ad" style="display: none;"><br>​                    <img style="width:100%" src="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/adv.jpg"><br>​                </div><br>​<br>​                <!-- 下方正文部分 --><br>​                <div id="content"><br>​                    正文部分<br>​                </div><br>​            </div><br>​            <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body><br>​            </p>
+<pre><code>2. 抽奖
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;jquery案例之抽奖&lt;/title&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;
+
+        &lt;script language=&apos;javascript&apos; type=&apos;text/javascript&apos;&gt;
+
+            /*
+                分析：
+                    1. 给开始按钮绑定单击事件
+                        1.1 定义循环定时器
+                        1.2 切换小相框的src属性
+                            * 定义数组，存放图片资源路径
+                            * 生成随机数。数组索引
+
+
+                    2. 给结束按钮绑定单击事件
+                        1.1 停止定时器
+                        1.2 给大相框设置src属性
+
+             */
+            var imgs = [&quot;../img/man00.jpg&quot;,
+                        &quot;../img/man01.jpg&quot;,
+                        &quot;../img/man02.jpg&quot;,
+                        &quot;../img/man03.jpg&quot;,
+                        &quot;../img/man04.jpg&quot;,
+                        &quot;../img/man05.jpg&quot;,
+                        &quot;../img/man06.jpg&quot;,
+                        ];
+            var startId;//开始定时器的id
+            var index;//随机角标
+            $(function () {
+                //处理按钮是否可以使用的效果
+                $(&quot;#startID&quot;).prop(&quot;disabled&quot;,false);
+                $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,true);
+
+
+               //1. 给开始按钮绑定单击事件
+                $(&quot;#startID&quot;).click(function () {
+                    // 1.1 定义循环定时器 20毫秒执行一次
+                    startId = setInterval(function () {
+                        //处理按钮是否可以使用的效果
+                        $(&quot;#startID&quot;).prop(&quot;disabled&quot;,true);
+                        $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,false);
+
+
+                        //1.2生成随机角标 0-6
+                        index = Math.floor(Math.random() * 7);//0.000--0.999 --&gt; * 7 --&gt; 0.0-----6.9999
+                        //1.3设置小相框的src属性
+                        $(&quot;#img1ID&quot;).prop(&quot;src&quot;,imgs[index]);
+
+                    },20);
+                });
+
+
+                //2. 给结束按钮绑定单击事件
+                $(&quot;#stopID&quot;).click(function () {
+                    //处理按钮是否可以使用的效果
+                    $(&quot;#startID&quot;).prop(&quot;disabled&quot;,false);
+                    $(&quot;#stopID&quot;).prop(&quot;disabled&quot;,true);
+
+
+                   // 1.1 停止定时器
+                    clearInterval(startId);
+                   // 1.2 给大相框设置src属性
+                    $(&quot;#img2ID&quot;).prop(&quot;src&quot;,imgs[index]).hide();
+                    //显示1秒之后
+                    $(&quot;#img2ID&quot;).show(1000);
+                });
+            });</code></pre><p>​<br>​<br>​                <br>​<br>​            <br>​            <body><br>​<br>            <!-- 小像框 --><br>            <div style="border-style:dotted;width:160px;height:100px"><br>                <img id="img1ID" src="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/img/man00.jpg" style="width:160px;height:100px"><br>            </div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></p>
+<pre><code>        &lt;!-- 大像框 --&gt;
+        &lt;div
+                style=&quot;border-style:double;width:800px;height:500px;position:absolute;left:500px;top:10px&quot;&gt;
+            &lt;img id=&quot;img2ID&quot; src=&quot;../img/man00.jpg&quot; width=&quot;800px&quot; height=&quot;500px&quot;/&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 开始按钮 --&gt;
+        &lt;input
+                id=&quot;startID&quot;
+                type=&quot;button&quot;
+                value=&quot;点击开始&quot;
+                style=&quot;width:150px;height:150px;font-size:22px&quot;&gt;
+
+        &lt;!-- 停止按钮 --&gt;
+        &lt;input
+                id=&quot;stopID&quot;
+                type=&quot;button&quot;
+                value=&quot;点击停止&quot;
+                style=&quot;width:150px;height:150px;font-size:22px&quot;&gt;
+
+
+        &lt;/body&gt;
+        &lt;/html&gt;
+
+5. 插件：增强JQuery的功能
+    1. 实现方式：
+        1. $.fn.extend(object) 
+            * 增强通过Jquery获取的对象的功能  $(&quot;#id&quot;)
+        2. $.extend(object)
+            * 增强JQeury对象自身的功能  $/jQuery</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># Web基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" rel="prev" title="JQuery初级笔记">
+      <i class="fa fa-chevron-left"></i> JQuery初级笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/04/Condition%20%E7%B1%BB%E5%92%8CObject%20%E7%B1%BB%E9%94%81%E6%96%B9%E6%B3%95%E5%8C%BA%E5%88%AB/" rel="next" title="Condition 类和Object 类锁方法区别">
+      Condition 类和Object 类锁方法区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#今日内容："><span class="nav-number">1.</span> <span class="nav-text">今日内容：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JQuery-高级"><span class="nav-number">2.</span> <span class="nav-text">JQuery 高级</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35:52</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

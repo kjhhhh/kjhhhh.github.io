@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今日内容1. JQuery 基础：     1. 概念     2. 快速入门     3. JQuery对象和JS对象区别与转换     4. 选择器     5. DOM操作     6. 案例JQuery 基础：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JQuery初级笔记">
+<meta property="og:url" content="http://yoursite.com/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="KJHの博客">
+<meta property="og:description" content="今日内容1. JQuery 基础：     1. 概念     2. 快速入门     3. JQuery对象和JS对象区别与转换     4. 选择器     5. DOM操作     6. 案例JQuery 基础：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-04T11:15:48.281Z">
+<meta property="article:modified_time" content="2021-11-04T11:16:56.324Z">
+<meta property="article:author" content="匡俊桦">
+<meta property="article:tag" content="Web基础学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JQuery初级笔记 | KJHの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KJHの博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录&回忆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/04/JQuery%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JQuery初级笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-04 19:15:48 / 修改时间：19:16:56" itemprop="dateCreated datePublished" datetime="2021-11-04T19:15:48+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h2><pre><code>1. JQuery 基础：
+    1. 概念
+    2. 快速入门
+    3. JQuery对象和JS对象区别与转换
+    4. 选择器
+    5. DOM操作
+    6. 案例</code></pre><h1 id="JQuery-基础："><a href="#JQuery-基础：" class="headerlink" title="JQuery 基础："></a>JQuery 基础：<a id="more"></a></h1><pre><code>1. 概念： 一个JavaScript框架。简化JS开发
+    * jQuery是一个快速、简洁的JavaScript框架，是继Prototype之后又一个优秀的JavaScript代码库（或JavaScript框架）。jQuery设计的宗旨    是“write Less，Do More”，即倡导写更少的代码，做更多的事情。它封装JavaScript常用的功能代码，提供一种简便的JavaScript设计模式，优    化HTML文档操作、事件处理、动画设计和Ajax交互。
+
+    * JavaScript框架：本质上就是一些js文件，封装了js的原生代码而已
+2. 快速入门
+    1. 步骤：
+        1. 下载JQuery
+            * 目前jQuery有三个大版本：
+                1.x：兼容ie678,使用最为广泛的，官方只做BUG维护，
+                     功能不再新增。因此一般项目来说，使用1.x版本就可以了，
+                     最终版本：1.12.4 (2016年5月20日)
+                2.x：不兼容ie678，很少有人使用，官方只做BUG维护，
+                     功能不再新增。如果不考虑兼容低版本的浏览器可以使用2.x，
+                     最终版本：2.2.4 (2016年5月20日)
+                3.x：不兼容ie678，只支持最新的浏览器。除非特殊要求，
+                     一般不会使用3.x版本的，很多老的jQuery插件不支持这个版本。
+                     目前该版本是官方主要更新维护的版本。最新版本：3.2.1（2017年3月20日）
+            * jquery-xxx.js 与 jquery-xxx.min.js区别：
+                1. jquery-xxx.js：开发版本。给程序员看的，有良好的缩进和注释。体积大一些
+                2. jquery-xxx.min.js：生产版本。程序中使用，没有缩进。体积小一些。程序加载更快
+
+        2. 导入JQuery的js文件：导入min.js文件
+        3. 使用
+            var div1 = $(&quot;#div1&quot;);
+            alert(div1.html());
+
+
+3. JQuery对象和JS对象区别与转换
+    1. JQuery对象在操作时，更加方便。
+    2. JQuery对象和js对象方法不通用的.
+    3. 两者相互转换
+        * jq -- &gt; js : jq对象[索引] 或者 jq对象.get(索引)
+        * js -- &gt; jq : $(js对象)
+
+
+4. 选择器：筛选具有相似特征的元素(标签)
+
+    1. 基本操作学习：
+        1. 事件绑定
+            //1.获取b1按钮
+            $(&quot;#b1&quot;).click(function(){
+                alert(&quot;abc&quot;);
+            });
+        2. 入口函数
+             $(function () {
+
+                });
+             window.onload  和 $(function) 区别
+                 * window.onload 只能定义一次,如果定义多次，后边的会将前边的覆盖掉
+                 * $(function)可以定义多次的。
+        3. 样式控制：css方法
+             // $(&quot;#div1&quot;).css(&quot;background-color&quot;,&quot;red&quot;);
+              $(&quot;#div1&quot;).css(&quot;backgroundColor&quot;,&quot;pink&quot;);
+
+
+    2. 分类
+        1. 基本选择器
+            1. 标签选择器（元素选择器）
+                * 语法： $(&quot;html标签名&quot;) 获得所有匹配标签名称的元素
+            2. id选择器 
+                * 语法： $(&quot;#id的属性值&quot;) 获得与指定id属性值匹配的元素
+            3. 类选择器
+                * 语法： $(&quot;.class的属性值&quot;) 获得与指定的class属性值匹配的元素
+            4. 并集选择器：
+                * 语法： $(&quot;选择器1,选择器2....&quot;) 获取多个选择器选中的所有元素
+        2. 层级选择器
+            1. 后代选择器
+                * 语法： $(&quot;A B &quot;) 选择A元素内部的所有B元素        
+            2. 子选择器
+                * 语法： $(&quot;A &gt; B&quot;) 选择A元素内部的所有B子元素
+        3. 属性选择器
+            1. 属性名称选择器 
+                * 语法： $(&quot;A[属性名]&quot;) 包含指定属性的选择器
+            2. 属性选择器
+                * 语法： $(&quot;A[属性名=&apos;值&apos;]&quot;) 包含指定属性等于指定值的选择器
+            3. 复合属性选择器
+                * 语法： $(&quot;A[属性名=&apos;值&apos;][]...&quot;) 包含多个属性条件的选择器
+        4. 过滤选择器
+            1. 首元素选择器 
+                * 语法： :first 获得选择的元素中的第一个元素
+            2. 尾元素选择器 
+                * 语法： :last 获得选择的元素中的最后一个元素
+            3. 非元素选择器
+                * 语法： :not(selector) 不包括指定内容的元素
+            4. 偶数选择器
+                * 语法： :even 偶数，从 0 开始计数
+            5. 奇数选择器
+                * 语法： :odd 奇数，从 0 开始计数
+            6. 等于索引选择器
+                * 语法： :eq(index) 指定索引元素
+            7. 大于索引选择器 
+                * 语法： :gt(index) 大于指定索引元素
+            8. 小于索引选择器 
+                * 语法： :lt(index) 小于指定索引元素
+            9. 标题选择器
+                * 语法： :header 获得标题（h1~h6）元素，固定写法
+        5. 表单过滤选择器
+            1. 可用元素选择器 
+                * 语法： :enabled 获得可用元素
+            2. 不可用元素选择器 
+                * 语法： :disabled 获得不可用元素
+            3. 选中选择器 
+                * 语法： :checked 获得单选/复选框选中的元素
+            4. 选中选择器 
+                * 语法： :selected 获得下拉框选中的元素
+
+5. DOM操作
+    1. 内容操作
+        1. html(): 获取/设置元素的标签体内容   &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt;  --&gt; &lt;font&gt;内容&lt;/font&gt;
+        2. text(): 获取/设置元素的标签体纯文本内容   &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt; --&gt; 内容
+        3. val()： 获取/设置元素的value属性值
+    2. 属性操作
+        1. 通用属性操作
+            1. attr(): 获取/设置元素的属性
+            2. removeAttr():删除属性
+            3. prop():获取/设置元素的属性
+            4. removeProp():删除属性
+
+            * attr和prop区别？
+                1. 如果操作的是元素的固有属性，则建议使用prop
+                2. 如果操作的是元素自定义的属性，则建议使用attr
+        2. 对class属性操作
+            1. addClass():添加class属性值
+            2. removeClass():删除class属性值
+            3. toggleClass():切换class属性
+                * toggleClass(&quot;one&quot;): 
+                    * 判断如果元素对象上存在class=&quot;one&quot;，则将属性值one删除掉。  如果元素对象上不存在class=&quot;one&quot;，则添加
+            4. css():
+    3. CRUD操作:
+        1. append():父元素将子元素追加到末尾
+            * 对象1.append(对象2): 将对象2添加到对象1元素内部，并且在末尾
+        2. prepend():父元素将子元素追加到开头
+            * 对象1.prepend(对象2):将对象2添加到对象1元素内部，并且在开头
+        3. appendTo():
+            * 对象1.appendTo(对象2):将对象1添加到对象2内部，并且在末尾
+        4. prependTo()：
+            * 对象1.prependTo(对象2):将对象1添加到对象2内部，并且在开头
+
+
+        5. after():添加元素到元素后边
+            * 对象1.after(对象2)： 将对象2添加到对象1后边。对象1和对象2是兄弟关系
+        6. before():添加元素到元素前边
+            * 对象1.before(对象2)： 将对象2添加到对象1前边。对象1和对象2是兄弟关系
+        7. insertAfter()
+            * 对象1.insertAfter(对象2)：将对象2添加到对象1后边。对象1和对象2是兄弟关系
+        8. insertBefore()
+            * 对象1.insertBefore(对象2)： 将对象2添加到对象1前边。对象1和对象2是兄弟关系
+
+        9. remove():移除元素
+            * 对象.remove():将对象删除掉
+        10. empty():清空元素的所有后代元素。
+            * 对象.empty():将对象的后代元素全部清空，但是保留当前对象以及其属性节点
+
+
+6. 案例</code></pre><p>​            </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag"># Web基础学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/Filter&Listener%E7%AC%94%E8%AE%B0/" rel="prev" title="Filter&Listener">
+      <i class="fa fa-chevron-left"></i> Filter&Listener
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/04/JQuery%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/" rel="next" title="JQuery高级笔记">
+      JQuery高级笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#今日内容"><span class="nav-number">1.</span> <span class="nav-text">今日内容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JQuery-基础："><span class="nav-number"></span> <span class="nav-text">JQuery 基础：</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">匡俊桦</p>
+  <div class="site-description" itemprop="description">回忆的沙漏将曾经屈指可数的日子渐渐淡去</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">290</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">匡俊桦</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">2.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35:52</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

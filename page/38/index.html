@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E7%BB%A7%E6%89%BF/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/C++%E6%96%87%E4%BB%B61/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +175,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/%E7%BB%A7%E6%89%BF/" class="post-title-link" itemprop="url">继承</a>
+            <a href="/2020/12/25/C++%E6%96%87%E4%BB%B61/" class="post-title-link" itemprop="url">C++文件1</a>
         </h2>
 
         <div class="post-meta">
@@ -185,14 +185,115 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-25 22:05:04" itemprop="dateCreated datePublished" datetime="2020-12-25T22:05:04+08:00">2020-12-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:14:52" itemprop="dateModified" datetime="2021-03-22T23:14:52+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-22 08:34:21" itemprop="dateModified" datetime="2021-03-22T08:34:21+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>基于C的文件操作<br>　　在ANSI C中，对文件的操作分为两种方式，即流式文件操作和I/O文件操作，下面就分别介绍之。</p>
+<p>一、流式文件操作<br>这种方式的文件操作有一个重要的结构FILE，FILE在stdio.h中定义如下：</p>
+<p><img src="/2020/12/25/C++%E6%96%87%E4%BB%B61/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> level;　　　　　　　　　　　<span class="comment">/* fill/empty level of buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> flags; 　　　　　　 <span class="comment">/* File status flags */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">char</span> fd;　　　　　　　　　　　 <span class="comment">/* File descriptor */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> hold;　　　　  <span class="comment">/* Ungetc char if no buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> bsize;　　　　　　　　　　 <span class="comment">/* Buffer size */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *<span class="built_in">buffer</span>;　<span class="comment">/* Data transfer buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *curp;　　<span class="comment">/* Current active pointer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> istemp;　　　　　　<span class="comment">/* Temporary file indicator */</span> </span><br><span class="line"></span><br><span class="line">　　short token;　　　　　　　　  <span class="comment">/* Used for validity checking */</span> </span><br><span class="line"></span><br><span class="line">&#125; FILE;　　　　　　　　　　　　  <span class="comment">/* This is the FILE object */</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<p>　　FILE这个结构包含了文件操作的基本属性，对文件的操作都要通过这个结构的指针来进行，此种文件操作常用的函数见下表 函数 功能</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/25/C++%E6%96%87%E4%BB%B61/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">游戏框架搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:33:32" itemprop="dateModified" datetime="2021-03-23T10:33:32+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,7 +311,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -229,28 +330,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>单继承</li>
-<li>多继承</li>
+          <h1 id="游戏框架搭建"><a href="#游戏框架搭建" class="headerlink" title="游戏框架搭建"></a>游戏框架搭建</h1><p><strong>目标</strong> —— 使用 <strong>面相对象</strong> 设计 <strong>飞机大战游戏类</strong></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>明确主程序职责</li>
+<li>实现主程序类</li>
+<li>准备游戏精灵组</li>
 </ul>
-<p><strong>面向对象三大特性</strong></p>
-<ol>
-<li><strong>封装</strong> 根据 <strong>职责</strong> 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>继承</strong> <strong>实现代码的重用</strong>，相同的代码不需要重复的编写</li>
-<li><strong>多态</strong> 不同的对象调用相同的方法，产生不同的执行结果，<strong>增加代码的灵活度</strong></li>
-</ol>
-<h2 id="01-单继承"><a href="#01-单继承" class="headerlink" title="01. 单继承"></a>01. 单继承</h2><h3 id="1-1-继承的概念、语法和特点"><a href="#1-1-继承的概念、语法和特点" class="headerlink" title="1.1 继承的概念、语法和特点"></a>1.1 继承的概念、语法和特点</h3><p><strong>继承的概念</strong>：<strong>子类</strong> 拥有 <strong>父类</strong> 的所有 <strong>方法</strong> 和 <strong>属性</strong></p>
-<p><img src="/2020/12/23/%E7%BB%A7%E6%89%BF/011_%E7%BB%A7%E6%89%BF%E5%AF%B9%E6%AF%94%E5%9B%BE%E7%A4%BA.png" alt></p>
-<h4 id="1-继承的语法"><a href="#1-继承的语法" class="headerlink" title="1) 继承的语法"></a>1) 继承的语法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 类名<span class="params">(父类名)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>子类</strong> 继承自 <strong>父类</strong>，可以直接 <strong>享受</strong> 父类中已经封装好的方法，不需要再次开发</li>
-<li><strong>子类</strong> 中应该根据 <strong>职责</strong>，封装 <strong>子类特有的</strong> <strong>属性和方法</strong></li>
+<h2 id="01-明确主程序职责"><a href="#01-明确主程序职责" class="headerlink" title="01. 明确主程序职责"></a>01. 明确主程序职责</h2><ul>
+<li>回顾 <strong>快速入门案例</strong>，一个游戏主程序的 <strong>职责</strong> 可以分为两个部分：<ul>
+<li>游戏初始化</li>
+<li>游戏循环</li>
 </ul>
-<h4 id="2-专业术语"><a href="#2-专业术语" class="headerlink" title="2) 专业术语"></a>2) 专业术语</h4>
+</li>
+<li>根据明确的职责，设计 <code>PlaneGame</code> 类如下：</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/%E7%BB%A7%E6%89%BF/#more" rel="contents">
+              <a class="btn" href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -274,7 +369,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E5%A4%9A%E6%80%81/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -288,7 +383,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/%E5%A4%9A%E6%80%81/" class="post-title-link" itemprop="url">多态</a>
+            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/" class="post-title-link" itemprop="url">游戏背景</a>
         </h2>
 
         <div class="post-meta">
@@ -298,137 +393,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:49:53" itemprop="dateModified" datetime="2021-03-22T21:49:53+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>900</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>多态</li>
-</ul>
-<p><strong>面向对象三大特性</strong></p>
-<ol>
-<li><p><strong>封装</strong> 根据 <strong>职责</strong> 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</p>
-<ul>
-<li>定义类的准则 </li>
-</ul>
-</li>
-<li><p><strong>继承</strong> <strong>实现代码的重用</strong>，相同的代码不需要重复的编写</p>
-<ul>
-<li>设计类的技巧 </li>
-<li>子类针对自己特有的需求，编写特定的代码</li>
-</ul>
-</li>
-<li><p><strong>多态</strong> 不同的 <strong>子类对象</strong> 调用相同的 <strong>父类方法</strong>，产生不同的执行结果</p>
-<ul>
-<li><p><strong>多态</strong> 可以 <strong>增加代码的灵活度</strong></p>
-</li>
-<li><p>以 <strong>继承</strong> 和 <strong>重写父类方法</strong> 为前提</p>
-</li>
-<li><p>是调用方法的技巧，<strong>不会影响到类的内部设计</strong></p>
-<p><img src="/2020/12/23/%E5%A4%9A%E6%80%81/016_%E5%A4%9A%E6%80%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt></p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="多态案例演练"><a href="#多态案例演练" class="headerlink" title="多态案例演练"></a>多态案例演练</h2><p><strong>需求</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/23/%E5%A4%9A%E6%80%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/%E5%8D%95%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/23/%E5%8D%95%E4%BE%8B/" class="post-title-link" itemprop="url">单例</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-23 18:34:06" itemprop="dateCreated datePublished" datetime="2020-12-23T18:34:06+08:00">2020-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:44:20" itemprop="dateModified" datetime="2021-03-22T21:44:20+08:00">2021-03-22</time>
+                <time title="修改时间：2021-03-23 10:33:23" itemprop="dateModified" datetime="2021-03-23T10:33:23+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -465,25 +437,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>单例设计模式</li>
-<li><code>__new__</code> 方法</li>
-<li>Python 中的单例</li>
+          <h1 id="游戏背景"><a href="#游戏背景" class="headerlink" title="游戏背景"></a>游戏背景</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>背景交替滚动的思路确定</li>
+<li>显示游戏背景</li>
 </ul>
-<h2 id="01-单例设计模式"><a href="#01-单例设计模式" class="headerlink" title="01. 单例设计模式"></a>01. 单例设计模式</h2><ul>
-<li><p>设计模式</p>
+<h2 id="01-背景交替滚动的思路确定"><a href="#01-背景交替滚动的思路确定" class="headerlink" title="01. 背景交替滚动的思路确定"></a>01. 背景交替滚动的思路确定</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 背景图像的显示效果：</p>
 <ul>
-<li><strong>设计模式</strong> 是 <strong>前人工作的总结和提炼</strong>，通常，被人们广泛流传的设计模式都是针对 <strong>某一特定问题</strong> 的成熟的解决方案</li>
-<li>使用 <strong>设计模式</strong> 是为了可重用代码、让代码更容易被他人理解、保证代码可靠性</li>
-</ul>
-</li>
-<li><p>单例设计模式</p>
-<ul>
-<li><strong>目的</strong> —— 让 <strong>类</strong> 创建的对象，在系统中 <strong>只有</strong> <strong>唯一的一个实例</strong></li>
-<li>每一次执行 <code>类名()</code> 返回的对象，<strong>内存地址是相同的</strong></li></ul></li></ul>
+<li>游戏启动后，<strong>背景图像</strong> 会 <strong>连续不断地</strong> <strong>向下方</strong> 移动</li>
+<li>在 <strong>视觉上</strong> 产生英雄的飞机不断向上方飞行的 <strong>错觉</strong> —— 在很多跑酷类游戏中常用的套路<ul>
+<li><strong>游戏的背景</strong> 不断变化</li>
+<li><strong>游戏的主角</strong> 位置保持不变</li></ul></li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/%E5%8D%95%E4%BE%8B/#more" rel="contents">
+              <a class="btn" href="/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -507,7 +473,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -521,7 +487,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">私有属性和私有方法</a>
+            <a href="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/" class="post-title-link" itemprop="url">英雄登场</a>
         </h2>
 
         <div class="post-meta">
@@ -531,14 +497,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:22:32" itemprop="dateModified" datetime="2021-03-21T23:22:32+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-23 10:32:55" itemprop="dateModified" datetime="2021-03-23T10:32:55+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -556,14 +522,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>592</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -575,23 +541,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="私有属性和私有方法"><a href="#私有属性和私有方法" class="headerlink" title="私有属性和私有方法"></a>私有属性和私有方法</h1><h2 id="01-应用场景及定义方式"><a href="#01-应用场景及定义方式" class="headerlink" title="01. 应用场景及定义方式"></a>01. 应用场景及定义方式</h2><p><strong>应用场景</strong></p>
-<ul>
-<li>在实际开发中，<strong>对象</strong> 的 <strong>某些属性或方法</strong> 可能只希望 <strong>在对象的内部被使用</strong>，而 <strong>不希望在外部被访问到</strong></li>
-<li><strong>私有属性</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>属性</strong></li>
-<li><strong>私有方法</strong> 就是 <strong>对象</strong> 不希望公开的 <strong>方法</strong></li>
+          <h1 id="英雄登场"><a href="#英雄登场" class="headerlink" title="英雄登场"></a>英雄登场</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>设计 <strong>英雄</strong> 和 <strong>子弹</strong> 类</li>
+<li>使用 <code>pygame.key.get_pressed()</code> 移动英雄</li>
+<li>发射子弹</li>
 </ul>
-<p><strong>定义方式</strong></p>
-<ul>
-<li>在 <strong>定义属性或方法时</strong>，在 <strong>属性名或者方法名前</strong> 增加 <strong>两个下划线</strong>，定义的就是 <strong>私有</strong> 属性或方法</li>
-</ul>
-<p><img src="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/010_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95.png" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Women</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># 不要问女生的年龄</span></span><br><span class="line">        self.__age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__secret</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"我的年龄是 %d"</span> % self.__age)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaofang = Women(<span class="string">"小芳"</span>)</span><br><span class="line"><span class="comment"># 私有属性，外部不能直接访问</span></span><br><span class="line"><span class="comment"># print(xiaofang.__age)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 私有方法，外部不能直接调用</span></span><br><span class="line"><span class="comment"># xiaofang.__secret()</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="02-伪私有属性和私有方法（科普）"><a href="#02-伪私有属性和私有方法（科普）" class="headerlink" title="02. 伪私有属性和私有方法（科普）"></a>02. 伪私有属性和私有方法（科普）</h2>
+<h2 id="01-设计-英雄-和-子弹-类"><a href="#01-设计-英雄-和-子弹-类" class="headerlink" title="01. 设计 英雄 和 子弹 类"></a>01. 设计 <strong>英雄</strong> 和 <strong>子弹</strong> 类</h2><h3 id="英雄需求"><a href="#英雄需求" class="headerlink" title="英雄需求"></a>英雄需求</h3><ol>
+<li>游戏启动后，<strong>英雄</strong> 出现在屏幕的 <strong>水平中间</strong> 位置，距离 <strong>屏幕底部</strong> <code>120</code> <strong>像素</strong></li>
+<li><strong>英雄</strong> 每隔 <code>0.5</code> 秒发射一次子弹，每次 <strong>连发三枚子弹</strong></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/06_%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2020/12/24/%E8%8B%B1%E9%9B%84%E7%99%BB%E5%9C%BA/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -615,7 +575,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -629,7 +589,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/" class="post-title-link" itemprop="url">面向对象封装案例 II</a>
+            <a href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/" class="post-title-link" itemprop="url">项目实战 —— 飞机大战</a>
         </h2>
 
         <div class="post-meta">
@@ -639,14 +599,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-23 18:24:40" itemprop="dateCreated datePublished" datetime="2020-12-23T18:24:40+08:00">2020-12-23</time>
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 23:22:08" itemprop="dateModified" datetime="2021-03-21T23:22:08+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-23 10:32:15" itemprop="dateModified" datetime="2021-03-23T10:32:15+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -664,7 +624,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>276</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -683,19 +643,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="面向对象封装案例-II"><a href="#面向对象封装案例-II" class="headerlink" title="面向对象封装案例 II"></a>面向对象封装案例 II</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>士兵突击案例</li>
-<li>身份运算符</li>
+          <h1 id="项目实战-——-飞机大战"><a href="#项目实战-——-飞机大战" class="headerlink" title="项目实战 —— 飞机大战"></a>项目实战 —— 飞机大战</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>强化 <strong>面向对象</strong> 程序设计</li>
+<li>体验使用 <code>pygame</code> 模块进行 <strong>游戏开发</strong></li>
 </ul>
-<p><strong>封装</strong></p>
-<ol>
-<li><strong>封装</strong> 是面向对象编程的一大特点</li>
-<li>面向对象编程的 <strong>第一步</strong> —— 将 <strong>属性</strong> 和 <strong>方法</strong> <strong>封装</strong> 到一个抽象的 <strong>类</strong> 中</li>
-<li><strong>外界</strong> 使用 <strong>类</strong> 创建 <strong>对象</strong>，然后 <strong>让对象调用方法</strong></li>
-<li><strong>对象方法的细节</strong> 都被 <strong>封装</strong> 在 <strong>类的内部</strong></li></ol>
+<h2 id="实战步骤"><a href="#实战步骤" class="headerlink" title="实战步骤"></a>实战步骤</h2><ol>
+<li><code>pygame</code> 快速体验</li>
+<li><strong>飞机大战</strong> 实战</li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/23/05_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%B0%81%E8%A3%85%E6%A1%88%E4%BE%8B%20II/#more" rel="contents">
+              <a class="btn" href="/2020/12/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%20%E2%80%94%E2%80%94%20%E9%A3%9E%E6%9C%BA%E5%A4%A7%E6%88%98/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -718,7 +675,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/37/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/39/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/37/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><a class="extend next" rel="next" href="/page/39/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -784,7 +741,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">276</span>
+          <span class="site-state-item-count">290</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -833,12 +790,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2.3m</span>
+    <span title="站点总字数">2.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35:08</span>
+    <span title="站点阅读时长">35:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
