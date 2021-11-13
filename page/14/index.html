@@ -161,6 +161,732 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Response%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/25/javaweb/Response%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">响应消息|Response对象|ServletContext对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-25 15:07:32" itemprop="dateCreated datePublished" datetime="2021-10-25T15:07:32+08:00">2021-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-26 20:26:41" itemprop="dateModified" datetime="2021-10-26T20:26:41+08:00">2021-10-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. HTTP协议：响应消息
+2. Response对象
+3. ServletContext对象</code></pre><h2 id="HTTP协议："><a href="#HTTP协议：" class="headerlink" title="HTTP协议："></a>HTTP协议：</h2><pre><code>1. 请求消息：客户端发送给服务器端的数据
+    * 数据格式：
+        1. 请求行
+        2. 请求头
+        3. 请求空行
+        4. 请求体
+2. 响应消息：服务器端发送给客户端的数据
+    * 数据格式：
+        1. 响应行
+            1. 组成：协议/版本 响应状态码 状态码描述
+            2. 响应状态码：服务器告诉客户端浏览器本次请求和响应的一个状态。
+                1. 状态码都是3位数字 
+                2. 分类：
+                    1. 1xx：服务器就收客户端消息，但没有接受完成，等待一段时间后，发送1xx多状态码
+                    2. 2xx：成功。代表：200
+                    3. 3xx：重定向。代表：302(重定向)，304(访问缓存)
+                    4. 4xx：客户端错误。
+                        * 代表：
+                            * 404（请求路径没有对应的资源） 
+                            * 405：请求方式没有对应的doXxx方法
+                    5. 5xx：服务器端错误。代表：500(服务器内部出现异常)</code></pre><p>​<br>            2. 响应头：<br>                1. 格式：头名称： 值<br>                2. 常见的响应头：<br>                    1. Content-Type：服务器告诉客户端本次响应体数据格式以及编码格式<br>                    2. Content-disposition：服务器告诉客户端以什么格式打开响应体数据<br>                        * 值：<br>                            * in-line:默认值,在当前页面内打开<br>                            * attachment;filename=xxx：以附件形式打开响应体。文件下载<br>            3. 响应空行<br>            4. 响应体:传输的数据</p>
+<pre><code>* 响应字符串格式
+    HTTP/1.1 200 OK
+    Content-Type: text/html;charset=UTF-8
+    Content-Length: 101
+    Date: Wed, 06 Jun 2018 07:08:42 GMT
+
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;$Title$&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+      hello , response
+      &lt;/body&gt;
+    &lt;/html&gt;</code></pre><h2 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h2><pre><code>* 功能：设置响应消息
+    1. 设置响应行
+        1. 格式：HTTP/1.1 200 ok
+        2. 设置状态码：setStatus(int sc) 
+    2. 设置响应头：setHeader(String name, String value) 
+
+    3. 设置响应体：
+        * 使用步骤：
+            1. 获取输出流
+                * 字符输出流：PrintWriter getWriter()
+
+                * 字节输出流：ServletOutputStream getOutputStream()
+
+            2. 使用输出流，将数据输出到客户端浏览器
+
+
+* 案例：
+    1. 完成重定向
+        * 重定向：资源跳转的方式
+        * 代码实现：
+            //1. 设置状态码为302
+            response.setStatus(302);
+            //2.设置响应头location
+            response.setHeader(&quot;location&quot;,&quot;/day15/responseDemo2&quot;);
+
+
+            //简单的重定向方法
+            response.sendRedirect(&quot;/day15/responseDemo2&quot;);
+
+        * 重定向的特点:redirect
+            1. 地址栏发生变化
+            2. 重定向可以访问其他站点(服务器)的资源
+            3. 重定向是两次请求。不能使用request对象来共享数据
+        * 转发的特点：forward
+            1. 转发地址栏路径不变
+            2. 转发只能访问当前服务器下的资源
+            3. 转发是一次请求，可以使用request对象来共享数据
+
+        * forward 和  redirect 区别
+
+        * 路径写法：
+            1. 路径分类
+                1. 相对路径：通过相对路径不可以确定唯一资源
+                    * 如：./index.html
+                    * 不以/开头，以.开头路径
+
+                    * 规则：找到当前资源和目标资源之间的相对位置关系
+                        * ./：当前目录
+                        * ../:后退一级目录
+                2. 绝对路径：通过绝对路径可以确定唯一资源
+                    * 如：http://localhost/day15/responseDemo2        /day15/responseDemo2
+                    * 以/开头的路径
+
+                    * 规则：判断定义的路径是给谁用的？判断请求将来从哪儿发出
+                        * 给客户端浏览器使用：需要加虚拟目录(项目的访问路径)
+                            * 建议虚拟目录动态获取：request.getContextPath()
+                            * &lt;a&gt; , &lt;form&gt; 重定向...
+                        * 给服务器使用：不需要加虚拟目录
+                            * 转发路径</code></pre><p>​<br>​                        </p>
+<pre><code>2. 服务器输出字符数据到浏览器
+    * 步骤：
+        1. 获取字符输出流
+        2. 输出数据
+
+    * 注意：
+        * 乱码问题：
+            1. PrintWriter pw = response.getWriter();获取的流的默认编码是ISO-8859-1
+            2. 设置该流的默认编码
+            3. 告诉浏览器响应体使用的编码
+
+            //简单的形式，设置编码，是在获取流之前设置
+            response.setContentType(&quot;text/html;charset=utf-8&quot;);
+3. 服务器输出字节数据到浏览器
+    * 步骤：
+        1. 获取字节输出流
+        2. 输出数据
+
+4. 验证码
+    1. 本质：图片
+    2. 目的：防止恶意表单注册</code></pre><h2 id="ServletContext对象："><a href="#ServletContext对象：" class="headerlink" title="ServletContext对象："></a>ServletContext对象：</h2><pre><code>1. 概念：代表整个web应用，可以和程序的容器(服务器)来通信
+2. 获取：
+    1. 通过request对象获取
+        request.getServletContext();
+    2. 通过HttpServlet获取
+        this.getServletContext();
+3. 功能：
+    1. 获取MIME类型：
+        * MIME类型:在互联网通信过程中定义的一种文件数据类型
+            * 格式： 大类型/小类型   text/html        image/jpeg
+
+        * 获取：String getMimeType(String file)  
+    2. 域对象：共享数据
+        1. setAttribute(String name,Object value)
+        2. getAttribute(String name)
+        3. removeAttribute(String name)
+
+        * ServletContext对象范围：所有用户所有请求的数据
+    3. 获取文件的真实(服务器)路径
+        1. 方法：String getRealPath(String path)  
+             String b = context.getRealPath(&quot;/b.txt&quot;);//web目录下资源访问
+             System.out.println(b);
+
+            String c = context.getRealPath(&quot;/WEB-INF/c.txt&quot;);//WEB-INF目录下的资源访问
+            System.out.println(c);
+
+            String a = context.getRealPath(&quot;/WEB-INF/classes/a.txt&quot;);//src目录下的资源访问
+            System.out.println(a);</code></pre><h2 id="案例："><a href="#案例：" class="headerlink" title="案例："></a>案例：</h2><pre><code>* 文件下载需求：
+    1. 页面显示超链接
+    2. 点击超链接后弹出下载提示框
+    3. 完成图片文件下载
+
+
+* 分析：
+    1. 超链接指向的资源如果能够被浏览器解析，则在浏览器中展示，如果不能解析，则弹出下载提示框。不满足需求
+    2. 任何资源都必须弹出下载提示框
+    3. 使用响应头设置资源的打开方式：
+        * content-disposition:attachment;filename=xxx
+
+
+* 步骤：
+    1. 定义页面，编辑超链接href属性，指向Servlet，传递资源名称filename
+    2. 定义Servlet
+        1. 获取文件名称
+        2. 使用字节输入流加载文件进内存
+        3. 指定response的响应头： content-disposition:attachment;filename=xxx
+        4. 将数据写出到response输出流
+
+
+* 问题：
+    * 中文文件问题
+        * 解决思路：
+            1. 获取客户端使用的浏览器版本信息
+            2. 根据不同的版本信息，设置filename的编码方式不同</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Servlet&HTTP&Request%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/25/javaweb/Servlet&HTTP&Request%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Servlet|HTTP协议|Request对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-25 15:07:25" itemprop="dateCreated datePublished" datetime="2021-10-25T15:07:25+08:00">2021-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-26 20:25:01" itemprop="dateModified" datetime="2021-10-26T20:25:01+08:00">2021-10-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. Servlet
+2. HTTP协议
+3. Request</code></pre><h2 id="Servlet："><a href="#Servlet：" class="headerlink" title="Servlet："></a>Servlet：</h2><pre><code>1. 概念
+2. 步骤
+3. 执行原理
+4. 生命周期
+5. Servlet3.0 注解配置
+6. Servlet的体系结构    
+    Servlet -- 接口
+        |
+    GenericServlet -- 抽象类
+        |
+    HttpServlet  -- 抽象类
+
+    * GenericServlet：将Servlet接口中其他的方法做了默认空实现，只将service()方法作为抽象
+        * 将来定义Servlet类时，可以继承GenericServlet，实现service()方法即可
+
+    * HttpServlet：对http协议的一种封装，简化操作
+        1. 定义类继承HttpServlet
+        2. 复写doGet/doPost方法
+
+7. Servlet相关配置
+    1. urlpartten:Servlet访问路径
+        1. 一个Servlet可以定义多个访问路径 ： @WebServlet({&quot;/d4&quot;,&quot;/dd4&quot;,&quot;/ddd4&quot;})
+        2. 路径定义规则：
+            1. /xxx：路径匹配
+            2. /xxx/xxx:多层路径，目录结构
+            3. *.do：扩展名匹配</code></pre><h2 id="HTTP："><a href="#HTTP：" class="headerlink" title="HTTP："></a>HTTP：</h2><pre><code>* 概念：Hyper Text Transfer Protocol 超文本传输协议
+    * 传输协议：定义了，客户端和服务器端通信时，发送数据的格式
+    * 特点：
+        1. 基于TCP/IP的高级协议
+        2. 默认端口号:80
+        3. 基于请求/响应模型的:一次请求对应一次响应
+        4. 无状态的：每次请求之间相互独立，不能交互数据
+
+    * 历史版本：
+        * 1.0：每一次请求响应都会建立新的连接
+        * 1.1：复用连接
+
+* 请求消息数据格式
+    1. 请求行
+        请求方式 请求url 请求协议/版本
+        GET /login.html    HTTP/1.1
+
+        * 请求方式：
+            * HTTP协议有7中请求方式，常用的有2种
+                * GET：
+                    1. 请求参数在请求行中，在url后。
+                    2. 请求的url长度有限制的
+                    3. 不太安全
+                * POST：
+                    1. 请求参数在请求体中
+                    2. 请求的url长度没有限制的
+                    3. 相对安全
+    2. 请求头：客户端浏览器告诉服务器一些信息
+        请求头名称: 请求头值
+        * 常见的请求头：
+            1. User-Agent：浏览器告诉服务器，我访问你使用的浏览器版本信息
+                * 可以在服务器端获取该头的信息，解决浏览器的兼容性问题
+
+            2. Referer：http://localhost/login.html
+                * 告诉服务器，我(当前请求)从哪里来？
+                    * 作用：
+                        1. 防盗链：
+                        2. 统计工作：
+    3. 请求空行
+        空行，就是用于分割POST请求的请求头，和请求体的。
+    4. 请求体(正文)：
+        * 封装POST请求消息的请求参数的
+
+    * 字符串格式：
+        POST /login.html    HTTP/1.1
+        Host: localhost
+        User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate
+        Referer: http://localhost/login.html
+        Connection: keep-alive
+        Upgrade-Insecure-Requests: 1
+
+        username=zhangsan    
+
+
+* 响应消息数据格式</code></pre><h2 id="Request："><a href="#Request：" class="headerlink" title="Request："></a>Request：</h2><pre><code>1. request对象和response对象的原理
+    1. request和response对象是由服务器创建的。我们来使用它们
+    2. request对象是来获取请求消息，response对象是来设置响应消息
+
+2. request对象继承体系结构：    
+    ServletRequest        --    接口
+        |    继承
+    HttpServletRequest    -- 接口
+        |    实现
+    org.apache.catalina.connector.RequestFacade 类(tomcat)
+
+3. request功能：
+    1. 获取请求消息数据
+        1. 获取请求行数据
+            * GET /day14/demo1?name=zhangsan HTTP/1.1
+            * 方法：
+                1. 获取请求方式 ：GET
+                    * String getMethod()  
+                2. (*)获取虚拟目录：/day14
+                    * String getContextPath()
+                3. 获取Servlet路径: /demo1
+                    * String getServletPath()
+                4. 获取get方式请求参数：name=zhangsan
+                    * String getQueryString()
+                5. (*)获取请求URI：/day14/demo1
+                    * String getRequestURI():        /day14/demo1
+                    * StringBuffer getRequestURL()  :http://localhost/day14/demo1
+
+                    * URL:统一资源定位符 ： http://localhost/day14/demo1    中华人民共和国
+                    * URI：统一资源标识符 : /day14/demo1                    共和国
+
+                6. 获取协议及版本：HTTP/1.1
+                    * String getProtocol()
+
+                7. 获取客户机的IP地址：
+                    * String getRemoteAddr()
+
+        2. 获取请求头数据
+            * 方法：
+                * (*)String getHeader(String name):通过请求头的名称获取请求头的值
+                * Enumeration&lt;String&gt; getHeaderNames():获取所有的请求头名称
+
+        3. 获取请求体数据:
+            * 请求体：只有POST请求方式，才有请求体，在请求体中封装了POST请求的请求参数
+            * 步骤：
+                1. 获取流对象
+                    *  BufferedReader getReader()：获取字符输入流，只能操作字符数据
+                    *  ServletInputStream getInputStream()：获取字节输入流，可以操作所有类型数据
+                        * 在文件上传知识点后讲解
+
+                2. 再从流对象中拿数据</code></pre><p>​<br>        2. 其他功能：<br>            1. 获取请求参数通用方式：不论get还是post请求方式都可以使用下列方法来获取请求参数<br>                1. String getParameter(String name):根据参数名称获取参数值    username=zs&amp;password=123<br>                2. String[] getParameterValues(String name):根据参数名称获取参数值的数组  hobby=xx&amp;hobby=game<br>                3. Enumeration<String> getParameterNames():获取所有请求的参数名称<br>                4. Map&lt;String,String[]&gt; getParameterMap():获取所有参数的map集合</String></p>
+<pre><code>* 中文乱码问题：
+    * get方式：tomcat 8 已经将get方式乱码问题解决了
+    * post方式：会乱码
+        * 解决：在获取参数前，设置request的编码request.setCharacterEncoding(&quot;utf-8&quot;);</code></pre><p>​<br>            2. 请求转发：一种在服务器内部的资源跳转方式<br>                1. 步骤：<br>                    1. 通过request对象获取请求转发器对象：RequestDispatcher getRequestDispatcher(String path)<br>                    2. 使用RequestDispatcher对象来进行转发：forward(ServletRequest request, ServletResponse response) </p>
+<pre><code>    2. 特点：
+        1. 浏览器地址栏路径不发生变化
+        2. 只能转发到当前服务器内部资源中。
+        3. 转发是一次请求
+
+
+3. 共享数据：
+    * 域对象：一个有作用范围的对象，可以在范围内共享数据
+    * request域：代表一次请求的范围，一般用于请求转发的多个资源中共享数据
+    * 方法：
+        1. void setAttribute(String name,Object obj):存储数据
+        2. Object getAttitude(String name):通过键获取值
+        3. void removeAttribute(String name):通过键移除键值对
+
+4. 获取ServletContext：
+    * ServletContext getServletContext()</code></pre><h2 id="案例：用户登录"><a href="#案例：用户登录" class="headerlink" title="案例：用户登录"></a>案例：用户登录</h2><pre><code>* 用户登录案例需求：
+    1.编写login.html登录页面
+        username &amp; password 两个输入框
+    2.使用Druid数据库连接池技术,操作mysql，day14数据库中user表
+    3.使用JdbcTemplate技术封装JDBC
+    4.登录成功跳转到SuccessServlet展示：登录成功！用户名,欢迎您
+    5.登录失败跳转到FailServlet展示：登录失败，用户名或密码错误
+
+
+* 分析
+
+* 开发步骤
+    1. 创建项目，导入html页面，配置文件，jar包
+    2. 创建数据库环境
+        CREATE DATABASE day14;
+        USE day14;
+        CREATE TABLE USER(
+
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            username VARCHAR(32) UNIQUE NOT NULL,
+            PASSWORD VARCHAR(32) NOT NULL
+        );
+
+    3. 创建包cn.itcast.domain,创建类User
+        package cn.itcast.domain;
+        /**
+         * 用户的实体类
+         */
+        public class User {
+
+            private int id;
+            private String username;
+            private String password;</code></pre><p>​<br>                public int getId() {<br>                    return id;<br>                }</p>
+<pre><code>        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        @Override
+        public String toString() {
+            return &quot;User{&quot; +
+                    &quot;id=&quot; + id +
+                    &quot;, username=&apos;&quot; + username + &apos;\&apos;&apos; +
+                    &quot;, password=&apos;&quot; + password + &apos;\&apos;&apos; +
+                    &apos;}&apos;;
+        }
+    }
+4. 创建包cn.itcast.util,编写工具类JDBCUtils
+    package cn.itcast.util;
+
+    import com.alibaba.druid.pool.DruidDataSourceFactory;
+
+    import javax.sql.DataSource;
+    import javax.xml.crypto.Data;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.sql.Connection;
+    import java.sql.SQLException;
+    import java.util.Properties;
+
+    /**
+     * JDBC工具类 使用Durid连接池
+     */
+    public class JDBCUtils {
+
+        private static DataSource ds ;
+
+        static {
+
+            try {
+                //1.加载配置文件
+                Properties pro = new Properties();
+                //使用ClassLoader加载配置文件，获取字节输入流
+                InputStream is = JDBCUtils.class.getClassLoader().getResourceAsStream(&quot;druid.properties&quot;);
+                pro.load(is);
+
+                //2.初始化连接池对象
+                ds = DruidDataSourceFactory.createDataSource(pro);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * 获取连接池对象
+         */
+        public static DataSource getDataSource(){
+            return ds;
+        }</code></pre><p>​<br>                /**<br>                 * 获取连接Connection对象<br>                 */<br>                public static Connection getConnection() throws SQLException {<br>                    return  ds.getConnection();<br>                }<br>            }<br>        5. 创建包cn.itcast.dao,创建类UserDao,提供login方法</p>
+<pre><code>package cn.itcast.dao;
+
+import cn.itcast.domain.User;
+import cn.itcast.util.JDBCUtils;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+/**
+ * 操作数据库中User表的类
+ */
+public class UserDao {
+
+    //声明JDBCTemplate对象共用
+    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
+
+    /**
+     * 登录方法
+     * @param loginUser 只有用户名和密码
+     * @return user包含用户全部数据,没有查询到，返回null
+     */
+    public User login(User loginUser){
+        try {
+            //1.编写sql
+            String sql = &quot;select * from user where username = ? and password = ?&quot;;
+            //2.调用query方法
+            User user = template.queryForObject(sql,
+                    new BeanPropertyRowMapper&lt;User&gt;(User.class),
+                    loginUser.getUsername(), loginUser.getPassword());</code></pre><p>​<br>                        return user;<br>                    } catch (DataAccessException e) {<br>                        e.printStackTrace();//记录日志<br>                        return null;<br>                    }<br>                }<br>            }</p>
+<pre><code>6. 编写cn.itcast.web.servlet.LoginServlet类
+    package cn.itcast.web.servlet;
+
+    import cn.itcast.dao.UserDao;
+    import cn.itcast.domain.User;
+
+    import javax.servlet.ServletException;
+    import javax.servlet.annotation.WebServlet;
+    import javax.servlet.http.HttpServlet;
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+    import java.io.IOException;</code></pre><p>​<br>            @WebServlet(“/loginServlet”)<br>            public class LoginServlet extends HttpServlet {</p>
+<p>​<br>                @Override<br>                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {<br>                    //1.设置编码<br>                    req.setCharacterEncoding(“utf-8”);<br>                    //2.获取请求参数<br>                    String username = req.getParameter(“username”);<br>                    String password = req.getParameter(“password”);<br>                    //3.封装user对象<br>                    User loginUser = new User();<br>                    loginUser.setUsername(username);<br>                    loginUser.setPassword(password);</p>
+<pre><code>            //4.调用UserDao的login方法
+            UserDao dao = new UserDao();
+            User user = dao.login(loginUser);
+
+            //5.判断user
+            if(user == null){
+                //登录失败
+                req.getRequestDispatcher(&quot;/failServlet&quot;).forward(req,resp);
+            }else{
+                //登录成功
+                //存储数据
+                req.setAttribute(&quot;user&quot;,user);
+                //转发
+                req.getRequestDispatcher(&quot;/successServlet&quot;).forward(req,resp);
+            }
+
+        }
+
+        @Override
+        protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            this.doGet(req,resp);
+        }
+    }
+
+7. 编写FailServlet和SuccessServlet类
+    @WebServlet(&quot;/successServlet&quot;)
+    public class SuccessServlet extends HttpServlet {
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            //获取request域中共享的user对象
+            User user = (User) request.getAttribute(&quot;user&quot;);
+
+            if(user != null){
+                //给页面写一句话
+
+                //设置编码
+                response.setContentType(&quot;text/html;charset=utf-8&quot;);
+                //输出
+                response.getWriter().write(&quot;登录成功！&quot;+user.getUsername()+&quot;,欢迎您&quot;);
+            }</code></pre><p>​<br>                }        </p>
+<pre><code>    @WebServlet(&quot;/failServlet&quot;)
+    public class FailServlet extends HttpServlet {
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            //给页面写一句话
+
+            //设置编码
+            response.setContentType(&quot;text/html;charset=utf-8&quot;);
+            //输出
+            response.getWriter().write(&quot;登录失败，用户名或密码错误&quot;);
+
+        }
+
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            this.doPost(request,response);
+        }
+    }
+
+
+
+8. login.html中form表单的action路径的写法
+    * 虚拟目录+Servlet的资源路径
+
+9. BeanUtils工具类，简化数据封装
+    * 用于封装JavaBean的
+    1. JavaBean：标准的Java类
+        1. 要求：
+            1. 类必须被public修饰
+            2. 必须提供空参的构造器
+            3. 成员变量必须使用private修饰
+            4. 提供公共setter和getter方法
+        2. 功能：封装数据
+
+
+    2. 概念：
+        成员变量：
+        属性：setter和getter方法截取后的产物
+            例如：getUsername() --&gt; Username--&gt; username
+
+
+    3. 方法：
+        1. setProperty()
+        2. getProperty()
+        3. populate(Object obj , Map map):将map集合的键值对信息，封装到对应的JavaBean对象中</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/Tomcat&Servlet%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1049,685 +1775,6 @@ for (JXNode jxNode : jxNodes4) {
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/JavaScript%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/25/javaweb/JavaScript%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">ECMAScipt|BOM|DOM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-25 15:06:41" itemprop="dateCreated datePublished" datetime="2021-10-25T15:06:41+08:00">2021-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:31:41" itemprop="dateModified" datetime="2021-10-26T20:31:41+08:00">2021-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今日内容："><a href="#今日内容：" class="headerlink" title="今日内容："></a>今日内容：</h1><pre><code>1. JavaScript：
-    1. ECMAScript：
-    2. BOM：
-    3. DOM：
-        1. 事件</code></pre><h2 id="DOM简单学习：为了满足案例要求"><a href="#DOM简单学习：为了满足案例要求" class="headerlink" title="DOM简单学习：为了满足案例要求"></a>DOM简单学习：为了满足案例要求</h2><pre><code>* 功能：控制html文档的内容
-* 获取页面标签(元素)对象：Element
-    * document.getElementById(&quot;id值&quot;):通过元素的id获取元素对象
-
-* 操作Element对象：
-    1. 修改属性值：
-        1. 明确获取的对象是哪一个？
-        2. 查看API文档，找其中有哪些属性可以设置
-    2. 修改标签体内容：
-        * 属性：innerHTML
-        1. 获取元素对象
-        2. 使用innerHTML属性修改标签体内容</code></pre><h2 id="事件简单学习"><a href="#事件简单学习" class="headerlink" title="事件简单学习"></a>事件简单学习</h2><pre><code>* 功能： 某些组件被执行了某些操作后，触发某些代码的执行。
-    * 造句：  xxx被xxx,我就xxx
-        * 我方水晶被摧毁后，我就责备对友。
-        * 敌方水晶被摧毁后，我就夸奖自己。
-
-* 如何绑定事件
-    1. 直接在html标签上，指定事件的属性(操作)，属性值就是js代码
-        1. 事件：onclick--- 单击事件
-
-    2. 通过js获取元素对象，指定事件属性，设置一个函数
-
-    * 代码：
-        &lt;body&gt;
-            &lt;img id=&quot;light&quot; src=&quot;img/off.gif&quot;  onclick=&quot;fun();&quot;&gt;
-            &lt;img id=&quot;light2&quot; src=&quot;img/off.gif&quot;&gt;
-
-            &lt;script&gt;
-                function fun(){
-                    alert(&apos;我被点了&apos;);
-                    alert(&apos;我又被点了&apos;);
-                }
-
-                function fun2(){
-                    alert(&apos;咋老点我？&apos;);
-                }
-
-                //1.获取light2对象
-                var light2 = document.getElementById(&quot;light2&quot;);
-                //2.绑定事件
-                light2.onclick = fun2;</code></pre><p>​<br>                <br>            <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></p>
-<pre><code>* 案例1：电灯开关
-    &lt;!DOCTYPE html&gt;
-    &lt;html lang=&quot;en&quot;&gt;
-    &lt;head&gt;
-        &lt;meta charset=&quot;UTF-8&quot;&gt;
-        &lt;title&gt;电灯开关&lt;/title&gt;
-
-    &lt;/head&gt;
-    &lt;body&gt;
-
-    &lt;img id=&quot;light&quot; src=&quot;img/off.gif&quot;&gt;
-
-    &lt;script&gt;
-        /*
-            分析：
-                1.获取图片对象
-                2.绑定单击事件
-                3.每次点击切换图片
-                    * 规则：
-                        * 如果灯是开的 on,切换图片为 off
-                        * 如果灯是关的 off,切换图片为 on
-                    * 使用标记flag来完成
-
-         */
-
-        //1.获取图片对象
-        var light = document.getElementById(&quot;light&quot;);
-
-        var flag = false;//代表灯是灭的。 off图片
-
-        //2.绑定单击事件
-        light.onclick = function(){
-            if(flag){//判断如果灯是开的，则灭掉
-                light.src = &quot;img/off.gif&quot;;
-                flag = false;
-
-            }else{
-                //如果灯是灭的，则打开
-
-                light.src = &quot;img/on.gif&quot;;
-                flag = true;
-            }</code></pre><p>​<br>            }</p>
-<pre><code>&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre><h1 id="BOM"><a href="#BOM" class="headerlink" title="BOM:"></a>BOM:</h1><pre><code>1. 概念：Browser Object Model 浏览器对象模型
-    * 将浏览器的各个组成部分封装成对象。
-
-2. 组成：
-    * Window：窗口对象
-    * Navigator：浏览器对象
-    * Screen：显示器屏幕对象
-    * History：历史记录对象
-    * Location：地址栏对象
-
-3. Window：窗口对象
-    1. 创建
-    2. 方法
-         1. 与弹出框有关的方法：
-            alert()    显示带有一段消息和一个确认按钮的警告框。
-            confirm()    显示带有一段消息以及确认按钮和取消按钮的对话框。
-                * 如果用户点击确定按钮，则方法返回true
-                * 如果用户点击取消按钮，则方法返回false
-            prompt()    显示可提示用户输入的对话框。
-                * 返回值：获取用户输入的值
-         2. 与打开关闭有关的方法：
-            close()    关闭浏览器窗口。
-                * 谁调用我 ，我关谁
-            open()    打开一个新的浏览器窗口
-                * 返回新的Window对象
-         3. 与定时器有关的方式
-            setTimeout()    在指定的毫秒数后调用函数或计算表达式。
-                * 参数：
-                    1. js代码或者方法对象
-                    2. 毫秒值
-                * 返回值：唯一标识，用于取消定时器
-            clearTimeout()    取消由 setTimeout() 方法设置的 timeout。
-
-            setInterval()    按照指定的周期（以毫秒计）来调用函数或计算表达式。
-            clearInterval()    取消由 setInterval() 设置的 timeout。
-
-    3. 属性：
-        1. 获取其他BOM对象：
-            history
-            location
-            Navigator
-            Screen:
-        2. 获取DOM对象
-            document
-    4. 特点
-        * Window对象不需要创建可以直接使用 window使用。 window.方法名();
-        * window引用可以省略。  方法名();
-
-
-4. Location：地址栏对象
-    1. 创建(获取)：
-        1. window.location
-        2. location
-
-    2. 方法：
-        * reload()    重新加载当前文档。刷新
-    3. 属性
-        * href    设置或返回完整的 URL。
-
-
-5. History：历史记录对象
-    1. 创建(获取)：
-        1. window.history
-        2. history
-
-    2. 方法：
-        * back()    加载 history 列表中的前一个 URL。
-        * forward()    加载 history 列表中的下一个 URL。
-        * go(参数)    加载 history 列表中的某个具体页面。
-            * 参数：
-                * 正数：前进几个历史记录
-                * 负数：后退几个历史记录
-    3. 属性：
-        * length    返回当前窗口历史列表中的 URL 数量。</code></pre><h2 id="DOM："><a href="#DOM：" class="headerlink" title="DOM："></a>DOM：</h2><pre><code>* 概念： Document Object Model 文档对象模型
-    * 将标记语言文档的各个组成部分，封装为对象。可以使用这些对象，对标记语言文档进行CRUD的动态操作
-
-* W3C DOM 标准被分为 3 个不同的部分：
-
-    * 核心 DOM - 针对任何结构化文档的标准模型
-        * Document：文档对象
-        * Element：元素对象
-        * Attribute：属性对象
-        * Text：文本对象
-        * Comment:注释对象
-
-        * Node：节点对象，其他5个的父对象
-    * XML DOM - 针对 XML 文档的标准模型
-    * HTML DOM - 针对 HTML 文档的标准模型
-
-
-
-
-
-* 核心DOM模型：
-    * Document：文档对象
-        1. 创建(获取)：在html dom模型中可以使用window对象来获取
-            1. window.document
-            2. document
-        2. 方法：
-            1. 获取Element对象：
-                1. getElementById()    ： 根据id属性值获取元素对象。id属性值一般唯一
-                2. getElementsByTagName()：根据元素名称获取元素对象们。返回值是一个数组
-                3. getElementsByClassName():根据Class属性值获取元素对象们。返回值是一个数组
-                4. getElementsByName(): 根据name属性值获取元素对象们。返回值是一个数组
-            2. 创建其他DOM对象：
-                createAttribute(name)
-                createComment()
-                createElement()
-                createTextNode()
-        3. 属性
-    * Element：元素对象
-        1. 获取/创建：通过document来获取和创建
-        2. 方法：
-            1. removeAttribute()：删除属性
-            2. setAttribute()：设置属性
-    * Node：节点对象，其他5个的父对象
-        * 特点：所有dom对象都可以被认为是一个节点
-        * 方法：
-            * CRUD dom树：
-                * appendChild()：向节点的子节点列表的结尾添加新的子节点。
-                * removeChild()    ：删除（并返回）当前节点的指定子节点。
-                * replaceChild()：用新节点替换一个子节点。
-        * 属性：
-            * parentNode 返回节点的父节点。
-
-
-* HTML DOM
-    1. 标签体的设置和获取：innerHTML
-    2. 使用html元素对象的属性
-    3. 控制元素样式
-        1. 使用元素的style属性来设置
-            如：
-                 //修改样式方式1
-                div1.style.border = &quot;1px solid red&quot;;
-                div1.style.width = &quot;200px&quot;;
-                //font-size--&gt; fontSize
-                div1.style.fontSize = &quot;20px&quot;;
-        2. 提前定义好类选择器的样式，通过元素的className属性来设置其class属性值。</code></pre><h2 id="事件监听机制："><a href="#事件监听机制：" class="headerlink" title="事件监听机制："></a>事件监听机制：</h2><pre><code>* 概念：某些组件被执行了某些操作后，触发某些代码的执行。    
-    * 事件：某些操作。如： 单击，双击，键盘按下了，鼠标移动了
-    * 事件源：组件。如： 按钮 文本输入框...
-    * 监听器：代码。
-    * 注册监听：将事件，事件源，监听器结合在一起。 当事件源上发生了某个事件，则触发执行某个监听器代码。
-
-
-* 常见的事件：
-    1. 点击事件：
-        1. onclick：单击事件
-        2. ondblclick：双击事件
-    2. 焦点事件
-        1. onblur：失去焦点
-        2. onfocus:元素获得焦点。
-
-    3. 加载事件：
-        1. onload：一张页面或一幅图像完成加载。
-
-    4. 鼠标事件：
-        1. onmousedown    鼠标按钮被按下。
-        2. onmouseup    鼠标按键被松开。
-        3. onmousemove    鼠标被移动。
-        4. onmouseover    鼠标移到某元素之上。
-        5. onmouseout    鼠标从某元素移开。</code></pre><p>​<br>        5. 键盘事件：<br>            1. onkeydown    某个键盘按键被按下。<br>            2. onkeyup        某个键盘按键被松开。<br>            3. onkeypress    某个键盘按键被按下并松开。</p>
-<pre><code>6. 选择和改变
-    1. onchange    域的内容被改变。
-    2. onselect    文本被选中。
-
-7. 表单事件：
-    1. onsubmit    确认按钮被点击。
-    2. onreset    重置按钮被点击。</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/25/javaweb/JavaScript%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/25/javaweb/JavaScript%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">JS基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-25 15:06:35" itemprop="dateCreated datePublished" datetime="2021-10-25T15:06:35+08:00">2021-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-26 20:30:48" itemprop="dateModified" datetime="2021-10-26T20:30:48+08:00">2021-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今日内容"><a href="#今日内容" class="headerlink" title="今日内容"></a>今日内容</h1><pre><code>1. JavaScript基础</code></pre><h2 id="JavaScript："><a href="#JavaScript：" class="headerlink" title="JavaScript："></a>JavaScript：</h2><pre><code>* 概念：    一门客户端脚本语言
-    * 运行在客户端浏览器中的。每一个浏览器都有JavaScript的解析引擎
-    * 脚本语言：不需要编译，直接就可以被浏览器解析执行了
-
-* 功能：
-    * 可以来增强用户和html页面的交互过程，可以来控制html元素，让页面有一些动态的效果，增强用户的体验。
-
-* JavaScript发展史：
-    1. 1992年，Nombase公司，开发出第一门客户端脚本语言，专门用于表单的校验。命名为 ： C--    ，后来更名为：ScriptEase
-    2. 1995年，Netscape(网景)公司，开发了一门客户端脚本语言：LiveScript。后来，请来SUN公司的专家，修改LiveScript，命名为JavaScript
-    3. 1996年，微软抄袭JavaScript开发出JScript语言
-    4. 1997年，ECMA(欧洲计算机制造商协会)，制定出客户端脚本语言的标准：ECMAScript，就是统一了所有客户端脚本语言的编码方式。
-
-    * JavaScript = ECMAScript + JavaScript自己特有的东西(BOM+DOM)
-
-* ECMAScript：客户端脚本语言的标准
-    1. 基本语法：
-        1. 与html结合方式
-            1. 内部JS：
-                * 定义&lt;script&gt;，标签体内容就是js代码
-            2. 外部JS：
-                * 定义&lt;script&gt;，通过src属性引入外部的js文件
-
-            * 注意：
-                1. &lt;script&gt;可以定义在html页面的任何地方。但是定义的位置会影响执行顺序。
-                2. &lt;script&gt;可以定义多个。
-        2. 注释
-            1. 单行注释：//注释内容
-            2. 多行注释：/*注释内容*/
-        3. 数据类型：
-            1. 原始数据类型(基本数据类型)：
-                1. number：数字。 整数/小数/NaN(not a number 一个不是数字的数字类型)
-                2. string：字符串。 字符串  &quot;abc&quot; &quot;a&quot; &apos;abc&apos;
-                3. boolean: true和false
-                4. null：一个对象为空的占位符
-                5. undefined：未定义。如果一个变量没有给初始化值，则会被默认赋值为undefined
-
-            2. 引用数据类型：对象
-
-        4. 变量
-            * 变量：一小块存储数据的内存空间
-            * Java语言是强类型语言，而JavaScript是弱类型语言。
-                * 强类型：在开辟变量存储空间时，定义了空间将来存储的数据的数据类型。只能存储固定类型的数据
-                * 弱类型：在开辟变量存储空间时，不定义空间将来的存储数据类型，可以存放任意类型的数据。
-            * 语法：
-                * var 变量名 = 初始化值;
-
-            * typeof运算符：获取变量的类型。
-                * 注：null运算后得到的是object
-        5. 运算符
-            1. 一元运算符：只有一个运算数的运算符
-                ++，-- ， +(正号)  
-                * ++ --: 自增(自减)
-                    * ++(--) 在前，先自增(自减)，再运算
-                    * ++(--) 在后，先运算，再自增(自减)
-                * +(-)：正负号
-                * 注意：在JS中，如果运算数不是运算符所要求的类型，那么js引擎会自动的将运算数进行类型转换
-                    * 其他类型转number：
-                        * string转number：按照字面值转换。如果字面值不是数字，则转为NaN（不是数字的数字）
-                        * boolean转number：true转为1，false转为0
-            2. 算数运算符
-                + - * / % ...
-
-            3. 赋值运算符
-                = += -+....
-
-            4. 比较运算符
-                &gt; &lt; &gt;= &lt;= == ===(全等于)
-                * 比较方式
-                  1. 类型相同：直接比较
-                      * 字符串：按照字典顺序比较。按位逐一比较，直到得出大小为止。
-                  2. 类型不同：先进行类型转换，再比较
-                      * ===：全等于。在比较之前，先判断类型，如果类型不一样，则直接返回false
-
-
-            5. 逻辑运算符
-                &amp;&amp; || !
-                * 其他类型转boolean：
-                   1. number：0或NaN为假，其他为真
-                   2. string：除了空字符串(&quot;&quot;)，其他都是true
-                   3. null&amp;undefined:都是false
-                   4. 对象：所有对象都为true
-
-            6. 三元运算符
-                ? : 表达式
-                var a = 3;
-                var b = 4;
-
-                var c = a &gt; b ? 1:0;
-                * 语法：
-                    * 表达式? 值1:值2;
-                    * 判断表达式的值，如果是true则取值1，如果是false则取值2；
-
-        6. 流程控制语句：
-            1. if...else...
-            2. switch:
-                * 在java中，switch语句可以接受的数据类型： byte int shor char,枚举(1.5) ,String(1.7)
-                    * switch(变量):
-                        case 值:
-                * 在JS中,switch语句可以接受任意的原始数据类型
-            3. while
-            4. do...while
-            5. for
-        7. JS特殊语法：
-            1. 语句以;结尾，如果一行只有一条语句则 ;可以省略 (不建议)
-            2. 变量的定义使用var关键字，也可以不使用
-                * 用： 定义的变量是局部变量
-                * 不用：定义的变量是全局变量(不建议)
-
-        8. 练习：99乘法表
-        &lt;!DOCTYPE html&gt;
-        &lt;html lang=&quot;en&quot;&gt;
-        &lt;head&gt;
-            &lt;meta charset=&quot;UTF-8&quot;&gt;
-            &lt;title&gt;99乘法表&lt;/title&gt;
-            &lt;style&gt;
-                td{
-                    border: 1px solid;
-                }
-
-            &lt;/style&gt;
-
-            &lt;script&gt;
-
-                document.write(&quot;&lt;table  align=&apos;center&apos;&gt;&quot;);</code></pre><p>​<br>                    //1.完成基本的for循环嵌套，展示乘法表<br>                    for (var i = 1; i &lt;= 9 ; i++) {<br>                        document.write(“<tr>“);<br>                        for (var j = 1; j &lt;=i ; j++) {<br>                            document.write(“<td>“);</td></tr></p>
-<pre><code>                        //输出  1 * 1 = 1
-                        document.write(i + &quot; * &quot; + j + &quot; = &quot; + ( i*j) +&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&quot;);
-
-                        document.write(&quot;&lt;/td&gt;&quot;);
-                    }
-                    /*//输出换行
-                    document.write(&quot;&lt;br&gt;&quot;);*/
-
-                    document.write(&quot;&lt;/tr&gt;&quot;);
-                }
-
-                //2.完成表格嵌套
-                document.write(&quot;&lt;/table&gt;&quot;);
-
-            &lt;/script&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-
-        &lt;/body&gt;
-        &lt;/html&gt;
-
-    2. 基本对象：
-        1. Function：函数(方法)对象
-            1. 创建：
-                1. var fun = new Function(形式参数列表,方法体);  //忘掉吧
-                2. 
-                    function 方法名称(形式参数列表){
-                        方法体
-                    }
-
-                3. 
-                   var 方法名 = function(形式参数列表){
-                        方法体
-                   }
-            2. 方法：
-
-            3. 属性：
-                length:代表形参的个数
-            4. 特点：
-                1. 方法定义是，形参的类型不用写,返回值类型也不写。
-                2. 方法是一个对象，如果定义名称相同的方法，会覆盖
-                3. 在JS中，方法的调用只与方法的名称有关，和参数列表无关
-                4. 在方法声明中有一个隐藏的内置对象（数组），arguments,封装所有的实际参数
-            5. 调用：
-                方法名称(实际参数列表);
-
-        2. Array:数组对象
-            1. 创建：
-                1. var arr = new Array(元素列表);
-                2. var arr = new Array(默认长度);
-                3. var arr = [元素列表];
-            2. 方法
-                join(参数):将数组中的元素按照指定的分隔符拼接为字符串
-                push()    向数组的末尾添加一个或更多元素，并返回新的长度。
-            3. 属性
-                length:数组的长度
-            4. 特点：
-                1. JS中，数组元素的类型可变的。
-                2. JS中，数组长度可变的。
-        3. Boolean
-        4. Date：日期对象
-            1. 创建：
-                var date = new Date();
-
-            2. 方法：
-                toLocaleString()：返回当前date对象对应的时间本地字符串格式
-                getTime():获取毫秒值。返回当前如期对象描述的时间到1970年1月1日零点的毫秒值差
-        5. Math：数学对象
-            1. 创建：
-                * 特点：Math对象不用创建，直接使用。  Math.方法名();
-
-            2. 方法：
-                random():返回 0 ~ 1 之间的随机数。 含0不含1
-                ceil(x)：对数进行上舍入。
-                floor(x)：对数进行下舍入。
-                round(x)：把数四舍五入为最接近的整数。
-            3. 属性：
-                PI
-        6. Number
-        7. String
-        8. RegExp：正则表达式对象
-            1. 正则表达式：定义字符串的组成规则。
-                1. 单个字符:[]
-                    如： [a] [ab] [a-zA-Z0-9_]
-                    * 特殊符号代表特殊含义的单个字符:
-                        \d:单个数字字符 [0-9]
-                        \w:单个单词字符[a-zA-Z0-9_]
-                2. 量词符号：
-                    ?：表示出现0次或1次
-                    *：表示出现0次或多次
-                    +：出现1次或多次
-                    {m,n}:表示 m&lt;= 数量 &lt;= n
-                        * m如果缺省： {,n}:最多n次
-                        * n如果缺省：{m,} 最少m次
-                3. 开始结束符号
-                    * ^:开始
-                    * $:结束
-            2. 正则对象：
-                1. 创建
-                    1. var reg = new RegExp(&quot;正则表达式&quot;);
-                    2. var reg = /正则表达式/;
-                2. 方法    
-                    1. test(参数):验证指定的字符串是否符合正则定义的规范    
-        9. Global
-            1. 特点：全局对象，这个Global中封装的方法不需要对象就可以直接调用。  方法名();
-            2. 方法：
-                encodeURI():url编码
-                decodeURI():url解码
-
-                encodeURIComponent():url编码,编码的字符更多
-                decodeURIComponent():url解码
-
-                parseInt():将字符串转为数字
-                    * 逐一判断每一个字符是否是数字，直到不是数字为止，将前边数字部分转为number
-                isNaN():判断一个值是否是NaN
-                    * NaN六亲不认，连自己都不认。NaN参与的==比较全部问false
-
-                eval():讲 JavaScript 字符串，并把它作为脚本代码来执行。
-            3. URL编码
-               传智播客 =  %E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2
-
-* BOM
-
-* DOM</code></pre><p>​    </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1797,7 +1844,7 @@ for (JXNode jxNode : jxNodes4) {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">318</span>
+          <span class="site-state-item-count">320</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1851,7 +1898,7 @@ for (JXNode jxNode : jxNodes4) {
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">36:33</span>
+    <span title="站点阅读时长">36:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -161,6 +161,214 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/C++%E6%96%87%E4%BB%B61/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/25/C++%E6%96%87%E4%BB%B61/" class="post-title-link" itemprop="url">C++文件1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-25 22:05:04" itemprop="dateCreated datePublished" datetime="2020-12-25T22:05:04+08:00">2020-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 08:34:21" itemprop="dateModified" datetime="2021-03-22T08:34:21+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>基于C的文件操作<br>　　在ANSI C中，对文件的操作分为两种方式，即流式文件操作和I/O文件操作，下面就分别介绍之。</p>
+<p>一、流式文件操作<br>这种方式的文件操作有一个重要的结构FILE，FILE在stdio.h中定义如下：</p>
+<p><img src="/2020/12/25/C++%E6%96%87%E4%BB%B61/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> level;　　　　　　　　　　　<span class="comment">/* fill/empty level of buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> flags; 　　　　　　 <span class="comment">/* File status flags */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">char</span> fd;　　　　　　　　　　　 <span class="comment">/* File descriptor */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> hold;　　　　  <span class="comment">/* Ungetc char if no buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">int</span> bsize;　　　　　　　　　　 <span class="comment">/* Buffer size */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *<span class="built_in">buffer</span>;　<span class="comment">/* Data transfer buffer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> <span class="keyword">char</span> _FAR *curp;　　<span class="comment">/* Current active pointer */</span> </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">unsigned</span> istemp;　　　　　　<span class="comment">/* Temporary file indicator */</span> </span><br><span class="line"></span><br><span class="line">　　short token;　　　　　　　　  <span class="comment">/* Used for validity checking */</span> </span><br><span class="line"></span><br><span class="line">&#125; FILE;　　　　　　　　　　　　  <span class="comment">/* This is the FILE object */</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/48304ba5e6f9fe08f3fa1abda7d326ab.png" alt="复制代码"></p>
+<p>　　FILE这个结构包含了文件操作的基本属性，对文件的操作都要通过这个结构的指针来进行，此种文件操作常用的函数见下表 函数 功能</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/25/C++%E6%96%87%E4%BB%B61/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="匡俊桦">
+      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KJHの博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">游戏框架搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-23 10:33:32" itemprop="dateModified" datetime="2021-03-23T10:33:32+08:00">2021-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="游戏框架搭建"><a href="#游戏框架搭建" class="headerlink" title="游戏框架搭建"></a>游戏框架搭建</h1><p><strong>目标</strong> —— 使用 <strong>面相对象</strong> 设计 <strong>飞机大战游戏类</strong></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>明确主程序职责</li>
+<li>实现主程序类</li>
+<li>准备游戏精灵组</li>
+</ul>
+<h2 id="01-明确主程序职责"><a href="#01-明确主程序职责" class="headerlink" title="01. 明确主程序职责"></a>01. 明确主程序职责</h2><ul>
+<li>回顾 <strong>快速入门案例</strong>，一个游戏主程序的 <strong>职责</strong> 可以分为两个部分：<ul>
+<li>游戏初始化</li>
+<li>游戏循环</li>
+</ul>
+</li>
+<li>根据明确的职责，设计 <code>PlaneGame</code> 类如下：</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/24/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -464,254 +672,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">碰撞检测</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 23:15:30" itemprop="dateModified" datetime="2021-03-22T23:15:30+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>756</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>了解碰撞检测方法</li>
-<li>碰撞实现</li>
-</ul>
-<h2 id="01-了解碰撞检测方法"><a href="#01-了解碰撞检测方法" class="headerlink" title="01. 了解碰撞检测方法"></a>01. 了解碰撞检测方法</h2><ul>
-<li><code>pygame</code> 提供了 <strong>两个非常方便</strong> 的方法可以实现碰撞检测：</li>
-</ul>
-<h3 id="pygame-sprite-groupcollide"><a href="#pygame-sprite-groupcollide" class="headerlink" title="pygame.sprite.groupcollide()"></a>pygame.sprite.groupcollide()</h3><ul>
-<li><strong>两个精灵组</strong> 中 <strong>所有的精灵</strong> 的碰撞检测</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupcollide(group1, group2, dokill1, dokill2, collided = None) -&gt; Sprite_dict</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="pygame-sprite-spritecollide"><a href="#pygame-sprite-spritecollide" class="headerlink" title="pygame.sprite.spritecollide()"></a>pygame.sprite.spritecollide()</h3><ul>
-<li>判断 <strong>某个精灵</strong> 和 <strong>指定精灵组</strong> 中的精灵的碰撞</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spritecollide(sprite, group, dokill, collided = None) -&gt; Sprite_list</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果将 <code>dokill</code> 设置为 <code>True</code>，则 <strong>指定精灵组</strong> 中 <strong>发生碰撞的精灵将被自动移除</strong></li>
-<li><code>collided</code> 参数是用于 <strong>计算碰撞的回调函数</strong><ul>
-<li>如果没有指定，则每个精灵必须有一个 <code>rect</code> 属性</li>
-</ul>
-</li>
-<li>返回 <strong>精灵组</strong> 中跟 <strong>精灵</strong> 发生碰撞的 <strong>精灵列表</strong></li>
-</ul>
-<h2 id="02-碰撞实现"><a href="#02-碰撞实现" class="headerlink" title="02. 碰撞实现"></a>02. 碰撞实现</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/24/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="匡俊桦">
-      <meta itemprop="description" content="回忆的沙漏将曾经屈指可数的日子渐渐淡去">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KJHの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/" class="post-title-link" itemprop="url">敌机出场</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-24 23:04:50" itemprop="dateCreated datePublished" datetime="2020-12-24T23:04:50+08:00">2020-12-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-22 21:49:22" itemprop="dateModified" datetime="2021-03-22T21:49:22+08:00">2021-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="敌机出场"><a href="#敌机出场" class="headerlink" title="敌机出场"></a>敌机出场</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>使用 <strong>定时器</strong> 添加敌机</li>
-<li>设计 <code>Enemy</code> 类</li>
-</ul>
-<h2 id="01-使用定时器添加敌机"><a href="#01-使用定时器添加敌机" class="headerlink" title="01. 使用定时器添加敌机"></a>01. 使用定时器添加敌机</h2><p>运行 <strong>备课代码</strong>，<strong>观察</strong> 敌机的 <strong>出现规律</strong>：</p>
-<ol>
-<li>游戏启动后，<strong>每隔 1 秒</strong> 会 <strong>出现一架敌机</strong></li>
-<li>每架敌机 <strong>向屏幕下方飞行</strong>，飞行 <strong>速度各不相同</strong></li>
-<li>每架敌机出现的 <strong>水平位置</strong> 也不尽相同</li>
-<li>当敌机 <strong>从屏幕下方飞出</strong>，不会再飞回到屏幕中</li>
-</ol>
-<h3 id="1-1-定时器"><a href="#1-1-定时器" class="headerlink" title="1.1 定时器"></a>1.1 定时器</h3><ul>
-<li>在 <code>pygame</code> 中可以使用 <code>pygame.time.set_timer()</code> 来添加 <strong>定时器</strong></li>
-<li>所谓 <strong>定时器</strong>，就是 <strong>每隔一段时间</strong>，去 <strong>执行一些动作</strong></li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_timer(eventid, milliseconds) -&gt; None</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>set_timer</code> 可以创建一个 <strong>事件</strong></li>
-<li>可以在 <strong>游戏循环</strong> 的 <strong>事件监听</strong> 方法中捕获到该事件</li>
-<li>第 1 个参数 <strong>事件代号</strong> 需要基于常量 <code>pygame.USEREVENT</code> 来指定<ul>
-<li><code>USEREVENT</code> 是一个整数，再增加的事件可以使用 <code>USEREVENT + 1</code> 指定，依次类推…</li>
-</ul>
-</li>
-<li>第 2 个参数是 <strong>事件触发</strong> 间隔的 <strong>毫秒值</strong></li>
-</ul>
-<p><strong>定时器事件的监听</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/24/%E6%95%8C%E6%9C%BA%E5%87%BA%E5%9C%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -781,7 +741,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">318</span>
+          <span class="site-state-item-count">320</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -835,7 +795,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">36:33</span>
+    <span title="站点阅读时长">36:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
